@@ -468,3 +468,6 @@ C:\inetpub\wwwroot\warehousemanagement\obj\Debug\net8.0\refint\LabMaterials.dll
 C:\inetpub\wwwroot\warehousemanagement\obj\Debug\net8.0\LabMaterials.pdb
 C:\inetpub\wwwroot\warehousemanagement\obj\Debug\net8.0\LabMaterials.genruntimeconfig.cache
 C:\inetpub\wwwroot\warehousemanagement\obj\Debug\net8.0\ref\LabMaterials.dll
+C:\inetpub\wwwroot\warehousemanagement\bin\Debug\net8.0\LabMaterials.staticwebassets.endpoints.json
+C:\inetpub\wwwroot\warehousemanagement\obj\Debug\net8.0\staticwebassets.build.endpoints.json
+C:\inetpub\wwwroot\warehousemanagement\obj\Debug\net8.0\staticwebassets\msbuild.LabMaterials.Microsoft.AspNetCore.StaticWebAssetEndpoints.props
