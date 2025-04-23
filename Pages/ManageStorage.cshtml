@@ -1,0 +1,185 @@
+﻿@page
+@model LabMaterials.Pages.ManageStorageModel
+@section Scripts
+{
+    <script type="text/javascript" language="javascript">
+        const notyf = new Notyf({
+            position: {
+                x: 'right',
+                y: 'top',
+            },
+            types: [
+                {
+                    type: 'error',
+                    background: '#e3392c',
+                    icon: {
+                        className: 'fas fa-times',
+                        tagName: 'span',
+                        color: '#000000'
+                    },
+                    dismissible: false
+                }
+            ]
+        });
+
+        function showErrorNotification(message) {
+            notyf.open({
+                type: 'error',
+                message: message
+            });
+        }
+
+        @if (!string.IsNullOrEmpty(Model.Message))
+        {
+            <text>
+                    var errorMessageFromServer = @Html.Raw(Json.Serialize(Model.Message));
+                    showErrorNotification(errorMessageFromServer);
+            </text>
+        }
+    </script>
+}
+@{
+
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
+        <div class="d-block mb-4 mb-md-0">
+            <h2 class="h4">@Model.lblStorage</h2>
+            <!-- <p class="mb-0">Your web analytics dashboard template.</p>-->
+        </div>
+        <div class="btn-toolbar mb-2 mb-md-0">
+            <div class="btn-group ms-2 ms-lg-3">
+                <a href="AddStorage" class="btn btn-sm justify-content-center top-btn btn-gray-800 d-inline-flex align-items-center">
+                <img b-ie9pk9zf1q="" class="icon text-white icon-xs mx-2" src="images/plus.png">
+                    @Model.lblAddStorage
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="table-settings mb-4">
+        <form method="post" asp-page-handler="Search" class="row align-items-center">
+            <div class="col col-md-6 col-lg-3 col-xl-3">
+                <div class="input-group me-2 me-lg-3 fmxw-400">
+                    <span class="input-group-text">
+                        <svg class="icon icon-xs" x-description="Heroicon name: solid/search"
+                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                            <path fill-rule="evenodd"
+                                d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                                clip-rule="evenodd"></path>
+                        </svg>
+                    </span>
+
+                    <input type="text" name="StoreNumber" class="form-control" placeholder="@Model.lblStoreNumber">
+                </div>
+            </div>
+            <div class="col col-md-6 col-lg-3 col-xl-3">
+                <div class="input-group me-2 me-lg-3 fmxw-400">
+                    <span class="input-group-text">
+                        <svg class="icon icon-xs" x-description="Heroicon name: solid/search"
+                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                            <path fill-rule="evenodd"
+                                d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                                clip-rule="evenodd"></path>
+                        </svg>
+                    </span>
+
+                    <input type="text" name="StoreName" class="form-control" placeholder="@Model.lblStoreName">
+                </div>
+            </div>
+            <div class="col col-md-6 col-lg-3 col-xl-3">
+                <div class="input-group me-2 me-lg-3 fmxw-400">
+                    <span class="input-group-text">
+                        <svg class="icon icon-xs" x-description="Heroicon name: solid/search"
+                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                            <path fill-rule="evenodd"
+                                d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                                clip-rule="evenodd"></path>
+                        </svg>
+                    </span>
+
+                    <input type="text" name="Item" class="form-control" placeholder="@Model.lblItemName">
+                </div>
+            </div>
+            <div class="col-4 col-md-2 col-xl-1 ps-md-0 text-end">
+                <button type="submit" class="btn btn-primary">@Model.lblSubmit</button>
+            </div>
+        </form>
+    </div>
+
+
+
+
+    <div  class="mb-3">@Model.lblTotalItem : @Model.TotalItems</div>
+
+
+    @* <div style="text-align:center; color:maroon">@Model.Message</div> *@
+    <script type="text/javascript">
+
+            window.setTimeout(function () { $('#modelDlg').modal(); }, 1000);
+
+        function setDialogData(str) {
+            var html = "<ul>";
+            var parts = str.split(',');
+            for (var i = 0; i < parts.length; i++)
+                html += "<li>" + parts[i] + "</li>";
+            document.getElementById('shelvesList').innerHTML = html;
+            $('#modelDlg').modal('show');
+        }
+
+    </script>
+
+    <div class="card border-0 shadow mb-4">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-centered table-nowrap mb-0 rounded">
+                    <thead class="thead-light">
+                        <tr>
+                            <th scope="col" class="border-0 rounded-start">@Model.lblItemName</th>
+                            <th scope="col" class="border-0">@Model.lblStoreNumber</th>
+                            <th scope="col" class="border-0">@Model.lblStoreName</th>
+                            <th scope="col" class="border-0">@Model.lblShelveNumber</th>
+                            <th scope="col" class="border-0">@Model.lblAvailableQuantity</th>
+                            <th class="border-0 rounded-end"></th>
+
+
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.Storages != null)
+                        {
+                            foreach (var item in Model.Storages)
+                            {
+                                <tr>
+                                    <th scope="row">@item.ItemName</th>
+                                    <td>@item.StoreNumber</td>
+                                    <td>@item.StoreName</td>
+                                    <td>@item.ShelfNumber</td>
+                                    <td>@item.AvailableQuantity</td>
+                                    <td>
+                                        <form method="post">
+                                            <input type="hidden" value="@item.StorageId" name="StorageId" />
+
+
+
+                                            <input type="submit" value="@Model.lblEdit" class="btn btn-secondary"
+                                                asp-page-handler="Edit" />
+                                            <input type="submit" value="@Model.lblDelete" class="btn btn-danger"
+                                                asp-page-handler="Delete" />
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        <tr>
+                            <td class="border-0" colspan="6">
+                                <div>@Model.lblTotalItem : @Model.TotalItems</div>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+}

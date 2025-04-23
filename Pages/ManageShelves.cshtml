@@ -1,0 +1,101 @@
+﻿@page
+@model LabMaterials.Pages.ManageShelvesModel
+@section Scripts
+{
+    <script type="text/javascript" language="javascript">
+        const notyf = new Notyf({
+            position: {
+                x: 'right',
+                y: 'top',
+            },
+            types: [
+                {
+                    type: 'error',
+                    background: '#e3392c',
+                    icon: {
+                        className: 'fas fa-times',
+                        tagName: 'span',
+                        color: '#000000'
+                    },
+                    dismissible: false
+                }
+            ]
+        });
+
+        function showErrorNotification(message) {
+            notyf.open({
+                type: 'error',
+                message: message
+            });
+        }
+
+        @if (!string.IsNullOrEmpty(Model.Message))
+        {
+            <text>
+                                            var errorMessageFromServer = @Html.Raw(Json.Serialize(Model.Message));
+            showErrorNotification(errorMessageFromServer);
+            </text>
+        }
+    </script>
+}
+@{
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
+        <div class="d-block mb-4 mb-md-0">
+
+            <h2 class="h4">@Model.lblManageShelves</h2>
+            <!-- <p class="mb-0">Your web analytics dashboard template.</p>-->
+        </div>
+        <div class="btn-toolbar mb-2 mb-md-0">
+            <div class="btn-group ms-2 ms-lg-3">
+                <a href="AddShelves" class="btn btn-sm btn-gray-800 d-inline-flex align-items-center">
+                    @Model.lblAddShelves
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card border-0 shadow mb-4">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-centered table-nowrap mb-0 rounded">
+                    <thead class="thead-light">
+                        <tr>
+                            <th scope="col" class="border-0 rounded-start">@Model.lblShelfNumber</th>
+                            
+                            <th class="border-0 rounded-end"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.shelfDetails != null)
+                        {
+                            foreach (var shelf in Model.shelfDetails)
+                            {
+                                if (shelf.ShelfNo != null && shelf.Ended ==null)
+                                {
+                                <tr>
+                                        <td>@shelf.ShelfNo</td>
+                                    
+                                    <td>
+                                        <form method="post">
+                                            <input type="hidden" value="@shelf.ShelfId" name="ShelfId" />
+                                            <input type="submit" value="@Model.lblEdit" class="btn btn-secondary"
+                                                   asp-page-handler="Edit" />
+                                            <input type="submit" value="@Model.lblDelete" class="btn btn-danger"
+                                                   asp-page-handler="Delete" />
+                                        </form>
+                                    </td>
+                                </tr>
+                                }
+                            }
+                        }
+                        <tr>
+                            <td colspan="4">
+                                <div>@Model.lblTotalItem : @Model.TotalItems</div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+}

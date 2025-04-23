@@ -1,0 +1,83 @@
+﻿@page
+@model LabMaterials.Pages.DBConfigModel
+@{
+    Layout = null;
+}
+<html>
+    <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title> Lab </title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/LabMaterials.styles.css" asp-append-version="true" />
+
+</head>
+<body>
+    <div class="container">
+        <main role="main" class="p-3 m-4">
+            <h4> DB Connection Test </h4>
+
+            <form method="post" id="form1">
+                <div style="color:forestgreen">@Model.msg</div>
+                <div style="color:orangered">@Model.error</div>
+                <hr />
+                @if (System.IO.File.Exists(Program.HostingEnv.ContentRootPath + "\\ConnectionString.config") == false)
+                {
+                    <fieldset>
+                        <legend>Sample Connection Strings</legend>
+                        <ul style="list-style-type:decimal">
+                   
+                            <li>
+                                <code> data source=xxxx,xx; initial catalog=LabMaterials; user id=xxx; pwd=xxxx;  encrypt=no;</code>
+                            </li>
+                        </ul>
+                    </fieldset>
+                    <hr />
+                    <div>Enter your connection string here</div>
+                    <div>
+                        <textarea id="connString" asp-for="connString" style="width:80%; height:100px"> </textarea>
+                    </div>
+                    <input type="submit" asp-page-handler="Test" value="Test Connection String" />
+                    <input type="submit" asp-page-handler="Save" value="Save Connection String" />
+                }
+                else if (Program.Configuration.GetSection("ShowConnectionString").Value == "true")
+                {
+                    <p>
+                        @{
+                            var sqlConnectionStringBuilder = new Microsoft.Data.SqlClient.SqlConnectionStringBuilder(DB.DBUtils.ConnectionsString);
+                            <span>Data Source: @sqlConnectionStringBuilder.DataSource </span>
+
+                            <br />
+                            <span>Initial Catalog : @sqlConnectionStringBuilder.InitialCatalog </span>
+
+                            <br />
+                            <span>User Id: @sqlConnectionStringBuilder.UserID </span>
+
+                            <br />
+                        }
+                        <hr />
+
+                        @if (Program.Configuration.GetSection("CanUpdateConnectionString").Value == "true")
+                        {
+                            <div>Update your connection string here</div>
+                            <div>
+                                <textarea id="connString" asp-for="connString" style="width:80%; height:100px"> </textarea>
+                            </div>
+                            <input type="submit" asp-page-handler="Test" value="Test Connection String" />
+                            <input type="submit" asp-page-handler="Update" value="Update Connection String" />
+                        }
+
+                    </p>
+                    <a href="Index">Login</a>
+                }
+                else
+                {
+                    <span>To update connection string, remove existing connection string file</span> <br />
+                    <a href="Index">Login</a>
+                }
+            </form>
+
+        </main>
+    </div>
+</body>

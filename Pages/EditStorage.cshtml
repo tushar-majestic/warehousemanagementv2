@@ -1,0 +1,133 @@
+﻿@page
+@model LabMaterials.Pages.EditStorageModel
+@section Scripts
+{
+    <script type="text/javascript" language="javascript">
+        const notyf = new Notyf({
+            position: {
+                x: 'right',
+                y: 'top',
+            },
+            types: [
+                {
+                    type: 'error',
+                    background: '#e3392c',
+                    icon: {
+                        className: 'fas fa-times',
+                        tagName: 'span',
+                        color: '#000000'
+                    },
+                    dismissible: false
+                }
+            ]
+        });
+
+        function showErrorNotification(message) {
+            notyf.open({
+                type: 'error',
+                message: message
+            });
+        }
+
+        @if (!string.IsNullOrEmpty(Model.ErrorMsg))
+        {
+            <text>
+                    var errorMessageFromServer = @Html.Raw(Json.Serialize(Model.ErrorMsg));
+                    showErrorNotification(errorMessageFromServer);
+            </text>
+        }
+    </script>
+}
+@{
+    <div class="py-4">
+
+        <div class="d-flex justify-content-between w-100 flex-wrap">
+            <div class="mb-3 mb-lg-0">
+                <h1 class="h4">@Model.lblUpdateStorage</h1>
+               <!-- <p class="mb-0">Dozens of reusable components built to provide buttons, alerts, popovers, and more.</p> -->
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-8 mb-4 m-auto">
+            <div class="card border-0 shadow components-section">
+                <form method="post" class="card-body">
+                    <input type="hidden" name="StorageId" value="@Model.StorageId" />
+                    <div class="row mb-4">
+
+
+                        <div class="col-lg-12 col-sm-12">
+                          
+
+
+                            <div class="mb-4">
+                                <label class="my-1 me-2" for="ItemId">@Model.lblItemName</label>
+                                <select class="form-select" id="ItemId"  name="ItemId" >
+                        @if (Model.Items != null)
+                        {
+                            foreach (var item in Model.Items)
+                            {
+                                <option value="@item.ItemId" selected="@(item.ItemId == Model.ItemId)">@item.ItemName</option>
+                            }
+                        }
+                    </select>
+                                
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="my-1 me-2" for="StoreId">@Model.lblStoreName</label>
+                                <select class="form-select" id="StoreId" name="StoreId" >
+                        @if (Model.Stores != null)
+                        {
+                            foreach (var item in Model.Stores)
+                            {
+                                <option value="@item.StoreId" selected="@(item.StoreId == Model.StoreId)">@item.StoreNumber :
+                                    @item.StoreName</option>
+                            }
+                        }
+                    </select>
+                                
+                            </div>
+
+                           
+                            <div class="mb-4">
+                                <label for="ShelfNumber">@Model.lblShelveNumber</label>
+
+                                <input type="text" class="form-control" id="ShelfNumber" name="ShelfNumber"
+                                    value="@Model.ShelfNumber" />
+
+                            </div>
+                             <div class="mb-4">
+                                <label for="Quantity">@Model.lblQuantity</label>
+
+                                <input type="number" class="form-control" id="Quantity" name="Quantity"
+                                    value="@Model.Quantity" />
+
+                            </div>
+
+                            <div class="mb-4">
+
+
+                                <div class="d-flex mb-2 mb-md-0" style="gap: 10px">
+                                    <a href="ManageStorage"
+                                        class="btn btn-outline-gray-600  align-items-center w-100">@Model.lblCancel</a>
+
+                                    <input type="submit" value="@Model.lblUpdate"
+                                        class="btn btn-sm btn-gray-800 align-items-center w-100"
+                                        style="text-align:center;" />
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+      
+        @* <div style="text-align:center; color:maroon">@Model.ErrorMsg</div> *@
+        
+
+}

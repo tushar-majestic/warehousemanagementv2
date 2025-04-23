@@ -1,0 +1,14 @@
+﻿Log File Creation	0
+	Info	13:31:04.535	->JsonLogwriter..ctor	C:\inetpub\wwwroot\warehousemanagement/Logs/Lab_2025-04-23 13-31-04.txt
+FirstLine	1
+	Info	13:31:04.539	InitializeLogWriter.ctor		
+Seed data	2
+	Info	13:31:04.545	DefaultData.InsertDefaultData	Init Started	
+	Info	13:31:06.118	DefaultData.InsertDefaultData	PrimaryKeys found	
+	Info	13:31:06.124	DefaultData.InsertDefaultData	admin user found	
+	Info	13:31:06.124	DefaultData.InsertDefaultData	Init Complete	
+Login	3
+	Info	13:31:28.001	IndexModel.OnPost	Called	
+	Info	13:31:28.280	IndexModel.OnPost	starting application user validation	
+	Info	13:31:28.280	IndexModel.OnPost	valid user, logging-in	
+	Info	13:31:28.485	IndexModel.OnPost	Completed	

@@ -1,0 +1,52 @@
+﻿@page
+@model LabMaterials.Pages.LoginModel
+@{
+    Layout = null;
+    ViewData["Title"] = "Login In";
+}
+<html>
+<head>
+
+    <title>@ViewData["Title"] - LabMaterials</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/LabMaterials.styles.css" asp-append-version="true" />
+
+    <style>
+        html, body, main {
+            height: 90%;
+        }
+    </style>
+
+</head>
+<body>
+    <div style="margin-top:5%">
+        <div class="row h-100">
+            <div class="col-sm-12 my-auto">
+                <div class="card card-block mx-auto" style="width: 360px;">
+                    <div class="card-header">
+                        Sign In
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">@Model.LoginTypeMsg</h5>
+                        <p class="card-text text-danger">@Model.errorMessage</p>
+                        <form method="post">
+                            <div class="form-group">
+                                <label for="textbox_userName">User Name</label>
+                                <input type="text" asp-for="UserName" class="form-control" id="textbox_userName" placeholder="Enter Username" autocomplete="off">
+                            </div>
+                            <div class="form-group">
+                                <label for="textbox_password">Password</label>
+                                <input type="password" asp-for="Password" class="form-control" id="textbox_password" placeholder="Enter Password" autocomplete="off">
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" id="button_login" class="btn btn-primary" onclick="onSubmitForm()">Login</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

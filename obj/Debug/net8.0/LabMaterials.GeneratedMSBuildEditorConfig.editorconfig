@@ -1,0 +1,259 @@
+is_global = true
+build_property.TargetFramework = net8.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = LabMaterials
+build_property.RootNamespace = LabMaterials
+build_property.ProjectDir = C:\inetpub\wwwroot\warehousemanagement\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
+build_property.RazorLangVersion = 8.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = true
+build_property.MSBuildProjectDirectory = C:\inetpub\wwwroot\warehousemanagement
+build_property._RazorSourceGeneratorDebug = 
+
+[C:/inetpub/wwwroot/warehousemanagement/Pages/AddDestination.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRkRGVzdGluYXRpb24uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/inetpub/wwwroot/warehousemanagement/Pages/AddDisbursement.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRkRGlzYnVyc2VtZW50LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/inetpub/wwwroot/warehousemanagement/Pages/AddItem.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRkSXRlbS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/inetpub/wwwroot/warehousemanagement/Pages/AddItemGroup.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRkSXRlbUdyb3VwLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/inetpub/wwwroot/warehousemanagement/Pages/AddRequestor.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRkUmVxdWVzdG9yLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/inetpub/wwwroot/warehousemanagement/Pages/AddRooms.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRkUm9vbXMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/inetpub/wwwroot/warehousemanagement/Pages/AddShelves.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRkU2hlbHZlcy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/inetpub/wwwroot/warehousemanagement/Pages/AddStorage.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRkU3RvcmFnZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/inetpub/wwwroot/warehousemanagement/Pages/AddStore.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRkU3RvcmUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/inetpub/wwwroot/warehousemanagement/Pages/AddSupplier.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRkU3VwcGxpZXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/inetpub/wwwroot/warehousemanagement/Pages/AddSupply.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRkU3VwcGx5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/inetpub/wwwroot/warehousemanagement/Pages/AddUnit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRkVW5pdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/inetpub/wwwroot/warehousemanagement/Pages/AddUser.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRkVXNlci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/inetpub/wwwroot/warehousemanagement/Pages/AddUserGroup.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRkVXNlckdyb3VwLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/inetpub/wwwroot/warehousemanagement/Pages/ChangePassword.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ2hhbmdlUGFzc3dvcmQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/inetpub/wwwroot/warehousemanagement/Pages/DamageItem.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRGFtYWdlSXRlbS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/inetpub/wwwroot/warehousemanagement/Pages/DBConfig.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcREJDb25maWcuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/inetpub/wwwroot/warehousemanagement/Pages/Disbursements.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRGlzYnVyc2VtZW50cy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/inetpub/wwwroot/warehousemanagement/Pages/EditDestinations.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRWRpdERlc3RpbmF0aW9ucy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/inetpub/wwwroot/warehousemanagement/Pages/EditDisbursement.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRWRpdERpc2J1cnNlbWVudC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/inetpub/wwwroot/warehousemanagement/Pages/EditItem.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRWRpdEl0ZW0uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/inetpub/wwwroot/warehousemanagement/Pages/EditItemGroup.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRWRpdEl0ZW1Hcm91cC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/inetpub/wwwroot/warehousemanagement/Pages/EditRequestor.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRWRpdFJlcXVlc3Rvci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/inetpub/wwwroot/warehousemanagement/Pages/EditRoom.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRWRpdFJvb20uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/inetpub/wwwroot/warehousemanagement/Pages/EditShelves.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRWRpdFNoZWx2ZXMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/inetpub/wwwroot/warehousemanagement/Pages/EditStorage.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRWRpdFN0b3JhZ2UuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/inetpub/wwwroot/warehousemanagement/Pages/EditStore.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRWRpdFN0b3JlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/inetpub/wwwroot/warehousemanagement/Pages/EditSupplier.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRWRpdFN1cHBsaWVyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/inetpub/wwwroot/warehousemanagement/Pages/EditSupply.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRWRpdFN1cHBseS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/inetpub/wwwroot/warehousemanagement/Pages/EditUnit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRWRpdFVuaXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/inetpub/wwwroot/warehousemanagement/Pages/EditUser.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRWRpdFVzZXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/inetpub/wwwroot/warehousemanagement/Pages/EditUserGroup.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRWRpdFVzZXJHcm91cC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/inetpub/wwwroot/warehousemanagement/Pages/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXJyb3IuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/inetpub/wwwroot/warehousemanagement/Pages/Home.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSG9tZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/inetpub/wwwroot/warehousemanagement/Pages/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/inetpub/wwwroot/warehousemanagement/Pages/ManageDamaged.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTWFuYWdlRGFtYWdlZC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/inetpub/wwwroot/warehousemanagement/Pages/ManageDestinations.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTWFuYWdlRGVzdGluYXRpb25zLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/inetpub/wwwroot/warehousemanagement/Pages/ManageItemGroups.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTWFuYWdlSXRlbUdyb3Vwcy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/inetpub/wwwroot/warehousemanagement/Pages/ManageItems.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTWFuYWdlSXRlbXMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/inetpub/wwwroot/warehousemanagement/Pages/ManageRequestor.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTWFuYWdlUmVxdWVzdG9yLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/inetpub/wwwroot/warehousemanagement/Pages/ManageRooms.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTWFuYWdlUm9vbXMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/inetpub/wwwroot/warehousemanagement/Pages/ManageShelves.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTWFuYWdlU2hlbHZlcy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/inetpub/wwwroot/warehousemanagement/Pages/ManageStorage.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTWFuYWdlU3RvcmFnZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/inetpub/wwwroot/warehousemanagement/Pages/ManageStore.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTWFuYWdlU3RvcmUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/inetpub/wwwroot/warehousemanagement/Pages/ManageSupplier.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTWFuYWdlU3VwcGxpZXIuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/inetpub/wwwroot/warehousemanagement/Pages/ManageUnits.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTWFuYWdlVW5pdHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/inetpub/wwwroot/warehousemanagement/Pages/ManageUserGroups.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTWFuYWdlVXNlckdyb3Vwcy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/inetpub/wwwroot/warehousemanagement/Pages/ManageUsers.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTWFuYWdlVXNlcnMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/inetpub/wwwroot/warehousemanagement/Pages/Rep_DamagedItems.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVwX0RhbWFnZWRJdGVtcy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/inetpub/wwwroot/warehousemanagement/Pages/Rep_Distribution.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVwX0Rpc3RyaWJ1dGlvbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/inetpub/wwwroot/warehousemanagement/Pages/Rep_HazardMaterial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVwX0hhemFyZE1hdGVyaWFsLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/inetpub/wwwroot/warehousemanagement/Pages/Rep_Inventory.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVwX0ludmVudG9yeS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/inetpub/wwwroot/warehousemanagement/Pages/Rep_MaterialsReceived.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVwX01hdGVyaWFsc1JlY2VpdmVkLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/inetpub/wwwroot/warehousemanagement/Pages/Rep_UserActivity.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVwX1VzZXJBY3Rpdml0eS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/inetpub/wwwroot/warehousemanagement/Pages/Rep_UserReport.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVwX1VzZXJSZXBvcnQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/inetpub/wwwroot/warehousemanagement/Pages/Shared/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/inetpub/wwwroot/warehousemanagement/Pages/Supplies.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU3VwcGxpZXMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/inetpub/wwwroot/warehousemanagement/Pages/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/inetpub/wwwroot/warehousemanagement/Pages/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/inetpub/wwwroot/warehousemanagement/Pages/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXF9MYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = b-ie9pk9zf1q

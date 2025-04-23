@@ -1,0 +1,313 @@
+﻿@page
+@model LabMaterials.Pages.ManageStoreModel
+@section Scripts
+{
+    <script type="text/javascript" language="javascript">
+        const notyf = new Notyf({
+            position: {
+                x: 'right',
+                y: 'top',
+            },
+            types: [
+                {
+                    type: 'error',
+                    background: '#e3392c',
+                    icon: {
+                        className: 'fas fa-times',
+                        tagName: 'span',
+                        color: '#000000'
+                    },
+                    dismissible: false
+                }
+            ]
+        });
+
+        document.querySelectorAll('.toggle-collapse').forEach(function (button) {
+            button.addEventListener('click', function () {debugger
+                var target = this.getAttribute('data-target');
+                document.querySelector(target).classList.toggle('show');
+                var icon = this.querySelector('.icon');
+                if (icon) {
+                    if (document.querySelector(target).classList.contains('show')) {
+                        icon.src = 'images/expand-button.png';
+                    } else {
+                        icon.src = 'images/collapse.png'; 
+                    }
+                }
+            });
+        });
+
+        function showErrorNotification(message) {
+            notyf.open({
+                type: 'error',
+                message: message
+            });
+        }
+
+        @if (!string.IsNullOrEmpty(Model.Message) )
+        {
+            <text>
+                var errorMessageFromServer = @Html.Raw(Json.Serialize(Model.Message));
+                showErrorNotification(errorMessageFromServer);
+            </text>
+        }
+        @if (TempData["Message"] != null)
+        {
+            <text>
+                var errorMessageFromServer = @Html.Raw(Json.Serialize(TempData["Message"]));
+                showErrorNotification(errorMessageFromServer);
+            </text>
+        }
+    </script>
+}
+@{
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
+        <div class="d-block mb-4 mb-md-0">
+
+            <h2 class="h4">@Model.lblStores</h2>
+            <!-- <p class="mb-0">Your web analytics dashboard template.</p>-->
+        </div>
+        <div class="btn-toolbar mb-2 mb-md-0">
+            <div class="btn-group ms-2 ms-lg-3">
+                <a href="AddStore" class="btn top-sm-btn btn-sm btn-gray-800 d-flex justify-content-center d-inline-flex align-items-center">
+                    <img b-ie9pk9zf1q="" class="icon text-white icon-xs mx-2" src="images/plus.png">   @Model.lblAddStore
+                </a>
+            </div>
+            <div class="btn-group ms-2 ms-lg-3">
+            <a href="ManageStorage" class="btn btn-sm top-btn btn-outline-gray-600 d-inline-flex align-items-center justify-content-center">
+                <img b-ie9pk9zf1q="" class="icon text-white icon-xs mx-2" src="images/manage-b.png">
+                @Model.lblManageStorage
+            </a>
+            </div>
+            <div class="btn-group ms-2 ms-lg-3">
+                <a href="ManageDestinations" class="btn btn-sm btn-outline-gray-600 justify-content-center top-big-btn d-inline-flex align-items-center">
+                    <img b-ie9pk9zf1q="" class="icon text-white icon-xs mx-2" src="images/manage-b.png">   @Model.lblManageDestination
+                </a>
+            </div>
+            <div class="btn-group ms-2 ms-lg-3">
+                <a href="ManageRooms" class="btn btn-sm justify-content-center top-btn btn-outline-gray-600 d-inline-flex align-items-center">
+                    <img b-ie9pk9zf1q="" class="icon text-white icon-xs mx-2" src="images/manage-b.png">
+                    @Model.lblManageRooms
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="table-settings mb-4">
+        <form method="post" asp-page-handler="Search" class="row align-items-center">
+            <div class="col col-md-6 col-lg-3 col-xl-3">
+                <div class="input-group me-2 me-lg-3 fmxw-400">
+                    <span class="input-group-text">
+                        <svg class="icon icon-xs" x-description="Heroicon name: solid/search"
+                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                            <path fill-rule="evenodd"
+                                d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                                clip-rule="evenodd"></path>
+                        </svg>
+                    </span>
+                    <input type="text" name="StoreNumber" class="form-control" placeholder="@Model.lblStoreNumber">
+                </div>
+            </div>
+            <div class="col col-md-6 col-lg-3 col-xl-3">
+                <div class="input-group me-2 me-lg-3 fmxw-400">
+                    <span class="input-group-text">
+                        <svg class="icon icon-xs" x-description="Heroicon name: solid/search"
+                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                            <path fill-rule="evenodd"
+                                d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                                clip-rule="evenodd"></path>
+                        </svg>
+                    </span>
+                    <input type="text" name="StoreName" class="form-control" placeholder="@Model.lblStoreName">
+                </div>
+            </div>
+            <div class="col-4 col-md-2 col-xl-1 ps-md-0 ">
+                <button type="submit" class="btn btn-primary">@Model.lblSubmit</button>
+            </div>
+        </form>
+    </div>
+    <div class="card border-0 shadow mb-4">
+        <div class="card-body">
+            <div class="table-responsive">
+
+                <table class="table">
+                    <thead class="thead-light">
+                        <tr>
+                            <th scope="col" class="border-0 rounded-start"></th>
+                            <th scope="col" class="border-0">@Model.lblStoreNumber</th>
+                            <th scope="col" class="border-0">@Model.lblStoreName</th>
+                            <th scope="col" class="border-0">@Model.lblRoomName</th>
+                            <th scope="col" class="border-0">@Model.lblShelves</th>
+                            <th class="border-0 rounded-end"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.Stores != null)
+                        {
+                            string prevStoreName = "";
+                            string prevStoreNumber = "";
+                            bool firstStore = true;
+                            foreach (var item in Model.Stores)
+                            {
+                                bool showCollapse = item.StoreName != prevStoreName || item.StoreNumber != prevStoreNumber;
+                                if (showCollapse)
+                                {
+                                    if (!firstStore)
+                                    {
+                                        @:</tr> 
+                                    }
+                                    firstStore = false;
+                                    <tr>
+                                        <td style="min-width:100px;  width:100px;">
+                                            <button class="btn btn-sm toggle-collapse" data-toggle="collapse"
+                                                    data-target="#@($"demo_{item.StoreNumber}_{item.StoreName.Replace(" ", "_")}")">
+                                                <img class="icon icon-xs border-0" src="images/collapse.png">
+                                            </button>
+                                        </td>
+                                        <td style="min-width:100px !important; min-width:100px;  width:100px !important;">@item.StoreNumber</td>
+                                        <td style="min-width:300px;  width:300px;">@item.StoreName</td>
+                                        <td style="min-width:300px;  width:300px;">@item.RoomName</td>
+                                        <td style="min-width:300px;  width:300px;">
+                                            @(string.IsNullOrWhiteSpace(item.ShelfNumber) ? "" : (item.ShelfNumber.Length > 30 ?
+                                            item.ShelfNumber.Substring(0, 30) : item.ShelfNumber))
+                                        </td>
+                                        <td>
+                                            <form method="post">
+                                                <input type="hidden" value="@item.StoreId" name="StoreId" />
+                                                <button type="submit" class="btn btn-info" name="lockToggle" value="toggle">
+                                                    @if (item.IsActive == 0)
+                                                    {
+                                                        <span>@Model.lblUnlock</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span>@Model.lblLock</span>
+                                                    }
+                                                </button>
+                                                <input type="submit" value="@Model.lblEdit" class="btn btn-secondary"
+                                                       asp-page-handler="Edit" />
+                                                <input type="submit" value="@Model.lblDelete" class="btn btn-danger"
+                                                       asp-page-handler="Delete" />
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    <tr class="collapse" id="@($"demo_{item.StoreNumber}_{item.StoreName.Replace(" ", "_")}")">
+                                        <td colspan="6" class="p-0">
+                                            <table class="table border-0 bg-light">
+                                                
+                                                <tbody>
+                                                    @foreach (var store in Model.Stores.Where(s=>s.StoreNumber == item.StoreNumber && s.StoreName == item.StoreName).Skip(1))
+                                                    {
+                                                        <tr class="border-0">
+                                                            <td class="border-0" style="max-width:187px; width:187px;"></td>
+                                                            <td class="border-0" style="max-width:120px;  width:120px;">@store.StoreNumber</td>
+                                                            <td class="border-0" style="max-width:300px;  width:300px;">@store.StoreName</td>
+                                                            <td class="border-0" style="max-width:300px;  width:300px;">@store.RoomName</td>
+                                                            <td class="border-0" style="max-width:300px;  width:300px;">
+                                                                @(string.IsNullOrWhiteSpace(store.ShelfNumber) ? "" : (store.ShelfNumber.Length > 30 ?
+                                                                store.ShelfNumber.Substring(0, 30) : store.ShelfNumber))
+                                                            </td>
+                                                            <td class="border-0"></td>
+                                                        </tr>
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    </tr>
+
+                                }
+                                prevStoreName = item.StoreName;
+                                prevStoreNumber = item.StoreNumber;
+                            }
+                            @:</tr> <!-- Close the last row -->
+                        }
+                    </tbody>
+                </table>
+
+
+
+               @* <table class="table table-centered table-nowrap mb-0 rounded">
+                    <thead class="thead-light">
+                        <tr>
+                            <th scope="col" class="border-0 rounded-start">@Model.lblStoreNumber</th>
+                            <th scope="col" class="border-0">@Model.lblStoreName</th>
+                            <th scope="col" class="border-0">@Model.lblRoomName</th>
+                            <th scope="col" class="border-0">@Model.lblShelves</th>
+                            <th class="border-0 rounded-end"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        @if (Model.Stores != null)
+                        {
+                            string prevStoreNumber = "";
+                            string prevStoreName = "";
+
+                            foreach (var item in Model.Stores)
+                            {
+                                <tr>
+                                    @if (item.StoreNumber != prevStoreNumber)
+                                    {
+                                        <th class="fw-bold" scope="row">@item.StoreNumber</th>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+
+                                    @if (item.StoreName != prevStoreName)
+                                    {
+                                        <td>@item.StoreName</td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                    <td>@item.RoomName</td>
+                                    <td>
+                                        @(string.IsNullOrWhiteSpace(item.ShelfNumber) ? "" : (item.ShelfNumber.Length > 30 ?
+                                        item.ShelfNumber.Substring(0, 30) : item.ShelfNumber))
+                                    </td>
+                                    @if (item.StoreNumber != prevStoreNumber)
+                                    {
+                                        <td>
+                                            <form method="post">
+                                                <input type="hidden" value="@item.StoreId" name="StoreId" />
+                                                <button type="submit" class="btn btn-info" name="lockToggle" value="toggle">
+                                                    @if (item.IsActive == 0)
+                                                    {
+                                                        <span>@Model.lblUnlock</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span>@Model.lblLock</span>
+                                                    }
+                                                </button>
+                                            <input type="submit" value="@Model.lblEdit" class="btn btn-secondary"
+                                                   asp-page-handler="Edit" />
+                                            <input type="submit" value="@Model.lblDelete" class="btn btn-danger"
+                                                   asp-page-handler="Delete" />
+                                        </form>
+                                        </td>
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                    }
+                                </tr>
+                                prevStoreNumber = item.StoreNumber;
+                                prevStoreName = item.StoreName;
+
+                            }
+                        }
+                        <tr>
+                            <td colspan="4">
+                                <div>@Model.lblTotalItem : @Model.TotalItems</div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>*@
+
+            </div>
+        </div>
+    </div>
+}

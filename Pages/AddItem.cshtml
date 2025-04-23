@@ -1,0 +1,272 @@
+﻿@page
+@model LabMaterials.Pages.AddItemModel
+@section Scripts
+{
+    <script type="text/javascript" language="javascript">
+        if (document.getElementById("IsHazardous").checked == false) {
+            document.getElementById("HazardTypeName").disabled = true;
+            document.getElementById("HazrdTypeSelections").style = 'display:none;';
+        }
+        else {
+            document.getElementById("HazardTypeName").disabled = false;
+            document.getElementById("HazrdTypeSelections").style = 'display:table-row;';
+        }
+
+        $("#IsHazardous").change(function () {
+
+            if (document.getElementById("IsHazardous").checked == false) {
+                document.getElementById("HazardTypeName").disabled = true;
+                document.getElementById("HazrdTypeSelections").style = 'display:none;';
+            }
+            else {
+                document.getElementById("HazardTypeName").disabled = false;
+                document.getElementById("HazrdTypeSelections").style = 'display:block;';
+            }
+
+        });
+
+        // $(document).ready(function () {  
+        // $.ajax({  
+        //     url: '@Url.Action("GetGroup", "Item")',  
+        //     type: "GET",  
+        //     success: function (json, textStatus) {  
+        //         json = json || {};  
+        //         for (var i = 0; i < json.length; i++) {  
+        //                 $("#GroupCode").append('<option value="' + json[i].GroupCode + '">' + json[i].GroupDesc + '</option>');  
+        //         }  
+        //     },  
+        //     error: function () {  
+        //         alert("Data Not Found");  
+        //     }  
+        // });  
+        // });  
+
+        $(document).ready(function () {
+            //$("#Units").prop("disabled", true); 
+            $("#GroupCode").change(function () {
+                var GroupCode = $("#GroupCode").val();
+                $.ajax({
+                    cache: false,
+                    type: "GET",
+                    url: '/api/ListValues/GetUnits',
+                    data: { "GroupCode": GroupCode },
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (json) {
+                        $("#Units").empty();
+                        json = json || {};
+                        for (var i = 0; i < json.length; i++) {
+                            $("#Units").append('<option value="' + json[i].Id + '">' + json[i].UnitCode + '</option>');
+                        }
+                        //$("#Units").prop("disabled", false);  
+                    },
+                    error: function () {
+                        alert("Data Not Found");
+                    }
+                });
+            });
+        });
+
+
+        const notyf = new Notyf({
+            position: {
+                x: 'right',
+                y: 'top',
+            },
+            types: [
+                {
+                    type: 'error',
+                    background: '#e3392c',
+                    icon: {
+                        className: 'fas fa-times',
+                        tagName: 'span',
+                        color: '#000000'
+                    },
+                    dismissible: false
+                }
+            ]
+        });
+
+        function showErrorNotification(message) {
+            notyf.open({
+                type: 'error',
+                message: message
+            });
+        }
+
+        @if (!string.IsNullOrEmpty(Model.ErrorMsg))
+        {
+            <text>
+                    var errorMessageFromServer = @Html.Raw(Json.Serialize(Model.ErrorMsg));
+                    showErrorNotification(errorMessageFromServer);
+            </text>
+        }
+            $(function () {
+                $("#ExpiryDate").datepicker({
+                    dateFormat: 'yy-mm-dd', // Set the date format
+                    minDate: 0, // Set minimum date to today
+                    onSelect: function (dateText, inst) {
+                        // You can perform any additional actions when a date is selected if needed
+                    }
+                });
+            });
+    </script>
+}
+@{
+
+    <div class="py-4">
+
+        <div class="d-flex justify-content-between w-100 flex-wrap">
+            <div class="mb-3 mb-lg-0">
+                <h1 class="h4">@Model.lblAddItem</h1>
+               <!-- <p class="mb-0">Dozens of reusable components built to provide buttons, alerts, popovers, and more.</p> -->
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-8 mb-4 m-auto">
+            <div class="card border-0 shadow components-section">
+                <form method="post" class="card-body">
+                    <div class="row mb-4">
+
+
+                        <div class="col-lg-12 col-sm-12">
+                            <div class="mb-4">
+                                <label for="ItemCode">@Model.lblItemCode</label>
+
+                                <input type="text" class="form-control" id="ItemCode" name="ItemCode"
+                                    value="@Model.ItemCode" />
+
+                            </div>
+                            <div class="mb-4">
+                                <label for="ItemName">@Model.lblItemName</label>
+
+                                <input type="text" class="form-control" id="ItemName" name="ItemName"
+                                    value="@Model.ItemName" />
+
+                            </div>
+                            <div class="mb-4">
+                                <label for="ItemDescription">@Model.lblItemDescription</label>
+
+                                <input type="text" class="form-control" id="ItemDescription" name="ItemDescription"
+                                    value="@Model.ItemDescription" />
+
+                            </div>
+
+
+
+
+                            <div class="mb-4">
+                                <div class="form-check">
+                                    <label class="form-check-label" for="IsHazardous">
+                                        @Model.lblIsHazardous
+                                    </label>
+                                    <input id="IsHazardous" class="form-check-input" type="checkbox" name="IsHazardous"
+                                        asp-for="IsHazardous">
+
+                                </div>
+                            </div>
+
+                            <div class="mb-4" id="HazrdTypeSelections">
+                                <label class="my-1 me-2" for="HazardTypeName">@Model.lblHazardType</label>
+                                <select class="form-select" id="HazardTypeName" name="HazardTypeName"
+                                    aria-label="Default select example">
+
+                                    @if (Model.HazardTypes != null)
+                                    {
+                                        foreach (var item in Model.HazardTypes)
+                                        {
+                                            <option value="@item.HazardTypeName">@item.HazardTypeName</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                            <div class="mb-4">
+                                <label class="my-1 me-2" for="ItemTypeCode">@Model.lblTypeName</label>
+                                <select class="form-select" id="ItemTypeCode" name="ItemTypeCode"
+                                    aria-label="Default select example">
+
+                                    @if (Model.ItemTypes != null)
+                                    {
+                                        foreach (var item in Model.ItemTypes)
+                                        {
+                                            <option value="@item.ItemTypeCode">@item.TypeName</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="my-1 me-2" for="GroupCode">@Model.lblGroupName</label>
+                                <select class="form-select" id="GroupCode" name="GroupCode"
+                                    aria-label="Default select example">
+
+                                    @if (Model.ItemGroups != null)
+                                    {
+                                        foreach (var item in Model.ItemGroups)
+                                        {
+                                            <option value="@item.GroupCode">@item.GroupDesc</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                            <div class="mb-4">
+                                <label class="my-1 me-2" for="Units">@Model.lblUnit</label>
+                                <select class="form-select" id="Units" name="UnitId" aria-label="Default select example">
+
+                                    @if (Model.UnitTypes != null)
+                                    {
+                                        foreach (var item in Model.UnitTypes)
+                                        {
+                                            <option value="@item.Id">@item.UnitCode</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+
+
+
+                            <div class="mb-4" id="PasswordRow">
+                                <label for="AvailableQuantity">@Model.lblAvailableQuantity</label>
+                                <input type="number" name="AvailableQuantity" value="@Model.AvailableQuantity"
+                                    class="form-control" id="Password">
+
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="BatchNo">@Model.lblBatchNo</label>
+
+                                <input type="text" class="form-control" id="BatchNo" name="BatchNo"
+                                       value="@Model.BatchNo" />
+
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="ExpiryDate">Expiry Date</label>
+                                <input asp-for="ExpiryDate" class="form-control" type="date" name="ExpiryDate"
+                                       value="@Model.ExpiryDate.ToString("yyyy-MM-dd")" />
+                            </div>
+                            <div class="mb-4">
+
+
+                                <div class="d-flex mb-2 mb-md-0" style="gap: 10px">
+                                    <a href="ManageItems"
+                                        class="btn btn-outline-gray-600  align-items-center w-100">@Model.lblCancel</a>
+
+                                    <input type="submit" value="@Model.lblAdd"
+                                        class="btn btn-sm btn-gray-800 align-items-center w-100"
+                                        style="text-align:center;" />
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+}

@@ -1,0 +1,158 @@
+﻿@page
+@model LabMaterials.Pages.Rep_InventoryModel
+@{
+
+    <div class="py-4 border-bottom">
+        <div class="d-block mb-4 mb-md-0">
+
+            <h2 class="h4">@Model.lblReports</h2>
+            <!-- <p class="mb-0">Your web analytics dashboard template.</p>-->
+        </div>
+        <div class="d-flex  flex-direcion-column flex-wrap flex-md-nowrap align-items-center btn-toolbar mb-2 mb-md-0">
+            <a href="Rep_MaterialsReceived"
+               class="btn btn-outline-gray-600 d-inline-flex align-items-center  report mx-2">@Model.lblMaterialsReceived</a>
+
+            <a href="Rep_Distribution" class="btn btn-outline-gray-600 d-inline-flex align-items-center  report mx-2"
+                >@Model.lblDistributedMaterials</a>
+            <a href="Rep_Inventory" class="btn btn-gray-600 d-inline-flex align-items-center  report mx-2"
+                >@Model.lblInventory</a>
+            <a href="Rep_HazardMaterial" class="btn btn-outline-gray-600 d-inline-flex align-items-center  report mx-2"
+                >@Model.lblHazardousMaterials</a>
+            <a href="Rep_UserActivity" class="btn btn-outline-gray-600 d-inline-flex align-items-center  report mx-2"
+                >@Model.lblUserActivity</a>
+
+            <a href="Rep_DamagedItems" class="btn btn-outline-gray-600 d-inline-flex align-items-center  report mx-2"
+                >@Model.lblDamagedItems</a>
+            <a href="Rep_User report mx-2" class="btn btn-outline-gray-600 d-inline-flex align-items-center  report mx-2"
+                >@Model.lblUserReport</a>
+
+        </div>
+    </div>
+
+    <div class="table-settings mt-4 mb-4">
+        <form method="post" asp-page-handler="Search" class="row align-items-center">
+
+        <div class="row">
+                    <div class="col-lg-3">
+                        <div class="input-group me-2 me-lg-3 fmxw-400">
+                            <span class="input-group-text">
+                                <svg class="icon icon-xs" x-description="Heroicon name: solid/search"
+                                     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                    <path fill-rule="evenodd"
+                                          d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                                          clip-rule="evenodd"></path>
+                                </svg>
+                            </span>
+                            <input type="text" name="StoreNumber" class="form-control" placeholder="@Model.lblStoreName">
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="input-group me-2 me-lg-3 fmxw-400">
+                            <span class="input-group-text">
+                                <svg class="icon icon-xs" x-description="Heroicon name: solid/search"
+                                     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                    <path fill-rule="evenodd"
+                                          d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                                          clip-rule="evenodd"></path>
+                                </svg>
+                            </span>
+                            <input type="text" name="StoreName" class="form-control" placeholder="@Model.lblStoreName">
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="input-group me-2 me-lg-3 fmxw-400">
+                            <span class="input-group-text">
+                                <svg class="icon icon-xs" x-description="Heroicon name: solid/search"
+                                     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                    <path fill-rule="evenodd"
+                                          d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                                          clip-rule="evenodd"></path>
+                                </svg>
+                            </span>
+                            <input type="text" name="Item" class="form-control" placeholder="@Model.lblItemName">
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3">
+                        <div class="input-group me-2 me-lg-3 fmxw-400">
+                            <span class="input-group-text">
+                                @Model.lblFromDate
+                            </span>
+
+                            <input asp-for="FromDate" class="form-control" type="date" name="FromDate"
+                                   value="@Model.FromDate" />
+                        </div>
+                    </div>
+
+        </div>
+
+
+                <div class="row">
+                    <div class="col-lg-3 mt-3">
+                        <div class="input-group me-2 me-lg-3 fmxw-400">
+                            <span class="input-group-text">
+                                @Model.lblToDate
+                            </span>
+
+                            <input asp-for="ToDate" type="date" class="form-control" name="ToDate"
+                                   value="@Model.ToDate" />
+                        </div>
+                    </div>
+                    <div class="col-4 col-md-2 col-xl-1 ps-md-0 mt-3 mx-3">
+                        <button type="submit" class="btn btn-primary">@Model.lblSearch</button>
+                    </div>
+
+                </div>
+
+
+
+
+
+        </form>
+    </div>
+
+
+    <h5>@Model.lblInventory</h5>
+    <div class="d-flex justify-content-between mb-3 align-items-center">
+        <div>@Model.lblTotalItem : @Model.TotalItems</div>
+
+            <form method="post">
+                <button type="submit" asp-page-handler="Export" class="btn btn-primary d-flex top-sm-btn justify-content-center"><img b-ie9pk9zf1q="" class="icon text-white icon-xs me-2" src="images/export.png">@Model.lblExport</button>
+            </form>
+    </div>
+    <div class="card border-0 shadow mb-4">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-centered table-nowrap mb-0 rounded">
+                    <thead class="thead-light">
+                        <tr>
+
+                            <th scope="col" class="border-0 rounded-start">@Model.lblItemName</th>
+                            <th scope="col" class="border-0">@Model.lblStoreNumber</th>
+                            <th scope="col" class="border-0">@Model.lblStoreName</th>
+                            <th scope="col" class="border-0">@Model.lblShelveNumber</th>
+                            <th scope="col" class="border-0 rounded-end">@Model.lblAvailableQuantity</th>
+                            <th scope="col" class="border-0 rounded-end">@Model.lblExpiryDate</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.Storages != null)
+                        {
+                            foreach (var item in Model.Storages)
+                            {
+                                <tr>
+                                    <th scope="row">@item.ItemName</th>
+                                    <td>@item.StoreNumber</td>
+                                    <td>@item.StoreName</td>
+                                    <td>@item.ShelfNumber</td>
+                                    <td>@item.AvailableQuantity</td>
+                                    <td>@item.ExpiryDate</td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+}

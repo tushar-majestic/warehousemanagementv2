@@ -1,0 +1,324 @@
+﻿@page
+@model LabMaterials.Pages.EditSupplyModel
+@section Scripts
+{
+    <script type="text/javascript" language="javascript">
+        const notyf = new Notyf({
+            position: {
+                x: 'right',
+                y: 'top',
+            },
+            types: [
+                {
+                    type: 'error',
+                    background: '#e3392c',
+                    icon: {
+                        className: 'fas fa-times',
+                        tagName: 'span',
+                        color: '#000000'
+                    },
+                    dismissible: false
+                }
+            ]
+        });
+
+        function showErrorNotification(message) {
+            notyf.open({
+                type: 'error',
+                message: message
+            });
+        }
+        $(document).ready(function () {
+        
+            var initialStoreId = $('#StoreId').val();
+            var initialRoomId = '@ViewData["RoomId"]';
+            var initialitemId = $('#ItemId').val();
+            var initialshelfNo = '@ViewData["ShelfNo"]';
+
+           
+
+
+            function loadRoomsForStore(storeId) {
+                debugger
+                $.ajax({
+                    url: '?handler=RoomsForStore',
+                    method: 'GET',
+                    data: { storeId: storeId },
+                    success: function (rooms) {
+                       
+                        var roomDropdown = $('#RoomId');
+                        roomDropdown.empty();
+                        rooms.forEach(function (room) {
+                            roomDropdown.append($('<option></option>').val(room.roomId).text(room.roomName));
+                        });
+                        // Load shelves for the initially selected room
+                        if (initialRoomId) {
+                            roomDropdown.val(initialRoomId);
+                            
+                        }
+                        loadShelvesForRoom(initialRoomId);
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+                        console.error('Error:', textStatus);
+                    }
+                });
+            }
+
+            function loadShelvesForRoom(roomId) {
+                $.ajax({
+                    
+                    url: '?handler=ShelvesForRoom',
+                    method: 'GET',
+                    data: { roomId: roomId },
+                    success: function (shelves) {
+
+                        var shelfDropdown = $('#ShelfId');
+                        shelfDropdown.empty();
+                        shelves.forEach(function (shelf) {
+                            shelfDropdown.append($('<option></option>').val(shelf).text(shelf));
+                        });
+                        if (initialshelfNo) {
+                            shelfDropdown.val(initialshelfNo);
+                            console.log(initialshelfNo,"sheldkfjdsfsd")
+                        }
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+                        console.error('Error:', textStatus);
+                    }
+                });
+            }
+            function loadTyepAndCode(ItemId) {
+                $.ajax({
+                    url: '?handler=ItemTypeAndCode',
+                    method: 'GET',
+                    data: { ItemId: ItemId },
+                    success: function (result) {
+                        if (result.length > 0) {
+                            console.log("First result object:", result[0]);
+
+                            $('#ItemTypeCode').val(result[0].itemTypeCode);
+                            $('#TypeName').val(result[0].typeName);
+                        }
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+                        console.error('Error:', textStatus);
+                    }
+                });
+            }
+
+            // Initial load of rooms
+            loadRoomsForStore(initialStoreId);
+            loadTyepAndCode(initialitemId);
+
+            // Event handler for room selection change
+            $('#RoomId').on('change', function () {
+                var roomId = $(this).val();
+                loadShelvesForRoom(roomId);
+            });
+
+            $('#ItemId').on('change', function () {
+                var ItemId = $(this).val();
+                loadTyepAndCode(ItemId);
+            });
+
+            // Event handler for store selection change
+            $('#StoreSelect').on('change', function () {
+                var storeId = $(this).val();
+                loadRoomsForStore(storeId);
+            });
+        });
+        @if (!string.IsNullOrEmpty(Model.ErrorMsg))
+        {
+            <text>
+                                var errorMessageFromServer = @Html.Raw(Json.Serialize(Model.ErrorMsg));
+            showErrorNotification(errorMessageFromServer);
+            </text>
+        }
+    </script>
+}
+@{
+    <div class="py-4">
+
+        <div class="d-flex justify-content-between w-100 flex-wrap">
+            <div class="mb-3 mb-lg-0">
+                <h1 class="h4">@Model.lblUpdateSupplies</h1>
+                <!-- <p class="mb-0">Dozens of reusable components built to provide buttons, alerts, popovers, and more.</p> -->
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-8 mb-4 m-auto">
+            <div class="card border-0 shadow components-section">
+                <form method="post" class="card-body">
+                    <div class="row mb-4">
+
+
+                        <div class="col-lg-12 col-sm-12">
+                            <input type="hidden" name="SupplyId" value="@Model.SupplyId" />
+                            <div class="col-lg-12 col-sm-12">
+                                <input type="hidden" name="SupplyId" value="@Model.SupplyId" />
+                                <div class="mb-4">
+                                    <label class="my-1 me-2" for="SupplierId">@Model.lblSupplierName</label>
+                                    <select class="form-select" id="SupplierId" name="SupplierId">
+                                        @if (Model.Suppliers != null)
+                                        {
+                                            foreach (var item in Model.Suppliers)
+                                            {
+                                                if (item.Ended == null)
+                                                {
+                                                <option value="@item.SupplierId" selected="@(item.SupplierId == Model.SupplierId)" )>@item.SupplierName</option>
+                                            }
+                                            }
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="ItemName">@Model.lblItemName</label>
+
+                                <select class="form-select" id="ItemId" name="ItemId">
+                                    @if (Model.Items != null)
+                                    {
+
+                                        foreach (var item in Model.Items)
+                                        {
+                                            if ( item.Ended == null)
+                                            {
+                                            <option value="@item.ItemId" selected="@(item.ItemId == Model.ItemId)">@item.ItemName</option>
+                                            }
+                                        }
+                                    }
+                                </select>
+                            </div>
+                            <div class="mb-4">
+                                <label class="my-1 me-2" for="TypeName">@Model.lblTypeName</label>
+
+                                <input class="form-control" id="TypeName" name="TypeName" readonly />
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="my-1 me-2" for="ItemTypeCode">@Model.lblItemTypeCode</label>
+                                <input class="form-control" id="ItemTypeCode" name="ItemTypeCode" readonly />
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="StoreName">@Model.lblStoreName</label>
+                                <!-- Change: Added comment to explain the purpose of the hidden input -->
+                                <input type="hidden" id="StoreId" value="@ViewData["StoreId"]" />
+                                <!-- Change: Renamed id attribute to ensure uniqueness -->
+                                <select class="form-select" id="StoreSelect" name="StoreId">
+                                    @if (Model.StoreName != null)
+                                    {
+                                        foreach (var item in Model.StoreName)
+                                        {
+                                            <!-- Change: Used ViewData["StoreId"] to set the selected option -->
+                                            if (item.IsActive == 1 && item.Ended == null)
+                                            {
+                                            <option value="@item.StoreId" selected="@(item.StoreId == (int)ViewData["StoreId"])">@item.StoreName</option>
+                                            }
+                                        }
+                                    }
+                                </select>
+                            </div>
+
+                           
+                            <div class="mb-4">
+                                <label for="roomNumber">@Model.lblRoomName</label>
+                                <input type="hidden" id="StoreId" value="@ViewData["StoreId"]" />
+                                <select class="form-select" id="RoomId" name="RoomId"></select>
+                            </div>
+
+
+                            <div class="mb-4">
+                                <label for="shelfNo">@Model.lblShelvesNumber</label>
+                                <input type="hidden" id="StoreId" value="@ViewData["ShelfNo"]" />
+                                <select name="ShelfNumber" class="form-select" id="ShelfId" ></select>
+                            </div>
+
+
+
+
+                            <div class="mb-4">
+                                <label for="InvoiceNumber">@Model.lblInvoiceNumber</label>
+
+                                <input type="text" class="form-control" id="InvoiceNumber" name="InvoiceNumber"
+                                       value="@Model.InvoiceNumber" />
+
+                            </div>
+                            <div class="mb-4">
+                                <label for="PurchaseOrderNo">@Model.lblPurchaseOrderNo</label>
+
+                                <input type="text" class="form-control" id="PurchaseOrderNo" name="PurchaseOrderNo"
+                                       value="@Model.PurchaseOrderNo" />
+
+                            </div>
+
+                            @* <div class="mb-4">
+                        <label for="ReceivedAt">@Model.lblReceivedAt</label>
+                        <input type="date" class="form-control" name="ReceivedAt" id="ReceivedAt"
+                        value="@Model.ReceivedAt..ToString(" yyyy-MM-dd")" />
+
+                        </div>*@
+
+                            <div class="mb-4">
+                                <label for="ReceivedAt">@Model.lblReceivedAt</label>
+                                <input type="date" class="form-control" name="ReceivedAt" id="ReceivedAt"
+                                       value="@Model.ReceivedAt.ToString("yyyy-MM-dd")" />
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="ExpiryDate">Expiry Date</label>
+                                <input type="date" class="form-control" name="ExpiryDate" id="ExpiryDate" min="@DateTime.Now.ToString("yyyy-MM-dd")"
+                                       value="@Model.ExpiryDate.ToString("yyyy-MM-dd")" />
+
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="QuantityReceived">@Model.lblQuantityReceived</label>
+                                <input type="number" class="form-control" id="QuantityReceived" name="QuantityReceived"
+                                       value="@Model.QuantityReceived" />
+
+                            </div>
+
+
+                            <div class="mb-4">
+                                <div class="form-check">
+                                    <label class="form-check-label" for="InventoryBalanced">
+                                        @Model.lblInventoryBalanced
+                                    </label>
+                                    <input id="InventoryBalanced" class="form-check-input" type="checkbox"
+                                           name="InventoryBalanced" asp-for="InventoryBalanced">
+
+                                </div>
+                            </div>
+
+
+
+                            <div class="mb-4">
+
+
+                                <div class="d-flex mb-2 mb-md-0" style="gap: 10px">
+                                    <a href="Supplies"
+                                       class="btn btn-outline-gray-600  align-items-center w-100">@Model.lblCancel</a>
+
+                                    <input type="submit" value="@Model.lblUpdate"
+                                           class="btn btn-sm btn-gray-800 align-items-center w-100"
+                                           style="text-align:center;" />
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+    @* <div style="text-align:center; color:maroon">@Model.ErrorMsg</div> *@
+
+
+}

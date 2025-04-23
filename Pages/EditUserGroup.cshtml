@@ -1,0 +1,67 @@
+﻿@page
+@model LabMaterials.Pages.EditUserGroupModel
+@section Scripts
+{
+    <script type="text/javascript" language="javascript">
+        const notyf = new Notyf({
+            position: {
+                x: 'right',
+                y: 'top',
+            },
+            types: [
+                {
+                    type: 'error',
+                    background: '#e3392c',
+                    icon: {
+                        className: 'fas fa-times',
+                        tagName: 'span',
+                        color: '#000000'
+                    },
+                    dismissible: false
+                }
+            ]
+        });
+
+        function showErrorNotification(message) {
+            notyf.open({
+                type: 'error',
+                message: message
+            });
+        }
+
+        @if (!string.IsNullOrEmpty(Model.ErrorMsg))
+        {
+            <text>
+                    var errorMessageFromServer = @Html.Raw(Json.Serialize(Model.ErrorMsg));
+                    showErrorNotification(errorMessageFromServer);
+            </text>
+        }
+    </script>
+}
+@{
+    <form method="post">
+        <h2>@Model.lblUpdateUserGroup</h2>
+        @* <div style="text-align:center; color:maroon">@Model.ErrorMsg</div> *@
+        <input type="hidden" name="UserGroupId" value="@Model.UserGroupId" />
+        <table>
+            <tr>
+                <td>@Model.lblUserGroupName</td>
+                <td><input type="text" name="UserGroupName" value="@Model.UserGroupName" style="width:250px" /></td>
+            </tr>
+            <tr>
+                <td>@Model.lblPrivilages</td>
+                <td>
+                    <select style="width:250px" multiple asp-for="SelectedPrivilages" id="SelectedPrivilages"
+                        asp-items="@Model.Privilages">
+                    </select>
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan=2 style="text-align:center;"><input type="submit" value="@Model.lblUpdate"
+                        class="btn btn-primary" style="width:150px" /> <a href="ManageUserGroups" style="width:150px"
+                        class="btn btn-primary">@Model.lblCancel</a></td>
+            </tr>
+        </table>
+    </form>
+}
