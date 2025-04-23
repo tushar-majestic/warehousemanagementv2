@@ -2,7 +2,7 @@
   "Files": [
     {
       "Id": "C:\\inetpub\\wwwroot\\warehousemanagement\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\LabMaterials.bundle.scp.css",
-      "PackagePath": "staticwebassets\\LabMaterials.bundle.scp.css"
+      "PackagePath": "staticwebassets\\LabMaterials.us8q7f1qpo.bundle.scp.css"
     },
     {
       "Id": "C:\\inetpub\\wwwroot\\warehousemanagement\\wwwroot\\ITEM_SAMPLE_FILE.xlsx",
@@ -671,6 +671,10 @@
     {
       "Id": "C:\\inetpub\\wwwroot\\warehousemanagement\\wwwroot\\lib\\sweetalert2\\dist\\sweetalert2.min.js",
       "PackagePath": "staticwebassets\\lib\\sweetalert2\\dist\\sweetalert2.min.js"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.LabMaterials.Microsoft.AspNetCore.StaticWebAssetEndpoints.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssetEndpoints.props"
     },
     {
       "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.LabMaterials.Microsoft.AspNetCore.StaticWebAssets.props",
