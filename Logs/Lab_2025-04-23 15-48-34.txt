@@ -1,9 +1,0 @@
-﻿Log File Creation	0
-	Info	15:48:34.628	->JsonLogwriter..ctor	C:\inetpub\wwwroot\warehousemanagement/Logs/Lab_2025-04-23 15-48-34.txt
-FirstLine	1
-	Info	15:48:34.630	InitializeLogWriter.ctor		
-Seed data	2
-	Info	15:48:34.645	DefaultData.InsertDefaultData	Init Started	
-	Info	15:48:36.254	DefaultData.InsertDefaultData	PrimaryKeys found	
-	Info	15:48:36.260	DefaultData.InsertDefaultData	admin user found	
-	Info	15:48:36.260	DefaultData.InsertDefaultData	Init Complete	
