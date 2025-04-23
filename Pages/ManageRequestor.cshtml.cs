@@ -21,7 +21,7 @@ namespace LabMaterials.Pages
         }
 
         public string lblDestinations, lblSearch, lblRequestorName, lblContactNumber, lblDestinationName, lblAddRequestor, lblManageRequestor, lblSubmit, lblAddDestination,
-            lblEdit, lblDelete;
+            lblEdit, lblDelete, lblStores;
 
         public void OnPostSearch([FromForm] string DestinationName)
         {
@@ -111,6 +111,8 @@ namespace LabMaterials.Pages
             this.lblAddRequestor = (Program.Translations["AddRequestor"])[Lang];
             this.lblRequestorName = (Program.Translations["RequestorName"])[Lang];
             this.lblContactNumber = (Program.Translations["ContactNumber"])[Lang];
+            this.lblDestinations = (Program.Translations["Destinations"])[Lang];
+            this.lblStores = (Program.Translations["Stores"])[Lang];
 
         }
     }

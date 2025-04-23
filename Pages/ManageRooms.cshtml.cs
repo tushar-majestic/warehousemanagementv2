@@ -146,6 +146,7 @@ namespace LabMaterials.Pages
             this.lblManageRooms = (Program.Translations["ManageRooms"])[Lang];
             this.lblManageShelves = (Program.Translations["ManageShelves"])[Lang]; 
             this.lblRoomName = (Program.Translations["RoomName"])[Lang];
+            
 
 
 

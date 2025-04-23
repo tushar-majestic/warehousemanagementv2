@@ -10,7 +10,7 @@ namespace LabMaterials.Pages
         public string ErrorMsg { get; set; }
         public string DestinationName;
 
-        public string lblAddDestination, lblDestinationName, lblAdd, lblCancel;
+        public string lblAddDestination, lblDestinationName, lblAdd, lblCancel, lblDestinations, lblStores;
         public void OnGet()
         {
             base.ExtractSessionData();
@@ -79,6 +79,8 @@ namespace LabMaterials.Pages
             this.lblDestinationName = (Program.Translations["DestinationName"])[Lang];
             this.lblAdd = (Program.Translations["Add"])[Lang];
             this.lblCancel = (Program.Translations["Cancel"])[Lang];
+            this.lblDestinations = (Program.Translations["Destinations"])[Lang];
+            this.lblStores = (Program.Translations["Stores"])[Lang];
         }
     }
 }

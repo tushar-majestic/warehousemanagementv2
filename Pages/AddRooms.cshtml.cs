@@ -12,7 +12,7 @@ namespace LabMaterials.Pages
         public int StoreId;
         public List<Store> Stores { get; set; }
 
-        public string lblAddStore, lblRoomNumber, lblStoreName, lblAdd, lblCancel, lblRoomName, lblStoreNumber, lblAddRoom;
+        public string lblAddStore, lblRoomNumber, lblStoreName, lblAdd, lblCancel, lblRoomName, lblStoreNumber, lblAddRoom, lblStores, lblManageRooms;
         public void OnGet()
         {
             base.ExtractSessionData();
@@ -97,6 +97,8 @@ namespace LabMaterials.Pages
             this.lblRoomName = (Program.Translations["RoomName"])[Lang]; 
             this.lblRoomNumber = (Program.Translations["RoomNumber"])[Lang]; 
             this.lblAddRoom = (Program.Translations["AddRoom"])[Lang];
+            this.lblStores = (Program.Translations["Stores"])[Lang];
+            this.lblManageRooms = (Program.Translations["ManageRooms"])[Lang];
 
 
 
