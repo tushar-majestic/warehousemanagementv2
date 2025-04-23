@@ -10,6 +10,7 @@ namespace LabMaterials.Pages
         public string ErrorMsg { get; set; }
         public string DestinationName;
 
+
         public string lblAddDestination, lblDestinationName, lblAdd, lblCancel, lblDestinations, lblStores;
         public void OnGet()
         {
