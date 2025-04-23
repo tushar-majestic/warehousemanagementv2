@@ -10,7 +10,7 @@ namespace LabMaterials.Pages
         public string ErrorMsg { get; set; }
         public string StoreNumber, StoreName, Shelves;
 
-        public string lblAddStore, lblStoreNumber, lblStoreName, lblShelves, lblAdd, lblCancel;
+        public string lblStores, lblAddStore, lblStoreNumber, lblStoreName, lblShelves, lblAdd, lblCancel;
         public void OnGet()
         {
             base.ExtractSessionData();
@@ -82,7 +82,7 @@ namespace LabMaterials.Pages
         private void FillLables()
         {
             
-
+            this.lblStores = (Program.Translations["Stores"])[Lang];
             this.lblAddStore = (Program.Translations["AddStore"])[Lang];
             this.lblStoreNumber = (Program.Translations["StoreNumber"])[Lang];
             this.lblStoreName = (Program.Translations["StoreName"])[Lang];

@@ -11,7 +11,8 @@ namespace LabMaterials.Pages
         public int DId;
         public List<Destination> Destinations { get; set; }
 
-        public string lblAddDestination, lblDestinationName, lblContactNumber,lblRequestorName, lblAddRequestor, lblAdd, lblCancel;
+        public string lblAddDestination, lblDestinationName, lblContactNumber,lblRequestorName, lblAddRequestor, lblAdd
+        , lblCancel, lblStores, lblDestinations, lblManageRequestor;
         public void OnGet()
         {
             base.ExtractSessionData();
@@ -88,6 +89,9 @@ namespace LabMaterials.Pages
             this.lblAddRequestor = (Program.Translations["AddRequestor"])[Lang]; 
             this.lblRequestorName = (Program.Translations["RequestorName"])[Lang]; 
             this.lblContactNumber = (Program.Translations["ContactNumber"])[Lang];
+            this.lblStores = (Program.Translations["Stores"])[Lang];
+            this.lblDestinations = (Program.Translations["Destinations"])[Lang];
+             this.lblManageRequestor = (Program.Translations["ManageRequestor"])[Lang]; 
 
 
 

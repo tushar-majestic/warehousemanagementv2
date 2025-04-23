@@ -20,7 +20,7 @@ namespace LabMaterials.Pages
         }
 
         public string lblDestinations, lblSearch, lblDestinationName, lblManageRequestor, lblSubmit, lblAddDestination,
-            lblEdit, lblDelete;
+            lblEdit, lblDelete, lblStores;
 
         public void OnPostSearch([FromForm] string DestinationName)
         {
@@ -95,7 +95,7 @@ namespace LabMaterials.Pages
         private void FillLables()
         {
 
-
+            this.lblDestinations = (Program.Translations["Destinations"])[Lang];
             this.lblSearch = (Program.Translations["Search"])[Lang];
             this.lblDestinationName = (Program.Translations["DestinationName"])[Lang];
             this.lblSubmit = (Program.Translations["Submit"])[Lang];
@@ -104,6 +104,7 @@ namespace LabMaterials.Pages
             this.lblEdit = (Program.Translations["Edit"])[Lang];
             this.lblDelete = (Program.Translations["Delete"])[Lang]; 
             this.lblManageRequestor = (Program.Translations["ManageRequestor"])[Lang];
+            this.lblStores = (Program.Translations["Stores"])[Lang];
 
         }
     }
