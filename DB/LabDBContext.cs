@@ -179,6 +179,7 @@ public partial class LabDBContext : DbContext
         modelBuilder.Entity<Store>(entity =>
         {
             entity.Property(e => e.StoreId).ValueGeneratedNever();
+            entity.Property(e => e.BuildingNumber).IsFixedLength();
             entity.Property(e => e.IsActive).HasDefaultValue(1);
         });
 
