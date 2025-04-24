@@ -46,6 +46,27 @@
 
         <div class="d-flex justify-content-between w-100 flex-wrap">
             <div class="mb-3 mb-lg-0">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb bg-transparent p-2 mb-0">
+                        <li class="breadcrumb-item d-flex align-items-center">
+                            <img src="images/home.png" alt="Home" width="16" height="16" class="me-2" />
+                            <a href="/Home" class="text-decoration-none">@Model.lblHome</a>
+                        </li>
+                        <li class="breadcrumb-item d-flex align-items-center">
+                            <img src="images/inventory.png" alt="Home" width="16" height="16" class="me-2" />
+                            <a href="/ManageItems" class="text-decoration-none">@Model.lblItems</a>
+                        </li>
+                        <li class="breadcrumb-item d-flex align-items-center">
+                            <img src="images/inventory.png" alt="Home" width="16" height="16" class="me-2" />
+                            <a href="/ManageUnits" class="text-decoration-none">@Model.lblUnits</a>
+                        </li>
+                          <li class="breadcrumb-item d-flex align-items-center">
+                            <img src="images/inventory.png" alt="Home" width="16" height="16" class="me-2" />
+                            @Model.lblAddUnits
+                        </li>
+                        
+                    </ol>
+                </nav>
                 <h1 class="h4">@Model.lblAddUnits</h1>
                <!-- <p class="mb-0">Dozens of reusable components built to provide buttons, alerts, popovers, and more.</p> -->
             </div>
