@@ -45,6 +45,9 @@ public partial class Store
     [Column("IN_Store")]
     public int? InStore { get; set; }
 
+    [StringLength(20)]
+    public string? StoreType { get; set; }
+
     [InverseProperty("Store")]
     public virtual ICollection<DisbursementRequest> DisbursementRequests { get; set; } = new List<DisbursementRequest>();
 

@@ -56,6 +56,10 @@ public partial class User
     [Column("UpdatedByID")]
     public int? UpdatedById { get; set; }
 
+    [Column("lang")]
+    [StringLength(2)]
+    public string? Lang { get; set; }
+
     [InverseProperty("User")]
     public virtual ICollection<ActivityLog> ActivityLogs { get; set; } = new List<ActivityLog>();
 
