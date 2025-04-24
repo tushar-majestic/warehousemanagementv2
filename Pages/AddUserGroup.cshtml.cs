@@ -11,7 +11,7 @@ namespace LabMaterials.Pages
         public List<int> SelectedPrivilages { get; set; }
         public SelectList Privilages { get; set; }
         
-        public string lblAddUserGroup, lblUserGroupName, lblPrivilages, lblAdd, lblCancel;
+        public string lblAddUserGroup, lblUserGroupName, lblPrivilages, lblAdd, lblCancel, lblUsers, lblUserGroup;
         public void OnGet()
         {
             base.ExtractSessionData();
@@ -99,6 +99,8 @@ namespace LabMaterials.Pages
 
             this.lblAdd = (Program.Translations["Add"])[Lang];
             this.lblCancel = (Program.Translations["Cancel"])[Lang];
+            this.lblUsers = (Program.Translations["Users"])[Lang];
+            this.lblUserGroup = (Program.Translations["UserGroups"])[Lang];
         }
     }
 }

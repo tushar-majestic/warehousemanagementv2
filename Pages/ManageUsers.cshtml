@@ -40,18 +40,18 @@
 }
 @{
     
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb bg-transparent p-2 mb-0">
-            <li class="breadcrumb-item d-flex align-items-center">
-                <img src="images/management.png" alt="Home" width="16" height="16" class="me-2" />
-                <a href="/ManageUsers" class="text-decoration-none">@Model.lblUsers</a>
-            </li>
-        </ol>
-    </nav>
+    
 
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
         <div class="d-block mb-4 mb-md-0">
-
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb bg-transparent p-2 mb-0">
+                    <li class="breadcrumb-item d-flex align-items-center">
+                        <img src="images/management.png" alt="Home" width="16" height="16" class="me-2" />
+                        @Model.lblUsers
+                    </li>
+                </ol>
+            </nav>
             <h2 class="h4">@Model.lblUsers</h2>
            <!-- <p class="mb-0">Your web analytics dashboard template.</p> -->
         </div>

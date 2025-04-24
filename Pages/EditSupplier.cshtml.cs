@@ -13,7 +13,8 @@ namespace LabMaterials.Pages
         public string SupplierNotUpdated;
         public int SupplierId;
         
-        public string lblSupplierName, lblSupplierNotUpdated, lblSupplierPhoneNumber, lblSelectSupplierType, lblSupplierType, lblUpdateSupplier, lblEdit, lblCancel;
+        public string lblSupplierName, lblSupplierNotUpdated, lblSupplierPhoneNumber, lblSelectSupplierType, lblSupplierType, 
+        lblUpdateSupplier, lblEdit, lblCancel, lblSupplies, lblSuppliers;
         public void OnGet()
         {
             base.ExtractSessionData();
@@ -114,6 +115,8 @@ namespace LabMaterials.Pages
 
             this.lblEdit = (Program.Translations["Add"])[Lang];
             this.lblCancel = (Program.Translations["Cancel"])[Lang];
+            this.lblSupplies = (Program.Translations["Supplies"])[Lang];
+            this.lblSuppliers = (Program.Translations["Suppliers"])[Lang];
         }
     }
 }
