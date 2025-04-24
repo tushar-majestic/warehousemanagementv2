@@ -124,6 +124,9 @@ ipch/
 *.vspx
 *.sap
 
+bin/
+obj/
+Logs/
 # Visual Studio Trace Files
 *.e2e
 

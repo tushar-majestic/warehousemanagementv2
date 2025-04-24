@@ -14,7 +14,8 @@ namespace LabMaterials.Pages
         public List<Room> Rooms { get; set; }
         public List<Shelf> Shelves { get; set; }
 
-        public string lblAddStore, lblRoomNumber, lblStoreName, lblAdd, lblCancel, lblRoomName, lblStoreNumber, lblAddRoom, lblShelves, lblShelfNumber;
+        public string lblAddStore, lblRoomNumber, lblStoreName, lblAdd, lblCancel, lblRoomName, lblStoreNumber, lblAddRoom, 
+        lblShelves, lblShelfNumber, lblStores, lblManageRooms, lblManageShelves;
         public void OnGet()
         {
             base.ExtractSessionData();
@@ -107,6 +108,11 @@ namespace LabMaterials.Pages
             this.lblAddRoom = (Program.Translations["AddRoom"])[Lang];
             this.lblShelfNumber = (Program.Translations["ShelfNumber"])[Lang];
             this.lblShelves = (Program.Translations["Shelves"])[Lang];
+            this.lblManageShelves = (Program.Translations["ManageShelves"])[Lang];
+            this.lblManageRooms = (Program.Translations["ManageRooms"])[Lang];
+            this.lblStores = (Program.Translations["Stores"])[Lang];
+            this.lblManageShelves = (Program.Translations["ManageShelves"])[Lang];
+            
 
 
         }

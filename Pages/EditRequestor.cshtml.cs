@@ -15,7 +15,8 @@ namespace LabMaterials.Pages
         public List<Requester> Requestors { get; set; }
         public List<Item> Items { get; set; }
 
-        public string lblItemName, lblDestinationName, lblUpdateDestination, lblUpdateRequestor, lblContactNumber, lblRequestorName, lblShelveNumber, lblQuantity, lblUpdate, lblCancel;
+        public string lblItemName, lblDestinationName, lblUpdateDestination, lblUpdateRequestor, lblContactNumber, 
+        lblRequestorName, lblShelveNumber, lblQuantity, lblUpdate, lblCancel, lblStores, lblDestinations, lblManageRequestor;
         public void OnGet()
         {
             base.ExtractSessionData();
@@ -97,6 +98,9 @@ namespace LabMaterials.Pages
             this.lblContactNumber = (Program.Translations["ContactNumber"])[Lang];
             this.lblRequestorName = (Program.Translations["RequestorName"])[Lang]; 
             this.lblUpdateRequestor = (Program.Translations["UpdateRequestor"])[Lang];
+            this.lblStores = (Program.Translations["Stores"])[Lang];
+            this.lblDestinations = (Program.Translations["Destinations"])[Lang];
+            this.lblManageRequestor = (Program.Translations["ManageRequestor"])[Lang];
 
 
         }

@@ -25,7 +25,9 @@ namespace LabMaterials.Pages
                 RedirectToPage("./Index?lang=" + Lang);
         }
 
-        public string lblStores, lblManageStorage, lblSearch, lblRoomName, lblAddShelves, lblRoomNumber, lblShelfNumber, lblManageShelves, lblManageRooms, lblStoreNumber, lblAddRoom, lblAddShelf, lblStoreName, lblSubmit, lblAddStore, lblShelves, lblEdit, lblDelete, lblTotalItem, lblAddDestination, lblManageDestination;
+        public string lblStores, lblManageStorage, lblSearch, lblRoomName, lblAddShelves, lblRoomNumber, lblShelfNumber, 
+        lblManageShelves, lblManageRooms, lblStoreNumber, lblAddRoom, lblAddShelf, lblStoreName, lblSubmit, lblAddStore, 
+        lblShelves, lblEdit, lblDelete, lblTotalItem, lblAddDestination, lblManageDestination;
 
         public void OnPostSearch([FromForm] string StoreNumber, [FromForm] string StoreName)
         {

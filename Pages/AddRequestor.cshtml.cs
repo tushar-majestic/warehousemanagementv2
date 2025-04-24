@@ -91,7 +91,7 @@ namespace LabMaterials.Pages
             this.lblContactNumber = (Program.Translations["ContactNumber"])[Lang];
             this.lblStores = (Program.Translations["Stores"])[Lang];
             this.lblDestinations = (Program.Translations["Destinations"])[Lang];
-             this.lblManageRequestor = (Program.Translations["ManageRequestor"])[Lang]; 
+             this.lblManageRequestor = (Program.Translations["ManageRequestor"])[Lang];
 
 
 
