@@ -27,7 +27,7 @@ namespace LabMaterials.Pages
         public List<Shelf> Shelf { get; set; }
 
         public string lblUpdateSupplies, lblSupplierName, lblStoreName, lblTypeName, lblExpiryDate, lblRoomName, lblShelvesNumber, lblItemName, lblItemTypeCode,
-            lblQuantityReceived, lblPurchaseOrderNo, lblInvoiceNumber, lblReceivedAt, lblInventoryBalanced, lblUpdate, lblCancel;
+            lblQuantityReceived, lblPurchaseOrderNo, lblInvoiceNumber, lblReceivedAt, lblInventoryBalanced, lblUpdate, lblCancel, lblSupplies;
 
         public void OnGet()
         {
@@ -268,6 +268,7 @@ namespace LabMaterials.Pages
 
             this.lblUpdate = (Program.Translations["Update"])[Lang];
             this.lblCancel = (Program.Translations["Cancel"])[Lang];
+            this.lblSupplies = (Program.Translations["Supplies"])[Lang];
         }
     }
 }

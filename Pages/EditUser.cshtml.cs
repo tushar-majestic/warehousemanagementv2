@@ -17,7 +17,7 @@ namespace LabMaterials.Pages
         public List<UserGroup> UserGroupsList {  get; set; }
         
         public string lblUpdateUser, lblUserName, lblFullName, lblEmail,
-            lblUserEnabled, lblPassword, lblChangePassword, lblIsDomainUser, lblUserGroupName, lblUpdate, lblCancel;
+            lblUserEnabled, lblPassword, lblChangePassword, lblIsDomainUser, lblUserGroupName, lblUpdate, lblCancel, lblUsers;
 
         public void OnGet()
         {
@@ -120,6 +120,7 @@ namespace LabMaterials.Pages
 
             this.lblUpdate = (Program.Translations["Update"])[Lang];
             this.lblCancel = (Program.Translations["Cancel"])[Lang];
+            this.lblUsers = (Program.Translations["Users"])[Lang];
         }
     }
 }

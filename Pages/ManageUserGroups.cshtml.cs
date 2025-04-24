@@ -12,7 +12,7 @@ namespace LabMaterials.Pages
         public int TotalItems { get; set; }
         public string Message { get; set; }
         
-        public string lblUserGroup, lblSearch, lblAddUserGroup, lblUserGroupName, lblPrivilages,  lblEdit, lblDelete, lblTotalItem;
+        public string lblUserGroup, lblSearch, lblAddUserGroup, lblUserGroupName, lblPrivilages,  lblEdit, lblDelete, lblTotalItem, lblUsers;
         public void OnGet()
         {
             base.ExtractSessionData();
@@ -111,6 +111,7 @@ namespace LabMaterials.Pages
             this.lblEdit = (Program.Translations["Edit"])[Lang];
             this.lblDelete = (Program.Translations["Delete"])[Lang];
             this.lblTotalItem = (Program.Translations["TotalItem"])[Lang];
+            this.lblUsers = (Program.Translations["Users"])[Lang];
         }
 
     }

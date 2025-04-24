@@ -26,7 +26,7 @@ namespace LabMaterials.Pages
         public List<ItemInfoByStoreId> ItemInfoByStore { get; set; }
 
         public string lblUpdateDisbursement, lblRequesterName, lblItemTypeCode, lblItemName, lblStoreName, lblEditDisbursement, lblItemCode, lblRequestReceivedDate, lblRequestingPlace, lblComments, lblQuantity,
-            lblDisbursementStatus, lblInventoryBalanced, lblUpdate, lblCancel;
+            lblDisbursementStatus, lblInventoryBalanced, lblUpdate, lblCancel, lblDisbursements;
 
         public void OnGet()
         {
@@ -261,6 +261,7 @@ namespace LabMaterials.Pages
             this.lblItemName = (Program.Translations["ItemName"])[Lang];
             this.lblItemTypeCode = (Program.Translations["ItemTypeCode"])[Lang]; 
             this.lblQuantity = (Program.Translations["Quantity"])[Lang];
+            this.lblDisbursements = (Program.Translations["Disbursements"])[Lang];
 
 
         }
