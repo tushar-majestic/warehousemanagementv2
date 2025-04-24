@@ -26,7 +26,7 @@
 
         const notyf = new Notyf({
             position: {
-                x: 'right',
+                x: 'center',
                 y: 'top',
             },
             types: [
@@ -38,7 +38,9 @@
                         tagName: 'span',
                         color: '#000000'
                     },
-                    dismissible: false
+                    dismissible: true,
+                    duration: 0,
+                    ripple: true
                 }
             ]
         });
@@ -65,6 +67,22 @@
 
         <div class="d-flex justify-content-between w-100 flex-wrap">
             <div class="mb-3 mb-lg-0">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb bg-transparent p-2 mb-0">
+                        <li class="breadcrumb-item d-flex align-items-center">
+                            <img src="images/home.png" alt="Home" width="16" height="16" class="me-2" />
+                            <a href="/Home" class="text-decoration-none">@Model.lblHome</a>
+                        </li>
+                        <li class="breadcrumb-item d-flex align-items-center">
+                            <img src="images/management.png" alt="Home" width="16" height="16" class="me-2" />
+                            <a href="/ManageUsers" class="text-decoration-none">@Model.lblUsers</a>
+                        </li>
+                        <li class="breadcrumb-item d-flex align-items-center">
+                            <img src="images/management.png" alt="Home" width="16" height="16" class="me-2" />
+                            @Model.lblAddUser
+                        </li>
+                    </ol>
+                </nav>
                 <h1 class="h4">@Model.lblAddUser</h1>
                <!-- <p class="mb-0">Dozens of reusable components built to provide buttons, alerts, popovers, and more.</p> -->
             </div>

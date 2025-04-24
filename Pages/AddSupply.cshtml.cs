@@ -28,7 +28,7 @@ namespace LabMaterials.Pages
         //public List<ItemCode> ItemCodes { get; set; }
 
         public string lblAddSupplies, lblSupplierName, lblExpiryDate, lblItemName, lblTypeName, lblItemCode, lblItemTypeCode, lblStoreName,lblRoomName, lblShelvesNumber,
-            lblQuantityReceived, lblPurchaseOrderNo, lblInvoiceNumber, lblReceivedAt, lblInventoryBalanced, lblAdd, lblCancel;
+            lblQuantityReceived, lblPurchaseOrderNo, lblInvoiceNumber, lblReceivedAt, lblInventoryBalanced, lblAdd, lblCancel, lblSupplies;
 
         public void OnGet(int storeId)
         {
@@ -225,6 +225,7 @@ namespace LabMaterials.Pages
 
             this.lblAdd = (Program.Translations["Add"])[Lang];
             this.lblCancel = (Program.Translations["Cancel"])[Lang];
+            this.lblSupplies = (Program.Translations["Supplies"])[Lang];
         }
     }
 }

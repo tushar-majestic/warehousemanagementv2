@@ -118,25 +118,35 @@
     <script src="~/lib/sweetalert2/sweetalert2.all.min.js"></script>
     <script src="~/lib/notyf/notyf.min.js"></script>
 
+  
+    
+<script>
+    const notyf = new Notyf({
+        position: {
+            x: 'center',
+            y: 'top',
+        },
+        types: [
+            {
+                type: 'error',
+                background: '#e3392c',
+                icon: {
+                    className: 'fas fa-times',
+                    tagName: 'span',
+                    color: '#000000'
+                },
+                    dismissible: true,
+                    duration: 0,
+                    ripple: true
+            }
+        ]
+    });
 
-    <script>
-        const notyf = new Notyf({
-            position: {
-                x: 'right',
-                y: 'top',
-            },
-            types: [
-                {
-                    type: 'error',
-                    background: '#e3392c',
-                    icon: {
-                        className: 'fas fa-times',
-                        tagName: 'span',
-                        color: '#000000'
-                    },
-                    dismissible: false
-                }
-            ]
+    function showErrorNotification(message) {
+        notyf.open({
+            type: 'error',
+            message: message
+
         });
 
         function showErrorNotification(message) {

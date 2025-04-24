@@ -16,7 +16,7 @@ namespace LabMaterials.Pages
         public List<Unit> UnitTypes { get; set; }
         
         public string lblItemName, lblGroupName, lblItemCode, lblItemDescription, lblAvailableQuantity, lblHazardType, lblTypeName,
-            lblUnit, lblUpdateItem, lblUpdate, lblCancel, lblIsHazardous, lblItemType, lblBatchNo, lblExpiryDate;
+            lblUnit, lblUpdateItem, lblUpdate, lblCancel, lblIsHazardous, lblItemType, lblBatchNo, lblExpiryDate, lblItems;
 
         public void OnGet()
         {
@@ -149,6 +149,7 @@ namespace LabMaterials.Pages
             this.lblCancel = (Program.Translations["Cancel"])[Lang];
             this.lblUpdateItem = (Program.Translations["UpdateItem"])[Lang];
             this.lblIsHazardous = (Program.Translations["IsHazardous"])[Lang];
+            this.lblItems = (Program.Translations["Items"])[Lang];
 
         }
     }

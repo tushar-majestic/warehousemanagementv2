@@ -8,7 +8,7 @@ namespace LabMaterials.Pages
         public string GroupCode;
         public string GroupDesc;
         
-        public string lblGroupCode, lblGroupName, lblAdd, lblCancel, lblAddItemGroup;
+        public string lblGroupCode, lblGroupName, lblAdd, lblCancel, lblAddItemGroup, lblItemGroups, lblItems;
 
         public void OnGet()
         {
@@ -84,6 +84,8 @@ namespace LabMaterials.Pages
             this.lblAdd = (Program.Translations["Add"])[Lang];
             this.lblCancel = (Program.Translations["Cancel"])[Lang];
             this.lblAddItemGroup = (Program.Translations["AddItemGroup"])[Lang];
+            this.lblItems = (Program.Translations["Items"])[Lang];
+            this.lblItemGroups = (Program.Translations["ItemGroups"])[Lang];
         }
 
     }

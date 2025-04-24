@@ -8,7 +8,7 @@ namespace LabMaterials.Pages
         public string GroupCode, GroupCodeID;
         public string GroupDesc;
         
-        public string lblGroupCode, lblGroupName, lblUpdate, lblCancel, lblUpdateItemGroup;
+        public string lblGroupCode, lblGroupName, lblUpdate, lblCancel, lblUpdateItemGroup, lblItems, lblItemGroups;
         public void OnGet()
         {
             base.ExtractSessionData();
@@ -92,6 +92,8 @@ namespace LabMaterials.Pages
             this.lblUpdate = (Program.Translations["Update"])[Lang];
             this.lblCancel = (Program.Translations["Cancel"])[Lang];
             this.lblUpdateItemGroup = (Program.Translations["UpdateItemGroup"])[Lang];
+            this.lblItems = (Program.Translations["Items"])[Lang];
+            this.lblItemGroups = (Program.Translations["ItemGroups"])[Lang];
         }
 
     }

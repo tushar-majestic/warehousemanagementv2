@@ -5,7 +5,7 @@
     <script type="text/javascript" language="javascript">
         const notyf = new Notyf({
             position: {
-                x: 'right',
+                x: 'center',
                 y: 'top',
             },
             types: [
@@ -17,7 +17,9 @@
                         tagName: 'span',
                         color: '#000000'
                     },
-                    dismissible: false
+                    dismissible: true,
+                    duration: 0,
+                    ripple: true
                 }
             ]
         });
@@ -41,7 +43,27 @@
 @{
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
         <div class="d-block mb-4 mb-md-0">
-
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb bg-transparent p-2 mb-0">
+                        <li class="breadcrumb-item d-flex align-items-center">
+                            <img src="images/home.png" alt="Home" width="16" height="16" class="me-2" />
+                            <a href="/Home" class="text-decoration-none">@Model.lblHome</a>
+                        </li>
+                        <li class="breadcrumb-item d-flex align-items-center">
+                            <img src="images/retailer.png" alt="Home" width="16" height="16" class="me-2" />
+                            <a href="/ManageStore" class="text-decoration-none">@Model.lblStores</a>
+                        </li>
+                        <li class="breadcrumb-item d-flex align-items-center">
+                            <img src="images/retailer.png" alt="Home" width="16" height="16" class="me-2" />
+                            <a href="/ManageRooms" class="text-decoration-none">@Model.lblManageRooms</a>
+                        </li>
+                        <li class="breadcrumb-item d-flex align-items-center active" aria-current="page">
+                            <img src="images/retailer.png" alt="Home" width="16" height="16" class="me-2" />
+                             @Model.lblManageShelves
+                        </li>
+                        
+                    </ol>
+                </nav>
             <h2 class="h4">@Model.lblManageShelves</h2>
             <!-- <p class="mb-0">Your web analytics dashboard template.</p>-->
         </div>

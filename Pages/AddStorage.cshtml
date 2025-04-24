@@ -5,7 +5,7 @@
     <script type="text/javascript" language="javascript">
         const notyf = new Notyf({
             position: {
-                x: 'right',
+                x: 'center',
                 y: 'top',
             },
             types: [
@@ -17,7 +17,9 @@
                         tagName: 'span',
                         color: '#000000'
                     },
-                    dismissible: false
+                    dismissible: true,
+                    duration: 0,
+                    ripple: true
                 }
             ]
         });
@@ -46,12 +48,16 @@
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb bg-transparent p-2 mb-0">
                         <li class="breadcrumb-item d-flex align-items-center">
+                            <img src="images/home.png" alt="Home" width="16" height="16" class="me-2" />
+                            <a href="/Home" class="text-decoration-none">@Model.lblHome</a>
+                        </li>
+                        <li class="breadcrumb-item d-flex align-items-center">
                             <img src="images/retailer.png" alt="Home" width="16" height="16" class="me-2" />
-                            <a href="/ManageStore" class="text-decoration-none">Warehouse</a>
+                            <a href="/ManageStore" class="text-decoration-none">@Model.lblStores</a>
                         </li>
                         <li class="breadcrumb-item d-flex align-items-center active" aria-current="page">
                             <img src="images/retailer.png" alt="Home" width="16" height="16" class="me-2" />
-                             <a href="/ManageStorage" class="text-decoration-none">Storages</a>
+                             <a href="/ManageStorage" class="text-decoration-none">@Model.lblStorage</a>
                         </li>
                         <li class="breadcrumb-item d-flex align-items-center active" aria-current="page">
                             <img src="images/retailer.png" alt="Home" width="16" height="16" class="me-2" />

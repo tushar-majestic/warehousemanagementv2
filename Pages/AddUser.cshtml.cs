@@ -17,7 +17,7 @@ namespace LabMaterials.Pages
         public List<UserGroup> UserGroupsList {  get; set; }
         
         public string lblAddUser, lblUserName, lblFullName, lblEmail,
-            lblUserEnabled, lblPassword, lblIsDomainUser, lblUserGroupName, lblAdd, lblCancel;
+            lblUserEnabled, lblPassword, lblIsDomainUser, lblUserGroupName, lblAdd, lblCancel, lblUsers;
 
         public void OnGet()
         {
@@ -118,6 +118,7 @@ namespace LabMaterials.Pages
 
             this.lblAdd = (Program.Translations["Add"])[Lang];
             this.lblCancel = (Program.Translations["Cancel"])[Lang];
+            this.lblUsers = (Program.Translations["Users"])[Lang];
         }
     }
 }
