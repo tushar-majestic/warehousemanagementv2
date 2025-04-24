@@ -15,7 +15,7 @@ namespace LabMaterials.Pages
         public int DamagedQuantity { get; set; }
         public List<DamageInfo> DamagedItem { get; set; }
 
-        public string lblItemName, lblDamagedQuantity, lblDamageReason, lblAdd, lblCancel, lblDamageItem;
+        public string lblItemName, lblDamagedQuantity, lblDamageReason, lblAdd, lblCancel, lblDamageItem, lblItems;
         public void OnGet(int id)
         {
             base.ExtractSessionData();
@@ -136,6 +136,7 @@ namespace LabMaterials.Pages
             this.lblDamageReason = (Program.Translations["DamageReason"])[Lang];
             this.lblAdd = (Program.Translations["Add"])[Lang];
             this.lblCancel = (Program.Translations["Cancel"])[Lang];
+            this.lblItems = (Program.Translations["Items"])[Lang];
         }
     }
 }

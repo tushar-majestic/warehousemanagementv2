@@ -43,6 +43,22 @@
 
         <div class="d-flex justify-content-between w-100 flex-wrap">
             <div class="mb-3 mb-lg-0">
+                 <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb bg-transparent p-2 mb-0">
+                        <li class="breadcrumb-item d-flex align-items-center">
+                            <img src="images/inventory.png" alt="Home" width="16" height="16" class="me-2" />
+                            <a href="/ManageItems" class="text-decoration-none">@Model.lblItems</a>
+                        </li>
+                        <li class="breadcrumb-item d-flex align-items-center">
+                            <img src="images/inventory.png" alt="Home" width="16" height="16" class="me-2" />
+                           <a href="/ManageItemGroups" class="text-decoration-none">@Model.lblItemGroups</a>
+                        </li>
+                        <li class="breadcrumb-item d-flex align-items-center">
+                            <img src="images/inventory.png" alt="Home" width="16" height="16" class="me-2" />
+                            @Model.lblUpdateItemGroup
+                        </li>
+                    </ol>
+                </nav>
                 <h1 class="h4">@Model.lblUpdateItemGroup</h1>
             </div>
         </div>

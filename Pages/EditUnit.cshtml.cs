@@ -12,7 +12,7 @@ namespace LabMaterials.Pages
         public string GroupCode;
         public List<ItemGroup> ItemGroups {  get; set; }
         
-        public string lblUnitCode, lblAddUnit, lblUnitDescription, lblGroupName, lblUpdate, lblCancel, lblUpdateUnits;
+        public string lblUnitCode, lblAddUnit, lblUnitDescription, lblGroupName, lblUpdate, lblCancel, lblUpdateUnits, lblUnits, lblItems;
         public void OnGet()
         {
             base.ExtractSessionData();
@@ -102,6 +102,8 @@ namespace LabMaterials.Pages
             this.lblCancel = (Program.Translations["Cancel"])[Lang];
             this.lblUpdateUnits = (Program.Translations["UpdateUnit"])[Lang];
             this.lblAddUnit = (Program.Translations["AddUnit"])[Lang];
+            this.lblUnits = (Program.Translations["Units"])[Lang];
+            this.lblItems = (Program.Translations["Items"])[Lang];
         }
     }
 }

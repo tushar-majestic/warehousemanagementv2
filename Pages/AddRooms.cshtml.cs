@@ -12,7 +12,8 @@ namespace LabMaterials.Pages
         public int StoreId;
         public List<Store> Stores { get; set; }
 
-        public string lblAddStore, lblRoomNumber, lblStoreName, lblAdd, lblCancel, lblRoomName, lblStoreNumber, lblAddRoom, lblStores, lblManageRooms;
+        public string lblAddStore, lblRoomNumber, lblStoreName, lblAdd, lblCancel, lblRoomName, lblStoreNumber, 
+        lblAddRoom, lblStores, lblManageRooms;
         public void OnGet()
         {
             base.ExtractSessionData();

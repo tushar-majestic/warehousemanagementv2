@@ -22,7 +22,7 @@ namespace LabMaterials.Pages
                 RedirectToPage("./Index?lang=" + Lang);
         }
         
-        public string lblGroupCode, lblGroupName, lblEdit, lblDelete, lblTotalItem, lblAddItemGroup, lblItemGroups, lblSearch;
+        public string lblGroupCode, lblGroupName, lblEdit, lblDelete, lblTotalItem, lblAddItemGroup, lblItemGroups, lblSearch, lblItems;
 
         public void OnPostSearch([FromForm] string GroupName)
         {
@@ -112,6 +112,7 @@ namespace LabMaterials.Pages
             this.lblAddItemGroup = (Program.Translations["AddItemGroup"])[Lang];
             this.lblItemGroups = (Program.Translations["ItemGroups"])[Lang];
             this.lblSearch = (Program.Translations["Search"])[Lang];
+            this.lblItems = (Program.Translations["Items"])[Lang];
         }
     }
 }
