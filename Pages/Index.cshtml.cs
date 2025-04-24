@@ -20,7 +20,7 @@ namespace LabMaterials.Pages
         public string dir { get; set; }
         public string Lang { get; set; }
 
-        public string lblUserName, lblPassword, lblLogin;
+        public string lblUserName, lblPassword, lblLogin, lblLabMaterials;
 
         public IActionResult OnGet()
         {
@@ -61,6 +61,7 @@ namespace LabMaterials.Pages
             this.lblUserName = (Program.Translations["UserName"])[Lang];
             this.lblPassword = (Program.Translations["Password"])[Lang];
             this.lblLogin = (Program.Translations["Login"])[Lang];
+            this.lblLabMaterials = (Program.Translations["LabMaterials"])[Lang];
         }
 
         public IActionResult OnPost(string UserName, string Password)
@@ -199,12 +200,30 @@ namespace LabMaterials.Pages
             HttpContext.Session.SetInt32("CanSeeReports", Privileges.Contains("CanSeeReports") ? 1 : 0);
             HttpContext.Session.SetInt32("CanManageItemGroup", Privileges.Contains("CanManageItemGroup") ? 1 : 0);
             HttpContext.Session.SetString("LastLogin", dbUser.LastLoginTime.HasValue ? dbUser.LastLoginTime.Value.ToString() : "");
-
-            string lang = Request.Query["lang"];
-            if (string.IsNullOrEmpty(lang))
+            if (string.IsNullOrEmpty(dbUser.Lang))
+            {
                 HttpContext.Session.SetString("Lang", "ar");
+                // update db
+                string sessionLang = HttpContext.Session.GetString("Lang");
+
+                if (!string.IsNullOrEmpty(sessionLang) && dbUser != null)
+                {
+                    dbUser.Lang = sessionLang;
+                    dbContext.SaveChanges();
+                }
+
+
+            }
             else
-                HttpContext.Session.SetString("Lang", lang);
+            {
+                HttpContext.Session.SetString("Lang", dbUser.Lang);
+            }
+
+            //string lang = Request.Query["lang"];
+            //if (string.IsNullOrEmpty(lang))
+            //    HttpContext.Session.SetString("Lang", "ar");
+            //else
+            //    HttpContext.Session.SetString("Lang", lang);
 
 
             if (dbUser.FailedPasswordAttemptCount > 0)

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using SkiaSharp;
 using System.Data;
 
 namespace LabMaterials.Pages
@@ -250,20 +251,35 @@ namespace LabMaterials.Pages
 
         private void LoadPage()
         {
-            dir = HttpContext.Session.GetString("Lang") == "en" ? "ltr" : "rtl";
-            Lang = HttpContext.Session.GetString("Lang") == "en" ? "en" : "ar";
-            if (Request.Query["lang"] == "en")
+            string lang = Request.Query["lang"];
+
+            if (!string.IsNullOrEmpty(lang))
             {
-                Lang = "en";
-                dir = "ltr";
-                HttpContext.Session.SetString("Lang", "en");
+                // Use lang from query string and update session
+                lang = lang.ToLower();
+                HttpContext.Session.SetString("Lang", lang);
+                // db
+                string UserName = HttpContext.Session.GetString("UserName");
+                var dbContext = new LabDBContext();
+                var dbUser = dbContext.Users.SingleOrDefault(u => u.UserName.ToLower() == UserName.ToLower());
+
+                string sessionLang = HttpContext.Session.GetString("Lang");
+
+                if (!string.IsNullOrEmpty(sessionLang) && dbUser != null)
+                {
+                    dbUser.Lang = sessionLang;
+                    dbContext.SaveChanges();
+                }
             }
             else
             {
-                dir = "rtl";
-                Lang = "ar";
-                HttpContext.Session.SetString("Lang", "ar");
+                // Fallback to session if query string not present
+                lang = HttpContext.Session.GetString("Lang") ?? "ar";
             }
+
+            Lang = lang == "en" ? "en" : "ar";
+            dir = lang == "en" ? "ltr" : "rtl";
+
             FillLables();
         }
     }
