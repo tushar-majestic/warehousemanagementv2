@@ -341,6 +341,22 @@
     "en": "Units",
     "ar": "الوحدات"
   },
+  "WarehouseType": {
+    "en": "Warehouse type",
+    "ar": "الوحدات"
+  },
+  "UnitsMeasure": {
+    "en": "Units of measure",
+    "ar": "الوحدات"
+  },
+  "ChemicalStatus": {
+    "en": "Chemical status",
+    "ar": "الوحدات"
+  },
+  "DocumentType": {
+    "en": "Document type",
+    "ar": "الوحدات"
+  },
 
   //Stores
   "Stores": {

@@ -1,12 +1,19 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace MyApp.Namespace
+namespace LabMaterials.Pages
 {
-    public class viewUserModel : PageModel
+    public class viewUserModel : BasePageModel
     {
         public void OnGet()
         {
+            base.ExtractSessionData();
+            if (CanManageUsers)
+            {
+               
+            }
+            else
+                RedirectToPage("./Index?lang=" + Lang);
         }
     }
 }
