@@ -21,6 +21,21 @@ public partial class Unit
     [Column("ID")]
     public int Id { get; set; }
 
+    [StringLength(20)]
+    public string? WarehouseType { get; set; }
+
+    [StringLength(20)]
+    public string? UnitsMeasure { get; set; }
+
+    [StringLength(20)]
+    public string? ChemicalStatus { get; set; }
+
+    [StringLength(20)]
+    public string? DocumentType { get; set; }
+
+    [StringLength(20)]
+    public string? HazardType { get; set; }
+
     [ForeignKey("GroupCode")]
     [InverseProperty("Units")]
     public virtual ItemGroup GroupCodeNavigation { get; set; } = null!;
