@@ -5,7 +5,7 @@
     <script type="text/javascript" language="javascript">
         const notyf = new Notyf({
             position: {
-                x: 'center',
+                x: 'right',
                 y: 'top',
             },
             types: [
@@ -17,25 +17,23 @@
                         tagName: 'span',
                         color: '#000000'
                     },
-                    dismissible: true,
-                    duration: 0,
-                    ripple: true
-                }
-            ]
-        });
+                    dismissible: false
+                        }
+                    ]
+                });
 
         function showErrorNotification(message) {
-            notyf.open({
+                    notyf.open({
                 type: 'error',
                 message: message
-            });
-        }
+                    });
+                }
 
         @if (!string.IsNullOrEmpty(Model.ErrorMsg))
         {
             <text>
-                    var errorMessageFromServer = @Html.Raw(Json.Serialize(Model.ErrorMsg));
-                    showErrorNotification(errorMessageFromServer);
+                            var errorMessageFromServer = @Html.Raw(Json.Serialize(Model.ErrorMsg));
+                        showErrorNotification(errorMessageFromServer);
             </text>
         }
     </script>
@@ -46,29 +44,8 @@
 
         <div class="d-flex justify-content-between w-100 flex-wrap">
             <div class="mb-3 mb-lg-0">
-                <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb bg-transparent p-2 mb-0">
-                        <li class="breadcrumb-item d-flex align-items-center">
-                            <img src="images/home.png" alt="Home" width="16" height="16" class="me-2" />
-                            <a href="/Home" class="text-decoration-none">@Model.lblHome</a>
-                        </li>
-                        <li class="breadcrumb-item d-flex align-items-center">
-                            <img src="images/inventory.png" alt="Home" width="16" height="16" class="me-2" />
-                            <a href="/ManageItems" class="text-decoration-none">@Model.lblItems</a>
-                        </li>
-                        <li class="breadcrumb-item d-flex align-items-center">
-                            <img src="images/inventory.png" alt="Home" width="16" height="16" class="me-2" />
-                            <a href="/ManageUnits" class="text-decoration-none">@Model.lblUnits</a>
-                        </li>
-                          <li class="breadcrumb-item d-flex align-items-center">
-                            <img src="images/inventory.png" alt="Home" width="16" height="16" class="me-2" />
-                            @Model.lblAddUnits
-                        </li>
-                        
-                    </ol>
-                </nav>
                 <h1 class="h4">@Model.lblAddUnits</h1>
-               <!-- <p class="mb-0">Dozens of reusable components built to provide buttons, alerts, popovers, and more.</p> -->
+                <!-- <p class="mb-0">Dozens of reusable components built to provide buttons, alerts, popovers, and more.</p> -->
             </div>
         </div>
     </div>
@@ -85,21 +62,21 @@
                                 <label for="UnitCode">@Model.lblUnitCode</label>
 
                                 <input type="text" class="form-control" id="UnitCode" name="UnitCode"
-                                    value="@Model.UnitCode" />
+                                       value="@Model.UnitCode" />
 
                             </div>
                             <div class="mb-4">
                                 <label for="UnitDescription">@Model.lblUnitDescription</label>
 
                                 <input type="text" class="form-control" id="UnitDescription" name="UnitDescription"
-                                    value="@Model.UnitDescription" />
+                                       value="@Model.UnitDescription" />
 
                             </div>
 
                             <div class="mb-4">
                                 <label class="my-1 me-2" for="GroupCode">@Model.lblGroupName</label>
                                 <select class="form-select" id="GroupCode" name="GroupCode"
-                                    aria-label="Default select example">
+                                        aria-label="Default select example">
 
                                     @if (Model.ItemGroups != null)
                                     {
@@ -110,17 +87,71 @@
                                     }
                                 </select>
                             </div>
+                            <div class="mb-4">
+                                <label class="my-1 me-2" for="WarehouseType">@Model.lblWarehouseType</label>
+                                <select class="form-select" id="WarehouseType" name="WarehouseType"
+                                        aria-label="Default select example">
+
+                                    @if (Model.WarehouseTypes != null)
+
+                                    {
+
+                                        foreach (var warehousetype in Model.WarehouseTypes)
+
+                                        {
+                                            <option value="@warehousetype.StoreType">@warehousetype.StoreName</option>
+                                        }
+                                    }
+                                </select>
+                            </div> <div class="mb-4">
+                                <label class="my-1 me-2" for="UnitsMeasure">@Model.lblUnitsMeasure</label>
+                                <input type="text" class="form-control" id="UnitsMeasure" name="UnitsMeasure"
+                                       value="@Model.UnitsMeasure" />
+                            </div>
+                            <div class="mb-4">
+                                <label class="my-1 me-2" for="HazardType">@Model.lblHazardType</label>
+                                <select class="form-select" id="HazardType" name="HazardType"
+                                        aria-label="Default select example">
+
+                                    @if (Model.HazardTypes != null)
+
+                                    {
+
+                                        foreach (var item in Model.HazardTypes)
+
+                                        {
+                                            <option value="@item.HazardTypeName">@item.HazardTypeName</option>
+                                        }
+                                    }
+                                </select>
+                            </div> <div class="mb-4">
+                                <label class="my-1 me-2" for="ChemicalStatus">@Model.lblChemicalStatus</label>
+                                <select class="form-select" id="ChemicalStatus" name="ChemicalStatus"
+                                        aria-label="Default select example">
+
+                                    @if (Model.ChemicalStatuss != null)
+
+                                    {
+
+                                        foreach (var item in Model.ChemicalStatuss)
+
+                                        {
+                                            <option value="@item.DamagedReason">@item.DamagedReason</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
 
                             <div class="mb-4">
 
 
                                 <div class="d-flex mb-2 mb-md-0" style="gap: 10px">
                                     <a href="ManageUnits"
-                                        class="btn btn-outline-gray-600  align-items-center w-100">@Model.lblCancel</a>
+                                       class="btn btn-outline-gray-600  align-items-center w-100">@Model.lblCancel</a>
 
                                     <input type="submit" value="@Model.lblAdd"
-                                        class="btn btn-sm btn-gray-800 align-items-center w-100"
-                                        style="text-align:center;" />
+                                           class="btn btn-sm btn-gray-800 align-items-center w-100"
+                                           style="text-align:center;" />
 
                                 </div>
 
