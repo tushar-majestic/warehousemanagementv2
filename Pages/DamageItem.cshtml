@@ -5,7 +5,7 @@
     <script type="text/javascript" language="javascript">
         const notyf = new Notyf({
             position: {
-                x: 'right',
+                x: 'center',
                 y: 'top',
             },
             types: [
@@ -17,7 +17,9 @@
                         tagName: 'span',
                         color: '#000000'
                     },
-                    dismissible: false
+                    dismissible: true,
+                    duration: 0,
+                    ripple: true
                 }
             ]
         });
