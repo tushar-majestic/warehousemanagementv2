@@ -9,7 +9,8 @@ namespace LabMaterials.Pages
         public List<ItemInfo> Items { get; set; }
         public int TotalItems { get; set; }
         public string Message { get; set; }
-
+        [BindProperty]
+        public string ItemName { get; set; }
         public string lblItems, lblItemName, lblGroupName, lblItemCode, lblAvailableQuantity, lblHazardType, lblTypeName,
             lblUnitCode, lblSearch, lblSubmit, lblDamageReason, lblDamagedQuantity, lblManageItemGroup, lblManageUnit, lblAddItem, lblEdit, lblDelete, lblTotalItem, lblExpiryDate, lblBatchNo, lblDamage, lblDamagedItems;
         public void OnGet()
@@ -26,6 +27,7 @@ namespace LabMaterials.Pages
         public void OnPost([FromForm] string ItemName, [FromForm] string Group)
         {
             base.ExtractSessionData();
+            this.ItemName = ItemName;
             if (CanManageItems)
             {
                 FillData(ItemName, Group);

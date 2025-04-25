@@ -9,6 +9,8 @@ namespace LabMaterials.Pages
         public List<DestinationsInfo> Destinations { get; set; }
         public List<RequestorInfo> Requestors { get; set; }
         public string Message { get; set; }
+        [BindProperty]
+        public string DestinationName { get; set; }
         public void OnGet() 
         {
             base.ExtractSessionData();
@@ -25,6 +27,7 @@ namespace LabMaterials.Pages
 
         public void OnPostSearch([FromForm] string DestinationName)
         {
+            this.DestinationName = DestinationName;
             FillData(DestinationName);
         }
 
@@ -84,7 +87,11 @@ namespace LabMaterials.Pages
                                 ReqId = req.ReqId,
                             };
                 if (string.IsNullOrEmpty(DestinationName) == false)
-                    query = query.Where(s => s.RequestorName.Contains(DestinationName));
+                    query = query.Where(s => s.RequestorName.Contains(DestinationName)||
+                                        s.DestinationName.Contains(DestinationName) ||
+                                        s.ContactNo.Contains(DestinationName) ||
+                                        s.ReqId.ToString().Contains(DestinationName));
+
 
                 Requestors = query.ToList();
 

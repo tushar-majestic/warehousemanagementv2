@@ -13,6 +13,10 @@ namespace LabMaterials.Pages
         public int TotalItems { get; set; }
         public string Message { get; set; }
         public DateTime? FromDate, ToDate;
+        [BindProperty]
+        public string ItemName { get; set; }
+        [BindProperty]
+        public string Group { get; set; }
 
         public string lblItems, lblItemName, lblGroupName, lblItemCode, lblAvailableQuantity, lblHazardType, lblTypeName,
             lblUnitCode, lblSearch, lblSubmit, lblManageItemGroup, lblManageUnit, lblAddItem, lblEdit,
@@ -31,7 +35,10 @@ namespace LabMaterials.Pages
 
         public void OnPost([FromForm] string ItemName, [FromForm] string Group, [FromForm] DateTime? FromDate, [FromForm] DateTime? ToDate)
         {
+            
             base.ExtractSessionData();
+            this.ItemName = ItemName;
+            this.Group = Group;
             if (CanManageItems)
             {
                 FillData(ItemName, Group, FromDate, ToDate);
