@@ -8,6 +8,8 @@ namespace LabMaterials.Pages
     {
         public List<DestinationsInfo> Destinations { get; set; }
         public string Message { get; set; }
+        [BindProperty]
+        public string DestinationName { get; set; }
         public void OnGet() 
         {
             base.ExtractSessionData();
@@ -24,6 +26,7 @@ namespace LabMaterials.Pages
 
         public void OnPostSearch([FromForm] string DestinationName)
         {
+            this.DestinationName = DestinationName;
             FillData(DestinationName);
         }
 

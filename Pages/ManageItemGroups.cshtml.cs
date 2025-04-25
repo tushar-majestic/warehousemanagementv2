@@ -11,6 +11,8 @@ namespace LabMaterials.Pages
         public List<GroupInfo> Groups { get; set; }
         public string Message { get; set; }
         public int TotalItems { get; set; }
+        [BindProperty]
+        public string GroupName { get; set; }
         public void OnGet() 
         {
             base.ExtractSessionData();
@@ -26,6 +28,7 @@ namespace LabMaterials.Pages
 
         public void OnPostSearch([FromForm] string GroupName)
         {
+            this.GroupName = GroupName;
             FillData(GroupName);
         }
 

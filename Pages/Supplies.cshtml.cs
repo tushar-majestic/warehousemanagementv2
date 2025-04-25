@@ -10,6 +10,11 @@ namespace LabMaterials.Pages
         public List<SupplyInfo> Supplies { get; set; }
         public int TotalItems { get; set; }
         public string Message { get; set; }
+        [BindProperty]
+        public string SupplierName { get; set; }
+
+        [BindProperty]
+        public string ItemName { get; set; }
         public DateTime? FromDate, ToDate;
 
 
@@ -85,6 +90,8 @@ namespace LabMaterials.Pages
 
         public void OnPost([FromForm] string SupplierName, [FromForm] string ItemName, [FromForm] DateTime? FromDate, [FromForm] DateTime? ToDate)
         {
+            this.SupplierName = SupplierName;
+            this.ItemName = ItemName;
             base.ExtractSessionData();
             if (CanManageSupplies)
             {

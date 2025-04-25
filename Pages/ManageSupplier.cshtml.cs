@@ -10,6 +10,9 @@ namespace LabMaterials.Pages
         public List<SupplierInfo> Suppliers { get; set; }
         public int TotalItems { get; set; }
         public string Message { get; set; }
+
+        [BindProperty]
+        public string SupplierName { get; set; }
         
         public string lblSuppliers, lblSearch, lblSuplierName, lblSubmit, lblSupplierName, lblConatctNumber, lblSupplierType, 
         lblAddSupplier, lblEdit, lblDelete, lblTotalItem, lblSupplies;
@@ -88,6 +91,7 @@ namespace LabMaterials.Pages
 
         public void OnPostSearch([FromForm] string SupplierName)
         {
+            this.SupplierName = SupplierName;
             FillData(SupplierName);
         }
 
