@@ -10,6 +10,12 @@ namespace LabMaterials.Pages
         public List<DisbursementInfo> Disbursement { get; set; }
         public int TotalItems { get; set; }
 
+        [BindProperty]
+        public string RequesterName { get; set; }
+
+    
+
+
         public string lblDistributedMaterials, lblSearch, lblRequesterName, lblRequestReceivedDate, lblRequestingPlace, lblComments,
             lblDisbursementStatus, lblInventoryBalanced, lblTotalItem,
             lblMaterialsReceived, lblInventory, lblHazardousMaterials, lblUserActivity, lblDamagedItems,
@@ -66,6 +72,7 @@ namespace LabMaterials.Pages
         public void OnPost([FromForm] string RequesterName, [FromForm] DateTime? FromDate, [FromForm] DateTime? ToDate)
         {
             base.ExtractSessionData();
+            this.RequesterName = RequesterName;
             if (CanSeeReports)
             {
                 FillData(RequesterName, FromDate, ToDate);

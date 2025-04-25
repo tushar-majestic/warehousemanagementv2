@@ -12,6 +12,11 @@ namespace LabMaterials.Pages
         public DateTime? FromDate, ToDate;
         public List<SupplyInfo> Supplies { get; set; }
         public int TotalItems { get; set; }
+        [BindProperty]
+        public string SupplierName { get; set; }
+
+        [BindProperty]
+        public string ItemName { get; set; }
 
         public string lblMaterialsReceived, lblSearch, lblSupplierName, lblItemName, lblSubmit,
             lblQuantityReceived, lblReceivedAt, lblInventoryBalanced, lblTotalItem,
@@ -74,6 +79,8 @@ namespace LabMaterials.Pages
         public void OnPost([FromForm] string SupplierName, [FromForm] string ItemName, [FromForm] DateTime? FromDate, [FromForm] DateTime? ToDate)
         {
             base.ExtractSessionData();
+            this.ItemName = ItemName;
+            this.SupplierName = SupplierName;
             if (CanSeeReports)
             {
                 FillData(SupplierName, ItemName, FromDate, ToDate);

@@ -10,6 +10,9 @@ namespace LabMaterials.Pages
         public int TotalItems { get; set; }
         public List<HazardType> HazardTypes { get; set; }
         public string HazardTypeName;
+
+        [BindProperty]
+        public string ItemName { get; set; }
         
         public string lblHazardousMaterials, lblHazardTypeName, lblSearch, lblSubmit, lblItemCode, lblItemName, lblGroupName, 
             lblAvailableQuantity, lblHazardType, lblTypeName, lblStoreName, lblUnitCode, lblTotalItem,
@@ -77,6 +80,7 @@ namespace LabMaterials.Pages
         public void OnPost([FromForm] string ItemName, [FromForm] string HazardTypeName)
         {
             base.ExtractSessionData();
+            this.ItemName = ItemName;
             var dbContext = new LabDBContext();
             HazardTypes = dbContext.HazardTypes.Where(h => h.HazardTypeName != "NonHazarduos").ToList();
             this.HazardTypeName = HazardTypeName;

@@ -11,6 +11,8 @@ namespace LabMaterials.Pages
         public List<UserGroupInfo> UserGroups { get; set; }
         public int TotalItems { get; set; }
         public string Message { get; set; }
+        [BindProperty]
+        public string UserGroupName { get; set; }
         
         public string lblUserGroup, lblSearch, lblAddUserGroup, lblUserGroupName, lblPrivilages,  lblEdit, lblDelete, lblTotalItem, lblUsers;
         public void OnGet()
@@ -95,6 +97,7 @@ namespace LabMaterials.Pages
 
         public void OnPostSearch([FromForm] string UserGroupName)
         {
+            this.UserGroupName = UserGroupName;
             FillData(UserGroupName);
         }
 
