@@ -147,6 +147,8 @@ public partial class LabDBContext : DbContext
         {
             entity.HasKey(e => e.RoomId).HasName("PK__ROOMS__328639396C49D5E5");
 
+            entity.Property(e => e.BuildingNumber).IsFixedLength();
+
             entity.HasOne(d => d.Store).WithMany(p => p.Rooms).HasConstraintName("FK__ROOMS__StoreId__71D1E811");
         });
 
@@ -181,6 +183,9 @@ public partial class LabDBContext : DbContext
             entity.Property(e => e.StoreId).ValueGeneratedNever();
             entity.Property(e => e.BuildingNumber).IsFixedLength();
             entity.Property(e => e.IsActive).HasDefaultValue(1);
+            entity.Property(e => e.StoreType)
+                .HasDefaultValueSql("(NULL)")
+                .IsFixedLength();
         });
 
         modelBuilder.Entity<StoreMovement>(entity =>

@@ -142,11 +142,7 @@ namespace LabMaterials.Pages
                 return RedirectToPage("./Index?lang=" + Lang);
         }
 
-        public IActionResult OnPostView([FromForm] int UserId)
-        {
-            HttpContext.Session.SetInt32("ToViewUserId", UserId);
-            return RedirectToPage("./viewUser");
-        }
+       
 
         private void FillData(string? UserName)
         {
