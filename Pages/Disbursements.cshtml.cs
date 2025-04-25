@@ -38,6 +38,12 @@ namespace LabMaterials.Pages
 
             return RedirectToPage("./EditDisbursement");
         }
+        public IActionResult OnPostView([FromForm] int DisbursementID)
+        {
+            HttpContext.Session.SetInt32("DisbursementID", DisbursementID);
+
+            return RedirectToPage("./viewMaterialDispensing");
+        }
 
         private void FillData(string? RequesterName, DateTime? FromDate, DateTime? ToDate)
         {

@@ -1,4 +1,62 @@
 ﻿@page
-@model MyApp.Namespace.viewSuppliesModel
+@model LabMaterials.Pages.viewSuppliesModel
 @{
+    <div class="py-4">
+
+        <div class="d-flex justify-content-between w-100 flex-wrap">
+            <div class="mb-3 mb-lg-0">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb bg-transparent p-2 mb-0">
+                        <li class="breadcrumb-item d-flex align-items-center">
+                            <img src="images/home.png" alt="Home" width="16" height="16" class="me-2" />
+                            <a href="/Home" class="text-decoration-none">@Model.lblHome</a>
+                        </li>
+                        <li class="breadcrumb-item d-flex align-items-center">
+                            <img src="images/management.png" alt="Home" width="16" height="16" class="me-2" />
+                            <a href="/Supplies" class="text-decoration-none">@Model.lblSupplies</a>
+                        </li>
+                        <li class="breadcrumb-item d-flex align-items-center">
+                            <img src="images/management.png" alt="Home" width="16" height="16" class="me-2" />
+                            @Model.lblView
+                        </li>
+                    </ol>
+                </nav>
+                <h1 class="h4">@Model.lblView</h1>
+                <!-- <p class="mb-0">Dozens of reusable components built to provide buttons, alerts, popovers, and more.</p> -->
+            </div>
+        </div>
+    </div>
 }
+<div class="row">
+    <div class="col-8 mb-4 m-auto">
+        <div class="card shadow-sm p-4 mb-4">
+            <div class="container mt-4">
+                <h3 class="mb-4">Supply Details</h3>
+                @if (Model.Supply != null)
+                {
+                    <table class="table table-bordered">
+                        <tr><th>Supply ID</th><td>@Model.Supply.SupplyId</td></tr>
+                        <tr><th>Supplier</th><td>@Model.Supply.SupplierName</td></tr>
+                        <tr><th>Item</th><td>@Model.Supply.ItemName</td></tr>
+                        <tr><th>Item Type</th><td>@Model.Supply.ItemType</td></tr>
+                        <tr><th>Item Code</th><td>@Model.Supply.ItemCode</td></tr>
+                        <tr><th>Received At</th><td>@Model.Supply.ReceivedAt.ToString("yyyy-MM-dd")</td></tr>
+                        <tr><th>Expiry Date</th><td>@Model.Supply.ExpiryDate.ToString("yyyy-MM-dd")</td></tr>
+                        <tr><th>Invoice Number</th><td>@Model.Supply.InvoiceNumber</td></tr>
+                        <tr><th>Purchase Order No</th><td>@Model.Supply.PurchaseOrderNo</td></tr>
+                        <tr><th>Quantity Received</th><td>@Model.Supply.QuantityReceived</td></tr>
+                        <tr><th>Store</th><td>@Model.Supply.StoreName</td></tr>
+                        <tr><th>Room</th><td>@Model.Supply.RoomName</td></tr>
+                        <tr><th>Shelf Number</th><td>@Model.Supply.ShelfNumber</td></tr>
+                        <tr><th>Inventory Balanced</th><td>@(Model.Supply.InventoryBalanced ? "Yes" : "No")</td></tr>
+                    </table>
+                }
+                else
+                {
+                    <div class="alert alert-warning">No supply record found.</div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
