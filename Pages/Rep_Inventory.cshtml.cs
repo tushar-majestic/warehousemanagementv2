@@ -9,6 +9,15 @@ namespace LabMaterials.Pages
         public List<StorageInfo> Storages { get; set; }
         public DateTime? FromDate, ToDate;
         public int TotalItems { get; set; }
+
+        [BindProperty]
+        public string StoreNumber { get; set; }
+
+        [BindProperty]
+        public string StoreName { get; set; }
+
+        [BindProperty]
+        public string Item { get; set; }
         
         public string lblInventory, lblSearch, lblStoreNumber, lblStoreName, lblItemName, lblSubmit,
             lblShelveNumber, lblAvailableQuantity, lblTotalItem, lblMaterialsReceived,
@@ -73,6 +82,9 @@ namespace LabMaterials.Pages
 
         public void OnPostSearch([FromForm] string StoreNumber, [FromForm] string StoreName, [FromForm] string Item, [FromForm] DateTime? FromDate, [FromForm] DateTime? ToDate)
         {
+            this.Item = Item;
+            this.StoreNumber = StoreNumber;
+            this.StoreName = StoreName;
             this.FromDate = DateTime.Today;
             this.ToDate = DateTime.Today;
             FillData(StoreNumber, StoreName, Item,FromDate,ToDate);
