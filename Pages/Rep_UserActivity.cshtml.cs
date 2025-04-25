@@ -11,6 +11,9 @@ namespace LabMaterials.Pages
         public int TotalItems { get; set; }
         public DateTime? FromDate, ToDate;
 
+        [BindProperty]
+        public string UserName { get; set; }
+
         public string lblUserActivity, lblSearch, lblUserName, lblFromDate, lblToDate, lblSubmit,
             lblAction, lblActionDetails, lblRequestingIp, lblActionTime, lblTotalItem,
             lblMaterialsReceived, lblInventory, lblHazardousMaterials, lblDistributedMaterials,
@@ -59,6 +62,7 @@ namespace LabMaterials.Pages
         public void OnPost([FromForm] string UserName, [FromForm] DateTime? FromDate, [FromForm] DateTime? ToDate)
         {
             base.ExtractSessionData();
+            this.UserName = UserName;
             if (CanSeeReports)
             {
                 FillData(UserName, FromDate, ToDate);

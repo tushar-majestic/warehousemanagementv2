@@ -19,7 +19,7 @@ namespace LabMaterials.Pages
             if (CanManageUsers)
             {
                 FillLables();
-                FillData("");
+                //FillData("");
             }
             else
                 RedirectToPage("./Index?lang=" + Lang);

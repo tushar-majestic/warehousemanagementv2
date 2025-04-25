@@ -11,7 +11,8 @@ namespace LabMaterials.Pages
         public List<UnitInfo> Units { get; set; }
         public string Message { get; set; }
         public int TotalItems { get; set; }
-        
+        [BindProperty]
+        public string UnitDesc { get; set; }
         public string lblUnitCode, lblUnitDescription, lblGroupName, lblEdit, lblDelete, lblTotalItem, lblAddUnit, 
         lblUnits, lblSearch, lblItems;
         public void OnGet() 
@@ -27,6 +28,7 @@ namespace LabMaterials.Pages
 
         public void OnPostSearch([FromForm] string UnitDesc)
         {
+            this.UnitDesc = UnitDesc;
             FillData(UnitDesc);
         }
 

@@ -10,6 +10,8 @@ namespace LabMaterials.Pages
         public string Message { get; set; }
         public int TotalItems { get; set; }
         public DateTime? FromDate, ToDate;
+        [BindProperty]
+        public string RequesterName { get; set; }
         public void OnGet() 
         {
             base.ExtractSessionData();
@@ -26,6 +28,7 @@ namespace LabMaterials.Pages
 
         public void OnPostSearch([FromForm] string RequesterName, [FromForm] DateTime? FromDate, [FromForm] DateTime? ToDate)
         {
+            this.RequesterName = RequesterName;
             FillData(RequesterName,FromDate,ToDate);
         }
 

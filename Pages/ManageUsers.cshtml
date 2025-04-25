@@ -108,8 +108,8 @@
                             <th scope="col" class="border-0">@Model.lblEmail</th>
                             <th scope="col" class="border-0">@Model.lblUserEnabled</th>
                             <th scope="col" class="border-0">@Model.lblIsLocked</th>
-                            <th scope="col" class="border-0">@Model.lblUserType</th>
-                            <th scope="col" class="border-0">@Model.lblUserGroupName</th>
+                            @*<th scope="col" class="border-0">@Model.lblUserType</th>
+                            <th scope="col" class="border-0">@Model.lblUserGroupName</th>*@
                             <th scope="col" class="border-0 rounded-end"></th>
                         </tr>
                     </thead>
@@ -125,8 +125,8 @@
                         <td>@item.Email</td>
                         <td>@item.IsActive</td>
                         <td>@item.IsLocked</td>
-                        <td>@item.IsADUser</td>
-                        <td>@item.GroupName</td>
+                       @* <td>@item.IsADUser</td>
+                        <td>@item.GroupName</td>*@
                         <td>
                             <form method="post">
                                 <input type="hidden" value="@item.UserID" name="UserId" />

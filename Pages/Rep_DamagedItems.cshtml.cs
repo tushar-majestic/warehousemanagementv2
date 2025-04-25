@@ -15,6 +15,9 @@ namespace LabMaterials.Pages
             lblFromDate, lblToDate, lblDamageditems, lblTotalDamagedItem,
             lblDamageDate, lblDamageQuantity, lblDamageReason, lblExport;
         public int TotalItems { get; set; }
+
+        [BindProperty]
+        public string ItemName { get; set; }
         public void OnGet()
         {
             base.ExtractSessionData();
@@ -63,6 +66,7 @@ namespace LabMaterials.Pages
         public void OnPost([FromForm] string ItemName, [FromForm] DateTime? FromDate, [FromForm] DateTime? ToDate)
         {
             base.ExtractSessionData();
+            this.ItemName = ItemName;
             if (CanSeeReports)
             {
                 FillData(ItemName, FromDate, ToDate);

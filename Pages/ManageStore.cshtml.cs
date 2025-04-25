@@ -15,6 +15,13 @@ namespace LabMaterials.Pages
         public Store store { get; set; }
         public string Message { get; set; }
         public int TotalItems { get; set; }
+
+        [BindProperty]
+        public string StoreName { get; set; }
+
+        [BindProperty]
+        public string StoreNumber { get; set; }
+
         public void OnGet() 
         {
             base.ExtractSessionData();
@@ -31,6 +38,9 @@ namespace LabMaterials.Pages
 
         public void OnPostSearch([FromForm] string StoreNumber, [FromForm] string StoreName)
         {
+            this.StoreNumber = StoreNumber;
+            this.StoreName = StoreName;
+
             FillData(StoreNumber, StoreName);
         }
 
