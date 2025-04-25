@@ -10,12 +10,16 @@ namespace LabMaterials.Pages
         public List<UserInfo> Users { get; set; }
         public string Message { get; set; }
         public int TotalItems { get; set; }
+        [BindProperty]
+        public string UserName { get; set; }
+
         public void OnGet() 
         {
             base.ExtractSessionData();
             if (CanManageUsers)
             {
                 FillLables();
+                FillData("");
             }
             else
                 RedirectToPage("./Index?lang=" + Lang);
@@ -24,10 +28,11 @@ namespace LabMaterials.Pages
         public string lblUsers, lblSearch, lblAddUser, lblManageUserGroups, lblUserName, lblFullName, lblEmail, 
             lblUserEnabled, lblIsLocked, lblUserType, lblUserGroupName, lblEdit, lblUnlock, lblTotalItem;
 
-        public void OnPostSearch([FromForm] string UserName)
+        public void OnPostSearch()
         {
             
-            FillData(UserName);
+            FillData(this.UserName);
+
         }
 
         public void OnPostEnable([FromForm] int UserId)
@@ -109,6 +114,27 @@ namespace LabMaterials.Pages
                     Message = string.Format((Program.Translations["UserSelfUpdateNotAllowed"])[Lang]);
                     return Page();
                 }
+            }
+            else
+                return RedirectToPage("./Index?lang=" + Lang);
+        }  
+        
+        public IActionResult OnPostView([FromForm] int UserId)
+        {
+            base.ExtractSessionData();
+            if (CanManageUsers)
+            {
+                //if (HttpContext.Session.GetInt32("UserId").Value != UserId)
+                {
+                    HttpContext.Session.SetInt32("ToUpdateUserId", UserId);
+                    return RedirectToPage("./viewUser");
+                }
+                //else
+                //{
+                //    FillData(null);
+                //    Message = string.Format((Program.Translations["UserSelfUpdateNotAllowed"])[Lang]);
+                //    return Page();
+                //}
             }
             else
                 return RedirectToPage("./Index?lang=" + Lang);
