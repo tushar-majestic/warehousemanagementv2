@@ -1112,5 +1112,10 @@
   "SupplierTypeMissing": {
     "en": "Supplier Type is missing.",
     "ar": "نوع المورد مفقود"
+  },
+  "View": {
+    "en": "View",
+    "ar": "منظر"
   }
+
 }

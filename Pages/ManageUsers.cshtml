@@ -131,7 +131,9 @@
                             <form method="post">
                                 <input type="hidden" value="@item.UserID" name="UserId" />
                                 <input type="submit" value="@Model.lblEdit" class="btn btn-primary" asp-page-handler="Edit" />
-                                @* <input type="submit" value="@Model.lblView" class="btn btn-primary" asp-page-handler="View" /> *@
+
+                                <input type="submit" value="@Model.lblView" class="btn btn-primary" asp-page-handler="View" />
+
                                 <input type="submit" value="@item.EnableBtnText" class="btn btn-danger"
                                     asp-page-handler="Enable" />
                                 <input type="submit" value="@Model.lblUnlock" class="btn text-white" style="background:gray;" asp-page-handler="Unlock" />

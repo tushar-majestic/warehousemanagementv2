@@ -25,8 +25,10 @@ namespace LabMaterials.Pages
                 RedirectToPage("./Index?lang=" + Lang);
         }
         //
+
         public string lblView, lblUsers, lblSearch, lblAddUser, lblManageUserGroups, lblUserName, lblFullName, lblEmail, 
             lblUserEnabled, lblIsLocked, lblUserType, lblUserGroupName, lblEdit, lblUnlock, lblTotalItem;
+
 
         public void OnPostSearch()
         {
@@ -200,6 +202,7 @@ namespace LabMaterials.Pages
             this.lblView = (Program.Translations["View"])[Lang];
             this.lblUnlock = (Program.Translations["Unlock"])[Lang];
             this.lblTotalItem = (Program.Translations["TotalItem"])[Lang];
+            this.lblView = (Program.Translations["View"])[Lang];
         }
     }
 }
