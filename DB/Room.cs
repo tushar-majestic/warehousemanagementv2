@@ -41,6 +41,9 @@ public partial class Room
     [Unicode(false)]
     public string? RoomNo { get; set; }
 
+    [StringLength(10)]
+    public string? BuildingNumber { get; set; }
+
     [InverseProperty("Room")]
     public virtual ICollection<Shelf> Shelves { get; set; } = new List<Shelf>();
 
