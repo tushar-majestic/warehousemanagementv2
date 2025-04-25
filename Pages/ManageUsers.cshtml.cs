@@ -26,7 +26,7 @@ namespace LabMaterials.Pages
         }
         //
         public string lblUsers, lblSearch, lblAddUser, lblManageUserGroups, lblUserName, lblFullName, lblEmail, 
-            lblUserEnabled, lblIsLocked, lblUserType, lblUserGroupName, lblEdit, lblUnlock, lblTotalItem;
+            lblUserEnabled, lblIsLocked, lblUserType, lblUserGroupName, lblEdit, lblUnlock, lblTotalItem ,lblView;
 
         public void OnPostSearch()
         {
@@ -193,6 +193,7 @@ namespace LabMaterials.Pages
             this.lblEdit = (Program.Translations["Edit"])[Lang];
             this.lblUnlock = (Program.Translations["Unlock"])[Lang];
             this.lblTotalItem = (Program.Translations["TotalItem"])[Lang];
+            this.lblView = (Program.Translations["View"])[Lang];
         }
     }
 }
