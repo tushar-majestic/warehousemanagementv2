@@ -25,8 +25,10 @@ namespace LabMaterials.Pages
                 RedirectToPage("./Index?lang=" + Lang);
         }
         //
-        public string lblUsers, lblSearch, lblAddUser, lblManageUserGroups, lblUserName, lblFullName, lblEmail, 
-            lblUserEnabled, lblIsLocked, lblUserType, lblUserGroupName, lblEdit, lblUnlock, lblTotalItem ,lblView;
+
+        public string lblView, lblUsers, lblSearch, lblAddUser, lblManageUserGroups, lblUserName, lblFullName, lblEmail, 
+            lblUserEnabled, lblIsLocked, lblUserType, lblUserGroupName, lblEdit, lblUnlock, lblTotalItem;
+
 
         public void OnPostSearch()
         {
@@ -140,6 +142,12 @@ namespace LabMaterials.Pages
                 return RedirectToPage("./Index?lang=" + Lang);
         }
 
+        public IActionResult OnPostView([FromForm] int UserId)
+        {
+            HttpContext.Session.SetInt32("ToViewUserId", UserId);
+            return RedirectToPage("./viewUser");
+        }
+
         private void FillData(string? UserName)
         {
             base.ExtractSessionData();
@@ -156,9 +164,9 @@ namespace LabMaterials.Pages
                                 FullName = u.FullName,
                                 Email = u.Email,
                                 IsActive = u.IsActive ? (Lang == "ar" ? "تمكين" : "Enabled") : (Lang == "ar" ? "تعطيل" : "Disabled"),
-                                EnableBtnText = u.IsActive ? (Lang == "ar"? "تعطيل" : "Disable") : (Lang == "ar" ? "تمكين" : "Enable"),
+                                EnableBtnText = u.IsActive ? (Lang == "ar" ? "تعطيل" : "Disable") : (Lang == "ar" ? "تمكين" : "Enable"),
                                 IsADUser = u.IsActiveDirectoryUser ? (Lang == "ar" ? "مستخدم المجال" : "Domain User") : (Lang == "ar" ? "مستخدم التطبيق" : "Application User"),
-                                IsLocked = u.Locked ? (Lang == "ar"? "نعم" : "Yes") : (Lang == "ar" ? "لا" : "No"),
+                                IsLocked = u.Locked ? (Lang == "ar" ? "نعم" : "Yes") : (Lang == "ar" ? "لا" : "No"),
                                 GroupName = g.UserGroupName
                             };
 
@@ -191,6 +199,7 @@ namespace LabMaterials.Pages
             this.lblUserGroupName = (Program.Translations["UserGroupName"])[Lang];
 
             this.lblEdit = (Program.Translations["Edit"])[Lang];
+            this.lblView = (Program.Translations["View"])[Lang];
             this.lblUnlock = (Program.Translations["Unlock"])[Lang];
             this.lblTotalItem = (Program.Translations["TotalItem"])[Lang];
             this.lblView = (Program.Translations["View"])[Lang];

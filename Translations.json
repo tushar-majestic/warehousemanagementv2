@@ -102,6 +102,10 @@
     "en": "Edit",
     "ar": "تعديل"
   },
+  "View": {
+    "en": "View",
+    "ar": "منظر"
+  },
   "Delete": {
     "en": "Delete",
     "ar": "حذف"
