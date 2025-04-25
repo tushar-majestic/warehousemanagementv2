@@ -3,16 +3,22 @@ using LabMaterials.dtos;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.IdentityModel.Tokens;
+
 
 namespace LabMaterials.Pages
 {
     public class viewUserModel : BasePageModel
     {
         public UserInfo singleUser { get; set; }
+        public string lblUsers;
+
 
         public void OnGet()
         {
             base.ExtractSessionData();
+            FillLables();
             if (CanManageUsers)
             {
                 var dbContext = new LabDBContext();
@@ -32,14 +38,19 @@ namespace LabMaterials.Pages
                                 GroupName = g.UserGroupName
                             };
 
-               // UserInfo singleUser = null;
+                // UserInfo singleUser = null;
 
-                
-                    singleUser = query.FirstOrDefault(s => s.UserID == user.UserId);
-               
+
+                singleUser = query.FirstOrDefault(s => s.UserID == user.UserId);
+
             }
             else
                 RedirectToPage("./Index?lang=" + Lang);
+        }
+
+        private void FillLables()
+        {
+            this.lblUsers = (Program.Translations["Users"])[Lang];
         }
     }
 }

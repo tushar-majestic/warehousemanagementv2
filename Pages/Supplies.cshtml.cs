@@ -101,6 +101,12 @@ namespace LabMaterials.Pages
 
             return RedirectToPage("./EditSupply");
         }
+        public IActionResult OnPostView([FromForm] int SupplyId)
+        {
+            HttpContext.Session.SetInt32("SupplyId", SupplyId);
+
+            return RedirectToPage("./viewSupplies");
+        }
 
         public void OnPostDelete([FromForm] int SupplyId)
         {
