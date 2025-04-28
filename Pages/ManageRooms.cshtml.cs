@@ -14,6 +14,7 @@ namespace LabMaterials.Pages
         public List<StoreDataResult> Stores { get; set; }
         public List<Room> Rooms { get; set; }
         public string Message { get; set; }
+        public string RoomName { get; set; }
         public int TotalItems { get; set; }
          public int CurrentPage { get; set; }
         public int ItemsPerPage { get; set; } = 10;
@@ -38,7 +39,9 @@ namespace LabMaterials.Pages
                 RedirectToPage("./Index?lang=" + Lang);
         }
 
-        public string lblStores, lblManageStorage, lblSearch, lblRoomName, lblRoomNumber, lblManageShelves, lblManageRooms, lblStoreNumber, lblAddRoom, lblAddShelf, lblStoreName, lblSubmit, lblAddStore, lblShelves, lblEdit, lblDelete, lblTotalItem, lblAddDestination, lblManageDestination;
+        public string lblStores, lblManageStorage, lblSearch, lblRoomName, lblRoomNumber, lblManageShelves, lblManageRooms, lblStoreNumber,
+        lblAddRoom, lblAddShelf, lblStoreName, lblSubmit, lblAddStore, lblShelves, lblEdit, lblDelete, lblTotalItem, lblAddDestination,
+        lblManageDestination;
 
         public void OnPostSearch([FromForm] string RoomName)
         {   CurrentPage = 1;
@@ -113,6 +116,7 @@ namespace LabMaterials.Pages
                                 .FromSqlRaw("EXEC PRC_GET_STORE_DATA @PCODE OUTPUT, @PDESC OUTPUT, @PMSG OUTPUT",
                                             codeParam, descParam, msgParam)
                                 .ToList();
+
 
                 Rooms = dbContext.Rooms.ToList();
                
