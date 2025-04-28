@@ -114,7 +114,7 @@ namespace LabMaterials.Pages
 
         private void FillData(string ItemName, string Group, DateTime? FromDate, DateTime? ToDate, int page = 1)
         {
-             if (HttpContext.Request.Query.ContainsKey("page"))
+            if (HttpContext.Request.Query.ContainsKey("page"))
             {
                 string pagevalue = HttpContext.Request.Query["page"];
                 page = int.Parse(pagevalue);
