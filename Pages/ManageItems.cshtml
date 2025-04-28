@@ -179,7 +179,7 @@
                         <tr>
                             <th scope="col" class="border-0 rounded-start">@Model.lblItemCode</th>
                             <th scope="col" class="border-0">@Model.lblItemName</th>
-                            <th scope="col" class="border-0">@Model.lblAvailableQuantity</th>
+                            <th scope="col" class="border-0">@Model.lblQuantity</th>
                             <th scope="col" class="border-0">@Model.lblHazardType</th>
                             <th scope="col" class="border-0">@Model.lblTypeName</th>
                             <th scope="col" class="border-0">@Model.lblUnitCode</th>
@@ -204,7 +204,7 @@
                                     <td>@item.UnitCode</td>
                                     <td>@item.GroupDesc</td>
                                     <td>@item.BatchNo</td>
-                                    <td>@item.ExpiryDate</td>
+                                    <td>@(item.ExpiryDate.HasValue? item.ExpiryDate.Value.ToString("dd-MM/yyyy") : "")</td>
                                     <td>
                                         <form method="post">
                                             <input type="hidden" value="@item.ItemId" name="ItemId" />

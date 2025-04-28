@@ -23836,7 +23836,7 @@ fieldset:disabled .btn {
 }
 
 td .btn{
-    width:138px;
+    width:auto;
 }
 .top-btn{
   width: 170px;
