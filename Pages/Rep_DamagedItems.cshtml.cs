@@ -15,23 +15,38 @@ namespace LabMaterials.Pages
             lblFromDate, lblToDate, lblDamageditems, lblTotalDamagedItem,
             lblDamageDate, lblDamageQuantity, lblDamageReason, lblExport;
         public int TotalItems { get; set; }
+        public int CurrentPage { get; set; }
+        public int ItemsPerPage { get; set; } = 10;
+        public int TotalPages { get; set; }
 
         [BindProperty]
         public string ItemName { get; set; }
-        public void OnGet()
+        public void OnGet(string? ItemName, DateTime? FromDate, DateTime? ToDate, int page = 1)
         {
             base.ExtractSessionData();
             if (CanSeeReports)
             {
-                this.FromDate = DateTime.Today;
-                this.ToDate = DateTime.Today;
+                // this.FromDate = DateTime.Today;
+                // this.ToDate = DateTime.Today;
                 FillLables();
+                if (HttpContext.Request.Query.ContainsKey("page")){
+                    string pagevalue = HttpContext.Request.Query["page"];
+                    page = int.Parse(pagevalue);
+                    this.ItemName = ItemName;
+                    this.FromDate = FromDate;
+                    this.ToDate = ToDate;
+                    FillData(ItemName, FromDate, ToDate, page);
+                }
             }
             else
                 RedirectToPage("./Index?lang=" + Lang);
         }
-        public void FillData(string ItemNAme, DateTime? StartDate, DateTime? EndDate)
-        {
+        public void FillData(string ItemNAme, DateTime? StartDate, DateTime? EndDate, int page = 1)
+        {    if (HttpContext.Request.Query.ContainsKey("page"))
+            {
+                string pagevalue = HttpContext.Request.Query["page"];
+                page = int.Parse(pagevalue);
+            }
             var dbContext = new LabDBContext();
             var query = (from i in dbContext.Items
                          join di in dbContext.DamagedItems on i.ItemId equals di.ItemId
@@ -55,21 +70,30 @@ namespace LabMaterials.Pages
             {
                 query = query.Where(e => e.DamageDate.Value.Date >= StartDate && e.DamageDate.Value.Date <= EndDate);
             }
-            DamagedItems = query.ToList();
-            TotalItems = DamagedItems.Count();
+            // DamagedItems = query.ToList();
+            // TotalItems = DamagedItems.Count();
 
-            FromDate = DateTime.Now;
-            ToDate = DateTime.Now;
+            // FromDate = DateTime.Now;
+            // ToDate = DateTime.Now;
+            TotalItems = query.Count();
+            TotalPages = (int)Math.Ceiling((double)TotalItems / ItemsPerPage);
+
+            var list = query.ToList();
+            DamagedItems = list.Skip((page - 1) * ItemsPerPage).Take(ItemsPerPage).ToList();     
+            CurrentPage = page;
             base.ExtractSessionData();
             FillLables();
         }
         public void OnPost([FromForm] string ItemName, [FromForm] DateTime? FromDate, [FromForm] DateTime? ToDate)
         {
             base.ExtractSessionData();
+            CurrentPage = 1;
+            this.FromDate = FromDate;
+            this.ToDate = ToDate;
             this.ItemName = ItemName;
             if (CanSeeReports)
             {
-                FillData(ItemName, FromDate, ToDate);
+                FillData(ItemName, FromDate, ToDate, CurrentPage);
             }
             else
                 RedirectToPage("./Index?lang=" + Lang);
