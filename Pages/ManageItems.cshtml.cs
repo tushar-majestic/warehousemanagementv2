@@ -23,7 +23,7 @@ namespace LabMaterials.Pages
         public int TotalPages { get; set; }
 
 
-        public string lblItems, lblItemName, lblGroupName, lblItemCode, lblAvailableQuantity, lblHazardType, lblTypeName,
+        public string lblItems, lblItemName, lblGroupName, lblItemCode, lblQuantity, lblHazardType, lblTypeName,
             lblUnitCode, lblSearch, lblSubmit, lblManageItemGroup, lblManageUnit, lblAddItem, lblEdit,
             lblDelete, lblTotalItem, lblExpiryDate, lblBatchNo, lblDamage, lblDamagedItems,
             lblImport, lblDonwloadSampleFile, lblFromDate, lblToDate;
@@ -318,7 +318,7 @@ namespace LabMaterials.Pages
             this.lblItemName = (Program.Translations["ItemName"])[Lang];
             this.lblGroupName = (Program.Translations["GroupName"])[Lang];
             this.lblItemCode = (Program.Translations["ItemCode"])[Lang];
-            this.lblAvailableQuantity = (Program.Translations["AvailableQuantity"])[Lang];
+            this.lblQuantity = (Program.Translations["Quantity"])[Lang];
             this.lblHazardType = (Program.Translations["HazardType"])[Lang];
             this.lblTypeName = (Program.Translations["TypeName"])[Lang];
             this.lblUnitCode = (Program.Translations["UnitCode"])[Lang];
