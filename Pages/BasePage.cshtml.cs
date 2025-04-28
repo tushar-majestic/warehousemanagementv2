@@ -6,6 +6,7 @@ namespace LabMaterials.Pages
     public class BasePageModel : PageModel
     {
         public string FullName { get; set; }
+        public string Usergroup { get; set; }
         public int? UserId { get; set; }
         public bool IsLDAP { get; set; }
         public bool CanManageStore { get; set; }
@@ -26,6 +27,7 @@ namespace LabMaterials.Pages
             {
                 UserId = HttpContext.Session.GetInt32("UserId");
                 FullName = HttpContext.Session.GetString("FullName");
+                Usergroup = HttpContext.Session.GetString("UserGroup");
                 IsLDAP = HttpContext.Session.GetInt32("IsLDAP") == 1;
                 CanManageStore = HttpContext.Session.GetInt32("CanManageStore") == 1;
                 CanManageUsers = HttpContext.Session.GetInt32("CanManageUsers") == 1;
