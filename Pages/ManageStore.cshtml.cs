@@ -36,7 +36,7 @@ namespace LabMaterials.Pages
                         this.StoreNumber = StoreNumber;
                         this.StoreName = StoreName;
 
-                        FillDataNew(StoreNumber, StoreName, page);
+                        FillData(StoreNumber, StoreName, page);
 
                 }
             }
@@ -52,7 +52,7 @@ namespace LabMaterials.Pages
             this.StoreNumber = StoreNumber;
             this.StoreName = StoreName;
 
-            FillDataNew(StoreNumber, StoreName, CurrentPage);
+            FillData(StoreNumber, StoreName, CurrentPage);
         }
 
         public void OnPostDelete([FromForm] int StoreId)
@@ -117,7 +117,8 @@ namespace LabMaterials.Pages
             return RedirectToPage("./EditStore");
         }
 
-        private void FillData(string? StoreNumber, string? StoreName)
+        // Function without pagination 
+        /*private void FillData(string? StoreNumber, string? StoreName)
         {
             base.ExtractSessionData();
             if (CanManageStore)
@@ -158,24 +159,13 @@ namespace LabMaterials.Pages
 
                 TotalItems = distinctStores.Count();
 
-                /*if (string.IsNullOrEmpty(StoreNumber) == false)
-                    query = query.Where(s => s.StoreNumber.Contains(StoreNumber));
-
-                if (string.IsNullOrEmpty(StoreName) == false)
-                    query = query.Where(s => s.StoreName.Contains(StoreName));
-
-                Stores = query.ToList();
-                foreach (var s in Stores)
-                    s.Shelves = string.IsNullOrEmpty(s.ShelfNumbers) ? new string[0] : s.StoreNumber.Split(',');
-
-                Stores = query.ToList();*/
-                /*TotalItems = Stores.Count();*/
+           
             }
             else
                 RedirectToPage("./Index?lang=" + Lang);
-        }
+        }*/
 
-        private void FillDataNew(string? StoreNumber, string? StoreName, int page =1)
+        private void FillData(string? StoreNumber, string? StoreName, int page =1)
         {
             base.ExtractSessionData();
             if (CanManageStore)

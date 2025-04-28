@@ -65,6 +65,7 @@ namespace LabMaterials.Pages
             return RedirectToPage("./viewMaterialDispensing");
         }
 
+        // Function without pagination 
         /*private void FillData(string? RequesterName, DateTime? FromDate, DateTime? ToDate)
         {
             base.ExtractSessionData();
