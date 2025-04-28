@@ -21,13 +21,24 @@ namespace LabMaterials.Pages
 
         [BindProperty]
         public string StoreNumber { get; set; }
-
-        public void OnGet() 
+        public int CurrentPage { get; set; }
+        public int ItemsPerPage { get; set; } = 10;
+        public int TotalPages { get; set; }
+        public void OnGet(string? StoreNumber,string? StoreName, int page = 1) 
         {
             base.ExtractSessionData();
             if (CanManageStore)
             {
                 FillLables();
+                if (HttpContext.Request.Query.ContainsKey("page")){
+                        string pagevalue = HttpContext.Request.Query["page"];
+                        page = int.Parse(pagevalue);
+                        this.StoreNumber = StoreNumber;
+                        this.StoreName = StoreName;
+
+                        FillDataNew(StoreNumber, StoreName, page);
+
+                }
             }
             else
                 RedirectToPage("./Index?lang=" + Lang);
@@ -37,11 +48,11 @@ namespace LabMaterials.Pages
         public string lblStores, lblManageStorage, lblSearch, lblRoomName, lblManageShelves, lblUnlock, lblLock, lblRoomNumber, lblManageRooms, lblStoreNumber, lblAddRoom, lblAddShelf, lblStoreName, lblSubmit, lblAddStore, lblShelves, lblEdit, lblDelete, lblTotalItem, lblAddDestination, lblManageDestination;
 
         public void OnPostSearch([FromForm] string StoreNumber, [FromForm] string StoreName)
-        {
+        {   CurrentPage = 1;
             this.StoreNumber = StoreNumber;
             this.StoreName = StoreName;
 
-            FillData(StoreNumber, StoreName);
+            FillDataNew(StoreNumber, StoreName, CurrentPage);
         }
 
         public void OnPostDelete([FromForm] int StoreId)
@@ -164,6 +175,71 @@ namespace LabMaterials.Pages
                 RedirectToPage("./Index?lang=" + Lang);
         }
 
+        private void FillDataNew(string? StoreNumber, string? StoreName, int page =1)
+        {
+            base.ExtractSessionData();
+            if (CanManageStore)
+            {
+
+                FillLables();
+                var dbContext = new LabDBContext();
+
+                var codeParam = new SqlParameter("@PCODE", SqlDbType.VarChar, 2) { Direction = ParameterDirection.Output };
+                var msgParam = new SqlParameter("@PMSG", SqlDbType.VarChar, 1000) { Direction = ParameterDirection.Output };
+                var descParam = new SqlParameter("@PDESC", SqlDbType.VarChar, 2) { Direction = ParameterDirection.Output };
+
+                
+                var query = dbContext.StoreDataResults
+                                .FromSqlRaw("EXEC PRC_GET_STORE_DATA @PCODE OUTPUT, @PDESC OUTPUT, @PMSG OUTPUT",
+                                            codeParam, descParam, msgParam)
+                                .ToList();
+                Rooms = dbContext.Rooms.ToList();
+
+
+
+                var code = (string)codeParam.Value;
+                var message = (string)msgParam.Value;
+                var description = (string)descParam.Value;
+                TotalItems = query.Count();
+
+                var distinctStores = query.GroupBy(s => new { s.StoreId, s.StoreName })
+                           .Select(g => g.First())
+                           .ToList();
+
+                if (string.IsNullOrEmpty(StoreNumber) == false)
+                    query = query.Where(s => s.StoreNumber.Contains(StoreNumber)).ToList();
+
+                if (string.IsNullOrEmpty(StoreName) == false)
+                    query = query.Where(s => s.StoreName.ToLower().Contains(StoreName.ToLower())).ToList();
+
+                if (string.IsNullOrEmpty(StoreNumber) == false && string.IsNullOrEmpty(StoreName) == false)
+                    query = query.Where(s => s.StoreNumber.Contains(StoreNumber) && s.StoreName.ToLower().Contains(StoreName.ToLower())).ToList();
+
+                TotalItems = query.Count();
+                TotalPages = (int)Math.Ceiling((double)TotalItems / ItemsPerPage);
+                var list = query.ToList();
+
+                Stores = list.Skip((page - 1) * ItemsPerPage).Take(ItemsPerPage).ToList();    
+                CurrentPage = page;
+
+                /*if (string.IsNullOrEmpty(StoreNumber) == false)
+                    query = query.Where(s => s.StoreNumber.Contains(StoreNumber));
+
+                if (string.IsNullOrEmpty(StoreName) == false)
+                    query = query.Where(s => s.StoreName.Contains(StoreName));
+
+                Stores = query.ToList();
+                foreach (var s in Stores)
+                    s.Shelves = string.IsNullOrEmpty(s.ShelfNumbers) ? new string[0] : s.StoreNumber.Split(',');
+
+                Stores = query.ToList();*/
+                /*TotalItems = Stores.Count();*/
+            }
+            else
+                RedirectToPage("./Index?lang=" + Lang);
+        }
+
+ 
         private void FillLables()
         {
 
