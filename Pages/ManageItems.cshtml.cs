@@ -40,6 +40,7 @@ namespace LabMaterials.Pages
                     this.Group = Group;
                     this.FromDate = FromDate;
                     this.ToDate = ToDate;
+                    Console.WriteLine("FromDate", this.FromDate);
                     FillData(ItemName, Group, FromDate, ToDate, page);
 
                 }
@@ -54,6 +55,8 @@ namespace LabMaterials.Pages
             base.ExtractSessionData();
             this.ItemName = ItemName;
             this.Group = Group;
+            this.FromDate = FromDate;
+            this.ToDate = ToDate;
             if (CanManageItems)
             {
                 FillData(ItemName, Group, FromDate, ToDate);
