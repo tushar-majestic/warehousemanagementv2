@@ -151,15 +151,10 @@ namespace LabMaterials.Pages
                 // Calculate total pages
                 TotalPages = (int)Math.Ceiling((double)TotalItems / ItemsPerPage);
 
-              
-
                 var list = query.ToList();
 
-                Disbursement = list.Skip((page - 1) * ItemsPerPage).Take(ItemsPerPage).ToList();
-
-
-                    
-                // Update current page properties
+                Disbursement = list.Skip((page - 1) * ItemsPerPage).Take(ItemsPerPage).ToList();   
+                
                 CurrentPage = page;
             }
             else
