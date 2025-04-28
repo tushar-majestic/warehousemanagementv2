@@ -14,6 +14,7 @@ namespace LabMaterials.Pages
         public List<StoreDataResult> Stores { get; set; }
         public List<Room> Rooms { get; set; }
         public string Message { get; set; }
+        public string RoomName { get; set; }
         public int TotalItems { get; set; }
         public void OnGet() 
         {
@@ -26,11 +27,19 @@ namespace LabMaterials.Pages
                 RedirectToPage("./Index?lang=" + Lang);
         }
 
-        public string lblStores, lblManageStorage, lblSearch, lblRoomName, lblRoomNumber, lblManageShelves, lblManageRooms, lblStoreNumber, lblAddRoom, lblAddShelf, lblStoreName, lblSubmit, lblAddStore, lblShelves, lblEdit, lblDelete, lblTotalItem, lblAddDestination, lblManageDestination;
+        public string lblStores, lblManageStorage, lblSearch, lblRoomName, lblRoomNumber, lblManageShelves, lblManageRooms, lblStoreNumber,
+        lblAddRoom, lblAddShelf, lblStoreName, lblSubmit, lblAddStore, lblShelves, lblEdit, lblDelete, lblTotalItem, lblAddDestination,
+        lblManageDestination;
 
-        public void OnPostSearch([FromForm] string StoreNumber, [FromForm] string StoreName)
+        // public void OnPostSearch([FromForm] string StoreNumber, [FromForm] string StoreName)
+        // {
+        //     FillData(StoreNumber, StoreName);
+        // }
+
+        public void OnPostSearch([FromForm] string RoomName)
         {
-            FillData(StoreNumber, StoreName);
+            this.RoomName = RoomName; // Store the input RoomName in the model
+            FillData(null, null);     // Load data again based on new RoomName
         }
 
         public void OnPostDelete([FromForm] int RoomId)
@@ -97,7 +106,14 @@ namespace LabMaterials.Pages
                                             codeParam, descParam, msgParam)
                                 .ToList();
 
-                Rooms = dbContext.Rooms.ToList();
+                var roomsQuery = dbContext.Rooms.AsQueryable();  // <- Start with all rooms
+
+                if (!string.IsNullOrEmpty(RoomName))
+                {
+                    roomsQuery = roomsQuery.Where(r => r.RoomName.Contains(RoomName));
+                }
+
+                Rooms = roomsQuery.ToList();
 
 
                 var code = (string)codeParam.Value;

@@ -35,48 +35,43 @@
             <div class="card shadow-sm p-4 mb-4">
                 <h3 class="card-title mb-4">User Profile</h3>
                 
-                <div class="row mb-3">
+                @* <div class="row mb-3">
                     <div class="col-sm-3 font-weight-bold">User ID:</div>
                     <div class="col-sm-9">@Model.singleUser.UserID</div>
-                </div>
+                </div> *@
                 
                 <div class="row mb-3">
-                    <div class="col-sm-3 font-weight-bold">Username:</div>
+                    <div class="col-sm-3 font-weight-bold">@Model.lblUserName:</div>
                     <div class="col-sm-9">@Model.singleUser.UserName</div>
                 </div>
 
                 <div class="row mb-3">
-                    <div class="col-sm-3 font-weight-bold">Full Name:</div>
+                    <div class="col-sm-3 font-weight-bold">@Model.lblFullName:</div>
                     <div class="col-sm-9">@Model.singleUser.FullName</div>
                 </div>
 
                 <div class="row mb-3">
-                    <div class="col-sm-3 font-weight-bold">Email:</div>
+                    <div class="col-sm-3 font-weight-bold">@Model.lblEmail:</div>
                     <div class="col-sm-9">@Model.singleUser.Email</div>
                 </div>
 
                 <div class="row mb-3">
-                    <div class="col-sm-3 font-weight-bold">Active Status:</div>
+                    <div class="col-sm-3 font-weight-bold">@Model.lblUserEnabled:</div>
                     <div class="col-sm-9">@Model.singleUser.IsActive</div>
                 </div>
 
                 <div class="row mb-3">
-                    <div class="col-sm-3 font-weight-bold">Enable/Disable:</div>
-                    <div class="col-sm-9">@Model.singleUser.EnableBtnText</div>
-                </div>
-
-                <div class="row mb-3">
-                    <div class="col-sm-3 font-weight-bold">User Type:</div>
+                    <div class="col-sm-3 font-weight-bold">@Model.lblUserType:</div>
                     <div class="col-sm-9">@Model.singleUser.IsADUser</div>
                 </div>
 
                 <div class="row mb-3">
-                    <div class="col-sm-3 font-weight-bold">Locked:</div>
+                    <div class="col-sm-3 font-weight-bold">@Model.lblIsLocked:</div>
                     <div class="col-sm-9">@Model.singleUser.IsLocked</div>
                 </div>
 
                 <div class="row mb-3">
-                    <div class="col-sm-3 font-weight-bold">Group:</div>
+                    <div class="col-sm-3 font-weight-bold">@Model.lblUserGroupName:</div>
                     <div class="col-sm-9">@Model.singleUser.GroupName</div>
                 </div>
             </div>
