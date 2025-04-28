@@ -14,7 +14,6 @@ namespace LabMaterials.Pages
         public List<StoreDataResult> Stores { get; set; }
         public List<Room> Rooms { get; set; }
         public string Message { get; set; }
-        public string RoomName { get; set; }
         public int TotalItems { get; set; }
          public int CurrentPage { get; set; }
         public int ItemsPerPage { get; set; } = 10;
