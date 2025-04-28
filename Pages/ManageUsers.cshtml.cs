@@ -12,14 +12,24 @@ namespace LabMaterials.Pages
         public int TotalItems { get; set; }
         [BindProperty]
         public string UserName { get; set; }
+        public int CurrentPage { get; set; }
+        public int ItemsPerPage { get; set; } = 10;
+        public int TotalPages { get; set; }
 
-        public void OnGet() 
+        public void OnGet(string? UserName, int page = 1) 
         {
             base.ExtractSessionData();
             if (CanManageUsers)
             {
                 FillLables();
                 //FillData("");
+                if (HttpContext.Request.Query.ContainsKey("page")){
+                    string pagevalue = HttpContext.Request.Query["page"];
+                    page = int.Parse(pagevalue);
+                    this.UserName = UserName;
+                    FillData(UserName, page);
+
+                }
             }
             else
                 RedirectToPage("./Index?lang=" + Lang);
@@ -30,10 +40,11 @@ namespace LabMaterials.Pages
             lblUserEnabled, lblIsLocked, lblUserType, lblUserGroupName, lblEdit, lblUnlock, lblTotalItem;
 
 
-        public void OnPostSearch()
+        public void OnPostSearch([FromForm] string UserName)
         {
-            
-            FillData(this.UserName);
+            CurrentPage = 1;
+            this.UserName = UserName;
+            FillData(this.UserName, CurrentPage);
 
         }
 
@@ -143,8 +154,8 @@ namespace LabMaterials.Pages
         }
 
        
-
-        private void FillData(string? UserName)
+        // function before pagination 
+        /*private void FillData(string? UserName)
         {
             base.ExtractSessionData();
             if (CanManageUsers)
@@ -173,6 +184,50 @@ namespace LabMaterials.Pages
                 Users = query.ToList();
 
                 TotalItems = Users.Count();
+            }
+            else
+                RedirectToPage("./Index?lang=" + Lang);
+        }*/
+
+        private void FillData(string? UserName, int page = 1)
+        {    if (HttpContext.Request.Query.ContainsKey("page"))
+            {
+                string pagevalue = HttpContext.Request.Query["page"];
+                page = int.Parse(pagevalue);
+            }
+            base.ExtractSessionData();
+            if (CanManageUsers)
+            {
+                FillLables();
+                var dbContext = new LabDBContext();
+                var query = from u in dbContext.Users
+                            join g in dbContext.UserGroups on u.UserGroupId equals g.UserGroupId
+                            select new UserInfo
+                            {
+                                UserID = u.UserId,
+                                UserName = u.UserName,
+                                FullName = u.FullName,
+                                Email = u.Email,
+                                IsActive = u.IsActive ? (Lang == "ar" ? "تمكين" : "Enabled") : (Lang == "ar" ? "تعطيل" : "Disabled"),
+                                EnableBtnText = u.IsActive ? (Lang == "ar" ? "تعطيل" : "Disable") : (Lang == "ar" ? "تمكين" : "Enable"),
+                                IsADUser = u.IsActiveDirectoryUser ? (Lang == "ar" ? "مستخدم المجال" : "Domain User") : (Lang == "ar" ? "مستخدم التطبيق" : "Application User"),
+                                IsLocked = u.Locked ? (Lang == "ar" ? "نعم" : "Yes") : (Lang == "ar" ? "لا" : "No"),
+                                GroupName = g.UserGroupName
+                            };
+
+                if (string.IsNullOrEmpty(UserName) == false)
+                    query = query.Where(s => s.UserName.Contains(UserName));
+
+                TotalItems = query.Count();
+
+                // Calculate total pages
+                TotalPages = (int)Math.Ceiling((double)TotalItems / ItemsPerPage);
+
+                var list = query.ToList();
+
+                Users = list.Skip((page - 1) * ItemsPerPage).Take(ItemsPerPage).ToList();   
+                
+                CurrentPage = page;
             }
             else
                 RedirectToPage("./Index?lang=" + Lang);

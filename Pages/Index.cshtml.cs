@@ -191,6 +191,7 @@ namespace LabMaterials.Pages
             HttpContext.Session.SetInt32("UserId", dbUser.UserId);
             HttpContext.Session.SetString("UserName", dbUser.UserName);
             HttpContext.Session.SetString("FullName", dbUser.FullName);
+            HttpContext.Session.SetString("UserGroup", dbUser.UserGroup.UserGroupName);
             HttpContext.Session.SetInt32("IsLDAP", dbUser.IsActiveDirectoryUser ? 1 : 0);
             HttpContext.Session.SetInt32("CanManageStore", Privileges.Contains("CanManageStore") ? 1 : 0);
             HttpContext.Session.SetInt32("CanManageUsers", Privileges.Contains("CanManageUsers") ? 1 : 0);

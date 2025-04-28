@@ -16,24 +16,36 @@ namespace LabMaterials.Pages
         [BindProperty]
         public string ItemName { get; set; }
         public DateTime? FromDate, ToDate;
-
+        public int CurrentPage { get; set; }
+        public int ItemsPerPage { get; set; } = 10;
+        public int TotalPages { get; set; }
 
 
 
         public string lblSupplies, lbltypeCode, lblStoreName, lblExpiryDate, lblItemType, lblRoomName, lblShelfNumber, lblManageSuppliers, lblSearch, lblSupplierName, lblItemName, lblSubmit, lblAddSupplies,
             lblQuantityReceived, lblPurchaseOrderNo, lblInvoiceNumber, lblReceivedAt, lblInventoryBalanced, lblEdit, lblDelete,
             lblTotalItem, lblFromDate, lblToDate;
-        public void OnGet()
+        public void OnGet(string? SupplierName,string? ItemName, DateTime? FromDate, DateTime? ToDate, int page = 1)
         {
             base.ExtractSessionData();
             if (this.CanManageSupplies)
             {
                 FillLables();
+                if (HttpContext.Request.Query.ContainsKey("page")){
+                    string pagevalue = HttpContext.Request.Query["page"];
+                    page = int.Parse(pagevalue);
+                    this.SupplierName = SupplierName;
+                    this.ItemName = ItemName;
+                    this.FromDate = FromDate;
+                    this.ToDate = ToDate;
+                    FillData(SupplierName,ItemName, FromDate, ToDate, page);
+
+                }
             }
             else
                 RedirectToPage("./Index?lang=" + Lang);
         }
-        private void FillData(string SupplierName, string ItemName, DateTime? FromDate, DateTime? ToDate)
+        /*private void FillData(string SupplierName, string ItemName, DateTime? FromDate, DateTime? ToDate)
         {
             base.ExtractSessionData();
             if (this.CanManageSupplies)
@@ -86,16 +98,79 @@ namespace LabMaterials.Pages
             }
             else
                 RedirectToPage("./Index?lang=" + Lang);
+        }*/
+
+        private void FillData(string SupplierName, string ItemName, DateTime? FromDate, DateTime? ToDate, int page = 1)
+        {
+            base.ExtractSessionData();
+            if (this.CanManageSupplies)
+            {
+                FillLables();
+                var dbContext = new LabDBContext();
+                var query = (from S in dbContext.Supplies
+                             join SR in dbContext.Suppliers on S.SupplierId equals SR.SupplierId
+                             join I in dbContext.Items on S.ItemId equals I.ItemId
+                             join sg in dbContext.Storages on S.SupplyId equals sg.SupplyId
+                             join st in dbContext.Stores on sg.StoreId equals st.StoreId
+                             join sb in dbContext.Rooms on sg.RoomId equals sb.RoomId
+                             select new SupplyInfo
+                             {
+                                 SupplyId = S.SupplyId,
+                                 SupplierName = SR.SupplierName,
+                                 ItemName = I.ItemName,
+                                 ReceivedAt = S.ReceivedAt,
+                                 InvoiceNumber = S.InvoiceNumber,
+                                 InventoryBalanced = S.InventoryBalanced,
+                                 PurchaseOrderNo = S.PurchaseOrderNo,
+                                 ItemCode=S.ItemCode,
+                                 ItemType=S.ItemType,
+                                 StoreName=st.StoreName,
+                                 RoomName=sb.RoomName,
+                                 ShelfNumber=sg.ShelfNumber,
+                                 ExpiryDate=S.ExpiryDate,
+                                 
+                                 QuantityReceived = S.QuantityReceived.ToString() + " " + I.Unit.UnitCode
+                             });
+                if (!string.IsNullOrEmpty(SupplierName) && !string.IsNullOrEmpty(ItemName))
+                {
+                    query = query.Where(i => i.SupplierName.Contains(SupplierName) && i.ItemName.Contains(ItemName));
+                }
+                if (!string.IsNullOrEmpty(SupplierName))
+                {
+                    query = query.Where(i => i.SupplierName.Contains(SupplierName));
+                }
+                if (!string.IsNullOrEmpty(ItemName))
+                {
+                    query = query.Where(i => i.ItemName.Contains(ItemName));
+                }
+
+                if (FromDate != null && FromDate >= DateTime.MinValue && ToDate != null && ToDate >= DateTime.MinValue)
+                    query = query.Where(e => e.ExpiryDate.Date >= FromDate.Value.Date && e.ExpiryDate.Date <= ToDate.Value.Date);
+
+
+                TotalItems = query.Count();
+                TotalPages = (int)Math.Ceiling((double)TotalItems / ItemsPerPage);
+
+                var list = query.ToList();
+
+                Supplies = list.Skip((page - 1) * ItemsPerPage).Take(ItemsPerPage).ToList();
+
+                CurrentPage = page;
+            }
+            else
+                RedirectToPage("./Index?lang=" + Lang);
         }
 
         public void OnPost([FromForm] string SupplierName, [FromForm] string ItemName, [FromForm] DateTime? FromDate, [FromForm] DateTime? ToDate)
-        {
+        {   CurrentPage = 1; 
+            this.FromDate = FromDate;
+            this.ToDate = ToDate;
             this.SupplierName = SupplierName;
             this.ItemName = ItemName;
             base.ExtractSessionData();
             if (CanManageSupplies)
             {
-                FillData(SupplierName, ItemName, FromDate, ToDate);
+                FillData(SupplierName, ItemName, FromDate, ToDate, CurrentPage);
             }
             else
                 RedirectToPage("./Index?lang=" + Lang);
