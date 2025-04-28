@@ -324,33 +324,77 @@
             </div>
         </div>
     </div>
+   
+
      @if (Model.TotalPages > 1)
     {
         <nav aria-label="Page navigation">
             <ul class="pagination">
+
+                @* Previous button *@
                 @if (Model.CurrentPage > 1)
                 {
+                   
                     <li class="page-item">
-                        <a class="page-link" href="?page=@(Model.CurrentPage - 1)&StoreNumber=@Model.StoreNumber&StoreName=@Model.StoreName" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
+                        <a class="page-link" href="?page=@(Model.CurrentPage - 1)&StoreNumber=@Model.StoreNumber&StoreName=@Model.StoreName">&laquo;</a>
                     </li>
                 }
 
-                @for (int i = 1; i <= Model.TotalPages; i++)
+                @* Show pages normally if the total pages are less than or equal to 10 *@
+                @if (Model.TotalPages <= 10)
                 {
-                    <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
-                        <a class="page-link" href="?page=@i&StoreNumber=@Model.StoreNumber&StoreName=@Model.StoreName">@i</a>
-                    </li>
+                    @for (int i = 1; i <= Model.TotalPages; i++)
+                    {
+                        <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                            <a class="page-link" href="?page=@i&StoreNumber=@Model.StoreNumber&StoreName=@Model.StoreName">@i</a>
+                        </li>
+                    }
+                }
+                else
+                {
+                    @* Show the first page, then ellipsis if there are skipped pages *@
+                    @if (Model.CurrentPage > 3)
+                    {
+                        <li class="page-item">
+                            <a class="page-link" href="?page=1&StoreNumber=@Model.StoreNumber&StoreName=@Model.StoreName">1</a>
+                        </li>
+                        <li class="page-item disabled">
+                            <span class="page-link">...</span>
+                        </li>
+                    }
+
+                    @* Show pages from (current-1) to (current+1) *@
+                    @for (int i = Math.Max(1, Model.CurrentPage - 1); i <= Math.Min(Model.TotalPages, Model.CurrentPage + 1); i++)
+                    {
+                        <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                            <a class="page-link" href="?page=@i&StoreNumber=@Model.StoreNumber&StoreName=@Model.StoreName">@i</a>
+                        </li>
+                    }
+
+                    @* Add "..." if there are skipped pages after the current page *@
+                    @if (Model.CurrentPage < Model.TotalPages - 1)
+                    {
+                        <li class="page-item disabled">
+                            <span class="page-link">...</span>
+                        </li>
+                    }
+
+                    @* Show the last page, if it's not already visible *@
+                    @if (Model.CurrentPage < Model.TotalPages - 2)
+                    {   
+                        <li class="page-item">
+                            <a class="page-link" href="?page=@Model.TotalPages&StoreNumber=@Model.StoreNumber&StoreName=@Model.StoreName">@Model.TotalPages</a>
+                        </li>
+                    }
                 }
 
+                @* Last buttons *@
                 @if (Model.CurrentPage < Model.TotalPages)
                 {
                     <li class="page-item">
-                        <a class="page-link" href="?page=@(Model.CurrentPage + 1)&StoreNumber=@Model.StoreNumber&StoreName=@Model.StoreName" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
+                        <a class="page-link" href="?page=@(Model.CurrentPage + 1)&StoreNumber=@Model.StoreNumber&StoreName=@Model.StoreName">&raquo;</a>
                     </li>
+                   
                 }
 
             </ul>
