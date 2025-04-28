@@ -4,9 +4,9 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb bg-transparent p-2 mb-0">
             <li class="breadcrumb-item d-flex align-items-center">
-                        <img src="images/home.png" alt="Home" width="16" height="16" class="me-2" />
-                        <a href="/Home" class="text-decoration-none">@Model.lblHome</a>
-                    </li>
+                <img src="images/home.png" alt="Home" width="16" height="16" class="me-2" />
+                <a href="/Home" class="text-decoration-none">@Model.lblHome</a>
+            </li>
             <li class="breadcrumb-item d-flex align-items-center">
                 <img src="images/pen.png" alt="Home" width="16" height="16" class="me-2" />
                 <a href="/Rep_MaterialsReceived" class="text-decoration-none">@Model.lblReports</a>
@@ -33,13 +33,13 @@
                 >@Model.lblInventory</a>
             <a href="Rep_HazardMaterial" class="btn btn-outline-gray-600 d-inline-flex  align-items-center report mx-2"
                 >@Model.lblHazardousMaterials</a> *@
-            <a href="Rep_UserActivity" class="btn btn-outline-gray-600 d-inline-flex  align-items-center report mx-2"
-                >@Model.lblUserActivity</a>
+            <a href="Rep_UserActivity"
+                class="btn btn-outline-gray-600 d-inline-flex  align-items-center report mx-2">@Model.lblUserActivity</a>
 
             @* <a href="Rep_DamagedItems" class="btn btn-gray-600 d-inline-flex  align-items-center report mx-2"
                 >@Model.lblDamagedItems</a> *@
-            <a href="Rep_UserReport" class="btn btn-outline-gray-600 d-inline-flex  align-items-center report mx-2"
-                >@Model.lblUserReport</a>
+            <a href="Rep_UserReport"
+                class="btn btn-outline-gray-600 d-inline-flex  align-items-center report mx-2">@Model.lblUserReport</a>
 
         </div>
     </div>
@@ -49,13 +49,14 @@
                 <div class="input-group me-2 me-lg-3 fmxw-400">
                     <span class="input-group-text">
                         <svg class="icon icon-xs" x-description="Heroicon name: solid/search"
-                             xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                             <path fill-rule="evenodd"
-                                  d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                                  clip-rule="evenodd"></path>
+                                d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                                clip-rule="evenodd"></path>
                         </svg>
                     </span>
-                    <input type="text" name="ItemName" class="form-control" placeholder="@Model.lblItemName" value="@Model.ItemName">
+                    <input type="text" name="ItemName" class="form-control" placeholder="@Model.lblItemName"
+                        value="@Model.ItemName">
                 </div>
             </div>
             <div class="col col-lg-3">
@@ -64,8 +65,7 @@
                         @Model.lblFromDate
                     </span>
 
-                    <input asp-for="FromDate" class="form-control" type="date" name="FromDate"
-                           value="@Model.FromDate" />
+                    <input asp-for="FromDate" class="form-control" type="date" name="FromDate" value="@Model.FromDate" />
                 </div>
             </div>
             <div class="col col-lg-3">
@@ -74,8 +74,7 @@
                         @Model.lblToDate
                     </span>
 
-                    <input asp-for="ToDate" type="date" class="form-control" name="ToDate"
-                           value="@Model.ToDate" />
+                    <input asp-for="ToDate" type="date" class="form-control" name="ToDate" value="@Model.ToDate" />
                 </div>
             </div>
             <div class="col-4 col-md-2  col-xl-1 ps-md-0 text-end">
@@ -106,13 +105,13 @@
                         {
                             foreach (var item in Model.DamagedItems)
                             {
-                            <tr>
-                                <th scope="row">@item.ItemCode</th>
-                                <td>@item.ItemName</td>
-                                <td>@item.DamageDate</td>
-                                <td>@item.DamageQuantity</td>
-                                <td>@item.DamageReason</td>
-                            </tr>
+                                <tr>
+                                    <th scope="row">@item.ItemCode</th>
+                                    <td>@item.ItemName</td>
+                                    <td>@item.DamageDate</td>
+                                    <td>@item.DamageQuantity</td>
+                                    <td>@item.DamageReason</td>
+                                </tr>
                             }
                         }
                     </tbody>

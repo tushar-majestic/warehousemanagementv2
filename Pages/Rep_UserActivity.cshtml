@@ -33,13 +33,13 @@
                  >@Model.lblInventory</a>
             <a href="Rep_HazardMaterial" class="btn btn-outline-gray-600 d-inline-flex  align-items-center report mx-2"
                  >@Model.lblHazardousMaterials</a> *@
-            <a href="Rep_UserActivity" class="btn btn-gray-600 d-inline-flex  align-items-center report mx-2"
-                 >@Model.lblUserActivity</a>
+            <a href="Rep_UserActivity"
+                class="btn btn-gray-600 d-inline-flex  align-items-center report mx-2">@Model.lblUserActivity</a>
 
             @* <a href="Rep_DamagedItems" class="btn btn-outline-gray-600 d-inline-flex  align-items-center report mx-2"
                 >@Model.lblDamagedItems</a> *@
-            <a href="Rep_UserReport" class="btn btn-outline-gray-600 d-inline-flex  align-items-center report mx-2"
-                >@Model.lblUserReport</a>
+            <a href="Rep_UserReport"
+                class="btn btn-outline-gray-600 d-inline-flex  align-items-center report mx-2">@Model.lblUserReport</a>
 
         </div>
     </div>
@@ -55,7 +55,8 @@
                                 clip-rule="evenodd"></path>
                         </svg>
                     </span>
-                    <input type="text" name="UserName" class="form-control" placeholder="@Model.lblUserName" value="@Model.UserName">
+                    <input type="text" name="UserName" class="form-control" placeholder="@Model.lblUserName"
+                        value="@Model.UserName">
                 </div>
             </div>
             <div class="col  col-lg-3 ">
@@ -63,9 +64,8 @@
                     <span class="input-group-text">
                         @Model.lblFromDate
                     </span>
-                    
-                    <input asp-for="FromDate" class="form-control" type="date" name="FromDate"
-                value="@Model.FromDate" />
+
+                    <input asp-for="FromDate" class="form-control" type="date" name="FromDate" value="@Model.FromDate" />
                 </div>
             </div>
             <div class="col  col-lg-3 ">
@@ -73,9 +73,8 @@
                     <span class="input-group-text">
                         @Model.lblToDate
                     </span>
-                    
-            <input asp-for="ToDate" type="date" class="form-control" name="ToDate"
-                value="@Model.ToDate" />
+
+                    <input asp-for="ToDate" type="date" class="form-control" name="ToDate" value="@Model.ToDate" />
                 </div>
             </div>
             <div class="col-4 col-md-2  col-xl-1 ps-md-0 text-end">
@@ -85,10 +84,91 @@
     </div>
 
     <h5>@Model.lblUserActivity</h5>
-  
+
     <div>@Model.lblTotalItem : @Model.TotalItems</div>
 
     <input type="hidden" id="currentPage" value="1" />
+
+    @if (Model.TotalPages > 1)
+    {
+        <nav aria-label="Page navigation">
+            <ul class="pagination">
+
+                @* Previous button *@
+                @if (Model.CurrentPage > 1)
+                {
+
+                    <li class="page-item">
+                        <a class="page-link"
+                            href="?page=@(Model.CurrentPage - 1)&UserName=@Model.UserName&FromDate=@Model.FromDate&ToDate=@Model.ToDate">&laquo;</a>
+                    </li>
+                }
+
+                @* Show pages normally if the total pages are less than or equal to 10 *@
+                @if (Model.TotalPages <= 10)
+                {
+                    @for (int i = 1; i <= Model.TotalPages; i++)
+                    {
+                        <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                            <a class="page-link"
+                                href="?page=@i&UserName=@Model.UserName&FromDate=@Model.FromDate&ToDate=@Model.ToDate">@i</a>
+                        </li>
+                    }
+                }
+                else
+                {
+                    @* Show the first page, then ellipsis if there are skipped pages *@
+                    @if (Model.CurrentPage > 3)
+                    {
+                        <li class="page-item">
+                            <a class="page-link"
+                                href="?page=1&UserName=@Model.UserName&FromDate=@Model.FromDate&ToDate=@Model.ToDate">1</a>
+                        </li>
+                        <li class="page-item disabled">
+                            <span class="page-link">...</span>
+                        </li>
+                    }
+
+                    @* Show pages from (current-1) to (current+1) *@
+                    @for (int i = Math.Max(1, Model.CurrentPage - 1); i <= Math.Min(Model.TotalPages, Model.CurrentPage + 1); i++)
+                    {
+                        <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                            <a class="page-link"
+                                href="?page=@i&UserName=@Model.UserName&FromDate=@Model.FromDate&ToDate=@Model.ToDate">@i</a>
+                        </li>
+                    }
+
+                    @* Add "..." if there are skipped pages after the current page *@
+                    @if (Model.CurrentPage < Model.TotalPages - 1)
+                    {
+                        <li class="page-item disabled">
+                            <span class="page-link">...</span>
+                        </li>
+                    }
+
+                    @* Show the last page, if it's not already visible *@
+                    @if (Model.CurrentPage < Model.TotalPages - 2)
+                    {
+                        <li class="page-item">
+                            <a class="page-link"
+                                href="?page=@Model.TotalPages&UserName=@Model.UserName&FromDate=@Model.FromDate&ToDate=@Model.ToDate">@Model.TotalPages</a>
+                        </li>
+                    }
+                }
+
+                @* Last buttons *@
+                @if (Model.CurrentPage < Model.TotalPages)
+                {
+                    <li class="page-item">
+                        <a class="page-link"
+                            href="?page=@(Model.CurrentPage + 1)&UserName=@Model.UserName&FromDate=@Model.FromDate&ToDate=@Model.ToDate">&raquo;</a>
+                    </li>
+
+                }
+
+            </ul>
+        </nav>
+    }
 
     <div class="card border-0 shadow mb-4">
         <div class="card-body">
@@ -130,9 +210,10 @@
                 @* Previous button *@
                 @if (Model.CurrentPage > 1)
                 {
-                   
+
                     <li class="page-item">
-                        <a class="page-link" href="?page=@(Model.CurrentPage - 1)&UserName=@Model.UserName&FromDate=@Model.FromDate&ToDate=@Model.ToDate">&laquo;</a>
+                        <a class="page-link"
+                            href="?page=@(Model.CurrentPage - 1)&UserName=@Model.UserName&FromDate=@Model.FromDate&ToDate=@Model.ToDate">&laquo;</a>
                     </li>
                 }
 
@@ -142,7 +223,8 @@
                     @for (int i = 1; i <= Model.TotalPages; i++)
                     {
                         <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
-                            <a class="page-link" href="?page=@i&UserName=@Model.UserName&FromDate=@Model.FromDate&ToDate=@Model.ToDate">@i</a>
+                            <a class="page-link"
+                                href="?page=@i&UserName=@Model.UserName&FromDate=@Model.FromDate&ToDate=@Model.ToDate">@i</a>
                         </li>
                     }
                 }
@@ -152,7 +234,8 @@
                     @if (Model.CurrentPage > 3)
                     {
                         <li class="page-item">
-                            <a class="page-link" href="?page=1&UserName=@Model.UserName&FromDate=@Model.FromDate&ToDate=@Model.ToDate">1</a>
+                            <a class="page-link"
+                                href="?page=1&UserName=@Model.UserName&FromDate=@Model.FromDate&ToDate=@Model.ToDate">1</a>
                         </li>
                         <li class="page-item disabled">
                             <span class="page-link">...</span>
@@ -163,7 +246,8 @@
                     @for (int i = Math.Max(1, Model.CurrentPage - 1); i <= Math.Min(Model.TotalPages, Model.CurrentPage + 1); i++)
                     {
                         <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
-                            <a class="page-link" href="?page=@i&UserName=@Model.UserName&FromDate=@Model.FromDate&ToDate=@Model.ToDate">@i</a>
+                            <a class="page-link"
+                                href="?page=@i&UserName=@Model.UserName&FromDate=@Model.FromDate&ToDate=@Model.ToDate">@i</a>
                         </li>
                     }
 
@@ -177,9 +261,10 @@
 
                     @* Show the last page, if it's not already visible *@
                     @if (Model.CurrentPage < Model.TotalPages - 2)
-                    {   
+                    {
                         <li class="page-item">
-                            <a class="page-link" href="?page=@Model.TotalPages&UserName=@Model.UserName&FromDate=@Model.FromDate&ToDate=@Model.ToDate">@Model.TotalPages</a>
+                            <a class="page-link"
+                                href="?page=@Model.TotalPages&UserName=@Model.UserName&FromDate=@Model.FromDate&ToDate=@Model.ToDate">@Model.TotalPages</a>
                         </li>
                     }
                 }
@@ -188,9 +273,10 @@
                 @if (Model.CurrentPage < Model.TotalPages)
                 {
                     <li class="page-item">
-                        <a class="page-link" href="?page=@(Model.CurrentPage + 1)&UserName=@Model.UserName&FromDate=@Model.FromDate&ToDate=@Model.ToDate">&raquo;</a>
+                        <a class="page-link"
+                            href="?page=@(Model.CurrentPage + 1)&UserName=@Model.UserName&FromDate=@Model.FromDate&ToDate=@Model.ToDate">&raquo;</a>
                     </li>
-                   
+
                 }
 
             </ul>
