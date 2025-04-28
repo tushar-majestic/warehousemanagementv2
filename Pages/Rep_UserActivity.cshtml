@@ -65,7 +65,7 @@
                     </span>
                     
                     <input asp-for="FromDate" class="form-control" type="date" name="FromDate"
-                value="@Model.FromDate" />
+                value="@Model.FromDate?.ToString("yyyy-MM-dd")" />
                 </div>
             </div>
             <div class="col  col-lg-3 ">
@@ -75,7 +75,7 @@
                     </span>
                     
             <input asp-for="ToDate" type="date" class="form-control" name="ToDate"
-                value="@Model.ToDate" />
+                value="@Model.ToDate?.ToString("yyyy-MM-dd")" />
                 </div>
             </div>
             <div class="col-4 col-md-2  col-xl-1 ps-md-0 text-end">

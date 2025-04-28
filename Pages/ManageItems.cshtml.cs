@@ -40,6 +40,7 @@ namespace LabMaterials.Pages
                     this.Group = Group;
                     this.FromDate = FromDate;
                     this.ToDate = ToDate;
+                    Console.WriteLine("FromDate", this.FromDate);
                     FillData(ItemName, Group, FromDate, ToDate, page);
 
                 }
@@ -54,6 +55,8 @@ namespace LabMaterials.Pages
             base.ExtractSessionData();
             this.ItemName = ItemName;
             this.Group = Group;
+            this.FromDate = FromDate;
+            this.ToDate = ToDate;
             if (CanManageItems)
             {
                 FillData(ItemName, Group, FromDate, ToDate);
@@ -111,7 +114,7 @@ namespace LabMaterials.Pages
 
         private void FillData(string ItemName, string Group, DateTime? FromDate, DateTime? ToDate, int page = 1)
         {
-             if (HttpContext.Request.Query.ContainsKey("page"))
+            if (HttpContext.Request.Query.ContainsKey("page"))
             {
                 string pagevalue = HttpContext.Request.Query["page"];
                 page = int.Parse(pagevalue);

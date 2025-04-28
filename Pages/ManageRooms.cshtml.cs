@@ -16,12 +16,24 @@ namespace LabMaterials.Pages
         public string Message { get; set; }
         public string RoomName { get; set; }
         public int TotalItems { get; set; }
-        public void OnGet() 
+         public int CurrentPage { get; set; }
+        public int ItemsPerPage { get; set; } = 10;
+        public int TotalPages { get; set; }
+        public string RoomName { get; set; }
+
+        public void OnGet(string? RoomName, int page = 1) 
         {
             base.ExtractSessionData();
             if (CanManageStore)
             {
                 FillLables();
+                if (HttpContext.Request.Query.ContainsKey("page")){
+                    string pagevalue = HttpContext.Request.Query["page"];
+                    page = int.Parse(pagevalue);
+                    this.RoomName = RoomName;
+                    FillData(RoomName, page);
+
+                }
             }
             else
                 RedirectToPage("./Index?lang=" + Lang);
@@ -31,15 +43,10 @@ namespace LabMaterials.Pages
         lblAddRoom, lblAddShelf, lblStoreName, lblSubmit, lblAddStore, lblShelves, lblEdit, lblDelete, lblTotalItem, lblAddDestination,
         lblManageDestination;
 
-        // public void OnPostSearch([FromForm] string StoreNumber, [FromForm] string StoreName)
-        // {
-        //     FillData(StoreNumber, StoreName);
-        // }
-
         public void OnPostSearch([FromForm] string RoomName)
-        {
-            this.RoomName = RoomName; // Store the input RoomName in the model
-            FillData(null, null);     // Load data again based on new RoomName
+        {   CurrentPage = 1;
+            this.RoomName = RoomName;
+            FillData(RoomName, CurrentPage);
         }
 
         public void OnPostDelete([FromForm] int RoomId)
@@ -53,7 +60,7 @@ namespace LabMaterials.Pages
                 room.Ended = DateTime.Now;
                 dbContext.Rooms.Update(room);
                 dbContext.SaveChanges();
-                FillData(null, null);
+                FillData(null);
                 Message = string.Format((Program.Translations["RoomDeleted"])[Lang], room.RoomName);
                 Helper.AddActivityLog(HttpContext.Session.GetInt32("UserId").Value, Message, "Delete", Helper.ExtractIP(Request), dbContext, true);
             }
@@ -62,7 +69,7 @@ namespace LabMaterials.Pages
                 var itemId = dbContext.Storages.First(s => s.RoomId == RoomId && s.AvailableQuantity > 0).ItemId;
                 Message = string.Format((Program.Translations["RoomNotDeleted"])[Lang], itemsInstore,
                     dbContext.Items.Single(i => i.ItemId == itemId).ItemName);
-                FillData(null, null);
+                FillData(null);
             }
 
         }
@@ -88,8 +95,12 @@ namespace LabMaterials.Pages
             return RedirectToPage("./ManageShelves");
         }
 
-        private void FillData(string? StoreNumber, string? StoreName)
-        {
+        private void FillData(string? RoomName, int page = 1)
+        {   if (HttpContext.Request.Query.ContainsKey("page"))
+            {
+                string pagevalue = HttpContext.Request.Query["page"];
+                page = int.Parse(pagevalue);
+            }
             base.ExtractSessionData();
             if (CanManageStore)
             {
@@ -106,14 +117,9 @@ namespace LabMaterials.Pages
                                             codeParam, descParam, msgParam)
                                 .ToList();
 
-                var roomsQuery = dbContext.Rooms.AsQueryable();  // <- Start with all rooms
 
-                if (!string.IsNullOrEmpty(RoomName))
-                {
-                    roomsQuery = roomsQuery.Where(r => r.RoomName.Contains(RoomName));
-                }
-
-                Rooms = roomsQuery.ToList();
+                Rooms = dbContext.Rooms.ToList();
+               
 
 
                 var code = (string)codeParam.Value;
@@ -134,6 +140,11 @@ namespace LabMaterials.Pages
 
                 Stores = query.ToList();*/
                 TotalItems = Rooms.Count(room => room.Ended == null);
+
+                TotalPages = (int)Math.Ceiling((double)TotalItems / ItemsPerPage);
+                var list = Rooms.ToList();
+                Rooms = list.Skip((page - 1) * ItemsPerPage).Take(ItemsPerPage).ToList();        
+                CurrentPage = page;   
             }
             else
                 RedirectToPage("./Index?lang=" + Lang);
