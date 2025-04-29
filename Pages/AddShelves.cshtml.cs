@@ -73,7 +73,9 @@ namespace LabMaterials.Pages
                             dbContext.SaveChanges();
                             task.LogInfo(MethodBase.GetCurrentMethod(), "room added");
 
-                            string Message = string.Format("Room {0} added", shelf.ShelfNo);
+                            // string Message = string.Format("Room {0} added", shelf.ShelfNo);
+                            string Message = string.Format("Shelve {0} added", shelf.ShelfNo,this.RoomName );
+
                             Helper.AddActivityLog(HttpContext.Session.GetInt32("UserId").Value, Message, "Add",
                                 Helper.ExtractIP(Request), dbContext, true);
 
