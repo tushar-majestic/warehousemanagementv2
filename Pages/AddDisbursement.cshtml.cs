@@ -163,7 +163,7 @@ namespace LabMaterials.Pages
                         
                         task.LogInfo(MethodBase.GetCurrentMethod(), "Disbursement added");
 
-                        string Message = string.Format("disbursement for added");
+                        string Message = string.Format("Disbursement  added");
                         Helper.AddActivityLog(HttpContext.Session.GetInt32("UserId").Value, Message, "Add",
                             Helper.ExtractIP(Request), dbContext, true);
 

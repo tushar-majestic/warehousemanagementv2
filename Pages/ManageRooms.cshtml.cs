@@ -94,12 +94,8 @@ namespace LabMaterials.Pages
             return RedirectToPage("./ManageShelves");
         }
 
-        private void FillData(string? RoomName, int page = 1)
-        {   if (HttpContext.Request.Query.ContainsKey("page"))
-            {
-                string pagevalue = HttpContext.Request.Query["page"];
-                page = int.Parse(pagevalue);
-            }
+       private void FillDataOld(string? StoreNumber, string? StoreName)
+        {
             base.ExtractSessionData();
             if (CanManageStore)
             {
@@ -116,9 +112,7 @@ namespace LabMaterials.Pages
                                             codeParam, descParam, msgParam)
                                 .ToList();
 
-
                 Rooms = dbContext.Rooms.ToList();
-               
 
 
                 var code = (string)codeParam.Value;
@@ -139,15 +133,67 @@ namespace LabMaterials.Pages
 
                 Stores = query.ToList();*/
                 TotalItems = Rooms.Count(room => room.Ended == null);
-
-                TotalPages = (int)Math.Ceiling((double)TotalItems / ItemsPerPage);
-                var list = Rooms.ToList();
-                Rooms = list.Skip((page - 1) * ItemsPerPage).Take(ItemsPerPage).ToList();        
-                CurrentPage = page;   
             }
             else
                 RedirectToPage("./Index?lang=" + Lang);
         }
+
+        private void FillData(string? RoomName, int page = 1)
+        {
+            if (HttpContext.Request.Query.ContainsKey("page"))
+            {
+                string pagevalue = HttpContext.Request.Query["page"];
+                page = int.Parse(pagevalue);
+            }
+
+            base.ExtractSessionData();
+
+            if (!CanManageStore)
+            {
+                RedirectToPage("./Index?lang=" + Lang);
+                return;
+            }
+
+            FillLables();
+            var dbContext = new LabDBContext();
+
+            var codeParam = new SqlParameter("@PCODE", SqlDbType.VarChar, 2) { Direction = ParameterDirection.Output };
+            var msgParam = new SqlParameter("@PMSG", SqlDbType.VarChar, 1000) { Direction = ParameterDirection.Output };
+            var descParam = new SqlParameter("@PDESC", SqlDbType.VarChar, 2) { Direction = ParameterDirection.Output };
+
+            var allStores = dbContext.StoreDataResults
+                                .FromSqlRaw("EXEC PRC_GET_STORE_DATA @PCODE OUTPUT, @PDESC OUTPUT, @PMSG OUTPUT",
+                                            codeParam, descParam, msgParam)
+                                .ToList();
+
+            var activeRooms = dbContext.Rooms
+                                .Where(r => r.Ended == null)
+                                .ToList();
+
+            // Join stores with active rooms
+            var joinedData = from store in allStores
+                            join room in activeRooms on store.RoomId equals room.RoomId
+                            select new StoreDataResult
+                            {
+                                StoreId = store.StoreId,
+                                StoreName = store.StoreName,
+                                ShelfNumber = store.ShelfNumber,
+                                RoomId = room.RoomId,
+                                RoomName = room.RoomName,
+                            };
+
+            // Optional: filter by room name
+            if (!string.IsNullOrEmpty(RoomName))
+            {
+                joinedData = joinedData.Where(s => s.RoomName != null && s.RoomName.Contains(RoomName));
+            }
+
+            TotalItems = joinedData.Count();
+            TotalPages = (int)Math.Ceiling((double)TotalItems / ItemsPerPage);
+            Stores = joinedData.Skip((page - 1) * ItemsPerPage).Take(ItemsPerPage).ToList();
+            CurrentPage = page;
+        }
+
 
         private void FillLables()
         {
