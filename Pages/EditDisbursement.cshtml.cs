@@ -14,6 +14,9 @@ namespace LabMaterials.Pages
     {
         public string ErrorMsg { get; set; }
         public string RequesterName, Status, Comments, RequestingPlace, StoreName, ItemName, ItemCode, ItemTypeCode;
+        
+        public string FromDate, ToDate, Requester;
+        public int page { get; set; }
         public int? Quantity, StoreId, ItemId;
         public int DId, rId;
         public List<DisbursementInfo> Disbursement { get; set; }
@@ -34,6 +37,14 @@ namespace LabMaterials.Pages
             if (CanManageStore == false)
                 RedirectToPage("./Index?lang=" + Lang);
             FillLables();
+
+            // Code for Breadcrumb Starts
+                this.page = (int)HttpContext.Session.GetInt32("page"); ;
+                this.Requester = HttpContext.Session.GetString("RequesterName");
+                this.FromDate = HttpContext.Session.GetString("FromDate");
+                this.ToDate = HttpContext.Session.GetString("ToDate");
+            // Code for Breadcrumb Ends
+
             StatusList = (new[] { "NewRequest", "InPreparation", "Dispatched", "Dilivered" }).ToList().Select(x => new SelectListItem() { Text = x, Value= x}).ToList();
             RequestRecievedAt = DateTime.Now;
             var dbContext = new LabDBContext();
