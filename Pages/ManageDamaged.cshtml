@@ -32,11 +32,11 @@
         }
 
         @if (!string.IsNullOrEmpty(Model.Message))
-        {
-            <text>
-                                var errorMessageFromServer = @Html.Raw(Json.Serialize(Model.Message));
-            showErrorNotification(errorMessageFromServer);
-            </text>
+            {
+                <text>
+                    var errorMessageFromServer = @Html.Raw(Json.Serialize(Model.Message));
+                    showErrorNotification(errorMessageFromServer);
+                </text>
         }
     </script>
 }
@@ -54,13 +54,13 @@
                         <img src="images/inventory.png" alt="Home" width="16" height="16" class="me-2" />
                         @Model.lblDamagedItems
                     </li>
-                    
+
                 </ol>
             </nav>
             <h2 class="h4">@Model.lblDamagedItems</h2>
             <!-- <p class="mb-0">Your web analytics dashboard template.</p>-->
         </div>
-        
+
     </div>
     <div class="table-settings mb-4">
         <form method="post" asp-page-handler="Search" class="row align-items-center">
@@ -68,69 +68,22 @@
                 <div class="input-group me-2 me-lg-3 fmxw-400">
                     <span class="input-group-text">
                         <svg class="icon icon-xs" x-description="Heroicon name: solid/search"
-                             xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                             <path fill-rule="evenodd"
-                                  d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                                  clip-rule="evenodd"></path>
+                                d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                                clip-rule="evenodd"></path>
                         </svg>
                     </span>
-                    <input type="text" name="ItemName" class="form-control" placeholder="@Model.lblItemName" value="@Model.ItemName">
+                    <input type="text" name="ItemName" class="form-control" placeholder="@Model.lblItemName"
+                        value="@Model.ItemName">
                 </div>
             </div>
-            
+
             <div class="col-4 col-md-2 col-xl-1 ps-md-0">
                 <button type="submit" class="btn btn-primary">@Model.lblSubmit</button>
             </div>
         </form>
     </div>
-    <div class="card border-0 shadow mb-4">
-        <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-centered table-nowrap mb-0 rounded">
-                    <thead class="thead-light">
-                        <tr>
-                            <th scope="col" class="border-0 rounded-start">@Model.lblItemCode</th>
-                            <th scope="col" class="border-0">@Model.lblItemName</th>
-                            <th scope="col" class="border-0">@Model.lblDamagedQuantity</th>
-                            <th scope="col" class="border-0">@Model.lblTypeName</th>
-                            <th scope="col" class="border-0">@Model.lblUnitCode</th>
-                            <th scope="col" class="border-0">@Model.lblDamageReason</th>
-
-                            <th class="border-0 rounded-end"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @if (Model.Items != null)
-                        {
-                            foreach (var item in Model.Items)
-                            {
-                                <tr>
-                                    <th scope="row">@item.ItemCode</th>
-                                    <td>@item.ItemName</td>
-                                    <td>@item.DamagedQuantity</td>
-                                    <td>@item.TypeName</td>
-                                    <td>@item.UnitCode</td>
-                                    <td>@item.DamageReason</td>
-                                    
-                                </tr>
-                            }
-                        }
-
-                        <tr>
-                            <td class="border-0" colspan="8">
-                                <div>@Model.lblTotalItem : @Model.TotalItems</div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-
-    @* <div style="color:maroon; text-align:center">@Model.Message</div> *@
-
-    
-
     @if (Model.TotalPages > 1)
     {
         <nav aria-label="Page navigation">
@@ -139,7 +92,7 @@
                 @* Previous button *@
                 @if (Model.CurrentPage > 1)
                 {
-                   
+
                     <li class="page-item">
                         <a class="page-link" href="?page=@(Model.CurrentPage - 1)&ItemName=@Model.ItemName">&laquo;</a>
                     </li>
@@ -186,7 +139,7 @@
 
                     @* Show the last page, if it's not already visible *@
                     @if (Model.CurrentPage < Model.TotalPages - 2)
-                    {   
+                    {
                         <li class="page-item">
                             <a class="page-link" href="?page=@Model.TotalPages&ItemName=@Model.ItemName">@Model.TotalPages</a>
                         </li>
@@ -199,11 +152,137 @@
                     <li class="page-item">
                         <a class="page-link" href="?page=@(Model.CurrentPage + 1)&ItemName=@Model.ItemName">&raquo;</a>
                     </li>
-                   
+
                 }
 
             </ul>
         </nav>
     }
+
+}
+
+
+<div class="card border-0 shadow mb-4">
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-centered table-nowrap mb-0 rounded">
+                <thead class="thead-light">
+                    <tr>
+                        <th scope="col" class="border-0 rounded-start">@Model.lblItemCode</th>
+                        <th scope="col" class="border-0">@Model.lblItemName</th>
+                        <th scope="col" class="border-0">@Model.lblDamagedQuantity</th>
+                        <th scope="col" class="border-0">@Model.lblTypeName</th>
+                        <th scope="col" class="border-0">@Model.lblUnitCode</th>
+                        <th scope="col" class="border-0">@Model.lblDamageReason</th>
+
+                        <th class="border-0 rounded-end"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Items != null)
+                    {
+                        foreach (var item in Model.Items)
+                        {
+                            <tr>
+                                <th scope="row">@item.ItemCode</th>
+                                <td>@item.ItemName</td>
+                                <td>@item.DamagedQuantity</td>
+                                <td>@item.TypeName</td>
+                                <td>@item.UnitCode</td>
+                                <td>@item.DamageReason</td>
+
+                            </tr>
+                        }
+                    }
+
+                    <tr>
+                        <td class="border-0" colspan="8">
+                            <div>@Model.lblTotalItem : @Model.TotalItems</div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@* <div style="color:maroon; text-align:center">@Model.Message</div> *@
+
+
+
+@if (Model.TotalPages > 1)
+{
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+
+            @* Previous button *@
+            @if (Model.CurrentPage > 1)
+            {
+
+                <li class="page-item">
+                    <a class="page-link" href="?page=@(Model.CurrentPage - 1)&ItemName=@Model.ItemName">&laquo;</a>
+                </li>
+            }
+
+            @* Show pages normally if the total pages are less than or equal to 10 *@
+            @if (Model.TotalPages <= 10)
+            {
+                @for (int i = 1; i <= Model.TotalPages; i++)
+                {
+                    <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                        <a class="page-link" href="?page=@i&ItemName=@Model.ItemName">@i</a>
+                    </li>
+                }
+            }
+            else
+            {
+                @* Show the first page, then ellipsis if there are skipped pages *@
+                @if (Model.CurrentPage > 3)
+                {
+                    <li class="page-item">
+                        <a class="page-link" href="?page=1&ItemName=@Model.ItemName">1</a>
+                    </li>
+                    <li class="page-item disabled">
+                        <span class="page-link">...</span>
+                    </li>
+                }
+
+                @* Show pages from (current-1) to (current+1) *@
+                @for (int i = Math.Max(1, Model.CurrentPage - 1); i <= Math.Min(Model.TotalPages, Model.CurrentPage + 1); i++)
+                {
+                    <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                        <a class="page-link" href="?page=@i&ItemName=@Model.ItemName">@i</a>
+                    </li>
+                }
+
+                @* Add "..." if there are skipped pages after the current page *@
+                @if (Model.CurrentPage < Model.TotalPages - 1)
+                {
+                    <li class="page-item disabled">
+                        <span class="page-link">...</span>
+                    </li>
+                }
+
+                @* Show the last page, if it's not already visible *@
+                @if (Model.CurrentPage < Model.TotalPages - 2)
+                {
+                    <li class="page-item">
+                        <a class="page-link" href="?page=@Model.TotalPages&ItemName=@Model.ItemName">@Model.TotalPages</a>
+                    </li>
+                }
+            }
+
+            @* Last buttons *@
+            @if (Model.CurrentPage < Model.TotalPages)
+            {
+                <li class="page-item">
+                    <a class="page-link" href="?page=@(Model.CurrentPage + 1)&ItemName=@Model.ItemName">&raquo;</a>
+                </li>
+
+            }
+
+        </ul>
+    </nav>
+}
 
 }
