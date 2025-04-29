@@ -32,15 +32,27 @@ namespace LabMaterials.Pages
                 int? DisbursementID = HttpContext.Session.GetInt32("DisbursementID");
 
                 // Code for Breadcrumb Starts
-                if (HttpContext.Request.Query.ContainsKey("page"))
-                {
-                    string pagevalue = HttpContext.Request.Query["page"];
-                    this.page = int.Parse(pagevalue);
-                    this.RequesterName = ""; //HttpContext.Session.GetString("RequesterName");
-                    this.FromDate = ""; //HttpContext.Session.GetString("FromDate");
-                    this.ToDate = ""; //HttpContext.Session.GetString("ToDate");
-                }
+                // Console.WriteLine("before if");
+                // if (HttpContext.Request.Query.ContainsKey("page"))
+                // {   
+                //     Console.WriteLine("in if");
+
+                //      string pagevalue = HttpContext.Request.Query["page"];
+                //     this.page = int.Parse(pagevalue);
+                //     this.RequesterName = ""; //HttpContext.Session.GetString("RequesterName");
+                //     this.FromDate = ""; //HttpContext.Session.GetString("FromDate");
+                //     this.ToDate = ""; //HttpContext.Session.GetString("ToDate");
+                // }
                 // Code for Breadcrumb Ends
+
+                
+                // Code for Breadcrumb Starts
+                    this.page = (int)HttpContext.Session.GetInt32("page"); ;
+                    this.RequesterName = HttpContext.Session.GetString("RequesterName");
+                    this.FromDate = HttpContext.Session.GetString("FromDate");
+                    this.ToDate = HttpContext.Session.GetString("ToDate");
+                // Code for Breadcrumb Ends
+
 
                 var query = from d in dbContext.DisbursementRequests
                             join s in dbContext.Stores on d.StoreId equals s.StoreId

@@ -250,8 +250,8 @@
                                 <!-- Variables for Breadcrumb Starts -->
                                 <input type="hidden" value="@Model.CurrentPage" name="page" />
                                 <input type="hidden" value="@Model.RequesterName" name="RequesterName" />
-                                <input type="hidden" value="@Model.FromDate" name="FromDate" />
-                                <input type="hidden" value="@Model.ToDate" name="ToDate" />
+                                <input type="hidden" value="@Model.FromDate?.ToString("yyyy-MM-dd")" name="FromDate" />
+                                <input type="hidden" value="@Model.ToDate?.ToString("yyyy-MM-dd")" name="ToDate" />
                                 <!-- Variables for Breadcrumb Ends -->
 
                                 <input type="submit" value="@Model.lblEdit" class="btn btn-secondary" asp-page-handler="Edit" />
