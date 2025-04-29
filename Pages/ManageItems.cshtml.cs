@@ -23,7 +23,7 @@ namespace LabMaterials.Pages
         public int TotalPages { get; set; }
 
 
-        public string lblItems, lblItemName, lblGroupName, lblItemCode, lblAvailableQuantity, lblHazardType, lblTypeName,
+        public string lblItems, lblItemName, lblGroupName, lblItemCode, lblQuantity, lblHazardType, lblTypeName,
             lblUnitCode, lblSearch, lblSubmit, lblManageItemGroup, lblManageUnit, lblAddItem, lblEdit,
             lblDelete, lblTotalItem, lblExpiryDate, lblBatchNo, lblDamage, lblDamagedItems,
             lblImport, lblDonwloadSampleFile, lblFromDate, lblToDate;
@@ -40,6 +40,7 @@ namespace LabMaterials.Pages
                     this.Group = Group;
                     this.FromDate = FromDate;
                     this.ToDate = ToDate;
+                    Console.WriteLine("FromDate", this.FromDate);
                     FillData(ItemName, Group, FromDate, ToDate, page);
 
                 }
@@ -54,6 +55,8 @@ namespace LabMaterials.Pages
             base.ExtractSessionData();
             this.ItemName = ItemName;
             this.Group = Group;
+            this.FromDate = FromDate;
+            this.ToDate = ToDate;
             if (CanManageItems)
             {
                 FillData(ItemName, Group, FromDate, ToDate);
@@ -111,7 +114,7 @@ namespace LabMaterials.Pages
 
         private void FillData(string ItemName, string Group, DateTime? FromDate, DateTime? ToDate, int page = 1)
         {
-             if (HttpContext.Request.Query.ContainsKey("page"))
+            if (HttpContext.Request.Query.ContainsKey("page"))
             {
                 string pagevalue = HttpContext.Request.Query["page"];
                 page = int.Parse(pagevalue);
@@ -318,7 +321,7 @@ namespace LabMaterials.Pages
             this.lblItemName = (Program.Translations["ItemName"])[Lang];
             this.lblGroupName = (Program.Translations["GroupName"])[Lang];
             this.lblItemCode = (Program.Translations["ItemCode"])[Lang];
-            this.lblAvailableQuantity = (Program.Translations["AvailableQuantity"])[Lang];
+            this.lblQuantity = (Program.Translations["Quantity"])[Lang];
             this.lblHazardType = (Program.Translations["HazardType"])[Lang];
             this.lblTypeName = (Program.Translations["TypeName"])[Lang];
             this.lblUnitCode = (Program.Translations["UnitCode"])[Lang];

@@ -35,20 +35,20 @@
                 @if (Model.Supply != null)
                 {
                     <table class="table table-bordered">
-                        <tr><th>Supply ID</th><td>@Model.Supply.SupplyId</td></tr>
-                        <tr><th>Supplier</th><td>@Model.Supply.SupplierName</td></tr>
-                        <tr><th>Item</th><td>@Model.Supply.ItemName</td></tr>
-                        <tr><th>Item Type</th><td>@Model.Supply.ItemType</td></tr>
-                        <tr><th>Item Code</th><td>@Model.Supply.ItemCode</td></tr>
-                        <tr><th>Received At</th><td>@Model.Supply.ReceivedAt.ToString("yyyy-MM-dd")</td></tr>
-                        <tr><th>Expiry Date</th><td>@Model.Supply.ExpiryDate.ToString("yyyy-MM-dd")</td></tr>
-                        <tr><th>Invoice Number</th><td>@Model.Supply.InvoiceNumber</td></tr>
-                        <tr><th>Purchase Order No</th><td>@Model.Supply.PurchaseOrderNo</td></tr>
-                        <tr><th>Quantity Received</th><td>@Model.Supply.QuantityReceived</td></tr>
-                        <tr><th>Store</th><td>@Model.Supply.StoreName</td></tr>
-                        <tr><th>Room</th><td>@Model.Supply.RoomName</td></tr>
-                        <tr><th>Shelf Number</th><td>@Model.Supply.ShelfNumber</td></tr>
-                        <tr><th>Inventory Balanced</th><td>@(Model.Supply.InventoryBalanced ? "Yes" : "No")</td></tr>
+                        @* <tr><th>Supply ID</th><td>@Model.Supply.SupplyId</td></tr> *@
+                        <tr><th>@Model.lblSupplierName</th><td>@Model.Supply.SupplierName</td></tr>
+                        <tr><th>@Model.lblItemName</th><td>@Model.Supply.ItemName</td></tr>
+                        <tr><th>@Model.lbltypeCode</th><td>@Model.Supply.ItemType</td></tr>
+                        <tr><th>@Model.lblItemType</th><td>@Model.Supply.ItemCode</td></tr>
+                        <tr><th>@Model.lblReceivedAt</th><td>@Model.Supply.ReceivedAt.ToString("yyyy-MM-dd")</td></tr>
+                        <tr><th>@Model.lblExpiryDate</th><td>@Model.Supply.ExpiryDate.ToString("yyyy-MM-dd")</td></tr>
+                        <tr><th>@Model.lblInvoiceNumber</th><td>@Model.Supply.InvoiceNumber</td></tr>
+                        <tr><th>@Model.lblPurchaseOrderNo</th><td>@Model.Supply.PurchaseOrderNo</td></tr>
+                        <tr><th>@Model.lblQuantityReceived</th><td>@Model.Supply.QuantityReceived</td></tr>
+                        <tr><th>@Model.lblStoreName</th><td>@Model.Supply.StoreName</td></tr>
+                        <tr><th>@Model.lblRoomName</th><td>@Model.Supply.RoomName</td></tr>
+                        <tr><th>@Model.lblShelfNumber</th><td>@Model.Supply.ShelfNumber</td></tr>
+                        <tr><th>@Model.lblInventoryBalanced</th><td>@(Model.Supply.InventoryBalanced ? "Yes" : "No")</td></tr>
                     </table>
                 }
                 else

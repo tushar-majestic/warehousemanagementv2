@@ -13,12 +13,15 @@ namespace LabMaterials.Pages
 
         [BindProperty]
         public string ItemName { get; set; }
+        public int CurrentPage { get; set; }
+        public int ItemsPerPage { get; set; } = 10;
+        public int TotalPages { get; set; }
         
         public string lblHazardousMaterials, lblHazardTypeName, lblSearch, lblSubmit, lblItemCode, lblItemName, lblGroupName, 
             lblAvailableQuantity, lblHazardType, lblTypeName, lblStoreName, lblUnitCode, lblTotalItem,
             lblMaterialsReceived, lblInventory, lblUserActivity, lblDistributedMaterials, lblDamagedItems,
             lblUserReport, lblExport, lblSelectHazardType;
-        public void OnGet()
+        public void OnGet(string? ItemName,string? HazardTypeName, int page = 1)
         {
             base.ExtractSessionData();
             if (CanSeeReports)
@@ -27,13 +30,25 @@ namespace LabMaterials.Pages
                 HazardTypes = dbContext.HazardTypes.Where(h => h.HazardTypeName != "NonHazarduos").ToList();
                 HazardTypeName = null;
                 FillLables();
+                 if (HttpContext.Request.Query.ContainsKey("page")){
+                    string pagevalue = HttpContext.Request.Query["page"];
+                    page = int.Parse(pagevalue);
+                    this.ItemName = ItemName;
+                    this.HazardTypeName = HazardTypeName;
+                   
+                    FillData(ItemName, HazardTypeName, page);
+                }
             }
             else
                 RedirectToPage("./Index?lang=" + Lang);
         }
 
-        private void FillData(string ItemName, string HazardTypeName)
-        {
+        private void FillData(string ItemName, string HazardTypeName, int page = 1)
+        {   if (HttpContext.Request.Query.ContainsKey("page"))
+            {
+                string pagevalue = HttpContext.Request.Query["page"];
+                page = int.Parse(pagevalue);
+            }
             if (CanSeeReports)
             {
                 FillLables();
@@ -70,8 +85,14 @@ namespace LabMaterials.Pages
                 if (string.IsNullOrEmpty(HazardTypeName) == false)
                     query = query.Where(i => i.HazardTypeName.Contains(HazardTypeName));
 
-                Items = query.ToList();
-                TotalItems = Items.Count();
+                // Items = query.ToList();
+                // TotalItems = Items.Count();
+                TotalItems = query.Count();
+                TotalPages = (int)Math.Ceiling((double)TotalItems / ItemsPerPage);
+
+                var list = query.ToList();
+                Items = list.Skip((page - 1) * ItemsPerPage).Take(ItemsPerPage).ToList();     
+                CurrentPage = page;
             }
             else
                 RedirectToPage("./Index?lang=" + Lang);
@@ -80,13 +101,14 @@ namespace LabMaterials.Pages
         public void OnPost([FromForm] string ItemName, [FromForm] string HazardTypeName)
         {
             base.ExtractSessionData();
+            CurrentPage = 1;
             this.ItemName = ItemName;
             var dbContext = new LabDBContext();
             HazardTypes = dbContext.HazardTypes.Where(h => h.HazardTypeName != "NonHazarduos").ToList();
             this.HazardTypeName = HazardTypeName;
             if (CanSeeReports)
             {
-                FillData(ItemName, HazardTypeName);
+                FillData(ItemName, HazardTypeName, CurrentPage);
             }
             else
                 RedirectToPage("./Index?lang=" + Lang);

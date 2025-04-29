@@ -111,44 +111,43 @@
                         <input type="text" name="ItemName" class="form-control" placeholder="@Model.lblItemName"
                             value="@Model.ItemName">
                     </div>
-                </div>
-                <div class="col col-md-6 col-lg-3 mb-3">
-                    <div class="input-group me-2 me-lg-3 fmxw-400">
-                        <span class="input-group-text">
-                            <svg class="icon icon-xs" x-description="Heroicon name: solid/search"
-                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
-                                aria-hidden="true">
-                                <path fill-rule="evenodd"
-                                    d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                                    clip-rule="evenodd"></path>
-                            </svg>
-                        </span>
-                        <input type="text" name="Group" class="form-control" placeholder="@Model.lblGroupName"
-                            value="@Model.Group">
-                    </div>
-                </div>
-                <div class="col col-md-6 col-lg-3 mb-3">
-                    <div class="input-group me-2 me-lg-3 fmxw-400">
-                        <span class="input-group-text">
-                            @Model.lblFromDate
-                        </span>
 
-                        <input asp-for="FromDate" class="form-control" type="date" name="FromDate"
-                            value="@Model.lblFromDate" />
-                    </div>
-                </div>
-                <div class="col col-md-6 col-lg-3 mb-3 pe-0">
-                    <div class="input-group me-2 me-lg-3 fmxw-400">
-                        <span class="input-group-text">
-                            @Model.lblToDate
-                        </span>
+                                <div class="col col-md-6 col-lg-3 mb-3">
+                                    <div class="input-group me-2 me-lg-3 fmxw-400">
+                                        <span class="input-group-text">
+                                            <svg class="icon icon-xs" x-description="Heroicon name: solid/search"
+                                                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                                <path fill-rule="evenodd"
+                                                      d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                                                      clip-rule="evenodd"></path>
+                                            </svg>
+                                        </span>
+                                        <input type="text" name="Group" class="form-control" placeholder="@Model.lblGroupName" value="@Model.Group">
+                                    </div>
+                                </div>
+                                            <div class="col col-md-6 col-lg-3 mb-3">
+                                                <div class="input-group me-2 me-lg-3 fmxw-400">
+                                                    <span class="input-group-text">
+                                                        @Model.lblFromDate
+                                                    </span>
 
-                        <input asp-for="ToDate" class="form-control" type="date" name="ToDate" value="@Model.lblToDate" />
-                    </div>
-                </div>
-            </div>
+                                                    <input asp-for="FromDate" class="form-control" type="date" name="FromDate"
+                                                           value="@Model.FromDate?.ToString("yyyy-MM-dd")" />
+                                                </div>
+                                            </div>
+                                            <div class="col col-md-6 col-lg-3 mb-3 pe-0">
+                                                <div class="input-group me-2 me-lg-3 fmxw-400">
+                                                    <span class="input-group-text">
+                                                        @Model.lblToDate
+                                                    </span>
 
-            <div class="row">
+                                                    <input asp-for="ToDate" class="form-control" type="date" name="ToDate"
+                                                           value="@Model.ToDate?.ToString("yyyy-MM-dd")" />
+                                                </div>
+                                            </div>
+        </div>
+        <div class="row">
+
 
                 <div class="col-4 col-md-2 ps-md-0  mx-3">
                     <button type="submit" class="btn btn-primary">@Model.lblSubmit</button>
@@ -178,6 +177,66 @@
         </div>
 
     </div>
+
+
+    <div class="card border-0 shadow mb-4">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-centered table-nowrap mb-0 rounded">
+                    <thead class="thead-light">
+                        <tr>
+                            <th scope="col" class="border-0 rounded-start">@Model.lblItemCode</th>
+                            <th scope="col" class="border-0">@Model.lblItemName</th>
+                            <th scope="col" class="border-0">@Model.lblQuantity</th>
+                            <th scope="col" class="border-0">@Model.lblHazardType</th>
+                            <th scope="col" class="border-0">@Model.lblTypeName</th>
+                            <th scope="col" class="border-0">@Model.lblUnitCode</th>
+                            <th scope="col" class="border-0">@Model.lblGroupName</th>
+                            <th scope="col" class="border-0">@Model.lblBatchNo</th>
+                            <th scope="col" class="border-0">@Model.lblExpiryDate</th>
+
+                            <th class="border-0 rounded-end"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.Items != null)
+                        {
+                            foreach (var item in Model.Items)
+                            {
+                                <tr>
+                                    <th scope="row">@item.ItemCode</th>
+                                    <td>@item.ItemName</td>
+                                    <td>@item.AvailableQuantity</td>
+                                    <td style='color: @(item.IsHazardous?"red":"teal")'>@item.HazardTypeName</td>
+                                    <td>@item.TypeName</td>
+                                    <td>@item.UnitCode</td>
+                                    <td>@item.GroupDesc</td>
+                                    <td>@item.BatchNo</td>
+                                    <td>@(item.ExpiryDate.HasValue? item.ExpiryDate.Value.ToString("dd-MM/yyyy") : "")</td>
+                                    <td>
+                                        <form method="post">
+                                            <input type="hidden" value="@item.ItemId" name="ItemId" />
+                                            <input type="submit" value="@Model.lblEdit" class="btn btn-secondary" asp-page-handler="Edit" />
+                                            <input type="submit" value="@Model.lblDelete" class="btn btn-danger" asp-page-handler="Delete" />
+                                            <!--<input type="submit" value="@Model.lblDamage" class="btn btn-danger" asp-page-handler="Damage" formaction="DamageItem?ItemId=@item.ItemId" /> -->
+                                            <a class="btn btn-danger" href="DamageItem?id=@item.ItemId">@Model.lblDamage </a>
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
+                        }
+
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    @* <div style="color:maroon; text-align:center">@Model.Message</div> *@
+
+   
+
     @if (Model.TotalPages > 1)
     {
         <nav aria-label="Page navigation">

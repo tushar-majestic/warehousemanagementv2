@@ -13,12 +13,21 @@ namespace LabMaterials.Pages
         public int TotalItems { get; set; }
         [BindProperty]
         public string GroupName { get; set; }
-        public void OnGet() 
+        public int CurrentPage { get; set; }
+        public int ItemsPerPage { get; set; } = 10;
+        public int TotalPages { get; set; }
+        public void OnGet(string? GroupName, int page = 1) 
         {
             base.ExtractSessionData();
             if (CanManageItemGroup)
             {
                 FillLables();
+                if (HttpContext.Request.Query.ContainsKey("page")){
+                    string pagevalue = HttpContext.Request.Query["page"];
+                    page = int.Parse(pagevalue);
+                    this.GroupName = GroupName;
+                    FillData(GroupName, page);
+                }
             }
             else
                 RedirectToPage("./Index?lang=" + Lang);
@@ -27,9 +36,9 @@ namespace LabMaterials.Pages
         public string lblGroupCode, lblGroupName, lblEdit, lblDelete, lblTotalItem, lblAddItemGroup, lblItemGroups, lblSearch, lblItems;
 
         public void OnPostSearch([FromForm] string GroupName)
-        {
+        {   CurrentPage = 1;
             this.GroupName = GroupName;
-            FillData(GroupName);
+            FillData(GroupName, CurrentPage);
         }
 
         public void OnPostDelete([FromForm] string GroupCode)
@@ -76,8 +85,12 @@ namespace LabMaterials.Pages
             return RedirectToPage("./EditItemGroup");
         }
 
-        private void FillData(string? GroupName)
-        {
+        private void FillData(string? GroupName, int page = 1)
+        {   if (HttpContext.Request.Query.ContainsKey("page"))
+            {
+                string pagevalue = HttpContext.Request.Query["page"];
+                page = int.Parse(pagevalue);
+            }
             base.ExtractSessionData();
             if (CanManageItemGroup)
             {
@@ -94,10 +107,12 @@ namespace LabMaterials.Pages
                     query = query.Where(s => s.GroupDesc.Contains(GroupName));
 
 
-                Groups = query.ToList();
-
-                Groups = query.ToList();
-                TotalItems = Groups.Count();
+                
+                TotalItems = query.Count();
+                TotalPages = (int)Math.Ceiling((double)TotalItems / ItemsPerPage);
+                var list = query.ToList();
+                Groups = list.Skip((page - 1) * ItemsPerPage).Take(ItemsPerPage).ToList();        
+                CurrentPage = page; 
             }
             else
                 RedirectToPage("./Index?lang=" + Lang);

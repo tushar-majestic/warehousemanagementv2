@@ -9,13 +9,26 @@ namespace LabMaterials.Pages
         public List<DestinationsInfo> Destinations { get; set; }
         public string Message { get; set; }
         [BindProperty]
+        public int TotalItems { get; set; }
+        [BindProperty]
         public string DestinationName { get; set; }
-        public void OnGet() 
+        public int CurrentPage { get; set; }
+        public int ItemsPerPage { get; set; } = 10;
+        public int TotalPages { get; set; }
+      
+        public void OnGet(string? DestinationName, int page = 1) 
         {
             base.ExtractSessionData();
             if (CanManageSupplies)
             {
                 FillLables();
+                if (HttpContext.Request.Query.ContainsKey("page")){
+                    string pagevalue = HttpContext.Request.Query["page"];
+                    page = int.Parse(pagevalue);
+                    this.DestinationName = DestinationName;
+                    FillData(DestinationName, page);
+
+                }
             }
             else
                 RedirectToPage("./Index?lang=" + Lang);
@@ -25,9 +38,9 @@ namespace LabMaterials.Pages
             lblEdit, lblDelete, lblStores;
 
         public void OnPostSearch([FromForm] string DestinationName)
-        {
+        {   CurrentPage = 1;
             this.DestinationName = DestinationName;
-            FillData(DestinationName);
+            FillData(DestinationName, CurrentPage);
         }
 
         public void OnPostDelete([FromForm] int DestinationId)
@@ -68,8 +81,13 @@ namespace LabMaterials.Pages
             return RedirectToPage("./EditDestinations");
         }
 
-        private void FillData(string? DestinationName)
-        {
+        private void FillData(string? DestinationName, int page = 1)
+        {   
+            if (HttpContext.Request.Query.ContainsKey("page"))
+            {
+                string pagevalue = HttpContext.Request.Query["page"];
+                page = int.Parse(pagevalue);
+            }
             base.ExtractSessionData();
             if (CanManageStore)
             {
@@ -85,7 +103,11 @@ namespace LabMaterials.Pages
                 if (string.IsNullOrEmpty(DestinationName) == false)
                     query = query.Where(s => s.DestinationName.Contains(DestinationName));
 
-                Destinations = query.ToList();
+                TotalItems = query.Count();
+                TotalPages = (int)Math.Ceiling((double)TotalItems / ItemsPerPage);
+                var list = query.ToList();
+                Destinations = list.Skip((page - 1) * ItemsPerPage).Take(ItemsPerPage).ToList();        
+                CurrentPage = page;   
 
                 /*Storages = query.ToList();
                 TotalItems = Storages.Count();*/

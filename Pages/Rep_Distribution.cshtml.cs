@@ -12,7 +12,9 @@ namespace LabMaterials.Pages
 
         [BindProperty]
         public string RequesterName { get; set; }
-
+        public int CurrentPage { get; set; }
+        public int ItemsPerPage { get; set; } = 10;
+        public int TotalPages { get; set; }
     
 
 
@@ -20,21 +22,33 @@ namespace LabMaterials.Pages
             lblDisbursementStatus, lblInventoryBalanced, lblTotalItem,
             lblMaterialsReceived, lblInventory, lblHazardousMaterials, lblUserActivity, lblDamagedItems,
             lblUserReport, lblExport, lblFromDate, lblToDate;
-        public void OnGet()
+        public void OnGet(string? RequesterName, DateTime? FromDate, DateTime? ToDate, int page = 1)
         {
             base.ExtractSessionData();
             if (CanSeeReports)
             {
-                this.FromDate = DateTime.Today;
-                this.ToDate = DateTime.Today;
+                // this.FromDate = DateTime.Today;
+                // this.ToDate = DateTime.Today;
                 FillLables();
+                if (HttpContext.Request.Query.ContainsKey("page")){
+                    string pagevalue = HttpContext.Request.Query["page"];
+                    page = int.Parse(pagevalue);
+                    this.RequesterName = RequesterName;
+                    this.FromDate = FromDate;
+                    this.ToDate = ToDate;
+                    FillData(RequesterName, FromDate, ToDate, page);
+                }
             }
             else
                 RedirectToPage("./Index?lang=" + Lang);
         }
 
-        private void FillData(string? RequesterName, DateTime? FromDate, DateTime? ToDate)
-        {
+        private void FillData(string? RequesterName, DateTime? FromDate, DateTime? ToDate, int page = 1)
+        {   if (HttpContext.Request.Query.ContainsKey("page"))
+            {
+                string pagevalue = HttpContext.Request.Query["page"];
+                page = int.Parse(pagevalue);
+            }
             base.ExtractSessionData();
             if (CanSeeReports)
             {
@@ -57,13 +71,20 @@ namespace LabMaterials.Pages
                 if (FromDate is not null && FromDate != DateTime.MinValue && ToDate is not null && ToDate != DateTime.MinValue)
                     query = query.Where(e => e.ReqReceivedAt >= FromDate && e.ReqReceivedAt <= ToDate);
 
-                Disbursement = query.ToList();
+                // Disbursement = query.ToList();
 
-                Disbursement = query.ToList();
-                TotalItems = Disbursement.Count();
+                // Disbursement = query.ToList();
+                // TotalItems = Disbursement.Count();
 
-                this.FromDate = DateTime.Today;
-                this.ToDate = DateTime.Today;
+                // this.FromDate = DateTime.Today;
+                // this.ToDate = DateTime.Today;
+
+                TotalItems = query.Count();
+                TotalPages = (int)Math.Ceiling((double)TotalItems / ItemsPerPage);
+
+                var list = query.ToList();
+                Disbursement = list.Skip((page - 1) * ItemsPerPage).Take(ItemsPerPage).ToList();     
+                CurrentPage = page;
             }
             else
                 RedirectToPage("./Index?lang=" + Lang);
@@ -73,9 +94,12 @@ namespace LabMaterials.Pages
         {
             base.ExtractSessionData();
             this.RequesterName = RequesterName;
+            this.FromDate = FromDate;
+            this.ToDate = ToDate;
+            CurrentPage = 1;
             if (CanSeeReports)
             {
-                FillData(RequesterName, FromDate, ToDate);
+                FillData(RequesterName, FromDate, ToDate, CurrentPage);
             }
             else
                 RedirectToPage("./Index?lang=" + Lang);
