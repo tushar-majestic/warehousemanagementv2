@@ -183,11 +183,11 @@
                     </thead>
                     <tbody>
                         @if (Model.Stores != null)
-                        {
-                            var filteredRooms = Model.Stores.Where(item => item.RoomName != null &&
-                            Model.Rooms.Any(room => room.RoomId == item.RoomId && room.Ended == null));
+                        @*    commenting *@
+                            @* var filteredRooms = Model.Stores.Where(item => item.RoomName != null &&
+                            Model.Rooms.Any(room => room.RoomId == item.RoomId && room.Ended == null)); *@
 
-                            foreach (var item in filteredRooms)
+                            foreach (var item in Model.Stores)
                             {
                                 
                                 <tr>
@@ -212,7 +212,7 @@
                                 </tr>
                                 
                             }
-                        }
+                        
                     <tr>
                         <td colspan="4">
                             <div>@Model.lblTotalItem : @Model.TotalItems</div>

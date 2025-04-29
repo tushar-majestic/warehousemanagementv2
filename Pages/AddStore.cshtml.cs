@@ -58,7 +58,7 @@ namespace LabMaterials.Pages
                             dbContext.SaveChanges();
                             task.LogInfo(MethodBase.GetCurrentMethod(), "store added");
 
-                            string Message = string.Format("Store {0} added", store.StoreName);
+                            string Message = string.Format("Warehouse {0} added", store.StoreName);
                             Helper.AddActivityLog(HttpContext.Session.GetInt32("UserId").Value, Message, "Add",
                                 Helper.ExtractIP(Request), dbContext, true);
 
