@@ -40,7 +40,24 @@
         }
 
 
+        document.getElementById('toggleDropdown').addEventListener('click', function (event) {
+            event.stopPropagation();
+            var panel = document.getElementById('dropdownPanel');
+            if (panel.style.display === 'none' || panel.style.display === '') {
+                panel.style.display = 'block';
+            } else {
+                panel.style.display = 'none';
+            }
+        });
 
+        // Close the dropdown if clicked outside
+        document.addEventListener('click', function (event) {
+            var panel = document.getElementById('dropdownPanel');
+            var button = document.getElementById('toggleDropdown');
+            if (!panel.contains(event.target) && event.target !== button) {
+                panel.style.display = 'none';
+            }
+        });
 
 
     </script>
@@ -66,15 +83,15 @@
             <!-- <p class="mb-0">Your web analytics dashboard template.</p>-->
         </div>
         <div class="btn-toolbar mb-2 mb-md-0">
-                    <div class="btn-group mx-3 ms-lg-3">
-                        <a href="AddSupply" class="btn btn-sm justify-content-center top-sm-btn d-flex btn-gray-800 d-inline-flex align-items-center">
-                            <img b-ie9pk9zf1q="" class="icon text-white icon-xs mx-2" src="images/plus.png">
+            <div class="btn-group mx-3 ms-lg-3">
+                <a href="AddSupply" class="btn btn-sm justify-content-center top-sm-btn d-flex btn-gray-800 d-inline-flex align-items-center">
+                    <img b-ie9pk9zf1q="" class="icon text-white icon-xs mx-2" src="images/plus.png">
 
-                            @Model.lblAddSupplies
-                        </a>
-                    </div>
+                    @Model.lblAddSupplies
+                </a>
+            </div>
             <a href="ManageSupplier" class="btn justify-content-center top-big-btn btn-outline-gray-600 d-inline-flex align-items-center">
-<img b-ie9pk9zf1q="" class="icon text-white icon-xs mx-2" src="images/manage-b.png">
+                <img b-ie9pk9zf1q="" class="icon text-white icon-xs mx-2" src="images/manage-b.png">
                 @Model.lblManageSuppliers
             </a>
 
@@ -84,65 +101,144 @@
     
     @* <div style="color:maroon; text-align:center">@Model.Message</div> *@
 
-    <div class="table-settings mb-4">
-        <form method="post" asp-page-handler="Search" class="row align-items-center">
-
-        <div class="row">
-                    <div class="col col-md-6 col-lg-3 mb-3">
-                        <div class="input-group me-2 me-lg-3 fmxw-400">
-                            <span class="input-group-text">
-                                <svg class="icon icon-xs" x-description="Heroicon name: solid/search"
-                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                    <path fill-rule="evenodd"
-                                        d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                                        clip-rule="evenodd"></path>
-                                </svg>
-                            </span>
-                            <input type="text" name="SupplierName" class="form-control" placeholder="@Model.lblSupplierName" value="@Model.SupplierName">
-                        </div>
+    <div class="table-settings mb-4 position-relative">
+        <form method="post" asp-page-handler="Action" class="row align-items-center">
+            <div class="row align-items-center">
+                <div class="col col-md-6 col-lg-3 mb-3">
+                    <div class="input-group me-2 me-lg-3 fmxw-400">
+                        <span class="input-group-text">
+                            <svg class="icon icon-xs" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path>
+                            </svg>
+                        </span>
+                        <input type="text" name="SupplierName" class="form-control" placeholder="@Model.lblSupplierName" value="@Model.SupplierName">
                     </div>
-                    <div class="col col-md-6 col-lg-3 mb-3">
-                        <div class="input-group me-2 me-lg-3 fmxw-400">
-                            <span class="input-group-text">
-                                <svg class="icon icon-xs" x-description="Heroicon name: solid/search"
-                                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                    <path fill-rule="evenodd"
-                                        d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                                        clip-rule="evenodd"></path>
-                                </svg>
-                            </span>
-                            <input type="text" name="ItemName" class="form-control" placeholder="@Model.lblItemName" value="@Model.ItemName">
-                        </div>
+                </div>
+
+                <div class="col col-md-6 col-lg-3 mb-3">
+                    <div class="input-group me-2 me-lg-3 fmxw-400">
+                        <span class="input-group-text">
+                            <svg class="icon icon-xs" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path>
+                            </svg>
+                        </span>
+                        <input type="text" name="ItemName" class="form-control" placeholder="@Model.lblItemName" value="@Model.ItemName">
                     </div>
-                    <div class="col col-md-6 col-lg-3 mb-3">
-                        <div class="input-group me-2 me-lg-3 fmxw-400">
-                            <span class="input-group-text">
-                                @Model.lblFromDate
-                            </span>
+                </div>
 
-                            <input asp-for="FromDate" class="form-control" type="date" name="FromDate"
-                                   value="@Model.FromDate?.ToString("yyyy-MM-dd")" />
-                        </div>
+                <div class="col col-md-6 col-lg-3 mb-3">
+                    <div class="input-group me-2 me-lg-3 fmxw-400">
+                        <span class="input-group-text">@Model.lblFromDate</span>
+                        <input asp-for="FromDate" class="form-control" type="date" name="FromDate" value="@Model.FromDate?.ToString("yyyy-MM-dd")" />
                     </div>
-                    <div class="col col-md-6 col-lg-3 mb-3 pe-0">
-                        <div class="input-group me-2 me-lg-3 fmxw-400">
-                            <span class="input-group-text">
-                                @Model.lblToDate
-                            </span>
+                </div>
 
-                            <input asp-for="ToDate" class="form-control" type="date" name="ToDate"
-                                   value="@Model.ToDate?.ToString("yyyy-MM-dd")" />
-                        </div>
+                <div class="col col-md-6 col-lg-3 mb-3 pe-0">
+                    <div class="input-group me-2 me-lg-3 fmxw-400">
+                        <span class="input-group-text">@Model.lblToDate</span>
+                        <input asp-for="ToDate" class="form-control" type="date" name="ToDate" value="@Model.ToDate?.ToString("yyyy-MM-dd")" />
                     </div>
-        </div>
-
-
-        <div class="row">
-            <div class="col-4 col-md-2 ps-md-0 mx-3 mb-3">
-                <button type="submit" class="btn btn-primary">@Model.lblSubmit</button>
+                </div>
             </div>
-        </div>
 
+            <div class="row">
+                <div class="col-4 col-md-2 ps-md-0 mx-3 mb-3">
+                    <button type="submit" name="action" value="search" class="btn btn-primary">@Model.lblSubmit</button>
+                </div>
+
+                <!-- Show/Hide Column button -->
+                <div class="col-4 col-md-2 mb-3 text-end ms-auto position-relative">
+                    <button type="button" id="toggleDropdown" class="btn btn-secondary">Show/Hide Columns</button>
+
+                    <!-- Dropdown panel -->
+                    <div id="dropdownPanel" class="card p-2 shadow-sm position-absolute bg-white"
+                        style="right: 0; top: 100%; width: 250px; display: none; z-index: 1000;">
+
+                        <div class="form-check mb-1">
+                            <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="SupplierName" id="SupplierName"
+                            @(Model.SelectedColumns.Contains("SupplierName") ? "checked" : "")>
+                            <label class="form-check-label" for="SupplierName">@Model.lblSupplierName</label>
+                        </div>
+
+                        <div class="form-check mb-1">
+                            <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="itemName" id="itemName"
+                            @(Model.SelectedColumns.Contains("itemName") ? "checked" : "")>
+                            <label class="form-check-label" for="itemName">@Model.lblItemName</label>
+                        </div>
+
+                        <div class="form-check mb-1">
+                            <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="typeCode" id="typeCode"
+                            @(Model.SelectedColumns.Contains("typeCode") ? "checked" : "")>
+                            <label class="form-check-label" for="typeCode">@Model.lbltypeCode</label>
+                        </div>
+
+                        <div class="form-check mb-1">
+                            <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="ItemType" id="ItemType"
+                            @(Model.SelectedColumns.Contains("ItemType") ? "checked" : "")>
+                            <label class="form-check-label" for="ItemType">@Model.lblItemType</label>
+                        </div>
+
+                        <div class="form-check mb-1">
+                            <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="StoreName" id="StoreName"
+                            @(Model.SelectedColumns.Contains("StoreName") ? "checked" : "")>
+                            <label class="form-check-label" for="StoreName">@Model.lblStoreName</label>
+                        </div>
+
+                        <div class="form-check mb-1">
+                            <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="RoomName" id="RoomName"
+                            @(Model.SelectedColumns.Contains("RoomName") ? "checked" : "")>
+                            <label class="form-check-label" for="RoomName">@Model.lblRoomName</label>
+                        </div>
+
+                        <div class="form-check mb-1">
+                            <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="ShelfNumber" id="ShelfNumber"
+                            @(Model.SelectedColumns.Contains("ShelfNumber") ? "checked" : "")>
+                            <label class="form-check-label" for="ShelfNumber">@Model.lblShelfNumber</label>
+                        </div>
+
+                        <div class="form-check mb-1">
+                            <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="QuantityReceived" id="QuantityReceived"
+                            @(Model.SelectedColumns.Contains("QuantityReceived") ? "checked" : "")>
+                            <label class="form-check-label" for="QuantityReceived">@Model.lblQuantityReceived</label>
+                        </div>
+
+                        <div class="form-check mb-1">
+                            <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="PurchaseOrderNo" id="PurchaseOrderNo"
+                            @(Model.SelectedColumns.Contains("PurchaseOrderNo") ? "checked" : "")>
+                            <label class="form-check-label" for="PurchaseOrderNo">@Model.lblPurchaseOrderNo</label>
+                        </div>
+
+                        <div class="form-check mb-1">
+                            <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="InvoiceNumber" id="InvoiceNumber"
+                            @(Model.SelectedColumns.Contains("InvoiceNumber") ? "checked" : "")>
+                            <label class="form-check-label" for="InvoiceNumber">@Model.lblInvoiceNumber</label>
+                        </div>
+
+                        <div class="form-check mb-1">
+                            <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="ReceivedAt" id="ReceivedAt"
+                            @(Model.SelectedColumns.Contains("ReceivedAt") ? "checked" : "")>
+                            <label class="form-check-label" for="ReceivedAt">@Model.lblReceivedAt</label>
+                        </div>
+
+                        <div class="form-check mb-1">
+                            <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="expiry" id="expiry"
+                            @(Model.SelectedColumns.Contains("expiry") ? "checked" : "")>
+                            <label class="form-check-label" for="expiry">@Model.lblExpiryDate</label>
+                        </div>
+
+                        <div class="form-check mb-1">
+                            <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="InventoryBalanced" id="InventoryBalanced"
+                            @(Model.SelectedColumns.Contains("InventoryBalanced") ? "checked" : "")>
+                            <label class="form-check-label" for="InventoryBalanced">@Model.lblInventoryBalanced</label>
+                        </div>
+
+                        <div class="form-check mb-1 text-center mt-2">
+                            <button type="submit" name="action" value="updateColumns" class="btn btn-success btn-sm">Ok</button>
+                        </div>
+
+                    </div> <!-- dropdownPanel -->
+                </div>
+            </div>
         </form>
     </div>
 
@@ -235,19 +331,58 @@
                 <table class="table table-centered table-nowrap mb-0 rounded">
                     <thead class="thead-light">
                         <tr>
+                            @if (Model.SelectedColumns.Contains("SupplierName"))
+                            {
                             <th scope="col" class="border-0 rounded-start">@Model.lblSupplierName</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("itemName"))
+                            {
                             <th scope="col" class="border-0">@Model.lblItemName</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("typeCode"))
+                            {
                             <th scope="col" class="border-0">@Model.lbltypeCode</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("ItemType"))
+                            {
                             <th scope="col" class="border-0">@Model.lblItemType</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("StoreName"))
+                            {
                             <th scope="col" class="border-0">@Model.lblStoreName</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("RoomName"))
+                            {
                             <th scope="col" class="border-0">@Model.lblRoomName</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("ShelfNumber"))
+                            {
                             <th scope="col" class="border-0">@Model.lblShelfNumber</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("QuantityReceived"))
+                            {
                             <th scope="col" class="border-0">@Model.lblQuantityReceived</th>
-                            @* <th scope="col" class="border-0">@Model.lblPurchaseOrderNo</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("PurchaseOrderNo"))
+                            {
+                            <th scope="col" class="border-0">@Model.lblPurchaseOrderNo</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("InvoiceNumber"))
+                            {
                             <th scope="col" class="border-0">@Model.lblInvoiceNumber</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("ReceivedAt"))
+                            {
                             <th scope="col" class="border-0">@Model.lblReceivedAt</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("expiry"))
+                            {
                             <th scope="col" class="border-0">@Model.lblExpiryDate</th>
-                            <th scope="col" class="border-0">@Model.lblInventoryBalanced</th> *@
+                            }
+                            @if (Model.SelectedColumns.Contains("InventoryBalanced"))
+                            {
+                            <th scope="col" class="border-0">@Model.lblInventoryBalanced</th>
+                            }
                             
                             
                             
@@ -262,19 +397,58 @@
                 foreach (var item in Model.Supplies)
                 {
                     <tr>
+                        @if (Model.SelectedColumns.Contains("SupplierName"))
+                        {
                         <th scope="row">@item.SupplierName</th>
+                        }
+                        @if (Model.SelectedColumns.Contains("itemName"))
+                        {
                         <td>@item.ItemName</td>
+                        }
+                        @if (Model.SelectedColumns.Contains("typeCode"))
+                        {
                         <td>@item.ItemCode</td>
+                        }
+                        @if (Model.SelectedColumns.Contains("ItemType"))
+                        {
                         <td>@item.ItemType</td>
+                        }
+                        @if (Model.SelectedColumns.Contains("StoreName"))
+                        {
                         <td>@item.StoreName</td>
+                        }
+                        @if (Model.SelectedColumns.Contains("RoomName"))
+                        {
                         <td>@item.RoomName</td>
+                        }
+                        @if (Model.SelectedColumns.Contains("ShelfNumber"))
+                        {
                         <td>@item.ShelfNumber</td>
+                        }
+                        @if (Model.SelectedColumns.Contains("QuantityReceived"))
+                        {
                         <td>@item.QuantityReceived</td>
-                        @* <td>@item.PurchaseOrderNo</td>
+                        }
+                        @if (Model.SelectedColumns.Contains("PurchaseOrderNo"))
+                        {
+                        <td>@item.PurchaseOrderNo</td>
+                        }
+                        @if (Model.SelectedColumns.Contains("InvoiceNumber"))
+                        {
                         <td>@item.InvoiceNumber</td>
+                        }
+                        @if (Model.SelectedColumns.Contains("ReceivedAt"))
+                        {
                         <td>@item.ReceivedAt</td>
+                        }
+                        @if (Model.SelectedColumns.Contains("expiry"))
+                        {
                         <td>@item.ExpiryDate</td>
-                        <td>@item.InventoryBalanced</td> *@
+                        }
+                        @if (Model.SelectedColumns.Contains("InventoryBalanced"))
+                        {
+                        <td>@item.InventoryBalanced</td>
+                        }
                         
                         
                         

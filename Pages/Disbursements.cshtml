@@ -38,6 +38,20 @@
                     showErrorNotification(errorMessageFromServer);
             </text>
         }
+
+        const toggleButton = document.getElementById('toggleDropdown');
+        const dropdownPanel = document.getElementById('dropdownPanel');
+
+        toggleButton.addEventListener('click', function () {
+            dropdownPanel.style.display = dropdownPanel.style.display === 'none' ? 'block' : 'none';
+        });
+
+        // Optional: Hide dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            if (!toggleButton.contains(event.target) && !dropdownPanel.contains(event.target)) {
+                dropdownPanel.style.display = 'none';
+            }
+        });
     </script>
 }
 @{
@@ -71,55 +85,124 @@
 
 
     <div class="table-settings mb-4">
-        <form method="post" asp-page-handler="Search" class="row align-items-center">
+        <form method="post" asp-page-handler="Action" class="row align-items-center">
 
-                <div class="row">
-            <div class="col col-md-3">
+            <!-- Requester Name Input -->
+            <div class="col col-lg-3 col-xl-3">
                 <div class="input-group me-2 me-lg-3 fmxw-400">
                     <span class="input-group-text">
-                        <svg class="icon icon-xs" x-description="Heroicon name: solid/search"
-                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                        <svg class="icon icon-xs" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                             <path fill-rule="evenodd"
                                 d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                                clip-rule="evenodd"></path>
+                                clip-rule="evenodd">
+                            </path>
                         </svg>
                     </span>
-                    <input type="text" name="RequesterName" class="form-control" placeholder="@Model.lblRequesterName" value="@Model.RequesterName">
+                    <input type="text" name="RequesterName" class="form-control" 
+                        placeholder="@Model.lblRequesterName" 
+                        value="@Model.RequesterName" />
                 </div>
             </div>
 
-            <div class="col col-md-3">
+            <div class="col col-lg-3 col-xl-3">
                 <div class="input-group me-2 me-lg-3 fmxw-400">
                     <span class="input-group-text">
                         @Model.lblFromDate
                     </span>
-
                     <input asp-for="FromDate" class="form-control" type="date" name="FromDate"
-                           value="@Model.FromDate?.ToString("yyyy-MM-dd")" />
+                        value="@Model.FromDate?.ToString("yyyy-MM-dd")" />
                 </div>
             </div>
-            <div class="col col-md-3">
+
+            <div class="col col-lg-3 col-xl-3">
                 <div class="input-group me-2 me-lg-3 fmxw-400">
                     <span class="input-group-text">
                         @Model.lblToDate
                     </span>
-
                     <input asp-for="ToDate" class="form-control" type="date" name="ToDate"
-                           value="@Model.ToDate?.ToString("yyyy-MM-dd")" />
+                        value="@Model.ToDate?.ToString("yyyy-MM-dd")" />
                 </div>
             </div>
 
-                                        <div class="col-3 col-xl-1 ps-md-0  mx-2">
-                                            <button type="submit" class="btn btn-primary">@Model.lblSubmit</button>
-                                        </div>
+            <div class="col-4 col-md-2 col-xl-1 ps-md-0">
+                <button type="submit" name="action" value="search" class="btn btn-primary w-100">
+                    @Model.lblSubmit
+                </button>
+            </div>
+
+            <div class="col text-end position-relative mt-3 mt-md-0">
+                <button type="button" id="toggleDropdown" class="btn btn-secondary">
+                    Show/Hide Columns
+                </button>
+        
+                <!-- Dropdown Panel -->
+                <div id="dropdownPanel" class="card p-2 shadow-sm position-absolute"
+                    style="right: 0; top: 100%; width: 200px; display: none; z-index: 1000;">
+
+                    <div class="form-check mb-1">
+                        <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="requesterName" id="requesterName"
+                        @(Model.SelectedColumns.Contains("requesterName") ? "checked" : "")>
+                        <label class="form-check-label" for="requesterName">@Model.lblRequesterName</label>
+                    </div>
+                    <div class="form-check mb-1">
+                        <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="requestReceivedDate" id="requestReceivedDate"
+                        @(Model.SelectedColumns.Contains("requestReceivedDate") ? "checked" : "")>
+                        <label class="form-check-label" for="requestReceivedDate">@Model.lblRequestReceivedDate</label>
+                    </div>
+                    <div class="form-check mb-1">
+                        <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="destination" id="destination"
+                        @(Model.SelectedColumns.Contains("destination") ? "checked" : "")>
+                        <label class="form-check-label" for="destination">@Model.lblDestination</label>
+                    </div>
+                    <div class="form-check mb-1">
+                        <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="storeName" id="storeName"
+                        @(Model.SelectedColumns.Contains("storeName") ? "checked" : "")>
+                        <label class="form-check-label" for="storeName">@Model.lblStoreName</label>
+                    </div>
+                    <div class="form-check mb-1">
+                        <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="comments" id="comments"
+                        @(Model.SelectedColumns.Contains("comments") ? "checked" : "")>
+                        <label class="form-check-label" for="comments">@Model.lblComments</label>
+                    </div>
+                    <div class="form-check mb-1">
+                        <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="disbursementStatus" id="disbursementStatus"
+                        @(Model.SelectedColumns.Contains("disbursementStatus") ? "checked" : "")>
+                        <label class="form-check-label" for="disbursementStatus">@Model.lblDisbursementStatus</label>
+                    </div>
+                    <div class="form-check mb-1">
+                        <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="inventoryBalance" id="inventoryBalance"
+                        @(Model.SelectedColumns.Contains("inventoryBalance") ? "checked" : "")>
+                        <label class="form-check-label" for="inventoryBalance">@Model.lblInventoryBalanced</label>
+                    </div>
+                    <div class="form-check mb-1">
+                        <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="itemName" id="itemName"
+                        @(Model.SelectedColumns.Contains("itemName") ? "checked" : "")>
+                        <label class="form-check-label" for="itemName">@Model.lblItemName</label>
+                    </div>
+                    <div class="form-check mb-1">
+                        <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="itemCode" id="itemCode"
+                        @(Model.SelectedColumns.Contains("itemCode") ? "checked" : "")>
+                        <label class="form-check-label" for="itemCode">@Model.lblItemCode</label>
+                    </div>
+                    <div class="form-check mb-1">
+                        <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="itemType" id="itemType"
+                        @(Model.SelectedColumns.Contains("itemType") ? "checked" : "")>
+                        <label class="form-check-label" for="itemType">@Model.lblItemType</label>
+                    </div>
+                    <div class="form-check mb-1">
+                        <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="quantity" id="quantity"
+                        @(Model.SelectedColumns.Contains("quantity") ? "checked" : "")>
+                        <label class="form-check-label" for="quantity">@Model.lblQuantity</label>
+                    </div>
+
+                    <div class="form-check mb-1 text-center mt-2">
+                        <button type="submit" name="action" value="updateColumns" class="btn btn-success btn-sm">
+                            Ok
+                        </button>
+                    </div>
+
                 </div>
-
-
-
-
-
-
-
+            </div>
 
         </form>
     </div>
@@ -211,17 +294,50 @@
                 <table class="table table-centered table-nowrap mb-0 rounded">
                     <thead class="thead-light">
                         <tr>
+                            @if (Model.SelectedColumns.Contains("requesterName"))
+                            {
                             <th scope="col" class="border-0 rounded-start">@Model.lblRequesterName</th>
-                            @* <th scope="col" class="border-0">@Model.lblRequestReceivedDate</th> *@
+                            }
+                            @if (Model.SelectedColumns.Contains("requestReceivedDate"))
+                            {
+                            <th scope="col" class="border-0">@Model.lblRequestReceivedDate</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("destination"))
+                            {
                             <th scope="col" class="border-0">@Model.lblDestination</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("storeName"))
+                            {
                             <th scope="col" class="border-0">@Model.lblStoreName</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("comments"))
+                            {
                             <th scope="col" class="border-0">@Model.lblComments</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("disbursementStatus"))
+                            {
                             <th scope="col" class="border-0">@Model.lblDisbursementStatus</th>
-                            @* <th scope="col" class="border-0">@Model.lblInventoryBalanced</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("inventoryBalance"))
+                            {
+                            <th scope="col" class="border-0">@Model.lblInventoryBalanced</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("itemName"))
+                            {
                             <th scope="col" class="border-0">@Model.lblItemName</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("itemCode"))
+                            {
                             <th scope="col" class="border-0">@Model.lblItemCode</th>
-                            <th scope="col" class="border-0">@Model.lblItemType</th> *@
+                            }
+                            @if (Model.SelectedColumns.Contains("itemType"))
+                            {
+                            <th scope="col" class="border-0">@Model.lblItemType</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("quantity"))
+                            {
                             <th scope="col" class="border-0">@Model.lblQuantity</th>
+                            }
                             <th scope="col" class="border-0 rounded-end"></th>
                         </tr>
                     </thead>
@@ -231,17 +347,50 @@
                 foreach (var item in Model.Disbursement)
                 {
                     <tr>
+                        @if (Model.SelectedColumns.Contains("requesterName"))
+                        {
                         <th scope="row">@item.RequesterName</th>
-                        @* <td>@item.ReqReceivedAt</td> *@
+                        }
+                        @if (Model.SelectedColumns.Contains("requestReceivedDate"))
+                        {
+                        <td>@item.ReqReceivedAt</td>
+                        }
+                        @if (Model.SelectedColumns.Contains("destination"))
+                        {
                         <td>@item.RequestingPlace</td>
+                        }
+                        @if (Model.SelectedColumns.Contains("storeName"))
+                        {
                         <td>@item.StoreName</td>
+                        }
+                        @if (Model.SelectedColumns.Contains("comments"))
+                        {
                         <td>@item.Comments</td>
+                        }
+                        @if (Model.SelectedColumns.Contains("disbursementStatus"))
+                        {
                         <td>@item.Status</td>
-                        @* <td>@item.InventoryBalanced</td>
+                        }
+                        @if (Model.SelectedColumns.Contains("inventoryBalance"))
+                        {
+                        <td>@item.InventoryBalanced</td>
+                        }
+                        @if (Model.SelectedColumns.Contains("itemName"))
+                        {
                         <td>@item.ItemName</td>
+                        }
+                        @if (Model.SelectedColumns.Contains("itemCode"))
+                        {
                         <td>@item.ItemCode</td>
-                        <td>@item.ItemTypeCode</td> *@
+                        }
+                        @if (Model.SelectedColumns.Contains("itemType"))
+                        {
+                        <td>@item.ItemTypeCode</td>
+                        }
+                        @if (Model.SelectedColumns.Contains("quantity"))
+                        {
                         <td>@item.Quantity</td>
+                        }
 
                         <td>
                             <form method="post">

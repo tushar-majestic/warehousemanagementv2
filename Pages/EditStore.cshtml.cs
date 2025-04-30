@@ -1,16 +1,27 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
+
 
 namespace LabMaterials.Pages
 {
     public class EditStoreModel : BasePageModel
     {
         public string ErrorMsg { get; set; }
-        public string StoreNumber, StoreName, Shelves, StoreNameSearch, StoreNumberSearch;
+        public string StoreNumber, StoreName, Shelves,  ManagerName, ManagerJobNumber, StoreNameSearch, StoreNumberSearch;
+
         public int StoreId;
+
+        public string Status { get; set; }
+        public string StoreType ;
+        public List<User> ManagerGroupsList {  get; set; }
+        public List<SelectListItem> StoreTypeList { get; set; }
+
+        public string lblUpdateStore, lblStoreNumber, lblStoreName, lblShelves, lblUpdate, lblCancel, lblStores, lblWarehouseType, lblManagerName, lblManagerJobNumber,lblStatus, lblOpen, lblClosed ;
+
         public int page { get; set; }
         
-        public string lblUpdateStore, lblStoreNumber, lblStoreName, lblShelves, lblUpdate, lblCancel, lblStores;
+
         public void OnGet()
         {
             base.ExtractSessionData();
@@ -22,16 +33,42 @@ namespace LabMaterials.Pages
                 RedirectToPage("./Index?lang=" + Lang);
             else
             {
+                StoreTypeList = new List<SelectListItem>
+                {
+                    new SelectListItem { Value = "Central", Text = "Central" },
+                    new SelectListItem { Value = "Branch", Text = "Branch" },
+                    new SelectListItem { Value = "SupplyRoom", Text = "Supply Room" },
+                    new SelectListItem { Value = "EmergencyRoom", Text = "Emergency Room" },
+                };
+
+
                 var dbContext = new LabDBContext();
                 var store = dbContext.Stores.Single(s => s.StoreId == HttpContext.Session.GetInt32("StoreId"));
+                var managerGroupId = dbContext.UserGroups
+                    .Where(g => g.UserGroupName == "Manager")
+                    .Select(g => g.UserGroupId)
+                    .FirstOrDefault();
+
+                ManagerGroupsList = dbContext.Users
+                    .Where(u => u.UserGroupId == managerGroupId)
+                    .ToList();
 
                 StoreNumber = store.StoreNumber;
                 StoreName = store.StoreName;
                 StoreId = store.StoreId;
+                ManagerName = store.WarehouseManagerName;
+
+                StoreType = store.StoreType;
+                Console.WriteLine(StoreType);  
+
+
+
+                ManagerJobNumber = store.ManagerJobNum.ToString();
+
             }
         }
 
-        public IActionResult OnPost([FromForm] int StoreId, [FromForm] string StoreNumber, [FromForm] string StoreName, [FromForm] string Shelves)
+        public IActionResult OnPost([FromForm] int StoreId, [FromForm] string StoreNumber, [FromForm] string StoreName, [FromForm] string Shelves, [FromForm] string StoreType, [FromForm] string ManagerName, [FromForm] string ManagerJobNumber, [FromForm] string Status)
         {
             LogableTask task = LogableTask.NewTask("EditStore");
 
@@ -45,11 +82,23 @@ namespace LabMaterials.Pages
                     this.StoreName = StoreName;
                     this.StoreNumber = StoreNumber;
                     this.StoreId = StoreId;
+                     this.StoreType = StoreType;
+                    this.ManagerName = ManagerName;
+                    this.ManagerJobNumber = ManagerJobNumber;
+                    int parsedManagerJobNumber = 0;
+                    int.TryParse(ManagerJobNumber, out parsedManagerJobNumber);
+                    this.Status = Status;
 
-                    if (string.IsNullOrEmpty(StoreNumber))
+                    if(string.IsNullOrEmpty(StoreType))
+                        ErrorMsg = (Program.Translations["StoreTypeMissing"])[Lang];
+                    else if (string.IsNullOrEmpty(StoreNumber))
                         ErrorMsg = (Program.Translations["StoreNumberMissing"])[Lang];
                     else if (string.IsNullOrEmpty(StoreName))
                         ErrorMsg = (Program.Translations["StoreNameMissing"])[Lang];
+                    else if (string.IsNullOrEmpty(ManagerName))
+                        ErrorMsg = (Program.Translations["ManagerNameMissing"])[Lang];
+                    else if (string.IsNullOrEmpty(ManagerJobNumber))
+                        ErrorMsg = (Program.Translations["ManagerJobNumberMissing"])[Lang];
                     else
                     {
                         var dbContext = new LabDBContext();
@@ -76,6 +125,10 @@ namespace LabMaterials.Pages
                                     return Page();
                                 }
                             }*/
+                            store.StoreType = StoreType;
+                            store.WarehouseManagerName = ManagerName;
+                            store.ManagerJobNum = parsedManagerJobNumber;
+                            store.WarehouseStatus = Status;
                             store.StoreName = StoreName;
                             store.StoreNumber = StoreNumber;
                             dbContext.SaveChanges();
@@ -113,6 +166,13 @@ namespace LabMaterials.Pages
             this.lblUpdate = (Program.Translations["Update"])[Lang];
             this.lblCancel = (Program.Translations["Cancel"])[Lang];
             this.lblStores = (Program.Translations["Stores"])[Lang];
+            this.lblWarehouseType = (Program.Translations["WarehouseType"])[Lang];
+            this.lblManagerName = (Program.Translations["ManagerName"])[Lang];
+            this.lblManagerJobNumber = (Program.Translations["ManagerJobNumber"])[Lang];
+            this.lblStatus = (Program.Translations["WarehouseStatus"])[Lang];
+            
+            this.lblOpen = (Program.Translations["Open"])[Lang];
+            this.lblClosed = (Program.Translations["Closed"])[Lang];
         }
     }
 }

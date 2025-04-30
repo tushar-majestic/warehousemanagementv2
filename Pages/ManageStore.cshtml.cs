@@ -27,7 +27,7 @@ namespace LabMaterials.Pages
         public List<string> SelectedColumns { get; set; } = new List<string>();
         public List<Room> Rooms { get; set; }
 
-        public string lblStores, lblManageStorage, lblSearch, lblRoomName, lblManageShelves, lblUnlock, lblLock, lblRoomNumber, lblManageRooms, lblStoreNumber, lblAddRoom, lblAddShelf, lblStoreName, lblSubmit, lblAddStore, lblShelves, lblEdit, lblDelete, lblTotalItem, lblAddDestination, lblManageDestination;
+        public string lblStores, lblManageStorage, lblSearch, lblRoomName, lblManageShelves, lblUnlock, lblLock, lblRoomNumber, lblManageRooms, lblStoreNumber, lblAddRoom, lblAddShelf, lblStoreName, lblSubmit, lblAddStore, lblShelves, lblEdit, lblDelete, lblTotalItem, lblAddDestination, lblManageDestination, lblWarehouseType, lblManagerName, lblManagerJobNumber, lblStatus;
 
         private void LoadSelectedColumns()
         {
@@ -345,8 +345,11 @@ namespace LabMaterials.Pages
             this.lblManageShelves = (Program.Translations["ManageShelves"])[Lang]; 
             this.lblLock = (Program.Translations["Lock"])[Lang]; 
             this.lblRoomName = (Program.Translations["RoomName"])[Lang]; 
-            this.lblUnlock = (Program.Translations["Unlock"])[Lang];
-
+            this.lblUnlock = (Program.Translations["Unlock"])[Lang];    
+            this.lblWarehouseType = (Program.Translations["WarehouseType"])[Lang];
+            this.lblManagerName = (Program.Translations["ManagerName"])[Lang];
+            this.lblManagerJobNumber = (Program.Translations["ManagerJobNumber"])[Lang];
+            this.lblStatus = (Program.Translations["WarehouseStatus"])[Lang];
 
 
 
