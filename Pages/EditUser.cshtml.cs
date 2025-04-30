@@ -11,13 +11,13 @@ namespace LabMaterials.Pages
     public class EditUserModel : BasePageModel
     {
         public string ErrorMsg { get; set; }
-        public string Username, UserFullName, Email, Password;
+        public string Username, UserFullName, Email, Password, EmpAffiliation,JobNumber, Transfer, ReTypePassword;
         public bool IsADUser, ChangePassword;
         public int UserGroupID, ToUpdateUserID;
         public List<UserGroup> UserGroupsList {  get; set; }
         
         public string lblUpdateUser, lblUserName, lblFullName, lblEmail,
-            lblUserEnabled, lblPassword, lblChangePassword, lblIsDomainUser, lblUserGroupName, lblUpdate, lblCancel, lblUsers;
+            lblUserEnabled, lblPassword, lblChangePassword, lblIsDomainUser, lblUserGroupName, lblUpdate, lblCancel, lblUsers, lblJobNumber, lblEmpAffiliation, lblTransfer, lblReTypePassword;
 
         public void OnGet()
         {
@@ -35,10 +35,13 @@ namespace LabMaterials.Pages
             this.UserGroupID = user.UserGroupId;
             this.IsADUser = user.IsActiveDirectoryUser;
             this.Password = "************";
+            this.JobNumber = user.JobNumber.ToString();
+            this.EmpAffiliation = user.EmpAffiliation;
+            this.Transfer = user.Transfer.ToString();
             UserGroupsList = dbContext.UserGroups.ToList();
         }
 
-        public IActionResult OnPost([FromForm] int ToUpdateUserID, [FromForm] string UserName, [FromForm] string UserFullName, [FromForm] string Email, [FromForm] string Password, [FromForm] bool IsADUser, [FromForm] bool ChangePassword, [FromForm] int UserGroupID)
+        public IActionResult OnPost([FromForm] int ToUpdateUserID, [FromForm] string UserName, [FromForm] string UserFullName, [FromForm] string Email, [FromForm] string Password, [FromForm] bool IsADUser, [FromForm] bool ChangePassword, [FromForm] int UserGroupID, string ReTypePassword,[FromForm] string JobNumber,[FromForm] string EmpAffiliation, [FromForm] string Transfer)
         {
             LogableTask task = LogableTask.NewTask("EditUser");
 
@@ -57,19 +60,48 @@ namespace LabMaterials.Pages
                     this.UserGroupID = UserGroupID;
                     this.IsADUser = IsADUser;
                     this.ChangePassword = ChangePassword;
-                    if(ChangePassword)
+                    this.JobNumber = JobNumber;
+                    this.EmpAffiliation = EmpAffiliation;
+                    this.Transfer = Transfer;
+                    if(ChangePassword){
                         this.Password = Password;
+                        this.ReTypePassword = ReTypePassword;
+                    }
                     UserGroupsList = dbContext.UserGroups.ToList();
 
+                    // old code 
+                    // if (string.IsNullOrEmpty(UserName))
+                    //     ErrorMsg = (Program.Translations["UserNameMissing"])[Lang];
+                    // else if (string.IsNullOrEmpty(UserFullName))
+                    //     ErrorMsg = (Program.Translations["UserFullNameMissing"])[Lang];
+                    // else if (string.IsNullOrEmpty(Email))
+                    //     ErrorMsg = (Program.Translations["UserEmailMissing"])[Lang];
+                    // else if (UserGroupID == 0)
+                    //     ErrorMsg = (Program.Translations["UserGroupMissing"])[Lang];
+                    //old code ends
 
-                    if (string.IsNullOrEmpty(UserName))
+                    // new Changes
+                    if (UserGroupID == 0)
+                        ErrorMsg = (Program.Translations["SelectUserGroup"])[Lang];
+                    else if (string.IsNullOrEmpty(JobNumber))
+                        ErrorMsg = (Program.Translations["JobNumberMissing"])[Lang];
+                    else if (string.IsNullOrEmpty(UserName))
                         ErrorMsg = (Program.Translations["UserNameMissing"])[Lang];
                     else if (string.IsNullOrEmpty(UserFullName))
                         ErrorMsg = (Program.Translations["UserFullNameMissing"])[Lang];
+                    else if (string.IsNullOrEmpty(EmpAffiliation))
+                        ErrorMsg = (Program.Translations["EmpAffiliationMissing"])[Lang];
+                    else if (string.IsNullOrEmpty(Transfer))
+                        ErrorMsg = (Program.Translations["TransferMissing"])[Lang];
                     else if (string.IsNullOrEmpty(Email))
                         ErrorMsg = (Program.Translations["UserEmailMissing"])[Lang];
-                    else if (UserGroupID == 0)
-                        ErrorMsg = (Program.Translations["UserGroupMissing"])[Lang];
+                    else if (ChangePassword && !IsADUser && string.IsNullOrEmpty(Password))
+                        ErrorMsg = (Program.Translations["PasswordMissing"])[Lang];
+                    else if (ChangePassword && !IsADUser && string.IsNullOrEmpty(ReTypePassword))
+                        ErrorMsg = (Program.Translations["ReTypePasswordMissing"])[Lang];
+                    else if (ChangePassword && !IsADUser && (Password != ReTypePassword))
+                        ErrorMsg = (Program.Translations["PasswordMismatch"])[Lang];
+                    // new Changes ends
                     else
                     {
                         var user = dbContext.Users.Single(u => u.UserId == ToUpdateUserID);
@@ -78,6 +110,11 @@ namespace LabMaterials.Pages
                         user.FullName = UserFullName;
                         user.UserGroupId = UserGroupID;
                         user.IsActiveDirectoryUser = IsADUser;
+                        //new changes
+                        user.JobNumber = int.Parse(JobNumber);
+                        user.EmpAffiliation = EmpAffiliation;
+                        user.Transfer = int.Parse(Transfer);
+                        //new changes ends
                         if(ChangePassword)
                             user.Password = Lib.Hash.GenerateSHA(System.Text.UTF8Encoding.UTF8.GetBytes(Password + UserName.ToLower()));
 
@@ -116,11 +153,16 @@ namespace LabMaterials.Pages
             this.lblChangePassword = (Program.Translations["ChangePassword"])[Lang];
             this.lblPassword = (Program.Translations["Password"])[Lang];
             this.lblIsDomainUser = (Program.Translations["IsDomainUser"])[Lang];
-            this.lblUserGroupName = (Program.Translations["UserGroupName"])[Lang];
+            this.lblUserGroupName = (Program.Translations["UserType"])[Lang];
 
             this.lblUpdate = (Program.Translations["Update"])[Lang];
             this.lblCancel = (Program.Translations["Cancel"])[Lang];
             this.lblUsers = (Program.Translations["Users"])[Lang];
+            this.lblJobNumber = (Program.Translations["JobNumber"])[Lang];
+            this.lblEmpAffiliation = (Program.Translations["EmpAffiliation"])[Lang];
+            this.lblTransfer = (Program.Translations["Transfer"])[Lang];
+            this.lblReTypePassword = (Program.Translations["ReTypePassword"])[Lang];
+
         }
     }
 }
