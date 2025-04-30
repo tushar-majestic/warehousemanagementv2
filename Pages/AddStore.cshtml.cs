@@ -8,22 +8,30 @@ namespace LabMaterials.Pages
     public class AddStoreModel : BasePageModel
     {
         public string ErrorMsg { get; set; }
-        public string StoreNumber, StoreName, Shelves,ManagerName,WarehouseType,ManagerJobNumber ;
-        public bool Open { get; set; }
-        public string Status { get; set; } // "Open" or "Closed"
-
-        public bool Closed { get; set; }
+        public string StoreNumber, StoreName, Shelves, ManagerName, StoreType,ManagerJobNumber ;
+        public string Status { get; set; }
+        public List<User> ManagerGroupsList {  get; set; }
 
         public string lblStores, lblAddStore, lblStoreNumber, lblStoreName, lblShelves, lblAdd, lblCancel,lblWarehouseType, lblManagerName, lblManagerJobNumber,lblStatus, lblOpen, lblClosed ;
         public void OnGet()
         {
             base.ExtractSessionData();
             FillLables();
+            var dbContext = new LabDBContext();
+            var managerGroupId = dbContext.UserGroups
+                    .Where(g => g.UserGroupName == "Manager")
+                    .Select(g => g.UserGroupId)
+                    .FirstOrDefault();
+
+            ManagerGroupsList = dbContext.Users
+                .Where(u => u.UserGroupId == managerGroupId)
+                .ToList();
+
             if (CanManageStore == false)
                 RedirectToPage("./Index?lang=" + Lang);
         }
 
-        public IActionResult OnPost([FromForm] string StoreNumber, [FromForm] string StoreName)
+        public IActionResult OnPost([FromForm] string StoreNumber, [FromForm] string StoreName, [FromForm] string StoreType, [FromForm] string ManagerName, [FromForm] string ManagerJobNumber, [FromForm] string Status)
         {
             LogableTask task = LogableTask.NewTask("AddStore");
 
@@ -37,14 +45,37 @@ namespace LabMaterials.Pages
                     this.StoreName = StoreName;
                     this.StoreNumber = StoreNumber;
                     this.Shelves = "";
+                    this.StoreType = StoreType;
+                    this.ManagerName = ManagerName;
+                    this.ManagerJobNumber = ManagerJobNumber;
+                    int parsedManagerJobNumber = 0;
+                    int.TryParse(ManagerJobNumber, out parsedManagerJobNumber);
+                    this.Status = Status;
 
-                    if (string.IsNullOrEmpty(StoreNumber))
-                        ErrorMsg = (Program.Translations["StoreNumberMissing"])[Lang];
+                    var dbContext = new LabDBContext();
+                    var managerGroupId = dbContext.UserGroups
+                                        .Where(g => g.UserGroupName == "Manager")
+                                        .Select(g => g.UserGroupId)
+                                        .FirstOrDefault();
+
+                                ManagerGroupsList = dbContext.Users
+                                    .Where(u => u.UserGroupId == managerGroupId)
+                                    .ToList();
+
+                    if(string.IsNullOrEmpty(StoreType))
+                        ErrorMsg = (Program.Translations["StoreTypeMissing"])[Lang];
                     else if (string.IsNullOrEmpty(StoreName))
                         ErrorMsg = (Program.Translations["StoreNameMissing"])[Lang];
+                    else if (string.IsNullOrEmpty(StoreNumber))
+                        ErrorMsg = (Program.Translations["StoreNumberMissing"])[Lang];
+                    else if (string.IsNullOrEmpty(ManagerName))
+                        ErrorMsg = (Program.Translations["ManagerNameMissing"])[Lang];
+                    else if (string.IsNullOrEmpty(ManagerJobNumber))
+                        ErrorMsg = (Program.Translations["ManagerJobNumberMissing"])[Lang];
+                    
                     else
                     {
-                        var dbContext = new LabDBContext();
+                        // var dbContext = new LabDBContext();
                         if (dbContext.Stores.Count(s => s.StoreNumber == StoreNumber) > 0)
                             ErrorMsg = string.Format((Program.Translations["StoreNumberExists"])[Lang], StoreNumber);
                         else if (dbContext.Stores.Count(s => s.StoreName == StoreName) > 0)
@@ -52,11 +83,17 @@ namespace LabMaterials.Pages
                         else
                         {
                             var store = new Store
-                            {
+                            {   
+                                StoreType = StoreType,
+                                WarehouseManagerName = ManagerName,
+                                ManagerJobNum = parsedManagerJobNumber,
+                                WarehouseStatus = Status,
                                 ShelfNumbers = Shelves,
                                 StoreName = StoreName,
                                 StoreNumber = StoreNumber,
-                                StoreId = PrimaryKeyManager.GetNextId()
+                                StoreId = PrimaryKeyManager.GetNextId(),
+                               
+
                             };
                             dbContext.Stores.Add(store);
                             dbContext.SaveChanges();

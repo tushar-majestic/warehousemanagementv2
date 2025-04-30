@@ -5,7 +5,7 @@ namespace LabMaterials.Pages
     public class EditItemGroupModel : BasePageModel
     {
         public string ErrorMsg { get; set; }
-        public string GroupCode, GroupCodeID;
+        public string GroupCode, GroupCodeID, GroupNameSearch;
         public string GroupDesc;
         public int page { get; set; }
         
@@ -14,6 +14,7 @@ namespace LabMaterials.Pages
         {
             base.ExtractSessionData();
             this.page = (int)HttpContext.Session.GetInt32("page");
+            this.GroupNameSearch = HttpContext.Session.GetString("GroupName");
             if (CanManageItems == false)
                 RedirectToPage("./Index?lang=" + Lang);
             using (var dbContext = new LabDBContext())

@@ -4,6 +4,7 @@ using LabMaterials.DB;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LabMaterials.Migrations
 {
     [DbContext(typeof(LabDBContext))]
-    partial class LabDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250430123809_AddStoredProcedures")]
+    partial class AddStoredProcedures
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1124,7 +1127,7 @@ namespace LabMaterials.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)")
                         .HasDefaultValue("");
-                        
+
                     b.Property<DateTime?>("Ended")
                         .HasColumnType("datetime");
 
@@ -1169,9 +1172,8 @@ namespace LabMaterials.Migrations
                         .HasDefaultValueSql("((0))");
 
                     b.Property<int?>("Transfer")
-                        .HasColumnType("int")
-                        .HasColumnName("Transfer");
-                        
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("Updated")
                         .HasColumnType("datetime");
 

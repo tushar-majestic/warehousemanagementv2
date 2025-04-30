@@ -53,6 +53,8 @@ public partial class LabDBContext : DbContext
 
     public virtual DbSet<Supply> Supplies { get; set; }
 
+    public virtual DbSet<Tablecolumn> Tablecolumns { get; set; }
+
     public virtual DbSet<Unit> Units { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
@@ -62,8 +64,6 @@ public partial class LabDBContext : DbContext
     public virtual DbSet<UserGroupPrivilege> UserGroupPrivileges { get; set; }
 
     public virtual DbSet<VActivityLog> VActivityLogs { get; set; }
-
-    public virtual DbSet<TableColumn> TableColumns { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -181,7 +181,9 @@ public partial class LabDBContext : DbContext
         modelBuilder.Entity<Store>(entity =>
         {
             entity.Property(e => e.StoreId).ValueGeneratedNever();
+            entity.Property(e => e.BuildingNumber).IsFixedLength();
             entity.Property(e => e.IsActive).HasDefaultValue(1);
+            entity.Property(e => e.StoreType).IsFixedLength();
         });
 
         modelBuilder.Entity<StoreMovement>(entity =>
@@ -215,6 +217,12 @@ public partial class LabDBContext : DbContext
 
         modelBuilder.Entity<Unit>(entity =>
         {
+            entity.Property(e => e.ChemicalStatus).IsFixedLength();
+            entity.Property(e => e.DocumentType).IsFixedLength();
+            entity.Property(e => e.HazardType).IsFixedLength();
+            entity.Property(e => e.UnitsMeasure).IsFixedLength();
+            entity.Property(e => e.WarehouseType).IsFixedLength();
+
             entity.HasOne(d => d.GroupCodeNavigation).WithMany(p => p.Units)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Units_UnitGroup");
@@ -222,6 +230,8 @@ public partial class LabDBContext : DbContext
 
         modelBuilder.Entity<User>(entity =>
         {
+            entity.Property(e => e.EmpAffiliation).HasDefaultValue("");
+            entity.Property(e => e.Lang).IsFixedLength();
             entity.Property(e => e.Password).HasDefaultValueSql("((0))");
 
             entity.HasOne(d => d.UserGroup).WithMany(p => p.Users)

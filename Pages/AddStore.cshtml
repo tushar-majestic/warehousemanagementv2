@@ -38,6 +38,13 @@
                     showErrorNotification(errorMessageFromServer);
             </text>
         }
+
+        document.getElementById("ManagerName").addEventListener("change", function () {
+            const selectedOption = this.options[this.selectedIndex];
+            const jobNumber = selectedOption.getAttribute("data-jobnumber");
+
+            document.getElementById("ManagerJobNumber").value = jobNumber || '';
+        });
     </script>
 }
 @{
@@ -77,15 +84,18 @@
                         <div class="col-lg-12 col-sm-12">
                             @* Warehouse type  *@
                             <div class="mb-4">
-                                    <label class="my-1 me-2" for="WarehouseType">@Model.lblWarehouseType</label>
-                                    <select class="form-select" id="WarehouseType" name="WarehouseType"
-                                        aria-label="Default select example">
-                                        <option value="Central">Central</option>
-                                        <option value="Branch">Branch</option>
-                                        <option value="SupplyRoom">Supply Room</option>
-                                        <option value="EmergencyRoom">Emergency Room</option>
+                                    <label class="my-1 me-2" for="StoreType">@Model.lblWarehouseType</label>
+                                    <select class="form-select" id="StoreType" name="StoreType"
+                                        aria-label="Default select example" value="@Model.StoreType">
+                                        @{
+                                            var selected = Model.StoreType;
+                                            <option value=""></option>
+                                            @:<option value="Central" @(selected == "Central" ? "selected" : "")>Central</option>
+                                            @:<option value="Branch"  @(selected == "Branch" ? "selected" : "")>Branch</option>
+                                            @:<option value="SupplyRoom"  @(selected == "SupplyRoom" ? "selected" : "")>Supply Room</option>
+                                            @:<option value="EmergencyRoom"  @(selected == "EmergencyRoom" ? "selected" : "")>Emergency Room</option>
 
-
+                                        }
                                     </select>
                             </div>
 
@@ -112,17 +122,27 @@
                                         aria-label="Default select example">
                                         <option value=""></option>
                                         
-
+                                        
+                                    @if (Model.ManagerGroupsList != null)
+                                    {
+                                        foreach (var item in Model.ManagerGroupsList)
+                                        {
+                                            <option value="@item.UserName" data-jobnumber="@item.JobNumber">@item.UserName</option>
+                                        }
+                                    }
 
                                     </select>
                             </div>
 
                             @* Warehouse manager Job Number  *@
                             <div class="mb-4">
-                                <label for="storeNumber">@Model.lblManagerJobNumber</label>
+                                <label for="ManagerJobNumber">@Model.lblManagerJobNumber</label>
                                 <input type="text" name="ManagerJobNumber" class="form-control" id="ManagerJobNumber"
                                     value="@Model.ManagerJobNumber" /> 
                             </div>
+
+                            
+
 
                             @* Warehouse status *@
                             <div class="mb-4">

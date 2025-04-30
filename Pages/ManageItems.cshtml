@@ -48,6 +48,21 @@
                 }
             }
 
+            
+        const toggleButton = document.getElementById('toggleDropdown');
+        const dropdownPanel = document.getElementById('dropdownPanel');
+
+        toggleButton.addEventListener('click', function () {
+            dropdownPanel.style.display = (dropdownPanel.style.display === 'none' || dropdownPanel.style.display === '') ? 'block' : 'none';
+        });
+
+        // Optional: hide when click outside
+        document.addEventListener('click', function (e) {
+            if (!toggleButton.contains(e.target) && !dropdownPanel.contains(e.target)) {
+                dropdownPanel.style.display = 'none';
+            }
+        });
+
 
 
     </script>
@@ -92,65 +107,125 @@
 
         </div>
     </div>
-   <div class="table-settings mb-4">
-        <form method="post" asp-page-handler="Search" class="row align-items-center">
+    <div class="table-settings mb-4">
+        <form method="post" asp-page-handler="Action" class="row align-items-center">
 
-        <div class="row">
+            <div class="row">
+                <div class="col col-md-6 col-lg-3 mb-3">
+                    <div class="input-group me-2 me-lg-3 fmxw-400">
+                        <span class="input-group-text">
+                            <svg class="icon icon-xs" x-description="Heroicon name: solid/search"
+                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                <path fill-rule="evenodd"
+                                    d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                                    clip-rule="evenodd"></path>
+                            </svg>
+                        </span>
+                        <input type="text" name="ItemName" class="form-control" placeholder="@Model.lblItemName" value="@Model.ItemName">
+                    </div>
+                </div>
 
-                    <div class="col col-md-6 col-lg-3 mb-3">
-                        <div class="input-group me-2 me-lg-3 fmxw-400">
-                            <span class="input-group-text">
-                                <svg class="icon icon-xs" x-description="Heroicon name: solid/search"
-                                     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                    <path fill-rule="evenodd"
-                                          d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                                          clip-rule="evenodd"></path>
-                                </svg>
-                            </span>
-                            <input type="text" name="ItemName" class="form-control" placeholder="@Model.lblItemName"  value="@Model.ItemName">
+                <div class="col col-md-6 col-lg-3 mb-3">
+                    <div class="input-group me-2 me-lg-3 fmxw-400">
+                        <span class="input-group-text">
+                            <svg class="icon icon-xs" x-description="Heroicon name: solid/search"
+                                xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                <path fill-rule="evenodd"
+                                    d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                                    clip-rule="evenodd"></path>
+                            </svg>
+                        </span>
+                        <input type="text" name="Group" class="form-control" placeholder="@Model.lblGroupName" value="@Model.Group">
+                    </div>
+                </div>
+
+                <div class="col col-md-6 col-lg-3 mb-3">
+                    <div class="input-group me-2 me-lg-3 fmxw-400">
+                        <span class="input-group-text">
+                            @Model.lblFromDate
+                        </span>
+                        <input asp-for="FromDate" class="form-control" type="date" name="FromDate"
+                            value="@Model.FromDate?.ToString("yyyy-MM-dd")" />
+                    </div>
+                </div>
+
+                <div class="col col-md-6 col-lg-3 mb-3 pe-0">
+                    <div class="input-group me-2 me-lg-3 fmxw-400">
+                        <span class="input-group-text">
+                            @Model.lblToDate
+                        </span>
+                        <input asp-for="ToDate" class="form-control" type="date" name="ToDate"
+                            value="@Model.ToDate?.ToString("yyyy-MM-dd")" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="row align-items-center">
+                <div class="col-6 col-md-2 ps-md-0 mx-3">
+                    <button type="submit" name="action" value="search"class="btn btn-primary">@Model.lblSubmit</button>
+                </div>
+
+                <div class="col-6 col-md-3 text-end ms-auto">
+                    <div class="position-relative">
+                        <button class="btn btn-secondary btn-sm" id="toggleDropdown" type="button">
+                            Show/Hide Columns
+                        </button>
+
+                        <div id="dropdownPanel" class="card p-2 shadow-sm position-absolute"
+                            style="right: 0; top: 100%; width: 200px; display: none; z-index: 1000;">
+                            <div class="form-check mb-1">
+                                <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="itemCode"
+                                    id="itemCode" @(Model.SelectedColumns.Contains("itemCode") ? "checked" : "")>
+                                <label class="form-check-label" for="itemCode">@Model.lblItemCode</label>
+                            </div>
+                            <div class="form-check mb-1">
+                                <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="itemName"
+                                    id="itemName" @(Model.SelectedColumns.Contains("itemName") ? "checked" : "")>
+                                <label class="form-check-label" for="itemName">@Model.lblItemName</label>
+                            </div>
+                            <div class="form-check mb-1">
+                                <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="quantity"
+                                    id="quantity" @(Model.SelectedColumns.Contains("quantity") ? "checked" : "")>
+                                <label class="form-check-label" for="quantity">@Model.lblQuantity</label>
+                            </div>
+                            <div class="form-check mb-1">
+                                <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="hazardType"
+                                    id="hazardType" @(Model.SelectedColumns.Contains("hazardType") ? "checked" : "")>
+                                <label class="form-check-label" for="hazardType">@Model.lblHazardType</label>
+                            </div>
+                            <div class="form-check mb-1">
+                                <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="typeName"
+                                    id="typeName" @(Model.SelectedColumns.Contains("typeName") ? "checked" : "")>
+                                <label class="form-check-label" for="typeName">@Model.lblTypeName</label>
+                            </div>
+                            <div class="form-check mb-1">
+                                <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="unitCode"
+                                    id="unitCode" @(Model.SelectedColumns.Contains("unitCode") ? "checked" : "")>
+                                <label class="form-check-label" for="unitCode">@Model.lblUnitCode</label>
+                            </div>
+                            <div class="form-check mb-1">
+                                <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="groupName"
+                                    id="groupName" @(Model.SelectedColumns.Contains("groupName") ? "checked" : "")>
+                                <label class="form-check-label" for="groupName">@Model.lblGroupName</label>
+                            </div>
+                            <div class="form-check mb-1">
+                                <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="batchNo"
+                                    id="batchNo" @(Model.SelectedColumns.Contains("batchNo") ? "checked" : "")>
+                                <label class="form-check-label" for="batchNo">@Model.lblBatchNo</label>
+                            </div>
+                            <div class="form-check mb-1">
+                                <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="expiry"
+                                    id="expiry" @(Model.SelectedColumns.Contains("expiry") ? "checked" : "")>
+                                <label class="form-check-label" for="expiry">@Model.lblExpiryDate</label>
+                            </div>
+                            <div class="form-check mb-1 text-center">
+                                <button type="submit" name="action" value="updateColumns"
+                                    class="btn btn-success btn-sm">Ok</button>
+                            </div>
                         </div>
                     </div>
-                                <div class="col col-md-6 col-lg-3 mb-3">
-                                    <div class="input-group me-2 me-lg-3 fmxw-400">
-                                        <span class="input-group-text">
-                                            <svg class="icon icon-xs" x-description="Heroicon name: solid/search"
-                                                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                                <path fill-rule="evenodd"
-                                                      d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                                                      clip-rule="evenodd"></path>
-                                            </svg>
-                                        </span>
-                                        <input type="text" name="Group" class="form-control" placeholder="@Model.lblGroupName" value="@Model.Group">
-                                    </div>
-                                </div>
-                                            <div class="col col-md-6 col-lg-3 mb-3">
-                                                <div class="input-group me-2 me-lg-3 fmxw-400">
-                                                    <span class="input-group-text">
-                                                        @Model.lblFromDate
-                                                    </span>
-
-                                                    <input asp-for="FromDate" class="form-control" type="date" name="FromDate"
-                                                           value="@Model.FromDate?.ToString("yyyy-MM-dd")" />
-                                                </div>
-                                            </div>
-                                            <div class="col col-md-6 col-lg-3 mb-3 pe-0">
-                                                <div class="input-group me-2 me-lg-3 fmxw-400">
-                                                    <span class="input-group-text">
-                                                        @Model.lblToDate
-                                                    </span>
-
-                                                    <input asp-for="ToDate" class="form-control" type="date" name="ToDate"
-                                                           value="@Model.ToDate?.ToString("yyyy-MM-dd")" />
-                                                </div>
-                                            </div>
-        </div>
-        <div class="row">
-
-                    <div class="col-4 col-md-2 ps-md-0  mx-3">
-                        <button type="submit" class="btn btn-primary">@Model.lblSubmit</button>
-                    </div>
-        </div>
-
+                </div>
+            </div>
 
         </form>
     </div>
@@ -268,15 +343,42 @@
                 <table class="table table-centered table-sm table-hover align-middle table-nowrap mb-0 rounded">
                     <thead class="thead-light">
                         <tr>
+                            @if (Model.SelectedColumns.Contains("itemCode"))
+                            {
                             <th scope="col" class="border-0 rounded-start">@Model.lblItemCode</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("itemName"))
+                            {
                             <th scope="col" class="border-0">@Model.lblItemName</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("quantity"))
+                            {
                             <th scope="col" class="border-0">@Model.lblQuantity</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("hazardType"))
+                            {
                             <th scope="col" class="border-0">@Model.lblHazardType</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("typeName"))
+                            {
                             <th scope="col" class="border-0">@Model.lblTypeName</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("unitCode"))
+                            {
                             <th scope="col" class="border-0">@Model.lblUnitCode</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("groupName"))
+                            {
                             <th scope="col" class="border-0">@Model.lblGroupName</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("batchNo"))
+                            {
                             <th scope="col" class="border-0">@Model.lblBatchNo</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("expiry"))
+                            {
                             <th scope="col" class="border-0">@Model.lblExpiryDate</th>
+                            }
 
                             <th class="border-0 rounded-end"></th>
                         </tr>
@@ -287,21 +389,50 @@
                             foreach (var item in Model.Items)
                             {
                                 <tr>
+                                    @if (Model.SelectedColumns.Contains("itemCode"))
+                                    {
                                     <th scope="row">@item.ItemCode</th>
+                                    }
+                                    @if (Model.SelectedColumns.Contains("itemName"))
+                                    {
                                     <td>@item.ItemName</td>
+                                    }
+                                    @if (Model.SelectedColumns.Contains("quantity"))
+                                    {
                                     <td>@item.AvailableQuantity</td>
+                                    }
+                                    @if (Model.SelectedColumns.Contains("hazardType"))
+                                    {
                                     <td style='color: @(item.IsHazardous?"red":"teal")'>@item.HazardTypeName</td>
+                                    }
+                                    @if (Model.SelectedColumns.Contains("typeName"))
+                                    {
                                     <td>@item.TypeName</td>
+                                    }
+                                    @if (Model.SelectedColumns.Contains("unitCode"))
+                                    {
                                     <td>@item.UnitCode</td>
+                                    }
+                                    @if (Model.SelectedColumns.Contains("groupName"))
+                                    {
                                     <td>@item.GroupDesc</td>
+                                    }
+                                    @if (Model.SelectedColumns.Contains("batchNo"))
+                                    {
                                     <td>@item.BatchNo</td>
-                                    <td>@(item.ExpiryDate.HasValue? item.ExpiryDate.Value.ToString("dd-MM/yyyy") : "")</td>
+                                    }
+                                    @if (Model.SelectedColumns.Contains("expiry"))
+                                    {
+                                        <td>@(item.ExpiryDate.HasValue ? item.ExpiryDate.Value.ToString("dd-MM/yyyy") : "")</td>
+                                    }
                                     <td>
                                         <form method="post">
                                             <input type="hidden" value="@item.ItemId" name="ItemId" />
                                             <input type="hidden" value="@Model.CurrentPage" name="page" />
                                             <input type="hidden" value="@Model.FromDate?.ToString("yyyy-MM-dd")" name="FromDate" />
                                             <input type="hidden" value="@Model.ToDate?.ToString("yyyy-MM-dd")" name="ToDate" />
+                                            <input type="hidden" value="@Model.ItemName" name="ItemName" />
+                                            <input type="hidden" value="@Model.Group" name="Group" />
                                             <input type="submit" value="@Model.lblEdit" class="btn btn-secondary" asp-page-handler="Edit" />
                                             <input type="submit" value="@Model.lblDelete" class="btn btn-danger" asp-page-handler="Delete" />
                                             <!--<input type="submit" value="@Model.lblDamage" class="btn btn-danger" asp-page-handler="Damage" formaction="DamageItem?ItemId=@item.ItemId" /> -->

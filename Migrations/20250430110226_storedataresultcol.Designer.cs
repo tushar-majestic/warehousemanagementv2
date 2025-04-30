@@ -4,6 +4,7 @@ using LabMaterials.DB;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LabMaterials.Migrations
 {
     [DbContext(typeof(LabDBContext))]
-    partial class LabDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250430110226_storedataresultcol")]
+    partial class storedataresultcol
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -713,8 +716,7 @@ namespace LabMaterials.Migrations
 
                     b.Property<string>("BuildingNumber")
                         .HasMaxLength(10)
-                        .HasColumnType("nchar(10)")
-                        .IsFixedLength();
+                        .HasColumnType("nvarchar(10)");
 
                     b.Property<DateTime?>("Created")
                         .HasColumnType("datetime");
@@ -760,8 +762,7 @@ namespace LabMaterials.Migrations
 
                     b.Property<string>("StoreType")
                         .HasMaxLength(50)
-                        .HasColumnType("nchar(50)")
-                        .IsFixedLength();
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<DateTime?>("Updated")
                         .HasColumnType("datetime");
@@ -1017,7 +1018,7 @@ namespace LabMaterials.Migrations
                     b.ToTable("Supply");
                 });
 
-            modelBuilder.Entity("LabMaterials.DB.Tablecolumn", b =>
+            modelBuilder.Entity("LabMaterials.DB.TableColumn", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -1052,13 +1053,11 @@ namespace LabMaterials.Migrations
 
                     b.Property<string>("ChemicalStatus")
                         .HasMaxLength(20)
-                        .HasColumnType("nchar(20)")
-                        .IsFixedLength();
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("DocumentType")
                         .HasMaxLength(20)
-                        .HasColumnType("nchar(20)")
-                        .IsFixedLength();
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("GroupCode")
                         .IsRequired()
@@ -1067,8 +1066,7 @@ namespace LabMaterials.Migrations
 
                     b.Property<string>("HazardType")
                         .HasMaxLength(20)
-                        .HasColumnType("nchar(20)")
-                        .IsFixedLength();
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("UnitCode")
                         .IsRequired()
@@ -1082,13 +1080,11 @@ namespace LabMaterials.Migrations
 
                     b.Property<string>("UnitsMeasure")
                         .HasMaxLength(20)
-                        .HasColumnType("nchar(20)")
-                        .IsFixedLength();
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("WarehouseType")
                         .HasMaxLength(20)
-                        .HasColumnType("nchar(20)")
-                        .IsFixedLength();
+                        .HasColumnType("nvarchar(20)");
 
                     b.HasKey("Id");
 
@@ -1120,11 +1116,9 @@ namespace LabMaterials.Migrations
 
                     b.Property<string>("EmpAffiliation")
                         .IsRequired()
-                        .ValueGeneratedOnAdd()
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
-                        .HasDefaultValue("");
-                        
+                        .HasColumnType("nvarchar(50)");
+
                     b.Property<DateTime?>("Ended")
                         .HasColumnType("datetime");
 
@@ -1147,13 +1141,13 @@ namespace LabMaterials.Migrations
                         .HasColumnType("bit");
 
                     b.Property<int?>("JobNumber")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("JobNumber");
 
                     b.Property<string>("Lang")
                         .HasMaxLength(2)
-                        .HasColumnType("nchar(2)")
-                        .HasColumnName("lang")
-                        .IsFixedLength();
+                        .HasColumnType("nvarchar(2)")
+                        .HasColumnName("lang");
 
                     b.Property<DateTime?>("LastLoginTime")
                         .HasColumnType("datetime");
@@ -1171,7 +1165,7 @@ namespace LabMaterials.Migrations
                     b.Property<int?>("Transfer")
                         .HasColumnType("int")
                         .HasColumnName("Transfer");
-                        
+
                     b.Property<DateTime?>("Updated")
                         .HasColumnType("datetime");
 

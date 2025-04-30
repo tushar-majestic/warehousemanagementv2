@@ -14,6 +14,7 @@ namespace LabMaterials.Pages
         [BindProperty]
         public string GroupName { get; set; }
         public int CurrentPage { get; set; }
+        public string GroupCode { get; set; }
         public int ItemsPerPage { get; set; } = 10;
         public int TotalPages { get; set; }
         public void OnGet(string? GroupName, int page = 1) 
@@ -78,11 +79,11 @@ namespace LabMaterials.Pages
         }
 
 
-        public IActionResult OnPostEdit([FromForm] string GroupCode, [FromForm] int page)
+        public IActionResult OnPostEdit([FromForm] string GroupCode, [FromForm] int page, [FromForm] string GroupName)
         {
             HttpContext.Session.SetInt32("page", page);
             HttpContext.Session.SetString("GroupCode", GroupCode);
-
+            HttpContext.Session.SetString("GroupName", string.IsNullOrEmpty(GroupName) ? "" : GroupName);
             return RedirectToPage("./EditItemGroup");
         }
 
