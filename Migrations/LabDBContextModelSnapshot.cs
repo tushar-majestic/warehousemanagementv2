@@ -1124,7 +1124,7 @@ namespace LabMaterials.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)")
                         .HasDefaultValue("");
-
+                        
                     b.Property<DateTime?>("Ended")
                         .HasColumnType("datetime");
 
@@ -1169,8 +1169,9 @@ namespace LabMaterials.Migrations
                         .HasDefaultValueSql("((0))");
 
                     b.Property<int?>("Transfer")
-                        .HasColumnType("int");
-
+                        .HasColumnType("int")
+                        .HasColumnName("Transfer");
+                        
                     b.Property<DateTime?>("Updated")
                         .HasColumnType("datetime");
 
