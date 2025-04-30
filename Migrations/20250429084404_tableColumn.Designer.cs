@@ -4,6 +4,7 @@ using LabMaterials.DB;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LabMaterials.Migrations
 {
     [DbContext(typeof(LabDBContext))]
-    partial class LabDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250429084404_tableColumn")]
+    partial class tableColumn
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -738,8 +741,7 @@ namespace LabMaterials.Migrations
                         .HasColumnType("int")
                         .HasDefaultValue(1)
                         .HasColumnName("isActive");
-                    b.Property<int?>("ManagerJobNum")
-                        .HasColumnType("int");
+
                     b.Property<string>("ShelfNumbers")
                         .IsRequired()
                         .HasMaxLength(4000)
@@ -765,14 +767,6 @@ namespace LabMaterials.Migrations
                     b.Property<int?>("UpdatedById")
                         .HasColumnType("int")
                         .HasColumnName("UpdatedByID");
-
-                    b.Property<string>("WarehouseManagerName")
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
-                    b.Property<string>("WarehouseStatus")
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
 
                     b.HasKey("StoreId");
 
@@ -997,6 +991,7 @@ namespace LabMaterials.Migrations
 
                     b.ToTable("Supply");
                 });
+
             modelBuilder.Entity("LabMaterials.DB.TableColumn", b =>
                 {
                     b.Property<int>("Id")
@@ -1020,6 +1015,7 @@ namespace LabMaterials.Migrations
 
                     b.ToTable("tablecolumn");
                 });
+
             modelBuilder.Entity("LabMaterials.DB.Unit", b =>
                 {
                     b.Property<int>("Id")
@@ -1092,12 +1088,6 @@ namespace LabMaterials.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("EmpAffiliation")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-
                     b.Property<DateTime?>("Ended")
                         .HasColumnType("datetime");
 
@@ -1119,10 +1109,6 @@ namespace LabMaterials.Migrations
                     b.Property<bool>("IsActiveDirectoryUser")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("JobNumber")
-                        .HasColumnType("int")
-                        .HasColumnName("JobNumber");
-
                     b.Property<string>("Lang")
                         .HasMaxLength(2)
                         .HasColumnType("nvarchar(2)")
@@ -1140,11 +1126,6 @@ namespace LabMaterials.Migrations
                         .HasMaxLength(512)
                         .HasColumnType("varbinary(512)")
                         .HasDefaultValueSql("((0))");
-
-                    b.Property<int?>("Transfer")
-                        .HasColumnType("int")
-                        .HasColumnName("Transfer");
-
 
                     b.Property<DateTime?>("Updated")
                         .HasColumnType("datetime");

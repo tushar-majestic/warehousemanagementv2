@@ -63,6 +63,8 @@ public partial class LabDBContext : DbContext
 
     public virtual DbSet<VActivityLog> VActivityLogs { get; set; }
 
+    public virtual DbSet<TableColumn> TableColumns { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<ActivityLog>(entity =>
