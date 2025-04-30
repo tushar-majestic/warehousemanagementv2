@@ -78,10 +78,10 @@ namespace LabMaterials.Pages
         }
 
 
-        public IActionResult OnPostEdit([FromForm] string GroupCode, [FromForm] int page)
+        public IActionResult OnPostEdit([FromForm] string GroupCode, [FromForm] int page, [FromForm] string GroupName)
         {
             HttpContext.Session.SetInt32("page", page);
-            HttpContext.Session.SetString("GroupCode", GroupCode);
+            HttpContext.Session.SetString("GroupName", string.IsNullOrEmpty(GroupName) ? "" : GroupName);
 
             return RedirectToPage("./EditItemGroup");
         }

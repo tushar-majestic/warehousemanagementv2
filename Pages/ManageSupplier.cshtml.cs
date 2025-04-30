@@ -73,10 +73,11 @@ namespace LabMaterials.Pages
                 RedirectToPage("./Index?lang=" + Lang);
         }
 
-        public IActionResult OnPostEdit([FromForm] int SupplierId, [FromForm] int page)
+        public IActionResult OnPostEdit([FromForm] int SupplierId, [FromForm] int page, [FromForm] string SupplierName)
         {
             HttpContext.Session.SetInt32("SupplierId", SupplierId);
             HttpContext.Session.SetInt32("page", page);
+            HttpContext.Session.SetString("SupplierName", string.IsNullOrEmpty(SupplierName) ? "" : SupplierName);
             return RedirectToPage("./EditSupplier");
         }
 

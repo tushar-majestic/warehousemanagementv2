@@ -111,7 +111,7 @@ namespace LabMaterials.Pages
                 RedirectToPage("./Index?lang=" + Lang);
         }
 
-        public IActionResult OnPostEdit([FromForm] int UserId, [FromForm] int page)
+        public IActionResult OnPostEdit([FromForm] int UserId, [FromForm] int page, [FromForm] string UserName)
         {
             base.ExtractSessionData();
             if (CanManageUsers)
@@ -120,6 +120,7 @@ namespace LabMaterials.Pages
                 {
                     HttpContext.Session.SetInt32("page", page);
                     HttpContext.Session.SetInt32("ToUpdateUserId", UserId);
+                     HttpContext.Session.SetString("UserName", string.IsNullOrEmpty(UserName) ? "" : UserName);
                     return RedirectToPage("./EditUser");
                 }
                 else

@@ -11,7 +11,7 @@ namespace LabMaterials.Pages
     public class EditUserModel : BasePageModel
     {
         public string ErrorMsg { get; set; }
-        public string Username, UserFullName, Email, Password, EmpAffiliation,JobNumber, Transfer, ReTypePassword;
+        public string Username, UserFullName, Email, Password, EmpAffiliation,JobNumber, Transfer, ReTypePassword, UserNameSearch;
         public bool IsADUser, ChangePassword;
         public int UserGroupID, ToUpdateUserID;
         public int page { get; set; }
@@ -27,6 +27,7 @@ namespace LabMaterials.Pages
                 RedirectToPage("./Index?lang=" + Lang);
             FillLables();
             this.page = (int)HttpContext.Session.GetInt32("page");
+            this.UserNameSearch = HttpContext.Session.GetString("UserName");
             var dbContext = new LabDBContext();
 
             var user = dbContext.Users.Single(u => u.UserId == HttpContext.Session.GetInt32("ToUpdateUserId"));
