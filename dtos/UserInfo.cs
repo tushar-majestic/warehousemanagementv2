@@ -6,6 +6,9 @@
         public string UserName {  get; set; }
         public string FullName { get; set; } 
         public string Email { get; set; }
+        public string JobNumber { get; set; }
+        public string EmpAffiliation { get; set; }
+        public string Transfer { get; set; }
         public string IsActive { get; set; }
         public string EnableBtnText { get; set; }
         public string IsLocked { get; set; }

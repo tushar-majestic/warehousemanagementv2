@@ -6,11 +6,15 @@
         if (document.getElementById("IsADUser").checked == true) {
             document.getElementById("Password").disabled = true;
             document.getElementById("PasswordRow").style = 'display:none;';
+            document.getElementById("ReTypePassword").disabled = true;
+            document.getElementById("ReTypePasswordRow").style = 'display:none;';
             document.getElementById("ChangePasswordRow").style = 'display:none;';
         }
         else {
             document.getElementById("Password").disabled = true;
             document.getElementById("PasswordRow").style = 'display:block;';
+            document.getElementById("ReTypePassword").disabled = true;
+            document.getElementById("ReTypePasswordRow").style = 'display:block;';
             document.getElementById("ChangePasswordRow").style = 'display:block;';
         }
 
@@ -19,11 +23,15 @@
             if (document.getElementById("IsADUser").checked == true) {
                 document.getElementById("Password").disabled = true;
                 document.getElementById("PasswordRow").style = 'display:none;';
+                document.getElementById("ReTypePassword").disabled = true;
+                document.getElementById("ReTypePasswordRow").style = 'display:none;';
                 document.getElementById("ChangePasswordRow").style = 'display:none;';
             }
             else {
                 document.getElementById("Password").disabled = true;
                 document.getElementById("PasswordRow").style = 'display:block;';
+                document.getElementById("ReTypePassword").disabled = true;
+                document.getElementById("ReTypePasswordRow").style = 'display:block;';
                 document.getElementById("ChangePasswordRow").style = 'display:block;';
             }
 
@@ -32,9 +40,12 @@
 
             if (document.getElementById("ChangePassword").checked == true) {
                 document.getElementById("Password").disabled = false;
+                document.getElementById("ReTypePassword").disabled = false;
+
             }
             else {
                 document.getElementById("Password").disabled = true;
+                document.getElementById("ReTypePassword").disabled = true;
             }
 
         });
@@ -112,6 +123,39 @@
 
                         <div class="col-lg-12 col-sm-12">
                             <input type="hidden" name="ToUpdateUserID" value="@Model.ToUpdateUserID" />
+
+                            @* User type  *@
+                            <div class="mb-4">
+                                <label class="my-1 me-2" for="UserGroupID">@Model.lblUserGroupName</label>
+                                <select class="form-select" id="UserGroupID" name="UserGroupID">
+                                @{
+                                    foreach (var item in Model.UserGroupsList)
+                                    {
+                                        var selectedAttr = item.UserGroupId == Model.UserGroupID ? "selected=\"selected\"" : "";
+                                        @:<option value="@item.UserGroupId" @Html.Raw(selectedAttr)>@item.UserGroupName</option>
+                                    }
+                                }
+                                </select>
+                            </div>
+
+                            @* isdomain user  *@
+                            <div class="mb-4">
+                                <div class="form-check">
+                                    <label class="form-check-label" for="IsADUser">
+                                        @Model.lblIsDomainUser
+                                    </label>
+                                    <input id="IsADUser" class="form-check-input" type="checkbox" name="IsADUser"
+                                        asp-for="IsADUser">
+
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <label for="JobNumber">@Model.lblJobNumber</label>
+
+                                <input type="text" class="form-control" id="JobNumber" name="JobNumber"
+                                    value="@Model.JobNumber" />
+
+                            </div>
                             <div class="mb-4">
                                 <label for="Username">@Model.lblUserName</label>
 
@@ -126,6 +170,25 @@
                                     value="@Model.UserFullName" />
 
                             </div>
+
+                            @* Employee's Affiliation  *@
+                            <div class="mb-4">
+                                <label for="EmpAffiliation">@Model.lblEmpAffiliation</label>
+
+                                <input type="text" class="form-control" id="EmpAffiliation" name="EmpAffiliation"
+                                    value="@Model.EmpAffiliation" />
+
+                            </div>
+
+                            @* Transfer  *@
+                            <div class="mb-4">
+                                <label for="Transfer">@Model.lblTransfer</label>
+
+                                <input type="text" class="form-control" id="Transfer" name="Transfer"
+                                    value="@Model.Transfer" />
+
+                            </div>
+
                             <div class="mb-4">
                                 <label for="Email">@Model.lblEmail</label>
 
@@ -134,30 +197,8 @@
                             </div>
 
 
-                            <div class="mb-4">
-                                <label class="my-1 me-2" for="UserGroupID">@Model.lblUserGroupName</label>
-                                <select class="form-select" id="UserGroupID" name="UserGroupID"
-                                    aria-label="Default select example">
-
-                                    @if (Model.UserGroupsList != null)
-                                    {
-                                        foreach (var item in Model.UserGroupsList)
-                                        {
-                                            <option value="@item.UserGroupId">@item.UserGroupName</option>
-                                        }
-                                    }
-                                </select>
-                            </div>
-                            <div class="mb-4">
-                                <div class="form-check">
-                                    <label class="form-check-label" for="IsADUser">
-                                        @Model.lblIsDomainUser
-                                    </label>
-                                    <input id="IsADUser" class="form-check-input" type="checkbox" name="IsADUser"
-                                        asp-for="IsADUser">
-
-                                </div>
-                            </div>
+                         
+                        
 
                             <div class="mb-4" id="ChangePasswordRow">
                                 <label for="ChangePassword">@Model.lblChangePassword</label>
@@ -169,6 +210,13 @@
                                 <label for="Password">@Model.lblPassword</label>
                                 <input type="password" name="Password" value="@Model.Password" class="form-control"
                                     id="Password">
+
+                            </div>
+                            @* re type password  *@
+                            <div class="mb-4" id="ReTypePasswordRow">
+                                <label for="ReTypePassword">@Model.lblReTypePassword</label>
+                                <input type="password" name="ReTypePassword" value="@Model.ReTypePassword" class="form-control"
+                                    id="ReTypePassword">
 
                             </div>
 
