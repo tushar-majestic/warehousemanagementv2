@@ -14,12 +14,13 @@ namespace LabMaterials.Pages
         public UserInfo singleUser { get; set; }
         public string lblView, lblUsers, lblSearch, lblAddUser, lblManageUserGroups, lblUserName, lblFullName, lblEmail,
             lblUserEnabled, lblIsLocked, lblUserType, lblUserGroupName, lblEdit, lblUnlock, lblTotalItem;
-
+        public int page { get; set; }
 
         public void OnGet()
         {
             base.ExtractSessionData();
             FillLables();
+            this.page = (int)HttpContext.Session.GetInt32("page");
             if (CanManageUsers)
             {
                 var dbContext = new LabDBContext();

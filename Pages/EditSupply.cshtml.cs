@@ -25,7 +25,8 @@ namespace LabMaterials.Pages
         public List<Store> StoreName { get; set; }
         public List<Room> Rooms { get; set; }
         public List<Shelf> Shelf { get; set; }
-
+        public int page { get; set; }
+         public string FromDate, ToDate;
         public string lblUpdateSupplies, lblSupplierName, lblStoreName, lblTypeName, lblExpiryDate, lblRoomName, lblShelvesNumber, lblItemName, lblItemTypeCode,
             lblQuantityReceived, lblPurchaseOrderNo, lblInvoiceNumber, lblReceivedAt, lblInventoryBalanced, lblUpdate, lblCancel, lblSupplies;
 
@@ -35,6 +36,9 @@ namespace LabMaterials.Pages
             if (CanManageSupplies == false)
                 RedirectToPage("./Index?lang=" + Lang);
             FillLables();
+            this.page = (int)HttpContext.Session.GetInt32("page");
+            this.FromDate = HttpContext.Session.GetString("FromDate");
+            this.ToDate = HttpContext.Session.GetString("ToDate");
             using (var dbContext = new LabDBContext())
             {
 

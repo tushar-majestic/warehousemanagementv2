@@ -75,10 +75,10 @@ namespace LabMaterials.Pages
                 RedirectToPage("./Index?lang=" + Lang);
         }
 
-        public IActionResult OnPostEdit([FromForm] int ReqId)
+        public IActionResult OnPostEdit([FromForm] int ReqId, [FromForm] int page)
         {
             HttpContext.Session.SetInt32("ReqId", ReqId);
-
+            HttpContext.Session.SetInt32("page", page);
             return RedirectToPage("./EditRequestor");
         }
 

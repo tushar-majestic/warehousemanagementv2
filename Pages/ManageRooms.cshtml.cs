@@ -74,10 +74,10 @@ namespace LabMaterials.Pages
         }
 
 
-        public IActionResult OnPostEdit([FromForm] int RoomId)
+        public IActionResult OnPostEdit([FromForm] int RoomId, [FromForm] int page)
         {
             HttpContext.Session.SetInt32("RoomId", RoomId);
-
+            HttpContext.Session.SetInt32("page", page);
             return RedirectToPage("./EditRoom");
         }
 

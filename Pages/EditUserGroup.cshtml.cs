@@ -11,7 +11,7 @@ namespace LabMaterials.Pages
         public int UserGroupId;
         public List<int> SelectedPrivilages { get; set; }
         public SelectList Privilages { get; set; }
-        
+        public int page { get; set; }
         public string lblUpdateUserGroup, lblUserGroupName, lblPrivilages, lblUpdate, lblCancel, lblUserGroup, lblUsers;
         public void OnGet()
         {
@@ -19,6 +19,7 @@ namespace LabMaterials.Pages
             if (CanManageUsers == false)
                 RedirectToPage("./Index?lang=" + Lang);
             FillLables();
+            this.page = (int)HttpContext.Session.GetInt32("page");
             var dbContext = new LabDBContext();
 
             Privilages = new SelectList(dbContext.Privileges.ToList(), "PrivilegeId", "PrivilegeName");

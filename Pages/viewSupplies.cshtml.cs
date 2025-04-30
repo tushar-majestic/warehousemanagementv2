@@ -11,10 +11,15 @@ namespace LabMaterials.Pages
         public string lblSupplies, lbltypeCode, lblStoreName, lblExpiryDate, lblItemType, lblRoomName, lblShelfNumber, lblManageSuppliers, lblSearch, lblSupplierName, lblItemName, lblSubmit, lblAddSupplies,
             lblQuantityReceived, lblPurchaseOrderNo, lblInvoiceNumber, lblReceivedAt, lblInventoryBalanced, lblEdit, lblDelete,
             lblTotalItem, lblFromDate, lblToDate;
+        public string FromDate, ToDate;
+        public int page { get; set; }
 
         public void OnGet()
         {
             base.ExtractSessionData();
+             this.page = (int)HttpContext.Session.GetInt32("page");
+            this.FromDate = HttpContext.Session.GetString("FromDate");
+            this.ToDate = HttpContext.Session.GetString("ToDate");
             if (!this.CanManageSupplies)
             {
                 Response.Redirect("./Index?lang=" + Lang);

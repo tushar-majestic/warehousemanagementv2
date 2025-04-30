@@ -182,6 +182,7 @@
                             <th scope="col" class="border-0">@Model.lblEmail</th>
                             <th scope="col" class="border-0">@Model.lblUserEnabled</th>
                             <th scope="col" class="border-0">@Model.lblIsLocked</th>
+                            
                             @*<th scope="col" class="border-0">@Model.lblUserType</th>
                             <th scope="col" class="border-0">@Model.lblUserGroupName</th>*@
                             <th scope="col" class="border-0 rounded-end"></th>
@@ -204,6 +205,7 @@
                         <td>
                             <form method="post">
                                 <input type="hidden" value="@item.UserID" name="UserId" />
+                                <input type="hidden" value="@Model.CurrentPage" name="page" />
                                 <input type="submit" value="@Model.lblEdit" class="btn btn-primary" asp-page-handler="Edit" />
 
                                 <input type="submit" value="@Model.lblView" class="btn btn-primary" asp-page-handler="View" />

@@ -39,7 +39,7 @@ namespace LabMaterials.Pages
             FillLables();
 
             // Code for Breadcrumb Starts
-                this.page = (int)HttpContext.Session.GetInt32("page"); ;
+                this.page = (int)HttpContext.Session.GetInt32("page");
                 this.Requester = HttpContext.Session.GetString("RequesterName");
                 this.FromDate = HttpContext.Session.GetString("FromDate");
                 this.ToDate = HttpContext.Session.GetString("ToDate");

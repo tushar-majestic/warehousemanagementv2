@@ -208,6 +208,7 @@
                         <td>@item.GroupDesc</td>
                         <td>
                             <form method="post">
+                                <input type="hidden" value="@Model.CurrentPage" name="page" />
                                 <input type="hidden" value="@item.GroupCode" name="GroupCode" />
                                 <input type="submit" value="@Model.lblEdit" class="btn btn-secondary" asp-page-handler="Edit" />
                                 <input type="submit" value="@Model.lblDelete" class="btn btn-danger" asp-page-handler="Delete" />
