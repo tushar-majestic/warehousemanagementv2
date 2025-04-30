@@ -12,10 +12,10 @@ namespace LabMaterials.Pages
     public class ChangePasswordModel : BasePageModel
     {
         public string ErrorMsg { get; set; }
-        public string Username, Password, NewPassword, NewPasswordConfirm;
+        public string Username, Password, NewPassword, NewPasswordConfirm, EmpAffiliation,JobNumber, Transfer,UserFullName,Email;
         public int ToUpdateUserID;
         
-        public string lblChangePassword, lblCurrentPassword, lblChangePasswords, lblNewPassword, lblConfirmNewPassword, lblUpdate, lblCancel;
+        public string lblChangePassword, lblCurrentPassword, lblChangePasswords, lblNewPassword, lblConfirmNewPassword, lblUpdate, lblCancel, lblJobNumber, lblEmpAffiliation, lblTransfer, lblFullName,lblEmail,lblUserName;
 
         public void OnGet()
         {
@@ -29,6 +29,12 @@ namespace LabMaterials.Pages
             ToUpdateUserID = user.UserId;
             Username = user.UserName;
             Password = NewPasswordConfirm = NewPassword = "";
+            JobNumber = user.JobNumber.ToString();
+            UserFullName = user.FullName;
+            Email = user.Email;
+            EmpAffiliation = user.EmpAffiliation;
+            Transfer = user.Transfer.ToString();
+
         }
 
         public IActionResult OnPost([FromForm] int ToUpdateUserID, [FromForm] string UserName, [FromForm] string NewPassword, [FromForm] string NewPasswordConfirm, [FromForm] string Password)
@@ -100,6 +106,13 @@ namespace LabMaterials.Pages
             this.lblUpdate = (Program.Translations["Update"])[Lang];
             this.lblCancel = (Program.Translations["Cancel"])[Lang]; 
             this.lblChangePasswords = (Program.Translations["ChangePasswords"])[Lang];
+
+            this.lblJobNumber = (Program.Translations["JobNumber"])[Lang];
+            this.lblEmpAffiliation = (Program.Translations["EmpAffiliation"])[Lang];
+            this.lblTransfer = (Program.Translations["Transfer"])[Lang];
+            this.lblUserName = (Program.Translations["UserName"])[Lang];
+            this.lblFullName = (Program.Translations["FullName"])[Lang];
+            this.lblEmail = (Program.Translations["Email"])[Lang];
 
         }
     }

@@ -125,12 +125,12 @@
                             </div>
 
                             @* Warehouse status *@
-                           <div class="mb-4">
+                            <div class="mb-4">
                                 <p>@Model.lblStatus</p>
 
                                 <div class="form-check">
                                     <input id="Open" class="form-check-input" type="radio" name="Status" value="Open" 
-                                        checked="@Model.Status == "Open"" />
+                                       />
                                     <label class="form-check-label" for="Open">
                                         @Model.lblOpen
                                     </label>
@@ -138,12 +138,14 @@
 
                                 <div class="form-check">
                                     <input id="Closed" class="form-check-input" type="radio" name="Status" value="Closed"
-                                        checked="@Model.Status == "Closed"" />
+                                        />
                                     <label class="form-check-label" for="Closed">
                                         @Model.lblClosed
                                     </label>
                                 </div>
-                            </div>
+                            </div> 
+                           
+
 
 
 
