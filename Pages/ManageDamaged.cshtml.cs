@@ -44,7 +44,7 @@ namespace LabMaterials.Pages
                 using (var db = new LabDBContext())
                 {
                     string pageName = "manageDamaged";
-                    var existingRecord = db.TableColumns.FirstOrDefault(c => c.UserId == userId.Value && c.Page == pageName);
+                    var existingRecord = db.Tablecolumns.FirstOrDefault(c => c.UserId == userId.Value && c.Page == pageName);
                     if (existingRecord != null && !string.IsNullOrEmpty(existingRecord.DisplayColumns))
                     {
                         SelectedColumns = existingRecord.DisplayColumns.Split(',').ToList();
@@ -109,7 +109,7 @@ namespace LabMaterials.Pages
             base.ExtractSessionData();
             using (var db = new LabDBContext())
             {
-                var existingRecord = db.TableColumns
+                var existingRecord = db.Tablecolumns
                     .FirstOrDefault(c => c.UserId == userId && c.Page == pageName);
 
                 if (existingRecord != null)
@@ -118,13 +118,13 @@ namespace LabMaterials.Pages
                 }
                 else
                 {
-                    var newRecord = new TableColumn
+                    var newRecord = new Tablecolumn
                     {
                         UserId = userId,
                         Page = pageName,
                         DisplayColumns = selectedColumns
                     };
-                    db.TableColumns.Add(newRecord);
+                    db.Tablecolumns.Add(newRecord);
                 }
 
                 db.SaveChanges();
