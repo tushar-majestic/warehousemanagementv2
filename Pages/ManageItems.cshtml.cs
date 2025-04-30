@@ -13,7 +13,7 @@ namespace LabMaterials.Pages
         public List<ItemInfo> Items { get; set; }
         public int TotalItems { get; set; }
         public string Message { get; set; }
-        public DateTime? FromDate, ToDate;
+        // public DateTime? FromDate, ToDate;
         [BindProperty]
         public string ItemName { get; set; }
         [BindProperty]
