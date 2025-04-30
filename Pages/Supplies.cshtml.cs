@@ -24,7 +24,7 @@ namespace LabMaterials.Pages
 
         public string lblSupplies, lbltypeCode, lblStoreName, lblExpiryDate, lblItemType, lblRoomName, lblShelfNumber, lblManageSuppliers, lblSearch, lblSupplierName, lblItemName, lblSubmit, lblAddSupplies,
             lblQuantityReceived, lblPurchaseOrderNo, lblInvoiceNumber, lblReceivedAt, lblInventoryBalanced, lblEdit, lblDelete,
-            lblTotalItem, lblFromDate, lblToDate;
+            lblTotalItem, lblFromDate, lblToDate, lblNewReceivingReport;
         public void OnGet(string? SupplierName,string? ItemName, DateTime? FromDate, DateTime? ToDate, int page = 1)
         {
             base.ExtractSessionData();
@@ -227,6 +227,7 @@ namespace LabMaterials.Pages
             this.lblManageSuppliers = (Program.Translations["ManageSuppliers"])[Lang];
             this.lblSearch = (Program.Translations["Search"])[Lang];
             this.lblSubmit = (Program.Translations["Submit"])[Lang];
+            this.lblNewReceivingReport = (Program.Translations["NewReceivingReport"])[Lang];
             this.lblAddSupplies = (Program.Translations["AddSupplies"])[Lang];
             this.lblSupplierName = (Program.Translations["SupplierName"])[Lang];
             this.lblItemName = (Program.Translations["ItemName"])[Lang];

@@ -93,6 +93,15 @@
           </a>
         </li>
 
+                <li class="nav-item  @(Context.Request.Path == "/Notifications" ? "active" : "") ">
+                    <a asp-area="" asp-page="/Notifications" class="nav-link sidebar-link">
+                        <span class="sidebar-icon">
+                            <img class="icon icon-xs mx-1" src="images/home.png" />
+                        </span>
+                        <span class="sidebar-text">@Model.lblNotifications</span>
+                    </a>
+                </li>
+
 
         @if (Model.CanManageStore)
         {

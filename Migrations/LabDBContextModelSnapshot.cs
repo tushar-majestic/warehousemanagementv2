@@ -738,8 +738,10 @@ namespace LabMaterials.Migrations
                         .HasColumnType("int")
                         .HasDefaultValue(1)
                         .HasColumnName("isActive");
+
                     b.Property<int?>("ManagerJobNum")
                         .HasColumnType("int");
+
                     b.Property<string>("ShelfNumbers")
                         .IsRequired()
                         .HasMaxLength(4000)
@@ -997,6 +999,7 @@ namespace LabMaterials.Migrations
 
                     b.ToTable("Supply");
                 });
+
             modelBuilder.Entity("LabMaterials.DB.TableColumn", b =>
                 {
                     b.Property<int>("Id")
@@ -1020,6 +1023,7 @@ namespace LabMaterials.Migrations
 
                     b.ToTable("tablecolumn");
                 });
+
             modelBuilder.Entity("LabMaterials.DB.Unit", b =>
                 {
                     b.Property<int>("Id")
@@ -1097,7 +1101,6 @@ namespace LabMaterials.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-
                     b.Property<DateTime?>("Ended")
                         .HasColumnType("datetime");
 
@@ -1144,7 +1147,6 @@ namespace LabMaterials.Migrations
                     b.Property<int?>("Transfer")
                         .HasColumnType("int")
                         .HasColumnName("Transfer");
-
 
                     b.Property<DateTime?>("Updated")
                         .HasColumnType("datetime");

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LabMaterials.Migrations
 {
     [DbContext(typeof(LabDBContext))]
-    [Migration("20250429094625_userschanges")]
-    partial class userschanges
+    [Migration("20250430085848_StoreUpdateNew")]
+    partial class StoreUpdateNew
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -1001,6 +1001,30 @@ namespace LabMaterials.Migrations
                     b.HasIndex("SupplierId");
 
                     b.ToTable("Supply");
+                });
+
+            modelBuilder.Entity("LabMaterials.DB.TableColumn", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("DisplayColumns")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Page")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("tablecolumn");
                 });
 
             modelBuilder.Entity("LabMaterials.DB.Unit", b =>
