@@ -5,19 +5,20 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Org.BouncyCastle.Crypto.Tls;
 
 namespace LabMaterials.Pages
 {
     public class AddUserModel : BasePageModel
     {
         public string ErrorMsg { get; set; }
-        public string Username, UserFullName, Email, Password;
+        public string Username, UserFullName, Email, Password,EmpAffiliation,JobNumber, Transfer, ReTypePassword;
         public bool IsADUser;
         public int UserGroupID;
         public List<UserGroup> UserGroupsList {  get; set; }
         
         public string lblAddUser, lblUserName, lblFullName, lblEmail,
-            lblUserEnabled, lblPassword, lblIsDomainUser, lblUserGroupName, lblAdd, lblCancel, lblUsers;
+            lblUserEnabled, lblPassword, lblIsDomainUser, lblUserGroupName, lblAdd, lblCancel, lblUsers, lblJobNumber, lblEmpAffiliation, lblTransfer, lblReTypePassword;
 
         public void OnGet()
         {
@@ -29,7 +30,7 @@ namespace LabMaterials.Pages
             UserGroupsList = dbContext.UserGroups.ToList();
         }
 
-        public IActionResult OnPost([FromForm] string UserName, [FromForm] string UserFullName, [FromForm] string Email, [FromForm] string Password, [FromForm] bool IsADUser, [FromForm] int UserGroupID)
+        public IActionResult OnPost([FromForm] string UserName, [FromForm] string UserFullName, [FromForm] string Email, [FromForm] string Password, [FromForm] string ReTypePassword,[FromForm] string JobNumber,[FromForm] string EmpAffiliation, [FromForm] string Transfer,[FromForm] bool IsADUser, [FromForm] int UserGroupID)
         {
             LogableTask task = LogableTask.NewTask("AddUser");
 
@@ -47,17 +48,37 @@ namespace LabMaterials.Pages
                     this.UserGroupID = UserGroupID;
                     this.IsADUser = IsADUser;
                     this.Password = Password;
+                    this.JobNumber = JobNumber;
+                    this.EmpAffiliation = EmpAffiliation;
+                    this.Transfer = Transfer;
+                    this.ReTypePassword = ReTypePassword;
                     UserGroupsList = dbContext.UserGroups.ToList();
 
-
-                    if (string.IsNullOrEmpty(UserName))
+                    // new Changes
+                    if (UserGroupID == 0)
+                        ErrorMsg = (Program.Translations["SelectUserGroup"])[Lang];
+                    else if (string.IsNullOrEmpty(JobNumber))
+                        ErrorMsg = (Program.Translations["JobNumberMissing"])[Lang];
+                    else if (string.IsNullOrEmpty(UserName))
                         ErrorMsg = (Program.Translations["UserNameMissing"])[Lang];
                     else if (string.IsNullOrEmpty(UserFullName))
                         ErrorMsg = (Program.Translations["UserFullNameMissing"])[Lang];
+                    else if (string.IsNullOrEmpty(EmpAffiliation))
+                        ErrorMsg = (Program.Translations["EmpAffiliationMissing"])[Lang];
+                    else if (string.IsNullOrEmpty(Transfer))
+                        ErrorMsg = (Program.Translations["TransferMissing"])[Lang];
                     else if (string.IsNullOrEmpty(Email))
                         ErrorMsg = (Program.Translations["UserEmailMissing"])[Lang];
-                    else if (UserGroupID == 0)
-                        ErrorMsg = (Program.Translations["SelectUserGroup"])[Lang];
+                    else if (!IsADUser && string.IsNullOrEmpty(Password))
+                        ErrorMsg = (Program.Translations["PasswordMissing"])[Lang];
+                    else if (!IsADUser && string.IsNullOrEmpty(ReTypePassword))
+                        ErrorMsg = (Program.Translations["ReTypePasswordMissing"])[Lang];
+                    else if (!IsADUser && (Password != ReTypePassword))
+                        ErrorMsg = (Program.Translations["PasswordMismatch"])[Lang];
+                    // new Changes ends
+                   
+                    
+                   
                     else
                     {
                         if (dbContext.Users.Count(s => s.UserName == UserName.ToLower()) > 0)
@@ -76,7 +97,15 @@ namespace LabMaterials.Pages
                                 UserGroupId = UserGroupID,
                                 CreatedById = HttpContext.Session.GetInt32("UserId").Value,
                                 CreatedDate = DateTime.Now,
-                                Password = Lib.Hash.GenerateSHA(System.Text.UTF8Encoding.UTF8.GetBytes(Password + UserName.ToLower()))
+                                Password = Lib.Hash.GenerateSHA(System.Text.UTF8Encoding.UTF8.GetBytes(Password + UserName.ToLower())),
+                                //new changes
+                                JobNumber = int.Parse(JobNumber),
+                                EmpAffiliation = EmpAffiliation,
+                                Transfer = int.Parse(Transfer),
+                                //new changes ends
+
+
+
                             };
                             dbContext.Users.Add(user);
                             dbContext.SaveChanges();
@@ -114,11 +143,17 @@ namespace LabMaterials.Pages
             this.lblUserEnabled = (Program.Translations["UserEnabled"])[Lang];
             this.lblPassword = (Program.Translations["Password"])[Lang];
             this.lblIsDomainUser = (Program.Translations["IsDomainUser"])[Lang];
-            this.lblUserGroupName = (Program.Translations["UserGroupName"])[Lang];
+            this.lblUserGroupName = (Program.Translations["UserType"])[Lang];
 
             this.lblAdd = (Program.Translations["Add"])[Lang];
             this.lblCancel = (Program.Translations["Cancel"])[Lang];
             this.lblUsers = (Program.Translations["Users"])[Lang];
+            this.lblJobNumber = (Program.Translations["JobNumber"])[Lang];
+            this.lblEmpAffiliation = (Program.Translations["EmpAffiliation"])[Lang];
+            this.lblTransfer = (Program.Translations["Transfer"])[Lang];
+            this.lblReTypePassword = (Program.Translations["ReTypePassword"])[Lang];
+
+
         }
     }
 }

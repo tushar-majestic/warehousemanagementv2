@@ -39,6 +39,15 @@ public partial class User
     [Column("CreatedByID")]
     public int? CreatedById { get; set; }
 
+    [Column("JobNumber")]
+    public int? JobNumber { get; set; }
+
+    [StringLength(50)]
+    public string EmpAffiliation { get; set; } = null!;
+
+    [Column("Transfer")]
+    public int? Transfer { get; set; }
+
     public bool IsActiveDirectoryUser { get; set; }
 
     [Column("UserGroupID")]

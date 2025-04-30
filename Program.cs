@@ -29,9 +29,9 @@ namespace LabMaterials
             });
             builder.Services.AddRazorPages()
                        .AddRazorRuntimeCompilation();
-                       
+            
             builder.Services.AddDbContext<LabDBContext>(options =>
-            options.UseSqlServer("Server=localhost;Database=LabMaterials;Trusted_Connection=True;TrustServerCertificate=True;"));
+                options.UseSqlServer("Server=localhost;Database=LabMaterials;Trusted_Connection=True;TrustServerCertificate=True;"));
 
             var app = builder.Build();
 

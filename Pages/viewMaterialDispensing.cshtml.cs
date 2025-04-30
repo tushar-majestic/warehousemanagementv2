@@ -13,6 +13,11 @@ namespace LabMaterials.Pages
         [BindProperty]
         public string RequesterName { get; set; }
 
+        // Code for Breadcrumb Starts
+        public string FromDate, ToDate;
+        public int page { get; set; }
+        // Code for Breadcrumb Ends
+
         public string lblItemName, lblDisbursements, lblSearch, lblRequesterName, lblFromStore, lblSubmit, lblStoreName, lblDestination, lblItemType, lblQuantity, lblItemCode, lblAddDisbursement, lblRequestReceivedDate, lblRequestingPlace, lblComments,
             lblDisbursementStatus, lblInventoryBalanced, lblEdit, lblTotalItem;
 
@@ -25,6 +30,29 @@ namespace LabMaterials.Pages
                 FillLables();
                 var dbContext = new LabDBContext();
                 int? DisbursementID = HttpContext.Session.GetInt32("DisbursementID");
+
+                // Code for Breadcrumb Starts
+                // Console.WriteLine("before if");
+                // if (HttpContext.Request.Query.ContainsKey("page"))
+                // {   
+                //     Console.WriteLine("in if");
+
+                //      string pagevalue = HttpContext.Request.Query["page"];
+                //     this.page = int.Parse(pagevalue);
+                //     this.RequesterName = ""; //HttpContext.Session.GetString("RequesterName");
+                //     this.FromDate = ""; //HttpContext.Session.GetString("FromDate");
+                //     this.ToDate = ""; //HttpContext.Session.GetString("ToDate");
+                // }
+                // Code for Breadcrumb Ends
+
+                
+                // Code for Breadcrumb Starts
+                    this.page = (int)HttpContext.Session.GetInt32("page"); ;
+                    this.RequesterName = HttpContext.Session.GetString("RequesterName");
+                    this.FromDate = HttpContext.Session.GetString("FromDate");
+                    this.ToDate = HttpContext.Session.GetString("ToDate");
+                // Code for Breadcrumb Ends
+
 
                 var query = from d in dbContext.DisbursementRequests
                             join s in dbContext.Stores on d.StoreId equals s.StoreId

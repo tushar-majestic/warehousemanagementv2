@@ -4,6 +4,7 @@ using LabMaterials.DB;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LabMaterials.Migrations
 {
     [DbContext(typeof(LabDBContext))]
-    partial class LabDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250429094625_userschanges")]
+    partial class userschanges
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -738,8 +741,10 @@ namespace LabMaterials.Migrations
                         .HasColumnType("int")
                         .HasDefaultValue(1)
                         .HasColumnName("isActive");
+
                     b.Property<int?>("ManagerJobNum")
                         .HasColumnType("int");
+
                     b.Property<string>("ShelfNumbers")
                         .IsRequired()
                         .HasMaxLength(4000)
@@ -997,29 +1002,7 @@ namespace LabMaterials.Migrations
 
                     b.ToTable("Supply");
                 });
-            modelBuilder.Entity("LabMaterials.DB.TableColumn", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("DisplayColumns")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Page")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("tablecolumn");
-                });
             modelBuilder.Entity("LabMaterials.DB.Unit", b =>
                 {
                     b.Property<int>("Id")
@@ -1097,7 +1080,6 @@ namespace LabMaterials.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-
                     b.Property<DateTime?>("Ended")
                         .HasColumnType("datetime");
 
@@ -1144,7 +1126,6 @@ namespace LabMaterials.Migrations
                     b.Property<int?>("Transfer")
                         .HasColumnType("int")
                         .HasColumnName("Transfer");
-
 
                     b.Property<DateTime?>("Updated")
                         .HasColumnType("datetime");
