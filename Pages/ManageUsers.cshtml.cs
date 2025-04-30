@@ -111,13 +111,14 @@ namespace LabMaterials.Pages
                 RedirectToPage("./Index?lang=" + Lang);
         }
 
-        public IActionResult OnPostEdit([FromForm] int UserId)
+        public IActionResult OnPostEdit([FromForm] int UserId, [FromForm] int page)
         {
             base.ExtractSessionData();
             if (CanManageUsers)
             {
                 if (HttpContext.Session.GetInt32("UserId").Value != UserId)
                 {
+                    HttpContext.Session.SetInt32("page", page);
                     HttpContext.Session.SetInt32("ToUpdateUserId", UserId);
                     return RedirectToPage("./EditUser");
                 }
@@ -132,13 +133,14 @@ namespace LabMaterials.Pages
                 return RedirectToPage("./Index?lang=" + Lang);
         }  
         
-        public IActionResult OnPostView([FromForm] int UserId)
+        public IActionResult OnPostView([FromForm] int UserId, [FromForm] int page)
         {
             base.ExtractSessionData();
             if (CanManageUsers)
             {
                 //if (HttpContext.Session.GetInt32("UserId").Value != UserId)
                 {
+                    HttpContext.Session.SetInt32("page", page);
                     HttpContext.Session.SetInt32("ToUpdateUserId", UserId);
                     return RedirectToPage("./viewUser");
                 }

@@ -10,16 +10,22 @@ namespace LabMaterials.Pages
         public string ErrorMsg { get; set; }
         public string StoreNumber, StoreName, Shelves,  ManagerName,ManagerJobNumber;
         public int StoreId;
+
         public string Status { get; set; }
         public string StoreType ;
         public List<User> ManagerGroupsList {  get; set; }
         public List<SelectListItem> StoreTypeList { get; set; }
 
         public string lblUpdateStore, lblStoreNumber, lblStoreName, lblShelves, lblUpdate, lblCancel, lblStores, lblWarehouseType, lblManagerName, lblManagerJobNumber,lblStatus, lblOpen, lblClosed ;
+
+        public int page { get; set; }
+        
+
         public void OnGet()
         {
             base.ExtractSessionData();
             FillLables();
+            this.page = (int)HttpContext.Session.GetInt32("page");
             if (CanManageStore == false)
                 RedirectToPage("./Index?lang=" + Lang);
             else

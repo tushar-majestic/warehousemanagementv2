@@ -77,10 +77,10 @@ namespace LabMaterials.Pages
                 RedirectToPage("./Index?lang=" + Lang);
         }
 
-        public IActionResult OnPostEdit([FromForm] int UserGroupID)
+        public IActionResult OnPostEdit([FromForm] int UserGroupID, [FromForm] int page)
         {
             HttpContext.Session.SetInt32("UserGroupID", UserGroupID);
-
+            HttpContext.Session.SetInt32("page", page);
             return RedirectToPage("./EditUserGroup");
         }
 

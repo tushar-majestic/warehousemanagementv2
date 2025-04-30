@@ -164,8 +164,11 @@ namespace LabMaterials.Pages
             Items = list.Skip((page - 1) * ItemsPerPage).Take(ItemsPerPage).ToList();        
             CurrentPage = page;       
         }
-        public IActionResult OnPostEdit([FromForm] int ItemId)
+        public IActionResult OnPostEdit([FromForm] int ItemId, [FromForm] string FromDate, [FromForm] string ToDate, [FromForm] int page)
         {
+            HttpContext.Session.SetString("FromDate", string.IsNullOrEmpty(FromDate) ? "" : FromDate);
+            HttpContext.Session.SetString("ToDate", string.IsNullOrEmpty(ToDate) ? "" : ToDate);
+            HttpContext.Session.SetInt32("page", page);
             HttpContext.Session.SetInt32("ItemId", ItemId);
 
             return RedirectToPage("./EditItem");
