@@ -45,7 +45,7 @@
     </nav>
 
     <nav id="sidebarMenu" class="sidebar d-lg-block bg-gray-800 text-white collapse @(Model.dir == "rtl" ? "sidebar-rtl" : "")" data-simplebar>
-    <div class="sidebar-inner px-4 pt-3">
+    <div class="sidebar-inner px-1 pt-3">
       <div class="user-card d-flex d-md-none align-items-center justify-content-between justify-content-md-center pb-4">
         <div class="d-flex align-items-center">
           <div class="avatar-lg me-4">
@@ -87,7 +87,7 @@
         <li class="nav-item  @(Context.Request.Path == "/Home" ? "active" : "") ">
                     <a asp-area="" asp-page="/Home" class="nav-link sidebar-link">
             <span class="sidebar-icon">
-              <img class="icon icon-xs mx-3" src="images/home.png" />
+              <img class="icon icon-xs mx-1" src="images/home.png" />
             </span>
             <span class="sidebar-text">@Model.lblHome</span>
           </a>
@@ -100,7 +100,7 @@
             class="nav-item @(Context.Request.Path == "/ManageStore" || Context.Request.Path == "/AddStore" || Context.Request.Path == "/ManageStorage" || Context.Request.Path == "/AddStorage" || Context.Request.Path == "/EditStorage" || Context.Request.Path == "/EditStore"  ? "active" : "")">
             <a asp-area="" asp-page="/ManageStore" class="nav-link sidebar-link">
               <span class="sidebar-icon">
-                <img class="icon icon-xs mx-3" src="images/retailer.png" />
+                <img class="icon icon-xs mx-1" src="images/retailer.png" />
               </span>
               <span class="sidebar-text break-word">@Model.lblManageStores</span>
             </a>
@@ -113,7 +113,7 @@
             class="nav-item @(Context.Request.Path == "/ManageItems" || Context.Request.Path == "/AddItem" || Context.Request.Path == "/ManageUnits" || Context.Request.Path == "/AddUnit" || Context.Request.Path == "/ManageItemGroups" || Context.Request.Path == "/AddItemGroup"  || Context.Request.Path == "/EditItem" || Context.Request.Path == "/EditUnit" || Context.Request.Path == "/EditItemGroup" ? "active" : "")">
             <a asp-area="" asp-page="/ManageItems" class="nav-link">
               <span class="sidebar-icon">
-                <img class="icon icon-xs mx-3" src="images/inventory.png" />
+                <img class="icon icon-xs mx-1" src="images/inventory.png" />
               </span>
               <span class="sidebar-text">@Model.lblManageItems</span>
             </a>
@@ -126,7 +126,7 @@
             class="nav-item @(Context.Request.Path == "/ManageDamaged" ? "active" : "")">
             <a asp-area="" asp-page="/ManageDamaged" class="nav-link">
               <span class="sidebar-icon">
-                <img class="icon icon-xs mx-3" src="images/inventory.png" />
+                <img class="icon icon-xs mx-1" src="images/inventory.png" />
               </span>
               <span class="sidebar-text">@Model.lblDamagedItems</span>
             </a>
@@ -139,7 +139,7 @@
             class="nav-item @(Context.Request.Path == "/Supplies" || Context.Request.Path == "/AddSupply"  || Context.Request.Path == "/EditSupply" || Context.Request.Path == "/EditSupplier" || Context.Request.Path == "/ManageSupplier" || Context.Request.Path == "/AddSupplier" ? "active" : "")">
             <a asp-area="" asp-page="/Supplies" class="nav-link">
               <span class="sidebar-icon">
-                <img class="icon icon-xs mx-3" src="images/supplies.png" />
+                <img class="icon icon-xs mx-1" src="images/supplies.png" />
               </span>
               <span class="sidebar-text">@Model.lblManageSupplies</span>
             </a>
@@ -151,7 +151,7 @@
             class="nav-item @(Context.Request.Path == "/Disbursements" || Context.Request.Path == "/AddDisbursement" || Context.Request.Path == "/EditDisbursement" ? "active" : "")">
             <a asp-area="" asp-page="/Disbursements" class="nav-link">
               <span class="sidebar-icon">
-                <img class="icon icon-xs mx-3" src="images/expenses.png" />
+                <img class="icon icon-xs mx-1" src="images/expenses.png" />
               </span>
               <span class="sidebar-text">@Model.lblDisbursement</span>
             </a>
@@ -161,9 +161,9 @@
         {
           <li
             class="nav-item @(Context.Request.Path == "/Rep_MaterialsReceived" || Context.Request.Path == "/Rep_Distribution" || Context.Request.Path == "/Rep_Inventory"  || Context.Request.Path == "/Rep_HazardMaterial" || Context.Request.Path == "/Rep_UserActivity"  ? "active" : "")">
-            <a asp-area="" asp-page="/Rep_MaterialsReceived" class="nav-link">
+            <a asp-area="" asp-page="/Rep_UserActivity" class="nav-link">
               <span class="sidebar-icon">
-                <img class="icon icon-xs mx-3" src="images/pen.png" />
+                <img class="icon icon-xs mx-1" src="images/pen.png" />
               </span>
               <span class="sidebar-text">@Model.lblReports</span>
             </a>
@@ -171,10 +171,11 @@
         }
         @if (Model.CanManageUsers)
         {
-            <li class="nav-item @(Context.Request.Path == "/ManageUsers" || Context.Request.Path == "/AddUser" || Context.Request.Path == "/ManageUserGroups" || Context.Request.Path == "/AddUserGroup" || Context.Request.Path == "/EditUser" || Context.Request.Path == "/EditUserGroup" ? "active" : "")">
+          <li
+            class="nav-item @(Context.Request.Path == "/ManageUsers" || Context.Request.Path == "/AddUser" || Context.Request.Path == "/ManageUserGroups" || Context.Request.Path == "/AddUserGroup" || Context.Request.Path == "/EditUser" || Context.Request.Path == "/EditUserGroup" || Context.Request.Path == "/viewUser" ? "active" : "")">
                 <a asp-area="" asp-page="/ManageUsers" class="nav-link">
                     <span class="sidebar-icon">
-                        <img class="icon icon-xs mx-3" src="images/management.png" />
+                        <img class="icon icon-xs mx-1" src="images/management.png" />
                     </span>
                     <span class="sidebar-text">@Model.lblManageUsers</span>
                 </a>
@@ -185,7 +186,7 @@
           <li class="nav-item @(Context.Request.Path == "/ChangePassword" ? "active" : "")">
             <a asp-area="" asp-page="/ChangePassword" class="nav-link">
               <span class="sidebar-icon">
-                <img class="icon icon-xs mx-3" src="images/password.png" />
+                <img class="icon icon-xs mx-1" src="images/password.png" />
               </span>
               <span class="sidebar-text">@Model.lblChangePassword</span>
             </a>
@@ -230,8 +231,9 @@
         }
         <li role="separator" class="dropdown-divider mt-4 mb-3 border-gray-700"></li>
         <li class="nav-item">
-                    <span class="sidebar-text break-word">
-                        @Model.lblLabMaterials <span class="badge badge-sm bg-secondary ms-1 text-gray-600">V1.0.0</span></span>
+                    <span class="sidebar-text break-word"><small>
+    @Model.lblLabMaterials <span class="badge badge-sm bg-secondary ms-1 text-gray-600">V1.0.0</span>
+</small></span>
         </li>
       </ul>
     </div>
@@ -253,7 +255,7 @@
                 <div class="media d-flex align-items-center">
                   <img class="avatar rounded-circle" alt="Image placeholder" src="images/user.png">
                   <div class="media-body mx-2 text-dark align-items-center d-none d-lg-block">
-                    <span class="mb-0 font-small fw-bold text-secondary">@Model.FullName</span>
+                                        <span class="mb-0 font-small fw-bold text-secondary">@Model.FullName</span><br /> <span class="mb-0 font-small fw-bold text-secondary">@Model.Usergroup</span>
                   </div>
                 </div>
               </a>

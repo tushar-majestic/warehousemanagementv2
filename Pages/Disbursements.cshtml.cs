@@ -12,13 +12,31 @@ namespace LabMaterials.Pages
         public DateTime? FromDate, ToDate;
         [BindProperty]
         public string RequesterName { get; set; }
-        public void OnGet() 
+
+        public int CurrentPage { get; set; }
+        public int ItemsPerPage { get; set; } = 10;
+        public int TotalPages { get; set; }
+        public void OnGet(string? RequesterName, DateTime? FromDate, DateTime? ToDate, int page = 1) 
         {
             base.ExtractSessionData();
             if (CanDisburseItems)
             {
                 FillLables();
+                    if (HttpContext.Request.Query.ContainsKey("page")){
+                        string pagevalue = HttpContext.Request.Query["page"];
+                        page = int.Parse(pagevalue);
+                        this.RequesterName = RequesterName;
+                        this.FromDate = FromDate;
+                        this.ToDate = ToDate;
+                        FillData(RequesterName, FromDate, ToDate, page);
+
+                    }
+
+                    
+
+                    
             }
+            
             else
                 RedirectToPage("./Index?lang=" + Lang);
         }
@@ -27,19 +45,39 @@ namespace LabMaterials.Pages
             lblDisbursementStatus, lblInventoryBalanced, lblEdit, lblTotalItem, lblFromDate, lblToDate;
 
         public void OnPostSearch([FromForm] string RequesterName, [FromForm] DateTime? FromDate, [FromForm] DateTime? ToDate)
-        {
-            this.RequesterName = RequesterName;
-            FillData(RequesterName,FromDate,ToDate);
+        {   CurrentPage = 1; 
+              this.RequesterName = RequesterName;
+                this.FromDate = FromDate;
+                this.ToDate = ToDate;
+            FillData(RequesterName,FromDate,ToDate, CurrentPage);
         }
 
-        public IActionResult OnPostEdit([FromForm] int DisbursementID)
+        public IActionResult OnPostEdit([FromForm] int DisbursementID, [FromForm] string RequesterName, [FromForm] string FromDate, [FromForm] string ToDate, [FromForm] int page)
         {
             HttpContext.Session.SetInt32("DisbursementID", DisbursementID);
+            HttpContext.Session.SetInt32("DisbursementID", DisbursementID);
+            HttpContext.Session.SetString("RequesterName", string.IsNullOrEmpty(RequesterName) ? "" : RequesterName);
+            HttpContext.Session.SetString("FromDate", string.IsNullOrEmpty(FromDate) ? "" : FromDate);
+            HttpContext.Session.SetString("ToDate", string.IsNullOrEmpty(ToDate) ? "" : ToDate);
+            HttpContext.Session.SetInt32("page", page);
 
             return RedirectToPage("./EditDisbursement");
         }
+        public IActionResult OnPostView([FromForm] int DisbursementID, [FromForm] string RequesterName, [FromForm] string FromDate, [FromForm] string ToDate, [FromForm] int page)
+        {
+            HttpContext.Session.SetInt32("DisbursementID", DisbursementID);
+            HttpContext.Session.SetString("RequesterName", string.IsNullOrEmpty(RequesterName) ? "" : RequesterName);
+            HttpContext.Session.SetString("FromDate", string.IsNullOrEmpty(FromDate) ? "" : FromDate);
+            HttpContext.Session.SetString("ToDate", string.IsNullOrEmpty(ToDate) ? "" : ToDate);
+            HttpContext.Session.SetInt32("page", page);
 
-        private void FillData(string? RequesterName, DateTime? FromDate, DateTime? ToDate)
+            
+
+            return RedirectToPage("./viewMaterialDispensing");
+        }
+
+        // Function without pagination 
+        /*private void FillData(string? RequesterName, DateTime? FromDate, DateTime? ToDate)
         {
             base.ExtractSessionData();
             if (CanManageStore)
@@ -78,7 +116,63 @@ namespace LabMaterials.Pages
             }
             else
                 RedirectToPage("./Index?lang=" + Lang);
-        }
+        }*/
+
+        private void FillData(string? RequesterName, DateTime? FromDate, DateTime? ToDate, int page = 1)
+        {
+            if (HttpContext.Request.Query.ContainsKey("page"))
+            {
+                string pagevalue = HttpContext.Request.Query["page"];
+                page = int.Parse(pagevalue);
+            }
+            base.ExtractSessionData();
+            if (CanManageStore)
+            {
+                FillLables();
+                var dbContext = new LabDBContext();
+                var query = from d in dbContext.DisbursementRequests
+                            join s in dbContext.Stores on d.StoreId equals s.StoreId
+                            join i in dbContext.Items on d.Itemcode equals i.ItemCode
+                            select new DisbursementInfo
+                            {
+                                DisbursementRequestId = d.DisbursementRequestId,
+                                RequesterName = d.RequesterName,
+                                RequestingPlace = d.RequestingPlace,
+                                Comments = d.Comments,
+                                ReqReceivedAt = d.ReqReceivedAt,
+                                Status = d.Status,
+                                InventoryBalanced = d.InventoryBalanced ? "Yes" : "No",
+                                ItemCode = d.Itemcode,
+                                ItemTypeCode = d.Itemtypecode,
+                                Quantity = d.ItemQuantity,
+                                StoreName = s.StoreName,
+                                ItemName = i.ItemName
+                            };
+
+                // Apply filtering if needed
+                if (!string.IsNullOrEmpty(RequesterName))
+                    query = query.Where(s => s.RequesterName.Contains(RequesterName));
+
+                if (FromDate != null && FromDate >= DateTime.MinValue && ToDate != null && ToDate >= DateTime.MinValue)
+                    query = query.Where(e => e.ReqReceivedAt.Date >= FromDate.Value.Date && e.ReqReceivedAt.Date <= ToDate.Value.Date);
+
+                // Get the total count of items
+                TotalItems = query.Count();
+
+                // Calculate total pages
+                TotalPages = (int)Math.Ceiling((double)TotalItems / ItemsPerPage);
+
+                var list = query.ToList();
+
+                Disbursement = list.Skip((page - 1) * ItemsPerPage).Take(ItemsPerPage).ToList();   
+                
+                CurrentPage = page;
+            }
+            else
+            {
+                RedirectToPage("./Index?lang=" + Lang);
+            }
+        }   
 
         private void FillLables()
         {

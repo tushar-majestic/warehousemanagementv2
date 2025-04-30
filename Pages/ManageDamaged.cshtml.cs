@@ -11,32 +11,43 @@ namespace LabMaterials.Pages
         public string Message { get; set; }
         [BindProperty]
         public string ItemName { get; set; }
+        public int CurrentPage { get; set; }
+        public int ItemsPerPage { get; set; } = 10;
+        public int TotalPages { get; set; }
         public string lblItems, lblItemName, lblGroupName, lblItemCode, lblAvailableQuantity, lblHazardType, lblTypeName,
             lblUnitCode, lblSearch, lblSubmit, lblDamageReason, lblDamagedQuantity, lblManageItemGroup, lblManageUnit, lblAddItem, lblEdit, lblDelete, lblTotalItem, lblExpiryDate, lblBatchNo, lblDamage, lblDamagedItems;
-        public void OnGet()
+        public void OnGet(string? ItemName,string? Group, int page = 1)
         {
             base.ExtractSessionData();
             if (CanManageItems)
             {
                 FillLables();
+                if (HttpContext.Request.Query.ContainsKey("page")){
+                    string pagevalue = HttpContext.Request.Query["page"];
+                    page = int.Parse(pagevalue);
+                    this.ItemName = ItemName;
+                    FillData(ItemName, Group , page);
+
+                }
             }
             else
                 RedirectToPage("./Index?lang=" + Lang);
         }
 
         public void OnPost([FromForm] string ItemName, [FromForm] string Group)
-        {
+        {   CurrentPage = 1;
             base.ExtractSessionData();
             this.ItemName = ItemName;
             if (CanManageItems)
             {
-                FillData(ItemName, Group);
+                FillData(ItemName, Group, CurrentPage);
             }
             else
                 RedirectToPage("./Index?lang=" + Lang);
         }
 
-        private void FillData(string ItemName, string Group)
+    // function before pagination 
+        /*private void FillData(string ItemName, string Group)
         {
             FillLables();
             var dbContext = new LabDBContext();
@@ -74,6 +85,52 @@ namespace LabMaterials.Pages
 
             Items = query.ToList();
             TotalItems = Items.Count();
+        }*/
+
+        private void    FillData(string ItemName, string Group, int page = 1)
+        {
+            FillLables();
+            var dbContext = new LabDBContext();
+            var query = (from i in dbContext.Items
+                         join g in dbContext.ItemGroups on i.GroupCode equals g.GroupCode
+                         join t in dbContext.ItemTypes on i.ItemTypeCode equals t.ItemTypeCode
+                         join u in dbContext.Units on i.UnitId equals u.Id
+                         join d in dbContext.DamagedItems on i.ItemId equals d.ItemId
+
+                         select new ItemInfo
+                         {
+                             AvailableQuantity = i.AvailableQuantity,
+                             GroupCode = g.GroupCode,
+                             GroupDesc = g.GroupDesc,
+                             HazardTypeName = i.HazardTypeName,
+                             IsHazardous = i.IsHazardous,
+                             ItemCode = i.ItemCode,
+                             ItemId = i.ItemId,
+                             ItemName = i.ItemName,
+                             ItemTypeCode = t.ItemTypeCode,
+                             TypeName = t.TypeName,
+                             UnitCode = u.UnitCode,
+                             UnitDesc = u.UnitDesc,
+                             BatchNo = i.BatchNo,
+                             ExpiryDate = i.ExpiryDate,
+                             DamagedQuantity = (int)d.DamagedQuantity,
+                             DamageReason = d.DamagedReason,
+                         });
+
+            if (string.IsNullOrEmpty(ItemName) == false)
+                query = query.Where(i => i.ItemName.Contains(ItemName));
+
+            if (string.IsNullOrEmpty(Group) == false)
+                query = query.Where(i => i.GroupDesc.Contains(Group));
+
+            TotalItems = query.Count();
+            TotalPages = (int)Math.Ceiling((double)TotalItems / ItemsPerPage);
+
+            var list = query.ToList();
+
+            Items = list.Skip((page - 1) * ItemsPerPage).Take(ItemsPerPage).ToList();
+
+            CurrentPage = page;
         }
 
         public IActionResult OnPostEdit([FromForm] int ItemId)

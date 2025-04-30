@@ -3,16 +3,23 @@ using LabMaterials.dtos;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.IdentityModel.Tokens;
+
 
 namespace LabMaterials.Pages
 {
     public class viewUserModel : BasePageModel
     {
         public UserInfo singleUser { get; set; }
+        public string lblView, lblUsers, lblSearch, lblAddUser, lblManageUserGroups, lblUserName, lblFullName, lblEmail,
+            lblUserEnabled, lblIsLocked, lblUserType, lblUserGroupName, lblEdit, lblUnlock, lblTotalItem;
+
 
         public void OnGet()
         {
             base.ExtractSessionData();
+            FillLables();
             if (CanManageUsers)
             {
                 var dbContext = new LabDBContext();
@@ -32,14 +39,35 @@ namespace LabMaterials.Pages
                                 GroupName = g.UserGroupName
                             };
 
-               // UserInfo singleUser = null;
+                // UserInfo singleUser = null;
 
-                
-                    singleUser = query.FirstOrDefault(s => s.UserID == user.UserId);
-               
+
+                singleUser = query.FirstOrDefault(s => s.UserID == user.UserId);
+
             }
             else
                 RedirectToPage("./Index?lang=" + Lang);
         }
+
+        private void FillLables()
+        {
+            this.lblUsers = (Program.Translations["Users"])[Lang];
+            this.lblSearch = (Program.Translations["Search"])[Lang];
+            this.lblAddUser = (Program.Translations["AddUser"])[Lang];
+            this.lblManageUserGroups = (Program.Translations["ManageUserGroups"])[Lang];
+            this.lblUserName = (Program.Translations["UserName"])[Lang];
+            this.lblFullName = (Program.Translations["FullName"])[Lang];
+            this.lblEmail = (Program.Translations["Email"])[Lang];
+            this.lblUserEnabled = (Program.Translations["UserEnabled"])[Lang];
+            this.lblIsLocked = (Program.Translations["IsLocked"])[Lang];
+            this.lblUserType = (Program.Translations["UserType"])[Lang];
+            this.lblUserGroupName = (Program.Translations["UserGroupName"])[Lang];
+
+            this.lblEdit = (Program.Translations["Edit"])[Lang];
+            this.lblView = (Program.Translations["View"])[Lang];
+            this.lblUnlock = (Program.Translations["Unlock"])[Lang];
+            this.lblTotalItem = (Program.Translations["TotalItem"])[Lang];
+            this.lblView = (Program.Translations["View"])[Lang];
+        }
     }
-}
+    }

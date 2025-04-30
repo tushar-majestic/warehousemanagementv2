@@ -1,4 +1,64 @@
 ﻿@page
-@model MyApp.Namespace.viewMaterialDispensingModel
+@model LabMaterials.Pages.viewMaterialDispensingModel
 @{
+    <div class="py-4">
+
+        <div class="d-flex justify-content-between w-100 flex-wrap">
+            <div class="mb-3 mb-lg-0">
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb bg-transparent p-2 mb-0">
+                        <li class="breadcrumb-item d-flex align-items-center">
+                            <img src="images/home.png" alt="Home" width="16" height="16" class="me-2" />
+                            <a href="/Home" class="text-decoration-none">@Model.lblHome</a>
+                        </li>
+
+                        <li class="breadcrumb-item d-flex align-items-center active" aria-current="page">
+                            <img src="images/expenses.png" alt="Home" width="16" height="16" class="me-2" />
+                            <a href="/Disbursements?page=@Model.page&RequesterName=@Model.RequesterName&FromDate=@Model.FromDate&ToDate=@Model.ToDate" class="text-decoration-none"> @Model.lblDisbursements</a>
+                        </li>
+                        <li class="breadcrumb-item d-flex align-items-center active" aria-current="page">
+                            <img src="images/retailer.png" alt="Home" width="16" height="16" class="me-2" />
+                            @Model.lblView
+                        </li>
+
+                    </ol>
+                </nav>
+                <h1 class="h4">@Model.lblView</h1>
+                <!-- <p class="mb-0">Dozens of reusable components built to provide buttons, alerts, popovers, and more.</p> -->
+            </div>
+        </div>
+    </div>
 }
+
+<div class="row">
+    <div class="col-8 mb-4 m-auto">
+        <div class="card shadow-sm p-4 mb-4">
+            <div class="container mt-4">
+                <h3 class="mb-4">Dispensing Details</h3>
+                @if (Model.Disbursement != null && Model.Disbursement.Any())
+                {
+                    <table class="table table-bordered">
+                        @foreach (var d in Model.Disbursement)
+                        {
+                            <tr><th>@Model.lblRequesterName</th><td>@d.RequesterName</td></tr>
+                            <tr><th>@Model.lblDestination</th><td>@d.RequestingPlace</td></tr>
+                            <tr><th>@Model.lblComments</th><td>@d.Comments</td></tr>
+                            <tr><th>@Model.lblRequestReceivedDate</th><td>@d.ReqReceivedAt.ToString("yyyy-MM-dd")</td></tr>
+                            <tr><th>@Model.lblDisbursementStatus</th><td>@d.Status</td></tr>
+                            <tr><th>@Model.lblInventoryBalanced</th><td>@d.InventoryBalanced</td></tr>
+                            <tr><th>@Model.lblItemCode</th><td>@d.ItemCode</td></tr>
+                            <tr><th>@Model.lblItemType</th><td>@d.ItemTypeCode</td></tr>
+                            <tr><th>@Model.lblItemName</th><td>@d.ItemName</td></tr>
+                            <tr><th>@Model.lblQuantity</th><td>@d.Quantity</td></tr>
+                            <tr><th>@Model.lblStoreName</th><td>@d.StoreName</td></tr>
+                        }
+                    </table>
+                }
+                else
+                {
+                    <div class="alert alert-warning">No disbursement record found.</div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

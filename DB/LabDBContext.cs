@@ -147,8 +147,6 @@ public partial class LabDBContext : DbContext
         {
             entity.HasKey(e => e.RoomId).HasName("PK__ROOMS__328639396C49D5E5");
 
-            entity.Property(e => e.BuildingNumber).IsFixedLength();
-
             entity.HasOne(d => d.Store).WithMany(p => p.Rooms).HasConstraintName("FK__ROOMS__StoreId__71D1E811");
         });
 
@@ -181,11 +179,7 @@ public partial class LabDBContext : DbContext
         modelBuilder.Entity<Store>(entity =>
         {
             entity.Property(e => e.StoreId).ValueGeneratedNever();
-            entity.Property(e => e.BuildingNumber).IsFixedLength();
             entity.Property(e => e.IsActive).HasDefaultValue(1);
-            entity.Property(e => e.StoreType)
-                .HasDefaultValueSql("(NULL)")
-                .IsFixedLength();
         });
 
         modelBuilder.Entity<StoreMovement>(entity =>
@@ -219,12 +213,6 @@ public partial class LabDBContext : DbContext
 
         modelBuilder.Entity<Unit>(entity =>
         {
-            entity.Property(e => e.ChemicalStatus).IsFixedLength();
-            entity.Property(e => e.DocumentType).IsFixedLength();
-            entity.Property(e => e.HazardType).IsFixedLength();
-            entity.Property(e => e.UnitsMeasure).IsFixedLength();
-            entity.Property(e => e.WarehouseType).IsFixedLength();
-
             entity.HasOne(d => d.GroupCodeNavigation).WithMany(p => p.Units)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_Units_UnitGroup");
@@ -232,7 +220,6 @@ public partial class LabDBContext : DbContext
 
         modelBuilder.Entity<User>(entity =>
         {
-            entity.Property(e => e.Lang).IsFixedLength();
             entity.Property(e => e.Password).HasDefaultValueSql("((0))");
 
             entity.HasOne(d => d.UserGroup).WithMany(p => p.Users)

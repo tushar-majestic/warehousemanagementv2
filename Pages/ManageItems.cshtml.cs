@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Identity.Client.Extensions.Msal;
 using OfficeOpenXml;
+using OfficeOpenXml.FormulaParsing.Excel.Functions;
 
 namespace LabMaterials.Pages
 {
@@ -17,22 +18,32 @@ namespace LabMaterials.Pages
         public string ItemName { get; set; }
         [BindProperty]
         public string Group { get; set; }
-        [BindProperty]
-        public DateTime? FromDate { get; set; }
+        public int CurrentPage { get; set; }
+        public int ItemsPerPage { get; set; } = 10;
+        public int TotalPages { get; set; }
 
-        [BindProperty]
-        public DateTime? ToDate { get; set; }
 
-        public string lblItems, lblItemName, lblGroupName, lblItemCode, lblAvailableQuantity, lblHazardType, lblTypeName,
+        public string lblItems, lblItemName, lblGroupName, lblItemCode, lblQuantity, lblHazardType, lblTypeName,
             lblUnitCode, lblSearch, lblSubmit, lblManageItemGroup, lblManageUnit, lblAddItem, lblEdit,
             lblDelete, lblTotalItem, lblExpiryDate, lblBatchNo, lblDamage, lblDamagedItems,
             lblImport, lblDonwloadSampleFile, lblFromDate, lblToDate;
-        public void OnGet()
+        public void OnGet(string? ItemName, string? Group, DateTime? FromDate, DateTime? ToDate, int page = 1)
         {
             base.ExtractSessionData();
             if (this.CanManageItems)
             {
                 FillLables();
+                if (HttpContext.Request.Query.ContainsKey("page")){
+                    string pagevalue = HttpContext.Request.Query["page"];
+                    page = int.Parse(pagevalue);
+                    this.ItemName = ItemName;
+                    this.Group = Group;
+                    this.FromDate = FromDate;
+                    this.ToDate = ToDate;
+                    Console.WriteLine("FromDate", this.FromDate);
+                    FillData(ItemName, Group, FromDate, ToDate, page);
+
+                }
             }
             else
                 RedirectToPage("./Index?lang=" + Lang);
@@ -44,8 +55,8 @@ namespace LabMaterials.Pages
             base.ExtractSessionData();
             this.ItemName = ItemName;
             this.Group = Group;
-             this.FromDate = FromDate;
-              this.ToDate = ToDate;
+            this.FromDate = FromDate;
+            this.ToDate = ToDate;
             if (CanManageItems)
             {
                 FillData(ItemName, Group, FromDate, ToDate);
@@ -54,7 +65,8 @@ namespace LabMaterials.Pages
                 RedirectToPage("./Index?lang=" + Lang);
         }
 
-        private void FillData(string ItemName, string Group, DateTime? FromDate, DateTime? ToDate)
+        // Function without pagination 
+        /*private void FillData(string ItemName, string Group, DateTime? FromDate, DateTime? ToDate)
         {
 
             FillLables();
@@ -98,8 +110,60 @@ namespace LabMaterials.Pages
             
             Items = query.ToList();
             TotalItems = Items.Count();
-        }
+        }*/
 
+        private void FillData(string ItemName, string Group, DateTime? FromDate, DateTime? ToDate, int page = 1)
+        {
+            if (HttpContext.Request.Query.ContainsKey("page"))
+            {
+                string pagevalue = HttpContext.Request.Query["page"];
+                page = int.Parse(pagevalue);
+            }
+            FillLables();
+            var dbContext = new LabDBContext();
+            var disbursements = dbContext.DisbursementRequests.ToList();
+            var query = (from i in dbContext.Items
+                         join g in dbContext.ItemGroups on i.GroupCode equals g.GroupCode
+                         join t in dbContext.ItemTypes on i.ItemTypeCode equals t.ItemTypeCode
+                         join u in dbContext.Units on i.UnitId equals u.Id
+                         where i.Ended == null
+                         select new ItemInfo
+                         {
+                             AvailableQuantity = i.AvailableQuantity,
+                             GroupCode = g.GroupCode,
+                             GroupDesc = g.GroupDesc,
+                             HazardTypeName = i.HazardTypeName,
+                             IsHazardous = i.IsHazardous,
+                             ItemCode = i.ItemCode,
+                             ItemId = i.ItemId,
+                             ItemName = i.ItemName,
+                             ItemTypeCode = t.ItemTypeCode,
+                             TypeName = t.TypeName,
+                             UnitCode = u.UnitCode,
+                             UnitDesc = u.UnitDesc,
+                             BatchNo = i.BatchNo,
+                             ExpiryDate = i.ExpiryDate,
+                             Ended = Convert.ToString(i.Ended),
+                         });
+
+            if (string.IsNullOrEmpty(ItemName) == false)
+                query = query.Where(i => i.ItemName.Contains(ItemName));
+
+            if (string.IsNullOrEmpty(Group) == false)
+                query = query.Where(i => i.GroupDesc.Contains(Group));
+
+            if (string.IsNullOrEmpty(ItemName) == false && string.IsNullOrEmpty(Group) == false)
+                query = query.Where(i => i.ItemName.Contains(ItemName) && i.GroupDesc.Contains(Group));
+
+            if (FromDate != null && FromDate >= DateTime.MinValue  && ToDate != null && ToDate >= DateTime.MinValue)
+                query = query.Where(e => e.ExpiryDate.Value.Date >= FromDate.Value.Date && e.ExpiryDate.Value.Date <= ToDate.Value.Date);
+            
+            TotalItems = query.Count();
+            TotalPages = (int)Math.Ceiling((double)TotalItems / ItemsPerPage);
+            var list = query.ToList();
+            Items = list.Skip((page - 1) * ItemsPerPage).Take(ItemsPerPage).ToList();        
+            CurrentPage = page;       
+        }
         public IActionResult OnPostEdit([FromForm] int ItemId)
         {
             HttpContext.Session.SetInt32("ItemId", ItemId);
@@ -257,7 +321,7 @@ namespace LabMaterials.Pages
             this.lblItemName = (Program.Translations["ItemName"])[Lang];
             this.lblGroupName = (Program.Translations["GroupName"])[Lang];
             this.lblItemCode = (Program.Translations["ItemCode"])[Lang];
-            this.lblAvailableQuantity = (Program.Translations["AvailableQuantity"])[Lang];
+            this.lblQuantity = (Program.Translations["Quantity"])[Lang];
             this.lblHazardType = (Program.Translations["HazardType"])[Lang];
             this.lblTypeName = (Program.Translations["TypeName"])[Lang];
             this.lblUnitCode = (Program.Translations["UnitCode"])[Lang];

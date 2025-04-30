@@ -18,14 +18,25 @@ namespace LabMaterials.Pages
 
         [BindProperty]
         public string UserName { get; set; }
-        public void OnGet()
+        public int CurrentPage { get; set; }
+        public int ItemsPerPage { get; set; } = 10;
+        public int TotalPages { get; set; }
+        public void OnGet(string? UserName, DateTime? FromDate, DateTime? ToDate, int page = 1)
         {
             base.ExtractSessionData();
             if (CanSeeReports)
             {
-                this.FromDate = DateTime.Today;
-                this.ToDate = DateTime.Today;
+                // this.FromDate = DateTime.Today;
+                // this.ToDate = DateTime.Today;
                 FillLables();
+                if (HttpContext.Request.Query.ContainsKey("page")){
+                    string pagevalue = HttpContext.Request.Query["page"];
+                    page = int.Parse(pagevalue);
+                    this.UserName = UserName;
+                    this.FromDate = FromDate;
+                    this.ToDate = ToDate;
+                    FillData(UserName, FromDate, ToDate, page);
+                }
             }
             else
                 RedirectToPage("./Index?lang=" + Lang);
@@ -35,14 +46,18 @@ namespace LabMaterials.Pages
         {
             base.ExtractSessionData();
             this.UserName = UserName;
+            CurrentPage = 1; 
+            this.FromDate = FromDate;
+            this.ToDate = ToDate;
             if (CanSeeReports)
             {
-                FillData(UserName, FromDate, ToDate);
+                FillData(UserName, FromDate, ToDate, CurrentPage);
             }
             else
                 RedirectToPage("./Index?lang=" + Lang);
         }
-        public void FillData(string UserName, DateTime? FromDate, DateTime? ToDate)
+        // function before pagination 
+        /*public void FillData(string UserName, DateTime? FromDate, DateTime? ToDate)
         {
             var dbContext = new LabDBContext();
             var query = (from u in dbContext.Users
@@ -73,6 +88,51 @@ namespace LabMaterials.Pages
 
             FromDate = DateTime.Now;
             ToDate = DateTime.Now;
+            base.ExtractSessionData();
+            FillLables();
+        }*/
+
+        public void FillData(string UserName, DateTime? FromDate, DateTime? ToDate, int page = 1)
+        {   if (HttpContext.Request.Query.ContainsKey("page"))
+            {
+                string pagevalue = HttpContext.Request.Query["page"];
+                page = int.Parse(pagevalue);
+            }
+            var dbContext = new LabDBContext();
+            var query = (from u in dbContext.Users
+                         join ug in dbContext.UserGroups on u.UserGroupId equals ug.UserGroupId
+                         select new UsersInfo
+                         {
+                             UserID = u.UserId,
+                             UserName = u.UserName,
+                             CreatedBy = u.CreatedById,
+                             CreationDate = u.CreatedDate,
+                             UserGroup = ug.UserGroupName
+
+                         });
+            query = query.OrderBy(u => u.UserID);
+
+            
+            if (UserName is not null)
+            {
+                query = query.Where(e => e.UserName.Contains(UserName));
+            }
+
+            if (FromDate is not null && FromDate != DateTime.MinValue && ToDate is not null && ToDate != DateTime.MinValue)
+            {
+                query = query.Where(e => e.CreationDate.Date >= FromDate && e.CreationDate.Date <= ToDate);
+            }
+            UserInfo = query.ToList();
+
+            TotalUsers = query.Count();
+            TotalPages = (int)Math.Ceiling((double)TotalUsers / ItemsPerPage);
+
+            var list = query.ToList();
+            UserInfo = list.Skip((page - 1) * ItemsPerPage).Take(ItemsPerPage).ToList();     
+            CurrentPage = page;
+
+            // FromDate = DateTime.Now;
+            // ToDate = DateTime.Now;
             base.ExtractSessionData();
             FillLables();
         }
