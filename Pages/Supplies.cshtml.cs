@@ -19,6 +19,7 @@ namespace LabMaterials.Pages
         public int CurrentPage { get; set; }
         public int ItemsPerPage { get; set; } = 10;
         public int TotalPages { get; set; }
+        public List<string> SelectedColumns { get; set; } = new List<string>();
 
 
 
@@ -31,6 +32,7 @@ namespace LabMaterials.Pages
             if (this.CanManageSupplies)
             {
                 FillLables();
+                LoadSelectedColumns();
                 if (HttpContext.Request.Query.ContainsKey("page")){
                     string pagevalue = HttpContext.Request.Query["page"];
                     page = int.Parse(pagevalue);
@@ -44,6 +46,27 @@ namespace LabMaterials.Pages
             }
             else
                 RedirectToPage("./Index?lang=" + Lang);
+        }
+
+        private void LoadSelectedColumns()
+        {
+            int? userId = HttpContext.Session.GetInt32("UserId");
+            if (userId.HasValue)
+            {
+                using (var db = new LabDBContext())
+                {
+                    string pageName = "supplies";
+                    var existingRecord = db.TableColumns.FirstOrDefault(c => c.UserId == userId.Value && c.Page == pageName);
+                    if (existingRecord != null && !string.IsNullOrEmpty(existingRecord.DisplayColumns))
+                    {
+                        SelectedColumns = existingRecord.DisplayColumns.Split(',').ToList();
+                    }
+                    else
+                    {
+                        SelectedColumns = new List<string>(); // Empty list
+                    }
+                }
+            }
         }
         /*private void FillData(string SupplierName, string ItemName, DateTime? FromDate, DateTime? ToDate)
         {
@@ -122,13 +145,13 @@ namespace LabMaterials.Pages
                                  InvoiceNumber = S.InvoiceNumber,
                                  InventoryBalanced = S.InventoryBalanced,
                                  PurchaseOrderNo = S.PurchaseOrderNo,
-                                 ItemCode=S.ItemCode,
-                                 ItemType=S.ItemType,
-                                 StoreName=st.StoreName,
-                                 RoomName=sb.RoomName,
-                                 ShelfNumber=sg.ShelfNumber,
-                                 ExpiryDate=S.ExpiryDate,
-                                 
+                                 ItemCode = S.ItemCode,
+                                 ItemType = S.ItemType,
+                                 StoreName = st.StoreName,
+                                 RoomName = sb.RoomName,
+                                 ShelfNumber = sg.ShelfNumber,
+                                 ExpiryDate = S.ExpiryDate,
+
                                  QuantityReceived = S.QuantityReceived.ToString() + " " + I.Unit.UnitCode
                              });
                 if (!string.IsNullOrEmpty(SupplierName) && !string.IsNullOrEmpty(ItemName))
@@ -174,6 +197,72 @@ namespace LabMaterials.Pages
             }
             else
                 RedirectToPage("./Index?lang=" + Lang);
+        }
+
+        public IActionResult OnPostAction(string SupplierName, string ItemName, DateTime? FromDate, DateTime? ToDate,string action, List<string> columns)
+        {
+            base.ExtractSessionData();
+
+            if (action == "search")
+            {
+                CurrentPage = 1;
+                this.FromDate = FromDate;
+                this.ToDate = ToDate;
+                this.SupplierName = SupplierName;
+                this.ItemName = ItemName;
+                if (CanManageSupplies)
+                {
+                    FillData(SupplierName, ItemName, FromDate, ToDate, CurrentPage);
+                }
+
+                int? userId = HttpContext.Session.GetInt32("UserId");
+                string pageName = "supplies";
+                LoadSelectedColumns();
+            }
+            else if (action == "updateColumns")
+            {
+                if (columns != null && columns.Any())
+                {
+                    string selectedColumns = string.Join(",", columns);
+
+                    int? userId = HttpContext.Session.GetInt32("UserId");
+                    string pageName = "supplies";
+
+                    SaveSelectedColumns(userId.Value, pageName, selectedColumns);
+                }
+
+                // After updating, redirect back to ManageStore with the StoreNumber and StoreName
+                return RedirectToPage("/supplies", new { SupplierName = SupplierName, ItemName = ItemName, FromDate= FromDate, ToDate= ToDate });
+            }
+
+            return Page();
+        }
+
+        private void SaveSelectedColumns(int userId, string pageName, string selectedColumns)
+        {
+            base.ExtractSessionData();
+            using (var db = new LabDBContext())
+            {
+                var existingRecord = db.TableColumns
+                    .FirstOrDefault(c => c.UserId == userId && c.Page == pageName);
+
+                if (existingRecord != null)
+                {
+                    existingRecord.DisplayColumns = selectedColumns;
+                }
+                else
+                {
+                    var newRecord = new TableColumn
+                    {
+                        UserId = userId,
+                        Page = pageName,
+                        DisplayColumns = selectedColumns
+                    };
+                    db.TableColumns.Add(newRecord);
+                }
+
+                db.SaveChanges();
+            }
         }
 
 

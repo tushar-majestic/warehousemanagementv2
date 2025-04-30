@@ -38,6 +38,20 @@
                     showErrorNotification(errorMessageFromServer);
                 </text>
         }
+
+        const toggleButton = document.getElementById('toggleDropdown');
+        const dropdownPanel = document.getElementById('dropdownPanel');
+
+        toggleButton.addEventListener('click', function () {
+            dropdownPanel.style.display = (dropdownPanel.style.display === 'none' || dropdownPanel.style.display === '') ? 'block' : 'none';
+        });
+
+        // Optional: hide when click outside
+        document.addEventListener('click', function (e) {
+            if (!toggleButton.contains(e.target) && !dropdownPanel.contains(e.target)) {
+                dropdownPanel.style.display = 'none';
+            }
+        });
     </script>
 }
 @{
@@ -63,27 +77,75 @@
 
     </div>
     <div class="table-settings mb-4">
-        <form method="post" asp-page-handler="Search" class="row align-items-center">
-            <div class="col  col-lg-3 col-xl-3">
+        <form method="post" asp-page-handler="Action" class="row align-items-center">
+
+            <div class="col col-lg-3 col-xl-3">
                 <div class="input-group me-2 me-lg-3 fmxw-400">
                     <span class="input-group-text">
-                        <svg class="icon icon-xs" x-description="Heroicon name: solid/search"
-                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                            <path fill-rule="evenodd"
-                                d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                                clip-rule="evenodd"></path>
+                        <svg class="icon icon-xs" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path>
                         </svg>
                     </span>
-                    <input type="text" name="ItemName" class="form-control" placeholder="@Model.lblItemName"
-                        value="@Model.ItemName">
+                    <input type="text" name="ItemName" class="form-control" placeholder="@Model.lblItemName" value="@Model.ItemName">
                 </div>
             </div>
 
             <div class="col-4 col-md-2 col-xl-1 ps-md-0">
-                <button type="submit" class="btn btn-primary">@Model.lblSubmit</button>
+                <button type="submit" name="action" value="search" class="btn btn-primary">@Model.lblSubmit</button>
             </div>
+
+            <div class="col text-end position-relative">
+                <button type="button" id="toggleDropdown" class="btn btn-secondary">
+                    Show/Hide Columns
+                </button>
+
+                <!-- DROPDOWN PANEL GOES HERE -->
+                <div id="dropdownPanel" class="card p-2 shadow-sm position-absolute"
+                    style="right: 0; top: 100%; width: 200px; display: none; z-index: 1000;">
+                    
+                    <!-- Your checkboxes here -->
+                    <div class="form-check mb-1">
+                        <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="itemCode" id="itemCode"
+                        @(Model.SelectedColumns.Contains("itemCode") ? "checked" : "")>
+                        <label class="form-check-label" for="itemCode">@Model.lblItemCode</label>
+                    </div>
+                    <div class="form-check mb-1">
+                        <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="itemName" id="itemName"
+                        @(Model.SelectedColumns.Contains("itemName") ? "checked" : "")>
+                        <label class="form-check-label" for="itemName">@Model.lblItemName</label>
+                    </div>
+                    <div class="form-check mb-1">
+                        <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="damagedQuantity" id="damagedQuantity"
+                        @(Model.SelectedColumns.Contains("damagedQuantity") ? "checked" : "")>
+                        <label class="form-check-label" for="damagedQuantity">@Model.lblDamagedQuantity</label>
+                    </div>
+                    <div class="form-check mb-1">
+                        <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="typeName" id="typeName"
+                        @(Model.SelectedColumns.Contains("typeName") ? "checked" : "")>
+                        <label class="form-check-label" for="typeName">@Model.lblTypeName</label>
+                    </div>
+                    <div class="form-check mb-1">
+                        <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="unitCode" id="unitCode"
+                        @(Model.SelectedColumns.Contains("unitCode") ? "checked" : "")>
+                        <label class="form-check-label" for="unitCode">@Model.lblUnitCode</label>
+                    </div>
+                    <div class="form-check mb-1">
+                        <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="damageReason" id="damageReason"
+                        @(Model.SelectedColumns.Contains("damageReason") ? "checked" : "")>
+                        <label class="form-check-label" for="damageReason">@Model.lblDamageReason</label>
+                    </div>
+
+                    <div class="form-check mb-1 text-center">
+                        <button type="submit" name="action" value="updateColumns" class="btn btn-success btn-sm">Ok</button>
+                    </div>
+
+                </div>
+            </div>
+
         </form>
     </div>
+
+
     <div class="d-flex align-items-center justify-content-between">
         <div>@Model.lblTotalItem : @Model.TotalItems</div>
         <div>
@@ -175,12 +237,30 @@
             <table class="table table-centered table-nowrap mb-0 rounded">
                 <thead class="thead-light">
                     <tr>
+                        @if (Model.SelectedColumns.Contains("itemCode"))
+                        {
                         <th scope="col" class="border-0 rounded-start">@Model.lblItemCode</th>
+                        }
+                        @if (Model.SelectedColumns.Contains("itemName"))
+                        {
                         <th scope="col" class="border-0">@Model.lblItemName</th>
+                        }
+                        @if (Model.SelectedColumns.Contains("damagedQuantity"))
+                        {
                         <th scope="col" class="border-0">@Model.lblDamagedQuantity</th>
+                        }
+                        @if (Model.SelectedColumns.Contains("typeName"))
+                        {
                         <th scope="col" class="border-0">@Model.lblTypeName</th>
+                        }
+                        @if (Model.SelectedColumns.Contains("unitCode"))
+                        {
                         <th scope="col" class="border-0">@Model.lblUnitCode</th>
+                        }
+                        @if (Model.SelectedColumns.Contains("damageReason"))
+                        {
                         <th scope="col" class="border-0">@Model.lblDamageReason</th>
+                        }
 
                         <th class="border-0 rounded-end"></th>
                     </tr>
@@ -191,12 +271,30 @@
                         foreach (var item in Model.Items)
                         {
                             <tr>
+                                @if (Model.SelectedColumns.Contains("itemCode"))
+                                {
                                 <th scope="row">@item.ItemCode</th>
+                                }
+                                @if (Model.SelectedColumns.Contains("itemName"))
+                                {
                                 <td>@item.ItemName</td>
+                                }
+                                @if (Model.SelectedColumns.Contains("damagedQuantity"))
+                                {
                                 <td>@item.DamagedQuantity</td>
+                                }
+                                @if (Model.SelectedColumns.Contains("typeName"))
+                                {
                                 <td>@item.TypeName</td>
+                                }
+                                @if (Model.SelectedColumns.Contains("unitCode"))
+                                {
                                 <td>@item.UnitCode</td>
+                                }
+                                @if (Model.SelectedColumns.Contains("damageReason"))
+                                {
                                 <td>@item.DamageReason</td>
+                                }
 
                             </tr>
                         }

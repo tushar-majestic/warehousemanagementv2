@@ -21,6 +21,7 @@ namespace LabMaterials.Pages
         public int CurrentPage { get; set; }
         public int ItemsPerPage { get; set; } = 10;
         public int TotalPages { get; set; }
+        public List<string> SelectedColumns { get; set; } = new List<string>();
 
 
         public string lblItems, lblItemName, lblGroupName, lblItemCode, lblQuantity, lblHazardType, lblTypeName,
@@ -33,6 +34,7 @@ namespace LabMaterials.Pages
             if (this.CanManageItems)
             {
                 FillLables();
+                LoadSelectedColumns();
                 if (HttpContext.Request.Query.ContainsKey("page")){
                     string pagevalue = HttpContext.Request.Query["page"];
                     page = int.Parse(pagevalue);
@@ -48,21 +50,106 @@ namespace LabMaterials.Pages
             else
                 RedirectToPage("./Index?lang=" + Lang);
         }
-
-        public void OnPost([FromForm] string ItemName, [FromForm] string Group, [FromForm] DateTime? FromDate, [FromForm] DateTime? ToDate)
+        private void LoadSelectedColumns()
         {
-            
-            base.ExtractSessionData();
-            this.ItemName = ItemName;
-            this.Group = Group;
-            this.FromDate = FromDate;
-            this.ToDate = ToDate;
-            if (CanManageItems)
+            int? userId = HttpContext.Session.GetInt32("UserId");
+            if (userId.HasValue)
             {
-                FillData(ItemName, Group, FromDate, ToDate);
+                using (var db = new LabDBContext())
+                {
+                    string pageName = "ManageItems";
+                    var existingRecord = db.TableColumns.FirstOrDefault(c => c.UserId == userId.Value && c.Page == pageName);
+                    if (existingRecord != null && !string.IsNullOrEmpty(existingRecord.DisplayColumns))
+                    {
+                        SelectedColumns = existingRecord.DisplayColumns.Split(',').ToList();
+                    }
+                    else
+                    {
+                        SelectedColumns = new List<string>(); // Empty list
+                    }
+                }
             }
-            else
-                RedirectToPage("./Index?lang=" + Lang);
+        }
+
+        // public void OnPost([FromForm] string ItemName, [FromForm] string Group, [FromForm] DateTime? FromDate, [FromForm] DateTime? ToDate)
+        // {
+
+        //     base.ExtractSessionData();
+        //     this.ItemName = ItemName;
+        //     this.Group = Group;
+        //     this.FromDate = FromDate;
+        //     this.ToDate = ToDate;
+        //     if (CanManageItems)
+        //     {
+        //         FillData(ItemName, Group, FromDate, ToDate);
+        //     }
+        //     else
+        //         RedirectToPage("./Index?lang=" + Lang);
+        // }
+
+        public IActionResult OnPostAction(string ItemName, string Group, DateTime? FromDate, DateTime? ToDate, string action, List<string> columns)
+        {
+            base.ExtractSessionData();
+
+            if (action == "search")
+            {
+                CurrentPage = 1;
+                this.ItemName = ItemName;
+                this.Group = Group;
+                this.FromDate = FromDate;
+                this.ToDate = ToDate;
+                if (CanManageItems)
+                {
+                    FillData(ItemName, Group, FromDate, ToDate);
+                }
+
+                int? userId = HttpContext.Session.GetInt32("UserId");
+                string pageName = "ManageItems";
+                LoadSelectedColumns();
+            }
+            else if (action == "updateColumns")
+            {
+                if (columns != null && columns.Any())
+                {
+                    string selectedColumns = string.Join(",", columns);
+
+                    int? userId = HttpContext.Session.GetInt32("UserId");
+                    string pageName = "ManageItems";
+
+                    SaveSelectedColumns(userId.Value, pageName, selectedColumns);
+                }
+
+                return RedirectToPage("/ManageItems", new { ItemName = ItemName, Group = Group });
+            }
+
+            return Page();
+        }
+
+        private void SaveSelectedColumns(int userId, string pageName, string selectedColumns)
+        {
+            base.ExtractSessionData();
+            using (var db = new LabDBContext())
+            {
+                var existingRecord = db.TableColumns
+                    .FirstOrDefault(c => c.UserId == userId && c.Page == pageName);
+
+                if (existingRecord != null)
+                {
+                    existingRecord.DisplayColumns = selectedColumns;
+                }
+                else
+                {
+                    var newRecord = new TableColumn
+                    {
+                        UserId = userId,
+                        Page = pageName,
+                        DisplayColumns = selectedColumns
+                    };
+                    db.TableColumns.Add(newRecord);
+                }
+
+                db.SaveChanges();
+            }
         }
 
         // Function without pagination 
@@ -155,14 +242,14 @@ namespace LabMaterials.Pages
             if (string.IsNullOrEmpty(ItemName) == false && string.IsNullOrEmpty(Group) == false)
                 query = query.Where(i => i.ItemName.Contains(ItemName) && i.GroupDesc.Contains(Group));
 
-            if (FromDate != null && FromDate >= DateTime.MinValue  && ToDate != null && ToDate >= DateTime.MinValue)
+            if (FromDate != null && FromDate >= DateTime.MinValue && ToDate != null && ToDate >= DateTime.MinValue)
                 query = query.Where(e => e.ExpiryDate.Value.Date >= FromDate.Value.Date && e.ExpiryDate.Value.Date <= ToDate.Value.Date);
-            
+
             TotalItems = query.Count();
             TotalPages = (int)Math.Ceiling((double)TotalItems / ItemsPerPage);
             var list = query.ToList();
-            Items = list.Skip((page - 1) * ItemsPerPage).Take(ItemsPerPage).ToList();        
-            CurrentPage = page;       
+            Items = list.Skip((page - 1) * ItemsPerPage).Take(ItemsPerPage).ToList();
+            CurrentPage = page;
         }
         public IActionResult OnPostEdit([FromForm] int ItemId, [FromForm] string FromDate, [FromForm] string ToDate, [FromForm] int page)
         {
