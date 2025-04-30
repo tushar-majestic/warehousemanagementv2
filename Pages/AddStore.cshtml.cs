@@ -8,9 +8,13 @@ namespace LabMaterials.Pages
     public class AddStoreModel : BasePageModel
     {
         public string ErrorMsg { get; set; }
-        public string StoreNumber, StoreName, Shelves;
+        public string StoreNumber, StoreName, Shelves,ManagerName,WarehouseType,ManagerJobNumber ;
+        public bool Open { get; set; }
+        public string Status { get; set; } // "Open" or "Closed"
 
-        public string lblStores, lblAddStore, lblStoreNumber, lblStoreName, lblShelves, lblAdd, lblCancel;
+        public bool Closed { get; set; }
+
+        public string lblStores, lblAddStore, lblStoreNumber, lblStoreName, lblShelves, lblAdd, lblCancel,lblWarehouseType, lblManagerName, lblManagerJobNumber,lblStatus, lblOpen, lblClosed ;
         public void OnGet()
         {
             base.ExtractSessionData();
@@ -58,7 +62,7 @@ namespace LabMaterials.Pages
                             dbContext.SaveChanges();
                             task.LogInfo(MethodBase.GetCurrentMethod(), "store added");
 
-                            string Message = string.Format("Store {0} added", store.StoreName);
+                            string Message = string.Format("Warehouse {0} added", store.StoreName);
                             Helper.AddActivityLog(HttpContext.Session.GetInt32("UserId").Value, Message, "Add",
                                 Helper.ExtractIP(Request), dbContext, true);
 
@@ -89,6 +93,15 @@ namespace LabMaterials.Pages
             this.lblShelves = (Program.Translations["Shelves"])[Lang];
             this.lblAdd = (Program.Translations["Add"])[Lang];
             this.lblCancel = (Program.Translations["Cancel"])[Lang];
+            this.lblWarehouseType = (Program.Translations["WarehouseType"])[Lang];
+            this.lblManagerName = (Program.Translations["ManagerName"])[Lang];
+            this.lblManagerJobNumber = (Program.Translations["ManagerJobNumber"])[Lang];
+            this.lblStatus = (Program.Translations["WarehouseStatus"])[Lang];
+            
+            this.lblOpen = (Program.Translations["Open"])[Lang];
+            this.lblClosed = (Program.Translations["Closed"])[Lang];
+
+
         }
     }
 }

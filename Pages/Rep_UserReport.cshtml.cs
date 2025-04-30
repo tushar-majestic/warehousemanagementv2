@@ -19,7 +19,7 @@ namespace LabMaterials.Pages
         [BindProperty]
         public string UserName { get; set; }
         public int CurrentPage { get; set; }
-        public int ItemsPerPage { get; set; } = 5;
+        public int ItemsPerPage { get; set; } = 10;
         public int TotalPages { get; set; }
         public void OnGet(string? UserName, DateTime? FromDate, DateTime? ToDate, int page = 1)
         {
@@ -93,7 +93,11 @@ namespace LabMaterials.Pages
         }*/
 
         public void FillData(string UserName, DateTime? FromDate, DateTime? ToDate, int page = 1)
-        {
+        {   if (HttpContext.Request.Query.ContainsKey("page"))
+            {
+                string pagevalue = HttpContext.Request.Query["page"];
+                page = int.Parse(pagevalue);
+            }
             var dbContext = new LabDBContext();
             var query = (from u in dbContext.Users
                          join ug in dbContext.UserGroups on u.UserGroupId equals ug.UserGroupId

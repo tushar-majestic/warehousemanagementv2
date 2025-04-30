@@ -13,22 +13,35 @@ namespace LabMaterials.Pages
 
         [BindProperty]
         public string SupplierName { get; set; }
+        public int CurrentPage { get; set; }
+        public int ItemsPerPage { get; set; } = 10;
+        public int TotalPages { get; set; }
         
         public string lblSuppliers, lblSearch, lblSuplierName, lblSubmit, lblSupplierName, lblConatctNumber, lblSupplierType, 
         lblAddSupplier, lblEdit, lblDelete, lblTotalItem, lblSupplies;
-        public void OnGet()
+        public void OnGet(string? SupplierName, int page = 1)
         {
             base.ExtractSessionData();
             if (CanManageSupplies)
             {
                 FillLables();
+                if (HttpContext.Request.Query.ContainsKey("page")){
+                    string pagevalue = HttpContext.Request.Query["page"];
+                    page = int.Parse(pagevalue);
+                    this.SupplierName = SupplierName;
+                    FillData(SupplierName, page);
+                }
             }
             else
                 RedirectToPage("./Index?lang=" + Lang);
         }
 
-        private void FillData(string SupplierName)
-        {
+        private void FillData(string SupplierName, int page = 1)
+        {   if (HttpContext.Request.Query.ContainsKey("page"))
+            {
+                string pagevalue = HttpContext.Request.Query["page"];
+                page = int.Parse(pagevalue);
+            }
             base.ExtractSessionData();
             if (this.CanManageSupplies)
             {
@@ -48,18 +61,22 @@ namespace LabMaterials.Pages
                 if (string.IsNullOrEmpty(SupplierName) == false)
                     query = query.Where(i => i.SupplierName.Contains(SupplierName));
 
-                Suppliers = query.ToList();
+                // Suppliers = query.ToList();
 
-                TotalItems = Suppliers.Count();
+                TotalItems = query.Count();
+                TotalPages = (int)Math.Ceiling((double)TotalItems / ItemsPerPage);
+                var list = query.ToList();
+                Suppliers = list.Skip((page - 1) * ItemsPerPage).Take(ItemsPerPage).ToList();        
+                CurrentPage = page; 
             }
             else
                 RedirectToPage("./Index?lang=" + Lang);
         }
 
-        public IActionResult OnPostEdit([FromForm] int SupplierId)
+        public IActionResult OnPostEdit([FromForm] int SupplierId, [FromForm] int page)
         {
             HttpContext.Session.SetInt32("SupplierId", SupplierId);
-
+            HttpContext.Session.SetInt32("page", page);
             return RedirectToPage("./EditSupplier");
         }
 
@@ -90,9 +107,9 @@ namespace LabMaterials.Pages
         }
 
         public void OnPostSearch([FromForm] string SupplierName)
-        {
+        {   CurrentPage = 1;
             this.SupplierName = SupplierName;
-            FillData(SupplierName);
+            FillData(SupplierName, CurrentPage);
         }
 
         private void FillLables()

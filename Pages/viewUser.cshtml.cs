@@ -12,14 +12,16 @@ namespace LabMaterials.Pages
     public class viewUserModel : BasePageModel
     {
         public UserInfo singleUser { get; set; }
-        public string lblView, lblUsers, lblSearch, lblAddUser, lblManageUserGroups, lblUserName, lblFullName, lblEmail,
-            lblUserEnabled, lblIsLocked, lblUserType, lblUserGroupName, lblEdit, lblUnlock, lblTotalItem;
+
+        public string lblView, lblUsers, lblSearch, lblAddUser, lblManageUserGroups, lblUserName, lblFullName, lblEmail, lblUserEnabled, lblIsLocked, lblUserType, lblUserGroupName, lblEdit, lblUnlock, lblTotalItem, lblJobNumber, lblEmpAffiliation, lblTransfer;
+        public int page { get; set; }
 
 
         public void OnGet()
         {
             base.ExtractSessionData();
             FillLables();
+            this.page = (int)HttpContext.Session.GetInt32("page");
             if (CanManageUsers)
             {
                 var dbContext = new LabDBContext();
@@ -32,6 +34,9 @@ namespace LabMaterials.Pages
                                 UserName = u.UserName,
                                 FullName = u.FullName,
                                 Email = u.Email,
+                                JobNumber = u.JobNumber.ToString(),
+                                EmpAffiliation = u.EmpAffiliation,
+                                Transfer = u.Transfer.ToString(),
                                 IsActive = u.IsActive ? (Lang == "ar" ? "تمكين" : "Enabled") : (Lang == "ar" ? "تعطيل" : "Disabled"),
                                 EnableBtnText = u.IsActive ? (Lang == "ar" ? "تعطيل" : "Disable") : (Lang == "ar" ? "تمكين" : "Enable"),
                                 IsADUser = u.IsActiveDirectoryUser ? (Lang == "ar" ? "مستخدم المجال" : "Domain User") : (Lang == "ar" ? "مستخدم التطبيق" : "Application User"),
@@ -68,6 +73,9 @@ namespace LabMaterials.Pages
             this.lblUnlock = (Program.Translations["Unlock"])[Lang];
             this.lblTotalItem = (Program.Translations["TotalItem"])[Lang];
             this.lblView = (Program.Translations["View"])[Lang];
+            this.lblJobNumber = (Program.Translations["JobNumber"])[Lang];
+            this.lblEmpAffiliation = (Program.Translations["EmpAffiliation"])[Lang];
+            this.lblTransfer = (Program.Translations["Transfer"])[Lang];
         }
     }
     }

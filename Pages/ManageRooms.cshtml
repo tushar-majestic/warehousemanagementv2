@@ -95,6 +95,80 @@
             </div>
         </form>
     </div>
+     @if (Model.TotalPages > 1)
+    {
+        <nav aria-label="Page navigation">
+            <ul class="pagination">
+
+                @* Previous button *@
+                @if (Model.CurrentPage > 1)
+                {
+                   
+                    <li class="page-item">
+                        <a class="page-link" href="?page=@(Model.CurrentPage - 1)&RoomName=@Model.RoomName">&laquo;</a>
+                    </li>
+                }
+
+                @* Show pages normally if the total pages are less than or equal to 10 *@
+                @if (Model.TotalPages <= 10)
+                {
+                    @for (int i = 1; i <= Model.TotalPages; i++)
+                    {
+                        <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                            <a class="page-link" href="?page=@i&RoomName=@Model.RoomName">@i</a>
+                        </li>
+                    }
+                }
+                else
+                {
+                    @* Show the first page, then ellipsis if there are skipped pages *@
+                    @if (Model.CurrentPage > 3)
+                    {
+                        <li class="page-item">
+                            <a class="page-link" href="?page=1&RoomName=@Model.RoomName">1</a>
+                        </li>
+                        <li class="page-item disabled">
+                            <span class="page-link">...</span>
+                        </li>
+                    }
+
+                    @* Show pages from (current-1) to (current+1) *@
+                    @for (int i = Math.Max(1, Model.CurrentPage - 1); i <= Math.Min(Model.TotalPages, Model.CurrentPage + 1); i++)
+                    {
+                        <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                            <a class="page-link" href="?page=@i&RoomName=@Model.RoomName">@i</a>
+                        </li>
+                    }
+
+                    @* Add "..." if there are skipped pages after the current page *@
+                    @if (Model.CurrentPage < Model.TotalPages - 1)
+                    {
+                        <li class="page-item disabled">
+                            <span class="page-link">...</span>
+                        </li>
+                    }
+
+                    @* Show the last page, if it's not already visible *@
+                    @if (Model.CurrentPage < Model.TotalPages - 2)
+                    {   
+                        <li class="page-item">
+                            <a class="page-link" href="?page=@Model.TotalPages&RoomName=@Model.RoomName">@Model.TotalPages</a>
+                        </li>
+                    }
+                }
+
+                @* Last buttons *@
+                @if (Model.CurrentPage < Model.TotalPages)
+                {
+                    <li class="page-item">
+                        <a class="page-link" href="?page=@(Model.CurrentPage + 1)&RoomName=@Model.RoomName">&raquo;</a>
+                    </li>
+                   
+                }
+
+            </ul>
+        </nav>
+    }
     <div class="card border-0 shadow mb-4">
         <div class="card-body">
             <div class="table-responsive">
@@ -109,11 +183,11 @@
                     </thead>
                     <tbody>
                         @if (Model.Stores != null)
-                        {
-                            var filteredRooms = Model.Stores.Where(item => item.RoomName != null &&
-                            Model.Rooms.Any(room => room.RoomId == item.RoomId && room.Ended == null));
+                        @*    commenting *@
+                            @* var filteredRooms = Model.Stores.Where(item => item.RoomName != null &&
+                            Model.Rooms.Any(room => room.RoomId == item.RoomId && room.Ended == null)); *@
 
-                            foreach (var item in filteredRooms)
+                            foreach (var item in Model.Stores)
                             {
                                 
                                 <tr>
@@ -126,6 +200,7 @@
                                     <td>
                                         <form method="post">
                                             <input type="hidden" value="@item.RoomId" name="RoomId" />
+                                            <input type="hidden" value="@Model.CurrentPage" name="page" />
                                             <input type="submit" value="@Model.lblEdit" class="btn btn-secondary"
                                                    asp-page-handler="Edit" />
                                             <input type="submit" value="@Model.lblDelete" class="btn btn-danger"
@@ -138,7 +213,7 @@
                                 </tr>
                                 
                             }
-                        }
+                        
                     <tr>
                         <td colspan="4">
                             <div>@Model.lblTotalItem : @Model.TotalItems</div>
@@ -150,7 +225,7 @@
         </div>
     </div>
 
-      @if (Model.TotalPages > 1)
+    @if (Model.TotalPages > 1)
     {
         <nav aria-label="Page navigation">
             <ul class="pagination">

@@ -18,26 +18,45 @@ namespace LabMaterials.Pages
 
         [BindProperty]
         public string Item { get; set; }
+        public int CurrentPage { get; set; }
+        public int ItemsPerPage { get; set; } = 10;
+        public int TotalPages { get; set; }
         
         public string lblInventory, lblSearch, lblStoreNumber, lblStoreName, lblItemName, lblSubmit,
             lblShelveNumber, lblAvailableQuantity, lblTotalItem, lblMaterialsReceived,
             lblHazardousMaterials, lblUserActivity, lblDistributedMaterials, lblExpiryDate,
             lblDamagedItems, lblUserReport, lblExport, lblFromDate, lblToDate;
-        public void OnGet()
+        public void OnGet(string? Item,string? StoreNumber, string? StoreName, DateTime? FromDate, DateTime? ToDate, int page = 1)
         {
             base.ExtractSessionData();
             if (CanSeeReports)
             {
-                this.FromDate = DateTime.Today;
-                this.ToDate = DateTime.Today;
+                // this.FromDate = DateTime.Today;
+                // this.ToDate = DateTime.Today;
                 FillLables();
+                if (HttpContext.Request.Query.ContainsKey("page")){
+                    string pagevalue = HttpContext.Request.Query["page"];
+                    page = int.Parse(pagevalue);
+                    this.Item = Item;
+                    this.StoreNumber = StoreNumber;
+                    this.StoreName = StoreName;
+                    this.FromDate = FromDate;
+                    this.ToDate = ToDate;
+                    // this.FromDate = DateTime.Today;
+                    // this.ToDate = DateTime.Today;
+                    FillData(StoreNumber, StoreName, Item,FromDate,ToDate, page);
+                }
             }
             else
                 RedirectToPage("./Index?lang=" + Lang);
         }
 
-        private void FillData(string? StoreNumber, string? StoreName, string? Item, DateTime? FromDate, DateTime? ToDate)
-        {
+        private void FillData(string? StoreNumber, string? StoreName, string? Item, DateTime? FromDate, DateTime? ToDate,  int page = 1)
+        {   if (HttpContext.Request.Query.ContainsKey("page"))
+            {
+                string pagevalue = HttpContext.Request.Query["page"];
+                page = int.Parse(pagevalue);
+            }
             base.ExtractSessionData();
             if (CanSeeReports)
             {
@@ -68,26 +87,34 @@ namespace LabMaterials.Pages
                 if (FromDate is not null && FromDate != DateTime.MinValue && ToDate is not null && ToDate != DateTime.MinValue)
                     query = query.Where(e => e.ExpiryDate >= FromDate && e.ExpiryDate <= ToDate);
 
-                Storages = query.ToList();
+                // Storages = query.ToList();
 
-                Storages = query.ToList();
-                TotalItems = Storages.Count();
+                // Storages = query.ToList();
+                // TotalItems = Storages.Count();
 
-                this.FromDate = DateTime.Today;
-                this.ToDate = DateTime.Today;
+                // this.FromDate = DateTime.Today;
+                // this.ToDate = DateTime.Today;
+                TotalItems = query.Count();
+                TotalPages = (int)Math.Ceiling((double)TotalItems / ItemsPerPage);
+
+                var list = query.ToList();
+                Storages = list.Skip((page - 1) * ItemsPerPage).Take(ItemsPerPage).ToList();     
+                CurrentPage = page;
             }
             else
                 RedirectToPage("./Index?lang=" + Lang);
         }
 
         public void OnPostSearch([FromForm] string StoreNumber, [FromForm] string StoreName, [FromForm] string Item, [FromForm] DateTime? FromDate, [FromForm] DateTime? ToDate)
-        {
+        {   CurrentPage = 1;
             this.Item = Item;
             this.StoreNumber = StoreNumber;
             this.StoreName = StoreName;
-            this.FromDate = DateTime.Today;
-            this.ToDate = DateTime.Today;
-            FillData(StoreNumber, StoreName, Item,FromDate,ToDate);
+            this.FromDate = FromDate;
+            this.ToDate = ToDate;
+            // this.FromDate = DateTime.Today;
+            // this.ToDate = DateTime.Today;
+            FillData(StoreNumber, StoreName, Item,FromDate,ToDate, CurrentPage);
         }
         public IActionResult OnPostExport()
         {
