@@ -329,63 +329,80 @@
     },
 
 
-  //Units
-  "AddUnit": {
-    "en": "Add Unit",
-    "ar": "إضافة وحدة"
-  },
-  "UpdateUnit": {
-    "en": "Update Unit",
-    "ar": "تحديث الوحدة"
-  },
-  "UnitDescription": {
-    "en": "Unit Description",
-    "ar": "وصف الوحدة"
-  },
-  "UnitCode": {
-    "en": "Unit Code",
-    "ar": "كود الوحدة"
-  },
-  "Units": {
-    "en": "Units",
-    "ar": "الوحدات"
-  },
-  "WarehouseType": {
-    "en": "Warehouse Type",
-    "ar": "الوحدات"
-  },
-  "ManagerName": {
-    "en": "Manager Name",
-    "ar": "اسم المدير"
-  },
-  "ManagerJobNumber": {
-    "en": "Manager Job Number",
-    "ar": "رقم وظيفة المدير"
-  },
-  "WarehouseStatus": {
-    "en": "Warehouse Status",
-    "ar": "حالة المستودع"
-  },
-  "Open": {
-    "en": "Open",
-    "ar": "يفتح"
-  },
-  "Closed": {
-    "en": "Closed",
-    "ar": "مغلق"
-  },
-  "UnitsMeasure": {
-    "en": "Units of measure",
-    "ar": "الوحدات"
-  },
-  "ChemicalStatus": {
-    "en": "Chemical status",
-    "ar": "الوحدات"
-  },
-  "DocumentType": {
-    "en": "Document type",
-    "ar": "الوحدات"
-  },
+    //Units
+    "AddUnit": {
+        "en": "Add Unit",
+        "ar": "إضافة وحدة"
+    },
+    "UpdateUnit": {
+        "en": "Update Unit",
+        "ar": "تحديث الوحدة"
+    },
+    "UnitDescription": {
+        "en": "Unit Description",
+        "ar": "وصف الوحدة"
+    },
+    "UnitCode": {
+        "en": "Unit Code",
+        "ar": "كود الوحدة"
+    },
+    "Units": {
+        "en": "Units",
+        "ar": "الوحدات"
+    },
+    "WarehouseType": {
+        "en": "Warehouse Type",
+        "ar": "الوحدات"
+    },
+    "ManagerName": {
+        "en": "Manager Name",
+        "ar": "اسم المدير"
+    },
+    "ManagerJobNumber": {
+        "en": "Manager Job Number",
+        "ar": "رقم وظيفة المدير"
+    },
+    "WarehouseStatus": {
+        "en": "Warehouse Status",
+        "ar": "حالة المستودع"
+    },
+    "Open": {
+        "en": "Open",
+        "ar": "يفتح"
+    },
+    "Closed": {
+        "en": "Closed",
+        "ar": "مغلق"
+    },
+    "UnitsMeasure": {
+        "en": "Units of measure",
+        "ar": "الوحدات"
+    },
+    "ChemicalStatus": {
+        "en": "Chemical status",
+        "ar": "الوحدات"
+    },
+    "DocumentType": {
+        "en": "Document type",
+        "ar": "الوحدات"
+    },
+
+    "ShelfIsMissing": {
+        "en": "Shelf Is Missing",
+        "ar": "رقم الفاتورة مفقود"
+    },
+    "PurchaseOrderNoMissing": {
+        "en": "Purchase order number is missing.",
+        "ar": "رقم أمر الشراء مفقود"
+    },
+    "QuantityReceivedMissing": {
+        "en": "Quantity received is missing.",
+        "ar": "الكمية المستلمة مفقودة"
+    },
+    "ReceivedAtMissing": {
+        "en": "Please select order received date.",
+        "ar": "يرجى تحديد تاريخ استلام الطلب"
+    },
 
     //Stores
     "Stores": {
@@ -880,55 +897,55 @@
         "en": "Type Name Is Missing",
         "ar": "اسم نوع الصنف مفقود"
     },
-  
-  "ExpiryDateMissing": {
-    "en": "Expiry Date is Missing",
-    "ar": "تاريخ انتهاء الصلاحية مفقود"
-  },
-  "InvoiceNumberExists": {
-    "en": "The invoice number {0} already exists.",
-    "ar": "رقم الفاتورة {0} موجود بالفعل"
-  },
-  "PurchaseOrderNoExists": {
-    "en": "The purchase order number {0} already exists.",
-    "ar": "رقم أمر الشراء {0} موجود بالفعل"
-  },
-  "SupplierNameMissing": {
-    "en": "Supplier name is missing.",
-    "ar": "اسم المورد مفقود"
-  },
-  "SupplierPhoneNumber": {
-    "en": "Supplier Conatct Number",
-    "ar": "رقم التواصل للمورد"
-  },
-  "SupplierType": {
-    "en": "Supplier Type",
-    "ar": "نوع المورد"
-  },
-  "SupplierNameExists": {
-    "en": "The Supplier name {0} already exists.",
-    "ar": "اسم المورد {0} موجود بالفعل"
-  },
-  "StoreNumberMissing": {
-    "en": "Warehouse Number is missing.",
-    "ar": "رقم المستودع مفقود"
-  },
-  "StoreNameMissing": {
-    "en": "Warehouse Name is missing.",
-    "ar": "اسم المستودع مفقود"
-  },
-  "StoreTypeMissing": {
-    "en": "Warehouse Type is missing.",
-    "ar": "Warehouse Type is missing."
-  },
-  "ManagerNameMissing":{
-    "en": "Warehouse Manager Name is missing.",
-    "ar": "Warehouse Manager Name is missing."
-  },
-  "ManagerJobNumberMissing":{
-    "en": "Manager Job Number is missing.",
-    "ar": "Manager Job Number is missing."
-  },
+
+    "ExpiryDateMissing": {
+        "en": "Expiry Date is Missing",
+        "ar": "تاريخ انتهاء الصلاحية مفقود"
+    },
+    "InvoiceNumberExists": {
+        "en": "The invoice number {0} already exists.",
+        "ar": "رقم الفاتورة {0} موجود بالفعل"
+    },
+    "PurchaseOrderNoExists": {
+        "en": "The purchase order number {0} already exists.",
+        "ar": "رقم أمر الشراء {0} موجود بالفعل"
+    },
+    "SupplierNameMissing": {
+        "en": "Supplier name is missing.",
+        "ar": "اسم المورد مفقود"
+    },
+    "SupplierPhoneNumber": {
+        "en": "Supplier Conatct Number",
+        "ar": "رقم التواصل للمورد"
+    },
+    "SupplierType": {
+        "en": "Supplier Type",
+        "ar": "نوع المورد"
+    },
+    "SupplierNameExists": {
+        "en": "The Supplier name {0} already exists.",
+        "ar": "اسم المورد {0} موجود بالفعل"
+    },
+    "StoreNumberMissing": {
+        "en": "Warehouse Number is missing.",
+        "ar": "رقم المستودع مفقود"
+    },
+    "StoreNameMissing": {
+        "en": "Warehouse Name is missing.",
+        "ar": "اسم المستودع مفقود"
+    },
+    "StoreTypeMissing": {
+        "en": "Warehouse Type is missing.",
+        "ar": "Warehouse Type is missing."
+    },
+    "ManagerNameMissing": {
+        "en": "Warehouse Manager Name is missing.",
+        "ar": "Warehouse Manager Name is missing."
+    },
+    "ManagerJobNumberMissing": {
+        "en": "Manager Job Number is missing.",
+        "ar": "Manager Job Number is missing."
+    },
     "ExpiryDateMissing": {
         "en": "Expiry Date is Missing",
         "ar": "تاريخ انتهاء الصلاحية مفقود"
