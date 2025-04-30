@@ -23,6 +23,17 @@ public partial class StoreDataResult
     [Unicode(false)]
     public string? RoomNo { get; set; }
 
+      [StringLength(50)]
+    public string? StoreType { get; set; }
+
+    [StringLength(20)]
+    public string? WarehouseManagerName { get; set; }
+
+    [StringLength(10)]
+    public string? WarehouseStatus{ get; set; }
+
+    public int? ManagerJobNum { get; set; }
+
     [StringLength(250)]
     [Unicode(false)]
     public string? RoomName { get; set; }

@@ -282,6 +282,8 @@
                             {
                             <th scope="col" class="border-0">@Model.lblStoreNumber</th>
                             }
+                            <th scope="col" class="border-0">@Model.lblWarehouseType</th>
+
                             @if (Model.SelectedColumns.Contains("col2"))
                             {
                             <th scope="col" class="border-0">@Model.lblStoreName</th>
@@ -324,6 +326,8 @@
                                         {
                                         <td style="min-width:100px !important; min-width:100px;  width:100px !important;">@item.StoreNumber</td>
                                         }
+                                        <td style="min-width:100px !important; min-width:100px;  width:100px !important;">@item.StoreType</td>
+
                                         @if (Model.SelectedColumns.Contains("col2"))
                                         {
                                         <td style="min-width:300px;  width:300px;">@item.StoreName</td>
