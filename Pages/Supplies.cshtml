@@ -456,9 +456,11 @@
                         <td>
                             <form method="post">
                                 <input type="hidden" value="@item.SupplyId" name="SupplyId" />
-                                   <input type="hidden" value="@Model.CurrentPage" name="page" />
-                                    <input type="hidden" value="@Model.FromDate?.ToString("yyyy-MM-dd")" name="FromDate" />
-                                    <input type="hidden" value="@Model.ToDate?.ToString("yyyy-MM-dd")" name="ToDate" />
+                                <input type="hidden" value="@Model.CurrentPage" name="page" />
+                                <input type="hidden" value="@Model.FromDate?.ToString("yyyy-MM-dd")" name="FromDate" />
+                                <input type="hidden" value="@Model.ToDate?.ToString("yyyy-MM-dd")" name="ToDate" />
+                                <input type="hidden" value="@Model.ItemName" name="ItemName" />
+                                <input type="hidden" value="@Model.SupplierName" name="SupplierName" />
                                 <input type="submit" value="@Model.lblEdit" class="btn btn-secondary" asp-page-handler="Edit" />
                                 <input type="submit" value="@Model.lblView" class="btn btn-secondary" asp-page-handler="View" />
                                 <input type="submit" value="@Model.lblDelete" class="btn btn-danger" asp-page-handler="Delete" />

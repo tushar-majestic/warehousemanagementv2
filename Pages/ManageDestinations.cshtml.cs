@@ -76,7 +76,9 @@ namespace LabMaterials.Pages
 
         public IActionResult OnPostEdit([FromForm] int DestinationId, [FromForm] int page)
         {
+            
             HttpContext.Session.SetInt32("DId", DestinationId);
+            HttpContext.Session.SetString("DestinationName", string.IsNullOrEmpty(DestinationName) ? "" : DestinationName);
             HttpContext.Session.SetInt32("page", page);
             return RedirectToPage("./EditDestinations");
         }

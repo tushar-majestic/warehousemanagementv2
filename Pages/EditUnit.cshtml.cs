@@ -7,7 +7,7 @@ namespace LabMaterials.Pages
     {
         public string ErrorMsg { get; set; }
         public int UnitId;
-        public string UnitCode;
+        public string UnitCode, UnitDescSearch;
         public string UnitDescription;
         public string GroupCode;
         public int page { get; set; }
@@ -19,6 +19,7 @@ namespace LabMaterials.Pages
             base.ExtractSessionData();
             FillLables();
             this.page = (int)HttpContext.Session.GetInt32("page");
+            this.UnitDescSearch = HttpContext.Session.GetString("UnitDesc");
             if (CanDisburseItems == false)
                 RedirectToPage("./Index?lang=" + Lang);
             using (var dbContext = new LabDBContext())

@@ -162,6 +162,7 @@
                     <button class="btn btn-secondary btn-sm" id="toggleDropdown" type="button">
                         Show/Hide Columns
                     </button>
+                    <input type="hidden" value="@Model.CurrentPage" name="page" />
 
                     <div id="dropdownPanel" class="card p-2 shadow-sm position-absolute"
                         style="right: 0; top: 100%; width: 200px; display: none; z-index: 1000;">
@@ -359,6 +360,8 @@
                                                     }
                                                 </button>
                                                 <input type="hidden" value="@Model.CurrentPage" name="page" />
+                                                <input type="hidden" value="@Model.StoreNumber" name="StoreNumber" />
+                                                <input type="hidden" value="@Model.StoreName" name="StoreName" />
                                                 <input type="submit" value="@Model.lblEdit" class="btn btn-secondary"
                                                        asp-page-handler="Edit" />
                                                 <input type="submit" value="@Model.lblDelete" class="btn btn-danger"

@@ -266,11 +266,13 @@ namespace LabMaterials.Pages
         }
 
 
-        public IActionResult OnPostEdit([FromForm] int SupplyId, [FromForm] string FromDate, [FromForm] string ToDate, [FromForm] int page)
+        public IActionResult OnPostEdit([FromForm] int SupplyId, [FromForm] string FromDate, [FromForm] string ToDate, [FromForm] int page, [FromForm] string ItemName, [FromForm] string SupplierName)
         {
             HttpContext.Session.SetString("FromDate", string.IsNullOrEmpty(FromDate) ? "" : FromDate);
             HttpContext.Session.SetString("ToDate", string.IsNullOrEmpty(ToDate) ? "" : ToDate);
             HttpContext.Session.SetInt32("page", page);
+             HttpContext.Session.SetString("ItemName", string.IsNullOrEmpty(ItemName) ? "" : ItemName);
+             HttpContext.Session.SetString("SupplierName", string.IsNullOrEmpty(SupplierName) ? "" : SupplierName);
             HttpContext.Session.SetInt32("SupplyId", SupplyId);
 
             return RedirectToPage("./EditSupply");

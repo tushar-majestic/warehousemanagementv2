@@ -6,7 +6,7 @@ namespace LabMaterials.Pages
     public class EditRoomModel : BasePageModel
     {
         public string ErrorMsg { get; set; }
-        public string RoomNumber, RoomName;
+        public string RoomNumber, RoomName, RoomNameSearch;
         public int? RoomId, SelectedStoreId;
         public List<Store> Stores { get; set; }
         public int page { get; set; }
@@ -17,6 +17,7 @@ namespace LabMaterials.Pages
             base.ExtractSessionData();
             FillLables();
             this.page = (int)HttpContext.Session.GetInt32("page");
+            this.RoomNameSearch = HttpContext.Session.GetString("RoomName");
             if (CanManageStore == false)
                 RedirectToPage("./Index?lang=" + Lang);
             else

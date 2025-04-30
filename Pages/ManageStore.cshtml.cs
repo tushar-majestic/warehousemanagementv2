@@ -199,11 +199,12 @@ namespace LabMaterials.Pages
 
 
 
-        public IActionResult OnPostEdit([FromForm] int StoreId, [FromForm] int page)
+        public IActionResult OnPostEdit([FromForm] int StoreId, [FromForm] int page, [FromForm] string StoreNumber, [FromForm] string StoreName)
         {
             HttpContext.Session.SetInt32("StoreId", StoreId);
             HttpContext.Session.SetInt32("page", page);
-
+            HttpContext.Session.SetString("StoreNumber", string.IsNullOrEmpty(StoreNumber) ? "" : StoreNumber);
+            HttpContext.Session.SetString("StoreName", string.IsNullOrEmpty(StoreName) ? "" : StoreName);
             return RedirectToPage("./EditStore");
         }
 

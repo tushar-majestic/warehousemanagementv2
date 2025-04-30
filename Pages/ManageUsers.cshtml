@@ -206,6 +206,7 @@
                             <form method="post">
                                 <input type="hidden" value="@item.UserID" name="UserId" />
                                 <input type="hidden" value="@Model.CurrentPage" name="page" />
+                                <input type="hidden" value="@Model.UserName" name="UserName" />
                                 <input type="submit" value="@Model.lblEdit" class="btn btn-primary" asp-page-handler="Edit" />
 
                                 <input type="submit" value="@Model.lblView" class="btn btn-primary" asp-page-handler="View" />
