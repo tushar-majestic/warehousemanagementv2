@@ -13,12 +13,13 @@ namespace LabMaterials.Pages
 
         public List<Destination> Destinations { get; set; }
         public List<Item> Items { get; set; }
-
+        public int page { get; set; }
         public string lblItemName, lblDestinationName, lblUpdateDestination, lblShelveNumber, lblQuantity, lblUpdate, lblCancel, lblDestinations, lblStores;
         public void OnGet()
         {
             base.ExtractSessionData();
             FillLables();
+            this.page = (int)HttpContext.Session.GetInt32("page");
             if (CanManageStore == false)
                 RedirectToPage("./Index?lang=" + Lang);
             var dbContext = new LabDBContext();

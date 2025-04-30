@@ -8,13 +8,14 @@ namespace LabMaterials.Pages
         public string ErrorMsg { get; set; }
         public string RoomNumber, RoomName, ShelfNumber;
         public int? RoomId, ShelfId;
-
+        public int page { get; set; }
         public string lblUpdateStore, lblStoreNumber, lblUpdateShelf, lblStoreName, lblShelfNumber, 
         lblShelves, lblUpdate, lblCancel, lblRoomNumber, lblRoomName, lblStores, lblManageRooms, lblManageShelves;
         public void OnGet()
         {
             base.ExtractSessionData();
             FillLables();
+             this.page = (int)HttpContext.Session.GetInt32("page");
             if (CanManageStore == false)
                 RedirectToPage("./Index?lang=" + Lang);
             else

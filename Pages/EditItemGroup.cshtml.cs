@@ -7,11 +7,13 @@ namespace LabMaterials.Pages
         public string ErrorMsg { get; set; }
         public string GroupCode, GroupCodeID;
         public string GroupDesc;
+        public int page { get; set; }
         
         public string lblGroupCode, lblGroupName, lblUpdate, lblCancel, lblUpdateItemGroup, lblItems, lblItemGroups;
         public void OnGet()
         {
             base.ExtractSessionData();
+            this.page = (int)HttpContext.Session.GetInt32("page");
             if (CanManageItems == false)
                 RedirectToPage("./Index?lang=" + Lang);
             using (var dbContext = new LabDBContext())

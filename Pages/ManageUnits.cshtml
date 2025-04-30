@@ -192,6 +192,7 @@
                                     <td>@item.GroupName</td>
                                     <td>
                                         <form method="post">
+                                            <input type="hidden" value="@Model.CurrentPage" name="page" />
                                             <input type="hidden" value="@item.ID" name="ID" />
                                             <input type="submit" value="@Model.lblEdit" class="btn btn-secondary"
                                                 asp-page-handler="Edit" />

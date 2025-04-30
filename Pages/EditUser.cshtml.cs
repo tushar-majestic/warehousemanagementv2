@@ -14,6 +14,7 @@ namespace LabMaterials.Pages
         public string Username, UserFullName, Email, Password, EmpAffiliation,JobNumber, Transfer, ReTypePassword;
         public bool IsADUser, ChangePassword;
         public int UserGroupID, ToUpdateUserID;
+        public int page { get; set; }
         public List<UserGroup> UserGroupsList {  get; set; }
         
         public string lblUpdateUser, lblUserName, lblFullName, lblEmail,
@@ -25,6 +26,7 @@ namespace LabMaterials.Pages
             if (CanManageUsers == false)
                 RedirectToPage("./Index?lang=" + Lang);
             FillLables();
+            this.page = (int)HttpContext.Session.GetInt32("page");
             var dbContext = new LabDBContext();
 
             var user = dbContext.Users.Single(u => u.UserId == HttpContext.Session.GetInt32("ToUpdateUserId"));

@@ -73,10 +73,10 @@ namespace LabMaterials.Pages
         }
 
 
-        public IActionResult OnPostEdit([FromForm] int ID)
+        public IActionResult OnPostEdit([FromForm] int ID, [FromForm] int page)
         {
             HttpContext.Session.SetInt32("ID", ID);
-
+            HttpContext.Session.SetInt32("page", page);
             return RedirectToPage("./EditUnit");
         }
 

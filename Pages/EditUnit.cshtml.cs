@@ -10,6 +10,7 @@ namespace LabMaterials.Pages
         public string UnitCode;
         public string UnitDescription;
         public string GroupCode;
+        public int page { get; set; }
         public List<ItemGroup> ItemGroups {  get; set; }
         
         public string lblUnitCode, lblAddUnit, lblUnitDescription, lblGroupName, lblUpdate, lblCancel, lblUpdateUnits, lblUnits, lblItems;
@@ -17,6 +18,7 @@ namespace LabMaterials.Pages
         {
             base.ExtractSessionData();
             FillLables();
+            this.page = (int)HttpContext.Session.GetInt32("page");
             if (CanDisburseItems == false)
                 RedirectToPage("./Index?lang=" + Lang);
             using (var dbContext = new LabDBContext())
