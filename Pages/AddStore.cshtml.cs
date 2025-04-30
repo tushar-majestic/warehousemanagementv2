@@ -8,9 +8,13 @@ namespace LabMaterials.Pages
     public class AddStoreModel : BasePageModel
     {
         public string ErrorMsg { get; set; }
-        public string StoreNumber, StoreName, Shelves;
+        public string StoreNumber, StoreName, Shelves,ManagerName,WarehouseType,ManagerJobNumber ;
+        public bool Open { get; set; }
+        public string Status { get; set; } // "Open" or "Closed"
 
-        public string lblStores, lblAddStore, lblStoreNumber, lblStoreName, lblShelves, lblAdd, lblCancel;
+        public bool Closed { get; set; }
+
+        public string lblStores, lblAddStore, lblStoreNumber, lblStoreName, lblShelves, lblAdd, lblCancel,lblWarehouseType, lblManagerName, lblManagerJobNumber,lblStatus, lblOpen, lblClosed ;
         public void OnGet()
         {
             base.ExtractSessionData();
@@ -89,6 +93,15 @@ namespace LabMaterials.Pages
             this.lblShelves = (Program.Translations["Shelves"])[Lang];
             this.lblAdd = (Program.Translations["Add"])[Lang];
             this.lblCancel = (Program.Translations["Cancel"])[Lang];
+            this.lblWarehouseType = (Program.Translations["WarehouseType"])[Lang];
+            this.lblManagerName = (Program.Translations["ManagerName"])[Lang];
+            this.lblManagerJobNumber = (Program.Translations["ManagerJobNumber"])[Lang];
+            this.lblStatus = (Program.Translations["WarehouseStatus"])[Lang];
+            
+            this.lblOpen = (Program.Translations["Open"])[Lang];
+            this.lblClosed = (Program.Translations["Closed"])[Lang];
+
+
         }
     }
 }

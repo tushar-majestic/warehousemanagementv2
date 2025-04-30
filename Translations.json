@@ -349,6 +349,26 @@
     "en": "Warehouse type",
     "ar": "الوحدات"
   },
+  "ManagerName": {
+    "en": "Manager Name",
+    "ar": "اسم المدير"
+  },
+  "ManagerJobNumber": {
+    "en": "Manager Job Number",
+    "ar": "رقم وظيفة المدير"
+  },
+  "WarehouseStatus": {
+    "en": "Warehouse Status",
+    "ar": "حالة المستودع"
+  },
+  "Open": {
+    "en": "Open",
+    "ar": "يفتح"
+  },
+  "Closed": {
+    "en": "Closed",
+    "ar": "مغلق"
+  },
   "UnitsMeasure": {
     "en": "Units of measure",
     "ar": "الوحدات"
@@ -613,6 +633,23 @@
     "en": "Is Domain User",
     "ar": "مستخدم إداري"
   },
+  "JobNumber": {
+    "en": "Job Number",
+    "ar": "رقم الوظيفة"
+  },
+  "EmpAffiliation": {
+    "en": "Employee's Affiliation",
+    "ar": "انتماء الموظف"
+  },
+  "Transfer": {
+    "en": "Transfer",
+    "ar": "تحويل"
+  },
+  "ReTypePassword": {
+    "en": "Re-type Password",
+    "ar": "أعد كتابة كلمة المرور"
+  },
+
 
   //Reports
   "HazardousMaterials": {
@@ -673,7 +710,28 @@
     "en": "User Name is required.",
     "ar": "اسم المستخدم مطلوب"
   },
-  "PassordMissing": {
+  "JobNumberMissing": {
+    "en": "Job Number is required.",
+    "ar": "رقم الوظيفة مطلوب."
+  },
+  "EmpAffiliationMissing": {
+    "en": "Employee's Affiliation is required.",
+    "ar": "يشترط انتماء الموظ"
+  },
+  "TransferMissing": {
+    "en": "Transfer is required.",
+    "ar": "النقل مطلوب"
+  },
+  
+  "ReTypePasswordMissing": {
+    "en": "ReType Password",
+    "ar": "أعد كتابة كلمة المرور"
+  },
+  "PasswordMismatch": {
+    "en": "Password and Confirm Password does not match.",
+    "ar": "كلمة المرور وتأكيد كلمة المرور غير متطابقتين"
+  },
+  "PasswordMissing": {
     "en": "Password is required.",
     "ar": "كلمة المرور مطلوبة"
   },
