@@ -350,7 +350,7 @@
     "ar": "الوحدات"
   },
   "WarehouseType": {
-    "en": "Warehouse type",
+    "en": "Warehouse Type",
     "ar": "الوحدات"
   },
   "ManagerName": {
@@ -932,6 +932,18 @@
   "StoreNameMissing": {
     "en": "Warehouse Name is missing.",
     "ar": "اسم المستودع مفقود"
+  },
+  "StoreTypeMissing": {
+    "en": "Warehouse Type is missing.",
+    "ar": "Warehouse Type is missing."
+  },
+  "ManagerNameMissing":{
+    "en": "Warehouse Manager Name is missing.",
+    "ar": "Warehouse Manager Name is missing."
+  },
+  "ManagerJobNumberMissing":{
+    "en": "Manager Job Number is missing.",
+    "ar": "Manager Job Number is missing."
   },
 
 

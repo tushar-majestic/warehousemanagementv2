@@ -38,6 +38,13 @@
                     showErrorNotification(errorMessageFromServer);
             </text>
         }
+
+         document.getElementById("ManagerName").addEventListener("change", function () {
+            const selectedOption = this.options[this.selectedIndex];
+            const jobNumber = selectedOption.getAttribute("data-jobnumber");
+
+            document.getElementById("ManagerJobNumber").value = jobNumber || '';
+        });
     </script>
 }
 @{
@@ -76,6 +83,32 @@
 
                         <div class="col-lg-12 col-sm-12">
                             <input type="hidden" name="StoreId" value="@Model.StoreId" />
+                            @* Warehouse type  *@
+                            <div class="mb-4">
+                                <p>@Model.StoreType</p>
+                                <label class="my-1 me-2" for="StoreType">@Model.lblWarehouseType</label>
+                                <select class="form-select" id="StoreType" name="StoreType"
+                                        aria-label="Default select example" >
+                                     @if (Model.StoreTypeList != null)
+                                    {
+                                        foreach (var item in Model.StoreTypeList)
+                                        {
+                                             var selectedAttr = item.Value == Model.StoreType ? "selected=\"selected\"" : "";
+                                            @:<option value="@item.Value" @Html.Raw(selectedAttr)>@item.Text</option>
+                                        }
+                                    }
+                                </select>
+                                
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="storeName">@Model.lblStoreName</label>
+                                <input type="text" name="StoreName" value="@Model.StoreName" class="form-control"
+                                    id="storeName">
+                             <!--   <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone
+                                    else.</small> -->
+                            </div>
+                            
                             <div class="mb-4">
                                 <label for="storeNumber">@Model.lblStoreNumber</label>
                                 <input type="text" name="StoreNumber" class="form-control" id="storeNumber"
@@ -84,13 +117,58 @@
                               <!--  <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone
                                     else.</small> -->
                             </div>
+
+                            @* Warehouse manager name  *@
                             <div class="mb-4">
-                                <label for="storeName">@Model.lblStoreName</label>
-                                <input type="text" name="StoreName" value="@Model.StoreName" class="form-control"
-                                    id="storeName">
-                             <!--   <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone
-                                    else.</small> -->
+                                    <label class="my-1 me-2" for="ManagerName">@Model.lblManagerName</label>
+                                    <select class="form-select" id="ManagerName" name="ManagerName"
+                                        aria-label="Default select example">
+                                        <option value=""></option>
+                                        
+                                        
+                                    @if (Model.ManagerGroupsList != null)
+                                    {
+                                        foreach (var item in Model.ManagerGroupsList)
+                                        {   
+                                            var selectedAttr = item.UserName == Model.ManagerName ? "selected=\"selected\"" : "";
+                                            @:<option value="@item.UserName" data-jobnumber="@item.JobNumber" @Html.Raw(selectedAttr)>@item.UserName</option>
+                                        }
+                                    }
+
+                                    </select>
                             </div>
+
+                             @* Warehouse manager Job Number  *@
+                            <div class="mb-4">
+                                <label for="ManagerJobNumber">@Model.lblManagerJobNumber</label>
+                                <input type="text" name="ManagerJobNumber" class="form-control" id="ManagerJobNumber"
+                                    value="@Model.ManagerJobNumber" /> 
+                            </div>
+
+                            
+
+
+                            @* Warehouse status *@
+                            <div class="mb-4">
+                                <p>@Model.lblStatus</p>
+
+                                <div class="form-check">
+                                    <input id="Open" class="form-check-input" type="radio" name="Status" value="Open"  @(Model.Status == "Open" ? "checked" : "") 
+                                       />
+                                    <label class="form-check-label" for="Open">
+                                        @Model.lblOpen
+                                    </label>
+                                </div>
+
+                                <div class="form-check">
+                                    <input id="Closed" class="form-check-input" type="radio" name="Status" value="Closed"  @(Model.Status == "Closed" ? "checked" : "") 
+                                        />
+                                    <label class="form-check-label" for="Closed">
+                                        @Model.lblClosed
+                                    </label>
+                                </div>
+                            </div>
+                            
                             <div class="mb-4">
 
 
