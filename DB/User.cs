@@ -39,15 +39,6 @@ public partial class User
     [Column("CreatedByID")]
     public int? CreatedById { get; set; }
 
-    [Column("JobNumber")]
-    public int? JobNumber { get; set; }
-
-    [StringLength(50)]
-    public string EmpAffiliation { get; set; } = null!;
-
-    [Column("Transfer")]
-    public int? Transfer { get; set; }
-
     public bool IsActiveDirectoryUser { get; set; }
 
     [Column("UserGroupID")]
@@ -68,6 +59,13 @@ public partial class User
     [Column("lang")]
     [StringLength(2)]
     public string? Lang { get; set; }
+
+    [StringLength(50)]
+    public string EmpAffiliation { get; set; } = null!;
+
+    public int? JobNumber { get; set; }
+
+    public int? Transfer { get; set; }
 
     [InverseProperty("User")]
     public virtual ICollection<ActivityLog> ActivityLogs { get; set; } = new List<ActivityLog>();

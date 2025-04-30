@@ -37,7 +37,7 @@ namespace LabMaterials.Pages
                 using (var db = new LabDBContext())
                 {
                     string pageName = "manageStore";
-                    var existingRecord = db.TableColumns.FirstOrDefault(c => c.UserId == userId.Value && c.Page == pageName);
+                    var existingRecord = db.Tablecolumns.FirstOrDefault(c => c.UserId == userId.Value && c.Page == pageName);
                     if (existingRecord != null && !string.IsNullOrEmpty(existingRecord.DisplayColumns))
                     {
                         SelectedColumns = existingRecord.DisplayColumns.Split(',').ToList();
@@ -120,7 +120,7 @@ namespace LabMaterials.Pages
             base.ExtractSessionData();
             using (var db = new LabDBContext())
             {
-                var existingRecord = db.TableColumns
+                var existingRecord = db.Tablecolumns
                     .FirstOrDefault(c => c.UserId == userId && c.Page == pageName);
 
                 if (existingRecord != null)
@@ -131,13 +131,13 @@ namespace LabMaterials.Pages
                 else
                 {
                     // Create new
-                    var newRecord = new TableColumn
+                    var newRecord = new Tablecolumn()
                     {
                         UserId = userId,
                         Page = pageName,
                         DisplayColumns = selectedColumns
                     };
-                    db.TableColumns.Add(newRecord);
+                    db.Tablecolumns.Add(newRecord);
                 }
 
                 db.SaveChanges();
@@ -199,12 +199,11 @@ namespace LabMaterials.Pages
 
 
 
-        public IActionResult OnPostEdit([FromForm] int StoreId, [FromForm] int page, [FromForm] string StoreNumber, [FromForm] string StoreName)
+        public IActionResult OnPostEdit([FromForm] int StoreId, [FromForm] int page)
         {
             HttpContext.Session.SetInt32("StoreId", StoreId);
             HttpContext.Session.SetInt32("page", page);
-            HttpContext.Session.SetString("StoreNumber", string.IsNullOrEmpty(StoreNumber) ? "" : StoreNumber);
-            HttpContext.Session.SetString("StoreName", string.IsNullOrEmpty(StoreName) ? "" : StoreName);
+
             return RedirectToPage("./EditStore");
         }
 
