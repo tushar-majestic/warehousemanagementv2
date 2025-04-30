@@ -12,11 +12,16 @@ namespace LabMaterials.Pages
         public List<ItemInfo> Items { get; set; }
         public int TotalItems { get; set; }
         public string Message { get; set; }
-        public DateTime? FromDate, ToDate;
+        // public DateTime? FromDate, ToDate;
         [BindProperty]
         public string ItemName { get; set; }
         [BindProperty]
         public string Group { get; set; }
+        [BindProperty]
+        public DateTime? FromDate { get; set; }
+
+        [BindProperty]
+        public DateTime? ToDate { get; set; }
 
         public string lblItems, lblItemName, lblGroupName, lblItemCode, lblAvailableQuantity, lblHazardType, lblTypeName,
             lblUnitCode, lblSearch, lblSubmit, lblManageItemGroup, lblManageUnit, lblAddItem, lblEdit,
@@ -39,6 +44,8 @@ namespace LabMaterials.Pages
             base.ExtractSessionData();
             this.ItemName = ItemName;
             this.Group = Group;
+             this.FromDate = FromDate;
+              this.ToDate = ToDate;
             if (CanManageItems)
             {
                 FillData(ItemName, Group, FromDate, ToDate);
