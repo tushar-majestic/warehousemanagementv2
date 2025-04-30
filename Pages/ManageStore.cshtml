@@ -284,11 +284,15 @@
                             <th scope="col" class="border-0">@Model.lblStoreNumber</th>
                             }
                             <th scope="col" class="border-0">@Model.lblWarehouseType</th>
-
                             @if (Model.SelectedColumns.Contains("col2"))
                             {
                             <th scope="col" class="border-0">@Model.lblStoreName</th>
                             }
+                            <th scope="col" class="border-0">@Model.lblManagerName</th>
+                            <th scope="col" class="border-0">@Model.lblManagerJobNumber</th>
+                            <th scope="col" class="border-0">@Model.lblStatus</th>
+
+
                             @if (Model.SelectedColumns.Contains("col3"))
                             {
                             <th scope="col" class="border-0">@Model.lblRoomName</th>
@@ -333,6 +337,11 @@
                                         {
                                         <td style="min-width:300px;  width:300px;">@item.StoreName</td>
                                         }
+                                        <td style="min-width:300px;  width:300px;">@item.WarehouseManagerName</td>
+                                        <td style="min-width:300px;  width:300px;">@item.ManagerJobNum</td>
+                                        <td style="min-width:100px;  width:100px;">@item.WarehouseStatus</td>
+
+
                                         @if (Model.SelectedColumns.Contains("col3"))
                                         {
                                         <td style="min-width:300px;  width:300px;">@item.RoomName</td>
