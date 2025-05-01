@@ -59,9 +59,9 @@ namespace LabMaterials.Pages
                 ManagerName = store.WarehouseManagerName;
 
                 StoreType = store.StoreType;
-                Console.WriteLine(StoreType);  
+                Console.WriteLine(StoreType);
 
-
+                Status = store.WarehouseStatus;
 
                 ManagerJobNumber = store.ManagerJobNum.ToString();
 
