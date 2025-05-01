@@ -14,12 +14,25 @@ namespace LabMaterials.Pages
         public List<Shelf> shelfDetails { get; set; }
         public string Message { get; set; }
         public int TotalItems { get; set; }
-        public void OnGet() 
+        public string ShelfNumber { get; set; }
+
+        public int CurrentPage { get; set; }
+        public int ItemsPerPage { get; set; } = 10;
+        public int TotalPages { get; set; }
+
+        public void OnGet(string? ShelfNumber, int page = 1) 
         {
             base.ExtractSessionData();
             if (CanManageStore)
             {
                 FillLables();
+                 if (HttpContext.Request.Query.ContainsKey("page")){
+                    string pagevalue = HttpContext.Request.Query["page"];
+                    page = int.Parse(pagevalue);
+                    this.ShelfNumber = ShelfNumber;
+                    FillData(ShelfNumber, CurrentPage);
+
+                }
             }
             else
                 RedirectToPage("./Index?lang=" + Lang);
@@ -29,9 +42,10 @@ namespace LabMaterials.Pages
         lblManageShelves, lblManageRooms, lblStoreNumber, lblAddRoom, lblAddShelf, lblStoreName, lblSubmit, lblAddStore, 
         lblShelves, lblEdit, lblDelete, lblTotalItem, lblAddDestination, lblManageDestination;
 
-        public void OnPostSearch([FromForm] string StoreNumber, [FromForm] string StoreName)
-        {
-            FillData(StoreNumber, StoreName);
+        public void OnPostSearch([FromForm] string ShelfNumber)
+        {   CurrentPage = 1;
+            this.ShelfNumber = ShelfNumber;
+            FillData(ShelfNumber, CurrentPage);
         }
 
         public void OnPostDelete([FromForm] int ShelfId)
@@ -45,8 +59,8 @@ namespace LabMaterials.Pages
                 shelf.Ended = DateTime.Now;
                 dbContext.Shelves.Update(shelf);
                 dbContext.SaveChanges();
-                FillData(null, null);
-                Message = string.Format((Program.Translations["ShelveDeleted"])[Lang], shelf.ShelfNo);
+                FillData(null);
+                Message = string.Format("Shelve {0} deleted", shelf.ShelfNo);
                 Helper.AddActivityLog(HttpContext.Session.GetInt32("UserId").Value, Message, "Delete", Helper.ExtractIP(Request), dbContext, true);
             }
             else
@@ -54,21 +68,26 @@ namespace LabMaterials.Pages
                 var itemId = dbContext.Storages.First(s => s.ShelfId == ShelfId && s.AvailableQuantity > 0).ItemId;
                 Message = string.Format((Program.Translations["ShelveNotDeleted"])[Lang], itemsInstore,
                     dbContext.Items.Single(i => i.ItemId == itemId).ItemName);
-                FillData(null, null);
+                FillData(null);
             }
 
         }
 
 
-        public IActionResult OnPostEdit([FromForm] int ShelfId)
+        public IActionResult OnPostEdit([FromForm] int ShelfId, [FromForm] int page, [FromForm] string ShelfNumber)
         {
             HttpContext.Session.SetInt32("ShelfId", ShelfId);
-
+            HttpContext.Session.SetInt32("page", page);
+            HttpContext.Session.SetString("ShelfNumber", string.IsNullOrEmpty(ShelfNumber) ? "" : ShelfNumber);
             return RedirectToPage("./EditShelves");
         }
 
-        private void FillData(string? StoreNumber, string? StoreName)
-        {
+        private void FillData(string? ShelfNumber, int page = 1)
+        {   if (HttpContext.Request.Query.ContainsKey("page"))
+            {
+                string pagevalue = HttpContext.Request.Query["page"];
+                page = int.Parse(pagevalue);
+            }
             base.ExtractSessionData();
             if (CanManageStore)
             {
@@ -77,7 +96,7 @@ namespace LabMaterials.Pages
 
                 var roomId  = HttpContext.Session.GetInt32("RoomId");
 
-                shelfDetails = (from sh in dbContext.Shelves
+                var query = (from sh in dbContext.Shelves
                                     where sh.RoomId == roomId
                                     orderby sh.ShelfId // Order by shelf ID or any other property if needed
                                     select sh).ToList();
@@ -94,7 +113,16 @@ namespace LabMaterials.Pages
                     s.Shelves = string.IsNullOrEmpty(s.ShelfNumbers) ? new string[0] : s.StoreNumber.Split(',');
 
                 Stores = query.ToList();*/
-                TotalItems = shelfDetails.Count();
+
+                if (string.IsNullOrEmpty(ShelfNumber) == false)
+                    query = query.Where(s => s.ShelfNo.Contains(ShelfNumber)).ToList();
+
+                TotalItems = query.Count();
+                // shelfDetails = query;
+                TotalPages = (int)Math.Ceiling((double)TotalItems / ItemsPerPage);
+                var list = query.ToList();
+                shelfDetails = list.Skip((page - 1) * ItemsPerPage).Take(ItemsPerPage).ToList();        
+                CurrentPage = page; 
             }
             else
                 RedirectToPage("./Index?lang=" + Lang);

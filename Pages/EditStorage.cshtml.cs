@@ -11,8 +11,8 @@ namespace LabMaterials.Pages
     {
         public string ErrorMsg { get; set; }
         public int StorageId, StoreId, ItemId, Quantity;
-        public string ShelfNumber;
-
+        public string ShelfNumber, StoreNumberSearch, StoreNameSearch, Item;
+        public int page { get; set; }
         public List<Store> Stores { get; set; }
         public List<Item> Items { get; set; }
         
@@ -21,6 +21,10 @@ namespace LabMaterials.Pages
         {
             base.ExtractSessionData();
             FillLables();
+            this.page = (int)HttpContext.Session.GetInt32("page");
+            this.StoreNumberSearch = HttpContext.Session.GetString("StoreNumber");
+            this.StoreNameSearch = HttpContext.Session.GetString("StoreName");
+             this.Item = HttpContext.Session.GetString("Item");
             if (CanManageStore == false)
                 RedirectToPage("./Index?lang=" + Lang);
             var dbContext = new LabDBContext();

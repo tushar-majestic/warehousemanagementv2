@@ -24,35 +24,128 @@ namespace LabMaterials.Pages
         public int CurrentPage { get; set; }
         public int ItemsPerPage { get; set; } = 10;
         public int TotalPages { get; set; }
-        public void OnGet(string? StoreNumber,string? StoreName, int page = 1) 
+        public List<string> SelectedColumns { get; set; } = new List<string>();
+        public List<Room> Rooms { get; set; }
+
+        public string lblStores, lblManageStorage, lblSearch, lblRoomName, lblManageShelves, lblUnlock, lblLock, lblRoomNumber, lblManageRooms, lblStoreNumber, lblAddRoom, lblAddShelf, lblStoreName, lblSubmit, lblAddStore, lblShelves, lblEdit, lblDelete, lblTotalItem, lblAddDestination, lblManageDestination, lblWarehouseType, lblManagerName, lblManagerJobNumber, lblStatus;
+
+        private void LoadSelectedColumns()
+        {
+            int? userId = HttpContext.Session.GetInt32("UserId");
+            if (userId.HasValue)
+            {
+                using (var db = new LabDBContext())
+                {
+                    string pageName = "manageStore";
+                    var existingRecord = db.Tablecolumns.FirstOrDefault(c => c.UserId == userId.Value && c.Page == pageName);
+                    if (existingRecord != null && !string.IsNullOrEmpty(existingRecord.DisplayColumns))
+                    {
+                        SelectedColumns = existingRecord.DisplayColumns.Split(',').ToList();
+                    }
+                    else
+                    {
+                        SelectedColumns = new List<string>(); // Empty list
+                    }
+                }
+            }
+        }
+
+        public void OnGet(string? StoreNumber, string? StoreName, int page = 1)
         {
             base.ExtractSessionData();
             if (CanManageStore)
             {
                 FillLables();
-                if (HttpContext.Request.Query.ContainsKey("page")){
-                        string pagevalue = HttpContext.Request.Query["page"];
-                        page = int.Parse(pagevalue);
-                        this.StoreNumber = StoreNumber;
-                        this.StoreName = StoreName;
+                LoadSelectedColumns(); // 👉 Load columns here
 
-                        FillData(StoreNumber, StoreName, page);
+                if (HttpContext.Request.Query.ContainsKey("page"))
+                {
+                    string pagevalue = HttpContext.Request.Query["page"];
+                    page = int.Parse(pagevalue);
+                    this.StoreNumber = StoreNumber;
+                    this.StoreName = StoreName;
 
+                    FillData(StoreNumber, StoreName, page);
                 }
             }
             else
                 RedirectToPage("./Index?lang=" + Lang);
         }
-        public List<Room> Rooms { get; set; }
 
-        public string lblStores, lblManageStorage, lblSearch, lblRoomName, lblManageShelves, lblUnlock, lblLock, lblRoomNumber, lblManageRooms, lblStoreNumber, lblAddRoom, lblAddShelf, lblStoreName, lblSubmit, lblAddStore, lblShelves, lblEdit, lblDelete, lblTotalItem, lblAddDestination, lblManageDestination;
+        // public void OnPostSearch([FromForm] string StoreNumber, [FromForm] string StoreName)
+        // {   CurrentPage = 1;
+        //     this.StoreNumber = StoreNumber;
+        //     this.StoreName = StoreName;
 
-        public void OnPostSearch([FromForm] string StoreNumber, [FromForm] string StoreName)
-        {   CurrentPage = 1;
-            this.StoreNumber = StoreNumber;
-            this.StoreName = StoreName;
+        //     FillData(StoreNumber, StoreName, CurrentPage);
+        // }
 
-            FillData(StoreNumber, StoreName, CurrentPage);
+        public IActionResult OnPostAction(string StoreNumber, string StoreName, string action, List<string> columns)
+        {
+            base.ExtractSessionData();
+
+            if (action == "search")
+            {
+                CurrentPage = 1;
+                this.StoreNumber = StoreNumber;
+                this.StoreName = StoreName;
+
+                FillData(StoreNumber, StoreName, CurrentPage);
+
+                int? userId = HttpContext.Session.GetInt32("UserId");
+                string pageName = "manageStore";
+                LoadSelectedColumns();
+            }
+            else if (action == "updateColumns")
+            {
+                if (columns != null && columns.Any())
+                {
+                    CurrentPage = 1;
+                    string selectedColumns = string.Join(",", columns);
+                    this.StoreNumber = StoreNumber;
+                    this.StoreName = StoreName;
+                    FillData(StoreNumber, StoreName, CurrentPage);
+                    int? userId = HttpContext.Session.GetInt32("UserId");
+                    string pageName = "manageStore";
+
+                    SaveSelectedColumns(userId.Value, pageName, selectedColumns);
+                    LoadSelectedColumns();
+                }
+
+                // After updating, redirect back to ManageStore with the StoreNumber and StoreName
+                // return RedirectToPage("/ManageStore", new { StoreNumber = StoreNumber, StoreName = StoreName });
+            }
+
+            return Page();
+        }
+
+        private void SaveSelectedColumns(int userId, string pageName, string selectedColumns)
+        {
+            base.ExtractSessionData();
+            using (var db = new LabDBContext())
+            {
+                var existingRecord = db.Tablecolumns
+                    .FirstOrDefault(c => c.UserId == userId && c.Page == pageName);
+
+                if (existingRecord != null)
+                {
+                    // Update existing
+                    existingRecord.DisplayColumns = selectedColumns;
+                }
+                else
+                {
+                    // Create new
+                    var newRecord = new Tablecolumn()
+                    {
+                        UserId = userId,
+                        Page = pageName,
+                        DisplayColumns = selectedColumns
+                    };
+                    db.Tablecolumns.Add(newRecord);
+                }
+
+                db.SaveChanges();
+            }
         }
 
         public void OnPostDelete([FromForm] int StoreId)
@@ -110,9 +203,10 @@ namespace LabMaterials.Pages
 
 
 
-        public IActionResult OnPostEdit([FromForm] int StoreId)
+        public IActionResult OnPostEdit([FromForm] int StoreId, [FromForm] int page)
         {
             HttpContext.Session.SetInt32("StoreId", StoreId);
+            HttpContext.Session.SetInt32("page", page);
 
             return RedirectToPage("./EditStore");
         }
@@ -254,8 +348,11 @@ namespace LabMaterials.Pages
             this.lblManageShelves = (Program.Translations["ManageShelves"])[Lang]; 
             this.lblLock = (Program.Translations["Lock"])[Lang]; 
             this.lblRoomName = (Program.Translations["RoomName"])[Lang]; 
-            this.lblUnlock = (Program.Translations["Unlock"])[Lang];
-
+            this.lblUnlock = (Program.Translations["Unlock"])[Lang];    
+            this.lblWarehouseType = (Program.Translations["WarehouseType"])[Lang];
+            this.lblManagerName = (Program.Translations["ManagerName"])[Lang];
+            this.lblManagerJobNumber = (Program.Translations["ManagerJobNumber"])[Lang];
+            this.lblStatus = (Program.Translations["WarehouseStatus"])[Lang];
 
 
 

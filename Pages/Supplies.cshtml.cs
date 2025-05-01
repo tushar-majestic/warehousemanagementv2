@@ -19,18 +19,20 @@ namespace LabMaterials.Pages
         public int CurrentPage { get; set; }
         public int ItemsPerPage { get; set; } = 10;
         public int TotalPages { get; set; }
+        public List<string> SelectedColumns { get; set; } = new List<string>();
 
 
 
         public string lblSupplies, lbltypeCode, lblStoreName, lblExpiryDate, lblItemType, lblRoomName, lblShelfNumber, lblManageSuppliers, lblSearch, lblSupplierName, lblItemName, lblSubmit, lblAddSupplies,
             lblQuantityReceived, lblPurchaseOrderNo, lblInvoiceNumber, lblReceivedAt, lblInventoryBalanced, lblEdit, lblDelete,
-            lblTotalItem, lblFromDate, lblToDate;
+            lblTotalItem, lblFromDate, lblToDate, lblNewReceivingReport;
         public void OnGet(string? SupplierName,string? ItemName, DateTime? FromDate, DateTime? ToDate, int page = 1)
         {
             base.ExtractSessionData();
             if (this.CanManageSupplies)
             {
                 FillLables();
+                LoadSelectedColumns();
                 if (HttpContext.Request.Query.ContainsKey("page")){
                     string pagevalue = HttpContext.Request.Query["page"];
                     page = int.Parse(pagevalue);
@@ -44,6 +46,27 @@ namespace LabMaterials.Pages
             }
             else
                 RedirectToPage("./Index?lang=" + Lang);
+        }
+
+        private void LoadSelectedColumns()
+        {
+            int? userId = HttpContext.Session.GetInt32("UserId");
+            if (userId.HasValue)
+            {
+                using (var db = new LabDBContext())
+                {
+                    string pageName = "supplies";
+                    var existingRecord = db.Tablecolumns.FirstOrDefault(c => c.UserId == userId.Value && c.Page == pageName);
+                    if (existingRecord != null && !string.IsNullOrEmpty(existingRecord.DisplayColumns))
+                    {
+                        SelectedColumns = existingRecord.DisplayColumns.Split(',').ToList();
+                    }
+                    else
+                    {
+                        SelectedColumns = new List<string>(); // Empty list
+                    }
+                }
+            }
         }
         /*private void FillData(string SupplierName, string ItemName, DateTime? FromDate, DateTime? ToDate)
         {
@@ -122,13 +145,13 @@ namespace LabMaterials.Pages
                                  InvoiceNumber = S.InvoiceNumber,
                                  InventoryBalanced = S.InventoryBalanced,
                                  PurchaseOrderNo = S.PurchaseOrderNo,
-                                 ItemCode=S.ItemCode,
-                                 ItemType=S.ItemType,
-                                 StoreName=st.StoreName,
-                                 RoomName=sb.RoomName,
-                                 ShelfNumber=sg.ShelfNumber,
-                                 ExpiryDate=S.ExpiryDate,
-                                 
+                                 ItemCode = S.ItemCode,
+                                 ItemType = S.ItemType,
+                                 StoreName = st.StoreName,
+                                 RoomName = sb.RoomName,
+                                 ShelfNumber = sg.ShelfNumber,
+                                 ExpiryDate = S.ExpiryDate,
+
                                  QuantityReceived = S.QuantityReceived.ToString() + " " + I.Unit.UnitCode
                              });
                 if (!string.IsNullOrEmpty(SupplierName) && !string.IsNullOrEmpty(ItemName))
@@ -176,15 +199,94 @@ namespace LabMaterials.Pages
                 RedirectToPage("./Index?lang=" + Lang);
         }
 
-
-        public IActionResult OnPostEdit([FromForm] int SupplyId)
+        public IActionResult OnPostAction(string SupplierName, string ItemName, DateTime? FromDate, DateTime? ToDate,string action, List<string> columns)
         {
+            base.ExtractSessionData();
+
+            if (action == "search")
+            {
+                CurrentPage = 1;
+                this.FromDate = FromDate;
+                this.ToDate = ToDate;
+                this.SupplierName = SupplierName;
+                this.ItemName = ItemName;
+                if (CanManageSupplies)
+                {
+                    FillData(SupplierName, ItemName, FromDate, ToDate, CurrentPage);
+                }
+
+                int? userId = HttpContext.Session.GetInt32("UserId");
+                string pageName = "supplies";
+                LoadSelectedColumns();
+            }
+            else if (action == "updateColumns")
+            {
+                if (columns != null && columns.Any())
+                {
+                    string selectedColumns = string.Join(",", columns);
+
+                    int? userId = HttpContext.Session.GetInt32("UserId");
+                    string pageName = "supplies";
+                    this.FromDate = FromDate;
+                    this.ToDate = ToDate;
+                    this.SupplierName = SupplierName;
+                    this.ItemName = ItemName;
+                    FillData(SupplierName, ItemName, FromDate, ToDate, CurrentPage);
+                    LoadSelectedColumns();
+                    SaveSelectedColumns(userId.Value, pageName, selectedColumns);
+                }
+
+                // After updating, redirect back to ManageStore with the StoreNumber and StoreName
+                // return RedirectToPage("/supplies", new { SupplierName = SupplierName, ItemName = ItemName, FromDate= FromDate, ToDate= ToDate });
+            }
+
+            return Page();
+        }
+
+        private void SaveSelectedColumns(int userId, string pageName, string selectedColumns)
+        {
+            base.ExtractSessionData();
+            using (var db = new LabDBContext())
+            {
+                var existingRecord = db.Tablecolumns
+                    .FirstOrDefault(c => c.UserId == userId && c.Page == pageName);
+
+                if (existingRecord != null)
+                {
+                    existingRecord.DisplayColumns = selectedColumns;
+                }
+                else
+                {
+                    var newRecord = new Tablecolumn
+                    {
+                        UserId = userId,
+                        Page = pageName,
+                        DisplayColumns = selectedColumns
+                    };
+                    db.Tablecolumns.Add(newRecord);
+                }
+
+                db.SaveChanges();
+            }
+        }
+
+
+        public IActionResult OnPostEdit([FromForm] int SupplyId, [FromForm] string FromDate, [FromForm] string ToDate, [FromForm] int page, [FromForm] string ItemName, [FromForm] string SupplierName)
+        {
+            HttpContext.Session.SetString("FromDate", string.IsNullOrEmpty(FromDate) ? "" : FromDate);
+            HttpContext.Session.SetString("ToDate", string.IsNullOrEmpty(ToDate) ? "" : ToDate);
+            HttpContext.Session.SetInt32("page", page);
+             HttpContext.Session.SetString("ItemName", string.IsNullOrEmpty(ItemName) ? "" : ItemName);
+             HttpContext.Session.SetString("SupplierName", string.IsNullOrEmpty(SupplierName) ? "" : SupplierName);
             HttpContext.Session.SetInt32("SupplyId", SupplyId);
 
             return RedirectToPage("./EditSupply");
         }
-        public IActionResult OnPostView([FromForm] int SupplyId)
+        public IActionResult OnPostView([FromForm] int SupplyId, [FromForm] string FromDate, [FromForm] string ToDate, [FromForm] int page)
         {
+            HttpContext.Session.SetString("FromDate", string.IsNullOrEmpty(FromDate) ? "" : FromDate);
+            HttpContext.Session.SetString("ToDate", string.IsNullOrEmpty(ToDate) ? "" : ToDate);
+            HttpContext.Session.SetInt32("page", page);
             HttpContext.Session.SetInt32("SupplyId", SupplyId);
 
             return RedirectToPage("./viewSupplies");
@@ -221,6 +323,7 @@ namespace LabMaterials.Pages
             this.lblManageSuppliers = (Program.Translations["ManageSuppliers"])[Lang];
             this.lblSearch = (Program.Translations["Search"])[Lang];
             this.lblSubmit = (Program.Translations["Submit"])[Lang];
+            this.lblNewReceivingReport = (Program.Translations["NewReceivingReport"])[Lang];
             this.lblAddSupplies = (Program.Translations["AddSupplies"])[Lang];
             this.lblSupplierName = (Program.Translations["SupplierName"])[Lang];
             this.lblItemName = (Program.Translations["ItemName"])[Lang];

@@ -16,12 +16,14 @@ namespace LabMaterials.Pages
         public int CurrentPage { get; set; }
         public int ItemsPerPage { get; set; } = 10;
         public int TotalPages { get; set; }
+        public List<string> SelectedColumns { get; set; } = new List<string>();
         public void OnGet(string? RequesterName, DateTime? FromDate, DateTime? ToDate, int page = 1) 
         {
             base.ExtractSessionData();
             if (CanDisburseItems)
             {
                 FillLables();
+                LoadSelectedColumns();
                     if (HttpContext.Request.Query.ContainsKey("page")){
                         string pagevalue = HttpContext.Request.Query["page"];
                         page = int.Parse(pagevalue);
@@ -40,8 +42,29 @@ namespace LabMaterials.Pages
             else
                 RedirectToPage("./Index?lang=" + Lang);
         }
-        
-        public string lblDisbursements, lblSearch, lblRequesterName, lblFromStore, lblSubmit, lblItemName, lblStoreName,lblDestination, lblItemType, lblQuantity, lblItemCode, lblAddDisbursement, lblRequestReceivedDate, lblRequestingPlace, lblComments,
+
+        private void LoadSelectedColumns()
+        {
+            int? userId = HttpContext.Session.GetInt32("UserId");
+            if (userId.HasValue)
+            {
+                using (var db = new LabDBContext())
+                {
+                    string pageName = "Disbursements";
+                    var existingRecord = db.Tablecolumns.FirstOrDefault(c => c.UserId == userId.Value && c.Page == pageName);
+                    if (existingRecord != null && !string.IsNullOrEmpty(existingRecord.DisplayColumns))
+                    {
+                        SelectedColumns = existingRecord.DisplayColumns.Split(',').ToList();
+                    }
+                    else
+                    {
+                        SelectedColumns = new List<string>(); // Empty list
+                    }
+                }
+            }
+        }
+
+        public string lblDisbursements, lblSearch, lblRequesterName, lblFromStore, lblSubmit, lblItemName, lblStoreName, lblDestination, lblItemType, lblQuantity, lblItemCode, lblAddDisbursement, lblRequestReceivedDate, lblRequestingPlace, lblComments,
             lblDisbursementStatus, lblInventoryBalanced, lblEdit, lblTotalItem, lblFromDate, lblToDate;
 
         public void OnPostSearch([FromForm] string RequesterName, [FromForm] DateTime? FromDate, [FromForm] DateTime? ToDate)
@@ -52,15 +75,94 @@ namespace LabMaterials.Pages
             FillData(RequesterName,FromDate,ToDate, CurrentPage);
         }
 
-        public IActionResult OnPostEdit([FromForm] int DisbursementID)
+        public IActionResult OnPostAction(string RequesterName, DateTime? FromDate, DateTime? ToDate, string action, List<string> columns)
+        {
+            base.ExtractSessionData();
+
+            if (action == "search")
+            {
+                CurrentPage = 1;
+                this.RequesterName = RequesterName;
+                this.FromDate = FromDate;
+                this.ToDate = ToDate;
+
+                FillData(RequesterName, FromDate, ToDate, CurrentPage);
+
+                int? userId = HttpContext.Session.GetInt32("UserId");
+                string pageName = "Disbursements";
+                LoadSelectedColumns();
+            }
+            else if (action == "updateColumns")
+            {
+                if (columns != null && columns.Any())
+                {
+                    string selectedColumns = string.Join(",", columns);
+
+                    int? userId = HttpContext.Session.GetInt32("UserId");
+                    string pageName = "Disbursements";
+                    this.RequesterName = RequesterName;
+                    this.FromDate = FromDate;
+                    this.ToDate = ToDate;
+
+                    FillData(RequesterName, FromDate, ToDate, CurrentPage);
+                    LoadSelectedColumns();
+                    SaveSelectedColumns(userId.Value, pageName, selectedColumns);
+                }
+
+                // After updating, redirect back to ManageStore with the StoreNumber and StoreName
+                // return RedirectToPage("/Disbursements", new { RequesterName = RequesterName, FromDate = FromDate, ToDate = ToDate });
+            }
+
+            return Page();
+        }
+
+        private void SaveSelectedColumns(int userId, string pageName, string selectedColumns)
+        {
+            base.ExtractSessionData();
+            using (var db = new LabDBContext())
+            {
+                var existingRecord = db.Tablecolumns
+                    .FirstOrDefault(c => c.UserId == userId && c.Page == pageName);
+
+                if (existingRecord != null)
+                {
+                    existingRecord.DisplayColumns = selectedColumns;
+                }
+                else
+                {
+                    var newRecord = new Tablecolumn
+                    {
+                        UserId = userId,
+                        Page = pageName,
+                        DisplayColumns = selectedColumns
+                    };
+                    db.Tablecolumns.Add(newRecord);
+                }
+
+                db.SaveChanges();
+            }
+        }
+
+        public IActionResult OnPostEdit([FromForm] int DisbursementID, [FromForm] string RequesterName, [FromForm] string FromDate, [FromForm] string ToDate, [FromForm] int page)
         {
             HttpContext.Session.SetInt32("DisbursementID", DisbursementID);
+            HttpContext.Session.SetInt32("DisbursementID", DisbursementID);
+            HttpContext.Session.SetString("RequesterName", string.IsNullOrEmpty(RequesterName) ? "" : RequesterName);
+            HttpContext.Session.SetString("FromDate", string.IsNullOrEmpty(FromDate) ? "" : FromDate);
+            HttpContext.Session.SetString("ToDate", string.IsNullOrEmpty(ToDate) ? "" : ToDate);
+            HttpContext.Session.SetInt32("page", page);
 
             return RedirectToPage("./EditDisbursement");
         }
-        public IActionResult OnPostView([FromForm] int DisbursementID)
+        public IActionResult OnPostView([FromForm] int DisbursementID, [FromForm] string RequesterName, [FromForm] string FromDate, [FromForm] string ToDate, [FromForm] int page)
         {
             HttpContext.Session.SetInt32("DisbursementID", DisbursementID);
+            HttpContext.Session.SetString("RequesterName", string.IsNullOrEmpty(RequesterName) ? "" : RequesterName);
+            HttpContext.Session.SetString("FromDate", string.IsNullOrEmpty(FromDate) ? "" : FromDate);
+            HttpContext.Session.SetString("ToDate", string.IsNullOrEmpty(ToDate) ? "" : ToDate);
+            HttpContext.Session.SetInt32("page", page);
+
+            
 
             return RedirectToPage("./viewMaterialDispensing");
         }
@@ -151,15 +253,10 @@ namespace LabMaterials.Pages
                 // Calculate total pages
                 TotalPages = (int)Math.Ceiling((double)TotalItems / ItemsPerPage);
 
-              
-
                 var list = query.ToList();
 
-                Disbursement = list.Skip((page - 1) * ItemsPerPage).Take(ItemsPerPage).ToList();
-
-
-                    
-                // Update current page properties
+                Disbursement = list.Skip((page - 1) * ItemsPerPage).Take(ItemsPerPage).ToList();   
+                
                 CurrentPage = page;
             }
             else

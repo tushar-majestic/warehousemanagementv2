@@ -21,9 +21,10 @@ namespace LabMaterials.Pages
         public int CurrentPage { get; set; }
         public int ItemsPerPage { get; set; } = 10;
         public int TotalPages { get; set; }
+        public List<string> SelectedColumns { get; set; } = new List<string>();
 
 
-        public string lblItems, lblItemName, lblGroupName, lblItemCode, lblAvailableQuantity, lblHazardType, lblTypeName,
+        public string lblItems, lblItemName, lblGroupName, lblItemCode, lblQuantity, lblHazardType, lblTypeName,
             lblUnitCode, lblSearch, lblSubmit, lblManageItemGroup, lblManageUnit, lblAddItem, lblEdit,
             lblDelete, lblTotalItem, lblExpiryDate, lblBatchNo, lblDamage, lblDamagedItems,
             lblImport, lblDonwloadSampleFile, lblFromDate, lblToDate, lblNewReceivingReport;
@@ -33,6 +34,7 @@ namespace LabMaterials.Pages
             if (this.CanManageItems)
             {
                 FillLables();
+                LoadSelectedColumns();
                 if (HttpContext.Request.Query.ContainsKey("page")){
                     string pagevalue = HttpContext.Request.Query["page"];
                     page = int.Parse(pagevalue);
@@ -40,6 +42,7 @@ namespace LabMaterials.Pages
                     this.Group = Group;
                     this.FromDate = FromDate;
                     this.ToDate = ToDate;
+                    Console.WriteLine("FromDate", this.FromDate);
                     FillData(ItemName, Group, FromDate, ToDate, page);
 
                 }
@@ -47,19 +50,112 @@ namespace LabMaterials.Pages
             else
                 RedirectToPage("./Index?lang=" + Lang);
         }
-
-        public void OnPost([FromForm] string ItemName, [FromForm] string Group, [FromForm] DateTime? FromDate, [FromForm] DateTime? ToDate)
+        private void LoadSelectedColumns()
         {
-            
-            base.ExtractSessionData();
-            this.ItemName = ItemName;
-            this.Group = Group;
-            if (CanManageItems)
+            int? userId = HttpContext.Session.GetInt32("UserId");
+            if (userId.HasValue)
             {
-                FillData(ItemName, Group, FromDate, ToDate);
+                using (var db = new LabDBContext())
+                {
+                    string pageName = "ManageItems";
+                    var existingRecord = db.Tablecolumns.FirstOrDefault(c => c.UserId == userId.Value && c.Page == pageName);
+                    if (existingRecord != null && !string.IsNullOrEmpty(existingRecord.DisplayColumns))
+                    {
+                        SelectedColumns = existingRecord.DisplayColumns.Split(',').ToList();
+                    }
+                    else
+                    {
+                        SelectedColumns = new List<string>(); // Empty list
+                    }
+                }
             }
-            else
-                RedirectToPage("./Index?lang=" + Lang);
+        }
+
+        // public void OnPost([FromForm] string ItemName, [FromForm] string Group, [FromForm] DateTime? FromDate, [FromForm] DateTime? ToDate)
+        // {
+
+        //     base.ExtractSessionData();
+        //     this.ItemName = ItemName;
+        //     this.Group = Group;
+        //     this.FromDate = FromDate;
+        //     this.ToDate = ToDate;
+        //     if (CanManageItems)
+        //     {
+        //         FillData(ItemName, Group, FromDate, ToDate);
+        //     }
+        //     else
+        //         RedirectToPage("./Index?lang=" + Lang);
+        // }
+
+        public IActionResult OnPostAction(string ItemName, string Group, DateTime? FromDate, DateTime? ToDate, string action, List<string> columns)
+        {
+            base.ExtractSessionData();
+
+            if (action == "search")
+            {
+                CurrentPage = 1;
+                this.ItemName = ItemName;
+                this.Group = Group;
+                this.FromDate = FromDate;
+                this.ToDate = ToDate;
+                if (CanManageItems)
+                {
+                    FillData(ItemName, Group, FromDate, ToDate);
+                }
+
+                int? userId = HttpContext.Session.GetInt32("UserId");
+                string pageName = "ManageItems";
+                LoadSelectedColumns();
+            }
+            else if (action == "updateColumns")
+            {
+                if (columns != null && columns.Any())
+                {
+                    string selectedColumns = string.Join(",", columns);
+                    this.ItemName = ItemName;
+                    this.Group = Group;
+                    this.FromDate = FromDate;
+                    this.ToDate = ToDate;
+                    FillData(ItemName, Group, FromDate, ToDate);
+
+                    int? userId = HttpContext.Session.GetInt32("UserId");
+                    string pageName = "ManageItems";
+
+                    SaveSelectedColumns(userId.Value, pageName, selectedColumns);
+                    LoadSelectedColumns();
+                }
+
+                // return RedirectToPage("/ManageItems", new { ItemName = ItemName, Group = Group });
+            }
+
+            return Page();
+        }
+
+        private void SaveSelectedColumns(int userId, string pageName, string selectedColumns)
+        {
+            base.ExtractSessionData();
+            using (var db = new LabDBContext())
+            {
+                var existingRecord = db.Tablecolumns
+                    .FirstOrDefault(c => c.UserId == userId && c.Page == pageName);
+
+                if (existingRecord != null)
+                {
+                    existingRecord.DisplayColumns = selectedColumns;
+                }
+                else
+                {
+                    var newRecord = new Tablecolumn
+                    {
+                        UserId = userId,
+                        Page = pageName,
+                        DisplayColumns = selectedColumns
+                    };
+                    db.Tablecolumns.Add(newRecord);
+                }
+
+                db.SaveChanges();
+            }
         }
 
         // Function without pagination 
@@ -111,7 +207,7 @@ namespace LabMaterials.Pages
 
         private void FillData(string ItemName, string Group, DateTime? FromDate, DateTime? ToDate, int page = 1)
         {
-             if (HttpContext.Request.Query.ContainsKey("page"))
+            if (HttpContext.Request.Query.ContainsKey("page"))
             {
                 string pagevalue = HttpContext.Request.Query["page"];
                 page = int.Parse(pagevalue);
@@ -152,18 +248,25 @@ namespace LabMaterials.Pages
             if (string.IsNullOrEmpty(ItemName) == false && string.IsNullOrEmpty(Group) == false)
                 query = query.Where(i => i.ItemName.Contains(ItemName) && i.GroupDesc.Contains(Group));
 
-            if (FromDate != null && FromDate >= DateTime.MinValue  && ToDate != null && ToDate >= DateTime.MinValue)
+            if (FromDate != null && FromDate >= DateTime.MinValue && ToDate != null && ToDate >= DateTime.MinValue)
                 query = query.Where(e => e.ExpiryDate.Value.Date >= FromDate.Value.Date && e.ExpiryDate.Value.Date <= ToDate.Value.Date);
-            
+
             TotalItems = query.Count();
             TotalPages = (int)Math.Ceiling((double)TotalItems / ItemsPerPage);
             var list = query.ToList();
-            Items = list.Skip((page - 1) * ItemsPerPage).Take(ItemsPerPage).ToList();        
-            CurrentPage = page;       
+            Items = list.Skip((page - 1) * ItemsPerPage).Take(ItemsPerPage).ToList();
+            CurrentPage = page;
         }
-        public IActionResult OnPostEdit([FromForm] int ItemId)
+        public IActionResult OnPostEdit([FromForm] int ItemId, [FromForm] string FromDate, [FromForm] string ToDate, [FromForm] 
+        int page, [FromForm] string ItemName, [FromForm] string Group)
         {
             HttpContext.Session.SetInt32("ItemId", ItemId);
+            HttpContext.Session.SetString("ItemName", string.IsNullOrEmpty(ItemName) ? "" : ItemName);
+            HttpContext.Session.SetString("Group", string.IsNullOrEmpty(Group) ? "" : Group);
+            HttpContext.Session.SetString("FromDate", string.IsNullOrEmpty(FromDate) ? "" : FromDate);
+            HttpContext.Session.SetString("ToDate", string.IsNullOrEmpty(ToDate) ? "" : ToDate);
+            HttpContext.Session.SetInt32("page", page);
+         
 
             return RedirectToPage("./EditItem");
         }
@@ -318,7 +421,7 @@ namespace LabMaterials.Pages
             this.lblItemName = (Program.Translations["ItemName"])[Lang];
             this.lblGroupName = (Program.Translations["GroupName"])[Lang];
             this.lblItemCode = (Program.Translations["ItemCode"])[Lang];
-            this.lblAvailableQuantity = (Program.Translations["AvailableQuantity"])[Lang];
+            this.lblQuantity = (Program.Translations["Quantity"])[Lang];
             this.lblHazardType = (Program.Translations["HazardType"])[Lang];
             this.lblTypeName = (Program.Translations["TypeName"])[Lang];
             this.lblUnitCode = (Program.Translations["UnitCode"])[Lang];

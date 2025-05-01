@@ -13,23 +13,33 @@ namespace LabMaterials.Pages
         public int TotalItems { get; set; }
         [BindProperty]
         public string UnitDesc { get; set; }
+        
+        public int CurrentPage { get; set; }
+        public int ItemsPerPage { get; set; } = 10;
+        public int TotalPages { get; set; }
         public string lblUnitCode, lblUnitDescription, lblGroupName, lblEdit, lblDelete, lblTotalItem, lblAddUnit, 
         lblUnits, lblSearch, lblItems;
-        public void OnGet() 
+        public void OnGet(string? UnitDesc, int page = 1) 
         {
             base.ExtractSessionData();
             if (CanManageStore)
             {
                 FillLables();
+                if (HttpContext.Request.Query.ContainsKey("page")){
+                    string pagevalue = HttpContext.Request.Query["page"];
+                    page = int.Parse(pagevalue);
+                    this.UnitDesc = UnitDesc;
+                    FillData(UnitDesc, page);
+                }
             }
             else
                 RedirectToPage("./Index?lang=" + Lang);
         }
 
         public void OnPostSearch([FromForm] string UnitDesc)
-        {
+        {   CurrentPage = 1;
             this.UnitDesc = UnitDesc;
-            FillData(UnitDesc);
+            FillData(UnitDesc, CurrentPage);
         }
 
         public void OnPostDelete([FromForm] int ID)
@@ -63,15 +73,20 @@ namespace LabMaterials.Pages
         }
 
 
-        public IActionResult OnPostEdit([FromForm] int ID)
+        public IActionResult OnPostEdit([FromForm] int ID, [FromForm] int page, [FromForm] string UnitDesc)
         {
             HttpContext.Session.SetInt32("ID", ID);
-
+            HttpContext.Session.SetInt32("page", page);
+            HttpContext.Session.SetString("UnitDesc", string.IsNullOrEmpty(UnitDesc) ? "" : UnitDesc);
             return RedirectToPage("./EditUnit");
         }
 
-        private void FillData(string? UnitDesc)
-        {
+        private void FillData(string? UnitDesc, int page = 1)
+        {   if (HttpContext.Request.Query.ContainsKey("page"))
+            {
+                string pagevalue = HttpContext.Request.Query["page"];
+                page = int.Parse(pagevalue);
+            }
             base.ExtractSessionData();
             if (CanManageItems)
             {
@@ -91,10 +106,12 @@ namespace LabMaterials.Pages
                     query = query.Where(s => s.UnitDescription.Contains(UnitDesc));
 
 
-                Units = query.ToList();
-
-                Units = query.ToList();
-                TotalItems = Units.Count();
+               
+                TotalItems = query.Count();
+                TotalPages = (int)Math.Ceiling((double)TotalItems / ItemsPerPage);
+                var list = query.ToList();
+                Units = list.Skip((page - 1) * ItemsPerPage).Take(ItemsPerPage).ToList();        
+                CurrentPage = page; 
             }
             else
                 RedirectToPage("./Index?lang=" + Lang);

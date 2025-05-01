@@ -36,6 +36,22 @@ public partial class Room
 
     public int? StoreId { get; set; }
 
+    [StringLength(10)]
+    public string? BuildingNumber { get; set; }
+
+    [StringLength(80)]
+    public string? RoomDesc { get; set; }
+    public int? NoOfShelves { get; set; }
+
+     public int? KeeperJobNum { get; set; }
+
+    [StringLength(20)]
+    public string? KeeperName { get; set; }
+
+    [StringLength(10)]
+    public string? RoomStatus { get; set; }
+
+
     [Column("ROOM_NO")]
     [StringLength(15)]
     [Unicode(false)]

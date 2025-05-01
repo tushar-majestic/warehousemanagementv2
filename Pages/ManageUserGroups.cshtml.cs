@@ -13,21 +13,34 @@ namespace LabMaterials.Pages
         public string Message { get; set; }
         [BindProperty]
         public string UserGroupName { get; set; }
+        public int CurrentPage { get; set; }
+        public int ItemsPerPage { get; set; } = 10;
+        public int TotalPages { get; set; }
         
         public string lblUserGroup, lblSearch, lblAddUserGroup, lblUserGroupName, lblPrivilages,  lblEdit, lblDelete, lblTotalItem, lblUsers;
-        public void OnGet()
+        public void OnGet(string? UserGroupName, int page = 1)
         {
             base.ExtractSessionData();
             if (CanManageUsers)
             {
                 FillLables();
+                if (HttpContext.Request.Query.ContainsKey("page")){
+                    string pagevalue = HttpContext.Request.Query["page"];
+                    page = int.Parse(pagevalue);
+                    this.UserGroupName = UserGroupName;
+                    FillData(UserGroupName, page);
+                }
             }
             else
                 RedirectToPage("./Index?lang=" + Lang);
         }
 
-        private void FillData(string UserGroupName)
-        {
+        private void FillData(string UserGroupName, int page = 1)
+        {    if (HttpContext.Request.Query.ContainsKey("page"))
+            {
+                string pagevalue = HttpContext.Request.Query["page"];
+                page = int.Parse(pagevalue);
+            }
             base.ExtractSessionData();
             if (this.CanManageUsers)
             {
@@ -44,8 +57,13 @@ namespace LabMaterials.Pages
                 if (string.IsNullOrEmpty(UserGroupName) == false)
                     query = query.Where(i => i.UserGroupName.Contains(UserGroupName));
 
-                UserGroups = query.ToList();
-                TotalItems = UserGroups.Count();
+                // UserGroups = query.ToList();
+                // TotalItems = UserGroups.Count();
+                TotalItems = query.Count();
+                TotalPages = (int)Math.Ceiling((double)TotalItems / ItemsPerPage);
+                var list = query.ToList();
+                UserGroups = list.Skip((page - 1) * ItemsPerPage).Take(ItemsPerPage).ToList();        
+                CurrentPage = page; 
                 foreach(var UG in UserGroups)
                 {
                     UG.Privilages = String.Join(", ", (from p in dbContext.Privileges
@@ -59,10 +77,11 @@ namespace LabMaterials.Pages
                 RedirectToPage("./Index?lang=" + Lang);
         }
 
-        public IActionResult OnPostEdit([FromForm] int UserGroupID)
+        public IActionResult OnPostEdit([FromForm] int UserGroupID, [FromForm] int page, [FromForm] string UserGroupName)
         {
             HttpContext.Session.SetInt32("UserGroupID", UserGroupID);
-
+            HttpContext.Session.SetInt32("page", page);
+            HttpContext.Session.SetString("UserGroupName", string.IsNullOrEmpty(UserGroupName) ? "" : UserGroupName);
             return RedirectToPage("./EditUserGroup");
         }
 
@@ -96,9 +115,9 @@ namespace LabMaterials.Pages
 
 
         public void OnPostSearch([FromForm] string UserGroupName)
-        {
+        {   CurrentPage = 1;
             this.UserGroupName = UserGroupName;
-            FillData(UserGroupName);
+            FillData(UserGroupName, CurrentPage);
         }
 
         private void FillLables()

@@ -8534,8 +8534,7 @@ fieldset:disabled .btn {
   display: flex;
   padding-left: 0;
   list-style: none;
-  width: fit-content;
-  margin: 0 auto;
+  justify-content: end;
 }
 
 .page-link {
@@ -23838,7 +23837,7 @@ fieldset:disabled .btn {
 }
 
 td .btn{
-    width:138px;
+    width:auto;
 }
 .top-btn{
   width: 170px;

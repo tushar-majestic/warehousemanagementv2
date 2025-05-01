@@ -15,22 +15,37 @@ namespace LabMaterials.Pages
         public List<Room> Rooms { get; set; }
         public string Message { get; set; }
         public int TotalItems { get; set; }
-        public void OnGet() 
+         public int CurrentPage { get; set; }
+        public int ItemsPerPage { get; set; } = 10;
+        public int TotalPages { get; set; }
+        public string RoomName { get; set; }
+
+        public void OnGet(string? RoomName, int page = 1) 
         {
             base.ExtractSessionData();
             if (CanManageStore)
             {
                 FillLables();
+                if (HttpContext.Request.Query.ContainsKey("page")){
+                    string pagevalue = HttpContext.Request.Query["page"];
+                    page = int.Parse(pagevalue);
+                    this.RoomName = RoomName;
+                    FillData(RoomName, page);
+
+                }
             }
             else
                 RedirectToPage("./Index?lang=" + Lang);
         }
 
-        public string lblStores, lblManageStorage, lblSearch, lblRoomName, lblRoomNumber, lblManageShelves, lblManageRooms, lblStoreNumber, lblAddRoom, lblAddShelf, lblStoreName, lblSubmit, lblAddStore, lblShelves, lblEdit, lblDelete, lblTotalItem, lblAddDestination, lblManageDestination;
+        public string lblStores, lblManageStorage, lblSearch, lblRoomName, lblRoomNumber, lblManageShelves, lblManageRooms, lblStoreNumber,
+        lblAddRoom, lblAddShelf, lblStoreName, lblSubmit, lblAddStore, lblShelves, lblEdit, lblDelete, lblTotalItem, lblAddDestination,
+        lblManageDestination;
 
-        public void OnPostSearch([FromForm] string StoreNumber, [FromForm] string StoreName)
-        {
-            FillData(StoreNumber, StoreName);
+        public void OnPostSearch([FromForm] string RoomName)
+        {   CurrentPage = 1;
+            this.RoomName = RoomName;
+            FillData(RoomName, CurrentPage);
         }
 
         public void OnPostDelete([FromForm] int RoomId)
@@ -44,7 +59,7 @@ namespace LabMaterials.Pages
                 room.Ended = DateTime.Now;
                 dbContext.Rooms.Update(room);
                 dbContext.SaveChanges();
-                FillData(null, null);
+                FillData(null);
                 Message = string.Format((Program.Translations["RoomDeleted"])[Lang], room.RoomName);
                 Helper.AddActivityLog(HttpContext.Session.GetInt32("UserId").Value, Message, "Delete", Helper.ExtractIP(Request), dbContext, true);
             }
@@ -53,16 +68,17 @@ namespace LabMaterials.Pages
                 var itemId = dbContext.Storages.First(s => s.RoomId == RoomId && s.AvailableQuantity > 0).ItemId;
                 Message = string.Format((Program.Translations["RoomNotDeleted"])[Lang], itemsInstore,
                     dbContext.Items.Single(i => i.ItemId == itemId).ItemName);
-                FillData(null, null);
+                FillData(null);
             }
 
         }
 
 
-        public IActionResult OnPostEdit([FromForm] int RoomId)
+        public IActionResult OnPostEdit([FromForm] int RoomId, [FromForm] int page, [FromForm] string RoomName)
         {
             HttpContext.Session.SetInt32("RoomId", RoomId);
-
+            HttpContext.Session.SetInt32("page", page);
+            HttpContext.Session.SetString("RoomName", string.IsNullOrEmpty(RoomName) ? "" : RoomName);
             return RedirectToPage("./EditRoom");
         }
 
@@ -79,7 +95,7 @@ namespace LabMaterials.Pages
             return RedirectToPage("./ManageShelves");
         }
 
-        private void FillData(string? StoreNumber, string? StoreName)
+       private void FillDataOld(string? StoreNumber, string? StoreName)
         {
             base.ExtractSessionData();
             if (CanManageStore)
@@ -122,6 +138,63 @@ namespace LabMaterials.Pages
             else
                 RedirectToPage("./Index?lang=" + Lang);
         }
+
+        private void FillData(string? RoomName, int page = 1)
+        {
+            if (HttpContext.Request.Query.ContainsKey("page"))
+            {
+                string pagevalue = HttpContext.Request.Query["page"];
+                page = int.Parse(pagevalue);
+            }
+
+            base.ExtractSessionData();
+
+            if (!CanManageStore)
+            {
+                RedirectToPage("./Index?lang=" + Lang);
+                return;
+            }
+
+            FillLables();
+            var dbContext = new LabDBContext();
+
+            var codeParam = new SqlParameter("@PCODE", SqlDbType.VarChar, 2) { Direction = ParameterDirection.Output };
+            var msgParam = new SqlParameter("@PMSG", SqlDbType.VarChar, 1000) { Direction = ParameterDirection.Output };
+            var descParam = new SqlParameter("@PDESC", SqlDbType.VarChar, 2) { Direction = ParameterDirection.Output };
+
+            var allStores = dbContext.StoreDataResults
+                                .FromSqlRaw("EXEC PRC_GET_STORE_DATA @PCODE OUTPUT, @PDESC OUTPUT, @PMSG OUTPUT",
+                                            codeParam, descParam, msgParam)
+                                .ToList();
+
+            var activeRooms = dbContext.Rooms
+                                .Where(r => r.Ended == null)
+                                .ToList();
+
+            // Join stores with active rooms
+            var joinedData = from store in allStores
+                            join room in activeRooms on store.RoomId equals room.RoomId
+                            select new StoreDataResult
+                            {
+                                StoreId = store.StoreId,
+                                StoreName = store.StoreName,
+                                ShelfNumber = store.ShelfNumber,
+                                RoomId = room.RoomId,
+                                RoomName = room.RoomName,
+                            };
+
+            // Optional: filter by room name
+            if (!string.IsNullOrEmpty(RoomName))
+            {
+                joinedData = joinedData.Where(s => s.RoomName != null && s.RoomName.Contains(RoomName));
+            }
+
+            TotalItems = joinedData.Count();
+            TotalPages = (int)Math.Ceiling((double)TotalItems / ItemsPerPage);
+            Stores = joinedData.Skip((page - 1) * ItemsPerPage).Take(ItemsPerPage).ToList();
+            CurrentPage = page;
+        }
+
 
         private void FillLables()
         {

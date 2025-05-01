@@ -4,40 +4,47 @@
 {
     <script type="text/javascript" language="javascript">
         const notyf = new Notyf({
-            position: {
-                x: 'center',
-                y: 'top',
-            },
-            types: [
-                {
-                    type: 'error',
-                    background: '#e3392c',
-                    icon: {
-                        className: 'fas fa-times',
-                        tagName: 'span',
-                        color: '#000000'
-                    },
-                    dismissible: true,
-                    duration: 0,
-                    ripple: true
-                }
-            ]
+        position: {
+        x: 'center',
+        y: 'top',
+        },
+        types: [
+        {
+        type: 'error',
+        background: '#e3392c',
+        icon: {
+        className: 'fas fa-times',
+        tagName: 'span',
+        color: '#000000'
+        },
+        dismissible: true,
+        duration: 0,
+        ripple: true
+        }
+        ]
         });
 
         function showErrorNotification(message) {
-            notyf.open({
-                type: 'error',
-                message: message
-            });
+        notyf.open({
+        type: 'error',
+        message: message
+        });
         }
 
         @if (!string.IsNullOrEmpty(Model.ErrorMsg))
         {
             <text>
-                    var errorMessageFromServer = @Html.Raw(Json.Serialize(Model.ErrorMsg));
-                    showErrorNotification(errorMessageFromServer);
+                var errorMessageFromServer = @Html.Raw(Json.Serialize(Model.ErrorMsg));
+                showErrorNotification(errorMessageFromServer);
             </text>
         }
+
+        document.getElementById("ManagerName").addEventListener("change", function () {
+        const selectedOption = this.options[this.selectedIndex];
+        const jobNumber = selectedOption.getAttribute("data-jobnumber");
+
+        document.getElementById("ManagerJobNumber").value = jobNumber || '';
+        });
     </script>
 }
 @{
@@ -45,7 +52,7 @@
 
         <div class="d-flex justify-content-between w-100 flex-wrap">
             <div class="mb-3 mb-lg-0">
-                 <nav aria-label="breadcrumb">
+                <nav aria-label="breadcrumb">
                     <ol class="breadcrumb bg-transparent p-2 mb-0">
                         <li class="breadcrumb-item d-flex align-items-center">
                             <img src="images/home.png" alt="Home" width="16" height="16" class="me-2" />
@@ -53,7 +60,7 @@
                         </li>
                         <li class="breadcrumb-item d-flex align-items-center">
                             <img src="images/retailer.png" alt="Home" width="16" height="16" class="me-2" />
-                            <a href="/ManageStore" class="text-decoration-none">@Model.lblStores</a>
+                            <a href="/ManageStore?page=@Model.page&StoreNumber=@Model.StoreNumberSearch&StoreName=@Model.StoreNameSearch" class="text-decoration-none">@Model.lblStores</a>
                         </li>
                         <li class="breadcrumb-item d-flex align-items-center active" aria-current="page">
                             <img src="images/retailer.png" alt="Home" width="16" height="16" class="me-2" />
@@ -62,7 +69,7 @@
                     </ol>
                 </nav>
                 <h1 class="h4">@Model.lblUpdateStore</h1>
-               <!-- <p class="mb-0">Dozens of reusable components built to provide buttons, alerts, popovers, and more.</p> -->
+                <!-- <p class="mb-0">Dozens of reusable components built to provide buttons, alerts, popovers, and more.</p> -->
             </div>
         </div>
     </div>
@@ -76,6 +83,34 @@
 
                         <div class="col-lg-12 col-sm-12">
                             <input type="hidden" name="StoreId" value="@Model.StoreId" />
+                            @* Warehouse type  *@
+                            <div class="mb-4">
+                                <p>@Model.StoreType</p>
+                                <label class="my-1 me-2" for="StoreType">@Model.lblWarehouseType</label>
+                                <select class="form-select" id="StoreType" name="StoreType"
+                                aria-label="Default select example" >
+                                    <option value=""></option>
+                                    @if (Model.StoreTypeList != null)
+                                    {
+                                        foreach (var item in Model.StoreTypeList)
+                                        {
+                                            var selectedAttr = item.Value.Trim() == Model.StoreType.Trim() ? "selected=\"selected\"" : "";
+
+                                            @:<option value="@item.Value" @Html.Raw(selectedAttr)>@item.Text</option>
+                                        }
+                                    }
+                                </select>
+                                
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="storeName">@Model.lblStoreName</label>
+                                <input type="text" name="StoreName" value="@Model.StoreName" class="form-control"
+                                    id="storeName">
+                             <!--   <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone
+                                    else.</small> -->
+                            </div>
+                            
                             <div class="mb-4">
                                 <label for="storeNumber">@Model.lblStoreNumber</label>
                                 <input type="text" name="StoreNumber" class="form-control" id="storeNumber"
@@ -84,13 +119,58 @@
                               <!--  <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone
                                     else.</small> -->
                             </div>
+
+                            @* Warehouse manager name  *@
                             <div class="mb-4">
-                                <label for="storeName">@Model.lblStoreName</label>
-                                <input type="text" name="StoreName" value="@Model.StoreName" class="form-control"
-                                    id="storeName">
-                             <!--   <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone
-                                    else.</small> -->
+                                    <label class="my-1 me-2" for="ManagerName">@Model.lblManagerName</label>
+                                    <select class="form-select" id="ManagerName" name="ManagerName"
+                                        aria-label="Default select example">
+                                        <option value=""></option>
+                                        
+                                        
+                                    @if (Model.ManagerGroupsList != null)
+                                    {
+                                        foreach (var item in Model.ManagerGroupsList)
+                                        {   
+                                            var selectedAttr = item.UserName == Model.ManagerName ? "selected=\"selected\"" : "";
+                                            @:<option value="@item.UserName" data-jobnumber="@item.JobNumber" @Html.Raw(selectedAttr)>@item.UserName</option>
+                                        }
+                                    }
+
+                                    </select>
                             </div>
+
+                             @* Warehouse manager Job Number  *@
+                            <div class="mb-4">
+                                <label for="ManagerJobNumber">@Model.lblManagerJobNumber</label>
+                                <input type="text" name="ManagerJobNumber" class="form-control" id="ManagerJobNumber"
+                                    value="@Model.ManagerJobNumber" /> 
+                            </div>
+
+                            
+
+
+                            @* Warehouse status *@
+                            <div class="mb-4">
+                                <p>@Model.lblStatus</p>
+
+                                <div class="form-check">
+                                    <input id="Open" class="form-check-input" type="radio" name="Status" value="Open"  @(Model.Status == "Open" ? "checked" : "") 
+                                       />
+                                    <label class="form-check-label" for="Open">
+                                        @Model.lblOpen
+                                    </label>
+                                </div>
+
+                                <div class="form-check">
+                                    <input id="Closed" class="form-check-input" type="radio" name="Status" value="Closed"  @(Model.Status == "Closed" ? "checked" : "") 
+                                        />
+                                    <label class="form-check-label" for="Closed">
+                                        @Model.lblClosed
+                                    </label>
+                                </div>
+                            </div>
+                            
                             <div class="mb-4">
 
 

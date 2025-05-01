@@ -9,16 +9,18 @@ namespace LabMaterials.Pages
     {
         public string ErrorMsg { get; set; }
         public int DId, StoreId, ItemId, Quantity;
-        public string ShelfNumber, DestinationName;
+        public string ShelfNumber, DestinationName, DestinationSearch;
 
         public List<Destination> Destinations { get; set; }
         public List<Item> Items { get; set; }
-
+        public int page { get; set; }
         public string lblItemName, lblDestinationName, lblUpdateDestination, lblShelveNumber, lblQuantity, lblUpdate, lblCancel, lblDestinations, lblStores;
         public void OnGet()
         {
             base.ExtractSessionData();
             FillLables();
+            this.page = (int)HttpContext.Session.GetInt32("page");
+            this.DestinationSearch = HttpContext.Session.GetString("DestinationName");
             if (CanManageStore == false)
                 RedirectToPage("./Index?lang=" + Lang);
             var dbContext = new LabDBContext();

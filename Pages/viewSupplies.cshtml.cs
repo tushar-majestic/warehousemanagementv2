@@ -8,11 +8,18 @@ namespace LabMaterials.Pages
     public class viewSuppliesModel : BasePageModel
     {
         public SupplyInfo Supply { get; set; } // Changed from List to single object
-        public string lblSupplies;
+        public string lblSupplies, lbltypeCode, lblStoreName, lblExpiryDate, lblItemType, lblRoomName, lblShelfNumber, lblManageSuppliers, lblSearch, lblSupplierName, lblItemName, lblSubmit, lblAddSupplies,
+            lblQuantityReceived, lblPurchaseOrderNo, lblInvoiceNumber, lblReceivedAt, lblInventoryBalanced, lblEdit, lblDelete,
+            lblTotalItem, lblFromDate, lblToDate;
+        public string FromDate, ToDate;
+        public int page { get; set; }
 
         public void OnGet()
         {
             base.ExtractSessionData();
+             this.page = (int)HttpContext.Session.GetInt32("page");
+            this.FromDate = HttpContext.Session.GetString("FromDate");
+            this.ToDate = HttpContext.Session.GetString("ToDate");
             if (!this.CanManageSupplies)
             {
                 Response.Redirect("./Index?lang=" + Lang);
@@ -61,6 +68,30 @@ namespace LabMaterials.Pages
         private void FillLables()
         {
             this.lblSupplies = (Program.Translations["Supplies"])[Lang];
+            this.lblManageSuppliers = (Program.Translations["ManageSuppliers"])[Lang];
+            this.lblSearch = (Program.Translations["Search"])[Lang];
+            this.lblSubmit = (Program.Translations["Submit"])[Lang];
+            this.lblAddSupplies = (Program.Translations["AddSupplies"])[Lang];
+            this.lblSupplierName = (Program.Translations["SupplierName"])[Lang];
+            this.lblItemName = (Program.Translations["ItemName"])[Lang];
+            this.lbltypeCode = (Program.Translations["ItemCode"])[Lang];
+            this.lblItemType = (Program.Translations["ItemType"])[Lang];
+            this.lblQuantityReceived = (Program.Translations["QuantityReceived"])[Lang];
+            this.lblPurchaseOrderNo = (Program.Translations["PurchaseOrderNo"])[Lang];
+            this.lblInvoiceNumber = (Program.Translations["InvoiceNumber"])[Lang];
+            this.lblReceivedAt = (Program.Translations["ReceivedAt"])[Lang];
+            this.lblInventoryBalanced = (Program.Translations["InventoryBalanced"])[Lang];
+            this.lblRoomName = (Program.Translations["RoomName"])[Lang];
+            this.lblShelfNumber = (Program.Translations["ShelfNumber"])[Lang];
+            this.lblStoreName = (Program.Translations["StoreName"])[Lang];
+            this.lblExpiryDate = (Program.Translations["ExpiryDate"])[Lang];
+
+            this.lblEdit = (Program.Translations["Edit"])[Lang];
+            this.lblDelete = (Program.Translations["Delete"])[Lang];
+            this.lblTotalItem = (Program.Translations["TotalItem"])[Lang];
+
+            this.lblFromDate = (Program.Translations["FromDate"])[Lang];
+            this.lblToDate = (Program.Translations["ToDate"])[Lang];
         }
     }
 }

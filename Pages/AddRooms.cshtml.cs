@@ -8,12 +8,17 @@ namespace LabMaterials.Pages
     public class AddRoomsModel : BasePageModel
     {
         public string ErrorMsg { get; set; }
-        public string StoreNumber, StoreName, RoomNumber, RoomName;
+        public string StoreNumber, StoreName, RoomNumber, RoomName, StoreType, ManagerName, BuildingNumber, RoomDesc, KeeperName;
         public int StoreId;
+        public int? KeeperJobNum, NoOfShelves ;
+        public string Status { get; set; }
+
         public List<Store> Stores { get; set; }
+        public List<User> KeeperGroupsList {  get; set; }
+
 
         public string lblAddStore, lblRoomNumber, lblStoreName, lblAdd, lblCancel, lblRoomName, lblStoreNumber, 
-        lblAddRoom, lblStores, lblManageRooms;
+        lblAddRoom, lblStores, lblManageRooms,lblNoOfShelves, lblKeeperJobNum, lblKeeperName;
         public void OnGet()
         {
             base.ExtractSessionData();
@@ -22,9 +27,17 @@ namespace LabMaterials.Pages
                 RedirectToPage("./Index?lang=" + Lang);
             var dbContext = new LabDBContext();
             Stores = dbContext.Stores.ToList();
+            var KeeperGroupId = dbContext.UserGroups
+                    .Where(g => g.UserGroupName == "Warehouse Keeper")
+                    .Select(g => g.UserGroupId)
+                    .FirstOrDefault();
+
+            KeeperGroupsList = dbContext.Users
+                .Where(u => u.UserGroupId == KeeperGroupId)
+                .ToList();
         }
 
-        public IActionResult OnPost([FromForm] int StoreId, [FromForm] string RoomNumber, [FromForm] string RoomName)
+        public IActionResult OnPost([FromForm] int StoreId, [FromForm] string RoomNumber,  [FromForm] string StoreType, [FromForm] string ManagerName, [FromForm] string BuildingNumber, [FromForm] string RoomDesc, [FromForm] int NoOfShelves, [FromForm] int? KeeperJobNum, [FromForm] string KeeperName,  [FromForm] string Status)
         {
             LogableTask task = LogableTask.NewTask("AddRoom");
 
@@ -35,28 +48,60 @@ namespace LabMaterials.Pages
                 if (CanManageStore)
                 {
                     FillLables();
-                    this.RoomName = RoomName;
+                    // this.RoomName = RoomName;
                     this.RoomNumber = RoomNumber;
+                    this.StoreType = StoreType;
+                    this.ManagerName = ManagerName;
+                    this.BuildingNumber = BuildingNumber;
+                    this.RoomDesc = RoomDesc;
+                    this.NoOfShelves = NoOfShelves;
+                    this.KeeperJobNum = KeeperJobNum;
+                    this.KeeperName = KeeperName;
+                    this.Status = Status;
+                    this.StoreId = StoreId; 
 
-                    if (string.IsNullOrEmpty(RoomNumber))
+                    var dbContext = new LabDBContext();
+                    var KeeperGroupId = dbContext.UserGroups
+                    .Where(g => g.UserGroupName == "Warehouse Keeper")
+                    .Select(g => g.UserGroupId)
+                    .FirstOrDefault();
+
+                    KeeperGroupsList = dbContext.Users
+                        .Where(u => u.UserGroupId == KeeperGroupId)
+                        .ToList();
+
+
+                    if(string.IsNullOrEmpty(BuildingNumber))
+                        ErrorMsg = (Program.Translations["BuildingNumberMissing"])[Lang];
+                    else if (string.IsNullOrEmpty(RoomNumber))
                         ErrorMsg = (Program.Translations["RoomNumberMissing"])[Lang];
-                    else if (string.IsNullOrEmpty(RoomName))
-                        ErrorMsg = (Program.Translations["RoomNameMissing"])[Lang];
+                    // else if (string.IsNullOrEmpty(RoomName))
+                    //     ErrorMsg = (Program.Translations["RoomNameMissing"])[Lang];
+                    else if (!KeeperJobNum.HasValue)
+                        ErrorMsg = (Program.Translations["KeeperJobNumMissing"])[Lang];
+                    else if (string.IsNullOrEmpty(Status))
+                        ErrorMsg = (Program.Translations["RoomStatusMissing"])[Lang];
                     else
                     {
-                        var dbContext = new LabDBContext();
-                        if (dbContext.Rooms.Any(r => r.RoomNo == RoomNumber && r.StoreId == StoreId))
-                            ErrorMsg = string.Format((Program.Translations["RoomNumberExists"])[Lang], RoomNumber);
-                        else if (dbContext.Rooms.Any(r => r.RoomName == RoomName && r.StoreId == StoreId))
-                            ErrorMsg = string.Format((Program.Translations["RoomNameExists"])[Lang], RoomName);
+
+                        if (dbContext.Rooms.Any(r => r.RoomNo == RoomNumber && r.StoreId == StoreId && r.BuildingNumber == BuildingNumber))
+                            ErrorMsg = string.Format((Program.Translations["RoomExists"])[Lang], RoomNumber);
+                       
                         else
                         {
                             var room = new Room
                             {
-                                RoomName = RoomName,
+                                // RoomName = RoomName,
                                 StoreId = StoreId,
                                 /*RoomNumber = RoomNumber,*/
                                 RoomNo = RoomNumber,
+                                BuildingNumber = BuildingNumber,
+                                RoomDesc = RoomDesc,
+                                NoOfShelves = NoOfShelves,
+                                KeeperJobNum = KeeperJobNum,
+                                KeeperName = KeeperName,
+                                RoomStatus = Status,
+
                             };
                             dbContext.Rooms.Add(room);
                             dbContext.SaveChanges();
@@ -69,7 +114,7 @@ namespace LabMaterials.Pages
                             return RedirectToPage("./ManageRooms");
                         }
                     }
-                    using (var dbContext = new LabDBContext())
+                    using ( dbContext = new LabDBContext())
                         { Stores = dbContext.Stores.ToList(); }
 
                     return Page();
@@ -100,6 +145,9 @@ namespace LabMaterials.Pages
             this.lblAddRoom = (Program.Translations["AddRoom"])[Lang];
             this.lblStores = (Program.Translations["Stores"])[Lang];
             this.lblManageRooms = (Program.Translations["ManageRooms"])[Lang];
+            this.lblNoOfShelves = (Program.Translations["NoOfShelves"])[Lang];
+            this.lblKeeperJobNum = (Program.Translations["KeeperJobNum"])[Lang];
+            this.lblKeeperName = (Program.Translations["KeeperName"])[Lang];
 
 
 

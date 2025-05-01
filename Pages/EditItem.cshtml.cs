@@ -6,7 +6,7 @@ namespace LabMaterials.Pages
     public class EditItemModel : BasePageModel
     {
         public string ErrorMsg { get; set; }
-        public string ItemCode, ItemName, GroupCode, ItemTypeCode, HazardTypeName, ItemDescription, BatchNo;
+        public string ItemCode, ItemName, GroupCode, ItemTypeCode, HazardTypeName, ItemDescription, BatchNo, ItemNameSearch, GroupSearch;
         public DateTime ExpiryDate;
         public bool IsHazardous;
         public int AvailableQuantity, UnitId, ItemID;
@@ -14,6 +14,8 @@ namespace LabMaterials.Pages
         public List<ItemType> ItemTypes { get; set; }
         public List<HazardType> HazardTypes { get; set; }
         public List<Unit> UnitTypes { get; set; }
+        public string FromDate, ToDate;
+        public int page { get; set; }
         
         public string lblItemName, lblGroupName, lblItemCode, lblItemDescription, lblAvailableQuantity, lblHazardType, lblTypeName,
             lblUnit, lblUpdateItem, lblUpdate, lblCancel, lblIsHazardous, lblItemType, lblBatchNo, lblExpiryDate, lblItems;
@@ -22,6 +24,11 @@ namespace LabMaterials.Pages
         {
             base.ExtractSessionData();
             FillLables();
+            this.page = (int)HttpContext.Session.GetInt32("page");
+            this.FromDate = HttpContext.Session.GetString("FromDate");
+            this.ToDate = HttpContext.Session.GetString("ToDate");
+            this.ItemNameSearch = HttpContext.Session.GetString("ItemName");
+            this.GroupSearch = HttpContext.Session.GetString("Group");
             if (CanManageItems == false)
                 RedirectToPage("./Index?lang=" + Lang);
             else

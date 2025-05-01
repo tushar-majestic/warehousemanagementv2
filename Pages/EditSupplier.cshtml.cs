@@ -12,13 +12,18 @@ namespace LabMaterials.Pages
         public string SelectSupplierType;
         public string SupplierNotUpdated;
         public int SupplierId;
-        
-        public string lblSupplierName, lblSupplierNotUpdated, lblSupplierPhoneNumber, lblSelectSupplierType, lblSupplierType, 
+        public string FromDate, ToDate;
+        public int page { get; set; }
+        public string lblSupplierName, lblSupplierNotUpdated, lblSupplierPhoneNumber, lblSelectSupplierType, lblSupplierType, SupplierNameSearch, 
         lblUpdateSupplier, lblEdit, lblCancel, lblSupplies, lblSuppliers;
         public void OnGet()
         {
             base.ExtractSessionData();
             FillLables();
+            this.page = (int)HttpContext.Session.GetInt32("page");
+            this.FromDate = HttpContext.Session.GetString("FromDate");
+            this.ToDate = HttpContext.Session.GetString("ToDate");
+            this.SupplierNameSearch = HttpContext.Session.GetString("SupplierName");
             if (CanManageSupplies == false)
                 RedirectToPage("./Index?lang=" + Lang);
             else

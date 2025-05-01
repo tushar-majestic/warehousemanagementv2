@@ -15,12 +15,25 @@ namespace LabMaterials.Pages
         public string StoreName { get; set; }
         [BindProperty]
         public string Item { get; set; }
-        public void OnGet() 
+        
+        public int CurrentPage { get; set; }
+        public int ItemsPerPage { get; set; } = 10;
+        public int TotalPages { get; set; }
+        public void OnGet(string? StoreNumber, string? StoreName,string? Item , int page = 1) 
         {
             base.ExtractSessionData();
             if (CanManageStore)
             {
                 FillLables();
+                if (HttpContext.Request.Query.ContainsKey("page")){
+                    string pagevalue = HttpContext.Request.Query["page"];
+                    page = int.Parse(pagevalue);
+                    this.StoreNumber = StoreNumber;
+                    this.StoreName = StoreName;
+                    this.Item = Item;
+                    FillData(StoreNumber, StoreName, Item, page);
+
+                }
             }
             else
                 RedirectToPage("./Index?lang=" + Lang);
@@ -30,11 +43,11 @@ namespace LabMaterials.Pages
             lblShelveNumber, lblAvailableQuantity, lblEdit, lblDelete, lblTotalItem, lblStores;
 
         public void OnPostSearch([FromForm] string StoreNumber, [FromForm] string StoreName, [FromForm] string Item)
-        {
+        {   CurrentPage = 1;
             this.StoreNumber = StoreNumber;
             this.StoreName = StoreName;
             this.Item = Item;
-            FillData(StoreNumber, StoreName, Item);
+            FillData(StoreNumber, StoreName, Item, CurrentPage);
         }
 
         public void OnPostDelete([FromForm] int StorageId)
@@ -65,15 +78,23 @@ namespace LabMaterials.Pages
                 RedirectToPage("./Index?lang=" + Lang);
         }
 
-        public IActionResult OnPostEdit([FromForm] int StorageId)
+        public IActionResult OnPostEdit([FromForm] int StorageId, [FromForm] int page, [FromForm] string StoreNumber, [FromForm] string StoreName, [FromForm] string Item)
         {
             HttpContext.Session.SetInt32("StorageId", StorageId);
+            HttpContext.Session.SetString("StoreNumber", string.IsNullOrEmpty(StoreNumber) ? "" : StoreNumber);
+            HttpContext.Session.SetString("StoreName", string.IsNullOrEmpty(StoreName) ? "" : StoreName);
+            HttpContext.Session.SetString("Item", string.IsNullOrEmpty(Item) ? "" : Item);
+            HttpContext.Session.SetInt32("page", page);
 
             return RedirectToPage("./EditStorage");
         }
 
-        private void FillData(string? StoreNumber, string? StoreName, string? Item)
-        {
+        private void FillData(string? StoreNumber, string? StoreName, string? Item, int page = 1)
+        {   if (HttpContext.Request.Query.ContainsKey("page"))
+            {
+                string pagevalue = HttpContext.Request.Query["page"];
+                page = int.Parse(pagevalue);
+            }
             base.ExtractSessionData();
             if (CanManageStore)
             {
@@ -100,10 +121,12 @@ namespace LabMaterials.Pages
                 if (string.IsNullOrEmpty(Item) == false)
                     query = query.Where(s => s.ItemName.Contains(Item));
 
-                Storages = query.ToList();
-
-                Storages = query.ToList();
-                TotalItems = Storages.Count();
+               
+                TotalItems = query.Count();
+                TotalPages = (int)Math.Ceiling((double)TotalItems / ItemsPerPage);
+                var list = query.ToList();
+                Storages = list.Skip((page - 1) * ItemsPerPage).Take(ItemsPerPage).ToList();        
+                CurrentPage = page;   
             }
             else
                 RedirectToPage("./Index?lang=" + Lang);
