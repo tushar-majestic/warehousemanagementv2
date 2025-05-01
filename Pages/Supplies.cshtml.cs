@@ -64,6 +64,7 @@ namespace LabMaterials.Pages
                     else
                     {
                         SelectedColumns = new List<string>(); // Empty list
+                        // Update DB
                     }
                 }
             }
