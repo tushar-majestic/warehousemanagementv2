@@ -7,6 +7,7 @@ namespace LabMaterials.Pages
     public class DisbursementsModel : BasePageModel
     {
         public List<DisbursementInfo> Disbursement { get; set; }
+        public List<DisbursementInfo> DisbursementAll { get; set; }
         public string Message { get; set; }
         public int TotalItems { get; set; }
         public DateTime? FromDate, ToDate;
@@ -58,7 +59,9 @@ namespace LabMaterials.Pages
                     }
                     else
                     {
-                        SelectedColumns = new List<string>(); // Empty list
+                        // SelectedColumns = new List<string>();
+                        string selectedColumns = "requesterName,destination";
+                        SaveSelectedColumns(userId.Value, pageName, selectedColumns);
                     }
                 }
             }
@@ -255,8 +258,9 @@ namespace LabMaterials.Pages
 
                 var list = query.ToList();
 
-                Disbursement = list.Skip((page - 1) * ItemsPerPage).Take(ItemsPerPage).ToList();   
-                
+                Disbursement = list.Skip((page - 1) * ItemsPerPage).Take(ItemsPerPage).ToList();
+                DisbursementAll = query.ToList();
+
                 CurrentPage = page;
             }
             else

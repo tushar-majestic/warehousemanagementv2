@@ -8,14 +8,17 @@
 
   <ItemGroup>
     <Compile Remove="Pages\Login.cshtml.cs" />
+    <Compile Remove="Pages\Requests - Copy.cshtml.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Remove="Pages\Login.cshtml" />
+    <Content Remove="Pages\Requests - Copy.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Azure.Identity" Version="1.10.4" />
+    <PackageReference Include="ClosedXML" Version="0.104.2" />
     <PackageReference Include="EPPlus" Version="7.1.2" />
     <PackageReference Include="GemBox.Spreadsheet" Version="49.0.1623" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.4" />
