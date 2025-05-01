@@ -1,4 +1,123 @@
 ﻿@page
 @model LabMaterials.Pages.NotificationsModel
 @{
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
+        <div class="d-block mb-4 mb-md-0">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb bg-transparent p-2 mb-0">
+                    <li class="breadcrumb-item d-flex align-items-center">
+                        <img src="images/home.png" alt="Home" width="16" height="16" class="me-2" />
+                        <a href="/Home" class="text-decoration-none">@Model.lblHome</a>
+                    </li>
+                    <li class="breadcrumb-item d-flex align-items-center">
+                        <img src="images/inventory.png" alt="Home" width="16" height="16" class="me-2" />
+                        @Model.lblNotifications
+                    </li>
+
+                </ol>
+            </nav>
+
+            <h2 class="h4">@Model.lblNotifications</h2>
+            <!-- <p class="mb-0">Your web analytics dashboard template.</p>-->
+        </div>
+    </div>
+
+
+
+    <nav class="nav">
+        <a class="nav-link @Model.inboxClass border border-bottom-0" href="?type=inbox">Inbox <sup><span class="badge rounded-pill badge-notification bg-danger">9</span></sup></a>
+        <a class="nav-link @Model.outboxClass border border-bottom-0" href="?type=outbox">Outbox</a>
+    </nav>
+    <div class="card border-0 shadow mb-4">
+        <div >
+            <div class="table-responsive">
+                <table class="table table-centered table-hover align-middle table-nowrap mb-0 rounded">
+                    <!--
+                    <thead class="thead-light">
+                    <tr>
+                    <th scope="col" class="border-0">@Model.lblNotifications</th>
+                    </tr>
+                    </thead>
+                    -->
+                    <tbody>
+                        @if (Model.pagetype == "inbox")
+                        {
+                            <tr>
+                                <td>
+                                    <div class="m-2"><b>Ashwin Bose</b> sent Request for Items. Approve the request or add comments.</div>
+                                    <button class="btn btn-info btn-sm p-1">
+                                        Accept
+                                    </button>
+                                    <button class="btn btn-warning btn-sm p-1">
+                                        Comment & Reject
+                                    </button>
+                                </td>
+                                <td>12:35 AM</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="m-2"><b>Ashwin Bose</b> sent Request for Items. Approve the request or add comments.</div>
+                                    <button class="btn btn-info btn-sm p-1">
+                                        Accept
+                                    </button>
+                                    <button class="btn btn-warning btn-sm p-1">
+                                        Comment & Reject
+                                    </button>
+                                </td>
+                                <td>12:35 AM</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="m-2"><b>Ashwin Bose</b> sent Request for Items. Approve the request or add comments.</div>
+                                    <button class="btn btn-info btn-sm p-1">
+                                        Accept
+                                    </button>
+                                    <button class="btn btn-warning btn-sm p-1">
+                                        Comment & Reject
+                                    </button>
+                                </td>
+                                <td>12:35 AM</td>
+                            </tr>
+                        }
+                        <tr>
+                            <td>Request for Warehouse <b>Dummy Warehouse</b> has been processed successfully.</td>
+                            <td>12:35 AM</td>
+                        </tr>
+                        <tr>
+                            <td>Request for Warehouse <b>Dummy Warehouse</b> has been processed successfully.</td>
+                            <td>12:35 AM</td>
+                        </tr>
+                        <tr>
+                            <td>Request for Warehouse <b>Dummy Warehouse</b> has been processed successfully.</td>
+                            <td>12:35 AM</td>
+                        </tr>
+                        <tr>
+                            <td>Request for Warehouse <b>Dummy Warehouse</b> has been processed successfully.</td>
+                            <td>12:35 AM</td>
+                        </tr>
+                        <tr>
+                            <td>Request for Warehouse <b>Dummy Warehouse</b> has been processed successfully.</td>
+                            <td>12:35 AM</td>
+                        </tr>
+                        <tr>
+                            <td>Request for Warehouse <b>Dummy Warehouse</b> has been processed successfully.</td>
+                            <td>12:35 AM</td>
+                        </tr>
+                        <tr>
+                            <td>Request for Warehouse <b>Dummy Warehouse</b> has been processed successfully.</td>
+                            <td>12:35 AM</td>
+                        </tr>
+                        <tr>
+                            <td>Request for Warehouse <b>Dummy Warehouse</b> has been processed successfully.</td>
+                            <td>12:35 AM</td>
+                        </tr>
+                        <tr>
+                            <td>Request for Warehouse <b>Dummy Warehouse</b> has been processed successfully.</td>
+                            <td>12:35 AM</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+          </div>
+    </div>
 }
