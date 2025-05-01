@@ -97,7 +97,7 @@
             </div>
         </form>
     </div>
-      @if (Model.TotalPages > 1)
+    @if (Model.TotalPages > 1)
     {
         <nav aria-label="Page navigation">
             <ul class="pagination">
@@ -180,6 +180,12 @@
                             <th scope="col" class="border-0 rounded-start">@Model.lblUserName</th>
                             <th scope="col" class="border-0">@Model.lblFullName</th>
                             <th scope="col" class="border-0">@Model.lblEmail</th>
+                            <th scope="col" class="border-0">@Model.lblUserType</th>
+                            <th scope="col" class="border-0">@Model.lblIsDomainUser</th>
+                            <th scope="col" class="border-0">@Model.lblJobNumber</th>
+                            <th scope="col" class="border-0">@Model.lblEmpAffiliation</th>
+                            <th scope="col" class="border-0">@Model.lblTransfer</th>
+
                             <th scope="col" class="border-0">@Model.lblUserEnabled</th>
                             <th scope="col" class="border-0">@Model.lblIsLocked</th>
                             
@@ -198,10 +204,15 @@
                         <th class="fw-bold" scope="row">@item.UserName</th>
                         <td>@item.FullName</td>
                         <td>@item.Email</td>
+                   
+                        <td>@item.GroupName</td>
+                        <td>@item.IsADUser</td>
+                        <td>@item.JobNumber</td>
+                        <td>@item.EmpAffiliation</td>
+                        <td>@item.Transfer</td>
                         <td>@item.IsActive</td>
                         <td>@item.IsLocked</td>
-                       @* <td>@item.IsADUser</td>
-                        <td>@item.GroupName</td>*@
+
                         <td>
                             <form method="post">
                                 <input type="hidden" value="@item.UserID" name="UserId" />
