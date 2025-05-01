@@ -61,6 +61,7 @@ namespace LabMaterials.Pages
                 StoreType = store.StoreType;
 
 
+                Status = store.WarehouseStatus;
 
                 ManagerJobNumber = store.ManagerJobNum.ToString();
 
