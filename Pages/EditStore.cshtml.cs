@@ -45,7 +45,7 @@ namespace LabMaterials.Pages
                 var dbContext = new LabDBContext();
                 var store = dbContext.Stores.Single(s => s.StoreId == HttpContext.Session.GetInt32("StoreId"));
                 var managerGroupId = dbContext.UserGroups
-                    .Where(g => g.UserGroupName == "Manager")
+                    .Where(g => g.UserGroupName == "Warehouse Manager")
                     .Select(g => g.UserGroupId)
                     .FirstOrDefault();
 
