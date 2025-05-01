@@ -897,7 +897,250 @@
         "en": "Type Name Is Missing",
         "ar": "اسم نوع الصنف مفقود"
     },
-
+  "ShelvesMissing": {
+    "en": "Shelves data is missing.",
+    "ar": "بيانات الرفوف مفقودة"
+  },
+  "StoreNumberExists": {
+    "en": "The warehouse number {0} already exists.",
+    "ar": "رقم المستودع {0} موجود بالفعل"
+  },
+  "StoreNameExists": {
+    "en": "The warehouse name {0} already exists.",
+    "ar": "اسم المستودع {0} موجود بالفعل"
+  },
+  "StoreNotUpdate": {
+    "en": "Warehouse was not updated as shelf {0} you are trying to remove have items in it.",
+    "ar": "لم يتم تحديث المستودع لأنه يوجد منتجات بالرف {0} الذي تحاول إزالته"
+  },
+  "ShelfNumberNotExists": {
+    "en": "Warehouse {0} does not have shelf {1} in it.",
+    "ar": "المستودع {0} لا يحتوي على رف {1} فيه."
+  },
+  "ShelfNumber": {
+    "en": "Shelf Number",
+    "ar": "رقم الرف"
+  },
+  "GroupCodeMissing": {
+    "en": "Group code is missing.",
+    "ar": "رمز المجموعة مفقود"
+  },
+  "GroupNameMissing": {
+    "en": "Group name is missing.",
+    "ar": "اسم المجموعة مفقود"
+  },
+  "GroupCodeExists": {
+    "en": "The group code {0} already exists.",
+    "ar": "رمز المجموعة {0} موجود بالفعل"
+  },
+  "GroupNameExists": {
+    "en": "The group name {0} already exists.",
+    "ar": "اسم المجموعة موجود {0} بالفعل"
+  },
+  "ItemNameMissing": {
+    "en": "Item name is missing.",
+    "ar": "اسم الصنف مفقود"
+  },
+  "ItemCodeMissing": {
+    "en": "Item code is missing.",
+    "ar": "رمز الصنف مفقود"
+  },
+  "ItemNameExists": {
+    "en": "The item name {0} already exists.",
+    "ar": "اسم الصنف {0} موجود بالفعل"
+  },
+  "ItemCodeExists": {
+    "en": "The item code {0} already exists.",
+    "ar": "رمز الصنف {0} موجود بالفعل"
+  },
+  "RequesterNameMissing": {
+    "en": "Requester name is missing.",
+    "ar": "اسم مقدم الطلب مفقود"
+  },
+  "RequestingPlaceMissing": {
+    "en": "Requester place is missing.",
+    "ar": "مكان مقدم الطلب مفقود"
+  },
+  "CurrentPasswordMissing": {
+    "en": "Current password is missing.",
+    "ar": "كلمة المرور الحالية مفقودة"
+  },
+  "NewPasswordMissing": {
+    "en": "New password is missing.",
+    "ar": "كلمة المرور الجديدة مفقودة"
+  },
+  "NewPasswordConfirmMissing": {
+    "en": "Confirm new password is missing.",
+    "ar": "تأكيد كلمة المرور الجديدة مفقودة"
+  },
+  "PasswordNotMatched": {
+    "en": "New password and confirm new password do not match.",
+    "ar": "كلمة المرور الجديدة وتأكيد كلمة المرور الجديدة غير متطابقة"
+  },
+  "InvalidCurrentPassword": {
+    "en": "Current password is wrong.",
+    "ar": "كلمة المرور الحالية خاطئة"
+  },
+  "StartDateGreaterThanEndDate": {
+    "en": "Start date cannot be greater than end date.",
+    "ar": "لا يمكن أن يكون تاريخ البدء أكبر من تاريخ الانتهاء"
+  },
+  "UserReport": {
+    "en": "User Report",
+    "ar": "تقرير المستخدم"
+  },
+  "TotalDamagedItem": {
+    "en": "Total Damaged Items",
+    "ar": "إجمالي الأصناف التالفة"
+  },
+  "DamageDate": {
+    "en": "Damage Date",
+    "ar": "تاريخ الإتلاف"
+  },
+  "DamageQuantity": {
+    "en": "Damage Quantity",
+    "ar": "كمية الضرر"
+  },
+  "RoomName": {
+    "en": "Room Name",
+    "ar": "اسم الغرفة"
+  },
+  "RoomNumber": {
+    "en": "Room Number",
+    "ar": "رقم الغرفة"
+  },
+  "RoomNumberMissing": {
+    "en": "Room Number Missing",
+    "ar": "رقم الغرفة مفقود"
+  },
+  "RoomNameMissing": {
+    "en": "Room Name Missing",
+    "ar": "اسم الغرفة مفقود"
+  },
+  "RoomNumberExists": {
+    "en": "Room Number Exists",
+    "ar": "رقم الغرفة موجود"
+  },
+  "RoomNameExists": {
+    "en": "Room Name Exists",
+    "ar": "اسم الغرفة موجود"
+  },
+  "AddRoom": {
+    "en": "Add Room",
+    "ar": "أضف غرفة"
+  },
+  "TotalUsers": {
+    "en": "Total Users",
+    "ar": "إجمالي المستخدمين"
+  },
+  "UserId": {
+    "en": "User Id",
+    "ar": "معرف المستخدم"
+  },
+  "CreatedBy": {
+    "en": "Created By",
+    "ar": "انشأ من قبل"
+  },
+  "MostRequestingDestination": {
+    "en": "Most Requesting Destination",
+    "ar": "الوجهة الأكثر طلبًا"
+  },
+  "FastMovingItem": {
+    "en": "Fast Moving Item",
+    "ar": "صنف سريع الحركة"
+  },
+  "LowInventoryItem": {
+    "en": "Low Inventory Item",
+    "ar": "صنف ذات مخزون منخفض"
+  },
+  "CountDestination": {
+    "en": "Destination Count",
+    "ar": "عدد الوجهات"
+  },
+  "Count": {
+    "en": "Count",
+    "ar": "العدد"
+  },
+  "Export": {
+    "en": "Export",
+    "ar": "تصدير"
+  },
+  "CreationDate": {
+    "en": "Creation Date",
+    "ar": "تاريخ الإنشاء"
+  },
+  "Import": {
+    "en": "Import",
+    "ar": "إستيراد"
+  },
+  "InvalidFile": {
+    "en": "Invalid File",
+    "ar": "الملف غير صالح"
+  },
+  "FileUploaded": {
+    "en": "File Uploaded Successfully",
+    "ar": "تم رفع الملف بنجاح"
+  },
+  "DonwloadSampleFile": {
+    "en": "Download Sample File",
+    "ar": "إستخراج الملف"
+  },
+  "ManageRequestor": {
+    "en": "Manage Requestor",
+    "ar": "إدارة مقدم الطلب"
+  },
+  "AddRequestor": {
+    "en": "Add Requestor",
+    "ar": "أضف مقدم الطلب"
+  },
+  "RequestorName": {
+    "en": "Requestor Name",
+    "ar": "اسم مقدم الطلب"
+  },
+  "UpdateRequestor": {
+    "en": "Update Requestor",
+    "ar": "تحديث مقدم الطلب"
+  },
+  "RequesterDeleted": {
+    "en": "Requester Deleted",
+    "ar": "تم حذف مقدم الطلب"
+  },
+  "ContactNumberMissing": {
+    "en": "Contact Number Missing",
+    "ar": "رقم التواصل مفقود"
+  },
+  "RequestorNameMissing": {
+    "en": "Requestor Name Missing",
+    "ar": "اسم مقدم الطلب مفقود"
+  },
+  "UpdateRoom": {
+    "en": "Update Room",
+    "ar": "تحديث الغرفة"
+  },
+  "SelectHazardType": {
+    "en": "Select Hazard Type",
+    "ar": "حدد نوع الخطر"
+  },
+  "TotalItems": {
+    "en": "Total Items",
+    "ar": "إجمالي العناصر"
+  },
+  "TotalStores": {
+    "en": "Total Stores",
+    "ar": "إجمالي المتاجر"
+  },
+  "SuppliesAndDisbursements": {
+    "en": "Supplies & Disbursements",
+    "ar": "اللوازم والصرفات"
+  },
+  "SupplierTypeMissing": {
+    "en": "Supplier Type is missing.",
+    "ar": "نوع المورد مفقود"
+  },
+  "ShowHideColumn": {
+    "en": "Show/Hide Column",
+    "ar": "Show/Hide Column"
+  }
     "ExpiryDateMissing": {
         "en": "Expiry Date is Missing",
         "ar": "تاريخ انتهاء الصلاحية مفقود"
