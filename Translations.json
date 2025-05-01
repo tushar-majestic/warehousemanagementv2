@@ -1187,9 +1187,9 @@
     "en": "Supplier Type is missing.",
     "ar": "نوع المورد مفقود"
   },
-  "View": {
-    "en": "View",
-    "ar": "منظر"
+  "ShowHideColumn": {
+    "en": "Show/Hide Column",
+    "ar": "Show/Hide Column"
   }
 
 }

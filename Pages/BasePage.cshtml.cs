@@ -18,7 +18,7 @@ namespace LabMaterials.Pages
         public bool CanManageItemGroup {  get; set; }
         public string dir { get; set; } = "rtl";
         public string Lang { get; set; } = "ar";
-        public string lblView, lblLabMaterials, lblHome, lblDisbursement, lblReports, lblManageUsers, lblManageItems, lblManageSupplies, lblManageStores, lblUserProfile, lblLogout, lblDamagedItems, lblLanguage;
+        public string lblView, lblLabMaterials, lblHome, lblShowHideColumn, lblDisbursement, lblReports, lblManageUsers, lblManageItems, lblManageSupplies, lblManageStores, lblUserProfile, lblLogout, lblDamagedItems, lblLanguage;
 
         public void ExtractSessionData()
         {
@@ -65,6 +65,7 @@ namespace LabMaterials.Pages
             this.lblLabMaterials = (Program.Translations["LabMaterials"])[Lang]; 
             this.lblDamagedItems = (Program.Translations["DamagedItems"])[Lang];
             this.lblLanguage = (Program.Translations["Language"])[Lang];
+            this.lblShowHideColumn = (Program.Translations["ShowHideColumn"])[Lang];
 
         }
     }
