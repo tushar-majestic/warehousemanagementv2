@@ -144,11 +144,16 @@
         "ar": "إجمالي الأصناف التي تم العثور عليها"
     },
 
+
     //HeaderLinks
     "Disbursements": {
         "en": "Material dispensing",
         "ar": "صرف المواد"
     },
+"NewReceivingReport": {
+    "en": "New Receiving Report",
+    "ar": "إتقرير الاستلام الجديد"
+  },
     "ManageStore": {
         "en": "Warehouse Control Panel",
         "ar": "لوحة تحكم المستودعات"
@@ -181,6 +186,7 @@
         "en": "Supplies",
         "ar": "التوريدات"
     },
+
 
     "SupplierAdded": {
         "en": "Supplier Added Successfully",
@@ -523,6 +529,7 @@
 
 
 
+
     "PurchaseOrderNumberIsMissing": {
         "en": "Purchase Order Number Is Missing",
         "ar": "رقم أمر الشراء مفقود"
@@ -531,6 +538,11 @@
         "en": "Update Supplier",
         "ar": "تحديث المورد"
     },
+   "Requests": {
+    "en": "Requests",
+    "ar": "اسم"
+  },
+
 
     //Supplies
     "QuantityReceived": {

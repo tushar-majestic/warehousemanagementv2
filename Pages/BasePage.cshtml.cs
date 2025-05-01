@@ -18,8 +18,10 @@ namespace LabMaterials.Pages
         public bool CanManageItemGroup {  get; set; }
         public string dir { get; set; } = "rtl";
         public string Lang { get; set; } = "ar";
+
         
-        public string lblView, lblLabMaterials, lblHome, lblNotifications, lblShowHideColumn, lblDisbursement, lblReports, lblManageUsers, lblManageItems, lblManageSupplies, lblManageStores, lblUserProfile, lblLogout, lblDamagedItems, lblLanguage,lblWarehouseType, lblManagerName, lblBuildingNumber, lblRoomDesc, lblStatus, lblRoomStatus, lblOpen, lblClosed;
+        public string lblView, lblRequests,lblLabMaterials, lblHome, lblNotifications, lblShowHideColumn, lblDisbursement, lblReports, lblManageUsers, lblManageItems, lblManageSupplies, lblManageStores, lblUserProfile, lblLogout, lblDamagedItems, lblLanguage,lblWarehouseType, lblManagerName, lblBuildingNumber, lblRoomDesc, lblStatus, lblRoomStatus, lblOpen, lblClosed;
+
 
         public void ExtractSessionData()
         {
@@ -67,6 +69,9 @@ namespace LabMaterials.Pages
             this.lblLabMaterials = (Program.Translations["LabMaterials"])[Lang]; 
             this.lblDamagedItems = (Program.Translations["DamagedItems"])[Lang];
             this.lblLanguage = (Program.Translations["Language"])[Lang];
+
+            this.lblRequests = (Program.Translations["Requests"])[Lang];
+
             this.lblShowHideColumn = (Program.Translations["ShowHideColumn"])[Lang];
             this.lblWarehouseType = (Program.Translations["WarehouseType"])[Lang];
             this.lblManagerName = (Program.Translations["ManagerName"])[Lang];
@@ -77,6 +82,7 @@ namespace LabMaterials.Pages
             this.lblOpen = (Program.Translations["Open"])[Lang];
             this.lblClosed = (Program.Translations["Closed"])[Lang];
             this.lblRoomStatus = (Program.Translations["RoomStatus"])[Lang];
+
 
         }
     }
