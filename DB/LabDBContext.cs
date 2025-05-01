@@ -62,6 +62,11 @@ public partial class LabDBContext : DbContext
     public virtual DbSet<UserGroupPrivilege> UserGroupPrivileges { get; set; }
 
     public virtual DbSet<VActivityLog> VActivityLogs { get; set; }
+    public virtual DbSet<MaterialRequest> MaterialRequests { get; set; }
+
+    public DbSet<ReceivingReport> ReceivingReports { get; set; }
+    public DbSet<ReceivingItem> ReceivingItems { get; set; }
+
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -242,6 +247,16 @@ public partial class LabDBContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_UserGroup_Privileges_UserGroup");
         });
+
+        modelBuilder.Entity<ReceivingItem>()
+                 .HasOne(ri => ri.Item)
+                 .WithMany()
+                 .HasForeignKey(ri => ri.ItemId);
+
+        modelBuilder.Entity<ReceivingReport>()
+            .HasMany(r => r.Items)
+            .WithOne(ri => ri.ReceivingReport)
+            .HasForeignKey(ri => ri.ReceivingReportId);
 
         modelBuilder.Entity<VActivityLog>(entity =>
         {

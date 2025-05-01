@@ -177,6 +177,10 @@
     "en": "Manage Units",
     "ar": "إدارة الوحدات"
   },
+  "NewReceivingReport": {
+    "en": "New Receiving Report",
+    "ar": "إتقرير الاستلام الجديد"
+  },
   "Supplies": {
     "en": "Supplies",
     "ar": "التوريدات"
@@ -524,6 +528,10 @@
   "RequesterName": {
     "en": "Requester Name",
     "ar": "اسم مقدم الطلب"
+  },
+  "Requests": {
+    "en": "Requests",
+    "ar": "اسم"
   },
   "AddDisbursement": {
     "en": "Materials Request order",

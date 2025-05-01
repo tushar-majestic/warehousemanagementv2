@@ -26,7 +26,7 @@ namespace LabMaterials.Pages
         public string lblItems, lblItemName, lblGroupName, lblItemCode, lblAvailableQuantity, lblHazardType, lblTypeName,
             lblUnitCode, lblSearch, lblSubmit, lblManageItemGroup, lblManageUnit, lblAddItem, lblEdit,
             lblDelete, lblTotalItem, lblExpiryDate, lblBatchNo, lblDamage, lblDamagedItems,
-            lblImport, lblDonwloadSampleFile, lblFromDate, lblToDate;
+            lblImport, lblDonwloadSampleFile, lblFromDate, lblToDate, lblNewReceivingReport;
         public void OnGet(string? ItemName, string? Group, DateTime? FromDate, DateTime? ToDate, int page = 1)
         {
             base.ExtractSessionData();
@@ -338,6 +338,7 @@ namespace LabMaterials.Pages
             this.lblDonwloadSampleFile = (Program.Translations["DonwloadSampleFile"])[Lang];
             this.lblFromDate = (Program.Translations["FromDate"])[Lang];
             this.lblToDate = (Program.Translations["ToDate"])[Lang];
+            this.lblNewReceivingReport = (Program.Translations["NewReceivingReport"])[Lang];
         }
 
     }

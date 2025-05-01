@@ -1,0 +1,193 @@
+﻿@page
+@model LabMaterials.Pages.ReceivingReportsModel
+
+@{
+    ViewData["Title"] = "Receiving Report";
+}
+
+<h2>Create Receiving Report</h2>
+<div asp-validation-summary="All" class="text-danger"></div>
+<div class="row">
+    <div class="col-8 mb-4 m-auto">
+        <div class="card border-0 shadow components-section">
+            <form method="post" enctype="multipart/form-data" class="card-body">
+                <div class="row mb-4">
+
+
+                    <div class="col-lg-12 col-sm-12">
+                        <div class="form-group">
+                            <label>Fiscal Year</label>
+                            <input asp-for="Report.FiscalYear" class="form-control" />
+                        </div>
+                        <div class="form-group">
+                            <label>Recipient Sector</label>
+                            <input asp-for="Report.RecipientSector" class="form-control" required />
+                        </div>
+                        <div class="form-group">
+                            <label>Sector Number</label>
+                            <input asp-for="Report.SectorNumber" class="form-control" required />
+                        </div>
+                        <div class="form-group">
+                            <label>Attachment</label>
+                            <input type="file" name="AttachmentFile" class="form-control" required />
+                        </div>
+                        <div class="form-group">
+                            <label>Recipient Employee ID</label>
+                            <input asp-for="Report.RecipientEmployeeId" class="form-control" required />
+                        </div>
+                        <div class="form-group">
+                            <label>Technical Member</label>
+                            <input asp-for="Report.TechnicalMember" class="form-control" required />
+                        </div>
+                        <div class="form-group">
+                            <label>Chief Responsible</label>
+                            <input asp-for="Report.ChiefResponsible" class="form-control" required />
+                        </div>
+                        <input asp-for="Report.CreatedBy" type="hidden" value="@Model.Report.CreatedBy" />
+
+
+                        <div class="form-group">
+                            <label>Receiving Date</label>
+                            <input asp-for="Report.ReceivingDate" type="date" class="form-control" />
+                        </div>
+
+                        <div class="form-group">
+                            <label>Receiving Warehouse</label>
+                            <input asp-for="Report.ReceivingWarehouse" class="form-control" />
+                        </div>
+
+                        <div class="form-group">
+                            <label>Based On Document</label>
+                            <input asp-for="Report.BasedOnDocument" class="form-control" />
+                        </div>
+
+                        <div class="form-group">
+                            <label>Document Number</label>
+                            <input asp-for="Report.DocumentNumber" class="form-control" />
+                        </div>
+
+                        <div class="form-group">
+                            <label>Document Date</label>
+                            <input asp-for="Report.DocumentDate" type="date" class="form-control" />
+                        </div>
+
+                        @*  <div class="form-group">
+                        <label>Supplier Type</label>
+                        <select asp-for="Report.SupplierId" class="form-control" required>
+                        <option value="">Select Supplier Type</option>
+                        @foreach (var supplier in Model.Suppliers.DistinctBy(s => s.SupplierType)) // Avoid duplicates
+                        {
+                        <option value="@supplier.SupplierType">@supplier.SupplierType</option>
+                        }
+                        </select>
+                        </div> *@
+
+                        <div class="form-group">
+                            <label>Supplier Name</label>
+                            <select asp-for="Report.SupplierId" class="form-control" required>
+                                <option value="">Select Supplier Name</option>
+                                @foreach (var supplier in Model.Suppliers)
+                                {
+                                    <option value="@supplier.SupplierId">@supplier.SupplierName</option>
+                                }
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Remarks</label>
+                            <textarea asp-for="Report.Comments" class="form-control"></textarea>
+                        </div>
+
+                        <h4>Items</h4>
+                        <div id="items-container">
+                            <div class="item-group border p-3 mb-3">
+                                <div class="form-group">
+                                    <label>Item</label>
+                                    <select class="form-control" name="ItemsForReport[0].ItemId" required>
+                                        <option value="">Select Item</option>
+                                        @foreach (var item in Model.Items)
+                                        {
+                                            <option value="@item.ItemId">@item.ItemName</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Quantity</label>
+                                    <input type="number" name="ItemsForReport[0].Quantity" class="form-control" required />
+                                </div>
+                                <div class="form-group">
+                                    <label>Unit Price</label>
+                                    <input type="number" step="0.01" name="ItemsForReport[0].UnitPrice" class="form-control" required />
+                                </div>
+                            </div>
+                        </div>
+
+
+                        @* <button type="button" class="btn btn-secondary" id="add-item-btn">Add Another Item</button> *@
+                        <br /><br />
+
+                        <button type="submit" class="btn btn-primary">Submit Report</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        let itemIndex = 1; // since [0] is seeded on GET
+
+        document.getElementById('add-item-btn').onclick = () => {
+            const container = document.getElementById('items-container');
+            const div = document.createElement('div');
+            div.className = 'item-group border p-3 mb-3';
+            div.innerHTML = `
+                <div class="form-group">
+                  <label>Item</label>
+                  <select class="form-control" name="ItemsForReport[${itemIndex}].ItemId" required>
+                    <option value="">Select Item</option>
+                    ${getItemOptions()}
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>Quantity</label>
+                  <input type="number" name="ItemsForReport[${itemIndex}].Quantity" class="form-control" required />
+                </div>
+                <div class="form-group">
+                  <label>Unit Price</label>
+                  <input type="number" step="0.01" name="ItemsForReport[${itemIndex}].UnitPrice" class="form-control" required />
+                </div>`;
+            container.appendChild(div);
+            itemIndex++;
+        };
+
+        function getItemOptions() {
+            return `@Html.Raw(string.Join("", Model.Items.Select(i => $"<option value='{i.ItemId}'>{i.ItemName}</option>")))`;
+        }
+    </script>
+    <script>
+        function filterSuppliersByType() {
+            const selectedType = document.getElementById('SupplierType').value;
+            const supplierSelect = document.getElementById('SupplierName');
+
+            // Clear previous options
+            supplierSelect.innerHTML = '<option value="">Select Supplier Name</option>';
+
+            // Get all suppliers from Razor
+            const suppliers = @Html.Raw(Json.Serialize(Model.Suppliers));
+
+            // Filter suppliers based on the selected type
+            const filteredSuppliers = suppliers.filter(s => s.SupplierType === selectedType);
+
+            // Populate the Supplier Name dropdown with filtered suppliers
+            filteredSuppliers.forEach(supplier => {
+                const option = document.createElement('option');
+                option.value = supplier.Id;
+                option.text = supplier.Name;
+                supplierSelect.appendChild(option);
+            });
+        }
+    </script>
+
+}

@@ -34,14 +34,14 @@
         @if (!string.IsNullOrEmpty(Model.Message))
         {
             <text>
-                                                                    var errorMessageFromServer = @Html.Raw(Json.Serialize(Model.Message));
-            showErrorNotification(errorMessageFromServer);
+                    var errorMessageFromServer = @Html.Raw(Json.Serialize(Model.Message));
+                    showErrorNotification(errorMessageFromServer);
             </text>
         }
 
 
             function submitForm() {
-               
+
                 var fileInput = document.getElementById("fileInput");
                 if (fileInput.files.length > 0) {
                     document.getElementById("import").submit();
@@ -66,7 +66,7 @@
                         <img src="images/inventory.png" alt="Home" width="16" height="16" class="me-2" />
                         @Model.lblItems
                     </li>
-                    
+
                 </ol>
             </nav>
 
@@ -74,16 +74,20 @@
             <!-- <p class="mb-0">Your web analytics dashboard template.</p>-->
         </div>
         <div class="btn-toolbar mb-2 mb-md-0">
-                        <a href="AddItem" class="btn btn-sm justify-content-center top-sm-btn btn-gray-800 mx-2 d-inline-flex align-items-center">
-                        <img b-ie9pk9zf1q="" class="icon text-white icon-xs mx-2" src="images/plus.png">
-                            @Model.lblAddItem
-                        </a>
+            <a href="ReceivingReports" class="btn btn-sm justify-content-center top-sm-btn btn-gray-800 mx-2 d-inline-flex align-items-center">
+                <img b-ie9pk9zf1q="" class="icon text-white icon-xs mx-2" src="images/plus.png">
+                @Model.lblNewReceivingReport
+            </a>
+            <a href="AddItem" class="btn btn-sm justify-content-center top-sm-btn btn-gray-800 mx-2 d-inline-flex align-items-center">
+                <img b-ie9pk9zf1q="" class="icon text-white icon-xs mx-2" src="images/plus.png">
+                @Model.lblAddItem
+            </a>
             <a href="ManageItemGroups" class="btn btn-sm justify-content-center mx-2 top-big-btn btn-outline-gray-600 d-inline-flex align-items-center">
-            <img b-ie9pk9zf1q="" class="icon text-white icon-xs mx-2" src="images/manage-b.png">
+                <img b-ie9pk9zf1q="" class="icon text-white icon-xs mx-2" src="images/manage-b.png">
                 @Model.lblManageItemGroup
             </a>
             <a href="ManageUnits" class="btn justify-content-center top-btn btn-sm btn-outline-gray-600 d-inline-flex align-items-center mx-2">
-            <img b-ie9pk9zf1q="" class="icon text-white icon-xs mx-2 " src="images/manage-b.png">
+                <img b-ie9pk9zf1q="" class="icon text-white icon-xs mx-2 " src="images/manage-b.png">
                 @Model.lblManageUnit
             </a>
 
@@ -92,62 +96,62 @@
     <div class="table-settings mb-4">
         <form method="post" asp-page-handler="Search" class="row align-items-center">
 
-        <div class="row">
+            <div class="row">
 
-                    <div class="col col-md-6 col-lg-3 mb-3">
-                        <div class="input-group me-2 me-lg-3 fmxw-400">
-                            <span class="input-group-text">
-                                <svg class="icon icon-xs" x-description="Heroicon name: solid/search"
-                                     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                    <path fill-rule="evenodd"
-                                          d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                                          clip-rule="evenodd"></path>
-                                </svg>
-                            </span>
-                            <input type="text" name="ItemName" class="form-control" placeholder="@Model.lblItemName"  value="@Model.ItemName">
-                        </div>
+                <div class="col col-md-6 col-lg-3 mb-3">
+                    <div class="input-group me-2 me-lg-3 fmxw-400">
+                        <span class="input-group-text">
+                            <svg class="icon icon-xs" x-description="Heroicon name: solid/search"
+                                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                <path fill-rule="evenodd"
+                                      d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                                      clip-rule="evenodd"></path>
+                            </svg>
+                        </span>
+                        <input type="text" name="ItemName" class="form-control" placeholder="@Model.lblItemName" value="@Model.ItemName">
                     </div>
-                                <div class="col col-md-6 col-lg-3 mb-3">
-                                    <div class="input-group me-2 me-lg-3 fmxw-400">
-                                        <span class="input-group-text">
-                                            <svg class="icon icon-xs" x-description="Heroicon name: solid/search"
-                                                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                                <path fill-rule="evenodd"
-                                                      d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                                                      clip-rule="evenodd"></path>
-                                            </svg>
-                                        </span>
-                                        <input type="text" name="Group" class="form-control" placeholder="@Model.lblGroupName" value="@Model.Group">
-                                    </div>
-                                </div>
-                                            <div class="col col-md-6 col-lg-3 mb-3">
-                                                <div class="input-group me-2 me-lg-3 fmxw-400">
-                                                    <span class="input-group-text">
-                                                        @Model.lblFromDate
-                                                    </span>
-
-                                                    <input asp-for="FromDate" class="form-control" type="date" name="FromDate"
-                                                           value="@Model.lblFromDate" />
-                                                </div>
-                                            </div>
-                                            <div class="col col-md-6 col-lg-3 mb-3 pe-0">
-                                                <div class="input-group me-2 me-lg-3 fmxw-400">
-                                                    <span class="input-group-text">
-                                                        @Model.lblToDate
-                                                    </span>
-
-                                                    <input asp-for="ToDate" class="form-control" type="date" name="ToDate"
-                                                           value="@Model.lblToDate" />
-                                                </div>
-                                            </div>
-        </div>
-
-        <div class="row">
-
-                    <div class="col-4 col-md-2 ps-md-0  mx-3">
-                        <button type="submit" class="btn btn-primary">@Model.lblSubmit</button>
+                </div>
+                <div class="col col-md-6 col-lg-3 mb-3">
+                    <div class="input-group me-2 me-lg-3 fmxw-400">
+                        <span class="input-group-text">
+                            <svg class="icon icon-xs" x-description="Heroicon name: solid/search"
+                                 xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                <path fill-rule="evenodd"
+                                      d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                                      clip-rule="evenodd"></path>
+                            </svg>
+                        </span>
+                        <input type="text" name="Group" class="form-control" placeholder="@Model.lblGroupName" value="@Model.Group">
                     </div>
-        </div>
+                </div>
+                <div class="col col-md-6 col-lg-3 mb-3">
+                    <div class="input-group me-2 me-lg-3 fmxw-400">
+                        <span class="input-group-text">
+                            @Model.lblFromDate
+                        </span>
+
+                        <input asp-for="FromDate" class="form-control" type="date" name="FromDate"
+                               value="@Model.lblFromDate" />
+                    </div>
+                </div>
+                <div class="col col-md-6 col-lg-3 mb-3 pe-0">
+                    <div class="input-group me-2 me-lg-3 fmxw-400">
+                        <span class="input-group-text">
+                            @Model.lblToDate
+                        </span>
+
+                        <input asp-for="ToDate" class="form-control" type="date" name="ToDate"
+                               value="@Model.lblToDate" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+
+                <div class="col-4 col-md-2 ps-md-0  mx-3">
+                    <button type="submit" class="btn btn-primary">@Model.lblSubmit</button>
+                </div>
+            </div>
 
 
         </form>
@@ -227,7 +231,7 @@
 
     @* <div style="color:maroon; text-align:center">@Model.Message</div> *@
 
-      @if (Model.TotalPages > 1)
+    @if (Model.TotalPages > 1)
     {
         <nav aria-label="Page navigation">
             <ul class="pagination">
