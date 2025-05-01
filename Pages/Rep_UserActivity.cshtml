@@ -1,5 +1,40 @@
 ﻿@page
 @model LabMaterials.Pages.Rep_UserActivityModel
+@section Scripts
+{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+    <script>
+        document.getElementById('exportExcel').addEventListener('click', function () {
+            let table = document.querySelector('#exportTable'); // use hidden export table directly
+            let wb = XLSX.utils.book_new();
+            let ws_data = [];
+
+            // Get headers
+            const headers = Array.from(table.querySelectorAll('thead th'))
+                .map(th => th.textContent.trim()); // use textContent instead of innerText
+            ws_data.push(headers);
+
+            // Get rows
+            const rows = table.querySelectorAll('tbody tr');
+            rows.forEach(row => {
+                const rowData = [];
+                const cells = row.querySelectorAll('th, td');
+                cells.forEach(cell => {
+                    rowData.push(cell.textContent.trim()); // use textContent
+                });
+                ws_data.push(rowData);
+            });
+
+            // Create worksheet and trigger download
+            let ws = XLSX.utils.aoa_to_sheet(ws_data);
+            XLSX.utils.book_append_sheet(wb, ws, "UserActivityReport Data");
+            XLSX.writeFile(wb, "UserActivityReport.xlsx");
+        });
+    </script>
+    
+}
+
 @{
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb bg-transparent p-2 mb-0">
@@ -59,7 +94,7 @@
                         value="@Model.UserName">
                 </div>
             </div>
-            <div class="col  col-lg-3 ">
+            <div class="col  col-lg-2 ">
                 <div class="input-group me-2 me-lg-3 fmxw-400">
                     <span class="input-group-text">
                         @Model.lblFromDate
@@ -71,7 +106,7 @@
 
                 </div>
             </div>
-            <div class="col  col-lg-3 ">
+            <div class="col  col-lg-2 ">
                 <div class="input-group me-2 me-lg-3 fmxw-400">
                     <span class="input-group-text">
                         @Model.lblToDate
@@ -83,9 +118,14 @@
 
                 </div>
             </div>
-            <div class="col-4 col-md-2  col-xl-1 ps-md-0 text-end">
+            <div class="col-3 col-md-2 col-xl-2 ps-md-2">
                 <button type="submit" class="btn btn-primary">@Model.lblSearch</button>
             </div>
+            <div class="col-3 col-md-3 col-xl-3 ps-md-3 text-end">
+                <button id="exportExcel" class="btn btn-success">Export</button>
+                <button id="printBtn" class="btn btn-primary">Print</button>
+            </div>
+            
         </form>
     </div>
 
@@ -298,3 +338,32 @@
 
 
 }
+
+<div class="table-responsive" id="exportTableContainer" style="display: none;">
+    <table class="table table-centered table-nowrap mb-0 rounded" id="exportTable">
+        <thead class="thead-light">
+            <tr>
+                <th scope="col" class="border-0 rounded-start">@Model.lblUserName</th>
+                <th scope="col" class="border-0">@Model.lblAction</th>
+                <th scope="col" class="border-0">@Model.lblActionDetails</th>
+                <th scope="col" class="border-0">@Model.lblRequestingIp</th>
+                <th scope="col" class="border-0 rounded-end">@Model.lblActionTime</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.UsersActivitiesAll != null)
+            {
+                foreach (var item in Model.UsersActivitiesAll)
+                {
+                    <tr>
+                        <th scope="row">@item.UserName</th>
+                        <td>@item.Action</td>
+                        <td>@item.Description</td>
+                        <td>@item.SourceIp</td>
+                        <td>@item.Time</td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>

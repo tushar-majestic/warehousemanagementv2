@@ -44,7 +44,9 @@ namespace LabMaterials.Pages
                     }
                     else
                     {
-                        SelectedColumns = new List<string>(); // Empty list
+                        // SelectedColumns = new List<string>();
+                        string selectedColumns = "storeNumber,warehouseType,storeName";
+                        SaveSelectedColumns(userId.Value, pageName, selectedColumns);
                     }
                 }
             }
