@@ -167,24 +167,44 @@
                     <div id="dropdownPanel" class="card p-2 shadow-sm position-absolute"
                         style="right: 0; top: 100%; width: 200px; display: none; z-index: 1000;">
                         <div class="form-check mb-1">
-                            <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="col1"
-                                id="column1"  @(Model.SelectedColumns.Contains("col1") ? "checked" : "")>
+                            <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="storeNumber"
+                                id="storeNumber"  @(Model.SelectedColumns.Contains("storeNumber") ? "checked" : "")>
                             <label class="form-check-label" for="column1">@Model.lblStoreNumber</label>
                         </div>
                         <div class="form-check mb-1">
-                            <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="col2"
-                                 @(Model.SelectedColumns.Contains("col2") ? "checked" : "")>
-                            <label class="form-check-label" for="column2">@Model.lblStoreName</label>
+                            <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="warehouseType"
+                                id="warehouseType"  @(Model.SelectedColumns.Contains("warehouseType") ? "checked" : "")>
+                            <label class="form-check-label" for="column1">@Model.lblWarehouseType</label>
                         </div>
                         <div class="form-check mb-1">
-                            <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="col3"
-                                 @(Model.SelectedColumns.Contains("col3") ? "checked" : "")>
-                            <label class="form-check-label" for="column3">@Model.lblRoomName</label>
+                            <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="storeName"
+                                 @(Model.SelectedColumns.Contains("storeName") ? "checked" : "")>
+                            <label class="form-check-label" for="storeName">@Model.lblStoreName</label>
                         </div>
                         <div class="form-check mb-1">
-                            <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="col4"
-                                id="column4"  @(Model.SelectedColumns.Contains("col4") ? "checked" : "")>
-                            <label class="form-check-label" for="column4">@Model.lblShelves</label>
+                            <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="managerName"
+                                 @(Model.SelectedColumns.Contains("managerName") ? "checked" : "")>
+                            <label class="form-check-label" for="managerName">@Model.lblManagerName</label>
+                        </div>
+                        <div class="form-check mb-1">
+                            <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="managerJobNumber"
+                                 @(Model.SelectedColumns.Contains("managerJobNumber") ? "checked" : "")>
+                            <label class="form-check-label" for="managerJobNumber">@Model.lblManagerJobNumber</label>
+                        </div>
+                        <div class="form-check mb-1">
+                            <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="status"
+                                 @(Model.SelectedColumns.Contains("status") ? "checked" : "")>
+                            <label class="form-check-label" for="status">@Model.lblStatus</label>
+                        </div>
+                        <div class="form-check mb-1">
+                            <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="roomName"
+                                 @(Model.SelectedColumns.Contains("roomName") ? "checked" : "")>
+                            <label class="form-check-label" for="roomName">@Model.lblRoomName</label>
+                        </div>
+                        <div class="form-check mb-1">
+                            <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="slaves"
+                                id="column4"  @(Model.SelectedColumns.Contains("slaves") ? "checked" : "")>
+                            <label class="form-check-label" for="slaves">@Model.lblShelves</label>
                         </div>
                         <div class="form-check mb-1 text-center">
                             <button type="submit" name="action" value="updateColumns"
@@ -279,25 +299,35 @@
                     <thead class="thead-light">
                         <tr>
                             <th scope="col" class="border-0 rounded-start"></th>
-                            @if (Model.SelectedColumns.Contains("col1"))
+                            @if (Model.SelectedColumns.Contains("storeNumber"))
                             {
                             <th scope="col" class="border-0">@Model.lblStoreNumber</th>
                             }
+                            @if (Model.SelectedColumns.Contains("warehouseType"))
+                            {
                             <th scope="col" class="border-0">@Model.lblWarehouseType</th>
-                            @if (Model.SelectedColumns.Contains("col2"))
+                            }
+                            @if (Model.SelectedColumns.Contains("storeName"))
                             {
                             <th scope="col" class="border-0">@Model.lblStoreName</th>
                             }
+                            @if (Model.SelectedColumns.Contains("managerName"))
+                            {
                             <th scope="col" class="border-0">@Model.lblManagerName</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("managerJobNumber"))
+                            {
                             <th scope="col" class="border-0">@Model.lblManagerJobNumber</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("status"))
+                            {
                             <th scope="col" class="border-0">@Model.lblStatus</th>
-
-
-                            @if (Model.SelectedColumns.Contains("col3"))
+                            }
+                            @if (Model.SelectedColumns.Contains("roomName"))
                             {
                             <th scope="col" class="border-0">@Model.lblRoomName</th>
                             }
-                            @if (Model.SelectedColumns.Contains("col4"))
+                            @if (Model.SelectedColumns.Contains("slaves"))
                             {
                             <th scope="col" class="border-0">@Model.lblShelves</th>
                             }
@@ -327,26 +357,37 @@
                                                 <img class="icon icon-xs border-0" src="images/collapse.png">
                                             </button>
                                         </td>
-                                        @if (Model.SelectedColumns.Contains("col1"))
+                                        @if (Model.SelectedColumns.Contains("storeNumber"))
                                         {
                                         <td style="min-width:100px !important; min-width:100px;  width:100px !important;">@item.StoreNumber</td>
                                         }
+                                        @if (Model.SelectedColumns.Contains("warehouseType"))
+                                        {
                                         <td style="min-width:100px !important; min-width:100px;  width:100px !important;">@item.StoreType</td>
-
-                                        @if (Model.SelectedColumns.Contains("col2"))
+                                        }
+                                        @if (Model.SelectedColumns.Contains("storeName"))
                                         {
                                         <td style="min-width:300px;  width:300px;">@item.StoreName</td>
                                         }
+                                        @if (Model.SelectedColumns.Contains("managerName"))
+                                        {
                                         <td style="min-width:300px;  width:300px;">@item.WarehouseManagerName</td>
+                                        }
+                                        @if (Model.SelectedColumns.Contains("managerJobNumber"))
+                                        {
                                         <td style="min-width:300px;  width:300px;">@item.ManagerJobNum</td>
+                                        }
+                                        @if (Model.SelectedColumns.Contains("status"))
+                                        {
                                         <td style="min-width:100px;  width:100px;">@item.WarehouseStatus</td>
+                                        }
 
 
-                                        @if (Model.SelectedColumns.Contains("col3"))
+                                        @if (Model.SelectedColumns.Contains("roomName"))
                                         {
                                         <td style="min-width:300px;  width:300px;">@item.RoomName</td>
                                         }
-                                        @if (Model.SelectedColumns.Contains("col4"))
+                                        @if (Model.SelectedColumns.Contains("slaves"))
                                         {
                                             <td style="min-width:300px;  width:300px;">
                                                 @(
@@ -387,19 +428,19 @@
                                                     {
                                                         <tr class="border-0">
                                                             <td class="border-0" style="max-width:187px; width:187px;"></td>
-                                                            @if (Model.SelectedColumns.Contains("col1"))
+                                                            @if (Model.SelectedColumns.Contains("storeNumber"))
                                                             {
                                                             <td class="border-0" style="max-width:120px;  width:120px;">@store.StoreNumber</td>
                                                             }
-                                                            @if (Model.SelectedColumns.Contains("col2"))
+                                                            @if (Model.SelectedColumns.Contains("storeName"))
                                                             {
                                                             <td class="border-0" style="max-width:300px;  width:300px;">@store.StoreName</td>
                                                             }
-                                                            @if (Model.SelectedColumns.Contains("col3"))
+                                                            @if (Model.SelectedColumns.Contains("roomName"))
                                                             {
                                                             <td class="border-0" style="max-width:300px;  width:300px;">@store.RoomName</td>
                                                             }
-                                                            @if (Model.SelectedColumns.Contains("col4"))
+                                                            @if (Model.SelectedColumns.Contains("slaves"))
                                                             {
                                                                 <td class="border-0" style="max-width:300px;  width:300px;">
                                                                     @(

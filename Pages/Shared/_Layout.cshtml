@@ -456,6 +456,32 @@
         };
 
   </script>
+  <script>
+    window.onload = function () {
+        document.getElementById('printBtn').addEventListener('click', function () {
+            const tableHTML = document.getElementById('exportTableContainer').innerHTML;
+
+            const printWindow = window.open('', '', 'width=900,height=700');
+
+            printWindow.document.write('<html><head><title>Print Table</title>');
+            printWindow.document.write('<style>');
+            printWindow.document.write('table { width: 100%; border-collapse: collapse; font-family: Arial; font-size: 14px; }');
+            printWindow.document.write('th, td { border: 1px solid #000; padding: 8px; text-align: left; }');
+            printWindow.document.write('</style>');
+            printWindow.document.write('</head><body>');
+            printWindow.document.write(tableHTML);
+            printWindow.document.write('</body></html>');
+
+            printWindow.document.close();
+            printWindow.focus();
+
+            setTimeout(() => {
+                printWindow.print();
+                printWindow.close();
+            }, 500);
+        });
+    };
+</script>
 </body>
 
 </html>
