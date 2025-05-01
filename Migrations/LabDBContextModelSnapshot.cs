@@ -866,6 +866,11 @@ namespace LabMaterials.Migrations
                         .HasDefaultValue(1)
                         .HasColumnName("isActive");
 
+
+                    b.Property<int?>("ManagerJobNum")
+                        .HasColumnType("int");
+
+
                     b.Property<string>("ShelfNumbers")
                         .IsRequired()
                         .HasMaxLength(4000)
@@ -893,8 +898,10 @@ namespace LabMaterials.Migrations
                         .HasColumnType("int")
                         .HasColumnName("UpdatedByID");
 
+
                     b.Property<int?>("WarehouseManagerID")
                         .HasColumnType("int");
+
 
                     b.Property<string>("WarehouseStatus")
                         .HasMaxLength(10)

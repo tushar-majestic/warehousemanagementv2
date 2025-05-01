@@ -41,9 +41,15 @@
 
                         <div class="form-group mb-4">
                             <label>Receiving Warehouse</label>
-                            <select class="form-select" id="ReceivingWarehouse" name="ReceivingWarehouse" required>
-                                <option value="majesticwarehouse">Majestic Warehouse</option>
-                                <option value="testwarehouse">Test Warehouse</option>
+
+                            
+                            <select asp-for="Report.ReceivingWarehouse" class="form-control" required>
+                                <option value="">Select Receiving Warehouse</option>
+                                @foreach (var Warehouse in Model.Warehouses)
+                                {
+                                    <option value="@Warehouse.StoreId">@Warehouse.StoreName</option>
+                                }
+
                             </select>
                         </div>
 
@@ -62,6 +68,7 @@
                             <input asp-for="Report.DocumentDate" type="date" class="form-control" required />
                         </div>
 
+
                         <div class="form-group mb-4">
                             <label>Add Attachment</label>
                             <input type="file" name="AttachmentFile" class="form-control" />
@@ -76,15 +83,17 @@
                         </div>
 
                         <div class="form-group mb-4">
+
                             <label>Supplier Name</label>
-                            <select asp-for="Report.SupplierId" class="form-control" required>
+                            <select id="SupplierName" asp-for="Report.SupplierId" class="form-control" required>
                                 <option value="">Select Supplier Name</option>
                                 @foreach (var supplier in Model.Suppliers)
                                 {
-                                    <option value="@supplier.SupplierId">@supplier.SupplierName</option>
+                                    <option value="@supplier.SupplierId" data-type="@supplier.SupplierType">@supplier.SupplierName</option>
                                 }
                             </select>
                         </div>
+
 
                         <div class="form-group mb-4">
                             <label>Item Group</label>
@@ -107,6 +116,7 @@
 
                         <div class="form-group mb-4">
                             <label>Item Description</label>
+
                             <textarea asp-for="Report.Comments" class="form-control"></textarea>
                         </div>
 
@@ -222,27 +232,33 @@
         }
     </script>
     <script>
-        function filterSuppliersByType() {
-            const selectedType = document.getElementById('SupplierType').value;
-            const supplierSelect = document.getElementById('SupplierName');
+        const allSuppliers = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.Suppliers));
 
-            // Clear previous options
+        function filterSuppliersByType() {
+            const selectedType = document.getElementById("SupplierType").value;
+            const supplierSelect = document.getElementById("SupplierName");
+
+            // Clear existing options
             supplierSelect.innerHTML = '<option value="">Select Supplier Name</option>';
 
-            // Get all suppliers from Razor
-            const suppliers = @Html.Raw(Json.Serialize(Model.Suppliers));
+            // Filter and repopulate
+            allSuppliers
+                .filter(s => s.SupplierType === selectedType)
+                .forEach(s => {
+                    const option = document.createElement('option');
+                    option.value = s.supplierId; // match C# casing
+                    option.textContent = s.supplierName;
+                    option.setAttribute("data-type", s.supplierType);
+                    supplierSelect.appendChild(option);
+                });
 
-            // Filter suppliers based on the selected type
-            const filteredSuppliers = suppliers.filter(s => s.SupplierType === selectedType);
-
-            // Populate the Supplier Name dropdown with filtered suppliers
-            filteredSuppliers.forEach(supplier => {
-                const option = document.createElement('option');
-                option.value = supplier.Id;
-                option.text = supplier.Name;
-                supplierSelect.appendChild(option);
-            });
+            // Clear SupplierType textbox if you use a separate input
+            // document.getElementById("SupplierTypeTextBox").value = '';
         }
+        document.getElementById("SupplierName").addEventListener("change", function () {
+    const selected = this.options[this.selectedIndex];
+    document.getElementById("SupplierType").value = selected.getAttribute("data-type") || "";
+});
     </script>
 
 }

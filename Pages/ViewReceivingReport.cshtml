@@ -1,0 +1,52 @@
+﻿@page
+@model LabMaterials.Pages.ViewReceivingReportModel
+@{
+    ViewData["Title"] = "View Receiving Reports";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<table class="table table-bordered table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th>Serial No.</th>
+            <th>Fiscal Year</th>
+            <th>Receiving Date</th>
+            <th>Recipient Sector</th>
+            <th>Sector No.</th>
+            <th>Warehouse</th>
+            <th>Supplier</th>
+            <th>Supplier Type</th>
+            <th>Document No.</th>
+            <th>Document Date</th>
+            <th>Remarks</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.ReceivingReports?.Any() == true)
+        {
+            foreach (var report in Model.ReceivingReports)
+            {
+                <tr>
+                    <td>@report.SerialNumber</td>
+                    <td>@report.FiscalYear</td>
+                    <td>@report.ReceivingDate.ToString("yyyy-MM-dd")</td>
+                    <td>@report.RecipientSector</td>
+                    <td>@report.SectorNumber</td>
+                    <td>@report.ReceivingWarehouse</td>
+                    <td>@report.Supplier?.SupplierName</td>
+                    <td>@report.Supplier?.SupplierType</td>
+                    <td>@report.DocumentNumber</td>
+                    <td>@report.DocumentDate.ToString("yyyy-MM-dd")</td>
+                    <td>@report.Comments</td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="11" class="text-center text-muted">No receiving reports available.</td>
+            </tr>
+        }
+    </tbody>
+</table>
