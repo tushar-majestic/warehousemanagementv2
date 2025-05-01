@@ -12,6 +12,7 @@ namespace LabMaterials.Pages
     public class ManageStoreModel : BasePageModel
     {
         public List<StoreDataResult> Stores { get; set; }
+        public List<StoreDataResult> StoresAll { get; set; }
         public Store store { get; set; }
         public string Message { get; set; }
         public int TotalItems { get; set; }
@@ -304,6 +305,7 @@ namespace LabMaterials.Pages
                 var list = query.ToList();
 
                 Stores = list.Skip((page - 1) * ItemsPerPage).Take(ItemsPerPage).ToList();    
+                StoresAll = query.ToList();
                 CurrentPage = page;
 
                 /*if (string.IsNullOrEmpty(StoreNumber) == false)

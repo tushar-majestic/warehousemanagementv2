@@ -8,6 +8,7 @@ namespace LabMaterials.Pages
     {
         public List<DestinationsInfo> Destinations { get; set; }
         public List<RequestorInfo> Requestors { get; set; }
+        public List<RequestorInfo> RequestorsAll { get; set; }
         public string Message { get; set; }
         [BindProperty]
         public int TotalItems { get; set; }
@@ -113,7 +114,8 @@ namespace LabMaterials.Pages
                 TotalItems = query.Count();
                 TotalPages = (int)Math.Ceiling((double)TotalItems / ItemsPerPage);
                 var list = query.ToList();
-                Requestors = list.Skip((page - 1) * ItemsPerPage).Take(ItemsPerPage).ToList();        
+                Requestors = list.Skip((page - 1) * ItemsPerPage).Take(ItemsPerPage).ToList();       
+                RequestorsAll = query.ToList();   
                 CurrentPage = page;   
 
                 /*Storages = query.ToList();

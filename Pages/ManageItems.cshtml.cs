@@ -11,6 +11,7 @@ namespace LabMaterials.Pages
     public class ManageItemsModel : BasePageModel
     {
         public List<ItemInfo> Items { get; set; }
+        public List<ItemInfo> ItemsAll { get; set; }
         public int TotalItems { get; set; }
         public string Message { get; set; }
         public DateTime? FromDate, ToDate;
@@ -255,6 +256,7 @@ namespace LabMaterials.Pages
             TotalPages = (int)Math.Ceiling((double)TotalItems / ItemsPerPage);
             var list = query.ToList();
             Items = list.Skip((page - 1) * ItemsPerPage).Take(ItemsPerPage).ToList();
+            ItemsAll = query.ToList();
             CurrentPage = page;
         }
         public IActionResult OnPostEdit([FromForm] int ItemId, [FromForm] string FromDate, [FromForm] string ToDate, [FromForm] 

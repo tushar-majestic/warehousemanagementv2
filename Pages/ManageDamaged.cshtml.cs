@@ -7,6 +7,7 @@ namespace LabMaterials.Pages
     public class ManageDamagedModel : BasePageModel
     {
         public List<ItemInfo> Items { get; set; }
+        public List<ItemInfo> ItemsAll { get; set; }
         public int TotalItems { get; set; }
         public string Message { get; set; }
         [BindProperty]
@@ -218,6 +219,7 @@ namespace LabMaterials.Pages
             var list = query.ToList();
 
             Items = list.Skip((page - 1) * ItemsPerPage).Take(ItemsPerPage).ToList();
+            ItemsAll = query.ToList();
 
             CurrentPage = page;
         }

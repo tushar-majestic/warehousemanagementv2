@@ -9,6 +9,7 @@ namespace LabMaterials.Pages
     public class ManageUnitsModel : BasePageModel
     {
         public List<UnitInfo> Units { get; set; }
+        public List<UnitInfo> UnitsAll { get; set; }
         public string Message { get; set; }
         public int TotalItems { get; set; }
         [BindProperty]
@@ -110,7 +111,8 @@ namespace LabMaterials.Pages
                 TotalItems = query.Count();
                 TotalPages = (int)Math.Ceiling((double)TotalItems / ItemsPerPage);
                 var list = query.ToList();
-                Units = list.Skip((page - 1) * ItemsPerPage).Take(ItemsPerPage).ToList();        
+                Units = list.Skip((page - 1) * ItemsPerPage).Take(ItemsPerPage).ToList();  
+                UnitsAll = query.ToList();        
                 CurrentPage = page; 
             }
             else

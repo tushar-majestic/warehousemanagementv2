@@ -8,6 +8,7 @@ namespace LabMaterials.Pages
     public class ManageSupplierModel : BasePageModel
     {
         public List<SupplierInfo> Suppliers { get; set; }
+        public List<SupplierInfo> SuppliersAll { get; set; }
         public int TotalItems { get; set; }
         public string Message { get; set; }
 
@@ -66,7 +67,8 @@ namespace LabMaterials.Pages
                 TotalItems = query.Count();
                 TotalPages = (int)Math.Ceiling((double)TotalItems / ItemsPerPage);
                 var list = query.ToList();
-                Suppliers = list.Skip((page - 1) * ItemsPerPage).Take(ItemsPerPage).ToList();        
+                Suppliers = list.Skip((page - 1) * ItemsPerPage).Take(ItemsPerPage).ToList();       
+                SuppliersAll = query.ToList();   
                 CurrentPage = page; 
             }
             else
