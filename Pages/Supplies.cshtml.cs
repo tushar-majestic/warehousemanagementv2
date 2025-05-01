@@ -25,7 +25,7 @@ namespace LabMaterials.Pages
 
         public string lblSupplies, lbltypeCode, lblStoreName, lblExpiryDate, lblItemType, lblRoomName, lblShelfNumber, lblManageSuppliers, lblSearch, lblSupplierName, lblItemName, lblSubmit, lblAddSupplies,
             lblQuantityReceived, lblPurchaseOrderNo, lblInvoiceNumber, lblReceivedAt, lblInventoryBalanced, lblEdit, lblDelete,
-            lblTotalItem, lblFromDate, lblToDate;
+            lblTotalItem, lblFromDate, lblToDate, lblNewReceivingReport;
         public void OnGet(string? SupplierName,string? ItemName, DateTime? FromDate, DateTime? ToDate, int page = 1)
         {
             base.ExtractSessionData();
@@ -56,7 +56,7 @@ namespace LabMaterials.Pages
                 using (var db = new LabDBContext())
                 {
                     string pageName = "supplies";
-                    var existingRecord = db.TableColumns.FirstOrDefault(c => c.UserId == userId.Value && c.Page == pageName);
+                    var existingRecord = db.Tablecolumns.FirstOrDefault(c => c.UserId == userId.Value && c.Page == pageName);
                     if (existingRecord != null && !string.IsNullOrEmpty(existingRecord.DisplayColumns))
                     {
                         SelectedColumns = existingRecord.DisplayColumns.Split(',').ToList();
@@ -243,7 +243,7 @@ namespace LabMaterials.Pages
             base.ExtractSessionData();
             using (var db = new LabDBContext())
             {
-                var existingRecord = db.TableColumns
+                var existingRecord = db.Tablecolumns
                     .FirstOrDefault(c => c.UserId == userId && c.Page == pageName);
 
                 if (existingRecord != null)
@@ -252,13 +252,13 @@ namespace LabMaterials.Pages
                 }
                 else
                 {
-                    var newRecord = new TableColumn
+                    var newRecord = new Tablecolumn
                     {
                         UserId = userId,
                         Page = pageName,
                         DisplayColumns = selectedColumns
                     };
-                    db.TableColumns.Add(newRecord);
+                    db.Tablecolumns.Add(newRecord);
                 }
 
                 db.SaveChanges();
@@ -266,11 +266,13 @@ namespace LabMaterials.Pages
         }
 
 
-        public IActionResult OnPostEdit([FromForm] int SupplyId, [FromForm] string FromDate, [FromForm] string ToDate, [FromForm] int page)
+        public IActionResult OnPostEdit([FromForm] int SupplyId, [FromForm] string FromDate, [FromForm] string ToDate, [FromForm] int page, [FromForm] string ItemName, [FromForm] string SupplierName)
         {
             HttpContext.Session.SetString("FromDate", string.IsNullOrEmpty(FromDate) ? "" : FromDate);
             HttpContext.Session.SetString("ToDate", string.IsNullOrEmpty(ToDate) ? "" : ToDate);
             HttpContext.Session.SetInt32("page", page);
+             HttpContext.Session.SetString("ItemName", string.IsNullOrEmpty(ItemName) ? "" : ItemName);
+             HttpContext.Session.SetString("SupplierName", string.IsNullOrEmpty(SupplierName) ? "" : SupplierName);
             HttpContext.Session.SetInt32("SupplyId", SupplyId);
 
             return RedirectToPage("./EditSupply");
@@ -316,6 +318,7 @@ namespace LabMaterials.Pages
             this.lblManageSuppliers = (Program.Translations["ManageSuppliers"])[Lang];
             this.lblSearch = (Program.Translations["Search"])[Lang];
             this.lblSubmit = (Program.Translations["Submit"])[Lang];
+            this.lblNewReceivingReport = (Program.Translations["NewReceivingReport"])[Lang];
             this.lblAddSupplies = (Program.Translations["AddSupplies"])[Lang];
             this.lblSupplierName = (Program.Translations["SupplierName"])[Lang];
             this.lblItemName = (Program.Translations["ItemName"])[Lang];

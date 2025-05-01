@@ -1,19 +1,20 @@
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
-namespace LabMaterials.DB
+namespace LabMaterials.DB;
+
+[Table("tablecolumn")]
+public partial class Tablecolumn
 {
-    [Table("tablecolumn")]
-    public class TableColumn
-    {
-        [Key]
-        public int Id { get; set; }
-        public string DisplayColumns { get; set; }
-        public string Page { get; set; }
-        
-        [ForeignKey("UserId")]
-        [InverseProperty("User")]
-        public int UserId { get; set; }
-    }
+    [Key]
+    public int Id { get; set; }
+
+    public string DisplayColumns { get; set; } = null!;
+
+    public string Page { get; set; } = null!;
+
+    public int UserId { get; set; }
 }

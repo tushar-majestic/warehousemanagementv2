@@ -74,10 +74,11 @@ namespace LabMaterials.Pages
         }
 
 
-        public IActionResult OnPostEdit([FromForm] int ShelfId, [FromForm] int page)
+        public IActionResult OnPostEdit([FromForm] int ShelfId, [FromForm] int page, [FromForm] string ShelfNumber)
         {
             HttpContext.Session.SetInt32("ShelfId", ShelfId);
             HttpContext.Session.SetInt32("page", page);
+            HttpContext.Session.SetString("ShelfNumber", string.IsNullOrEmpty(ShelfNumber) ? "" : ShelfNumber);
             return RedirectToPage("./EditShelves");
         }
 

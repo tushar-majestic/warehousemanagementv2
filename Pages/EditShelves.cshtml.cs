@@ -6,7 +6,7 @@ namespace LabMaterials.Pages
     public class EditShelvesModel : BasePageModel
     {
         public string ErrorMsg { get; set; }
-        public string RoomNumber, RoomName, ShelfNumber;
+        public string RoomNumber, RoomName, ShelfNumber, ShelfNumberSearch;
         public int? RoomId, ShelfId;
         public int page { get; set; }
         public string lblUpdateStore, lblStoreNumber, lblUpdateShelf, lblStoreName, lblShelfNumber, 
@@ -16,6 +16,7 @@ namespace LabMaterials.Pages
             base.ExtractSessionData();
             FillLables();
              this.page = (int)HttpContext.Session.GetInt32("page");
+             this.ShelfNumberSearch = HttpContext.Session.GetString("ShelfNumber");
             if (CanManageStore == false)
                 RedirectToPage("./Index?lang=" + Lang);
             else

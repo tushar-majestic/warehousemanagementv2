@@ -83,9 +83,20 @@
             <!-- <p class="mb-0">Your web analytics dashboard template.</p>-->
         </div>
         <div class="btn-toolbar mb-2 mb-md-0">
-            <div class="btn-group mx-3 ms-lg-3">
-                <a href="AddSupply" class="btn btn-sm justify-content-center top-sm-btn d-flex btn-gray-800 d-inline-flex align-items-center">
-                    <img b-ie9pk9zf1q="" class="icon text-white icon-xs mx-2" src="images/plus.png">
+
+                    <div class="btn-group">
+
+                        <a href="AddSupply" class="btn btn-sm justify-content-center d-flex btn-gray-800 d-inline-flex align-items-center">
+                            <img b-ie9pk9zf1q="" class="icon text-white icon-xs mx-2" src="images/plus.png">
+
+                            @Model.lblNewReceivingReport
+                        </a>
+                    </div>
+                    <div class="btn-group mx-3 ms-lg-3">
+                        
+                        <a href="AddSupply" class="btn btn-sm justify-content-center top-sm-btn d-flex btn-gray-800 d-inline-flex align-items-center">
+                            <img b-ie9pk9zf1q="" class="icon text-white icon-xs mx-2" src="images/plus.png">
+
 
                     @Model.lblAddSupplies
                 </a>
@@ -456,9 +467,11 @@
                         <td>
                             <form method="post">
                                 <input type="hidden" value="@item.SupplyId" name="SupplyId" />
-                                   <input type="hidden" value="@Model.CurrentPage" name="page" />
-                                    <input type="hidden" value="@Model.FromDate?.ToString("yyyy-MM-dd")" name="FromDate" />
-                                    <input type="hidden" value="@Model.ToDate?.ToString("yyyy-MM-dd")" name="ToDate" />
+                                <input type="hidden" value="@Model.CurrentPage" name="page" />
+                                <input type="hidden" value="@Model.FromDate?.ToString("yyyy-MM-dd")" name="FromDate" />
+                                <input type="hidden" value="@Model.ToDate?.ToString("yyyy-MM-dd")" name="ToDate" />
+                                <input type="hidden" value="@Model.ItemName" name="ItemName" />
+                                <input type="hidden" value="@Model.SupplierName" name="SupplierName" />
                                 <input type="submit" value="@Model.lblEdit" class="btn btn-secondary" asp-page-handler="Edit" />
                                 <input type="submit" value="@Model.lblView" class="btn btn-secondary" asp-page-handler="View" />
                                 <input type="submit" value="@Model.lblDelete" class="btn btn-danger" asp-page-handler="Delete" />

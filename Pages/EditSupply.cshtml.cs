@@ -11,7 +11,7 @@ namespace LabMaterials.Pages
     public class EditSupplyModel : BasePageModel
     {
         public string ErrorMsg { get; set; }
-        public string InvoiceNumber, ShelfNo, itemTypeCode, storee, PurchaseOrderNo, Room_Name, ShelfNumber, ItemName, TypeName;
+        public string InvoiceNumber, ShelfNo, itemTypeCode, storee, PurchaseOrderNo, Room_Name, ShelfNumber, ItemName, TypeName, SupplierNameSearch, ItemNameSearch;
         public bool InventoryBalanced;
         public int QuantityReceived, SupplierId, ItemId, SupplyId, StoreId, RoomId, QuantityReceivedd;
         public DateTime ReceivedAt, ExpiryDate;
@@ -37,6 +37,8 @@ namespace LabMaterials.Pages
                 RedirectToPage("./Index?lang=" + Lang);
             FillLables();
             this.page = (int)HttpContext.Session.GetInt32("page");
+            this.ItemNameSearch = HttpContext.Session.GetString("ItemName");
+            this.SupplierNameSearch = HttpContext.Session.GetString("SupplierName");
             this.FromDate = HttpContext.Session.GetString("FromDate");
             this.ToDate = HttpContext.Session.GetString("ToDate");
             using (var dbContext = new LabDBContext())

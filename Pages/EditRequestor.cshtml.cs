@@ -9,7 +9,7 @@ namespace LabMaterials.Pages
         public string ErrorMsg { get; set; }
         public int StoreId, ItemId, Quantity, ReqId;
         public int? DId;
-        public string ShelfNumber, DestinationName, RequestorName, ContactNo;
+        public string ShelfNumber, DestinationName, RequestorName, ContactNo, DestinationNameSearch;
 
         public List<Destination> Destinations { get; set; }
         public List<Requester> Requestors { get; set; }
@@ -22,6 +22,7 @@ namespace LabMaterials.Pages
             base.ExtractSessionData();
             FillLables();
             this.page = (int)HttpContext.Session.GetInt32("page");
+            this.DestinationNameSearch = HttpContext.Session.GetString("DestinationName");
             if (CanManageStore == false)
                 RedirectToPage("./Index?lang=" + Lang);
             var dbContext = new LabDBContext();

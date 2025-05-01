@@ -713,7 +713,8 @@ namespace LabMaterials.Migrations
 
                     b.Property<string>("BuildingNumber")
                         .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
+                        .HasColumnType("nchar(10)")
+                        .IsFixedLength();
 
                     b.Property<DateTime?>("Created")
                         .HasColumnType("datetime");
@@ -738,8 +739,10 @@ namespace LabMaterials.Migrations
                         .HasColumnType("int")
                         .HasDefaultValue(1)
                         .HasColumnName("isActive");
+
                     b.Property<int?>("ManagerJobNum")
                         .HasColumnType("int");
+
                     b.Property<string>("ShelfNumbers")
                         .IsRequired()
                         .HasMaxLength(4000)
@@ -757,7 +760,8 @@ namespace LabMaterials.Migrations
 
                     b.Property<string>("StoreType")
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nchar(50)")
+                        .IsFixedLength();
 
                     b.Property<DateTime?>("Updated")
                         .HasColumnType("datetime");
@@ -784,6 +788,9 @@ namespace LabMaterials.Migrations
                     b.Property<int?>("IsActive")
                         .HasColumnType("int")
                         .HasColumnName("isActive");
+
+                    b.Property<int?>("ManagerJobNum")
+                        .HasColumnType("int");
 
                     b.Property<int?>("RoomId")
                         .HasColumnType("int");
@@ -817,6 +824,18 @@ namespace LabMaterials.Migrations
                         .HasMaxLength(250)
                         .IsUnicode(false)
                         .HasColumnType("varchar(250)");
+
+                    b.Property<string>("StoreType")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("WarehouseManagerName")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<string>("WarehouseStatus")
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
 
                     b.ToTable("StoreDataResult");
                 });
@@ -997,7 +1016,8 @@ namespace LabMaterials.Migrations
 
                     b.ToTable("Supply");
                 });
-            modelBuilder.Entity("LabMaterials.DB.TableColumn", b =>
+
+            modelBuilder.Entity("LabMaterials.DB.Tablecolumn", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -1020,6 +1040,7 @@ namespace LabMaterials.Migrations
 
                     b.ToTable("tablecolumn");
                 });
+
             modelBuilder.Entity("LabMaterials.DB.Unit", b =>
                 {
                     b.Property<int>("Id")
@@ -1031,11 +1052,13 @@ namespace LabMaterials.Migrations
 
                     b.Property<string>("ChemicalStatus")
                         .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasColumnType("nchar(20)")
+                        .IsFixedLength();
 
                     b.Property<string>("DocumentType")
                         .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasColumnType("nchar(20)")
+                        .IsFixedLength();
 
                     b.Property<string>("GroupCode")
                         .IsRequired()
@@ -1044,7 +1067,8 @@ namespace LabMaterials.Migrations
 
                     b.Property<string>("HazardType")
                         .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasColumnType("nchar(20)")
+                        .IsFixedLength();
 
                     b.Property<string>("UnitCode")
                         .IsRequired()
@@ -1058,11 +1082,13 @@ namespace LabMaterials.Migrations
 
                     b.Property<string>("UnitsMeasure")
                         .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasColumnType("nchar(20)")
+                        .IsFixedLength();
 
                     b.Property<string>("WarehouseType")
                         .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasColumnType("nchar(20)")
+                        .IsFixedLength();
 
                     b.HasKey("Id");
 
@@ -1094,10 +1120,11 @@ namespace LabMaterials.Migrations
 
                     b.Property<string>("EmpAffiliation")
                         .IsRequired()
+                        .ValueGeneratedOnAdd()
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-
+                        .HasColumnType("nvarchar(50)")
+                        .HasDefaultValue("");
+                        
                     b.Property<DateTime?>("Ended")
                         .HasColumnType("datetime");
 
@@ -1120,13 +1147,13 @@ namespace LabMaterials.Migrations
                         .HasColumnType("bit");
 
                     b.Property<int?>("JobNumber")
-                        .HasColumnType("int")
-                        .HasColumnName("JobNumber");
+                        .HasColumnType("int");
 
                     b.Property<string>("Lang")
                         .HasMaxLength(2)
-                        .HasColumnType("nvarchar(2)")
-                        .HasColumnName("lang");
+                        .HasColumnType("nchar(2)")
+                        .HasColumnName("lang")
+                        .IsFixedLength();
 
                     b.Property<DateTime?>("LastLoginTime")
                         .HasColumnType("datetime");
@@ -1144,8 +1171,7 @@ namespace LabMaterials.Migrations
                     b.Property<int?>("Transfer")
                         .HasColumnType("int")
                         .HasColumnName("Transfer");
-
-
+                        
                     b.Property<DateTime?>("Updated")
                         .HasColumnType("datetime");
 

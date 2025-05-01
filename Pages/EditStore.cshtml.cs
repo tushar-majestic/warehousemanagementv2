@@ -8,7 +8,8 @@ namespace LabMaterials.Pages
     public class EditStoreModel : BasePageModel
     {
         public string ErrorMsg { get; set; }
-        public string StoreNumber, StoreName, Shelves,  ManagerName,ManagerJobNumber;
+        public string StoreNumber, StoreName, Shelves,  ManagerName, ManagerJobNumber, StoreNameSearch, StoreNumberSearch;
+
         public int StoreId;
 
         public string Status { get; set; }
@@ -26,6 +27,8 @@ namespace LabMaterials.Pages
             base.ExtractSessionData();
             FillLables();
             this.page = (int)HttpContext.Session.GetInt32("page");
+            this.StoreNumberSearch = HttpContext.Session.GetString("StoreNumber");
+            this.StoreNameSearch = HttpContext.Session.GetString("StoreName");
             if (CanManageStore == false)
                 RedirectToPage("./Index?lang=" + Lang);
             else

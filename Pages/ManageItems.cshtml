@@ -340,7 +340,7 @@
     <div class="card border-0 shadow mb-4">
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-centered table-nowrap mb-0 rounded">
+                <table class="table table-centered table-sm table-hover align-middle table-nowrap mb-0 rounded">
                     <thead class="thead-light">
                         <tr>
                             @if (Model.SelectedColumns.Contains("itemCode"))
@@ -431,6 +431,8 @@
                                             <input type="hidden" value="@Model.CurrentPage" name="page" />
                                             <input type="hidden" value="@Model.FromDate?.ToString("yyyy-MM-dd")" name="FromDate" />
                                             <input type="hidden" value="@Model.ToDate?.ToString("yyyy-MM-dd")" name="ToDate" />
+                                            <input type="hidden" value="@Model.ItemName" name="ItemName" />
+                                            <input type="hidden" value="@Model.Group" name="Group" />
                                             <input type="submit" value="@Model.lblEdit" class="btn btn-secondary" asp-page-handler="Edit" />
                                             <input type="submit" value="@Model.lblDelete" class="btn btn-danger" asp-page-handler="Delete" />
                                             <!--<input type="submit" value="@Model.lblDamage" class="btn btn-danger" asp-page-handler="Damage" formaction="DamageItem?ItemId=@item.ItemId" /> -->

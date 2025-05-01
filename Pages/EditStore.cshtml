@@ -60,7 +60,7 @@
                         </li>
                         <li class="breadcrumb-item d-flex align-items-center">
                             <img src="images/retailer.png" alt="Home" width="16" height="16" class="me-2" />
-                            <a href="/ManageStore?page=@Model.page" class="text-decoration-none">@Model.lblStores</a>
+                            <a href="/ManageStore?page=@Model.page&StoreNumber=@Model.StoreNumberSearch&StoreName=@Model.StoreNameSearch" class="text-decoration-none">@Model.lblStores</a>
                         </li>
                         <li class="breadcrumb-item d-flex align-items-center active" aria-current="page">
                             <img src="images/retailer.png" alt="Home" width="16" height="16" class="me-2" />
@@ -89,6 +89,7 @@
                                 <label class="my-1 me-2" for="StoreType">@Model.lblWarehouseType</label>
                                 <select class="form-select" id="StoreType" name="StoreType"
                                         aria-label="Default select example" >
+                                    <option value=""></option>
                                      @if (Model.StoreTypeList != null)
                                     {
                                         foreach (var item in Model.StoreTypeList)

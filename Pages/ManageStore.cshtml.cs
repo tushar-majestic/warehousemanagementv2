@@ -27,7 +27,7 @@ namespace LabMaterials.Pages
         public List<string> SelectedColumns { get; set; } = new List<string>();
         public List<Room> Rooms { get; set; }
 
-        public string lblStores, lblManageStorage, lblSearch, lblRoomName, lblManageShelves, lblUnlock, lblLock, lblRoomNumber, lblManageRooms, lblStoreNumber, lblAddRoom, lblAddShelf, lblStoreName, lblSubmit, lblAddStore, lblShelves, lblEdit, lblDelete, lblTotalItem, lblAddDestination, lblManageDestination;
+        public string lblStores, lblManageStorage, lblSearch, lblRoomName, lblManageShelves, lblUnlock, lblLock, lblRoomNumber, lblManageRooms, lblStoreNumber, lblAddRoom, lblAddShelf, lblStoreName, lblSubmit, lblAddStore, lblShelves, lblEdit, lblDelete, lblTotalItem, lblAddDestination, lblManageDestination, lblWarehouseType, lblManagerName, lblManagerJobNumber, lblStatus;
 
         private void LoadSelectedColumns()
         {
@@ -37,7 +37,7 @@ namespace LabMaterials.Pages
                 using (var db = new LabDBContext())
                 {
                     string pageName = "manageStore";
-                    var existingRecord = db.TableColumns.FirstOrDefault(c => c.UserId == userId.Value && c.Page == pageName);
+                    var existingRecord = db.Tablecolumns.FirstOrDefault(c => c.UserId == userId.Value && c.Page == pageName);
                     if (existingRecord != null && !string.IsNullOrEmpty(existingRecord.DisplayColumns))
                     {
                         SelectedColumns = existingRecord.DisplayColumns.Split(',').ToList();
@@ -120,7 +120,7 @@ namespace LabMaterials.Pages
             base.ExtractSessionData();
             using (var db = new LabDBContext())
             {
-                var existingRecord = db.TableColumns
+                var existingRecord = db.Tablecolumns
                     .FirstOrDefault(c => c.UserId == userId && c.Page == pageName);
 
                 if (existingRecord != null)
@@ -131,13 +131,13 @@ namespace LabMaterials.Pages
                 else
                 {
                     // Create new
-                    var newRecord = new TableColumn
+                    var newRecord = new Tablecolumn()
                     {
                         UserId = userId,
                         Page = pageName,
                         DisplayColumns = selectedColumns
                     };
-                    db.TableColumns.Add(newRecord);
+                    db.Tablecolumns.Add(newRecord);
                 }
 
                 db.SaveChanges();
@@ -344,8 +344,11 @@ namespace LabMaterials.Pages
             this.lblManageShelves = (Program.Translations["ManageShelves"])[Lang]; 
             this.lblLock = (Program.Translations["Lock"])[Lang]; 
             this.lblRoomName = (Program.Translations["RoomName"])[Lang]; 
-            this.lblUnlock = (Program.Translations["Unlock"])[Lang];
-
+            this.lblUnlock = (Program.Translations["Unlock"])[Lang];    
+            this.lblWarehouseType = (Program.Translations["WarehouseType"])[Lang];
+            this.lblManagerName = (Program.Translations["ManagerName"])[Lang];
+            this.lblManagerJobNumber = (Program.Translations["ManagerJobNumber"])[Lang];
+            this.lblStatus = (Program.Translations["WarehouseStatus"])[Lang];
 
 
 
