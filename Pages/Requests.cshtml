@@ -1,0 +1,107 @@
+﻿@page
+@model LabMaterials.Pages.RequestsModel
+
+@{
+    ViewData["Title"] = "Requests";
+}
+
+<!-- Create New Request -->
+<h3>Create New Request</h3>
+<div asp-validation-summary="All" class="text-danger"></div>
+
+<form method="post" asp-page-handler="Create">
+    <div>
+        <label for="MaterialName">Material Name:</label>
+        <select id="MaterialName" name="NewRequest.MaterialName" asp-items="Model.ItemList">
+            <option value="">-- Select Material --</option>
+        </select>
+        <span asp-validation-for="NewRequest.MaterialName" class="text-danger"></span>
+    </div>
+    <div>
+        <label for="Status">Status:</label>
+        <select id="Status" name="NewRequest.Status">
+            <option value="Pending">Pending</option>
+            <option value="Approved">Approved</option>
+            <option value="Rejected">Rejected</option>
+        </select>
+        <span asp-validation-for="NewRequest.Status" class="text-danger"></span>
+    </div>
+    <div>
+        <label for="RequestedByUser">RequestedByUser:</label>
+        <input asp-for="NewRequest.RequestedByUser" value="@Model.RequestedByUserI" />
+        <input type="hidden" asp-for="NewRequest.RequestedByUserId" value="@Model.RequestedByUserId" />
+
+
+    </div>
+    <button type="submit">Create Request</button>
+</form>
+
+
+<h2>Inbox - Pending Approvals</h2>
+
+@if (Model.PendingRequests.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Material</th>
+                <th>Requested By</th>
+                <th>Requested Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var request in Model.PendingRequests)
+            {
+                <tr>
+                    <td>@request.MaterialName</td>
+                    <td>@request.RequestedByUser.FullName</td>
+                    <td>@request.RequestedDate.ToString("MM/dd/yyyy")</td>
+                    <td>
+                        <form method="post" asp-page-handler="Approve" asp-route-id="@request.RequestId">
+                            <button type="submit" class="btn btn-success">Approve</button>
+                        </form>
+                        <form method="post" asp-page-handler="Reject" asp-route-id="@request.RequestId">
+                            <button type="submit" class="btn btn-danger">Reject</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No pending requests.</p>
+}
+
+<hr />
+
+<h2>Outbox - Your Requests</h2>
+
+@if (Model.UserRequests.Any())
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Material</th>
+                <th>Requested Date</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var request in Model.UserRequests)
+            {
+                <tr>
+                    <td>@request.MaterialName</td>
+                    <td>@request.RequestedDate.ToString("MM/dd/yyyy")</td>
+                    <td>@request.Status</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No requests found.</p>
+}
