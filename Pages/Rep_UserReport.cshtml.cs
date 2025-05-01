@@ -9,6 +9,7 @@ namespace LabMaterials.Pages
     {
         public DateTime? FromDate, ToDate;
         public List<UsersInfo> UserInfo;
+        public List<UsersInfo> UserInfoAll;
         public string lblTotalUsers,lblUsers, lblFromDate, lblToDate, lblMaterialsReceived, lblInventory, 
             lblHazardousMaterials, lblUserActivity, lblDistributedMaterials, lblHazardTypeName, 
             lblItemCode, lblItemName, lblStoreName, lblGroupName, lblAvailableQuantity, lblHazardType, 
@@ -128,7 +129,8 @@ namespace LabMaterials.Pages
             TotalPages = (int)Math.Ceiling((double)TotalUsers / ItemsPerPage);
 
             var list = query.ToList();
-            UserInfo = list.Skip((page - 1) * ItemsPerPage).Take(ItemsPerPage).ToList();     
+            UserInfo = list.Skip((page - 1) * ItemsPerPage).Take(ItemsPerPage).ToList();
+            UserInfoAll = query.ToList();  
             CurrentPage = page;
 
             // FromDate = DateTime.Now;

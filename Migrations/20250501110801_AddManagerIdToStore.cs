@@ -5,16 +5,15 @@
 namespace LabMaterials.Migrations
 {
     /// <inheritdoc />
-    public partial class StoreUpdateNew : Migration
+    public partial class AddManagerIdToStore : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<string>(
-                name: "BuildingNumber",
+            migrationBuilder.AddColumn<int>(
+                name: "WarehouseManagerID",
                 table: "Store",
-                type: "nvarchar(10)",
-                maxLength: 10,
+                type: "int",
                 nullable: true);
         }
 
@@ -22,7 +21,7 @@ namespace LabMaterials.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "BuildingNumber",
+                name: "WarehouseManagerID",
                 table: "Store");
         }
     }

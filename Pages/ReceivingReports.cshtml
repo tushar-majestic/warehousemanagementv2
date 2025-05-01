@@ -15,63 +15,166 @@
 
 
                     <div class="col-lg-12 col-sm-12">
-                        <div class="form-group">
-                            <label>Fiscal Year</label>
-                            <input asp-for="Report.FiscalYear" class="form-control" />
+                        <div class="form-group mb-4">
+                            <label>Serial Number: <b>0001</b></label>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group mb-4">
+                            <label>Fiscal Year</label>
+                            <select class="form-select" id="FiscalYear" name="FiscalYear" required>
+                                <option value="2024">2024</option>
+                                <option value="2025">2025</option>
+                            </select>
+                        </div>
+                        <div class="form-group mb-4">
+                            <label>Receiving Date</label>
+                            <input asp-for="Report.ReceivingDate" type="date" class="form-control" required />
+                        </div>
+
+                        <div class="form-group mb-4">
                             <label>Recipient Sector</label>
                             <input asp-for="Report.RecipientSector" class="form-control" required />
                         </div>
-                        <div class="form-group">
+                        <div class="form-group mb-4">
                             <label>Sector Number</label>
                             <input asp-for="Report.SectorNumber" class="form-control" required />
                         </div>
-                        <div class="form-group">
-                            <label>Attachment</label>
-                            <input type="file" name="AttachmentFile" class="form-control" required />
+
+                        <div class="form-group mb-4">
+                            <label>Receiving Warehouse</label>
+
+                            
+                            <select asp-for="Report.ReceivingWarehouse" class="form-control" required>
+                                <option value="">Select Receiving Warehouse</option>
+                                @foreach (var Warehouse in Model.Warehouses)
+                                {
+                                    <option value="@Warehouse.StoreId">@Warehouse.StoreName</option>
+                                }
+
+                            </select>
                         </div>
-                        <div class="form-group">
+
+                        <div class="form-group mb-4">
+                            <label>Based On Document</label>
+                            <input asp-for="Report.BasedOnDocument" class="form-control" required />
+                        </div>
+
+                        <div class="form-group mb-4">
+                            <label>Document Number</label>
+                            <input asp-for="Report.DocumentNumber" class="form-control" required />
+                        </div>
+
+                        <div class="form-group mb-4">
+                            <label>Document Date</label>
+                            <input asp-for="Report.DocumentDate" type="date" class="form-control" required />
+                        </div>
+
+
+                        <div class="form-group mb-4">
+                            <label>Add Attachment</label>
+                            <input type="file" name="AttachmentFile" class="form-control" />
+                        </div>
+
+                        <div class="form-group mb-4">
+                            <label>Supplier Type</label>
+                            <select class="form-select" id="SupplierType" name="SupplierType" required>
+                                <option value="Internal">Internal</option>
+                                <option value="External">External</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group mb-4">
+
+                            <label>Supplier Name</label>
+                            <select id="SupplierName" asp-for="Report.SupplierId" class="form-control" required>
+                                <option value="">Select Supplier Name</option>
+                                @foreach (var supplier in Model.Suppliers)
+                                {
+                                    <option value="@supplier.SupplierId" data-type="@supplier.SupplierType">@supplier.SupplierName</option>
+                                }
+                            </select>
+                        </div>
+
+
+                        <div class="form-group mb-4">
+                            <label>Item Group</label>
+                            <select class="form-select" id="ItemGroup" name="ItemGroup" required>
+                                <option value="Chemicals">Chemicals</option>
+                                <option value="Glass">Glass</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group mb-4">
+                            <label>Item Name</label>
+                            <select class="form-control" name="ItemsForReport[0].ItemId" required>
+                                <option value="">Select Item</option>
+                                @foreach (var item in Model.Items)
+                                {
+                                    <option value="@item.ItemId">@item.ItemName</option>
+                                }
+                            </select>
+                        </div>
+
+                        <div class="form-group mb-4">
+                            <label>Item Description</label>
+
+                            <textarea asp-for="Report.Comments" class="form-control"></textarea>
+                        </div>
+
+                        <div class="form-group mb-4">
+                            <label>Unit of Measure</label>
+                            <input type="number" name="UnitofMeasure" class="form-control" />
+                        </div>
+
+                        <div class="form-group mb-4">
+                            <label>Quantity</label>
+                            <input type="number" name="ItemsForReport[0].Quantity" class="form-control" required />
+                        </div>
+                        <div class="form-group mb-4">
+                            <label>Unit Price</label>
+                            <input type="number" step="0.01" name="ItemsForReport[0].UnitPrice" class="form-control" required />
+                        </div>
+
+                        <div class="form-group mb-4">
+                            <label>Total Price</label>
+                            <input type="number" step="0.01" name="TotalPrice" class="form-control" />
+                        </div>
+
+                        <div class="form-group mb-4">
+                            <label>Comments</label>
+                            <textarea asp-for="Report.Comments" class="form-control"></textarea>
+                        </div>
+
+
+                        <div class="form-group mb-4">
                             <label>Recipient Employee ID</label>
                             <input asp-for="Report.RecipientEmployeeId" class="form-control" required />
                         </div>
-                        <div class="form-group">
-                            <label>Technical Member</label>
-                            <input asp-for="Report.TechnicalMember" class="form-control" required />
+                        <div class="form-group mb-4">
+                            <label>Recipient Employee Name</label>
+                            <input asp-for="Report.RecipientEmployeeId" class="form-control" required />
                         </div>
-                        <div class="form-group">
-                            <label>Chief Responsible</label>
-                            <input asp-for="Report.ChiefResponsible" class="form-control" required />
+
+
+                        <div class="form-group mb-4">
+                            <label>Technical Member</label>
+                            <select class="form-select" id="TechnicalMember" name="TechnicalMember" required>
+                                <option value="FirstTechnical">First Technical Member</option>
+                                <option value="SecondTechnical">Second Technical Member</option>
+                            </select>
+                        </div>
+                        <div class="form-group mb-4">
+                            <label>Chief Responsible (General Supervisor)</label>
+                            <select class="form-select" id="ChiefResponsible" name="ChiefResponsible" required>
+                                <option value="FirstChief">First Chief Responsible</option>
+                                <option value="SecondChief">Second Chief Responsible</option>
+                            </select>
                         </div>
                         <input asp-for="Report.CreatedBy" type="hidden" value="@Model.Report.CreatedBy" />
 
 
-                        <div class="form-group">
-                            <label>Receiving Date</label>
-                            <input asp-for="Report.ReceivingDate" type="date" class="form-control" />
-                        </div>
+                        
 
-                        <div class="form-group">
-                            <label>Receiving Warehouse</label>
-                            <input asp-for="Report.ReceivingWarehouse" class="form-control" />
-                        </div>
-
-                        <div class="form-group">
-                            <label>Based On Document</label>
-                            <input asp-for="Report.BasedOnDocument" class="form-control" />
-                        </div>
-
-                        <div class="form-group">
-                            <label>Document Number</label>
-                            <input asp-for="Report.DocumentNumber" class="form-control" />
-                        </div>
-
-                        <div class="form-group">
-                            <label>Document Date</label>
-                            <input asp-for="Report.DocumentDate" type="date" class="form-control" />
-                        </div>
-
-                        @*  <div class="form-group">
+                        @*  <div class="form-group mb-4">
                         <label>Supplier Type</label>
                         <select asp-for="Report.SupplierId" class="form-control" required>
                         <option value="">Select Supplier Type</option>
@@ -82,45 +185,7 @@
                         </select>
                         </div> *@
 
-                        <div class="form-group">
-                            <label>Supplier Name</label>
-                            <select asp-for="Report.SupplierId" class="form-control" required>
-                                <option value="">Select Supplier Name</option>
-                                @foreach (var supplier in Model.Suppliers)
-                                {
-                                    <option value="@supplier.SupplierId">@supplier.SupplierName</option>
-                                }
-                            </select>
-                        </div>
-
-                        <div class="form-group">
-                            <label>Remarks</label>
-                            <textarea asp-for="Report.Comments" class="form-control"></textarea>
-                        </div>
-
-                        <h4>Items</h4>
-                        <div id="items-container">
-                            <div class="item-group border p-3 mb-3">
-                                <div class="form-group">
-                                    <label>Item</label>
-                                    <select class="form-control" name="ItemsForReport[0].ItemId" required>
-                                        <option value="">Select Item</option>
-                                        @foreach (var item in Model.Items)
-                                        {
-                                            <option value="@item.ItemId">@item.ItemName</option>
-                                        }
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label>Quantity</label>
-                                    <input type="number" name="ItemsForReport[0].Quantity" class="form-control" required />
-                                </div>
-                                <div class="form-group">
-                                    <label>Unit Price</label>
-                                    <input type="number" step="0.01" name="ItemsForReport[0].UnitPrice" class="form-control" required />
-                                </div>
-                            </div>
-                        </div>
+                        
 
 
                         @* <button type="button" class="btn btn-secondary" id="add-item-btn">Add Another Item</button> *@
@@ -167,27 +232,33 @@
         }
     </script>
     <script>
-        function filterSuppliersByType() {
-            const selectedType = document.getElementById('SupplierType').value;
-            const supplierSelect = document.getElementById('SupplierName');
+        const allSuppliers = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.Suppliers));
 
-            // Clear previous options
+        function filterSuppliersByType() {
+            const selectedType = document.getElementById("SupplierType").value;
+            const supplierSelect = document.getElementById("SupplierName");
+
+            // Clear existing options
             supplierSelect.innerHTML = '<option value="">Select Supplier Name</option>';
 
-            // Get all suppliers from Razor
-            const suppliers = @Html.Raw(Json.Serialize(Model.Suppliers));
+            // Filter and repopulate
+            allSuppliers
+                .filter(s => s.SupplierType === selectedType)
+                .forEach(s => {
+                    const option = document.createElement('option');
+                    option.value = s.supplierId; // match C# casing
+                    option.textContent = s.supplierName;
+                    option.setAttribute("data-type", s.supplierType);
+                    supplierSelect.appendChild(option);
+                });
 
-            // Filter suppliers based on the selected type
-            const filteredSuppliers = suppliers.filter(s => s.SupplierType === selectedType);
-
-            // Populate the Supplier Name dropdown with filtered suppliers
-            filteredSuppliers.forEach(supplier => {
-                const option = document.createElement('option');
-                option.value = supplier.Id;
-                option.text = supplier.Name;
-                supplierSelect.appendChild(option);
-            });
+            // Clear SupplierType textbox if you use a separate input
+            // document.getElementById("SupplierTypeTextBox").value = '';
         }
+        document.getElementById("SupplierName").addEventListener("change", function () {
+    const selected = this.options[this.selectedIndex];
+    document.getElementById("SupplierType").value = selected.getAttribute("data-type") || "";
+});
     </script>
 
 }

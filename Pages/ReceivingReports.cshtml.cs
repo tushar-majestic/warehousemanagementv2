@@ -18,12 +18,13 @@ namespace LabMaterials.Pages
         [BindProperty]
         public IFormFile AttachmentFile { get; set; }
         public IList<Supplier> Suppliers { get; set; }
+        public IList<Store> Warehouses { get; set; }
         public List<ReceivingReport> Reports { get; set; }
         public List<Item> Items { get; set; }
 
         [BindProperty]
         public ReceivingReport Report { get; set; }  // <- change name from NewReport
-
+        public string SupplierType => Report.Supplier?.SupplierType;
 
         [BindProperty]
         public List<ReceivingItem> ItemsForReport { get; set; } = new List<ReceivingItem>();
@@ -32,6 +33,7 @@ namespace LabMaterials.Pages
         {
             base.ExtractSessionData();
             Suppliers = _context.Suppliers.ToList();  // Fetch suppliers
+            Warehouses = _context.Stores.ToList();  // Fetch suppliers
             Reports = await _context.ReceivingReports.Include(r => r.Items).ToListAsync();
             Items = await _context.Items.ToListAsync();
             Report ??= new ReceivingReport();

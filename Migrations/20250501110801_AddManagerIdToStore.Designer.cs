@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LabMaterials.Migrations
 {
     [DbContext(typeof(LabDBContext))]
-    [Migration("20250501063200_roomchanges")]
-    partial class roomchanges
+    [Migration("20250501110801_AddManagerIdToStore")]
+    partial class AddManagerIdToStore
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -765,9 +765,6 @@ namespace LabMaterials.Migrations
                         .HasDefaultValue(1)
                         .HasColumnName("isActive");
 
-                    b.Property<int?>("ManagerJobNum")
-                        .HasColumnType("int");
-
                     b.Property<string>("ShelfNumbers")
                         .IsRequired()
                         .HasMaxLength(4000)
@@ -795,9 +792,8 @@ namespace LabMaterials.Migrations
                         .HasColumnType("int")
                         .HasColumnName("UpdatedByID");
 
-                    b.Property<string>("WarehouseManagerName")
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                    b.Property<int?>("WarehouseManagerID")
+                        .HasColumnType("int");
 
                     b.Property<string>("WarehouseStatus")
                         .HasMaxLength(10)

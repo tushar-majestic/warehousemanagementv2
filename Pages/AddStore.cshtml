@@ -39,7 +39,7 @@
             </text>
         }
 
-        document.getElementById("ManagerName").addEventListener("change", function () {
+        document.getElementById("ManagerId").addEventListener("change", function () {
             const selectedOption = this.options[this.selectedIndex];
             const jobNumber = selectedOption.getAttribute("data-jobnumber");
 
@@ -117,8 +117,8 @@
                            
                             @* Warehouse manager name  *@
                             <div class="mb-4">
-                                    <label class="my-1 me-2" for="ManagerName">@Model.lblManagerName</label>
-                                    <select class="form-select" id="ManagerName" name="ManagerName"
+                                    <label class="my-1 me-2" for="ManagerId">@Model.lblManagerName</label>
+                                    <select class="form-select" id="ManagerId" name="ManagerId"
                                         aria-label="Default select example">
                                         <option value=""></option>
                                         
@@ -127,7 +127,7 @@
                                     {
                                         foreach (var item in Model.ManagerGroupsList)
                                         {
-                                            <option value="@item.UserName" data-jobnumber="@item.JobNumber">@item.UserName</option>
+                                            <option value="@item.UserId" data-jobnumber="@item.JobNumber">@item.FullName</option>
                                         }
                                     }
 
