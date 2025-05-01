@@ -1,107 +1,142 @@
 ﻿@page
 @model LabMaterials.Pages.RequestsModel
-
 @{
-    ViewData["Title"] = "Requests";
-}
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
+        <div class="d-block mb-4 mb-md-0">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb bg-transparent p-2 mb-0">
+                    <li class="breadcrumb-item d-flex align-items-center">
+                        <img src="images/home.png" alt="Home" width="16" height="16" class="me-2" />
+                        <a href="/Home" class="text-decoration-none">@Model.lblHome</a>
+                    </li>
+                    <li class="breadcrumb-item d-flex align-items-center">
+                        <img src="images/inventory.png" alt="Home" width="16" height="16" class="me-2" />
+                        @Model.lblRequests
+                    </li>
 
-<!-- Create New Request -->
-<h3>Create New Request</h3>
-<div asp-validation-summary="All" class="text-danger"></div>
+                </ol>
+            </nav>
 
-<form method="post" asp-page-handler="Create">
-    <div>
-        <label for="MaterialName">Material Name:</label>
-        <select id="MaterialName" name="NewRequest.MaterialName" asp-items="Model.ItemList">
-            <option value="">-- Select Material --</option>
-        </select>
-        <span asp-validation-for="NewRequest.MaterialName" class="text-danger"></span>
+            <h2 class="h4">@Model.lblRequests</h2>
+            <!-- <p class="mb-0">Your web analytics dashboard template.</p>-->
+        </div>
+
+        <div class="btn-toolbar mb-2 mb-md-0">
+            <a href="ReceivingReports" class="btn btn-sm justify-content-center btn-gray-800 mx-2 d-inline-flex align-items-center">
+                <img b-ie9pk9zf1q="" class="icon text-white icon-xs mx-2" src="images/plus.png">
+                @Model.lblNewReceivingReport
+            </a>
+        </div>
     </div>
-    <div>
-        <label for="Status">Status:</label>
-        <select id="Status" name="NewRequest.Status">
-            <option value="Pending">Pending</option>
-            <option value="Approved">Approved</option>
-            <option value="Rejected">Rejected</option>
-        </select>
-        <span asp-validation-for="NewRequest.Status" class="text-danger"></span>
+
+
+
+    <nav class="nav">
+        <a class="nav-link @Model.inboxClass border border-bottom-0" href="?type=inbox">Inbox <sup><span class="badge rounded-pill badge-notification bg-danger">9</span></sup></a>
+        <a class="nav-link @Model.outboxClass border border-bottom-0" href="?type=outbox">Request Sent</a>
+    </nav>
+    <div class="card border-0 shadow mb-4">
+        <div>
+            <div class="table-responsive">
+                <table class="table table-centered table-hover align-middle table-nowrap mb-0 rounded">
+                    <!--
+                    <thead class="thead-light">
+                    <tr>
+                    <th scope="col" class="border-0">@Model.lblNotifications</th>
+                    </tr>
+                    </thead>
+                    -->
+                    <tbody>
+                        @if (Model.pagetype == "inbox")
+                        {
+                        <tr>
+                            <td>
+                                <div class="m-2"><b>Ashwin Bose</b> sent Request for Items. Approve the request or add comments.</div>
+                                <button class="btn btn-info btn-sm p-1">
+                                    Accept
+                                </button>
+                                <button class="btn btn-warning btn-sm p-1">
+                                    Comment & Reject
+                                </button>
+                            </td>
+                            <td>12:35 AM</td>
+                            <td><input type="submit" value="@Model.lblView" class="btn btn-secondary" asp-page-handler="View" /></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="m-2"><b>Ashwin Bose</b> sent Request for Items. Approve the request or add comments.</div>
+                                <button class="btn btn-info btn-sm p-1">
+                                    Accept
+                                </button>
+                                <button class="btn btn-warning btn-sm p-1">
+                                    Comment & Reject
+                                </button>
+                            </td>
+                            <td>12:35 AM</td>
+                            <td><input type="submit" value="@Model.lblView" class="btn btn-secondary" asp-page-handler="View" /></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="m-2"><b>Ashwin Bose</b> sent Request for Items. Approve the request or add comments.</div>
+                                <button class="btn btn-info btn-sm p-1">
+                                    Accept
+                                </button>
+                                <button class="btn btn-warning btn-sm p-1">
+                                    Comment & Reject
+                                </button>
+                            </td>
+                            <td>12:35 AM</td>
+                            <td><input type="submit" value="@Model.lblView" class="btn btn-secondary" asp-page-handler="View" /></td>
+                        </tr>
+                        }
+                    <tr>
+                        <td>Request for Warehouse <b>Dummy Warehouse</b> has been processed successfully.</td>
+                        <td>12:35 AM</td>
+                        <td><input type="submit" value="@Model.lblView" class="btn btn-secondary" asp-page-handler="View" /></td>
+                    </tr>
+                    <tr>
+                        <td>Request for Warehouse <b>Dummy Warehouse</b> has been processed successfully.</td>
+                        <td>12:35 AM</td>
+                        <td><input type="submit" value="@Model.lblView" class="btn btn-secondary" asp-page-handler="View" /></td>
+                    </tr>
+                    <tr>
+                        <td>Request for Warehouse <b>Dummy Warehouse</b> has been processed successfully.</td>
+                        <td>12:35 AM</td>
+                        <td><input type="submit" value="@Model.lblView" class="btn btn-secondary" asp-page-handler="View" /></td>
+                    </tr>
+                    <tr>
+                        <td>Request for Warehouse <b>Dummy Warehouse</b> has been processed successfully.</td>
+                        <td>12:35 AM</td>
+                        <td><input type="submit" value="@Model.lblView" class="btn btn-secondary" asp-page-handler="View" /></td>
+                    </tr>
+                    <tr>
+                        <td>Request for Warehouse <b>Dummy Warehouse</b> has been processed successfully.</td>
+                        <td>12:35 AM</td>
+                        <td><input type="submit" value="@Model.lblView" class="btn btn-secondary" asp-page-handler="View" /></td>
+                    </tr>
+                    <tr>
+                        <td>Request for Warehouse <b>Dummy Warehouse</b> has been processed successfully.</td>
+                        <td>12:35 AM</td>
+                        <td><input type="submit" value="@Model.lblView" class="btn btn-secondary" asp-page-handler="View" /></td>
+                    </tr>
+                    <tr>
+                        <td>Request for Warehouse <b>Dummy Warehouse</b> has been processed successfully.</td>
+                        <td>12:35 AM</td>
+                        <td><input type="submit" value="@Model.lblView" class="btn btn-secondary" asp-page-handler="View" /></td>
+                    </tr>
+                    <tr>
+                        <td>Request for Warehouse <b>Dummy Warehouse</b> has been processed successfully.</td>
+                        <td>12:35 AM</td>
+                        <td><input type="submit" value="@Model.lblView" class="btn btn-secondary" asp-page-handler="View" /></td>
+                    </tr>
+                    <tr>
+                        <td>Request for Warehouse <b>Dummy Warehouse</b> has been processed successfully.</td>
+                        <td>12:35 AM</td>
+                        <td><input type="submit" value="@Model.lblView" class="btn btn-secondary" asp-page-handler="View" /></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
-    <div>
-        <label for="RequestedByUser">RequestedByUser:</label>
-        <input asp-for="NewRequest.RequestedByUser" value="@Model.RequestedByUserI" />
-        <input type="hidden" asp-for="NewRequest.RequestedByUserId" value="@Model.RequestedByUserId" />
-
-
-    </div>
-    <button type="submit">Create Request</button>
-</form>
-
-
-<h2>Inbox - Pending Approvals</h2>
-
-@if (Model.PendingRequests.Any())
-{
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Material</th>
-                <th>Requested By</th>
-                <th>Requested Date</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var request in Model.PendingRequests)
-            {
-                <tr>
-                    <td>@request.MaterialName</td>
-                    <td>@request.RequestedByUser.FullName</td>
-                    <td>@request.RequestedDate.ToString("MM/dd/yyyy")</td>
-                    <td>
-                        <form method="post" asp-page-handler="Approve" asp-route-id="@request.RequestId">
-                            <button type="submit" class="btn btn-success">Approve</button>
-                        </form>
-                        <form method="post" asp-page-handler="Reject" asp-route-id="@request.RequestId">
-                            <button type="submit" class="btn btn-danger">Reject</button>
-                        </form>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
-else
-{
-    <p>No pending requests.</p>
-}
-
-<hr />
-
-<h2>Outbox - Your Requests</h2>
-
-@if (Model.UserRequests.Any())
-{
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Material</th>
-                <th>Requested Date</th>
-                <th>Status</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var request in Model.UserRequests)
-            {
-                <tr>
-                    <td>@request.MaterialName</td>
-                    <td>@request.RequestedDate.ToString("MM/dd/yyyy")</td>
-                    <td>@request.Status</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
-else
-{
-    <p>No requests found.</p>
 }
