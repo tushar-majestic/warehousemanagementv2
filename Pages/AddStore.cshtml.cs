@@ -55,7 +55,7 @@ namespace LabMaterials.Pages
 
                     var dbContext = new LabDBContext();
                     var managerGroupId = dbContext.UserGroups
-                                        .Where(g => g.UserGroupName == "Manager")
+                                        .Where(g => g.UserGroupName == "Warehouse Manager")
                                         .Select(g => g.UserGroupId)
                                         .FirstOrDefault();
 
