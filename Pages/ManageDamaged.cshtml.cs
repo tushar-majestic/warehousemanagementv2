@@ -89,16 +89,20 @@ namespace LabMaterials.Pages
             {
                 if (columns != null && columns.Any())
                 {
+                    
                     string selectedColumns = string.Join(",", columns);
 
                     int? userId = HttpContext.Session.GetInt32("UserId");
                     string pageName = "manageDamaged";
+                    this.ItemName = ItemName;
+                    FillData(ItemName, Group, CurrentPage);
+                    LoadSelectedColumns();
 
                     SaveSelectedColumns(userId.Value, pageName, selectedColumns);
                 }
 
                 // After updating, redirect back to ManageStore with the StoreNumber and StoreName
-                return RedirectToPage("/ManageDamaged", new { ItemName = ItemName, Group = Group });
+                // return RedirectToPage("/ManageDamaged", new { ItemName = ItemName, Group = Group });
             }
 
             return Page();

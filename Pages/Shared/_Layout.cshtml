@@ -96,7 +96,7 @@
                 <li class="nav-item  @(Context.Request.Path == "/Notifications" ? "active" : "") ">
                     <a asp-area="" asp-page="/Notifications" class="nav-link sidebar-link">
                         <span class="sidebar-icon">
-                            <img class="icon icon-xs mx-1" src="images/home.png" />
+                            <img class="icon icon-xs mx-1" src="images/eye-grey.png" />
                         </span>
                         <span class="sidebar-text">@Model.lblNotifications</span>
                     </a>
@@ -112,6 +112,18 @@
                 <img class="icon icon-xs mx-1" src="images/retailer.png" />
               </span>
               <span class="sidebar-text break-word">@Model.lblManageStores</span>
+            </a>
+          </li>
+        }     
+        
+        @if (Model.CanManageStore)
+        {
+                    <li class="nav-item @(Context.Request.Path == "/Requests"|| Context.Request.Query["handler"] == "Create") )">
+                        <a asp-area="" asp-page="/Requests" class="nav-link sidebar-link">
+              <span class="sidebar-icon">
+                <img class="icon icon-xs mx-3" src="images/retailer.png" />
+              </span>
+              <span class="sidebar-text break-word">@Model.lblRequests</span>
             </a>
           </li>
         }

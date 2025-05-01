@@ -27,7 +27,7 @@ namespace LabMaterials.Pages
         public string lblItems, lblItemName, lblGroupName, lblItemCode, lblQuantity, lblHazardType, lblTypeName,
             lblUnitCode, lblSearch, lblSubmit, lblManageItemGroup, lblManageUnit, lblAddItem, lblEdit,
             lblDelete, lblTotalItem, lblExpiryDate, lblBatchNo, lblDamage, lblDamagedItems,
-            lblImport, lblDonwloadSampleFile, lblFromDate, lblToDate;
+            lblImport, lblDonwloadSampleFile, lblFromDate, lblToDate, lblNewReceivingReport;
         public void OnGet(string? ItemName, string? Group, DateTime? FromDate, DateTime? ToDate, int page = 1)
         {
             base.ExtractSessionData();
@@ -112,14 +112,20 @@ namespace LabMaterials.Pages
                 if (columns != null && columns.Any())
                 {
                     string selectedColumns = string.Join(",", columns);
+                    this.ItemName = ItemName;
+                    this.Group = Group;
+                    this.FromDate = FromDate;
+                    this.ToDate = ToDate;
+                    FillData(ItemName, Group, FromDate, ToDate);
 
                     int? userId = HttpContext.Session.GetInt32("UserId");
                     string pageName = "ManageItems";
 
                     SaveSelectedColumns(userId.Value, pageName, selectedColumns);
+                    LoadSelectedColumns();
                 }
 
-                return RedirectToPage("/ManageItems", new { ItemName = ItemName, Group = Group });
+                // return RedirectToPage("/ManageItems", new { ItemName = ItemName, Group = Group });
             }
 
             return Page();
@@ -435,6 +441,7 @@ namespace LabMaterials.Pages
             this.lblDonwloadSampleFile = (Program.Translations["DonwloadSampleFile"])[Lang];
             this.lblFromDate = (Program.Translations["FromDate"])[Lang];
             this.lblToDate = (Program.Translations["ToDate"])[Lang];
+            this.lblNewReceivingReport = (Program.Translations["NewReceivingReport"])[Lang];
         }
 
     }

@@ -254,7 +254,7 @@
     </div>
 
     <div class="d-flex justify-content-between align-items-center">
-        <div>@Model.lblTotalItem : @Model.TotalItems</div>
+        <div></div>
         <div>
             @if (Model.TotalPages > 1)
             {
@@ -480,7 +480,11 @@
                     </tr>
                 }
             }
-                        
+                    <tr>
+                        <td class="border-0" colspan="8">
+                            <div>@Model.lblTotalItem : @Model.TotalItems</div>
+                        </td>
+                    </tr>
                     </tbody>
                 </table>
             </div>
