@@ -7,6 +7,7 @@ namespace LabMaterials.Pages
     public class ManageStorageModel : BasePageModel
     {
         public List<StorageInfo> Storages { get; set; }
+        public List<StorageInfo> StoragesAll { get; set; }
         public string Message { get; set; }
         public int TotalItems { get; set; }
         [BindProperty]
@@ -126,6 +127,7 @@ namespace LabMaterials.Pages
                 TotalPages = (int)Math.Ceiling((double)TotalItems / ItemsPerPage);
                 var list = query.ToList();
                 Storages = list.Skip((page - 1) * ItemsPerPage).Take(ItemsPerPage).ToList();        
+                StoragesAll = query.ToList();
                 CurrentPage = page;   
             }
             else

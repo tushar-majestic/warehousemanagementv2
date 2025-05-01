@@ -12,6 +12,7 @@ namespace LabMaterials.Pages
     public class ManageRoomsModel : BasePageModel
     {
         public List<StoreDataResult> Stores { get; set; }
+        public List<StoreDataResult> StoresAll { get; set; }
         public List<Room> Rooms { get; set; }
         public string Message { get; set; }
         public int TotalItems { get; set; }
@@ -192,6 +193,7 @@ namespace LabMaterials.Pages
             TotalItems = joinedData.Count();
             TotalPages = (int)Math.Ceiling((double)TotalItems / ItemsPerPage);
             Stores = joinedData.Skip((page - 1) * ItemsPerPage).Take(ItemsPerPage).ToList();
+            StoresAll = joinedData.ToList();
             CurrentPage = page;
         }
 

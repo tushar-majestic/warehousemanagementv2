@@ -68,10 +68,39 @@
 
 
     </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script>
+        document.getElementById('exportExcel').addEventListener('click', function () {
+            let table = document.querySelector('#exportTable'); // use hidden export table directly
+            let wb = XLSX.utils.book_new();
+            let ws_data = [];
+
+            // Get headers
+            const headers = Array.from(table.querySelectorAll('thead th'))
+                .map(th => th.textContent.trim()); // use textContent instead of innerText
+            ws_data.push(headers);
+
+            // Get rows
+            const rows = table.querySelectorAll('tbody tr');
+            rows.forEach(row => {
+                const rowData = [];
+                const cells = row.querySelectorAll('th, td');
+                cells.forEach(cell => {
+                    rowData.push(cell.textContent.trim()); // use textContent
+                });
+                ws_data.push(rowData);
+            });
+
+            // Create worksheet and trigger download
+            let ws = XLSX.utils.aoa_to_sheet(ws_data);
+            XLSX.utils.book_append_sheet(wb, ws, "Manage Items Data");
+            XLSX.writeFile(wb, "ManageItems.xlsx");
+        });
+    </script>
 }
 @{
 
-    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4 pb-2">
         <div class="d-block mb-4 mb-md-0">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb bg-transparent p-2 mb-0">
@@ -111,6 +140,10 @@
             </a>
 
         </div>
+    </div>
+     <div class="mb-4">
+        <button id="exportExcel" class="btn btn-success">Export Excel</button>
+        <button id="printBtn" class="btn btn-primary">Print Table</button>
     </div>
     <div class="table-settings mb-4">
 
@@ -548,6 +581,98 @@
             </ul>
         </nav>
     }
+    <div class="table-responsive" id="exportTableContainer" style="display: none;">
+        <table class="table table-centered table-nowrap mb-0 rounded" id="exportTable">
+            <thead class="thead-light">
+                <tr>
+                    
+                    @if (Model.SelectedColumns.Contains("itemCode"))
+                    {
+                    <th scope="col" class="border-0 rounded-start">@Model.lblItemCode</th>
+                    }
+                    @if (Model.SelectedColumns.Contains("itemName"))
+                    {
+                    <th scope="col" class="border-0">@Model.lblItemName</th>
+                    }
+                    @if (Model.SelectedColumns.Contains("quantity"))
+                    {
+                    <th scope="col" class="border-0">@Model.lblQuantity</th>
+                    }
+                    @if (Model.SelectedColumns.Contains("hazardType"))
+                    {
+                    <th scope="col" class="border-0">@Model.lblHazardType</th>
+                    }
+                    @if (Model.SelectedColumns.Contains("typeName"))
+                    {
+                    <th scope="col" class="border-0">@Model.lblTypeName</th>
+                    }
+                    @if (Model.SelectedColumns.Contains("unitCode"))
+                    {
+                    <th scope="col" class="border-0">@Model.lblUnitCode</th>
+                    }
+                    @if (Model.SelectedColumns.Contains("groupName"))
+                    {
+                    <th scope="col" class="border-0">@Model.lblGroupName</th>
+                    }
+                    @if (Model.SelectedColumns.Contains("batchNo"))
+                    {
+                    <th scope="col" class="border-0">@Model.lblBatchNo</th>
+                    }
+                    @if (Model.SelectedColumns.Contains("expiry"))
+                    {
+                    <th scope="col" class="border-0">@Model.lblExpiryDate</th>
+                    }
+                </tr>  
+            </thead>
+            <tbody>
+                @if (Model.ItemsAll != null)
+                {
+                    
+                    foreach (var item in Model.ItemsAll)
+                    {
+                        <tr>
+                            @if (Model.SelectedColumns.Contains("itemCode"))
+                            {
+                            <th scope="row">@item.ItemCode</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("itemName"))
+                            {
+                            <td>@item.ItemName</td>
+                            }
+                            @if (Model.SelectedColumns.Contains("quantity"))
+                            {
+                            <td>@item.AvailableQuantity</td>
+                            }
+                            @if (Model.SelectedColumns.Contains("hazardType"))
+                            {
+                            <td style='color: @(item.IsHazardous?"red":"teal")'>@item.HazardTypeName</td>
+                            }
+                            @if (Model.SelectedColumns.Contains("typeName"))
+                            {
+                            <td>@item.TypeName</td>
+                            }
+                            @if (Model.SelectedColumns.Contains("unitCode"))
+                            {
+                            <td>@item.UnitCode</td>
+                            }
+                            @if (Model.SelectedColumns.Contains("groupName"))
+                            {
+                            <td>@item.GroupDesc</td>
+                            }
+                            @if (Model.SelectedColumns.Contains("batchNo"))
+                            {
+                            <td>@item.BatchNo</td>
+                            }
+                            @if (Model.SelectedColumns.Contains("expiry"))
+                            {
+                                <td>@(item.ExpiryDate.HasValue ? item.ExpiryDate.Value.ToString("dd-MM/yyyy") : "")</td>
+                            }
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
 
 }
 

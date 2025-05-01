@@ -9,6 +9,7 @@ namespace LabMaterials.Pages
     public class ManageUserGroupsModel : BasePageModel
     {
         public List<UserGroupInfo> UserGroups { get; set; }
+        public List<UserGroupInfo> UserGroupsAll { get; set; }
         public int TotalItems { get; set; }
         public string Message { get; set; }
         [BindProperty]
@@ -62,7 +63,8 @@ namespace LabMaterials.Pages
                 TotalItems = query.Count();
                 TotalPages = (int)Math.Ceiling((double)TotalItems / ItemsPerPage);
                 var list = query.ToList();
-                UserGroups = list.Skip((page - 1) * ItemsPerPage).Take(ItemsPerPage).ToList();        
+                UserGroups = list.Skip((page - 1) * ItemsPerPage).Take(ItemsPerPage).ToList();    
+                UserGroupsAll = query.ToList();    
                 CurrentPage = page; 
                 foreach(var UG in UserGroups)
                 {

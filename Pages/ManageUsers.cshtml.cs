@@ -8,6 +8,7 @@ namespace LabMaterials.Pages
     public class ManageUsersModel : BasePageModel
     {
         public List<UserInfo> Users { get; set; }
+        public List<UserInfo> UsersAll { get; set; }
         public string Message { get; set; }
         public int TotalItems { get; set; }
         [BindProperty]
@@ -233,6 +234,7 @@ namespace LabMaterials.Pages
                 var list = query.ToList();
 
                 Users = list.Skip((page - 1) * ItemsPerPage).Take(ItemsPerPage).ToList();   
+                UsersAll = query.ToList();  
                 
                 CurrentPage = page;
             }

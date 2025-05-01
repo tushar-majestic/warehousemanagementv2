@@ -39,10 +39,39 @@
             </text>
         }
     </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script>
+        document.getElementById('exportExcel').addEventListener('click', function () {
+            let table = document.querySelector('#exportTable'); // use hidden export table directly
+            let wb = XLSX.utils.book_new();
+            let ws_data = [];
+
+            // Get headers
+            const headers = Array.from(table.querySelectorAll('thead th'))
+                .map(th => th.textContent.trim()); // use textContent instead of innerText
+            ws_data.push(headers);
+
+            // Get rows
+            const rows = table.querySelectorAll('tbody tr');
+            rows.forEach(row => {
+                const rowData = [];
+                const cells = row.querySelectorAll('th, td');
+                cells.forEach(cell => {
+                    rowData.push(cell.textContent.trim()); // use textContent
+                });
+                ws_data.push(rowData);
+            });
+
+            // Create worksheet and trigger download
+            let ws = XLSX.utils.aoa_to_sheet(ws_data);
+            XLSX.utils.book_append_sheet(wb, ws, "Manage Requestor Data");
+            XLSX.writeFile(wb, "ManageRequestor.xlsx");
+        });
+    </script>
 }
 @{
 
-    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4 pb-2">
         <div class="d-block mb-4 mb-md-0">
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb bg-transparent p-2 mb-0">
@@ -74,6 +103,10 @@
                 </a>
             </div>
         </div>
+    </div>
+     <div class="mb-4">
+        <button id="exportExcel" class="btn btn-success">Export Excel</button>
+        <button id="printBtn" class="btn btn-primary">Print Table</button>
     </div>
 
     <div class="table-settings mb-4">
@@ -264,4 +297,29 @@
             </ul>
         </nav>
     }
+    <div class="table-responsive" id="exportTableContainer" style="display: none;">
+        <table class="table table-centered table-nowrap mb-0 rounded" id="exportTable">
+            <thead class="thead-light">
+                <tr>
+                    <th>@Model.lblRequestorName</th>
+                    <th>@Model.lblDestinationName</th>
+                    <th>@Model.lblContactNumber</th>
+                </tr>  
+            </thead>
+            <tbody>
+                @if (Model.RequestorsAll != null)
+                {
+                    
+                    foreach (var item in Model.RequestorsAll)
+                    {
+                        <tr>
+                            <td>@item.RequestorName </td>
+                            <td>@item.DestinationName</td>
+                            <td>@item.ContactNo</td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
 }

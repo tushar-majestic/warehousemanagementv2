@@ -11,6 +11,7 @@ namespace LabMaterials.Pages
     public class ManageShelvesModel : BasePageModel
     {
         public List<StoreDataResult> Stores { get; set; }
+        public List<Shelf> StoresAll { get; set; }
         public List<Shelf> shelfDetails { get; set; }
         public string Message { get; set; }
         public int TotalItems { get; set; }
@@ -121,7 +122,8 @@ namespace LabMaterials.Pages
                 // shelfDetails = query;
                 TotalPages = (int)Math.Ceiling((double)TotalItems / ItemsPerPage);
                 var list = query.ToList();
-                shelfDetails = list.Skip((page - 1) * ItemsPerPage).Take(ItemsPerPage).ToList();        
+                shelfDetails = list.Skip((page - 1) * ItemsPerPage).Take(ItemsPerPage).ToList();
+                StoresAll = query.ToList();
                 CurrentPage = page; 
             }
             else
