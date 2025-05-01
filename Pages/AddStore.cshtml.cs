@@ -19,7 +19,7 @@ namespace LabMaterials.Pages
             FillLables();
             var dbContext = new LabDBContext();
             var managerGroupId = dbContext.UserGroups
-                    .Where(g => g.UserGroupName == "Manager")
+                    .Where(g => g.UserGroupName == "Warehouse Manager")
                     .Select(g => g.UserGroupId)
                     .FirstOrDefault();
 
@@ -72,6 +72,8 @@ namespace LabMaterials.Pages
                         ErrorMsg = (Program.Translations["ManagerNameMissing"])[Lang];
                     else if (string.IsNullOrEmpty(ManagerJobNumber))
                         ErrorMsg = (Program.Translations["ManagerJobNumberMissing"])[Lang];
+                    else if (string.IsNullOrEmpty(Status))
+                        ErrorMsg = (Program.Translations["WarehouseStatusMissing"])[Lang];
                     
                     else
                     {

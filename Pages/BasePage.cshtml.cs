@@ -19,7 +19,7 @@ namespace LabMaterials.Pages
         public string dir { get; set; } = "rtl";
         public string Lang { get; set; } = "ar";
         
-        public string lblView, lblLabMaterials, lblHome, lblNotifications, lblShowHideColumn, lblDisbursement, lblReports, lblManageUsers, lblManageItems, lblManageSupplies, lblManageStores, lblUserProfile, lblLogout, lblDamagedItems, lblLanguage;
+        public string lblView, lblLabMaterials, lblHome, lblNotifications, lblShowHideColumn, lblDisbursement, lblReports, lblManageUsers, lblManageItems, lblManageSupplies, lblManageStores, lblUserProfile, lblLogout, lblDamagedItems, lblLanguage,lblWarehouseType, lblManagerName, lblBuildingNumber, lblRoomDesc, lblStatus, lblRoomStatus, lblOpen, lblClosed;
 
         public void ExtractSessionData()
         {
@@ -68,6 +68,15 @@ namespace LabMaterials.Pages
             this.lblDamagedItems = (Program.Translations["DamagedItems"])[Lang];
             this.lblLanguage = (Program.Translations["Language"])[Lang];
             this.lblShowHideColumn = (Program.Translations["ShowHideColumn"])[Lang];
+            this.lblWarehouseType = (Program.Translations["WarehouseType"])[Lang];
+            this.lblManagerName = (Program.Translations["ManagerName"])[Lang];
+            this.lblBuildingNumber = (Program.Translations["BuildingNumber"])[Lang];
+            this.lblRoomDesc = (Program.Translations["RoomDesc"])[Lang];
+            this.lblStatus = (Program.Translations["WarehouseStatus"])[Lang];
+            
+            this.lblOpen = (Program.Translations["Open"])[Lang];
+            this.lblClosed = (Program.Translations["Closed"])[Lang];
+            this.lblRoomStatus = (Program.Translations["RoomStatus"])[Lang];
 
         }
     }
