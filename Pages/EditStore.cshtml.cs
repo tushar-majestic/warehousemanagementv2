@@ -59,7 +59,6 @@ namespace LabMaterials.Pages
                 ManagerName = store.WarehouseManagerName;
 
                 StoreType = store.StoreType;
-                Console.WriteLine(StoreType);  
 
 
 
