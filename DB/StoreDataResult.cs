@@ -40,12 +40,16 @@ public partial class StoreDataResult
     public string? StoreName { get; set; }
 
     public int? ManagerJobNum { get; set; }
+    public int? KeeperJobNum { get; set; }
 
     [StringLength(50)]
     public string? StoreType { get; set; }
 
     [StringLength(20)]
     public string? WarehouseManagerName { get; set; }
+
+    [StringLength(20)]
+    public string? KeeperName { get; set; }
 
     [StringLength(10)]
     public string? WarehouseStatus { get; set; }

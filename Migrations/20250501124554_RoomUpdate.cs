@@ -5,33 +5,34 @@
 namespace LabMaterials.Migrations
 {
     /// <inheritdoc />
-    public partial class storeDeletedManagerName : Migration
+    public partial class RoomUpdate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "ManagerJobNum",
-                table: "Store");
+                name: "KeeperName",
+                table: "ROOMS");
 
             migrationBuilder.RenameColumn(
-                name: "WarehouseManagerName",
-                table: "Store",
-                newName: "WarehouseManagerID");
+                name: "KeeperJobNum",
+                table: "ROOMS",
+                newName: "KeeperID");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.RenameColumn(
-                name: "WarehouseManagerID",
-                table: "Store",
-                newName: "WarehouseManagerName");
+                name: "KeeperID",
+                table: "ROOMS",
+                newName: "KeeperJobNum");
 
-            migrationBuilder.AddColumn<int>(
-                name: "ManagerJobNum",
-                table: "Store",
-                type: "int",
+            migrationBuilder.AddColumn<string>(
+                name: "KeeperName",
+                table: "ROOMS",
+                type: "nvarchar(20)",
+                maxLength: 20,
                 nullable: true);
         }
     }

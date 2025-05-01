@@ -1237,9 +1237,9 @@
         "en": "Building Number is required.",
         "ar": "Building Number is required." 
     },
-    "KeeperJobNumMissing":{
-        "en": "Warehouse Keeper Job Number is required.",
-        "ar": "Warehouse Keeper Job Number is required." 
+    "KeeperMissing":{
+        "en": "Warehouse Keeper required.",
+        "ar": "Warehouse Keeper required." 
     },
     "WarehouseStatusMissing":{
         "en": "Warehouse Status is required.",
