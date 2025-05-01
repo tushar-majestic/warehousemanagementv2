@@ -20,6 +20,7 @@ namespace LabMaterials.Pages
         public int ItemsPerPage { get; set; } = 10;
         public int TotalPages { get; set; }
         public string RoomName { get; set; }
+        public string BuildingNnumber;
 
         public void OnGet(string? RoomName, int page = 1) 
         {
@@ -181,7 +182,7 @@ namespace LabMaterials.Pages
                                 StoreName = store.StoreName,
                                 ShelfNumber = store.ShelfNumber,
                                 RoomId = room.RoomId,
-                                RoomName = room.RoomName,
+                            
                             };
 
             // Optional: filter by room name

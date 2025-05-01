@@ -209,8 +209,10 @@
                     <thead class="thead-light">
                         <tr>
                             <th scope="col" class="border-0 rounded-start">@Model.lblStoreName</th>
-                            <th scope="col" class="border-0">@Model.lblRoomName</th>
+                            @* <th scope="col" class="border-0">@Model.lblRoomName</th> *@
                             <th scope="col" class="border-0">@Model.lblShelves</th>
+                            <th scope="col" class="border-0">Keeper Name</th>
+                            <th scope="col" class="border-0">Keeper JobNumber</th>
                             <th class="border-0 rounded-end"></th>
                         </tr>
                     </thead>
@@ -225,11 +227,15 @@
                                 
                                 <tr>
                                     <td>@item.StoreName</td>
-                                    <td>@item.RoomName</td>
+                                    @* <td>@item.RoomName</td> *@
                                     <td>
                                         @(string.IsNullOrWhiteSpace(item.ShelfNumber) ? "" : (item.ShelfNumber.Length > 30 ?
                                         item.ShelfNumber.Substring(0, 30) : item.ShelfNumber))
                                     </td>
+                                    <td>@item.KeeperName</td>
+                                    <td>@item.KeeperJobNum</td>
+
+
                                     <td>
                                         <form method="post">
                                             <input type="hidden" value="@item.RoomId" name="RoomId" />

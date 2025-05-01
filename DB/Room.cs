@@ -43,10 +43,7 @@ public partial class Room
     public string? RoomDesc { get; set; }
     public int? NoOfShelves { get; set; }
 
-     public int? KeeperJobNum { get; set; }
-
-    [StringLength(20)]
-    public string? KeeperName { get; set; }
+    public int? KeeperID {get; set;}
 
     [StringLength(10)]
     public string? RoomStatus { get; set; }

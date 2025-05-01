@@ -4,6 +4,7 @@ using LabMaterials.DB;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LabMaterials.Migrations
 {
     [DbContext(typeof(LabDBContext))]
-    partial class LabDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250501123826_StoreDataResultKeeper")]
+    partial class StoreDataResultKeeper
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -662,8 +665,12 @@ namespace LabMaterials.Migrations
                         .HasColumnType("int")
                         .HasColumnName("EndedByID");
 
-                    b.Property<int?>("KeeperID")
+                    b.Property<int?>("KeeperJobNum")
                         .HasColumnType("int");
+
+                    b.Property<string>("KeeperName")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<int?>("NoOfShelves")
                         .HasColumnType("int");
@@ -862,11 +869,6 @@ namespace LabMaterials.Migrations
                         .HasDefaultValue(1)
                         .HasColumnName("isActive");
 
-
-                    b.Property<int?>("ManagerJobNum")
-                        .HasColumnType("int");
-
-
                     b.Property<string>("ShelfNumbers")
                         .IsRequired()
                         .HasMaxLength(4000)
@@ -894,10 +896,8 @@ namespace LabMaterials.Migrations
                         .HasColumnType("int")
                         .HasColumnName("UpdatedByID");
 
-
                     b.Property<int?>("WarehouseManagerID")
                         .HasColumnType("int");
-
 
                     b.Property<string>("WarehouseStatus")
                         .HasMaxLength(10)
