@@ -1196,6 +1196,50 @@
     "Notifications": {
         "en": "Notifications",
         "ar": "منظر"
+    },
+    "BuildingNumber": {
+        "en": "Building Number",
+        "ar": "Building Number"
+    },
+    "NoOfShelves":{
+        "en": "Number of Shelves",
+        "ar": "Number of Shelves"
+    },
+    "RoomDesc":{
+        "en": "Room Description",
+        "ar": "Room Description" 
+    },
+    "KeeperJobNum":{
+        "en": "Warehouse Keeper Job Number",
+        "ar": "Warehouse Keeper Job Number" 
+    },
+    "KeeperName":{
+        "en": "Warehouse Keeper Name",
+        "ar": "Warehouse Keeper Name" 
+    },
+    "RoomStatus":{
+        "en": "Room Status",
+        "ar": "Room Status" 
+    },
+    "BuildingNumberMissing":{
+        "en": "Building Number is required.",
+        "ar": "Building Number is required." 
+    },
+    "KeeperJobNumMissing":{
+        "en": "Warehouse Keeper Job Number is required.",
+        "ar": "Warehouse Keeper Job Number is required." 
+    },
+    "WarehouseStatusMissing":{
+        "en": "Warehouse Status is required.",
+        "ar": "Warehouse Status is required." 
+    },
+    "RoomStatusMissing":{
+        "en": "Room Status is required.",
+        "ar": "Room Status is required." 
+    },
+    "RoomExists":{
+        "en": "Room Exists.",
+        "ar": "Room Exists." 
     }
 
 }
