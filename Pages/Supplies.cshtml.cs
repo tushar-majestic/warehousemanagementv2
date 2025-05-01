@@ -227,12 +227,17 @@ namespace LabMaterials.Pages
 
                     int? userId = HttpContext.Session.GetInt32("UserId");
                     string pageName = "supplies";
-
+                    this.FromDate = FromDate;
+                    this.ToDate = ToDate;
+                    this.SupplierName = SupplierName;
+                    this.ItemName = ItemName;
+                    FillData(SupplierName, ItemName, FromDate, ToDate, CurrentPage);
+                    LoadSelectedColumns();
                     SaveSelectedColumns(userId.Value, pageName, selectedColumns);
                 }
 
                 // After updating, redirect back to ManageStore with the StoreNumber and StoreName
-                return RedirectToPage("/supplies", new { SupplierName = SupplierName, ItemName = ItemName, FromDate= FromDate, ToDate= ToDate });
+                // return RedirectToPage("/supplies", new { SupplierName = SupplierName, ItemName = ItemName, FromDate= FromDate, ToDate= ToDate });
             }
 
             return Page();

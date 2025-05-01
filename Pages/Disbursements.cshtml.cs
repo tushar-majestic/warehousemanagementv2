@@ -100,12 +100,17 @@ namespace LabMaterials.Pages
 
                     int? userId = HttpContext.Session.GetInt32("UserId");
                     string pageName = "Disbursements";
+                    this.RequesterName = RequesterName;
+                    this.FromDate = FromDate;
+                    this.ToDate = ToDate;
 
+                    FillData(RequesterName, FromDate, ToDate, CurrentPage);
+                    LoadSelectedColumns();
                     SaveSelectedColumns(userId.Value, pageName, selectedColumns);
                 }
 
                 // After updating, redirect back to ManageStore with the StoreNumber and StoreName
-                return RedirectToPage("/Disbursements", new { RequesterName = RequesterName, FromDate = FromDate, ToDate = ToDate });
+                // return RedirectToPage("/Disbursements", new { RequesterName = RequesterName, FromDate = FromDate, ToDate = ToDate });
             }
 
             return Page();
