@@ -51,7 +51,9 @@ namespace LabMaterials.Pages
                     }
                     else
                     {
-                        SelectedColumns = new List<string>(); // Empty list
+                        // SelectedColumns = new List<string>();
+                        string selectedColumns = "itemCode,itemName";
+                        SaveSelectedColumns(userId.Value, pageName, selectedColumns);
                     }
                 }
             }

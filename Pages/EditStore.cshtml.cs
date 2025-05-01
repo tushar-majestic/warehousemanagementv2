@@ -8,9 +8,10 @@ namespace LabMaterials.Pages
     public class EditStoreModel : BasePageModel
     {
         public string ErrorMsg { get; set; }
-        public string StoreNumber, StoreName, Shelves,  ManagerName, ManagerJobNumber, StoreNameSearch, StoreNumberSearch;
+        public string StoreNumber, StoreName, Shelves, ManagerJobNumber, StoreNameSearch, StoreNumberSearch;
 
         public int StoreId;
+        public int? ManagerId;
 
         public string Status { get; set; }
         public string StoreType ;
@@ -56,19 +57,29 @@ namespace LabMaterials.Pages
                 StoreNumber = store.StoreNumber;
                 StoreName = store.StoreName;
                 StoreId = store.StoreId;
-                ManagerName = store.WarehouseManagerName;
+                ManagerId = store.WarehouseManagerID;
 
                 StoreType = store.StoreType;
 
+                var manager = dbContext.Users
+                    .Where(u => u.UserId == ManagerId)
+                    .FirstOrDefault();
 
-                Status = store.WarehouseStatus;
-
-                ManagerJobNumber = store.ManagerJobNum.ToString();
+                if (manager != null)
+                {
+                    ManagerJobNumber = manager.JobNumber.ToString();
+                }
+                else
+                {
+                    ManagerJobNumber = string.Empty; // or handle as needed
+                }
+                                
+                // ManagerJobNumber = store.ManagerJobNum.ToString();
 
             }
         }
 
-        public IActionResult OnPost([FromForm] int StoreId, [FromForm] string StoreNumber, [FromForm] string StoreName, [FromForm] string Shelves, [FromForm] string StoreType, [FromForm] string ManagerName, [FromForm] string ManagerJobNumber, [FromForm] string Status)
+        public IActionResult OnPost([FromForm] int StoreId, [FromForm] string StoreNumber, [FromForm] string StoreName, [FromForm] string Shelves, [FromForm] string StoreType, [FromForm] int? ManagerId, [FromForm] string ManagerJobNumber, [FromForm] string Status)
         {
             LogableTask task = LogableTask.NewTask("EditStore");
 
@@ -83,7 +94,7 @@ namespace LabMaterials.Pages
                     this.StoreNumber = StoreNumber;
                     this.StoreId = StoreId;
                      this.StoreType = StoreType;
-                    this.ManagerName = ManagerName;
+                    this.ManagerId = ManagerId;
                     this.ManagerJobNumber = ManagerJobNumber;
                     int parsedManagerJobNumber = 0;
                     int.TryParse(ManagerJobNumber, out parsedManagerJobNumber);
@@ -95,10 +106,9 @@ namespace LabMaterials.Pages
                         ErrorMsg = (Program.Translations["StoreNumberMissing"])[Lang];
                     else if (string.IsNullOrEmpty(StoreName))
                         ErrorMsg = (Program.Translations["StoreNameMissing"])[Lang];
-                    else if (string.IsNullOrEmpty(ManagerName))
+                    else if (!ManagerId.HasValue)
                         ErrorMsg = (Program.Translations["ManagerNameMissing"])[Lang];
-                    else if (string.IsNullOrEmpty(ManagerJobNumber))
-                        ErrorMsg = (Program.Translations["ManagerJobNumberMissing"])[Lang];
+                   
                     else
                     {
                         var dbContext = new LabDBContext();
@@ -126,8 +136,7 @@ namespace LabMaterials.Pages
                                 }
                             }*/
                             store.StoreType = StoreType;
-                            store.WarehouseManagerName = ManagerName;
-                            store.ManagerJobNum = parsedManagerJobNumber;
+                            store.WarehouseManagerID = ManagerId;
                             store.WarehouseStatus = Status;
                             store.StoreName = StoreName;
                             store.StoreNumber = StoreNumber;

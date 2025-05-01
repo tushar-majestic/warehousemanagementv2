@@ -8,6 +8,7 @@ namespace LabMaterials.Pages
     public class Rep_UserActivityModel : BasePageModel
     {
         public List<VActivityLog> UsersActivities { get; set; }
+        public List<VActivityLog> UsersActivitiesAll { get; set; }
         public int TotalItems { get; set; }
         public DateTime? FromDate, ToDate;
 
@@ -96,7 +97,8 @@ namespace LabMaterials.Pages
 
                 var list = query.ToList();
                 //UsersActivities = list;
-                UsersActivities = list.Skip((page - 1) * ItemsPerPage).Take(ItemsPerPage).ToList();   
+                UsersActivities = list.Skip((page - 1) * ItemsPerPage).Take(ItemsPerPage).ToList();
+                UsersActivitiesAll = query.ToList();
                 
                 CurrentPage = page;
 
