@@ -8,8 +8,10 @@ namespace LabMaterials.Pages
     public class AddStoreModel : BasePageModel
     {
         public string ErrorMsg { get; set; }
-        public string StoreNumber, StoreName, Shelves, ManagerName, StoreType,ManagerJobNumber ;
+        public string StoreNumber, StoreName, Shelves, StoreType,ManagerJobNumber ;
         public string Status { get; set; }
+
+        public int? ManagerId;
         public List<User> ManagerGroupsList {  get; set; }
 
         public string lblStores, lblAddStore, lblStoreNumber, lblStoreName, lblShelves, lblAdd, lblCancel,lblWarehouseType, lblManagerName, lblManagerJobNumber,lblStatus, lblOpen, lblClosed ;
@@ -32,7 +34,7 @@ namespace LabMaterials.Pages
                 RedirectToPage("./Index?lang=" + Lang);
         }
 
-        public IActionResult OnPost([FromForm] string StoreNumber, [FromForm] string StoreName, [FromForm] string StoreType, [FromForm] string ManagerName, [FromForm] string ManagerJobNumber, [FromForm] string Status)
+        public IActionResult OnPost([FromForm] string StoreNumber, [FromForm] string StoreName, [FromForm] string StoreType, [FromForm] int? ManagerId, [FromForm] string ManagerJobNumber, [FromForm] string Status)
         {
             LogableTask task = LogableTask.NewTask("AddStore");
 
@@ -47,7 +49,7 @@ namespace LabMaterials.Pages
                     this.StoreNumber = StoreNumber;
                     this.Shelves = "";
                     this.StoreType = StoreType;
-                    this.ManagerName = ManagerName;
+                    this.ManagerId = ManagerId;
                     this.ManagerJobNumber = ManagerJobNumber;
                     int parsedManagerJobNumber = 0;
                     int.TryParse(ManagerJobNumber, out parsedManagerJobNumber);
@@ -55,11 +57,11 @@ namespace LabMaterials.Pages
 
                     var dbContext = new LabDBContext();
                     var managerGroupId = dbContext.UserGroups
-                                        .Where(g => g.UserGroupName == "Warehouse Manager")
+                                        .Where(g => g.UserGroupName == "Manager")
                                         .Select(g => g.UserGroupId)
                                         .FirstOrDefault();
 
-                                ManagerGroupsList = dbContext.Users
+                    ManagerGroupsList = dbContext.Users
                                     .Where(u => u.UserGroupId == managerGroupId)
                                     .ToList();
 
@@ -69,7 +71,7 @@ namespace LabMaterials.Pages
                         ErrorMsg = (Program.Translations["StoreNameMissing"])[Lang];
                     else if (string.IsNullOrEmpty(StoreNumber))
                         ErrorMsg = (Program.Translations["StoreNumberMissing"])[Lang];
-                    else if (string.IsNullOrEmpty(ManagerName))
+                    else if (!ManagerId.HasValue)
                         ErrorMsg = (Program.Translations["ManagerNameMissing"])[Lang];
                     else if (string.IsNullOrEmpty(ManagerJobNumber))
                         ErrorMsg = (Program.Translations["ManagerJobNumberMissing"])[Lang];
@@ -88,8 +90,8 @@ namespace LabMaterials.Pages
                             var store = new Store
                             {   
                                 StoreType = StoreType,
-                                WarehouseManagerName = ManagerName,
-                                ManagerJobNum = parsedManagerJobNumber,
+                                WarehouseManagerID = ManagerId,
+                                // ManagerJobNum = parsedManagerJobNumber,
                                 WarehouseStatus = Status,
                                 ShelfNumbers = Shelves,
                                 StoreName = StoreName,
