@@ -26,6 +26,7 @@ namespace LabMaterials.Pages
             ManagerGroupsList = dbContext.Users
                 .Where(u => u.UserGroupId == managerGroupId)
                 .ToList();
+                Console.WriteLine(ManagerGroupsList);
 
             if (CanManageStore == false)
                 RedirectToPage("./Index?lang=" + Lang);

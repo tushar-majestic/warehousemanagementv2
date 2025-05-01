@@ -102,15 +102,18 @@ namespace LabMaterials.Pages
                 {
                     CurrentPage = 1;
                     string selectedColumns = string.Join(",", columns);
-
+                    this.StoreNumber = StoreNumber;
+                    this.StoreName = StoreName;
+                    FillData(StoreNumber, StoreName, CurrentPage);
                     int? userId = HttpContext.Session.GetInt32("UserId");
                     string pageName = "manageStore";
 
                     SaveSelectedColumns(userId.Value, pageName, selectedColumns);
+                    LoadSelectedColumns();
                 }
 
                 // After updating, redirect back to ManageStore with the StoreNumber and StoreName
-                return RedirectToPage("/ManageStore", new { StoreNumber = StoreNumber, StoreName = StoreName });
+                // return RedirectToPage("/ManageStore", new { StoreNumber = StoreNumber, StoreName = StoreName });
             }
 
             return Page();

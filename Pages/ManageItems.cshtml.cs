@@ -112,14 +112,20 @@ namespace LabMaterials.Pages
                 if (columns != null && columns.Any())
                 {
                     string selectedColumns = string.Join(",", columns);
+                    this.ItemName = ItemName;
+                    this.Group = Group;
+                    this.FromDate = FromDate;
+                    this.ToDate = ToDate;
+                    FillData(ItemName, Group, FromDate, ToDate);
 
                     int? userId = HttpContext.Session.GetInt32("UserId");
                     string pageName = "ManageItems";
 
                     SaveSelectedColumns(userId.Value, pageName, selectedColumns);
+                    LoadSelectedColumns();
                 }
 
-                return RedirectToPage("/ManageItems", new { ItemName = ItemName, Group = Group });
+                // return RedirectToPage("/ManageItems", new { ItemName = ItemName, Group = Group });
             }
 
             return Page();
