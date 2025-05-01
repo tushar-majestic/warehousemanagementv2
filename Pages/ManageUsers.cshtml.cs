@@ -36,7 +36,7 @@ namespace LabMaterials.Pages
         }
         //
 
-        public string lblView, lblUsers, lblSearch, lblAddUser, lblManageUserGroups, lblUserName, lblFullName, lblEmail, 
+        public string lblView, lblUsers, lblSearch, lblAddUser, lblManageUserGroups, lblUserName, lblFullName, lblEmail, lblIsDomainUser, lblJobNumber, lblEmpAffiliation, lblTransfer, 
             lblUserEnabled, lblIsLocked, lblUserType, lblUserGroupName, lblEdit, lblUnlock, lblTotalItem;
 
 
@@ -211,6 +211,10 @@ namespace LabMaterials.Pages
                                 UserName = u.UserName,
                                 FullName = u.FullName,
                                 Email = u.Email,
+                                EmpAffiliation = u.EmpAffiliation,
+                                JobNumber = u.JobNumber.ToString(),
+                                Transfer = u.Transfer.ToString(),
+
                                 IsActive = u.IsActive ? (Lang == "ar" ? "تمكين" : "Enabled") : (Lang == "ar" ? "تعطيل" : "Disabled"),
                                 EnableBtnText = u.IsActive ? (Lang == "ar" ? "تعطيل" : "Disable") : (Lang == "ar" ? "تمكين" : "Enable"),
                                 IsADUser = u.IsActiveDirectoryUser ? (Lang == "ar" ? "مستخدم المجال" : "Domain User") : (Lang == "ar" ? "مستخدم التطبيق" : "Application User"),
@@ -257,6 +261,11 @@ namespace LabMaterials.Pages
             this.lblUnlock = (Program.Translations["Unlock"])[Lang];
             this.lblTotalItem = (Program.Translations["TotalItem"])[Lang];
             this.lblView = (Program.Translations["View"])[Lang];
+            this.lblIsDomainUser = (Program.Translations["IsDomainUser"])[Lang];
+            this.lblJobNumber = (Program.Translations["JobNumber"])[Lang];
+            this.lblEmpAffiliation = (Program.Translations["EmpAffiliation"])[Lang];
+            this.lblTransfer = (Program.Translations["Transfer"])[Lang];
+
         }
     }
 }
