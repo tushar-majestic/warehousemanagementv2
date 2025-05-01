@@ -280,7 +280,6 @@ namespace LabMaterials.Pages
                 Rooms = dbContext.Rooms.ToList();
 
 
-
                 var code = (string)codeParam.Value;
                 var message = (string)msgParam.Value;
                 var description = (string)descParam.Value;
@@ -303,7 +302,8 @@ namespace LabMaterials.Pages
                 TotalPages = (int)Math.Ceiling((double)TotalItems / ItemsPerPage);
                 var list = query.ToList();
 
-                Stores = list.Skip((page - 1) * ItemsPerPage).Take(ItemsPerPage).ToList();    
+                Stores = list.Skip((page - 1) * ItemsPerPage).Take(ItemsPerPage).ToList();   
+ 
                 CurrentPage = page;
 
                 /*if (string.IsNullOrEmpty(StoreNumber) == false)

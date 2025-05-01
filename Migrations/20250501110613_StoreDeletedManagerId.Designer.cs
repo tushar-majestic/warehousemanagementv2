@@ -4,6 +4,7 @@ using LabMaterials.DB;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LabMaterials.Migrations
 {
     [DbContext(typeof(LabDBContext))]
-    partial class LabDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250501110613_StoreDeletedManagerId")]
+    partial class StoreDeletedManagerId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -788,9 +791,6 @@ namespace LabMaterials.Migrations
                     b.Property<int?>("UpdatedById")
                         .HasColumnType("int")
                         .HasColumnName("UpdatedByID");
-
-                    b.Property<int?>("WarehouseManagerID")
-                        .HasColumnType("int");
 
                     b.Property<string>("WarehouseStatus")
                         .HasMaxLength(10)
