@@ -14,12 +14,13 @@ namespace LabMaterials.Pages
 
         [BindProperty]
         public string SupplierName { get; set; }
+        public string CoordinatorName { get; set; }
         public int CurrentPage { get; set; }
         public int ItemsPerPage { get; set; } = 10;
         public int TotalPages { get; set; }
         
         public string lblSuppliers, lblSearch, lblSuplierName, lblSubmit, lblSupplierName, lblConatctNumber, lblSupplierType, 
-        lblAddSupplier, lblEdit, lblDelete, lblTotalItem, lblSupplies;
+        lblAddSupplier, lblEdit, lblDelete, lblTotalItem, lblSupplies, lblCoordinatorName;
         public void OnGet(string? SupplierName, int page = 1)
         {
             base.ExtractSessionData();
@@ -54,6 +55,7 @@ namespace LabMaterials.Pages
                              {
                                  SupplierId = i.SupplierId,
                                  SupplierName = i.SupplierName,
+                                 CoordinatorName = i.CoordinatorName,
                                  ConatctNumber=i.SupplierContact,
                                  SupplierType=i.SupplierType,
                                  
@@ -122,6 +124,7 @@ namespace LabMaterials.Pages
             this.lblSuppliers = (Program.Translations["Suppliers"])[Lang];
             this.lblSearch = (Program.Translations["Search"])[Lang];
             this.lblSupplierName = (Program.Translations["SupplierName"])[Lang];
+            this.lblCoordinatorName = (Program.Translations["CoordinatorName"])[Lang];
             this.lblConatctNumber = (Program.Translations["SupplierContactNumber"])[Lang];
             this.lblSupplierType = (Program.Translations["SupplierType"])[Lang];
             this.lblAddSupplier = (Program.Translations["AddSupplier"])[Lang];
