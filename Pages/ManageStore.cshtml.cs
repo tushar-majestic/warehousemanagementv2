@@ -4,14 +4,21 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http.Extensions;
+using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.Http; 
+using Microsoft.AspNetCore.Session;
+
 using SkiaSharp;
 using System.Data;
+
 
 namespace LabMaterials.Pages
 {
     public class ManageStoreModel : BasePageModel
     {
         public List<StoreDataResult> Stores { get; set; }
+        public List<StoreDataResult> StoresAll { get; set; }
         public Store store { get; set; }
         public string Message { get; set; }
         public int TotalItems { get; set; }
@@ -304,8 +311,10 @@ namespace LabMaterials.Pages
                 TotalPages = (int)Math.Ceiling((double)TotalItems / ItemsPerPage);
                 var list = query.ToList();
 
-                Stores = list.Skip((page - 1) * ItemsPerPage).Take(ItemsPerPage).ToList();   
+                Stores = list.Skip((page - 1) * ItemsPerPage).Take(ItemsPerPage).ToList();  
+                StoresAll = query.ToList();
  
+
                 CurrentPage = page;
 
                 /*if (string.IsNullOrEmpty(StoreNumber) == false)

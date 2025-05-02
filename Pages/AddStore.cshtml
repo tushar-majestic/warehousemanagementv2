@@ -117,7 +117,7 @@
                            
                             @* Warehouse manager name  *@
                             <div class="mb-4">
-                                    <label class="my-1 me-2" for="ManagerId">@Model.lblManagerName</label>
+                                    <label class="my-1 me-2" for="ManagerId">@Model.lblWarehouseManagerName</label>
                                     <select class="form-select" id="ManagerId" name="ManagerId"
                                         aria-label="Default select example">
                                         <option value=""></option>
@@ -127,7 +127,7 @@
                                     {
                                         foreach (var item in Model.ManagerGroupsList)
                                         {
-                                            <option value="@item.UserId" data-jobnumber="@item.JobNumber">@item.FullName</option>
+                                            <option value="@item.UserId" data-jobnumber="@item.JobNumber" selected="@(item.UserId == Model.ManagerId)">@item.FullName</option>
                                         }
                                     }
 
@@ -138,7 +138,7 @@
                             <div class="mb-4">
                                 <label for="ManagerJobNumber">@Model.lblManagerJobNumber</label>
                                 <input type="text" name="ManagerJobNumber" class="form-control" id="ManagerJobNumber"
-                                    value="@Model.ManagerJobNumber" /> 
+                                    value="@Model.ManagerJobNumber" readonly /> 
                             </div>
 
                             

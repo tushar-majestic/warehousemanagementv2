@@ -8,6 +8,7 @@ namespace LabMaterials.Pages
     public class SuppliesModel : BasePageModel
     {
         public List<SupplyInfo> Supplies { get; set; }
+        public List<SupplyInfo> SuppliesAll { get; set; }
         public int TotalItems { get; set; }
         public string Message { get; set; }
         [BindProperty]
@@ -178,6 +179,7 @@ namespace LabMaterials.Pages
                 var list = query.ToList();
 
                 Supplies = list.Skip((page - 1) * ItemsPerPage).Take(ItemsPerPage).ToList();
+                SuppliesAll = query.ToList();
 
                 CurrentPage = page;
             }

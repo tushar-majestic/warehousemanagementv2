@@ -5,6 +5,7 @@ namespace LabMaterials.Pages
     public class BasePageModel : PageModel
     {
         public string FullName { get; set; }
+        public string UserGroupName { get; set; }
         public string Usergroup { get; set; }
         public int? UserId { get; set; }
         public bool IsLDAP { get; set; }
@@ -19,7 +20,7 @@ namespace LabMaterials.Pages
         public string Lang { get; set; } = "ar";
 
 
-        public string lblView, lblRequests, lblLabMaterials, lblHome, lblNotifications, lblShowHideColumn, lblDisbursement, lblReports, lblManageUsers, lblManageItems, lblManageSupplies, lblManageStores, lblUserProfile, lblLogout, lblDamagedItems, lblLanguage, lblWarehouseType, lblManagerName, lblBuildingNumber, lblRoomDesc, lblStatus, lblRoomStatus, lblOpen, lblClosed, lblItemCards;
+        public string lblView, lblRequests, lblLabMaterials, lblHome, lblNotifications, lblShowHideColumn, lblDisbursement, lblReports, lblManageUsers, lblManageItems, lblManageSupplies, lblManageStores, lblUserProfile, lblLogout, lblDamagedItems, lblLanguage, lblWarehouseType, lblManagerName, lblBuildingNumber, lblRoomDesc, lblStatus, lblRoomStatus, lblOpen, lblClosed, lblRoomNumber, lblNoOfShelves, lblKeeperName, lblKeeperJobNum, lblWarehouseManagerName;
 
 
         public void ExtractSessionData()
@@ -29,6 +30,7 @@ namespace LabMaterials.Pages
             {
                 UserId = HttpContext.Session.GetInt32("UserId");
                 FullName = HttpContext.Session.GetString("FullName");
+                UserGroupName = HttpContext.Session.GetString("UserGroup");
                 Usergroup = HttpContext.Session.GetString("UserGroup");
                 IsLDAP = HttpContext.Session.GetInt32("IsLDAP") == 1;
                 CanManageStore = HttpContext.Session.GetInt32("CanManageStore") == 1;
@@ -74,6 +76,7 @@ namespace LabMaterials.Pages
             this.lblShowHideColumn = (Program.Translations["ShowHideColumn"])[Lang];
             this.lblWarehouseType = (Program.Translations["WarehouseType"])[Lang];
             this.lblManagerName = (Program.Translations["ManagerName"])[Lang];
+            this.lblWarehouseManagerName = (Program.Translations["WarehouseManagerName"])[Lang];
             this.lblBuildingNumber = (Program.Translations["BuildingNumber"])[Lang];
             this.lblRoomDesc = (Program.Translations["RoomDesc"])[Lang];
             this.lblStatus = (Program.Translations["WarehouseStatus"])[Lang];
@@ -81,7 +84,11 @@ namespace LabMaterials.Pages
             this.lblOpen = (Program.Translations["Open"])[Lang];
             this.lblClosed = (Program.Translations["Closed"])[Lang];
             this.lblRoomStatus = (Program.Translations["RoomStatus"])[Lang];
-            this.lblItemCards = (Program.Translations["ItemCards"])[Lang];
+            this.lblRoomNumber = (Program.Translations["RoomNumber"])[Lang];
+            this.lblNoOfShelves = (Program.Translations["NoOfShelves"])[Lang];
+            this.lblKeeperJobNum = (Program.Translations["KeeperJobNum"])[Lang];
+            this.lblKeeperName = (Program.Translations["KeeperName"])[Lang];
+
 
 
         }

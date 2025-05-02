@@ -61,11 +61,40 @@
 
 
     </script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script>
+        document.getElementById('exportExcel').addEventListener('click', function () {
+            let table = document.querySelector('#exportTable'); // use hidden export table directly
+            let wb = XLSX.utils.book_new();
+            let ws_data = [];
+
+            // Get headers
+            const headers = Array.from(table.querySelectorAll('thead th'))
+                .map(th => th.textContent.trim()); // use textContent instead of innerText
+            ws_data.push(headers);
+
+            // Get rows
+            const rows = table.querySelectorAll('tbody tr');
+            rows.forEach(row => {
+                const rowData = [];
+                const cells = row.querySelectorAll('th, td');
+                cells.forEach(cell => {
+                    rowData.push(cell.textContent.trim()); // use textContent
+                });
+                ws_data.push(rowData);
+            });
+
+            // Create worksheet and trigger download
+            let ws = XLSX.utils.aoa_to_sheet(ws_data);
+            XLSX.utils.book_append_sheet(wb, ws, "Supplies Data");
+            XLSX.writeFile(wb, "Supplies.xlsx");
+        });
+    </script>
 }
 @{
    
 
-    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4 pb-2">
         <div class="d-block mb-4 mb-md-0">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb bg-transparent p-2 mb-0">
@@ -107,6 +136,10 @@
             </a>
 
         </div>
+    </div>
+    <div class="mb-4">
+        <button id="exportExcel" class="btn btn-success">Export Excel</button>
+        <button id="printBtn" class="btn btn-primary">Print Table</button>
     </div>
 
     
@@ -567,5 +600,128 @@
 
             </ul>
         </nav>
+        <div class="table-responsive" id="exportTableContainer" style="display: none;">
+            <table class="table table-centered table-nowrap mb-0 rounded" id="exportTable">
+                <thead class="thead-light">
+                    <tr>
+                        
+                        @if (Model.SelectedColumns.Contains("SupplierName"))
+                            {
+                            <th scope="col" class="border-0 rounded-start">@Model.lblSupplierName</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("itemName"))
+                            {
+                            <th scope="col" class="border-0">@Model.lblItemName</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("typeCode"))
+                            {
+                            <th scope="col" class="border-0">@Model.lbltypeCode</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("ItemType"))
+                            {
+                            <th scope="col" class="border-0">@Model.lblItemType</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("StoreName"))
+                            {
+                            <th scope="col" class="border-0">@Model.lblStoreName</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("RoomName"))
+                            {
+                            <th scope="col" class="border-0">@Model.lblRoomName</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("ShelfNumber"))
+                            {
+                            <th scope="col" class="border-0">@Model.lblShelfNumber</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("QuantityReceived"))
+                            {
+                            <th scope="col" class="border-0">@Model.lblQuantityReceived</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("PurchaseOrderNo"))
+                            {
+                            <th scope="col" class="border-0">@Model.lblPurchaseOrderNo</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("InvoiceNumber"))
+                            {
+                            <th scope="col" class="border-0">@Model.lblInvoiceNumber</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("ReceivedAt"))
+                            {
+                            <th scope="col" class="border-0">@Model.lblReceivedAt</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("expiry"))
+                            {
+                            <th scope="col" class="border-0">@Model.lblExpiryDate</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("InventoryBalanced"))
+                            {
+                            <th scope="col" class="border-0">@Model.lblInventoryBalanced</th>
+                            }
+                    </tr>  
+                </thead>
+                <tbody>
+                    @if (Model.SuppliesAll != null)
+                    {
+                        foreach (var item in Model.SuppliesAll)
+                        {
+                            <tr>
+                                @if (Model.SelectedColumns.Contains("SupplierName"))
+                                {
+                                <th scope="row">@item.SupplierName</th>
+                                }
+                                @if (Model.SelectedColumns.Contains("itemName"))
+                                {
+                                <td>@item.ItemName</td>
+                                }
+                                @if (Model.SelectedColumns.Contains("typeCode"))
+                                {
+                                <td>@item.ItemCode</td>
+                                }
+                                @if (Model.SelectedColumns.Contains("ItemType"))
+                                {
+                                <td>@item.ItemType</td>
+                                }
+                                @if (Model.SelectedColumns.Contains("StoreName"))
+                                {
+                                <td>@item.StoreName</td>
+                                }
+                                @if (Model.SelectedColumns.Contains("RoomName"))
+                                {
+                                <td>@item.RoomName</td>
+                                }
+                                @if (Model.SelectedColumns.Contains("ShelfNumber"))
+                                {
+                                <td>@item.ShelfNumber</td>
+                                }
+                                @if (Model.SelectedColumns.Contains("QuantityReceived"))
+                                {
+                                <td>@item.QuantityReceived</td>
+                                }
+                                @if (Model.SelectedColumns.Contains("PurchaseOrderNo"))
+                                {
+                                <td>@item.PurchaseOrderNo</td>
+                                }
+                                @if (Model.SelectedColumns.Contains("InvoiceNumber"))
+                                {
+                                <td>@item.InvoiceNumber</td>
+                                }
+                                @if (Model.SelectedColumns.Contains("ReceivedAt"))
+                                {
+                                <td>@item.ReceivedAt</td>
+                                }
+                                @if (Model.SelectedColumns.Contains("expiry"))
+                                {
+                                <td>@item.ExpiryDate</td>
+                                }
+                                @if (Model.SelectedColumns.Contains("InventoryBalanced"))
+                                {
+                                <td>@item.InventoryBalanced</td>
+                                }
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
     }
 

@@ -57,9 +57,10 @@ namespace LabMaterials.Pages
                 StoreNumber = store.StoreNumber;
                 StoreName = store.StoreName;
                 StoreId = store.StoreId;
-                ManagerId = store.WarehouseManagerID;
+                ManagerId = store.WarehouseManagerId;
 
                 StoreType = store.StoreType;
+                Status = store.WarehouseStatus;
 
                 var manager = dbContext.Users
                     .Where(u => u.UserId == ManagerId)
@@ -136,7 +137,7 @@ namespace LabMaterials.Pages
                                 }
                             }*/
                             store.StoreType = StoreType;
-                            store.WarehouseManagerID = ManagerId;
+                            store.WarehouseManagerId = ManagerId;
                             store.WarehouseStatus = Status;
                             store.StoreName = StoreName;
                             store.StoreNumber = StoreNumber;

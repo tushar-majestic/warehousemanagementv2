@@ -7,10 +7,14 @@ namespace LabMaterials.Pages
     public class ManageDamagedModel : BasePageModel
     {
         public List<ItemInfo> Items { get; set; }
+        public List<ItemInfo> ItemsAll { get; set; }
         public int TotalItems { get; set; }
         public string Message { get; set; }
         [BindProperty]
         public string ItemName { get; set; }
+        public List<string> UniqueItemNames { get; set; }
+        public List<string> UniqueTypeNames { get; set; }
+        public List<string> UniqueDamageReasons { get; set; }
         public int CurrentPage { get; set; }
         public int ItemsPerPage { get; set; } = 10;
         public int TotalPages { get; set; }
@@ -217,9 +221,14 @@ namespace LabMaterials.Pages
             TotalItems = query.Count();
             TotalPages = (int)Math.Ceiling((double)TotalItems / ItemsPerPage);
 
+            UniqueItemNames = query.Select(i => i.ItemName).Distinct().ToList();
+            UniqueTypeNames = query.Select(i => i.TypeName).Distinct().ToList();
+            UniqueDamageReasons = query.Select(i => i.DamageReason).Distinct().ToList();
+
             var list = query.ToList();
 
             Items = list.Skip((page - 1) * ItemsPerPage).Take(ItemsPerPage).ToList();
+            ItemsAll = query.ToList();
 
             CurrentPage = page;
         }

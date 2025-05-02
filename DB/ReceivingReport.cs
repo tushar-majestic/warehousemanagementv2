@@ -1,45 +1,53 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace LabMaterials.DB;
 
-public class ReceivingReport
+[Index("SupplierId", Name = "IX_ReceivingReports_SupplierId")]
+public partial class ReceivingReport
 {
     [Key]
     public int Id { get; set; }
-    // General info
-    public int SerialNumber { get; set; }
-    public string FiscalYear { get; set; }
 
-    [DataType(DataType.Date)]
+    public string ReceivingWarehouse { get; set; } = null!;
+
     public DateTime ReceivingDate { get; set; }
 
-    public string RecipientSector { get; set; }
-    public string SectorNumber { get; set; }
+    public string FiscalYear { get; set; } = null!;
 
-    public string ReceivingWarehouse { get; set; }
-    public string BasedOnDocument { get; set; }
+    public string AttachmentPath { get; set; } = null!;
 
-    public string DocumentNumber { get; set; }
+    public string BasedOnDocument { get; set; } = null!;
 
-    [DataType(DataType.Date)]
+    public string ChiefResponsible { get; set; } = null!;
+
+    public string Comments { get; set; } = null!;
+
+    public string CreatedBy { get; set; } = null!;
+
     public DateTime DocumentDate { get; set; }
 
-    public string AttachmentPath { get; set; }
+    public string DocumentNumber { get; set; } = null!;
 
-    // Foreign key reference to Supplier
+    public string RecipientEmployeeId { get; set; } = null!;
+
+    public string RecipientSector { get; set; } = null!;
+
+    public string SectorNumber { get; set; } = null!;
+
+    public int SerialNumber { get; set; }
+
+    public string TechnicalMember { get; set; } = null!;
+
     public int SupplierId { get; set; }
-    public virtual Supplier Supplier { get; set; }  // Navigation property to Supplier
 
+    [InverseProperty("ReceivingReport")]
+    public virtual ICollection<ReceivingItem> ReceivingItems { get; set; } = new List<ReceivingItem>();
 
-
-    // Metadata
-    public string Comments { get; set; }
-    public string RecipientEmployeeId { get; set; }
-    public string TechnicalMember { get; set; }
-    public string ChiefResponsible { get; set; }
-
-    public string CreatedBy { get; set; }
-
-    public virtual ICollection<ReceivingItem> Items { get; set; } = new List<ReceivingItem>();
+    [ForeignKey("SupplierId")]
+    [InverseProperty("ReceivingReports")]
+    public virtual Supplier Supplier { get; set; } = null!;
 }

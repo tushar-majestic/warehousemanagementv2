@@ -12,6 +12,7 @@ namespace LabMaterials.Pages
     public class ManageRoomsModel : BasePageModel
     {
         public List<StoreDataResult> Stores { get; set; }
+        public List<StoreDataResult> StoresAll { get; set; }
         public List<Room> Rooms { get; set; }
         public string Message { get; set; }
         public int TotalItems { get; set; }
@@ -19,6 +20,7 @@ namespace LabMaterials.Pages
         public int ItemsPerPage { get; set; } = 10;
         public int TotalPages { get; set; }
         public string RoomName { get; set; }
+        public string BuildingNnumber;
 
         public void OnGet(string? RoomName, int page = 1) 
         {
@@ -167,6 +169,8 @@ namespace LabMaterials.Pages
                                             codeParam, descParam, msgParam)
                                 .ToList();
 
+                              
+
             var activeRooms = dbContext.Rooms
                                 .Where(r => r.Ended == null)
                                 .ToList();
@@ -174,13 +178,21 @@ namespace LabMaterials.Pages
             // Join stores with active rooms
             var joinedData = from store in allStores
                             join room in activeRooms on store.RoomId equals room.RoomId
+                            join user in dbContext.Users on room.KeeperId equals user.UserId
                             select new StoreDataResult
                             {
                                 StoreId = store.StoreId,
                                 StoreName = store.StoreName,
                                 ShelfNumber = store.ShelfNumber,
                                 RoomId = room.RoomId,
-                                RoomName = room.RoomName,
+                                KeeperName = user.FullName,
+                                KeeperJobNum = user.JobNumber,
+                                BuildingNumber = room.BuildingNumber,
+                                RoomNo = room.RoomNo,
+                                RoomDesc = room.RoomDesc,
+                                NoOfShelves = room.NoOfShelves,
+                                RoomStatus = room.RoomStatus
+                            
                             };
 
             // Optional: filter by room name
@@ -188,10 +200,16 @@ namespace LabMaterials.Pages
             {
                 joinedData = joinedData.Where(s => s.RoomName != null && s.RoomName.Contains(RoomName));
             }
+            
 
             TotalItems = joinedData.Count();
             TotalPages = (int)Math.Ceiling((double)TotalItems / ItemsPerPage);
             Stores = joinedData.Skip((page - 1) * ItemsPerPage).Take(ItemsPerPage).ToList();
+            StoresAll = joinedData.ToList();
+            //   foreach (var store in StoresAll)
+            //                     {
+            //                         Console.WriteLine($"ID: {store.StoreId}, Name: {store.StoreName}, KeeperName: {store.KeeperName}");
+            //                     }
             CurrentPage = page;
         }
 

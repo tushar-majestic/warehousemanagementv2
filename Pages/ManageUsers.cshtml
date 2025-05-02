@@ -38,13 +38,56 @@
                     showErrorNotification(errorMessageFromServer);
             </text>
         }
+
+        const toggleButton = document.getElementById('toggleDropdown');
+        const dropdownPanel = document.getElementById('dropdownPanel');
+
+        toggleButton.addEventListener('click', function () {
+            dropdownPanel.style.display = (dropdownPanel.style.display === 'none' || dropdownPanel.style.display === '') ? 'block' : 'none';
+        });
+
+        // Optional: hide when click outside
+        document.addEventListener('click', function (e) {
+            if (!toggleButton.contains(e.target) && !dropdownPanel.contains(e.target)) {
+                dropdownPanel.style.display = 'none';
+            }
+        });
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script>
+        document.getElementById('exportExcel').addEventListener('click', function () {
+            let table = document.querySelector('#exportTable'); // use hidden export table directly
+            let wb = XLSX.utils.book_new();
+            let ws_data = [];
+
+            // Get headers
+            const headers = Array.from(table.querySelectorAll('thead th'))
+                .map(th => th.textContent.trim()); // use textContent instead of innerText
+            ws_data.push(headers);
+
+            // Get rows
+            const rows = table.querySelectorAll('tbody tr');
+            rows.forEach(row => {
+                const rowData = [];
+                const cells = row.querySelectorAll('th, td');
+                cells.forEach(cell => {
+                    rowData.push(cell.textContent.trim()); // use textContent
+                });
+                ws_data.push(rowData);
+            });
+
+            // Create worksheet and trigger download
+            let ws = XLSX.utils.aoa_to_sheet(ws_data);
+            XLSX.utils.book_append_sheet(wb, ws, "Manage Users Data");
+            XLSX.writeFile(wb, "ManageUsers.xlsx");
+        });
     </script>
 }
 @{
     
     
 
-    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4 pb-2">
         <div class="d-block mb-4 mb-md-0">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb bg-transparent p-2 mb-0">
@@ -74,8 +117,12 @@
 
         </div>
     </div>
+    <div class="mb-4">
+        <button id="exportExcel" class="btn btn-success">Export Excel</button>
+        <button id="printBtn" class="btn btn-primary">Print Table</button>
+    </div>
     <div class="table-settings mb-4">
-        <form method="post" asp-page-handler="Search" class="row align-items-center">
+        <form method="post" asp-page-handler="Action" class="row align-items-center">
             
             <div class="col col-md-3 col-lg-3 col-xl-3">
                 <div class="input-group me-2 me-lg-3 fmxw-400">
@@ -93,7 +140,74 @@
                 </div>
             </div>
             <div class="col-4 col-md-2 col-xl-1 ps-md-0 ">
-                <button type="submit" class="btn btn-primary">@Model.lblSearch</button>
+                <button type="submit" name="action" value="search" class="btn btn-primary">@Model.lblSearch</button>
+            </div>
+            <div class="col text-end position-relative">
+                <button type="button" id="toggleDropdown" class="btn btn-secondary">
+                    @Model.lblShowHideColumn
+                </button>
+
+                <!-- DROPDOWN PANEL GOES HERE -->
+                <div id="dropdownPanel" class="card p-2 shadow-sm position-absolute"
+                    style="right: 0; top: 100%; width: 200px; display: none; z-index: 1000;">
+                    
+                    <!-- Your checkboxes here -->
+                    <div class="form-check mb-1">
+                        <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="userName" id="userName"
+                        @(Model.SelectedColumns.Contains("userName") ? "checked" : "")>
+                        <label class="form-check-label" for="userName">@Model.lblUserName</label>
+                    </div>
+                    <div class="form-check mb-1">
+                        <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="fullName" id="fullName"
+                        @(Model.SelectedColumns.Contains("fullName") ? "checked" : "")>
+                        <label class="form-check-label" for="fullName">@Model.lblFullName</label>
+                    </div>
+                    <div class="form-check mb-1">
+                        <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="email" id="email"
+                        @(Model.SelectedColumns.Contains("email") ? "checked" : "")>
+                        <label class="form-check-label" for="email">@Model.lblEmail</label>
+                    </div>
+                    <div class="form-check mb-1">
+                        <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="userType" id="userType"
+                        @(Model.SelectedColumns.Contains("userType") ? "checked" : "")>
+                        <label class="form-check-label" for="userType">@Model.lblUserType</label>
+                    </div>
+                    <div class="form-check mb-1">
+                        <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="domainUser" id="domainUser"
+                        @(Model.SelectedColumns.Contains("domainUser") ? "checked" : "")>
+                        <label class="form-check-label" for="domainUser">@Model.lblIsDomainUser</label>
+                    </div>
+                    <div class="form-check mb-1">
+                        <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="jobNumber" id="jobNumber"
+                        @(Model.SelectedColumns.Contains("jobNumber") ? "checked" : "")>
+                        <label class="form-check-label" for="jobNumber">@Model.lblJobNumber</label>
+                    </div>
+                    <div class="form-check mb-1">
+                        <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="empAffiliation" id="empAffiliation"
+                        @(Model.SelectedColumns.Contains("empAffiliation") ? "checked" : "")>
+                        <label class="form-check-label" for="empAffiliation">@Model.lblEmpAffiliation</label>
+                    </div>
+                    <div class="form-check mb-1">
+                        <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="transfer" id="transfer"
+                        @(Model.SelectedColumns.Contains("transfer") ? "checked" : "")>
+                        <label class="form-check-label" for="transfer">@Model.lblTransfer</label>
+                    </div>
+                    <div class="form-check mb-1">
+                        <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="userEnabled" id="userEnabled"
+                        @(Model.SelectedColumns.Contains("userEnabled") ? "checked" : "")>
+                        <label class="form-check-label" for="userEnabled">@Model.lblUserEnabled</label>
+                    </div>
+                    <div class="form-check mb-1">
+                        <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="isLocked" id="isLocked"
+                        @(Model.SelectedColumns.Contains("isLocked") ? "checked" : "")>
+                        <label class="form-check-label" for="isLocked">@Model.lblIsLocked</label>
+                    </div>
+
+                    <div class="form-check mb-1 text-center">
+                        <button type="submit" name="action" value="updateColumns" class="btn btn-success btn-sm">Ok</button>
+                    </div>
+
+                </div>
             </div>
         </form>
     </div>
@@ -177,18 +291,46 @@
                 <table class="table table-centered table-nowrap mb-0 rounded">
                     <thead class="thead-light">
                         <tr>
+                            @if (Model.SelectedColumns.Contains("userName"))
+                            {
                             <th scope="col" class="border-0 rounded-start">@Model.lblUserName</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("fullName"))
+                            {
                             <th scope="col" class="border-0">@Model.lblFullName</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("email"))
+                            {
                             <th scope="col" class="border-0">@Model.lblEmail</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("userType"))
+                            {
                             <th scope="col" class="border-0">@Model.lblUserType</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("domainUser"))
+                            {
                             <th scope="col" class="border-0">@Model.lblIsDomainUser</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("jobNumber"))
+                            {
                             <th scope="col" class="border-0">@Model.lblJobNumber</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("empAffiliation"))
+                            {
                             <th scope="col" class="border-0">@Model.lblEmpAffiliation</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("transfer"))
+                            {
                             <th scope="col" class="border-0">@Model.lblTransfer</th>
-
+                            }
+                            @if (Model.SelectedColumns.Contains("userEnabled"))
+                            {
                             <th scope="col" class="border-0">@Model.lblUserEnabled</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("isLocked"))
+                            {
                             <th scope="col" class="border-0">@Model.lblIsLocked</th>
-                            
+                            }
                             @*<th scope="col" class="border-0">@Model.lblUserType</th>
                             <th scope="col" class="border-0">@Model.lblUserGroupName</th>*@
                             <th scope="col" class="border-0 rounded-end"></th>
@@ -201,17 +343,46 @@
                 foreach (var item in Model.Users)
                 {
                     <tr>
+                        @if (Model.SelectedColumns.Contains("userName"))
+                        {
                         <th class="fw-bold" scope="row">@item.UserName</th>
+                        }
+                        @if (Model.SelectedColumns.Contains("fullName"))
+                        {
                         <td>@item.FullName</td>
+                        }
+                        @if (Model.SelectedColumns.Contains("email"))
+                        {
                         <td>@item.Email</td>
-                   
+                        }
+                        @if (Model.SelectedColumns.Contains("userType"))
+                        {
                         <td>@item.GroupName</td>
+                        }
+                        @if (Model.SelectedColumns.Contains("domainUser"))
+                        {
                         <td>@item.IsADUser</td>
+                        }
+                        @if (Model.SelectedColumns.Contains("jobNumber"))
+                        {
                         <td>@item.JobNumber</td>
+                        }
+                        @if (Model.SelectedColumns.Contains("empAffiliation"))
+                        {
                         <td>@item.EmpAffiliation</td>
+                        }
+                        @if (Model.SelectedColumns.Contains("transfer"))
+                        {
                         <td>@item.Transfer</td>
+                        }
+                        @if (Model.SelectedColumns.Contains("userEnabled"))
+                        {
                         <td>@item.IsActive</td>
+                        }
+                        @if (Model.SelectedColumns.Contains("isLocked"))
+                        {
                         <td>@item.IsLocked</td>
+                        }
 
                         <td>
                             <form method="post">
@@ -324,5 +495,46 @@
             </ul>
         </nav>
     }
+    <div class="table-responsive" id="exportTableContainer" style="display: none;">
+        <table class="table table-centered table-nowrap mb-0 rounded" id="exportTable">
+            <thead class="thead-light">
+                <tr>
+                    <th>@Model.lblUserName</th>
+                    <th>@Model.lblFullName</th>
+                    <th>@Model.lblEmail</th>
+                    <th>@Model.lblUserType</th>
+                    <th>@Model.lblIsDomainUser</th>
+                    <th>@Model.lblJobNumber</th>
+                    <th>@Model.lblEmpAffiliation</th>
+                    <th>@Model.lblTransfer</th>
+
+                    <th>@Model.lblUserEnabled</th>
+                    <th>@Model.lblIsLocked</th>
+                </tr>  
+            </thead>
+            <tbody>
+                @if (Model.UsersAll != null)
+                {
+                    
+                    foreach (var item in Model.UsersAll)
+                    {
+                        <tr>
+                        <th>@item.UserName</th>
+                        <td>@item.FullName</td>
+                        <td>@item.Email</td>
+                   
+                        <td>@item.GroupName</td>
+                        <td>@item.IsADUser</td>
+                        <td>@item.JobNumber</td>
+                        <td>@item.EmpAffiliation</td>
+                        <td>@item.Transfer</td>
+                        <td>@item.IsActive</td>
+                        <td>@item.IsLocked</td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
 
 }

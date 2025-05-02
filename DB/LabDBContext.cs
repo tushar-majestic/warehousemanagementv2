@@ -29,9 +29,15 @@ public partial class LabDBContext : DbContext
 
     public virtual DbSet<ItemType> ItemTypes { get; set; }
 
+    public virtual DbSet<MaterialRequest> MaterialRequests { get; set; }
+
     public virtual DbSet<PrimaryKey> PrimaryKeys { get; set; }
 
     public virtual DbSet<Privilege> Privileges { get; set; }
+
+    public virtual DbSet<ReceivingItem> ReceivingItems { get; set; }
+
+    public virtual DbSet<ReceivingReport> ReceivingReports { get; set; }
 
     public virtual DbSet<Requester> Requesters { get; set; }
 
@@ -54,6 +60,9 @@ public partial class LabDBContext : DbContext
     public virtual DbSet<Tablecolumn> Tablecolumns { get; set; }
 
     public virtual DbSet<Unit> Units { get; set; }
+
+    public virtual DbSet<ItemGroup> ItemGroup { get; set; }
+
 
     public virtual DbSet<User> Users { get; set; }
 
@@ -142,6 +151,22 @@ public partial class LabDBContext : DbContext
             entity.HasKey(e => e.TableName).HasName("PK__PrimaryK__733652EFA4AA236C");
         });
 
+        modelBuilder.Entity<ReceivingReport>(entity =>
+        {
+            entity.Property(e => e.AttachmentPath).HasDefaultValue("");
+            entity.Property(e => e.BasedOnDocument).HasDefaultValue("");
+            entity.Property(e => e.ChiefResponsible).HasDefaultValue("");
+            entity.Property(e => e.Comments).HasDefaultValue("");
+            entity.Property(e => e.CreatedBy).HasDefaultValue("");
+            entity.Property(e => e.DocumentNumber).HasDefaultValue("");
+            entity.Property(e => e.FiscalYear).HasDefaultValue("");
+            entity.Property(e => e.ReceivingWarehouse).HasDefaultValue("");
+            entity.Property(e => e.RecipientEmployeeId).HasDefaultValue("");
+            entity.Property(e => e.RecipientSector).HasDefaultValue("");
+            entity.Property(e => e.SectorNumber).HasDefaultValue("");
+            entity.Property(e => e.TechnicalMember).HasDefaultValue("");
+        });
+
         modelBuilder.Entity<Requester>(entity =>
         {
             entity.HasKey(e => e.ReqId).HasName("PK__REQUESTE__06143B5B0B81E13C");
@@ -185,7 +210,6 @@ public partial class LabDBContext : DbContext
         modelBuilder.Entity<Store>(entity =>
         {
             entity.Property(e => e.StoreId).ValueGeneratedNever();
-            entity.Property(e => e.BuildingNumber).IsFixedLength();
             entity.Property(e => e.IsActive).HasDefaultValue(1);
             entity.Property(e => e.StoreType).IsFixedLength();
         });
@@ -258,16 +282,6 @@ public partial class LabDBContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK_UserGroup_Privileges_UserGroup");
         });
-
-        modelBuilder.Entity<ReceivingItem>()
-                 .HasOne(ri => ri.Item)
-                 .WithMany()
-                 .HasForeignKey(ri => ri.ItemId);
-
-        modelBuilder.Entity<ReceivingReport>()
-            .HasMany(r => r.Items)
-            .WithOne(ri => ri.ReceivingReport)
-            .HasForeignKey(ri => ri.ReceivingReportId);
 
         modelBuilder.Entity<VActivityLog>(entity =>
         {

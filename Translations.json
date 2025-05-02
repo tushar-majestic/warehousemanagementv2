@@ -100,7 +100,6 @@
     "en": "Add Shelves",
     "ar": "أضف الرفوف"
   },
-
   //Common
   "Edit": {
     "en": "Edit",
@@ -142,13 +141,10 @@
     "en": "العربية",
     "ar": "English"
   },
-
   "TotalItem": {
     "en": "Total Items found",
     "ar": "إجمالي الأصناف التي تم العثور عليها"
   },
-
-
   //HeaderLinks
   "Disbursements": {
     "en": "Material dispensing",
@@ -190,14 +186,10 @@
     "en": "Supplies",
     "ar": "التوريدات"
   },
-
-
   "SupplierAdded": {
     "en": "Supplier Added Successfully",
     "ar": "تمت إضافة المورد بنجاح"
   },
-
-
   "SupplierNotAdded": {
     "en": "Supplier Not Added",
     "ar": "لم تتم إضافة المورد"
@@ -234,7 +226,6 @@
     "en": "Change Password",
     "ar": "تغيير كلمة المرور"
   },
-
   //ChangePassword
   "CurrentPassword": {
     "en": "Current Password",
@@ -248,9 +239,7 @@
     "en": "Confirm New Password",
     "ar": "تأكيد كلمة المرور الجديدة"
   },
-
   //Items
-
   "ItemName": {
     "en": "Item Name",
     "ar": "اسم الصنف"
@@ -315,7 +304,6 @@
     "en": "Return items",
     "ar": "إرجاع الأصناف"
   },
-
   //ItemGroup
   "ItemGroups": {
     "en": "Item Groups",
@@ -337,8 +325,6 @@
     "en": "Update Item Group",
     "ar": "تحديث مجموعة الصنف"
   },
-
-
   //Units
   "AddUnit": {
     "en": "Add Unit",
@@ -365,11 +351,11 @@
     "ar": "الوحدات"
   },
   "ManagerName": {
-    "en": "Manager Name",
+    "en": "Warehouse Manager",
     "ar": "اسم المدير"
   },
   "ManagerJobNumber": {
-    "en": "Manager Job Number",
+    "en": "Warehouse Manager Job Number",
     "ar": "رقم وظيفة المدير"
   },
   "WarehouseStatus": {
@@ -396,7 +382,6 @@
     "en": "Document type",
     "ar": "الوحدات"
   },
-
   "ShelfIsMissing": {
     "en": "Shelf Is Missing",
     "ar": "رقم الفاتورة مفقود"
@@ -413,7 +398,6 @@
     "en": "Please select order received date.",
     "ar": "يرجى تحديد تاريخ استلام الطلب"
   },
-
   //Stores
   "Stores": {
     "en": "Warehouses",
@@ -447,7 +431,6 @@
     "en": "Update Warehouse",
     "ar": "تحديث المستودع"
   },
-
   //Destinations
   "Destinations": {
     "en": "Destinations",
@@ -515,13 +498,10 @@
     "en": "Supplier Not Updated",
     "ar": "لم يتم تحديث المورد"
   },
-
   "SupplierPhoneNumberMissing": {
     "en": "Supplier Phone Number Is Missing",
     "ar": "رقم تواصل المورد مفقود"
   },
-
-
   "SupplierContactNumber": {
     "en": "Contact Number",
     "ar": "رقم التواصل"
@@ -530,10 +510,6 @@
     "en": "Contact Number",
     "ar": "رقم التواصل"
   },
-
-
-
-
   "PurchaseOrderNumberIsMissing": {
     "en": "Purchase Order Number Is Missing",
     "ar": "رقم أمر الشراء مفقود"
@@ -546,8 +522,6 @@
     "en": "Requests",
     "ar": "اسم"
   },
-
-
   //Supplies
   "QuantityReceived": {
     "en": "Quantity Received",
@@ -577,7 +551,6 @@
     "en": "Inventory Balanced",
     "ar": "توازن المخزون"
   },
-
   //Disbursements
   "RequesterName": {
     "en": "Requester Name",
@@ -607,7 +580,6 @@
     "en": "Materials Request Status",
     "ar": "حالة الصرف"
   },
-
   //UserGroups
   "UserGroups": {
     "en": "User Groups",
@@ -629,7 +601,6 @@
     "en": "Privilages",
     "ar": "الأذونات"
   },
-
   //Users
   "Users": {
     "en": "Users",
@@ -687,8 +658,6 @@
     "en": "Re-type Password",
     "ar": "أعد كتابة كلمة المرور"
   },
-
-
   //Reports
   "HazardousMaterials": {
     "en": "Hazardous Materials",
@@ -738,7 +707,6 @@
     "en": "Action Time",
     "ar": "وقت التعديل"
   },
-
   //Errors
   "InvalidLgoin": {
     "en": "User LoginName or password is not valid.",
@@ -760,7 +728,6 @@
     "en": "Transfer is required.",
     "ar": "النقل مطلوب"
   },
-
   "ReTypePasswordMissing": {
     "en": "ReType Password",
     "ar": "أعد كتابة كلمة المرور"
@@ -897,18 +864,14 @@
     "en": "Invoice number is missing.",
     "ar": "رقم الفاتورة مفقود"
   },
-
   "SupplierNameisMissing": {
     "en": "Supplier Name is Missing",
     "ar": "اسم المورد مفقود"
   },
-
   "ItemCodeIsMissing": {
     "en": "Item Code Is Missing",
     "ar": "رمز الصنف مفقود"
   },
-
-
   "ItemTypeIsMissing": {
     "en": "Type Name Is Missing",
     "ar": "اسم نوع الصنف مفقود"
@@ -1022,7 +985,7 @@
     "ar": "اسم الغرفة"
   },
   "RoomNumber": {
-    "en": "Room Number",
+    "en": "Room No.",
     "ar": "رقم الغرفة"
   },
   "RoomNumberMissing": {
@@ -1214,8 +1177,8 @@
     "ar": "منظر"
   },
   "BuildingNumber": {
-    "en": "Building Number",
-    "ar": "Building Number"
+    "en": "Building No.",
+    "ar": "Building No."
   },
   "NoOfShelves": {
     "en": "Number of Shelves",
@@ -1241,9 +1204,9 @@
     "en": "Building Number is required.",
     "ar": "Building Number is required."
   },
-  "KeeperJobNumMissing": {
-    "en": "Warehouse Keeper Job Number is required.",
-    "ar": "Warehouse Keeper Job Number is required."
+  "KeeperMissing": {
+    "en": "Warehouse Keeper required.",
+    "ar": "Warehouse Keeper required."
   },
   "WarehouseStatusMissing": {
     "en": "Warehouse Status is required.",
@@ -1256,6 +1219,25 @@
   "RoomExists": {
     "en": "Room Exists.",
     "ar": "Room Exists."
+  },
+  "CoordinatorName": {
+    "en": "Coordinator Name",
+    "ar": "Coordinator Name"
+  },
+  "ManagerWarehouseOnly": {
+    "en": "Manager can add room to his warehouse only.",
+    "ar": "Manager can add room to his warehouse only."
+  },
+  "ManagerEditWarehouseOnly": {
+    "en": "Manager can edit room of his warehouse only.",
+    "ar": "Manager can edit room of his warehouse only."
+  },
+  "WarehouseManagerName": {
+    "en": "Warehouse Manager Name",
+    "ar": "Warehouse Manager Name"
+  },
+  "WarehouseMissing": {
+    "en": "Warehouse is required",
+    "ar": "Warehouse is required"
   }
-
 }

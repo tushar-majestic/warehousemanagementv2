@@ -28,11 +28,12 @@ namespace LabMaterials.Pages
             ManagerGroupsList = dbContext.Users
                 .Where(u => u.UserGroupId == managerGroupId)
                 .ToList();
-                Console.WriteLine(ManagerGroupsList);
 
             if (CanManageStore == false)
                 RedirectToPage("./Index?lang=" + Lang);
         }
+
+     
 
         public IActionResult OnPost([FromForm] string StoreNumber, [FromForm] string StoreName, [FromForm] string StoreType, [FromForm] int? ManagerId, [FromForm] string ManagerJobNumber, [FromForm] string Status)
         {
@@ -57,7 +58,7 @@ namespace LabMaterials.Pages
 
                     var dbContext = new LabDBContext();
                     var managerGroupId = dbContext.UserGroups
-                                        .Where(g => g.UserGroupName == "Manager")
+                                        .Where(g => g.UserGroupName == "Warehouse Manager")
                                         .Select(g => g.UserGroupId)
                                         .FirstOrDefault();
 
@@ -73,8 +74,7 @@ namespace LabMaterials.Pages
                         ErrorMsg = (Program.Translations["StoreNumberMissing"])[Lang];
                     else if (!ManagerId.HasValue)
                         ErrorMsg = (Program.Translations["ManagerNameMissing"])[Lang];
-                    else if (string.IsNullOrEmpty(ManagerJobNumber))
-                        ErrorMsg = (Program.Translations["ManagerJobNumberMissing"])[Lang];
+                    
                     else if (string.IsNullOrEmpty(Status))
                         ErrorMsg = (Program.Translations["WarehouseStatusMissing"])[Lang];
                     
@@ -90,8 +90,7 @@ namespace LabMaterials.Pages
                             var store = new Store
                             {   
                                 StoreType = StoreType,
-                                WarehouseManagerID = ManagerId,
-                                // ManagerJobNum = parsedManagerJobNumber,
+                                WarehouseManagerId = ManagerId,
                                 WarehouseStatus = Status,
                                 ShelfNumbers = Shelves,
                                 StoreName = StoreName,

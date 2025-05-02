@@ -8,17 +8,19 @@ namespace LabMaterials.Pages
     public class ManageSupplierModel : BasePageModel
     {
         public List<SupplierInfo> Suppliers { get; set; }
+        public List<SupplierInfo> SuppliersAll { get; set; }
         public int TotalItems { get; set; }
         public string Message { get; set; }
 
         [BindProperty]
         public string SupplierName { get; set; }
+        public string CoordinatorName { get; set; }
         public int CurrentPage { get; set; }
         public int ItemsPerPage { get; set; } = 10;
         public int TotalPages { get; set; }
         
         public string lblSuppliers, lblSearch, lblSuplierName, lblSubmit, lblSupplierName, lblConatctNumber, lblSupplierType, 
-        lblAddSupplier, lblEdit, lblDelete, lblTotalItem, lblSupplies;
+        lblAddSupplier, lblEdit, lblDelete, lblTotalItem, lblSupplies, lblCoordinatorName;
         public void OnGet(string? SupplierName, int page = 1)
         {
             base.ExtractSessionData();
@@ -53,6 +55,7 @@ namespace LabMaterials.Pages
                              {
                                  SupplierId = i.SupplierId,
                                  SupplierName = i.SupplierName,
+                                 CoordinatorName = i.CoordinatorName,
                                  ConatctNumber=i.SupplierContact,
                                  SupplierType=i.SupplierType,
                                  
@@ -66,7 +69,8 @@ namespace LabMaterials.Pages
                 TotalItems = query.Count();
                 TotalPages = (int)Math.Ceiling((double)TotalItems / ItemsPerPage);
                 var list = query.ToList();
-                Suppliers = list.Skip((page - 1) * ItemsPerPage).Take(ItemsPerPage).ToList();        
+                Suppliers = list.Skip((page - 1) * ItemsPerPage).Take(ItemsPerPage).ToList();       
+                SuppliersAll = query.ToList();   
                 CurrentPage = page; 
             }
             else
@@ -120,6 +124,7 @@ namespace LabMaterials.Pages
             this.lblSuppliers = (Program.Translations["Suppliers"])[Lang];
             this.lblSearch = (Program.Translations["Search"])[Lang];
             this.lblSupplierName = (Program.Translations["SupplierName"])[Lang];
+            this.lblCoordinatorName = (Program.Translations["CoordinatorName"])[Lang];
             this.lblConatctNumber = (Program.Translations["SupplierContactNumber"])[Lang];
             this.lblSupplierType = (Program.Translations["SupplierType"])[Lang];
             this.lblAddSupplier = (Program.Translations["AddSupplier"])[Lang];

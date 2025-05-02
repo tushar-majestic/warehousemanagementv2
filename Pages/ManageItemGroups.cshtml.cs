@@ -9,6 +9,7 @@ namespace LabMaterials.Pages
     public class ManageItemGroupsModel : BasePageModel
     {
         public List<GroupInfo> Groups { get; set; }
+        public List<GroupInfo> GroupsAll { get; set; }
         public string Message { get; set; }
         public int TotalItems { get; set; }
         [BindProperty]
@@ -113,7 +114,8 @@ namespace LabMaterials.Pages
                 TotalItems = query.Count();
                 TotalPages = (int)Math.Ceiling((double)TotalItems / ItemsPerPage);
                 var list = query.ToList();
-                Groups = list.Skip((page - 1) * ItemsPerPage).Take(ItemsPerPage).ToList();        
+                Groups = list.Skip((page - 1) * ItemsPerPage).Take(ItemsPerPage).ToList();   
+                GroupsAll = query.ToList();     
                 CurrentPage = page; 
             }
             else

@@ -7,6 +7,7 @@ namespace LabMaterials.Pages
     public class ManageDestinationsModel : BasePageModel
     {
         public List<DestinationsInfo> Destinations { get; set; }
+        public List<DestinationsInfo> DestinationsAll { get; set; }
         public string Message { get; set; }
         [BindProperty]
         public int TotalItems { get; set; }
@@ -108,7 +109,8 @@ namespace LabMaterials.Pages
                 TotalItems = query.Count();
                 TotalPages = (int)Math.Ceiling((double)TotalItems / ItemsPerPage);
                 var list = query.ToList();
-                Destinations = list.Skip((page - 1) * ItemsPerPage).Take(ItemsPerPage).ToList();        
+                Destinations = list.Skip((page - 1) * ItemsPerPage).Take(ItemsPerPage).ToList();     
+                DestinationsAll = query.ToList();   
                 CurrentPage = page;   
 
                 /*Storages = query.ToList();
