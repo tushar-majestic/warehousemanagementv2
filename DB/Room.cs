@@ -36,23 +36,24 @@ public partial class Room
 
     public int? StoreId { get; set; }
 
-    [StringLength(10)]
-    public string? BuildingNumber { get; set; }
-
-    [StringLength(80)]
-    public string? RoomDesc { get; set; }
-    public int? NoOfShelves { get; set; }
-
-    public int? KeeperID {get; set;}
-
-    [StringLength(10)]
-    public string? RoomStatus { get; set; }
-
-
     [Column("ROOM_NO")]
     [StringLength(15)]
     [Unicode(false)]
     public string? RoomNo { get; set; }
+
+    [StringLength(10)]
+    public string? BuildingNumber { get; set; }
+
+    [Column("KeeperID")]
+    public int? KeeperId { get; set; }
+
+    public int? NoOfShelves { get; set; }
+
+    [StringLength(80)]
+    public string? RoomDesc { get; set; }
+
+    [StringLength(10)]
+    public string? RoomStatus { get; set; }
 
     [InverseProperty("Room")]
     public virtual ICollection<Shelf> Shelves { get; set; } = new List<Shelf>();

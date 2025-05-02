@@ -422,6 +422,42 @@ namespace LabMaterials.Migrations
                     b.ToTable("ItemType");
                 });
 
+            modelBuilder.Entity("LabMaterials.DB.MaterialRequest", b =>
+                {
+                    b.Property<int>("RequestId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RequestId"));
+
+                    b.Property<int?>("CurrentApproverUserId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("MaterialName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("RequestedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("RequestedDate")
+                        .HasColumnType("datetime");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.HasKey("RequestId");
+
+                    b.HasIndex(new[] { "CurrentApproverUserId" }, "IX_MaterialRequests_CurrentApproverUserId");
+
+                    b.HasIndex(new[] { "RequestedByUserId" }, "IX_MaterialRequests_RequestedByUserId");
+
+                    b.ToTable("MaterialRequests");
+                });
+
             modelBuilder.Entity("LabMaterials.DB.PrimaryKey", b =>
                 {
                     b.Property<string>("TableName")
@@ -473,13 +509,13 @@ namespace LabMaterials.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("UnitPrice")
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("decimal(18, 2)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ItemId");
+                    b.HasIndex(new[] { "ItemId" }, "IX_ReceivingItems_ItemId");
 
-                    b.HasIndex("ReceivingReportId");
+                    b.HasIndex(new[] { "ReceivingReportId" }, "IX_ReceivingItems_ReceivingReportId");
 
                     b.ToTable("ReceivingItems");
                 });
@@ -494,53 +530,75 @@ namespace LabMaterials.Migrations
 
                     b.Property<string>("AttachmentPath")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(max)")
+                        .HasDefaultValue("");
 
                     b.Property<string>("BasedOnDocument")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(max)")
+                        .HasDefaultValue("");
 
                     b.Property<string>("ChiefResponsible")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(max)")
+                        .HasDefaultValue("");
 
                     b.Property<string>("Comments")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(max)")
+                        .HasDefaultValue("");
 
                     b.Property<string>("CreatedBy")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(max)")
+                        .HasDefaultValue("");
 
                     b.Property<DateTime>("DocumentDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("DocumentNumber")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(max)")
+                        .HasDefaultValue("");
 
                     b.Property<string>("FiscalYear")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(max)")
+                        .HasDefaultValue("");
 
                     b.Property<DateTime>("ReceivingDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("ReceivingWarehouse")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(max)")
+                        .HasDefaultValue("");
 
                     b.Property<string>("RecipientEmployeeId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(max)")
+                        .HasDefaultValue("");
 
                     b.Property<string>("RecipientSector")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(max)")
+                        .HasDefaultValue("");
 
                     b.Property<string>("SectorNumber")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(max)")
+                        .HasDefaultValue("");
 
                     b.Property<int>("SerialNumber")
                         .HasColumnType("int");
@@ -550,11 +608,13 @@ namespace LabMaterials.Migrations
 
                     b.Property<string>("TechnicalMember")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(max)")
+                        .HasDefaultValue("");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("SupplierId");
+                    b.HasIndex(new[] { "SupplierId" }, "IX_ReceivingReports_SupplierId");
 
                     b.ToTable("ReceivingReports");
                 });
@@ -662,8 +722,9 @@ namespace LabMaterials.Migrations
                         .HasColumnType("int")
                         .HasColumnName("EndedByID");
 
-                    b.Property<int?>("KeeperID")
-                        .HasColumnType("int");
+                    b.Property<int?>("KeeperId")
+                        .HasColumnType("int")
+                        .HasColumnName("KeeperID");
 
                     b.Property<int?>("NoOfShelves")
                         .HasColumnType("int");
@@ -835,8 +896,7 @@ namespace LabMaterials.Migrations
 
                     b.Property<string>("BuildingNumber")
                         .HasMaxLength(10)
-                        .HasColumnType("nchar(10)")
-                        .IsFixedLength();
+                        .HasColumnType("nvarchar(10)");
 
                     b.Property<DateTime?>("Created")
                         .HasColumnType("datetime");
@@ -889,8 +949,9 @@ namespace LabMaterials.Migrations
                         .HasColumnType("int")
                         .HasColumnName("UpdatedByID");
 
-                    b.Property<int?>("WarehouseManagerID")
-                        .HasColumnType("int");
+                    b.Property<int?>("WarehouseManagerId")
+                        .HasColumnType("int")
+                        .HasColumnName("WarehouseManagerID");
 
                     b.Property<string>("WarehouseStatus")
                         .HasMaxLength(10)
@@ -1064,6 +1125,10 @@ namespace LabMaterials.Migrations
                 {
                     b.Property<int>("SupplierId")
                         .HasColumnType("int");
+
+                    b.Property<string>("CoordinatorName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("Created")
                         .HasColumnType("datetime");
@@ -1407,42 +1472,6 @@ namespace LabMaterials.Migrations
                     b.ToView("vActivityLog", (string)null);
                 });
 
-            modelBuilder.Entity("MaterialRequest", b =>
-                {
-                    b.Property<int>("RequestId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RequestId"));
-
-                    b.Property<int?>("CurrentApproverUserId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("MaterialName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<int>("RequestedByUserId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("RequestedDate")
-                        .HasColumnType("datetime");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
-                    b.HasKey("RequestId");
-
-                    b.HasIndex("CurrentApproverUserId");
-
-                    b.HasIndex("RequestedByUserId");
-
-                    b.ToTable("MaterialRequests");
-                });
-
             modelBuilder.Entity("LabMaterials.DB.ActivityLog", b =>
                 {
                     b.HasOne("LabMaterials.DB.User", "User")
@@ -1525,16 +1554,33 @@ namespace LabMaterials.Migrations
                     b.Navigation("Unit");
                 });
 
+            modelBuilder.Entity("LabMaterials.DB.MaterialRequest", b =>
+                {
+                    b.HasOne("LabMaterials.DB.User", "CurrentApproverUser")
+                        .WithMany("MaterialRequestCurrentApproverUsers")
+                        .HasForeignKey("CurrentApproverUserId");
+
+                    b.HasOne("LabMaterials.DB.User", "RequestedByUser")
+                        .WithMany("MaterialRequestRequestedByUsers")
+                        .HasForeignKey("RequestedByUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CurrentApproverUser");
+
+                    b.Navigation("RequestedByUser");
+                });
+
             modelBuilder.Entity("LabMaterials.DB.ReceivingItem", b =>
                 {
                     b.HasOne("LabMaterials.DB.Item", "Item")
-                        .WithMany()
+                        .WithMany("ReceivingItems")
                         .HasForeignKey("ItemId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("LabMaterials.DB.ReceivingReport", "ReceivingReport")
-                        .WithMany("Items")
+                        .WithMany("ReceivingItems")
                         .HasForeignKey("ReceivingReportId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1547,7 +1593,7 @@ namespace LabMaterials.Migrations
             modelBuilder.Entity("LabMaterials.DB.ReceivingReport", b =>
                 {
                     b.HasOne("LabMaterials.DB.Supplier", "Supplier")
-                        .WithMany()
+                        .WithMany("ReceivingReports")
                         .HasForeignKey("SupplierId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1722,23 +1768,6 @@ namespace LabMaterials.Migrations
                     b.Navigation("UserGroup");
                 });
 
-            modelBuilder.Entity("MaterialRequest", b =>
-                {
-                    b.HasOne("LabMaterials.DB.User", "CurrentApproverUser")
-                        .WithMany()
-                        .HasForeignKey("CurrentApproverUserId");
-
-                    b.HasOne("LabMaterials.DB.User", "RequestedByUser")
-                        .WithMany()
-                        .HasForeignKey("RequestedByUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("CurrentApproverUser");
-
-                    b.Navigation("RequestedByUser");
-                });
-
             modelBuilder.Entity("LabMaterials.DB.Destination", b =>
                 {
                     b.Navigation("Requesters");
@@ -1754,6 +1783,8 @@ namespace LabMaterials.Migrations
                     b.Navigation("ColorCodes");
 
                     b.Navigation("DamagedItems");
+
+                    b.Navigation("ReceivingItems");
 
                     b.Navigation("Storages");
 
@@ -1779,7 +1810,7 @@ namespace LabMaterials.Migrations
 
             modelBuilder.Entity("LabMaterials.DB.ReceivingReport", b =>
                 {
-                    b.Navigation("Items");
+                    b.Navigation("ReceivingItems");
                 });
 
             modelBuilder.Entity("LabMaterials.DB.Room", b =>
@@ -1817,6 +1848,8 @@ namespace LabMaterials.Migrations
                 {
                     b.Navigation("Items");
 
+                    b.Navigation("ReceivingReports");
+
                     b.Navigation("Supplies");
                 });
 
@@ -1833,6 +1866,10 @@ namespace LabMaterials.Migrations
             modelBuilder.Entity("LabMaterials.DB.User", b =>
                 {
                     b.Navigation("ActivityLogs");
+
+                    b.Navigation("MaterialRequestCurrentApproverUsers");
+
+                    b.Navigation("MaterialRequestRequestedByUsers");
                 });
 
             modelBuilder.Entity("LabMaterials.DB.UserGroup", b =>

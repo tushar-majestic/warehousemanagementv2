@@ -39,30 +39,30 @@ public partial class StoreDataResult
     [Unicode(false)]
     public string? StoreName { get; set; }
 
-    public int? ManagerJobNum { get; set; }
-    public int? KeeperJobNum { get; set; }
-
     [StringLength(50)]
     public string? StoreType { get; set; }
 
     [StringLength(20)]
     public string? WarehouseManagerName { get; set; }
 
+    [StringLength(10)]
+    public string? WarehouseStatus { get; set; }
+
+    public int? ManagerJobNum { get; set; }
+
+    public int? KeeperJobNum { get; set; }
+
     [StringLength(20)]
     public string? KeeperName { get; set; }
 
     [StringLength(10)]
-    public string? WarehouseStatus { get; set; }
-
-    [StringLength(10)]
     public string? BuildingNumber { get; set; }
+
+    public int? NoOfShelves { get; set; }
 
     [StringLength(80)]
     public string? RoomDesc { get; set; }
-    public int? NoOfShelves { get; set; }
-    
+
     [StringLength(10)]
     public string? RoomStatus { get; set; }
-
-    
 }

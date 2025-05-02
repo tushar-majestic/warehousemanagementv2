@@ -82,6 +82,69 @@
             XLSX.writeFile(wb, "ManageDamaged.xlsx");
         });
     </script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const filterButton = document.getElementById("toggleFilterDropdown");
+    const filterPanel = document.getElementById("filterDropdownPanel");
+
+    // Dummy data — replace with your actual Razor model values
+    const filterData = {
+        itemName: @Html.Raw(Json.Serialize(Model.UniqueItemNames)),
+        typeName: @Html.Raw(Json.Serialize(Model.UniqueTypeNames)),
+        damageReason: @Html.Raw(Json.Serialize(Model.UniqueDamageReasons))
+    };
+
+    // Show values inside the right panel
+    function showFilterValues(category) {
+        const container = document.getElementById("filterValues");
+        container.innerHTML = "";
+
+        const values = filterData[category] || [];
+
+        if (values.length === 0) {
+            container.innerHTML = "<div class='text-muted'>No values found</div>";
+            return;
+        }
+
+        values.forEach(function (value) {
+            const div = document.createElement("div");
+            div.className = "filter-value mb-1";
+            const btn = document.createElement("button");
+            btn.className = "btn btn-sm w-100 text-start";
+            btn.innerText = value;
+            btn.onclick = function () {
+                applyFilter(category, value);
+            };
+            div.appendChild(btn);
+            container.appendChild(div);
+        });
+    }
+
+    // Apply the filter (navigate with query param)
+    function applyFilter(field, value) {
+        const url = new URL(window.location.href);
+        url.searchParams.set(field, value);
+        window.location.href = url;
+    }
+
+    // Show/hide logic
+    filterButton.addEventListener("click", function (e) {
+        e.stopPropagation();
+        const isVisible = filterPanel.style.display === "flex";
+        filterPanel.style.display = isVisible ? "none" : "flex";
+        if (!isVisible) showFilterValues('itemName'); // default on open
+    });
+
+    document.addEventListener("click", function (e) {
+        if (!filterPanel.contains(e.target) && e.target !== filterButton) {
+            filterPanel.style.display = "none";
+        }
+    });
+
+    // Make showFilterValues globally accessible
+    window.showFilterValues = showFilterValues;
+});
+</script>
 }
 @{
 
@@ -105,10 +168,41 @@
         </div>
 
     </div>
-    <div class="mb-4">
-        <button id="exportExcel" class="btn btn-success">Export Excel</button>
+
+<div class="row mb-4 align-items-start">
+    <div class="col-auto">
+        <button id="exportExcel" class="btn btn-success me-2">Export Excel</button>
         <button id="printBtn" class="btn btn-primary">Print Table</button>
     </div>
+
+    <!-- Right: Filter button and dropdown -->
+    <div class="col text-end position-relative">
+        <button type="button" id="toggleFilterDropdown" class="btn btn-secondary">
+            Filter
+        </button>
+
+        <!-- Filter Panel -->
+        <div id="filterDropdownPanel"
+            class="card shadow-sm position-absolute flex-row"
+            style="right: 0; top: 100%; width: 400px; display: none; z-index: 1000; height: 400px; overflow: hidden;">
+
+            <!-- Left: Filter Categories -->
+            <div class="border-end p-2" style="width: 40%; overflow-y: auto;">
+                <div class="fw-bold mb-2">Filter By</div>
+                <div class="filter-option text-primary mb-2" onclick="showFilterValues('itemName')">Item Name</div>
+                <div class="filter-option text-primary mb-2" onclick="showFilterValues('typeName')">Type Name</div>
+                <div class="filter-option text-primary mb-2" onclick="showFilterValues('damageReason')">Damage Reason</div>
+            </div>
+
+            <!-- Right: Unique Values -->
+            <div class="p-2" id="filterValues"
+                style="width: 60%; overflow-y: auto; border-left: 1px solid #eee;">
+                <div class="text-muted">Select a filter from left</div>
+            </div>
+        </div>
+    </div>
+</div>
+
     <div class="table-settings mb-4">
         <form method="post" asp-page-handler="Action" class="row align-items-center">
 

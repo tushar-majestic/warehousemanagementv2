@@ -49,7 +49,7 @@ namespace LabMaterials.Pages
                 Status = room.RoomStatus;
                 NoOfShelves = room.NoOfShelves;
                 
-                KeeperId = room.KeeperID;
+                KeeperId = room.KeeperId;
 
                 var st = dbContext.Stores
                     .Where(s => s.StoreId == room.StoreId)
@@ -57,7 +57,7 @@ namespace LabMaterials.Pages
 
                 if (st != null)
                 {
-                    WarehouseManagerID = st.WarehouseManagerID;
+                     WarehouseManagerID = st.WarehouseManagerId;
                     StoreType = st.StoreType;
                     var keeper = dbContext.Users
                         .Where(u => u.UserId == KeeperId)
@@ -148,6 +148,9 @@ namespace LabMaterials.Pages
                     KeeperGroupsList = dbContext.Users
                         .Where(u => u.UserGroupId == KeeperGroupId)
                         .ToList();
+
+                    if (!StoreId.HasValue)
+                        ErrorMsg = (Program.Translations["WarehouseMissing"])[Lang];
                     if(string.IsNullOrEmpty(BuildingNumber))
                         ErrorMsg = (Program.Translations["BuildingNumberMissing"])[Lang];
                     else if (string.IsNullOrEmpty(RoomNumber))
@@ -208,7 +211,7 @@ namespace LabMaterials.Pages
                             room.BuildingNumber = BuildingNumber;
                             room.RoomDesc = RoomDesc;
                             room.NoOfShelves = NoOfShelves;
-                            room.KeeperID = KeeperId;
+                            room.KeeperId = KeeperId;
                             room.RoomStatus = Status;
                             dbContext.SaveChanges();
 

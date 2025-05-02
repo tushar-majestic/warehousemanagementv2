@@ -361,11 +361,11 @@
         "ar": "الوحدات"
     },
     "ManagerName": {
-        "en": "Manager Name",
+        "en": "Warehouse Manager",
         "ar": "اسم المدير"
     },
     "ManagerJobNumber": {
-        "en": "Manager Job Number",
+        "en": "Warehouse Manager Job Number",
         "ar": "رقم وظيفة المدير"
     },
     "WarehouseStatus": {
@@ -1018,7 +1018,7 @@
     "ar": "اسم الغرفة"
   },
   "RoomNumber": {
-    "en": "Room Number",
+    "en": "Room No.",
     "ar": "رقم الغرفة"
   },
   "RoomNumberMissing": {
@@ -1210,8 +1210,8 @@
         "ar": "منظر"
     },
     "BuildingNumber": {
-        "en": "Building Number",
-        "ar": "Building Number"
+        "en": "Building No.",
+        "ar": "Building No."
     },
     "NoOfShelves":{
         "en": "Number of Shelves",
@@ -1253,6 +1253,10 @@
         "en": "Room Exists.",
         "ar": "Room Exists." 
     },
+    "CoordinatorName":{
+        "en": "Coordinator Name",
+        "ar": "Coordinator Name" 
+    },
     "ManagerWarehouseOnly":{
         "en": "Manager can add room to his warehouse only.",
         "ar": "Manager can add room to his warehouse only." 
@@ -1260,6 +1264,14 @@
     "ManagerEditWarehouseOnly":{
         "en": "Manager can edit room of his warehouse only.",
         "ar": "Manager can edit room of his warehouse only." 
+    },
+    "WarehouseManagerName":{
+        "en": "Warehouse Manager Name",
+        "ar": "Warehouse Manager Name" 
+    },
+    "WarehouseMissing":{
+        "en": "Warehouse is required",
+        "ar": "Warehouse is required"  
     }
 
 }

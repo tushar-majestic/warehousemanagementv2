@@ -35,6 +35,10 @@ public partial class Supplier
     [Column("UpdatedByID")]
     public int? UpdatedById { get; set; }
 
+    
+    [StringLength(255)]
+    public string? CoordinatorName { get; set; }
+
     [Column(TypeName = "datetime")]
     public DateTime? Created { get; set; }
 
@@ -45,5 +49,11 @@ public partial class Supplier
     public virtual ICollection<Item> Items { get; set; } = new List<Item>();
 
     [InverseProperty("Supplier")]
+    public virtual ICollection<ReceivingReport> ReceivingReports { get; set; } = new List<ReceivingReport>();
+
+    [InverseProperty("Supplier")]
     public virtual ICollection<Supply> Supplies { get; set; } = new List<Supply>();
+
+
+    public string CoordinatorName { get; set; }
 }

@@ -12,6 +12,9 @@ namespace LabMaterials.Pages
         public string Message { get; set; }
         [BindProperty]
         public string ItemName { get; set; }
+        public List<string> UniqueItemNames { get; set; }
+        public List<string> UniqueTypeNames { get; set; }
+        public List<string> UniqueDamageReasons { get; set; }
         public int CurrentPage { get; set; }
         public int ItemsPerPage { get; set; } = 10;
         public int TotalPages { get; set; }
@@ -217,6 +220,10 @@ namespace LabMaterials.Pages
 
             TotalItems = query.Count();
             TotalPages = (int)Math.Ceiling((double)TotalItems / ItemsPerPage);
+
+            UniqueItemNames = query.Select(i => i.ItemName).Distinct().ToList();
+            UniqueTypeNames = query.Select(i => i.TypeName).Distinct().ToList();
+            UniqueDamageReasons = query.Select(i => i.DamageReason).Distinct().ToList();
 
             var list = query.ToList();
 

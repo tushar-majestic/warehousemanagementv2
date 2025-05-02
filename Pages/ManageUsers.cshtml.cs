@@ -16,6 +16,7 @@ namespace LabMaterials.Pages
         public int CurrentPage { get; set; }
         public int ItemsPerPage { get; set; } = 10;
         public int TotalPages { get; set; }
+        public List<string> SelectedColumns { get; set; } = new List<string>();
 
         public void OnGet(string? UserName, int page = 1) 
         {
@@ -23,8 +24,10 @@ namespace LabMaterials.Pages
             if (CanManageUsers)
             {
                 FillLables();
+                LoadSelectedColumns();
                 //FillData("");
-                if (HttpContext.Request.Query.ContainsKey("page")){
+                if (HttpContext.Request.Query.ContainsKey("page"))
+                {
                     string pagevalue = HttpContext.Request.Query["page"];
                     page = int.Parse(pagevalue);
                     this.UserName = UserName;
@@ -37,7 +40,30 @@ namespace LabMaterials.Pages
         }
         //
 
-        public string lblView, lblUsers, lblSearch, lblAddUser, lblManageUserGroups, lblUserName, lblFullName, lblEmail, lblIsDomainUser, lblJobNumber, lblEmpAffiliation, lblTransfer, 
+        private void LoadSelectedColumns()
+        {
+            int? userId = HttpContext.Session.GetInt32("UserId");
+            if (userId.HasValue)
+            {
+                using (var db = new LabDBContext())
+                {
+                    string pageName = "manageUsers";
+                    var existingRecord = db.Tablecolumns.FirstOrDefault(c => c.UserId == userId.Value && c.Page == pageName);
+                    if (existingRecord != null && !string.IsNullOrEmpty(existingRecord.DisplayColumns))
+                    {
+                        SelectedColumns = existingRecord.DisplayColumns.Split(',').ToList();
+                    }
+                    else
+                    {
+                        // SelectedColumns = new List<string>();
+                        string selectedColumns = "userName,fullName,email";
+                        SaveSelectedColumns(userId.Value, pageName, selectedColumns);
+                    }
+                }
+            }
+        }
+
+        public string lblView, lblUsers, lblSearch, lblAddUser, lblManageUserGroups, lblUserName, lblFullName, lblEmail, lblIsDomainUser, lblJobNumber, lblEmpAffiliation, lblTransfer,
             lblUserEnabled, lblIsLocked, lblUserType, lblUserGroupName, lblEdit, lblUnlock, lblTotalItem;
 
 
@@ -49,6 +75,71 @@ namespace LabMaterials.Pages
 
         }
 
+        public IActionResult OnPostAction(string UserName, string action, List<string> columns)
+        {
+            base.ExtractSessionData();
+
+            if (action == "search")
+            {
+                CurrentPage = 1;
+                this.UserName = UserName;
+
+                FillData(UserName, CurrentPage);
+
+                int? userId = HttpContext.Session.GetInt32("UserId");
+                string pageName = "manageUsers";
+                LoadSelectedColumns();
+            }
+            else if (action == "updateColumns")
+            {
+                if (columns != null && columns.Any())
+                {
+
+                    string selectedColumns = string.Join(",", columns);
+
+                    int? userId = HttpContext.Session.GetInt32("UserId");
+                    string pageName = "manageUsers";
+                    this.UserName = UserName;
+                    FillData(UserName, CurrentPage);
+                    LoadSelectedColumns();
+
+                    SaveSelectedColumns(userId.Value, pageName, selectedColumns);
+                }
+
+                // After updating, redirect back to ManageStore with the StoreNumber and StoreName
+                // return RedirectToPage("/ManageDamaged", new { ItemName = ItemName, Group = Group });
+            }
+
+            return Page();
+        }
+
+        private void SaveSelectedColumns(int userId, string pageName, string selectedColumns)
+        {
+            base.ExtractSessionData();
+            using (var db = new LabDBContext())
+            {
+                var existingRecord = db.Tablecolumns
+                    .FirstOrDefault(c => c.UserId == userId && c.Page == pageName);
+
+                if (existingRecord != null)
+                {
+                    existingRecord.DisplayColumns = selectedColumns;
+                }
+                else
+                {
+                    var newRecord = new Tablecolumn
+                    {
+                        UserId = userId,
+                        Page = pageName,
+                        DisplayColumns = selectedColumns
+                    };
+                    db.Tablecolumns.Add(newRecord);
+                }
+
+                db.SaveChanges();
+            }
+        }
+
         public void OnPostEnable([FromForm] int UserId)
         {
             base.ExtractSessionData();
@@ -56,7 +147,7 @@ namespace LabMaterials.Pages
             {
                 //
                 var dbContext = new LabDBContext();
-                string MessageText = Lang == "ar"? "تمكين" : "Enabled";
+                string MessageText = Lang == "ar" ? "تمكين" : "Enabled";
                 var user = dbContext.Users.Single(s => s.UserId == UserId);
                 if (user.IsActive)
                 {

@@ -1,30 +1,36 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
-public class MaterialRequest
+namespace LabMaterials.DB;
+
+[Index("CurrentApproverUserId", Name = "IX_MaterialRequests_CurrentApproverUserId")]
+[Index("RequestedByUserId", Name = "IX_MaterialRequests_RequestedByUserId")]
+public partial class MaterialRequest
 {
-    public MaterialRequest() { }
-
     [Key]
     public int RequestId { get; set; }
 
-    [Required]
     [StringLength(100)]
     public string MaterialName { get; set; } = null!;
 
     [Column(TypeName = "datetime")]
-    public DateTime RequestedDate { get; set; } = DateTime.Now;
+    public DateTime RequestedDate { get; set; }
 
-    [Required]
     [StringLength(20)]
-    public string Status { get; set; } = "Pending";
+    public string Status { get; set; } = null!;
 
-    [ForeignKey(nameof(RequestedByUser))]
     public int RequestedByUserId { get; set; }
-
-    public virtual User RequestedByUser { get; set; } = null!;
 
     public int? CurrentApproverUserId { get; set; }
 
+    [ForeignKey("CurrentApproverUserId")]
+    [InverseProperty("MaterialRequestCurrentApproverUsers")]
     public virtual User? CurrentApproverUser { get; set; }
+
+    [ForeignKey("RequestedByUserId")]
+    [InverseProperty("MaterialRequestRequestedByUsers")]
+    public virtual User RequestedByUser { get; set; } = null!;
 }
