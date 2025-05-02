@@ -178,7 +178,7 @@ namespace LabMaterials.Pages
             // Join stores with active rooms
             var joinedData = from store in allStores
                             join room in activeRooms on store.RoomId equals room.RoomId
-                            join user in dbContext.Users on room.KeeperID equals user.UserId
+                            join user in dbContext.Users on room.KeeperId equals user.UserId
                             select new StoreDataResult
                             {
                                 StoreId = store.StoreId,

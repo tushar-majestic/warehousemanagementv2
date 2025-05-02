@@ -90,8 +90,7 @@ namespace LabMaterials.Pages
                             var store = new Store
                             {   
                                 StoreType = StoreType,
-                                WarehouseManagerID = ManagerId,
-                                // ManagerJobNum = parsedManagerJobNumber,
+                                WarehouseManagerId = ManagerId,
                                 WarehouseStatus = Status,
                                 ShelfNumbers = Shelves,
                                 StoreName = StoreName,

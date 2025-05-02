@@ -97,10 +97,10 @@ namespace LabMaterials.Pages
                            .Select(g => g.First())
                            .ToList();
 
-                    var managerId = dbContext.Stores
-                        .Where(s => s.StoreId == StoreId)
-                        .Select(s => s.WarehouseManagerID)
-                        .FirstOrDefault();
+                    // var managerId = dbContext.Stores
+                    //     .Where(s => s.StoreId == StoreId)
+                    //     .Select(s => s.WarehouseManagerID)
+                    //     .FirstOrDefault();
 
                     var KeeperGroupId = dbContext.UserGroups
                     .Where(g => g.UserGroupName == "Warehouse Keeper")
@@ -123,13 +123,13 @@ namespace LabMaterials.Pages
                         ErrorMsg = (Program.Translations["KeeperMissing"])[Lang];
                     else if (string.IsNullOrEmpty(Status))
                         ErrorMsg = (Program.Translations["RoomStatusMissing"])[Lang];
-                    else if( HttpContext.Session.GetString("UserGroup") == "Warehouse Manager")
-                    {
-                        if(HttpContext.Session.GetInt32("UserId").Value != managerId){
-                            ErrorMsg = (Program.Translations["ManagerWarehouseOnly"])[Lang];
+                    // else if( HttpContext.Session.GetString("UserGroup") == "Warehouse Manager")
+                    // {
+                    //     if(HttpContext.Session.GetInt32("UserId").Value != managerId){
+                    //         ErrorMsg = (Program.Translations["ManagerWarehouseOnly"])[Lang];
 
-                        }
-                    }
+                    //     }
+                    // }
                     else
                     {
 
@@ -147,7 +147,7 @@ namespace LabMaterials.Pages
                                 BuildingNumber = BuildingNumber,
                                 RoomDesc = RoomDesc,
                                 NoOfShelves = NoOfShelves,
-                                KeeperID = KeeperId,
+                                KeeperId = KeeperId,
                                 RoomStatus = Status,
 
                             };

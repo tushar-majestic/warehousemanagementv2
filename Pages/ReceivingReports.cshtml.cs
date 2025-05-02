@@ -41,7 +41,7 @@ namespace LabMaterials.Pages
             var dbContext = new LabDBContext();
             Suppliers = _context.Suppliers.ToList();  // Fetch suppliers
             Warehouses = _context.Stores.ToList();  // Fetch suppliers
-            Reports = await _context.ReceivingReports.Include(r => r.Items).ToListAsync();
+            // Reports = await _context.ReceivingReports.Include(r => r.Items).ToListAsync();
             Items = await _context.Items.ToListAsync();
             Report ??= new ReceivingReport();
             // **Important**: seed one blank ReceivingItem so index [0] exists
