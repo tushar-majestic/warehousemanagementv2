@@ -22,7 +22,14 @@ namespace LabMaterials.Pages
         public List<ReceivingReport> Reports { get; set; }
         public List<Item> Items { get; set; }
         public List<User> GeneralSupervisorList {  get; set; }
+
+        public List<User> Users {  get; set; }
+
         public List<User> TechnicalMemberList {  get; set; }
+
+        public List<Unit> Units { get; set; } 
+        public List<ItemGroup> ItemGroupList { get; set; } 
+
 
         public int?  GeneralSupervisorId, TechnicalMemberId ;
         public int? ItemId;
@@ -51,6 +58,11 @@ namespace LabMaterials.Pages
 
             // If the session is set, use it; otherwise, fallback to "Unknown"
             Report.CreatedBy = string.IsNullOrEmpty(userName) ? "Unknown" : userName;
+
+            Units = dbContext.Units.ToList(); 
+            ItemGroupList = dbContext.ItemGroup.ToList(); 
+            Users = dbContext.Users.ToList(); 
+
 
             //General Supervisor of educational services list
             var GeneralSupervisorId = dbContext.UserGroups

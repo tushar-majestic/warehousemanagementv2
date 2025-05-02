@@ -63,6 +63,9 @@ public partial class LabDBContext : DbContext
 
     public virtual DbSet<Unit> Units { get; set; }
 
+    public virtual DbSet<ItemGroup> ItemGroup { get; set; }
+
+
     public virtual DbSet<User> Users { get; set; }
 
     public virtual DbSet<UserGroup> UserGroups { get; set; }

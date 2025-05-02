@@ -36,8 +36,6 @@ public partial class Supplier
     public int? UpdatedById { get; set; }
 
     
-    [StringLength(255)]
-    public string? CoordinatorName { get; set; }
 
     [Column(TypeName = "datetime")]
     public DateTime? Created { get; set; }
