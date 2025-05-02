@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace LabMaterials.Pages
@@ -16,12 +15,12 @@ namespace LabMaterials.Pages
         public bool CanManageSupplies { get; set; }
         public bool CanDisburseItems { get; set; }
         public bool CanSeeReports { get; set; }
-        public bool CanManageItemGroup {  get; set; }
+        public bool CanManageItemGroup { get; set; }
         public string dir { get; set; } = "rtl";
         public string Lang { get; set; } = "ar";
 
-        
-        public string lblView, lblRequests,lblLabMaterials, lblHome, lblNotifications, lblShowHideColumn, lblDisbursement, lblReports, lblManageUsers, lblManageItems, lblManageSupplies, lblManageStores, lblUserProfile, lblLogout, lblDamagedItems, lblLanguage,lblWarehouseType, lblManagerName, lblBuildingNumber, lblRoomDesc, lblStatus, lblRoomStatus, lblOpen, lblClosed, lblRoomNumber, lblNoOfShelves, lblKeeperName, lblKeeperJobNum, lblWarehouseManagerName;
+
+        public string lblView, lblRequests, lblLabMaterials, lblHome, lblNotifications, lblShowHideColumn, lblDisbursement, lblReports, lblManageUsers, lblManageItems, lblManageSupplies, lblManageStores, lblUserProfile, lblLogout, lblDamagedItems, lblLanguage, lblWarehouseType, lblManagerName, lblBuildingNumber, lblRoomDesc, lblStatus, lblRoomStatus, lblOpen, lblClosed, lblRoomNumber, lblNoOfShelves, lblKeeperName, lblKeeperJobNum, lblWarehouseManagerName;
 
 
         public void ExtractSessionData()
@@ -44,18 +43,18 @@ namespace LabMaterials.Pages
                 dir = HttpContext.Session.GetString("Lang") == "en" ? "ltr" : "rtl";
                 Lang = HttpContext.Session.GetString("Lang") == "en" ? "en" : "ar";
                 FillLables();
-                
+
             }
             else
             {
                 HttpContext.Response.Redirect("/Index?lang=" + Lang);
             }
-             
+
         }
 
         private void FillLables()
         {
-            
+
 
             this.lblDisbursement = (Program.Translations["Disbursements"])[Lang];
             this.lblReports = (Program.Translations["Reports"])[Lang];
@@ -68,7 +67,7 @@ namespace LabMaterials.Pages
             this.lblView = (Program.Translations["View"])[Lang];
             this.lblUserProfile = (Program.Translations["UserProfile"])[Lang];
             this.lblLogout = (Program.Translations["Logout"])[Lang];
-            this.lblLabMaterials = (Program.Translations["LabMaterials"])[Lang]; 
+            this.lblLabMaterials = (Program.Translations["LabMaterials"])[Lang];
             this.lblDamagedItems = (Program.Translations["DamagedItems"])[Lang];
             this.lblLanguage = (Program.Translations["Language"])[Lang];
 
@@ -77,16 +76,16 @@ namespace LabMaterials.Pages
             this.lblShowHideColumn = (Program.Translations["ShowHideColumn"])[Lang];
             this.lblWarehouseType = (Program.Translations["WarehouseType"])[Lang];
             this.lblManagerName = (Program.Translations["ManagerName"])[Lang];
-            this.lblWarehouseManagerName  = (Program.Translations["WarehouseManagerName"])[Lang];
+            this.lblWarehouseManagerName = (Program.Translations["WarehouseManagerName"])[Lang];
             this.lblBuildingNumber = (Program.Translations["BuildingNumber"])[Lang];
             this.lblRoomDesc = (Program.Translations["RoomDesc"])[Lang];
             this.lblStatus = (Program.Translations["WarehouseStatus"])[Lang];
-            
+
             this.lblOpen = (Program.Translations["Open"])[Lang];
             this.lblClosed = (Program.Translations["Closed"])[Lang];
             this.lblRoomStatus = (Program.Translations["RoomStatus"])[Lang];
-            this.lblRoomNumber = (Program.Translations["RoomNumber"])[Lang]; 
-            this.lblNoOfShelves = (Program.Translations["NoOfShelves"])[Lang]; 
+            this.lblRoomNumber = (Program.Translations["RoomNumber"])[Lang];
+            this.lblNoOfShelves = (Program.Translations["NoOfShelves"])[Lang];
             this.lblKeeperJobNum = (Program.Translations["KeeperJobNum"])[Lang];
             this.lblKeeperName = (Program.Translations["KeeperName"])[Lang];
 
