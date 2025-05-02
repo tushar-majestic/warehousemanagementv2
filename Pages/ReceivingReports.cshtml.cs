@@ -21,7 +21,13 @@ namespace LabMaterials.Pages
         public IList<Store> Warehouses { get; set; }
         public List<ReceivingReport> Reports { get; set; }
         public List<Item> Items { get; set; }
+        public List<User> GeneralSupervisorList {  get; set; }
+        public List<User> TechnicalMemberList {  get; set; }
 
+        public int?  GeneralSupervisorId, TechnicalMemberId ;
+        public int? ItemId;
+
+        public string ItemNo;
         [BindProperty]
         public ReceivingReport Report { get; set; }  // <- change name from NewReport
         public string SupplierType => Report.Supplier?.SupplierType;
@@ -32,6 +38,7 @@ namespace LabMaterials.Pages
         public async Task OnGetAsync()
         {
             base.ExtractSessionData();
+            var dbContext = new LabDBContext();
             Suppliers = _context.Suppliers.ToList();  // Fetch suppliers
             Warehouses = _context.Stores.ToList();  // Fetch suppliers
             Reports = await _context.ReceivingReports.Include(r => r.Items).ToListAsync();
@@ -44,6 +51,26 @@ namespace LabMaterials.Pages
 
             // If the session is set, use it; otherwise, fallback to "Unknown"
             Report.CreatedBy = string.IsNullOrEmpty(userName) ? "Unknown" : userName;
+
+            //General Supervisor of educational services list
+            var GeneralSupervisorId = dbContext.UserGroups
+                    .Where(g => g.UserGroupName == "General Supervisor of Educational Services")
+                    .Select(g => g.UserGroupId)
+                    .FirstOrDefault();
+
+            GeneralSupervisorList = dbContext.Users
+                        .Where(u => u.UserGroupId == GeneralSupervisorId)
+                        .ToList();
+
+            //General Supervisor of educational services list
+            var TechnicalMemberId = dbContext.UserGroups
+                    .Where(g => g.UserGroupName == "Technical Member")
+                    .Select(g => g.UserGroupId)
+                    .FirstOrDefault();
+
+            TechnicalMemberList = dbContext.Users
+                        .Where(u => u.UserGroupId == TechnicalMemberId)
+                        .ToList();
 
             // Debugging: log item count and details
             Console.WriteLine($"Item count: {Items?.Count}");
@@ -59,7 +86,8 @@ namespace LabMaterials.Pages
             Report.CreatedBy = HttpContext.Session.GetString("UserName") ?? "Unknown";
 
            
-
+            this.ItemNo = ItemNo;
+            this.ItemId = ItemId;
 
             if (AttachmentFile != null)
             {

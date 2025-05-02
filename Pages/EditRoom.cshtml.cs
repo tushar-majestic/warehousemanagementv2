@@ -148,6 +148,9 @@ namespace LabMaterials.Pages
                     KeeperGroupsList = dbContext.Users
                         .Where(u => u.UserGroupId == KeeperGroupId)
                         .ToList();
+
+                    if (!StoreId.HasValue)
+                        ErrorMsg = (Program.Translations["WarehouseMissing"])[Lang];
                     if(string.IsNullOrEmpty(BuildingNumber))
                         ErrorMsg = (Program.Translations["BuildingNumberMissing"])[Lang];
                     else if (string.IsNullOrEmpty(RoomNumber))

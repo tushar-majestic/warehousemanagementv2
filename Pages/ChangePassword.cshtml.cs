@@ -76,7 +76,18 @@ namespace LabMaterials.Pages
    
                     // if (string.IsNullOrEmpty(Password))
                     //     ErrorMsg = (Program.Translations["CurrentPasswordMissing"])[Lang];
-                     if (!string.IsNullOrEmpty(Password) && string.IsNullOrEmpty(NewPassword))
+                    if(string.IsNullOrEmpty(JobNumber))
+                          ErrorMsg = (Program.Translations["JobNumberMissing"])[Lang];
+                    else if (string.IsNullOrEmpty(UserFullName))
+                        ErrorMsg = (Program.Translations["UserFullNameMissing"])[Lang];
+                    else if (string.IsNullOrEmpty(EmpAffiliation))
+                        ErrorMsg = (Program.Translations["EmpAffiliationMissing"])[Lang];
+                    else if (string.IsNullOrEmpty(Transfer))
+                        ErrorMsg = (Program.Translations["TransferMissing"])[Lang];
+                    else if (string.IsNullOrEmpty(Email))
+                        ErrorMsg = (Program.Translations["UserEmailMissing"])[Lang];
+
+                    else if (!string.IsNullOrEmpty(Password) && string.IsNullOrEmpty(NewPassword))
                         ErrorMsg = (Program.Translations["NewPasswordMissing"])[Lang];
                     else if (!string.IsNullOrEmpty(Password) &&  string.IsNullOrEmpty(NewPasswordConfirm))
                         ErrorMsg = (Program.Translations["NewPasswordConfirmMissing"])[Lang];
