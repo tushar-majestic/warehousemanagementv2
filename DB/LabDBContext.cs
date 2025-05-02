@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace LabMaterials.DB;
 
@@ -68,6 +66,7 @@ public partial class LabDBContext : DbContext
 
     public DbSet<ReceivingReport> ReceivingReports { get; set; }
     public DbSet<ReceivingItem> ReceivingItems { get; set; }
+    public DbSet<ItemCard> ItemCards { get; set; }
 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -1,914 +1,918 @@
 {
-    //Login Page
-    "UserName": {
-        "en": "User Name",
-        "ar": "اسم المستخدم"
-    },
-    "FromStore": {
-        "en": "From Warehouse",
-        "ar": "من المستودع"
-    },
-    "ItemType": {
-        "en": "Item Type",
-        "ar": "نوع الصنف"
-    },
-    "Quantity": {
-        "en": "Quantity",
-        "ar": "الكمية"
-    },
-    "RoomDeleted": {
-        "en": "Room Deleted",
-        "ar": "تم حذف الغرفة"
-    },
-    "RoomNotDeleted": {
-        "en": "Room Not Deleted",
-        "ar": "لم يتم حذف الغرفة"
-    },
-    "DisbursedQuantityExceeded": {
-        "en": "Disbursed Quantity Exceeded",
-        "ar": "تجاوزت الكمية المصروفة"
-    },
-    "ShelveDeleted": {
-        "en": "Shelve Deleted",
-        "ar": "تم حذف الرف"
-    },
-    "ShelveNotDeleted": {
-        "en": "Shelve Not Deleted",
-        "ar": "لم يتم حذف الرف"
-    },
-    "StoreUnlock": {
-        "en": "Warehouse Unlocked",
-        "ar": "تم فتح المستودع"
-    },
-    "StoreLocked": {
-        "en": "Warehouse Locked",
-        "ar": "تم إغلاق المستودع"
-    },
-    "UpdateShelf": {
-        "en": "Update Shelf",
-        "ar": "تحديث الرف"
-    },
-    "ItemCode": {
-        "en": "Item Code",
-        "ar": "نوع الصنف"
-    },
-    "ItemTypeCode": {
-        "en": "Item Type Code",
-        "ar": "رمز الصنف"
-    },
-    "Password": {
-        "en": "Password",
-        "ar": "كلمة المرور"
-    },
-    "EditDisbursement": {
-        "en": "Edit Disbursement",
-        "ar": "تعديل طلب الصرف"
-    },
-    "Login": {
-        "en": "Login",
-        "ar": "تسجيل الدخول"
-    },
-    "LdapLogin": {
-        "en": "Use your domain account to login",
-        "ar": "استخدم الحساب الخاص بك لتسجيل الدخول"
-    },
-    "AppLogin": {
-        "en": "Use application account to login",
-        "ar": "استخدم حساب التطبيق لتسجيل الدخول"
-    },
-    "SignIn": {
-        "en": "Sign In",
-        "ar": "تسجيل الدخول"
-    },
-    "Lock": {
-        "en": "Lock",
-        "ar": "قفل"
-    },
-    "ManageRooms": {
-        "en": "Manage Rooms",
-        "ar": "إدارة الغرف"
-    },
-    "ManageShelves": {
-        "en": "Manage Shelves",
-        "ar": "إدارة الرفوف"
-    },
-    "AddShelves": {
-        "en": "Add Shelves",
-        "ar": "أضف الرفوف"
-    },
+  //Login Page
+  "UserName": {
+    "en": "User Name",
+    "ar": "اسم المستخدم"
+  },
+  "FromStore": {
+    "en": "From Warehouse",
+    "ar": "من المستودع"
+  },
+  "ItemType": {
+    "en": "Item Type",
+    "ar": "نوع الصنف"
+  },
+  "Quantity": {
+    "en": "Quantity",
+    "ar": "الكمية"
+  },
+  "RoomDeleted": {
+    "en": "Room Deleted",
+    "ar": "تم حذف الغرفة"
+  },
+  "RoomNotDeleted": {
+    "en": "Room Not Deleted",
+    "ar": "لم يتم حذف الغرفة"
+  },
+  "DisbursedQuantityExceeded": {
+    "en": "Disbursed Quantity Exceeded",
+    "ar": "تجاوزت الكمية المصروفة"
+  },
+  "ShelveDeleted": {
+    "en": "Shelve Deleted",
+    "ar": "تم حذف الرف"
+  },
+  "ShelveNotDeleted": {
+    "en": "Shelve Not Deleted",
+    "ar": "لم يتم حذف الرف"
+  },
+  "StoreUnlock": {
+    "en": "Warehouse Unlocked",
+    "ar": "تم فتح المستودع"
+  },
+  "StoreLocked": {
+    "en": "Warehouse Locked",
+    "ar": "تم إغلاق المستودع"
+  },
+  "UpdateShelf": {
+    "en": "Update Shelf",
+    "ar": "تحديث الرف"
+  },
+  "ItemCode": {
+    "en": "Item Code",
+    "ar": "نوع الصنف"
+  },
+  "ItemCards": {
+    "en": "Item Cards",
+    "ar": "نوع الصنف"
+  },
+  "ItemTypeCode": {
+    "en": "Item Type Code",
+    "ar": "رمز الصنف"
+  },
+  "Password": {
+    "en": "Password",
+    "ar": "كلمة المرور"
+  },
+  "EditDisbursement": {
+    "en": "Edit Disbursement",
+    "ar": "تعديل طلب الصرف"
+  },
+  "Login": {
+    "en": "Login",
+    "ar": "تسجيل الدخول"
+  },
+  "LdapLogin": {
+    "en": "Use your domain account to login",
+    "ar": "استخدم الحساب الخاص بك لتسجيل الدخول"
+  },
+  "AppLogin": {
+    "en": "Use application account to login",
+    "ar": "استخدم حساب التطبيق لتسجيل الدخول"
+  },
+  "SignIn": {
+    "en": "Sign In",
+    "ar": "تسجيل الدخول"
+  },
+  "Lock": {
+    "en": "Lock",
+    "ar": "قفل"
+  },
+  "ManageRooms": {
+    "en": "Manage Rooms",
+    "ar": "إدارة الغرف"
+  },
+  "ManageShelves": {
+    "en": "Manage Shelves",
+    "ar": "إدارة الرفوف"
+  },
+  "AddShelves": {
+    "en": "Add Shelves",
+    "ar": "أضف الرفوف"
+  },
 
-    //Common
-    "Edit": {
-        "en": "Edit",
-        "ar": "تعديل"
-    },
-    "View": {
-        "en": "View",
-        "ar": "منظر"
-    },
-    "Delete": {
-        "en": "Delete",
-        "ar": "حذف"
-    },
-    "Add": {
-        "en": "Add",
-        "ar": "إضافة"
-    },
-    "Update": {
-        "en": "Update",
-        "ar": "تحديث"
-    },
-    "Cancel": {
-        "en": "Cancel",
-        "ar": "إلغاء"
-    },
-    "Search": {
-        "en": "Search",
-        "ar": "بحث"
-    },
-    "Unlock": {
-        "en": "Unlock",
-        "ar": "فتح"
-    },
-    "Submit": {
-        "en": "Submit",
-        "ar": "إرسال"
-    },
-    "Language": {
-        "en": "العربية",
-        "ar": "English"
-    },
+  //Common
+  "Edit": {
+    "en": "Edit",
+    "ar": "تعديل"
+  },
+  "View": {
+    "en": "View",
+    "ar": "منظر"
+  },
+  "Delete": {
+    "en": "Delete",
+    "ar": "حذف"
+  },
+  "Add": {
+    "en": "Add",
+    "ar": "إضافة"
+  },
+  "Update": {
+    "en": "Update",
+    "ar": "تحديث"
+  },
+  "Cancel": {
+    "en": "Cancel",
+    "ar": "إلغاء"
+  },
+  "Search": {
+    "en": "Search",
+    "ar": "بحث"
+  },
+  "Unlock": {
+    "en": "Unlock",
+    "ar": "فتح"
+  },
+  "Submit": {
+    "en": "Submit",
+    "ar": "إرسال"
+  },
+  "Language": {
+    "en": "العربية",
+    "ar": "English"
+  },
 
-    "TotalItem": {
-        "en": "Total Items found",
-        "ar": "إجمالي الأصناف التي تم العثور عليها"
-    },
+  "TotalItem": {
+    "en": "Total Items found",
+    "ar": "إجمالي الأصناف التي تم العثور عليها"
+  },
 
 
-    //HeaderLinks
-    "Disbursements": {
-        "en": "Material dispensing",
-        "ar": "صرف المواد"
-    },
-"NewReceivingReport": {
+  //HeaderLinks
+  "Disbursements": {
+    "en": "Material dispensing",
+    "ar": "صرف المواد"
+  },
+  "NewReceivingReport": {
     "en": "New Receiving Report",
     "ar": "إتقرير الاستلام الجديد"
   },
-    "ManageStore": {
-        "en": "Warehouse Control Panel",
-        "ar": "لوحة تحكم المستودعات"
-    },
-    "ManageStorage": {
-        "en": "Manage Storage",
-        "ar": "إدارة المخزون"
-    },
-    "ManageUsers": {
-        "en": "System control panel",
-        "ar": "لوحة تحكم النظام"
-    },
-    "ManageUserGroups": {
-        "en": "Manage User Groups",
-        "ar": "إدارة مجموعات المستخدمين"
-    },
-    "ManageItems": {
-        "en": "Receiving items",
-        "ar": "استلام الأصناف"
-    },
-    "ManageItemGroups": {
-        "en": "Manage Item Groups",
-        "ar": "إدارة مجموعات الأصناف"
-    },
-    "ManageUnits": {
-        "en": "Manage Units",
-        "ar": "إدارة الوحدات"
-    },
-    "Supplies": {
-        "en": "Supplies",
-        "ar": "التوريدات"
-    },
+  "ManageStore": {
+    "en": "Warehouse Control Panel",
+    "ar": "لوحة تحكم المستودعات"
+  },
+  "ManageStorage": {
+    "en": "Manage Storage",
+    "ar": "إدارة المخزون"
+  },
+  "ManageUsers": {
+    "en": "System control panel",
+    "ar": "لوحة تحكم النظام"
+  },
+  "ManageUserGroups": {
+    "en": "Manage User Groups",
+    "ar": "إدارة مجموعات المستخدمين"
+  },
+  "ManageItems": {
+    "en": "Receiving items",
+    "ar": "استلام الأصناف"
+  },
+  "ManageItemGroups": {
+    "en": "Manage Item Groups",
+    "ar": "إدارة مجموعات الأصناف"
+  },
+  "ManageUnits": {
+    "en": "Manage Units",
+    "ar": "إدارة الوحدات"
+  },
+  "Supplies": {
+    "en": "Supplies",
+    "ar": "التوريدات"
+  },
 
 
-    "SupplierAdded": {
-        "en": "Supplier Added Successfully",
-        "ar": "تمت إضافة المورد بنجاح"
-    },
+  "SupplierAdded": {
+    "en": "Supplier Added Successfully",
+    "ar": "تمت إضافة المورد بنجاح"
+  },
 
 
-    "SupplierNotAdded": {
-        "en": "Supplier Not Added",
-        "ar": "لم تتم إضافة المورد"
-    },
-    "ManageSuppliers": {
-        "en": "Manage Suppliers",
-        "ar": "إدارة الموردين"
-    },
-    "Reports": {
-        "en": "Reports",
-        "ar": "التقارير"
-    },
-    "Home": {
-        "en": "Home",
-        "ar": "الرئيسية"
-    },
-    "UserProfile": {
-        "en": "User profile",
-        "ar": "ملف المستخدم"
-    },
-    "ChangePassword": {
-        "en": "Change Password",
-        "ar": "Change Password"
-    },
-    "Logout": {
-        "en": "Logout",
-        "ar": "تسجيل الخروج"
-    },
-    "LabMaterials": {
-        "en": "General Administration of Educational Services Warehouse Management System",
-        "ar": "الإدارة العامة للخدمات التعليمية"
-    },
-    "ChangePasswords": {
-        "en": "Change Password",
-        "ar": "تغيير كلمة المرور"
-    },
+  "SupplierNotAdded": {
+    "en": "Supplier Not Added",
+    "ar": "لم تتم إضافة المورد"
+  },
+  "ManageSuppliers": {
+    "en": "Manage Suppliers",
+    "ar": "إدارة الموردين"
+  },
+  "Reports": {
+    "en": "Reports",
+    "ar": "التقارير"
+  },
+  "Home": {
+    "en": "Home",
+    "ar": "الرئيسية"
+  },
+  "UserProfile": {
+    "en": "User profile",
+    "ar": "ملف المستخدم"
+  },
+  "ChangePassword": {
+    "en": "Change Password",
+    "ar": "Change Password"
+  },
+  "Logout": {
+    "en": "Logout",
+    "ar": "تسجيل الخروج"
+  },
+  "LabMaterials": {
+    "en": "General Administration of Educational Services Warehouse Management System",
+    "ar": "الإدارة العامة للخدمات التعليمية"
+  },
+  "ChangePasswords": {
+    "en": "Change Password",
+    "ar": "تغيير كلمة المرور"
+  },
 
-    //ChangePassword
-    "CurrentPassword": {
-        "en": "Current Password",
-        "ar": "كلمة المرور الحالية"
-    },
-    "NewPassword": {
-        "en": "New Password",
-        "ar": "كلمة المرور الجديدة"
-    },
-    "ConfirmNewPassword": {
-        "en": "Confirm New Password",
-        "ar": "تأكيد كلمة المرور الجديدة"
-    },
+  //ChangePassword
+  "CurrentPassword": {
+    "en": "Current Password",
+    "ar": "كلمة المرور الحالية"
+  },
+  "NewPassword": {
+    "en": "New Password",
+    "ar": "كلمة المرور الجديدة"
+  },
+  "ConfirmNewPassword": {
+    "en": "Confirm New Password",
+    "ar": "تأكيد كلمة المرور الجديدة"
+  },
 
-    //Items
+  //Items
 
-    "ItemName": {
-        "en": "Item Name",
-        "ar": "اسم الصنف"
-    },
-    "TypeName": {
-        "en": "Type Name",
-        "ar": "أكتب اسم"
-    },
-    "ItemDescription": {
-        "en": "Item Description",
-        "ar": "وصف الصنف"
-    },
-    "Items": {
-        "en": "Items",
-        "ar": "الأصناف"
-    },
-    "AvailableQuantity": {
-        "en": "Available Quantity",
-        "ar": "الكمية المتاحة"
-    },
-    "IsHazardous": {
-        "en": "Is Hazardous",
-        "ar": "صنف خطر"
-    },
-    "HazardType": {
-        "en": "Hazard Type",
-        "ar": "نوع خطورة الصنف"
-    },
-    "AddItem": {
-        "en": "Add Item",
-        "ar": "إضافة الصنف"
-    },
-    "UpdateItem": {
-        "en": "Update Item",
-        "ar": "تحديث الصنف"
-    },
-    "BatchNo": {
-        "en": "Batch Number",
-        "ar": "رقم الدفعة"
-    },
-    "ExpiryDate": {
-        "en": "Expiry Date ",
-        "ar": "تاريخ الانتهاء"
-    },
-    "Damage": {
-        "en": "Damage",
-        "ar": "إتلاف"
-    },
-    "DamagedQuantity": {
-        "en": "Damaged Quantity",
-        "ar": "الكمية التالفة"
-    },
-    "DamageReason": {
-        "en": "Damage Reason",
-        "ar": "سبب التلف"
-    },
-    "DamagedQuantityExceeded": {
-        "en": "Damaged Quantity Exceeded",
-        "ar": "تجاوزت الكمية التالفة"
-    },
-    "DamagedItems": {
-        "en": "Return items",
-        "ar": "إرجاع الأصناف"
-    },
+  "ItemName": {
+    "en": "Item Name",
+    "ar": "اسم الصنف"
+  },
+  "TypeName": {
+    "en": "Type Name",
+    "ar": "أكتب اسم"
+  },
+  "ItemDescription": {
+    "en": "Item Description",
+    "ar": "وصف الصنف"
+  },
+  "Items": {
+    "en": "Items",
+    "ar": "الأصناف"
+  },
+  "AvailableQuantity": {
+    "en": "Available Quantity",
+    "ar": "الكمية المتاحة"
+  },
+  "IsHazardous": {
+    "en": "Is Hazardous",
+    "ar": "صنف خطر"
+  },
+  "HazardType": {
+    "en": "Hazard Type",
+    "ar": "نوع خطورة الصنف"
+  },
+  "AddItem": {
+    "en": "Add Item",
+    "ar": "إضافة الصنف"
+  },
+  "UpdateItem": {
+    "en": "Update Item",
+    "ar": "تحديث الصنف"
+  },
+  "BatchNo": {
+    "en": "Batch Number",
+    "ar": "رقم الدفعة"
+  },
+  "ExpiryDate": {
+    "en": "Expiry Date ",
+    "ar": "تاريخ الانتهاء"
+  },
+  "Damage": {
+    "en": "Damage",
+    "ar": "إتلاف"
+  },
+  "DamagedQuantity": {
+    "en": "Damaged Quantity",
+    "ar": "الكمية التالفة"
+  },
+  "DamageReason": {
+    "en": "Damage Reason",
+    "ar": "سبب التلف"
+  },
+  "DamagedQuantityExceeded": {
+    "en": "Damaged Quantity Exceeded",
+    "ar": "تجاوزت الكمية التالفة"
+  },
+  "DamagedItems": {
+    "en": "Return items",
+    "ar": "إرجاع الأصناف"
+  },
 
-    //ItemGroup
-    "ItemGroups": {
-        "en": "Item Groups",
-        "ar": "مجموعات الأصناف"
-    },
-    "GroupCode": {
-        "en": "Group Code",
-        "ar": "رمز المجموعة"
-    },
-    "GroupName": {
-        "en": "Group Name",
-        "ar": "اسم المجموعة"
-    },
-    "AddItemGroup": {
-        "en": "Add Item Group",
-        "ar": "إضافة مجموعة صنف"
-    },
-    "UpdateItemGroup": {
-        "en": "Update Item Group",
-        "ar": "تحديث مجموعة الصنف"
-    },
-
-
-    //Units
-    "AddUnit": {
-        "en": "Add Unit",
-        "ar": "إضافة وحدة"
-    },
-    "UpdateUnit": {
-        "en": "Update Unit",
-        "ar": "تحديث الوحدة"
-    },
-    "UnitDescription": {
-        "en": "Unit Description",
-        "ar": "وصف الوحدة"
-    },
-    "UnitCode": {
-        "en": "Unit Code",
-        "ar": "كود الوحدة"
-    },
-    "Units": {
-        "en": "Units",
-        "ar": "الوحدات"
-    },
-    "WarehouseType": {
-        "en": "Warehouse Type",
-        "ar": "الوحدات"
-    },
-    "ManagerName": {
-        "en": "Manager Name",
-        "ar": "اسم المدير"
-    },
-    "ManagerJobNumber": {
-        "en": "Manager Job Number",
-        "ar": "رقم وظيفة المدير"
-    },
-    "WarehouseStatus": {
-        "en": "Warehouse Status",
-        "ar": "حالة المستودع"
-    },
-    "Open": {
-        "en": "Open",
-        "ar": "يفتح"
-    },
-    "Closed": {
-        "en": "Closed",
-        "ar": "مغلق"
-    },
-    "UnitsMeasure": {
-        "en": "Units of measure",
-        "ar": "الوحدات"
-    },
-    "ChemicalStatus": {
-        "en": "Chemical status",
-        "ar": "الوحدات"
-    },
-    "DocumentType": {
-        "en": "Document type",
-        "ar": "الوحدات"
-    },
-
-    "ShelfIsMissing": {
-        "en": "Shelf Is Missing",
-        "ar": "رقم الفاتورة مفقود"
-    },
-    "PurchaseOrderNoMissing": {
-        "en": "Purchase order number is missing.",
-        "ar": "رقم أمر الشراء مفقود"
-    },
-    "QuantityReceivedMissing": {
-        "en": "Quantity received is missing.",
-        "ar": "الكمية المستلمة مفقودة"
-    },
-    "ReceivedAtMissing": {
-        "en": "Please select order received date.",
-        "ar": "يرجى تحديد تاريخ استلام الطلب"
-    },
-
-    //Stores
-    "Stores": {
-        "en": "Warehouses",
-        "ar": "المستودعات"
-    },
-    "StoreNumber": {
-        "en": "Warehouse Number",
-        "ar": "رقم المستودع"
-    },
-    "StoreName": {
-        "en": "Warehouse Name",
-        "ar": "اسم المستودع"
-    },
-    "Shelve": {
-        "en": "Shelve",
-        "ar": "الرف"
-    },
-    "Shelves": {
-        "en": "Shelves",
-        "ar": "الرفوف"
-    },
-    "AddShelf": {
-        "en": "Add Shelf",
-        "ar": "أضف الرف"
-    },
-    "AddStore": {
-        "en": "Add Warehouse",
-        "ar": "إضافة مستودع"
-    },
-    "UpdateStore": {
-        "en": "Update Warehouse",
-        "ar": "تحديث المستودع"
-    },
-
-    //Destinations
-    "Destinations": {
-        "en": "Destinations",
-        "ar": "الوجهات"
-    },
-    "DestinationName": {
-        "en": "Destination Name",
-        "ar": "اسم الوجهة"
-    },
-    "AddDestination": {
-        "en": "Add Destination",
-        "ar": "أضف الوجهة"
-    },
-    "UpdateDestination": {
-        "en": "Update Destination",
-        "ar": "تحديث الوجهة"
-    },
-    "DestinationNameMissing": {
-        "en": "Destination Name Missing",
-        "ar": "يرجى إدخال اسم الوجهة"
-    },
-    "ManageDestinations": {
-        "en": "Manage Destinations",
-        "ar": "إدارة الوجهات"
-    },
-    "DestinationDeleted": {
-        "en": "Destination Deleted",
-        "ar": "تم حذف الوجهة"
-    },
-    //Storage
-    "Storages": {
-        "en": "Storages",
-        "ar": "المخازن"
-    },
-    "AddStorage": {
-        "en": "Add Storage",
-        "ar": "إضافة مخزون"
-    },
-    "UpdateStorage": {
-        "en": "Update Storage",
-        "ar": "تحديث المخزون"
-    },
-    "ShelveNumber": {
-        "en": "Shelve Number",
-        "ar": "رقم الرف"
-    },
-    //Suppliers
-    "Suppliers": {
-        "en": "Suppliers",
-        "ar": "الموردين"
-    },
-    "SupplierName": {
-        "en": "Supplier Name",
-        "ar": "اسم المورد"
-    },
-    "SelectSupplierType": {
-        "en": "Select Supplier Type",
-        "ar": "حدد نوع المورد"
-    },
-    "AddSupplier": {
-        "en": "Add Supplier",
-        "ar": "إضافة مورد"
-    },
-    "SupplierNotUpdated": {
-        "en": "Supplier Not Updated",
-        "ar": "لم يتم تحديث المورد"
-    },
-
-    "SupplierPhoneNumberMissing": {
-        "en": "Supplier Phone Number Is Missing",
-        "ar": "رقم تواصل المورد مفقود"
-    },
+  //ItemGroup
+  "ItemGroups": {
+    "en": "Item Groups",
+    "ar": "مجموعات الأصناف"
+  },
+  "GroupCode": {
+    "en": "Group Code",
+    "ar": "رمز المجموعة"
+  },
+  "GroupName": {
+    "en": "Group Name",
+    "ar": "اسم المجموعة"
+  },
+  "AddItemGroup": {
+    "en": "Add Item Group",
+    "ar": "إضافة مجموعة صنف"
+  },
+  "UpdateItemGroup": {
+    "en": "Update Item Group",
+    "ar": "تحديث مجموعة الصنف"
+  },
 
 
-    "SupplierContactNumber": {
-        "en": "Contact Number",
-        "ar": "رقم التواصل"
-    },
-    "ContactNumber": {
-        "en": "Contact Number",
-        "ar": "رقم التواصل"
-    },
+  //Units
+  "AddUnit": {
+    "en": "Add Unit",
+    "ar": "إضافة وحدة"
+  },
+  "UpdateUnit": {
+    "en": "Update Unit",
+    "ar": "تحديث الوحدة"
+  },
+  "UnitDescription": {
+    "en": "Unit Description",
+    "ar": "وصف الوحدة"
+  },
+  "UnitCode": {
+    "en": "Unit Code",
+    "ar": "كود الوحدة"
+  },
+  "Units": {
+    "en": "Units",
+    "ar": "الوحدات"
+  },
+  "WarehouseType": {
+    "en": "Warehouse Type",
+    "ar": "الوحدات"
+  },
+  "ManagerName": {
+    "en": "Manager Name",
+    "ar": "اسم المدير"
+  },
+  "ManagerJobNumber": {
+    "en": "Manager Job Number",
+    "ar": "رقم وظيفة المدير"
+  },
+  "WarehouseStatus": {
+    "en": "Warehouse Status",
+    "ar": "حالة المستودع"
+  },
+  "Open": {
+    "en": "Open",
+    "ar": "يفتح"
+  },
+  "Closed": {
+    "en": "Closed",
+    "ar": "مغلق"
+  },
+  "UnitsMeasure": {
+    "en": "Units of measure",
+    "ar": "الوحدات"
+  },
+  "ChemicalStatus": {
+    "en": "Chemical status",
+    "ar": "الوحدات"
+  },
+  "DocumentType": {
+    "en": "Document type",
+    "ar": "الوحدات"
+  },
+
+  "ShelfIsMissing": {
+    "en": "Shelf Is Missing",
+    "ar": "رقم الفاتورة مفقود"
+  },
+  "PurchaseOrderNoMissing": {
+    "en": "Purchase order number is missing.",
+    "ar": "رقم أمر الشراء مفقود"
+  },
+  "QuantityReceivedMissing": {
+    "en": "Quantity received is missing.",
+    "ar": "الكمية المستلمة مفقودة"
+  },
+  "ReceivedAtMissing": {
+    "en": "Please select order received date.",
+    "ar": "يرجى تحديد تاريخ استلام الطلب"
+  },
+
+  //Stores
+  "Stores": {
+    "en": "Warehouses",
+    "ar": "المستودعات"
+  },
+  "StoreNumber": {
+    "en": "Warehouse Number",
+    "ar": "رقم المستودع"
+  },
+  "StoreName": {
+    "en": "Warehouse Name",
+    "ar": "اسم المستودع"
+  },
+  "Shelve": {
+    "en": "Shelve",
+    "ar": "الرف"
+  },
+  "Shelves": {
+    "en": "Shelves",
+    "ar": "الرفوف"
+  },
+  "AddShelf": {
+    "en": "Add Shelf",
+    "ar": "أضف الرف"
+  },
+  "AddStore": {
+    "en": "Add Warehouse",
+    "ar": "إضافة مستودع"
+  },
+  "UpdateStore": {
+    "en": "Update Warehouse",
+    "ar": "تحديث المستودع"
+  },
+
+  //Destinations
+  "Destinations": {
+    "en": "Destinations",
+    "ar": "الوجهات"
+  },
+  "DestinationName": {
+    "en": "Destination Name",
+    "ar": "اسم الوجهة"
+  },
+  "AddDestination": {
+    "en": "Add Destination",
+    "ar": "أضف الوجهة"
+  },
+  "UpdateDestination": {
+    "en": "Update Destination",
+    "ar": "تحديث الوجهة"
+  },
+  "DestinationNameMissing": {
+    "en": "Destination Name Missing",
+    "ar": "يرجى إدخال اسم الوجهة"
+  },
+  "ManageDestinations": {
+    "en": "Manage Destinations",
+    "ar": "إدارة الوجهات"
+  },
+  "DestinationDeleted": {
+    "en": "Destination Deleted",
+    "ar": "تم حذف الوجهة"
+  },
+  //Storage
+  "Storages": {
+    "en": "Storages",
+    "ar": "المخازن"
+  },
+  "AddStorage": {
+    "en": "Add Storage",
+    "ar": "إضافة مخزون"
+  },
+  "UpdateStorage": {
+    "en": "Update Storage",
+    "ar": "تحديث المخزون"
+  },
+  "ShelveNumber": {
+    "en": "Shelve Number",
+    "ar": "رقم الرف"
+  },
+  //Suppliers
+  "Suppliers": {
+    "en": "Suppliers",
+    "ar": "الموردين"
+  },
+  "SupplierName": {
+    "en": "Supplier Name",
+    "ar": "اسم المورد"
+  },
+  "SelectSupplierType": {
+    "en": "Select Supplier Type",
+    "ar": "حدد نوع المورد"
+  },
+  "AddSupplier": {
+    "en": "Add Supplier",
+    "ar": "إضافة مورد"
+  },
+  "SupplierNotUpdated": {
+    "en": "Supplier Not Updated",
+    "ar": "لم يتم تحديث المورد"
+  },
+
+  "SupplierPhoneNumberMissing": {
+    "en": "Supplier Phone Number Is Missing",
+    "ar": "رقم تواصل المورد مفقود"
+  },
+
+
+  "SupplierContactNumber": {
+    "en": "Contact Number",
+    "ar": "رقم التواصل"
+  },
+  "ContactNumber": {
+    "en": "Contact Number",
+    "ar": "رقم التواصل"
+  },
 
 
 
 
-    "PurchaseOrderNumberIsMissing": {
-        "en": "Purchase Order Number Is Missing",
-        "ar": "رقم أمر الشراء مفقود"
-    },
-    "UpdateSupplier": {
-        "en": "Update Supplier",
-        "ar": "تحديث المورد"
-    },
-   "Requests": {
+  "PurchaseOrderNumberIsMissing": {
+    "en": "Purchase Order Number Is Missing",
+    "ar": "رقم أمر الشراء مفقود"
+  },
+  "UpdateSupplier": {
+    "en": "Update Supplier",
+    "ar": "تحديث المورد"
+  },
+  "Requests": {
     "en": "Requests",
     "ar": "اسم"
   },
 
 
-    //Supplies
-    "QuantityReceived": {
-        "en": "Quantity Received",
-        "ar": "الكمية المستلمة"
-    },
-    "PurchaseOrderNo": {
-        "en": "Purchase Order Number",
-        "ar": "رقم طلب الشراء"
-    },
-    "AddSupplies": {
-        "en": "Add Supply",
-        "ar": "إضافة طلب توريد"
-    },
-    "UpdateSupplies": {
-        "en": "Update Supply",
-        "ar": "تحديث طلب التوريد"
-    },
-    "InvoiceNumber": {
-        "en": "Invoice Number",
-        "ar": "رقم الفاتورة"
-    },
-    "ReceivedAt": {
-        "en": "Received Date",
-        "ar": "تاريخ الاستلام"
-    },
-    "InventoryBalanced": {
-        "en": "Inventory Balanced",
-        "ar": "توازن المخزون"
-    },
+  //Supplies
+  "QuantityReceived": {
+    "en": "Quantity Received",
+    "ar": "الكمية المستلمة"
+  },
+  "PurchaseOrderNo": {
+    "en": "Purchase Order Number",
+    "ar": "رقم طلب الشراء"
+  },
+  "AddSupplies": {
+    "en": "Add Supply",
+    "ar": "إضافة طلب توريد"
+  },
+  "UpdateSupplies": {
+    "en": "Update Supply",
+    "ar": "تحديث طلب التوريد"
+  },
+  "InvoiceNumber": {
+    "en": "Invoice Number",
+    "ar": "رقم الفاتورة"
+  },
+  "ReceivedAt": {
+    "en": "Received Date",
+    "ar": "تاريخ الاستلام"
+  },
+  "InventoryBalanced": {
+    "en": "Inventory Balanced",
+    "ar": "توازن المخزون"
+  },
 
-    //Disbursements
-    "RequesterName": {
-        "en": "Requester Name",
-        "ar": "اسم مقدم الطلب"
-    },
-    "AddDisbursement": {
-        "en": "Materials Request order",
-        "ar": "طلب صرف مواد"
-    },
-    "UpdateDisbursement": {
-        "en": "Update Materials Request",
-        "ar": "تحديث صرف المواد"
-    },
-    "RequestReceivedDate": {
-        "en": "Request Received Date",
-        "ar": "تاريخ استلام الطلب"
-    },
-    "RequestingPlace": {
-        "en": "Requesting Place",
-        "ar": "مكان الطلب"
-    },
-    "Comments": {
-        "en": "Comments",
-        "ar": "تعليقات / إضافات"
-    },
-    "DisbursementStatus": {
-        "en": "Materials Request Status",
-        "ar": "حالة الصرف"
-    },
+  //Disbursements
+  "RequesterName": {
+    "en": "Requester Name",
+    "ar": "اسم مقدم الطلب"
+  },
+  "AddDisbursement": {
+    "en": "Materials Request order",
+    "ar": "طلب صرف مواد"
+  },
+  "UpdateDisbursement": {
+    "en": "Update Materials Request",
+    "ar": "تحديث صرف المواد"
+  },
+  "RequestReceivedDate": {
+    "en": "Request Received Date",
+    "ar": "تاريخ استلام الطلب"
+  },
+  "RequestingPlace": {
+    "en": "Requesting Place",
+    "ar": "مكان الطلب"
+  },
+  "Comments": {
+    "en": "Comments",
+    "ar": "تعليقات / إضافات"
+  },
+  "DisbursementStatus": {
+    "en": "Materials Request Status",
+    "ar": "حالة الصرف"
+  },
 
-    //UserGroups
-    "UserGroups": {
-        "en": "User Groups",
-        "ar": "مجموعات المستخدمين"
-    },
-    "AddUserGroup": {
-        "en": "Add User Group",
-        "ar": "إضافة مجموعة مستخدمين"
-    },
-    "UpdateUserGroup": {
-        "en": "Update User Group",
-        "ar": "تحديث مجموعة مستخدمين"
-    },
-    "UserGroupName": {
-        "en": "User Group Name",
-        "ar": "اسم مجموعة المستخدمين"
-    },
-    "Privilages": {
-        "en": "Privilages",
-        "ar": "الأذونات"
-    },
+  //UserGroups
+  "UserGroups": {
+    "en": "User Groups",
+    "ar": "مجموعات المستخدمين"
+  },
+  "AddUserGroup": {
+    "en": "Add User Group",
+    "ar": "إضافة مجموعة مستخدمين"
+  },
+  "UpdateUserGroup": {
+    "en": "Update User Group",
+    "ar": "تحديث مجموعة مستخدمين"
+  },
+  "UserGroupName": {
+    "en": "User Group Name",
+    "ar": "اسم مجموعة المستخدمين"
+  },
+  "Privilages": {
+    "en": "Privilages",
+    "ar": "الأذونات"
+  },
 
-    //Users
-    "Users": {
-        "en": "Users",
-        "ar": "المستخدمين"
-    },
-    "User": {
-        "en": "User",
-        "ar": "المستخدم"
-    },
-    "AddUser": {
-        "en": "Add User",
-        "ar": "إضافة مستخدم"
-    },
-    "UpdateUser": {
-        "en": "Update User",
-        "ar": "تحديث المستخدم"
-    },
-    "FullName": {
-        "en": "Full Name",
-        "ar": "الاسم الكامل"
-    },
-    "Email": {
-        "en": "Email",
-        "ar": "البريد الإلكتروني"
-    },
-    "UserEnabled": {
-        "en": "Is User Enabled",
-        "ar": "تمكين المستخدم"
-    },
-    "IsLocked": {
-        "en": "Is User Locked",
-        "ar": "تعطيل المستخدم"
-    },
-    "UserType": {
-        "en": "User Type",
-        "ar": "نوع المستخدم"
-    },
-    "IsDomainUser": {
-        "en": "Is Domain User",
-        "ar": "مستخدم إداري"
-    },
-    "JobNumber": {
-        "en": "Job Number",
-        "ar": "رقم الوظيفة"
-    },
-    "EmpAffiliation": {
-        "en": "Employee's Affiliation",
-        "ar": "انتماء الموظف"
-    },
-    "Transfer": {
-        "en": "Transfer",
-        "ar": "تحويل"
-    },
-    "ReTypePassword": {
-        "en": "Re-type Password",
-        "ar": "أعد كتابة كلمة المرور"
-    },
-
-
-    //Reports
-    "HazardousMaterials": {
-        "en": "Hazardous Materials",
-        "ar": "المواد الخطرة"
-    },
-    "HazardTypeName": {
-        "en": "Hazard Type Name",
-        "ar": "نوع الخطر"
-    },
-    "Inventory": {
-        "en": "Inventory",
-        "ar": "المستودع"
-    },
-    "DistributedMaterials": {
-        "en": "Distributed Materials",
-        "ar": "المواد الموزعة"
-    },
-    "MaterialsReceived": {
-        "en": "Materials Received",
-        "ar": "المواد المستلمة"
-    },
-    "UserActivity": {
-        "en": "User Activity",
-        "ar": "نشاط المستخدم"
-    },
-    "FromDate": {
-        "en": "From Date",
-        "ar": "من تاريخ"
-    },
-    "ToDate": {
-        "en": "To Date",
-        "ar": "إلى تاريخ"
-    },
-    "Action": {
-        "en": "Action",
-        "ar": "تعديل"
-    },
-    "ActionDetails": {
-        "en": "Action Details",
-        "ar": "تفاصيل التعديل"
-    },
-    "RequestingIp": {
-        "en": "Requesting Ip",
-        "ar": "عنوان الطلب"
-    },
-    "ActionTime": {
-        "en": "Action Time",
-        "ar": "وقت التعديل"
-    },
-
-    //Errors
-    "InvalidLgoin": {
-        "en": "User LoginName or password is not valid.",
-        "ar": "اسم المستخدم أو كلمة المرور غير صالحة"
-    },
-    "UserNameMissing": {
-        "en": "User Name is required.",
-        "ar": "اسم المستخدم مطلوب"
-    },
-    "JobNumberMissing": {
-        "en": "Job Number is required.",
-        "ar": "رقم الوظيفة مطلوب."
-    },
-    "EmpAffiliationMissing": {
-        "en": "Employee's Affiliation is required.",
-        "ar": "يشترط انتماء الموظ"
-    },
-    "TransferMissing": {
-        "en": "Transfer is required.",
-        "ar": "النقل مطلوب"
-    },
-
-    "ReTypePasswordMissing": {
-        "en": "ReType Password",
-        "ar": "أعد كتابة كلمة المرور"
-    },
-    "PasswordMismatch": {
-        "en": "Password and Confirm Password does not match.",
-        "ar": "كلمة المرور وتأكيد كلمة المرور غير متطابقتين"
-    },
-    "PasswordMissing": {
-        "en": "Password is required.",
-        "ar": "كلمة المرور مطلوبة"
-    },
-    "UserLocked": {
-        "en": "User is locked, contact administrator.",
-        "ar": "تم تعطيل المستخدم، يرجى التواصل مع الإدارة"
-    },
-    "UserDeactive": {
-        "en": "User is deactivated, contact administrator.",
-        "ar": "تم إلغاء تنشيط المستخدم، يرجى التواصل مع الإدارة"
-    },
-    "ItemGroupDeleted": {
-        "en": "Item group {0} deleted",
-        "ar": "تم حذف مجموعة الأصناف {0}"
-    },
-    "ItemGroupNotDeleted": {
-        "en": "The item group {0} cannot be deleted as there are units/items assigned to this group, like {1}",
-        "ar": "لا يمكن حذف مجموعة الأصناف {0} نظرا لوجود وحدات/أصناف مخصصة لهذه المجموعة، مثل {1}"
-    },
-    "UnitDeleted": {
-        "en": "Unit {0} deleted",
-        "ar": "تم حذف الوحدة {0}"
-    },
-    "UnitNotDeleted": {
-        "en": "The unit {0} cannot be deleted as this unit is assigned to items, like {1}",
-        "ar": "لا يمكن حذف الوحدة {0} حيث يتم تعيين هذه الوحدة لأصناف ، مثل {1}"
-    },
-    "UserSelfUpdateNotAllowed": {
-        "en": "User cannot update own details.",
-        "ar": "لا يمكن للمستخدم تحديث التفاصيل الخاصة"
-    },
-    "UserUnlocked": {
-        "en": "User {0} unlocked",
-        "ar": "تم إلغاء تعطيل المستخدم {0}"
-    },
-    "UserAlreadyUnlocked": {
-        "en": "User {0} already unlocked",
-        "ar": "المستخدم {0} معطل بالفعل"
-    },
-    "UserGroupDeleted": {
-        "en": "User group {0} deleted.",
-        "ar": "تم حذف مجموعة المستخدمين {0}"
-    },
-    "UserGroupNotDeleted": {
-        "en": "The user group cannot be deleted as there are users assigned to this group.",
-        "ar": "لا يمكن حذف مجموعة المستخدمين نظرا لوجود مستخدمين معينين لهذه المجموعة"
-    },
-    "SupplierDeleted": {
-        "en": "Supplier {0} deleted",
-        "ar": "تم حذف المورد {0}"
-    },
-    "SupplierNotDeleted": {
-        "en": "The Supplier cannot be deleted as there is supplies data for this supplier",
-        "ar": "لا يمكن حذف المورد نظرا لوجود بيانات توريد لهذا المورد"
-    },
-    "StoreDeleted": {
-        "en": "Warehouse {0} deleted",
-        "ar": "تم حذف المستودع {0}"
-    },
-    "StoreNotDeleted": {
-        "en": "The Warehouse cannot be deleted as there are items {0} in this warehouse, like {1}",
-        "ar": "لا يمكن حذف المستودع نظرا لوجود أصناف {0} في هذا المستودع، مثل {1}"
-    },
-    "StorageDeleted": {
-        "en": "Storage of item {0} deleted",
-        "ar": "تم حذف المخزون للصنف {0}"
-    },
-    "StorageNotDeleted": {
-        "en": "The storage cannot be deleted as the item {0} still in this warehouse, like {1}",
-        "ar": "لا يمكن حذف مخزون الصنف {0} لأنه لا يزال في هذا المستودع، مثل {1}"
-    },
-    "ItemDeleted": {
-        "en": "Item {0} deleted",
-        "ar": "تم حذف الصنف {0}"
-    },
-    "ItemNotDeleted": {
-        "en": "The item can not be deleted as there is supplies data for this item",
-        "ar": "لا يمكن حذف الصنف حيث توجد بيانات توريد لهذا الصنف"
-    },
-    "UserGroupMissing": {
-        "en": "User Group Name is missing.",
-        "ar": "اسم مجموعة المستخدمين مفقود"
-    },
-    "AtleastOnePrivilage": {
-        "en": "Select at least one previlage.",
-        "ar": "اختر واحد من الأذونات على الأقل"
-    },
-    "UserGroupExists": {
-        "en": "The user group name {0} already exists.",
-        "ar": "اسم مجموعة المستخدمين {0} موجود بالفعل."
-    },
-    "UserFullNameMissing": {
-        "en": "User Full Name Missing.",
-        "ar": "الاسم الكامل للمستخدم مفقود"
-    },
-    "UserEmailMissing": {
-        "en": "User Email Missing.",
-        "ar": "البريد الإلكتروني للمستخدم مفقود"
-    },
-    "SelectUserGroup": {
-        "en": "Select a user group.",
-        "ar": "حدد مجموعة مستخدمين"
-    },
-    "UserNameExist": {
-        "en": "User name already exists.",
-        "ar": "اسم المستخدم موجود بالفعل"
-    },
-    "UnitCodeMissing": {
-        "en": "Unit Code Missing.",
-        "ar": "رمز الوحدة مفقود"
-    },
-    "UnitDescriptionMissing": {
-        "en": "Unit Description Missing.",
-        "ar": "وصف الوحدة مفقود"
-    },
-    "UnitCodeExists": {
-        "en": "The unit code {0} already exists.",
-        "ar": "رمز الوحدة {0} موجود بالفعل"
-    },
-    "UnitDescriptionExists": {
-        "en": "The unit description {0} already exists.",
-        "ar": "وصف الوحدة {0} موجود بالفعل"
-    },
-    "InvoiceNumberMissing": {
-        "en": "Invoice number is missing.",
-        "ar": "رقم الفاتورة مفقود"
-    },
-
-    "SupplierNameisMissing": {
-        "en": "Supplier Name is Missing",
-        "ar": "اسم المورد مفقود"
-    },
-
-    "ItemCodeIsMissing": {
-        "en": "Item Code Is Missing",
-        "ar": "رمز الصنف مفقود"
-    },
+  //Users
+  "Users": {
+    "en": "Users",
+    "ar": "المستخدمين"
+  },
+  "User": {
+    "en": "User",
+    "ar": "المستخدم"
+  },
+  "AddUser": {
+    "en": "Add User",
+    "ar": "إضافة مستخدم"
+  },
+  "UpdateUser": {
+    "en": "Update User",
+    "ar": "تحديث المستخدم"
+  },
+  "FullName": {
+    "en": "Full Name",
+    "ar": "الاسم الكامل"
+  },
+  "Email": {
+    "en": "Email",
+    "ar": "البريد الإلكتروني"
+  },
+  "UserEnabled": {
+    "en": "Is User Enabled",
+    "ar": "تمكين المستخدم"
+  },
+  "IsLocked": {
+    "en": "Is User Locked",
+    "ar": "تعطيل المستخدم"
+  },
+  "UserType": {
+    "en": "User Type",
+    "ar": "نوع المستخدم"
+  },
+  "IsDomainUser": {
+    "en": "Is Domain User",
+    "ar": "مستخدم إداري"
+  },
+  "JobNumber": {
+    "en": "Job Number",
+    "ar": "رقم الوظيفة"
+  },
+  "EmpAffiliation": {
+    "en": "Employee's Affiliation",
+    "ar": "انتماء الموظف"
+  },
+  "Transfer": {
+    "en": "Transfer",
+    "ar": "تحويل"
+  },
+  "ReTypePassword": {
+    "en": "Re-type Password",
+    "ar": "أعد كتابة كلمة المرور"
+  },
 
 
-    "ItemTypeIsMissing": {
-        "en": "Type Name Is Missing",
-        "ar": "اسم نوع الصنف مفقود"
-    },
+  //Reports
+  "HazardousMaterials": {
+    "en": "Hazardous Materials",
+    "ar": "المواد الخطرة"
+  },
+  "HazardTypeName": {
+    "en": "Hazard Type Name",
+    "ar": "نوع الخطر"
+  },
+  "Inventory": {
+    "en": "Inventory",
+    "ar": "المستودع"
+  },
+  "DistributedMaterials": {
+    "en": "Distributed Materials",
+    "ar": "المواد الموزعة"
+  },
+  "MaterialsReceived": {
+    "en": "Materials Received",
+    "ar": "المواد المستلمة"
+  },
+  "UserActivity": {
+    "en": "User Activity",
+    "ar": "نشاط المستخدم"
+  },
+  "FromDate": {
+    "en": "From Date",
+    "ar": "من تاريخ"
+  },
+  "ToDate": {
+    "en": "To Date",
+    "ar": "إلى تاريخ"
+  },
+  "Action": {
+    "en": "Action",
+    "ar": "تعديل"
+  },
+  "ActionDetails": {
+    "en": "Action Details",
+    "ar": "تفاصيل التعديل"
+  },
+  "RequestingIp": {
+    "en": "Requesting Ip",
+    "ar": "عنوان الطلب"
+  },
+  "ActionTime": {
+    "en": "Action Time",
+    "ar": "وقت التعديل"
+  },
+
+  //Errors
+  "InvalidLgoin": {
+    "en": "User LoginName or password is not valid.",
+    "ar": "اسم المستخدم أو كلمة المرور غير صالحة"
+  },
+  "UserNameMissing": {
+    "en": "User Name is required.",
+    "ar": "اسم المستخدم مطلوب"
+  },
+  "JobNumberMissing": {
+    "en": "Job Number is required.",
+    "ar": "رقم الوظيفة مطلوب."
+  },
+  "EmpAffiliationMissing": {
+    "en": "Employee's Affiliation is required.",
+    "ar": "يشترط انتماء الموظ"
+  },
+  "TransferMissing": {
+    "en": "Transfer is required.",
+    "ar": "النقل مطلوب"
+  },
+
+  "ReTypePasswordMissing": {
+    "en": "ReType Password",
+    "ar": "أعد كتابة كلمة المرور"
+  },
+  "PasswordMismatch": {
+    "en": "Password and Confirm Password does not match.",
+    "ar": "كلمة المرور وتأكيد كلمة المرور غير متطابقتين"
+  },
+  "PasswordMissing": {
+    "en": "Password is required.",
+    "ar": "كلمة المرور مطلوبة"
+  },
+  "UserLocked": {
+    "en": "User is locked, contact administrator.",
+    "ar": "تم تعطيل المستخدم، يرجى التواصل مع الإدارة"
+  },
+  "UserDeactive": {
+    "en": "User is deactivated, contact administrator.",
+    "ar": "تم إلغاء تنشيط المستخدم، يرجى التواصل مع الإدارة"
+  },
+  "ItemGroupDeleted": {
+    "en": "Item group {0} deleted",
+    "ar": "تم حذف مجموعة الأصناف {0}"
+  },
+  "ItemGroupNotDeleted": {
+    "en": "The item group {0} cannot be deleted as there are units/items assigned to this group, like {1}",
+    "ar": "لا يمكن حذف مجموعة الأصناف {0} نظرا لوجود وحدات/أصناف مخصصة لهذه المجموعة، مثل {1}"
+  },
+  "UnitDeleted": {
+    "en": "Unit {0} deleted",
+    "ar": "تم حذف الوحدة {0}"
+  },
+  "UnitNotDeleted": {
+    "en": "The unit {0} cannot be deleted as this unit is assigned to items, like {1}",
+    "ar": "لا يمكن حذف الوحدة {0} حيث يتم تعيين هذه الوحدة لأصناف ، مثل {1}"
+  },
+  "UserSelfUpdateNotAllowed": {
+    "en": "User cannot update own details.",
+    "ar": "لا يمكن للمستخدم تحديث التفاصيل الخاصة"
+  },
+  "UserUnlocked": {
+    "en": "User {0} unlocked",
+    "ar": "تم إلغاء تعطيل المستخدم {0}"
+  },
+  "UserAlreadyUnlocked": {
+    "en": "User {0} already unlocked",
+    "ar": "المستخدم {0} معطل بالفعل"
+  },
+  "UserGroupDeleted": {
+    "en": "User group {0} deleted.",
+    "ar": "تم حذف مجموعة المستخدمين {0}"
+  },
+  "UserGroupNotDeleted": {
+    "en": "The user group cannot be deleted as there are users assigned to this group.",
+    "ar": "لا يمكن حذف مجموعة المستخدمين نظرا لوجود مستخدمين معينين لهذه المجموعة"
+  },
+  "SupplierDeleted": {
+    "en": "Supplier {0} deleted",
+    "ar": "تم حذف المورد {0}"
+  },
+  "SupplierNotDeleted": {
+    "en": "The Supplier cannot be deleted as there is supplies data for this supplier",
+    "ar": "لا يمكن حذف المورد نظرا لوجود بيانات توريد لهذا المورد"
+  },
+  "StoreDeleted": {
+    "en": "Warehouse {0} deleted",
+    "ar": "تم حذف المستودع {0}"
+  },
+  "StoreNotDeleted": {
+    "en": "The Warehouse cannot be deleted as there are items {0} in this warehouse, like {1}",
+    "ar": "لا يمكن حذف المستودع نظرا لوجود أصناف {0} في هذا المستودع، مثل {1}"
+  },
+  "StorageDeleted": {
+    "en": "Storage of item {0} deleted",
+    "ar": "تم حذف المخزون للصنف {0}"
+  },
+  "StorageNotDeleted": {
+    "en": "The storage cannot be deleted as the item {0} still in this warehouse, like {1}",
+    "ar": "لا يمكن حذف مخزون الصنف {0} لأنه لا يزال في هذا المستودع، مثل {1}"
+  },
+  "ItemDeleted": {
+    "en": "Item {0} deleted",
+    "ar": "تم حذف الصنف {0}"
+  },
+  "ItemNotDeleted": {
+    "en": "The item can not be deleted as there is supplies data for this item",
+    "ar": "لا يمكن حذف الصنف حيث توجد بيانات توريد لهذا الصنف"
+  },
+  "UserGroupMissing": {
+    "en": "User Group Name is missing.",
+    "ar": "اسم مجموعة المستخدمين مفقود"
+  },
+  "AtleastOnePrivilage": {
+    "en": "Select at least one previlage.",
+    "ar": "اختر واحد من الأذونات على الأقل"
+  },
+  "UserGroupExists": {
+    "en": "The user group name {0} already exists.",
+    "ar": "اسم مجموعة المستخدمين {0} موجود بالفعل."
+  },
+  "UserFullNameMissing": {
+    "en": "User Full Name Missing.",
+    "ar": "الاسم الكامل للمستخدم مفقود"
+  },
+  "UserEmailMissing": {
+    "en": "User Email Missing.",
+    "ar": "البريد الإلكتروني للمستخدم مفقود"
+  },
+  "SelectUserGroup": {
+    "en": "Select a user group.",
+    "ar": "حدد مجموعة مستخدمين"
+  },
+  "UserNameExist": {
+    "en": "User name already exists.",
+    "ar": "اسم المستخدم موجود بالفعل"
+  },
+  "UnitCodeMissing": {
+    "en": "Unit Code Missing.",
+    "ar": "رمز الوحدة مفقود"
+  },
+  "UnitDescriptionMissing": {
+    "en": "Unit Description Missing.",
+    "ar": "وصف الوحدة مفقود"
+  },
+  "UnitCodeExists": {
+    "en": "The unit code {0} already exists.",
+    "ar": "رمز الوحدة {0} موجود بالفعل"
+  },
+  "UnitDescriptionExists": {
+    "en": "The unit description {0} already exists.",
+    "ar": "وصف الوحدة {0} موجود بالفعل"
+  },
+  "InvoiceNumberMissing": {
+    "en": "Invoice number is missing.",
+    "ar": "رقم الفاتورة مفقود"
+  },
+
+  "SupplierNameisMissing": {
+    "en": "Supplier Name is Missing",
+    "ar": "اسم المورد مفقود"
+  },
+
+  "ItemCodeIsMissing": {
+    "en": "Item Code Is Missing",
+    "ar": "رمز الصنف مفقود"
+  },
+
+
+  "ItemTypeIsMissing": {
+    "en": "Type Name Is Missing",
+    "ar": "اسم نوع الصنف مفقود"
+  },
   "ShelvesMissing": {
     "en": "Shelves data is missing.",
     "ar": "بيانات الرفوف مفقودة"
@@ -1153,105 +1157,105 @@
     "en": "Show/Hide Column",
     "ar": "Show/Hide Column"
   },
-    "ExpiryDateMissing": {
-        "en": "Expiry Date is Missing",
-        "ar": "تاريخ انتهاء الصلاحية مفقود"
-    },
-    "InvoiceNumberExists": {
-        "en": "The invoice number {0} already exists.",
-        "ar": "رقم الفاتورة {0} موجود بالفعل"
-    },
-    "PurchaseOrderNoExists": {
-        "en": "The purchase order number {0} already exists.",
-        "ar": "رقم أمر الشراء {0} موجود بالفعل"
-    },
-    "SupplierNameMissing": {
-        "en": "Supplier name is missing.",
-        "ar": "اسم المورد مفقود"
-    },
-    "SupplierPhoneNumber": {
-        "en": "Supplier Conatct Number",
-        "ar": "رقم التواصل للمورد"
-    },
-    "SupplierType": {
-        "en": "Supplier Type",
-        "ar": "نوع المورد"
-    },
-    "SupplierNameExists": {
-        "en": "The Supplier name {0} already exists.",
-        "ar": "اسم المورد {0} موجود بالفعل"
-    },
-    "StoreNumberMissing": {
-        "en": "Warehouse Number is missing.",
-        "ar": "رقم المستودع مفقود"
-    },
-    "StoreNameMissing": {
-        "en": "Warehouse Name is missing.",
-        "ar": "اسم المستودع مفقود"
-    },
-    "StoreTypeMissing": {
-        "en": "Warehouse Type is missing.",
-        "ar": "Warehouse Type is missing."
-    },
-    "ManagerNameMissing": {
-        "en": "Warehouse Manager Name is missing.",
-        "ar": "Warehouse Manager Name is missing."
-    },
-    "ManagerJobNumberMissing": {
-        "en": "Manager Job Number is missing.",
-        "ar": "Manager Job Number is missing."
-    },
-    "NewReceivingReport": {
-        "en": "New Receiving Report",
-        "ar": "إتقرير الاستلام الجديد"
-    },
-    "Notifications": {
-        "en": "Notifications",
-        "ar": "منظر"
-    },
-    "BuildingNumber": {
-        "en": "Building Number",
-        "ar": "Building Number"
-    },
-    "NoOfShelves":{
-        "en": "Number of Shelves",
-        "ar": "Number of Shelves"
-    },
-    "RoomDesc":{
-        "en": "Room Description",
-        "ar": "Room Description" 
-    },
-    "KeeperJobNum":{
-        "en": "Warehouse Keeper Job Number",
-        "ar": "Warehouse Keeper Job Number" 
-    },
-    "KeeperName":{
-        "en": "Warehouse Keeper Name",
-        "ar": "Warehouse Keeper Name" 
-    },
-    "RoomStatus":{
-        "en": "Room Status",
-        "ar": "Room Status" 
-    },
-    "BuildingNumberMissing":{
-        "en": "Building Number is required.",
-        "ar": "Building Number is required." 
-    },
-    "KeeperJobNumMissing":{
-        "en": "Warehouse Keeper Job Number is required.",
-        "ar": "Warehouse Keeper Job Number is required." 
-    },
-    "WarehouseStatusMissing":{
-        "en": "Warehouse Status is required.",
-        "ar": "Warehouse Status is required." 
-    },
-    "RoomStatusMissing":{
-        "en": "Room Status is required.",
-        "ar": "Room Status is required." 
-    },
-    "RoomExists":{
-        "en": "Room Exists.",
-        "ar": "Room Exists." 
-    }
+  "ExpiryDateMissing": {
+    "en": "Expiry Date is Missing",
+    "ar": "تاريخ انتهاء الصلاحية مفقود"
+  },
+  "InvoiceNumberExists": {
+    "en": "The invoice number {0} already exists.",
+    "ar": "رقم الفاتورة {0} موجود بالفعل"
+  },
+  "PurchaseOrderNoExists": {
+    "en": "The purchase order number {0} already exists.",
+    "ar": "رقم أمر الشراء {0} موجود بالفعل"
+  },
+  "SupplierNameMissing": {
+    "en": "Supplier name is missing.",
+    "ar": "اسم المورد مفقود"
+  },
+  "SupplierPhoneNumber": {
+    "en": "Supplier Conatct Number",
+    "ar": "رقم التواصل للمورد"
+  },
+  "SupplierType": {
+    "en": "Supplier Type",
+    "ar": "نوع المورد"
+  },
+  "SupplierNameExists": {
+    "en": "The Supplier name {0} already exists.",
+    "ar": "اسم المورد {0} موجود بالفعل"
+  },
+  "StoreNumberMissing": {
+    "en": "Warehouse Number is missing.",
+    "ar": "رقم المستودع مفقود"
+  },
+  "StoreNameMissing": {
+    "en": "Warehouse Name is missing.",
+    "ar": "اسم المستودع مفقود"
+  },
+  "StoreTypeMissing": {
+    "en": "Warehouse Type is missing.",
+    "ar": "Warehouse Type is missing."
+  },
+  "ManagerNameMissing": {
+    "en": "Warehouse Manager Name is missing.",
+    "ar": "Warehouse Manager Name is missing."
+  },
+  "ManagerJobNumberMissing": {
+    "en": "Manager Job Number is missing.",
+    "ar": "Manager Job Number is missing."
+  },
+  "NewReceivingReport": {
+    "en": "New Receiving Report",
+    "ar": "إتقرير الاستلام الجديد"
+  },
+  "Notifications": {
+    "en": "Notifications",
+    "ar": "منظر"
+  },
+  "BuildingNumber": {
+    "en": "Building Number",
+    "ar": "Building Number"
+  },
+  "NoOfShelves": {
+    "en": "Number of Shelves",
+    "ar": "Number of Shelves"
+  },
+  "RoomDesc": {
+    "en": "Room Description",
+    "ar": "Room Description"
+  },
+  "KeeperJobNum": {
+    "en": "Warehouse Keeper Job Number",
+    "ar": "Warehouse Keeper Job Number"
+  },
+  "KeeperName": {
+    "en": "Warehouse Keeper Name",
+    "ar": "Warehouse Keeper Name"
+  },
+  "RoomStatus": {
+    "en": "Room Status",
+    "ar": "Room Status"
+  },
+  "BuildingNumberMissing": {
+    "en": "Building Number is required.",
+    "ar": "Building Number is required."
+  },
+  "KeeperJobNumMissing": {
+    "en": "Warehouse Keeper Job Number is required.",
+    "ar": "Warehouse Keeper Job Number is required."
+  },
+  "WarehouseStatusMissing": {
+    "en": "Warehouse Status is required.",
+    "ar": "Warehouse Status is required."
+  },
+  "RoomStatusMissing": {
+    "en": "Room Status is required.",
+    "ar": "Room Status is required."
+  },
+  "RoomExists": {
+    "en": "Room Exists.",
+    "ar": "Room Exists."
+  }
 
 }
