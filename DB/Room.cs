@@ -44,10 +44,8 @@ public partial class Room
     [StringLength(10)]
     public string? BuildingNumber { get; set; }
 
-    public int? KeeperJobNum { get; set; }
-
-    [StringLength(20)]
-    public string? KeeperName { get; set; }
+    [Column("KeeperID")]
+    public int? KeeperId { get; set; }
 
     public int? NoOfShelves { get; set; }
 

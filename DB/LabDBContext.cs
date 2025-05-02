@@ -225,7 +225,6 @@ public partial class LabDBContext : DbContext
         modelBuilder.Entity<Supplier>(entity =>
         {
             entity.Property(e => e.SupplierId).ValueGeneratedNever();
-            entity.Property(e => e.CoordinatorName).IsFixedLength();
         });
 
         modelBuilder.Entity<Supply>(entity =>
