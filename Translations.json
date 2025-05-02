@@ -1256,6 +1256,14 @@
     "CoordinatorName":{
         "en": "Coordinator Name",
         "ar": "Coordinator Name" 
+    },
+    "ManagerWarehouseOnly":{
+        "en": "Manager can add room to his warehouse only.",
+        "ar": "Manager can add room to his warehouse only." 
+    },
+    "ManagerEditWarehouseOnly":{
+        "en": "Manager can edit room of his warehouse only.",
+        "ar": "Manager can edit room of his warehouse only." 
     }
 
 }

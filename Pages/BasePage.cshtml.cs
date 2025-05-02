@@ -6,6 +6,7 @@ namespace LabMaterials.Pages
     public class BasePageModel : PageModel
     {
         public string FullName { get; set; }
+        public string UserGroupName { get; set; }
         public string Usergroup { get; set; }
         public int? UserId { get; set; }
         public bool IsLDAP { get; set; }
@@ -20,7 +21,7 @@ namespace LabMaterials.Pages
         public string Lang { get; set; } = "ar";
 
         
-        public string lblView, lblRequests,lblLabMaterials, lblHome, lblNotifications, lblShowHideColumn, lblDisbursement, lblReports, lblManageUsers, lblManageItems, lblManageSupplies, lblManageStores, lblUserProfile, lblLogout, lblDamagedItems, lblLanguage,lblWarehouseType, lblManagerName, lblBuildingNumber, lblRoomDesc, lblStatus, lblRoomStatus, lblOpen, lblClosed;
+        public string lblView, lblRequests,lblLabMaterials, lblHome, lblNotifications, lblShowHideColumn, lblDisbursement, lblReports, lblManageUsers, lblManageItems, lblManageSupplies, lblManageStores, lblUserProfile, lblLogout, lblDamagedItems, lblLanguage,lblWarehouseType, lblManagerName, lblBuildingNumber, lblRoomDesc, lblStatus, lblRoomStatus, lblOpen, lblClosed, lblRoomNumber, lblNoOfShelves, lblKeeperName, lblKeeperJobNum;
 
 
         public void ExtractSessionData()
@@ -30,6 +31,7 @@ namespace LabMaterials.Pages
             {
                 UserId = HttpContext.Session.GetInt32("UserId");
                 FullName = HttpContext.Session.GetString("FullName");
+                UserGroupName = HttpContext.Session.GetString("UserGroup");
                 Usergroup = HttpContext.Session.GetString("UserGroup");
                 IsLDAP = HttpContext.Session.GetInt32("IsLDAP") == 1;
                 CanManageStore = HttpContext.Session.GetInt32("CanManageStore") == 1;
@@ -82,6 +84,11 @@ namespace LabMaterials.Pages
             this.lblOpen = (Program.Translations["Open"])[Lang];
             this.lblClosed = (Program.Translations["Closed"])[Lang];
             this.lblRoomStatus = (Program.Translations["RoomStatus"])[Lang];
+            this.lblRoomNumber = (Program.Translations["RoomNumber"])[Lang]; 
+            this.lblNoOfShelves = (Program.Translations["NoOfShelves"])[Lang]; 
+            this.lblKeeperJobNum = (Program.Translations["KeeperJobNum"])[Lang];
+            this.lblKeeperName = (Program.Translations["KeeperName"])[Lang];
+
 
 
         }
