@@ -21,7 +21,7 @@ namespace LabMaterials.Pages
         public string Lang { get; set; } = "ar";
 
         
-        public string lblView, lblRequests,lblLabMaterials, lblHome, lblNotifications, lblShowHideColumn, lblDisbursement, lblReports, lblManageUsers, lblManageItems, lblManageSupplies, lblManageStores, lblUserProfile, lblLogout, lblDamagedItems, lblLanguage,lblWarehouseType, lblManagerName, lblBuildingNumber, lblRoomDesc, lblStatus, lblRoomStatus, lblOpen, lblClosed, lblRoomNumber, lblNoOfShelves, lblKeeperName, lblKeeperJobNum;
+        public string lblView, lblRequests,lblLabMaterials, lblHome, lblNotifications, lblShowHideColumn, lblDisbursement, lblReports, lblManageUsers, lblManageItems, lblManageSupplies, lblManageStores, lblUserProfile, lblLogout, lblDamagedItems, lblLanguage,lblWarehouseType, lblManagerName, lblBuildingNumber, lblRoomDesc, lblStatus, lblRoomStatus, lblOpen, lblClosed, lblRoomNumber, lblNoOfShelves, lblKeeperName, lblKeeperJobNum, lblWarehouseManagerName;
 
 
         public void ExtractSessionData()
@@ -77,6 +77,7 @@ namespace LabMaterials.Pages
             this.lblShowHideColumn = (Program.Translations["ShowHideColumn"])[Lang];
             this.lblWarehouseType = (Program.Translations["WarehouseType"])[Lang];
             this.lblManagerName = (Program.Translations["ManagerName"])[Lang];
+            this.lblWarehouseManagerName  = (Program.Translations["WarehouseManagerName"])[Lang];
             this.lblBuildingNumber = (Program.Translations["BuildingNumber"])[Lang];
             this.lblRoomDesc = (Program.Translations["RoomDesc"])[Lang];
             this.lblStatus = (Program.Translations["WarehouseStatus"])[Lang];

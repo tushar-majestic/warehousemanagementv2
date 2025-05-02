@@ -13,7 +13,7 @@ namespace LabMaterials.Pages
     {
         public string ErrorMsg { get; set; }
         public string StoreNumber, StoreName, RoomNumber,KeeperName, RoomName, StoreType, ManagerName, BuildingNumber, RoomDesc;
-        public int StoreId;
+        public int? StoreId;
         public int? KeeperJobNum, NoOfShelves, KeeperId ;
         public int? WarehouseManagerID { get; set; }
         public string WarehouseManagerName { get; set; }
@@ -59,7 +59,7 @@ namespace LabMaterials.Pages
                 .ToList();
         }
 
-        public IActionResult OnPost([FromForm] int StoreId, [FromForm] string RoomNumber,  [FromForm] string StoreType, [FromForm] string ManagerName, [FromForm] string BuildingNumber, [FromForm] string RoomDesc, [FromForm] int NoOfShelves, [FromForm] int? KeeperJobNum, [FromForm] int? KeeperId,  [FromForm] string Status, [FromForm] string KeeperName)
+        public IActionResult OnPost([FromForm] int? StoreId, [FromForm] string RoomNumber,  [FromForm] string StoreType, [FromForm] string ManagerName, [FromForm] string BuildingNumber, [FromForm] string RoomDesc, [FromForm] int NoOfShelves, [FromForm] int? KeeperJobNum, [FromForm] int? KeeperId,  [FromForm] string Status, [FromForm] string KeeperName)
         {
             LogableTask task = LogableTask.NewTask("AddRoom");
 
@@ -111,8 +111,9 @@ namespace LabMaterials.Pages
                         .Where(u => u.UserGroupId == KeeperGroupId)
                         .ToList();
 
-
-                    if(string.IsNullOrEmpty(BuildingNumber))
+                    if (!StoreId.HasValue)
+                        ErrorMsg = (Program.Translations["WarehouseMissing"])[Lang];
+                    else if(string.IsNullOrEmpty(BuildingNumber))
                         ErrorMsg = (Program.Translations["BuildingNumberMissing"])[Lang];
                     else if (string.IsNullOrEmpty(RoomNumber))
                         ErrorMsg = (Program.Translations["RoomNumberMissing"])[Lang];
