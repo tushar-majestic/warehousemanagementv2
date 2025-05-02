@@ -1,27 +1,32 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace LabMaterials.DB;
 
-public class ReceivingItem
+[Index("ItemId", Name = "IX_ReceivingItems_ItemId")]
+[Index("ReceivingReportId", Name = "IX_ReceivingItems_ReceivingReportId")]
+public partial class ReceivingItem
 {
     [Key]
     public int Id { get; set; }
 
-    [ForeignKey(nameof(ReceivingReport))]
     public int ReceivingReportId { get; set; }
 
-    [ForeignKey(nameof(Item))]
     public int ItemId { get; set; }
 
     public int Quantity { get; set; }
 
-    [Column(TypeName = "decimal(18,2)")]
+    [Column(TypeName = "decimal(18, 2)")]
     public decimal UnitPrice { get; set; }
 
-    [NotMapped]
-    public decimal TotalPrice => Quantity * UnitPrice;
-
-    public virtual ReceivingReport ReceivingReport { get; set; } = null!;
+    [ForeignKey("ItemId")]
+    [InverseProperty("ReceivingItems")]
     public virtual Item Item { get; set; } = null!;
+
+    [ForeignKey("ReceivingReportId")]
+    [InverseProperty("ReceivingItems")]
+    public virtual ReceivingReport ReceivingReport { get; set; } = null!;
 }

@@ -1253,6 +1253,10 @@
         "en": "Room Exists.",
         "ar": "Room Exists." 
     },
+    "CoordinatorName":{
+        "en": "Coordinator Name",
+        "ar": "Coordinator Name" 
+    },
     "ManagerWarehouseOnly":{
         "en": "Manager can add room to his warehouse only.",
         "ar": "Manager can add room to his warehouse only." 
