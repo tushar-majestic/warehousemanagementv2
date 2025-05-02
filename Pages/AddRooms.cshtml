@@ -100,7 +100,7 @@
 
                         <div class="col-lg-12 col-sm-12">
                             <div class="mb-4">
-                                <label for="StoreId">@Model.lblStoreNumber</label>
+                                <label for="StoreId">@Model.lblStoreName</label>
                                 <select class="form-select" id="StoreId" name="StoreId">
                                     <option value=""></option>
                                     @if (Model.Stores != null)
@@ -174,7 +174,7 @@
                                     {
                                         foreach (var item in Model.KeeperGroupsList)
                                         {
-                                            <option value="@item.UserId" data-UserName="@item.UserName">@item.JobNumber</option>
+                                            <option value="@item.UserId" data-UserName="@item.UserName" selected="@(item.UserId == Model.KeeperId)">@item.JobNumber</option>
                                         }
                                     }
 
@@ -184,7 +184,7 @@
                             <div class="mb-4">
                                 <label for="KeeperName">@Model.lblKeeperName</label>
                                 <input type="text" name="KeeperName" class="form-control" id="KeeperName"
-                                       value="@Model.KeeperName" />
+                                       value="@Model.KeeperName" readonly />
                             </div>
 
                              @* Room status *@
@@ -192,7 +192,7 @@
                                 <p>@Model.lblRoomStatus</p>
 
                                 <div class="form-check">
-                                    <input id="Open" class="form-check-input" type="radio" name="Status" value="Open" 
+                                    <input id="Open" class="form-check-input" type="radio" name="Status" value="Open"   @(Model.Status == "Open" ? "checked" : "")
                                        />
                                     <label class="form-check-label" for="Open">
                                         @Model.lblOpen
@@ -200,7 +200,7 @@
                                 </div>
 
                                 <div class="form-check">
-                                    <input id="Closed" class="form-check-input" type="radio" name="Status" value="Closed"
+                                    <input id="Closed" class="form-check-input" type="radio" name="Status" value="Closed"  @(Model.Status == "Closed" ? "checked" : "")
                                         />
                                     <label class="form-check-label" for="Closed">
                                         @Model.lblClosed
