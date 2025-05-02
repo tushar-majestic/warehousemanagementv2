@@ -71,10 +71,7 @@ public partial class LabDBContext : DbContext
     public virtual DbSet<UserGroupPrivilege> UserGroupPrivileges { get; set; }
 
     public virtual DbSet<VActivityLog> VActivityLogs { get; set; }
-    public virtual DbSet<MaterialRequest> MaterialRequests { get; set; }
 
-    public DbSet<ReceivingReport> ReceivingReports { get; set; }
-    public DbSet<ReceivingItem> ReceivingItems { get; set; }
     public DbSet<ItemCard> ItemCards { get; set; }
 
 
