@@ -49,7 +49,7 @@ namespace LabMaterials.Pages
                 Status = room.RoomStatus;
                 NoOfShelves = room.NoOfShelves;
                 
-                // KeeperId = room.KeeperID;
+                KeeperId = room.KeeperId;
 
                 var st = dbContext.Stores
                     .Where(s => s.StoreId == room.StoreId)
@@ -211,7 +211,7 @@ namespace LabMaterials.Pages
                             room.BuildingNumber = BuildingNumber;
                             room.RoomDesc = RoomDesc;
                             room.NoOfShelves = NoOfShelves;
-                            // room.KeeperID = KeeperId;
+                            room.KeeperId = KeeperId;
                             room.RoomStatus = Status;
                             dbContext.SaveChanges();
 
