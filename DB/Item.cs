@@ -84,6 +84,9 @@ public partial class Item
     public virtual ItemType ItemTypeCodeNavigation { get; set; } = null!;
 
     [InverseProperty("Item")]
+    public virtual ICollection<ReceivingItem> ReceivingItems { get; set; } = new List<ReceivingItem>();
+
+    [InverseProperty("Item")]
     public virtual ICollection<Storage> Storages { get; set; } = new List<Storage>();
 
     [InverseProperty("Item")]

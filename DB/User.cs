@@ -70,6 +70,12 @@ public partial class User
     [InverseProperty("User")]
     public virtual ICollection<ActivityLog> ActivityLogs { get; set; } = new List<ActivityLog>();
 
+    [InverseProperty("CurrentApproverUser")]
+    public virtual ICollection<MaterialRequest> MaterialRequestCurrentApproverUsers { get; set; } = new List<MaterialRequest>();
+
+    [InverseProperty("RequestedByUser")]
+    public virtual ICollection<MaterialRequest> MaterialRequestRequestedByUsers { get; set; } = new List<MaterialRequest>();
+
     [ForeignKey("UserGroupId")]
     [InverseProperty("Users")]
     public virtual UserGroup UserGroup { get; set; } = null!;

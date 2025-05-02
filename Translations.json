@@ -1252,6 +1252,10 @@
     "RoomExists":{
         "en": "Room Exists.",
         "ar": "Room Exists." 
+    },
+    "CoordinatorName":{
+        "en": "Coordinator Name",
+        "ar": "Coordinator Name" 
     }
 
 }

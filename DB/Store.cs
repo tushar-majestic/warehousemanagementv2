@@ -48,14 +48,16 @@ public partial class Store
     [StringLength(50)]
     public string? StoreType { get; set; }
 
-    [StringLength(10)]
-    public string? BuildingNumber { get; set; }
+    public int? ManagerJobNum { get; set; }
 
-    public int? WarehouseManagerID { get; set; }
-
+    [StringLength(20)]
+    public string? WarehouseManagerName { get; set; }
 
     [StringLength(10)]
     public string? WarehouseStatus { get; set; }
+
+    [StringLength(10)]
+    public string? BuildingNumber { get; set; }
 
     [InverseProperty("Store")]
     public virtual ICollection<DisbursementRequest> DisbursementRequests { get; set; } = new List<DisbursementRequest>();

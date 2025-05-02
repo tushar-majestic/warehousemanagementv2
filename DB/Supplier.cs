@@ -41,8 +41,14 @@ public partial class Supplier
     [Column("CreatedByID")]
     public int? CreatedById { get; set; }
 
+    [StringLength(255)]
+    public string? CoordinatorName { get; set; }
+
     [InverseProperty("Supply")]
     public virtual ICollection<Item> Items { get; set; } = new List<Item>();
+
+    [InverseProperty("Supplier")]
+    public virtual ICollection<ReceivingReport> ReceivingReports { get; set; } = new List<ReceivingReport>();
 
     [InverseProperty("Supplier")]
     public virtual ICollection<Supply> Supplies { get; set; } = new List<Supply>();

@@ -8,12 +8,13 @@ namespace LabMaterials.Pages
         public string ErrorMsg { get; set; }
         
         public string SupplierName;
+        public string CoordinatorName;
         public string SupplierPhoneNumber;
         public string SupplierType;
         
         
         public string lblSupplierName, lbSupplierAdded,lblSupplierPhoneNumber, 
-        lblSupplierType, lblAddSupplier, lblAdd, lblCancel, lblSupplies, lblSuppliers;
+        lblSupplierType, lblAddSupplier, lblAdd, lblCancel, lblSupplies, lblSuppliers, lblCoordinatorName;
         public void OnGet()
         {
             base.ExtractSessionData();
@@ -22,7 +23,7 @@ namespace LabMaterials.Pages
                 RedirectToPage("./Index?lang=" + Lang);
         }
 
-        public IActionResult OnPost([FromForm] string SupplierName, string SupplierPhoneNumber, string SupplierType)
+        public IActionResult OnPost([FromForm] string SupplierName, string CoordinatorName, string SupplierPhoneNumber, string SupplierType)
         {
             LogableTask task = LogableTask.NewTask("AddSupplier");
 
@@ -35,11 +36,13 @@ namespace LabMaterials.Pages
                 {
                     FillLables();
                     this.SupplierName = SupplierName;
+                    this.CoordinatorName = CoordinatorName;
                     this.SupplierPhoneNumber = SupplierPhoneNumber;
                     this.SupplierType = SupplierType;
+                    var dbContext = new LabDBContext();
 
                     // Validate fields
-                    
+
                     if (string.IsNullOrEmpty(SupplierName))
                     {
                         ErrorMsg = (Program.Translations["SupplierNameMissing"])[Lang];
@@ -52,9 +55,13 @@ namespace LabMaterials.Pages
                     {
                         ErrorMsg = (Program.Translations["SupplierTypeMissing"])[Lang];
                     }
+                    if (dbContext.Suppliers.Any(s => s.SupplierName == SupplierName))
+                    {
+                        ErrorMsg = string.Format((Program.Translations["SupplierNameExists"])[Lang], SupplierName);
+                    }
                     else
                     {
-                        var dbContext = new LabDBContext();
+                        // var dbContext = new LabDBContext();
                         if (dbContext.Suppliers.Any(s => s.SupplierName == SupplierName))
                         {
                             ErrorMsg = string.Format((Program.Translations["SupplierNameExists"])[Lang], SupplierName);
@@ -64,6 +71,7 @@ namespace LabMaterials.Pages
                             var supplier = new Supplier
                             {
                                 SupplierName = SupplierName,
+                                CoordinatorName = CoordinatorName,
                                 SupplierType = SupplierType,
                                 SupplierContact = SupplierPhoneNumber,
                                 SupplierId = PrimaryKeyManager.GetNextId()
@@ -119,6 +127,7 @@ namespace LabMaterials.Pages
             this.lblCancel = (Program.Translations["Cancel"])[Lang];
             this.lblSupplies = (Program.Translations["Supplies"])[Lang];
             this.lblSuppliers = (Program.Translations["Suppliers"])[Lang];
+            this.lblCoordinatorName = (Program.Translations["CoordinatorName"])[Lang];
         }
     }
 }
