@@ -1,5 +1,10 @@
+using System.Data;
+using LabMaterials.DB;
+using LabMaterials.Migrations;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 
 namespace LabMaterials.Pages
 {
@@ -7,8 +12,18 @@ namespace LabMaterials.Pages
     {
         public string ErrorMsg { get; set; }
         public string RoomNumber, RoomName, RoomNameSearch;
-        public int? RoomId, SelectedStoreId;
-        public List<Store> Stores { get; set; }
+         public string StoreNumber, StoreName,KeeperName, StoreType, ManagerName, BuildingNumber, RoomDesc;
+        public int? RoomId;
+
+        public int? StoreId;
+        public int? KeeperJobNum, NoOfShelves, KeeperId ;
+        public int? WarehouseManagerID { get; set; }
+        public string WarehouseManagerName { get; set; }
+        public string Status { get; set; }
+        // public List<Store> Stores { get; set; }
+        public List<StoreDataResult> Stores { get; set; }
+        public List<User> KeeperGroupsList {  get; set; }
+
         public int page { get; set; }
         public string lblUpdateStore, lblStoreNumber, lblStoreName, lblUpdateRoom, lblShelves, lblUpdate, lblCancel, lblRoomNumber, 
         lblRoomName, lblStores, lblManageRooms;
@@ -28,12 +43,67 @@ namespace LabMaterials.Pages
                 RoomNumber = room.RoomNo;
                 RoomName = room.RoomName;
                 RoomId = room.RoomId;
-                SelectedStoreId = room.StoreId;
-                Stores = dbContext.Stores.ToList();
+                StoreId = room.StoreId;
+                BuildingNumber = room.BuildingNumber;
+                RoomDesc = room.RoomDesc;
+                Status = room.RoomStatus;
+                NoOfShelves = room.NoOfShelves;
+                
+                KeeperId = room.KeeperID;
+
+                var st = dbContext.Stores
+                    .Where(s => s.StoreId == room.StoreId)
+                    .FirstOrDefault();
+
+                if (st != null)
+                {
+                    WarehouseManagerID = st.WarehouseManagerID;
+                    StoreType = st.StoreType;
+                    var keeper = dbContext.Users
+                        .Where(u => u.UserId == KeeperId)
+                        .FirstOrDefault();
+
+                    if (keeper != null)
+                        KeeperName = keeper.FullName;
+                    else
+                        KeeperName = string.Empty; 
+
+                    var manager = dbContext.Users
+                        .Where(u => u.UserId == WarehouseManagerID)
+                        .FirstOrDefault();
+                    
+                    if (manager != null)
+                        ManagerName = manager.FullName;
+                    else
+                        ManagerName = string.Empty; 
+                }
+                
+                // Stores = dbContext.Stores.ToList();
+                
+                var codeParam = new SqlParameter("@PCODE", SqlDbType.VarChar, 2) { Direction = ParameterDirection.Output };
+                var msgParam = new SqlParameter("@PMSG", SqlDbType.VarChar, 1000) { Direction = ParameterDirection.Output };
+                var descParam = new SqlParameter("@PDESC", SqlDbType.VarChar, 2) { Direction = ParameterDirection.Output };
+          
+            var query =  dbContext.StoreDataResults
+                                .FromSqlRaw("EXEC PRC_GET_STORE_DATA @PCODE OUTPUT, @PDESC OUTPUT, @PMSG OUTPUT",
+                                            codeParam, descParam, msgParam)
+                                .ToList();
+            Stores = query.GroupBy(s => new { s.StoreId, s.StoreName })
+                           .Select(g => g.First())
+                           .ToList();
+
+            var KeeperGroupId = dbContext.UserGroups
+                    .Where(g => g.UserGroupName == "Warehouse Keeper")
+                    .Select(g => g.UserGroupId)
+                    .FirstOrDefault();
+
+            KeeperGroupsList = dbContext.Users
+                .Where(u => u.UserGroupId == KeeperGroupId)
+                .ToList();
             }
         }
 
-        public IActionResult OnPost([FromForm] int RoomId, [FromForm] string RoomNumber, [FromForm] string RoomName, int StoreID)
+        public IActionResult OnPost([FromForm] int RoomId, [FromForm] string RoomNumber, [FromForm] string RoomName, int? StoreId, [FromForm] string StoreType, [FromForm] string ManagerName, [FromForm] string BuildingNumber, [FromForm] string RoomDesc, [FromForm] int NoOfShelves, [FromForm] int? KeeperJobNum, [FromForm] int? KeeperId,  [FromForm] string Status, [FromForm] string KeeperName)
         {
             LogableTask task = LogableTask.NewTask("EditRoom");
 
@@ -44,22 +114,74 @@ namespace LabMaterials.Pages
                 if (CanManageStore)
                 {
                     FillLables();
-                    this.RoomName = RoomName;
+                    // this.RoomName = RoomName;
                     this.RoomNumber = RoomNumber;
+                     this.StoreType = StoreType;
+                    this.ManagerName = ManagerName;
+                    this.BuildingNumber = BuildingNumber;
+                    this.RoomDesc = RoomDesc;
+                    this.NoOfShelves = NoOfShelves;
+                    this.StoreId = StoreId;
 
-                    if (string.IsNullOrEmpty(RoomNumber))
+                    this.KeeperId = KeeperId;
+                    this.KeeperName = KeeperName;
+                    this.Status = Status;
+
+                    var codeParam = new SqlParameter("@PCODE", SqlDbType.VarChar, 2) { Direction = ParameterDirection.Output };
+                    var msgParam = new SqlParameter("@PMSG", SqlDbType.VarChar, 1000) { Direction = ParameterDirection.Output };
+                    var descParam = new SqlParameter("@PDESC", SqlDbType.VarChar, 2) { Direction = ParameterDirection.Output };
+                    var dbContext = new LabDBContext();
+
+                    var query =  dbContext.StoreDataResults
+                                        .FromSqlRaw("EXEC PRC_GET_STORE_DATA @PCODE OUTPUT, @PDESC OUTPUT, @PMSG OUTPUT",
+                                                    codeParam, descParam, msgParam)
+                                        .ToList();
+                    Stores = query.GroupBy(s => new { s.StoreId, s.StoreName })
+                                .Select(g => g.First())
+                                .ToList();
+
+                    var KeeperGroupId = dbContext.UserGroups
+                            .Where(g => g.UserGroupName == "Warehouse Keeper")
+                            .Select(g => g.UserGroupId)
+                            .FirstOrDefault();
+
+                    KeeperGroupsList = dbContext.Users
+                        .Where(u => u.UserGroupId == KeeperGroupId)
+                        .ToList();
+                    if(string.IsNullOrEmpty(BuildingNumber))
+                        ErrorMsg = (Program.Translations["BuildingNumberMissing"])[Lang];
+                    else if (string.IsNullOrEmpty(RoomNumber))
+                        ErrorMsg = (Program.Translations["RoomNumberMissing"])[Lang];
+                    if (!StoreId.HasValue)
                         ErrorMsg = (Program.Translations["StoreNumberMissing"])[Lang];
-                    else if (string.IsNullOrEmpty(RoomName))
-                        ErrorMsg = (Program.Translations["StoreNameMissing"])[Lang];
+                    else if (!KeeperId.HasValue)
+                        ErrorMsg = (Program.Translations["KeeperMissing"])[Lang];
+                    else if( HttpContext.Session.GetString("UserGroup") == "Warehouse Manager")
+                    {
+                        if(HttpContext.Session.GetInt32("UserId").Value != WarehouseManagerID){
+                            ErrorMsg = (Program.Translations["ManagerEditWarehouseOnly"])[Lang];
+
+                        }
+                    }
+                    // else if (string.IsNullOrEmpty(RoomName))
+                    //     ErrorMsg = (Program.Translations["StoreNameMissing"])[Lang];
                     else
                     {
-                        var dbContext = new LabDBContext();
-                        var selectedStore = dbContext.Stores.FirstOrDefault(X => X.StoreId == StoreID);
+                        var selectedStore = dbContext.Stores.FirstOrDefault(X => X.StoreId == StoreId);
                         var name = selectedStore.StoreName;
-                        if (dbContext.Rooms.Count(s => s.RoomNo == RoomNumber && s.RoomId != RoomId) > 0)
-                            ErrorMsg = string.Format((Program.Translations["StoreNumberExists"])[Lang], RoomNumber);
-                        else if (dbContext.Rooms.Count(s => s.RoomNo == RoomName && s.RoomId != RoomId) > 0)
-                            ErrorMsg = string.Format((Program.Translations["StoreNameExists"])[Lang], RoomName);
+                        // if (dbContext.Rooms.Count(s => s.RoomNo == RoomNumber && s.RoomId != RoomId) > 0)
+                        //     ErrorMsg = string.Format((Program.Translations["StoreNumberExists"])[Lang], RoomNumber);
+                        // else if (dbContext.Rooms.Count(s => s.RoomNo == RoomName && s.RoomId != RoomId) > 0)
+                        //     ErrorMsg = string.Format((Program.Translations["StoreNameExists"])[Lang], RoomName);
+                        if (dbContext.Rooms.Any(r =>
+                            r.RoomNo == RoomNumber &&
+                            r.StoreId == StoreId &&
+                            r.BuildingNumber == BuildingNumber &&
+                            r.RoomId != RoomId)) // Exclude the current room being edited
+                        {
+                            ErrorMsg = string.Format((Program.Translations["RoomExists"])[Lang], RoomNumber);
+                        }
+
                         else
                         {
                             var room = dbContext.Rooms.Single(s => s.RoomId == RoomId);
@@ -79,9 +201,15 @@ namespace LabMaterials.Pages
                                     return Page();
                                 }
                             }*/
-                            room.RoomName = RoomName;
+
+                            // room.RoomName = RoomName;
                             room.RoomNo = RoomNumber;
-                            room.StoreId = StoreID;
+                            room.StoreId = StoreId;
+                            room.BuildingNumber = BuildingNumber;
+                            room.RoomDesc = RoomDesc;
+                            room.NoOfShelves = NoOfShelves;
+                            room.KeeperID = KeeperId;
+                            room.RoomStatus = Status;
                             dbContext.SaveChanges();
 
                             string Message = string.Format("Store {0} updated", room.RoomName);

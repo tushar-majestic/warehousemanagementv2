@@ -1,5 +1,7 @@
 ﻿@page
 @model LabMaterials.Pages.ManageStoreModel
+@using Microsoft.AspNetCore.Http
+
 @section Scripts
 {
     <script type="text/javascript" language="javascript">
@@ -124,11 +126,17 @@
             <!-- <p class="mb-0">Your web analytics dashboard template.</p>-->
         </div>
         <div class="btn-toolbar mb-2 mb-md-0">
+       @{
+            var userGroupName = HttpContext.Session.GetString("UserGroup");
+        }
+        @if (userGroupName == "System Admin")
+        {
             <div class="btn-group ms-2 ms-lg-3">
                 <a href="AddStore" class="btn top-sm-btn btn-sm btn-gray-800 d-flex justify-content-center d-inline-flex align-items-center">
                     <img b-ie9pk9zf1q="" class="icon text-white icon-xs mx-2" src="images/plus.png">   @Model.lblAddStore
                 </a>
             </div>
+        }
             <div class="btn-group ms-2 ms-lg-3">
             <a href="ManageStorage" class="btn btn-sm top-btn btn-outline-gray-600 d-inline-flex align-items-center justify-content-center">
                 <img b-ie9pk9zf1q="" class="icon text-white icon-xs mx-2" src="images/manage-b.png">

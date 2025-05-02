@@ -4,8 +4,14 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http.Extensions;
+using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.Http; 
+using Microsoft.AspNetCore.Session;
+
 using SkiaSharp;
 using System.Data;
+
 
 namespace LabMaterials.Pages
 {

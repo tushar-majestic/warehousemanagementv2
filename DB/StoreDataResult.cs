@@ -53,4 +53,16 @@ public partial class StoreDataResult
 
     [StringLength(10)]
     public string? WarehouseStatus { get; set; }
+
+    [StringLength(10)]
+    public string? BuildingNumber { get; set; }
+
+    [StringLength(80)]
+    public string? RoomDesc { get; set; }
+    public int? NoOfShelves { get; set; }
+    
+    [StringLength(10)]
+    public string? RoomStatus { get; set; }
+
+    
 }

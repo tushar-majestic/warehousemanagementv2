@@ -59,7 +59,7 @@ namespace LabMaterials.Pages
                 .ToList();
         }
 
-        public IActionResult OnPost([FromForm] int StoreId, [FromForm] string RoomNumber,  [FromForm] string StoreType, [FromForm] string ManagerName, [FromForm] string BuildingNumber, [FromForm] string RoomDesc, [FromForm] int NoOfShelves, [FromForm] int? KeeperJobNum, [FromForm] int? KeeperId,  [FromForm] string Status)
+        public IActionResult OnPost([FromForm] int StoreId, [FromForm] string RoomNumber,  [FromForm] string StoreType, [FromForm] string ManagerName, [FromForm] string BuildingNumber, [FromForm] string RoomDesc, [FromForm] int NoOfShelves, [FromForm] int? KeeperJobNum, [FromForm] int? KeeperId,  [FromForm] string Status, [FromForm] string KeeperName)
         {
             LogableTask task = LogableTask.NewTask("AddRoom");
 
@@ -79,7 +79,7 @@ namespace LabMaterials.Pages
                     this.NoOfShelves = NoOfShelves;
                     // this.KeeperJobNum = KeeperJobNum;
                     this.KeeperId = KeeperId;
-                    // this.KeeperName = KeeperId;
+                    this.KeeperName = KeeperName;
                     this.Status = Status;
                     this.StoreId = StoreId; 
 
@@ -96,6 +96,11 @@ namespace LabMaterials.Pages
                     Stores = query.GroupBy(s => new { s.StoreId, s.StoreName })
                            .Select(g => g.First())
                            .ToList();
+
+                    var managerId = dbContext.Stores
+                        .Where(s => s.StoreId == StoreId)
+                        .Select(s => s.WarehouseManagerID)
+                        .FirstOrDefault();
 
                     var KeeperGroupId = dbContext.UserGroups
                     .Where(g => g.UserGroupName == "Warehouse Keeper")
@@ -117,6 +122,13 @@ namespace LabMaterials.Pages
                         ErrorMsg = (Program.Translations["KeeperMissing"])[Lang];
                     else if (string.IsNullOrEmpty(Status))
                         ErrorMsg = (Program.Translations["RoomStatusMissing"])[Lang];
+                    else if( HttpContext.Session.GetString("UserGroup") == "Warehouse Manager")
+                    {
+                        if(HttpContext.Session.GetInt32("UserId").Value != managerId){
+                            ErrorMsg = (Program.Translations["ManagerWarehouseOnly"])[Lang];
+
+                        }
+                    }
                     else
                     {
 

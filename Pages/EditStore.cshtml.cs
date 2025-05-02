@@ -60,6 +60,7 @@ namespace LabMaterials.Pages
                 ManagerId = store.WarehouseManagerID;
 
                 StoreType = store.StoreType;
+                Status = store.WarehouseStatus;
 
                 var manager = dbContext.Users
                     .Where(u => u.UserId == ManagerId)

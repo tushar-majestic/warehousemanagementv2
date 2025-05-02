@@ -1252,6 +1252,14 @@
     "RoomExists":{
         "en": "Room Exists.",
         "ar": "Room Exists." 
+    },
+    "ManagerWarehouseOnly":{
+        "en": "Manager can add room to his warehouse only.",
+        "ar": "Manager can add room to his warehouse only." 
+    },
+    "ManagerEditWarehouseOnly":{
+        "en": "Manager can edit room of his warehouse only.",
+        "ar": "Manager can edit room of his warehouse only." 
     }
 
 }

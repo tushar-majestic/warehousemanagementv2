@@ -169,6 +169,8 @@ namespace LabMaterials.Pages
                                             codeParam, descParam, msgParam)
                                 .ToList();
 
+                              
+
             var activeRooms = dbContext.Rooms
                                 .Where(r => r.Ended == null)
                                 .ToList();
@@ -176,12 +178,20 @@ namespace LabMaterials.Pages
             // Join stores with active rooms
             var joinedData = from store in allStores
                             join room in activeRooms on store.RoomId equals room.RoomId
+                            join user in dbContext.Users on room.KeeperID equals user.UserId
                             select new StoreDataResult
                             {
                                 StoreId = store.StoreId,
                                 StoreName = store.StoreName,
                                 ShelfNumber = store.ShelfNumber,
                                 RoomId = room.RoomId,
+                                KeeperName = user.FullName,
+                                KeeperJobNum = user.JobNumber,
+                                BuildingNumber = room.BuildingNumber,
+                                RoomNo = room.RoomNo,
+                                RoomDesc = room.RoomDesc,
+                                NoOfShelves = room.NoOfShelves,
+                                RoomStatus = room.RoomStatus
                             
                             };
 
@@ -190,11 +200,16 @@ namespace LabMaterials.Pages
             {
                 joinedData = joinedData.Where(s => s.RoomName != null && s.RoomName.Contains(RoomName));
             }
+            
 
             TotalItems = joinedData.Count();
             TotalPages = (int)Math.Ceiling((double)TotalItems / ItemsPerPage);
             Stores = joinedData.Skip((page - 1) * ItemsPerPage).Take(ItemsPerPage).ToList();
             StoresAll = joinedData.ToList();
+            //   foreach (var store in StoresAll)
+            //                     {
+            //                         Console.WriteLine($"ID: {store.StoreId}, Name: {store.StoreName}, KeeperName: {store.KeeperName}");
+            //                     }
             CurrentPage = page;
         }
 
