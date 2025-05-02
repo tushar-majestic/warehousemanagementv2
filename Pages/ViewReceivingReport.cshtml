@@ -6,47 +6,56 @@
 
 <h2>@ViewData["Title"]</h2>
 
-<table class="table table-bordered table-striped">
-    <thead class="thead-dark">
-        <tr>
-            <th>Serial No.</th>
-            <th>Fiscal Year</th>
-            <th>Receiving Date</th>
-            <th>Recipient Sector</th>
-            <th>Sector No.</th>
-            <th>Warehouse</th>
-            <th>Supplier</th>
-            <th>Supplier Type</th>
-            <th>Document No.</th>
-            <th>Document Date</th>
-            <th>Remarks</th>
-        </tr>
-    </thead>
-    <tbody>
-        @if (Model.ReceivingReports?.Any() == true)
-        {
-            foreach (var report in Model.ReceivingReports)
-            {
-                <tr>
-                    <td>@report.SerialNumber</td>
-                    <td>@report.FiscalYear</td>
-                    <td>@report.ReceivingDate.ToString("yyyy-MM-dd")</td>
-                    <td>@report.RecipientSector</td>
-                    <td>@report.SectorNumber</td>
-                    <td>@report.ReceivingWarehouse</td>
-                    <td>@report.Supplier?.SupplierName</td>
-                    <td>@report.Supplier?.SupplierType</td>
-                    <td>@report.DocumentNumber</td>
-                    <td>@report.DocumentDate.ToString("yyyy-MM-dd")</td>
-                    <td>@report.Comments</td>
-                </tr>
-            }
-        }
-        else
-        {
-            <tr>
-                <td colspan="11" class="text-center text-muted">No receiving reports available.</td>
-            </tr>
-        }
-    </tbody>
-</table>
+@if (Model.ReceivingReports?.Any() == true)
+{
+    foreach (var report in Model.ReceivingReports)
+    {
+        <div class="card mb-4 border-primary shadow-sm">
+            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                <strong>Receiving Report - Serial No: @report.SerialNumber</strong>
+                <div>
+                    <a asp-page="/EditReceivingReport" asp-route-id="@report.Id" class="btn btn-sm btn-warning me-2">Edit</a>
+                    @* <a asp-page="/DeleteReceivingReport" asp-route-id="@report.Id" class="btn btn-sm btn-danger me-2">Delete</a> *@
+                    <a asp-page="/PrintReceivingReport" asp-route-id="@report.Id" class="btn btn-sm btn-secondary">Print</a>
+                </div>
+            </div>
+            <div class="card-body">
+                <dl class="row">
+                    <dt class="col-sm-3">Fiscal Year</dt>
+                    <dd class="col-sm-9">@report.FiscalYear</dd>
+
+                    <dt class="col-sm-3">Receiving Date</dt>
+                    <dd class="col-sm-9">@report.ReceivingDate.ToString("yyyy-MM-dd")</dd>
+
+                    <dt class="col-sm-3">Recipient Sector</dt>
+                    <dd class="col-sm-9">@report.RecipientSector</dd>
+
+                    <dt class="col-sm-3">Sector No.</dt>
+                    <dd class="col-sm-9">@report.SectorNumber</dd>
+
+                    <dt class="col-sm-3">Warehouse</dt>
+                    <dd class="col-sm-9">@report.ReceivingWarehouse</dd>
+
+                    <dt class="col-sm-3">Supplier</dt>
+                    <dd class="col-sm-9">@report.Supplier?.SupplierName</dd>
+
+                    <dt class="col-sm-3">Supplier Type</dt>
+                    <dd class="col-sm-9">@report.Supplier?.SupplierType</dd>
+
+                    <dt class="col-sm-3">Document No.</dt>
+                    <dd class="col-sm-9">@report.DocumentNumber</dd>
+
+                    <dt class="col-sm-3">Document Date</dt>
+                    <dd class="col-sm-9">@report.DocumentDate.ToString("yyyy-MM-dd")</dd>
+
+                    <dt class="col-sm-3">Remarks</dt>
+                    <dd class="col-sm-9">@report.Comments</dd>
+                </dl>
+            </div>
+        </div>
+    }
+}
+else
+{
+    <div class="alert alert-info text-center">No receiving reports available.</div>
+}
