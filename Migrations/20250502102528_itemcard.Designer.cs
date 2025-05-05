@@ -641,11 +641,10 @@ namespace LabMaterials.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasDefaultValue("");
 
-                    b.Property<string>("ChiefResponsible")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(max)")
-                        .HasDefaultValue("");
+
+                    b.Property<int>("ChiefResponsibleId")
+                        .HasColumnType("int");
+
 
                     b.Property<string>("Comments")
                         .IsRequired()
@@ -683,11 +682,9 @@ namespace LabMaterials.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasDefaultValue("");
 
-                    b.Property<string>("RecipientEmployeeId")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(max)")
-                        .HasDefaultValue("");
+
+                    b.Property<int>("RecipientEmployeeId")
+                        .HasColumnType("int");
 
                     b.Property<string>("RecipientSector")
                         .IsRequired()
@@ -707,11 +704,10 @@ namespace LabMaterials.Migrations
                     b.Property<int>("SupplierId")
                         .HasColumnType("int");
 
-                    b.Property<string>("TechnicalMember")
-                        .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(max)")
-                        .HasDefaultValue("");
+
+                    b.Property<int>("TechnicalMemberId")
+                        .HasColumnType("int");
+
 
                     b.HasKey("Id");
 

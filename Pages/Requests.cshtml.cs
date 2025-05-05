@@ -12,6 +12,9 @@ namespace LabMaterials.Pages
     {
         public string lblRequests, lblNewReceivingReport, pagetype = "inbox", inboxClass = "btn-dark text-white", outboxClass = "btn-light";
 
+        public List<ReceivingReport> RequestSent { get; set; }
+        public IList<Store> Warehouses { get; set; }
+
         public void OnGet()
         {
             if (HttpContext.Request.Query.ContainsKey("type"))
@@ -29,10 +32,26 @@ namespace LabMaterials.Pages
                     outboxClass = "btn-dark text-white";
                 }
             }
-
+            var dbContext = new LabDBContext();
+            RequestSent = dbContext.ReceivingReports.ToList(); 
+            Warehouses = dbContext.Stores.ToList();  // Fetch suppliers
+ 
             base.ExtractSessionData();
             FillLables();
         }
+
+
+         public IActionResult OnPostView([FromForm] string ReportId)
+        {
+                   var dbContext = new LabDBContext();
+
+            HttpContext.Session.SetString("ReportId", ReportId);
+            RequestSent = dbContext.ReceivingReports.ToList(); 
+
+
+            return RedirectToPage("./ViewReceivingReport");
+        }
+
 
         private void FillLables()
         {
