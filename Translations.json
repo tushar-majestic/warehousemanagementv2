@@ -1121,6 +1121,7 @@
     "ar": "Show/Hide Column"
   },
 
+
     "ExpiryDateMissing": {
         "en": "Expiry Date is Missing",
         "ar": "تاريخ انتهاء الصلاحية مفقود"
@@ -1333,6 +1334,7 @@
 
 }
 
+
   "ExpiryDateMissing": {
     "en": "Expiry Date is Missing",
     "ar": "تاريخ انتهاء الصلاحية مفقود"
@@ -1453,5 +1455,4 @@
     "en": "Warehouse is required",
     "ar": "Warehouse is required"
   }
-}
 

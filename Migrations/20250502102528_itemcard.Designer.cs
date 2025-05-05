@@ -641,8 +641,10 @@ namespace LabMaterials.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasDefaultValue("");
 
+
                     b.Property<int>("ChiefResponsibleId")
                         .HasColumnType("int");
+
 
                     b.Property<string>("Comments")
                         .IsRequired()
@@ -680,6 +682,7 @@ namespace LabMaterials.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasDefaultValue("");
 
+
                     b.Property<int>("RecipientEmployeeId")
                         .HasColumnType("int");
 
@@ -701,8 +704,10 @@ namespace LabMaterials.Migrations
                     b.Property<int>("SupplierId")
                         .HasColumnType("int");
 
+
                     b.Property<int>("TechnicalMemberId")
                         .HasColumnType("int");
+
 
                     b.HasKey("Id");
 
