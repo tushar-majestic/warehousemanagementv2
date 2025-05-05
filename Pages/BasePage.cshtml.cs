@@ -20,7 +20,7 @@ namespace LabMaterials.Pages
         public string Lang { get; set; } = "ar";
 
 
-        public string lblView, lblRequests, lblLabMaterials, lblHome, lblNotifications, lblShowHideColumn, lblDisbursement, lblReports, lblManageUsers, lblManageItems, lblManageSupplies, lblManageStores, lblUserProfile, lblLogout, lblDamagedItems, lblLanguage, lblWarehouseType, lblManagerName, lblBuildingNumber, lblRoomDesc, lblStatus, lblRoomStatus, lblOpen, lblClosed, lblRoomNumber, lblNoOfShelves, lblKeeperName, lblKeeperJobNum, lblWarehouseManagerName;
+        public string lblView, lblRequests, lblLabMaterials, lblHome, lblNotifications, lblShowHideColumn, lblDisbursement, lblReports, lblManageUsers, lblManageItems, lblManageSupplies, lblManageStores, lblUserProfile, lblLogout, lblDamagedItems, lblLanguage, lblWarehouseType, lblManagerName, lblBuildingNumber, lblRoomDesc, lblStatus, lblRoomStatus, lblOpen, lblClosed, lblRoomNumber, lblNoOfShelves, lblKeeperName, lblKeeperJobNum, lblWarehouseManagerName, lblItemCards;
 
 
         public void ExtractSessionData()
@@ -88,6 +88,7 @@ namespace LabMaterials.Pages
             this.lblNoOfShelves = (Program.Translations["NoOfShelves"])[Lang];
             this.lblKeeperJobNum = (Program.Translations["KeeperJobNum"])[Lang];
             this.lblKeeperName = (Program.Translations["KeeperName"])[Lang];
+            this.lblItemCards = (Program.Translations["ItemCards"])[Lang];
 
 
 

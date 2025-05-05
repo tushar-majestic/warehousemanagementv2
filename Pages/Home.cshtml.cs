@@ -1,12 +1,6 @@
-using LabMaterials.DB;
 using LabMaterials.dtos;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using SkiaSharp;
 using System.Data;
 
 namespace LabMaterials.Pages
@@ -30,7 +24,7 @@ namespace LabMaterials.Pages
             lblMostRequestingDestination, LineChartTitle, LineChartLabels, LineChartData,
             lblDestinationName, countDestination, lblCountDestination, lblItemName, lblCount,
             SuppliesData, DisbursementData, lblFromDate, lblToDate, lblTotalItems, lblTotalUsers, lblTotalStores,
-            lblDisbursements, lblSupplies, lblSuppliesAndDisbursements, lblItems;
+            lblDisbursements, lblSupplies, lblSuppliesAndDisbursements, lblItems, lblItemCards;
 
         public DateTime? FromDate = DateTime.Now;
         public DateTime? ToDate = DateTime.Now;
@@ -69,12 +63,12 @@ namespace LabMaterials.Pages
                 var itemsList = (from i in dbContext.Items
                                  where i.Ended == null
                                  join cc in dbContext.ColorCodes on i.ItemId equals cc.ItemId
-                                select new
-                                {
-                                    Name = i.ItemName,
-                                    Percentage = (double)i.AvailableQuantity / totalQuantity * 100,
-                                    COLOR_CODE = cc.ColorCode1,
-                                })
+                                 select new
+                                 {
+                                     Name = i.ItemName,
+                                     Percentage = (double)i.AvailableQuantity / totalQuantity * 100,
+                                     COLOR_CODE = cc.ColorCode1,
+                                 })
                         .GroupBy(item => item.Name)
                         .Select(group => new
                         {
@@ -163,22 +157,22 @@ namespace LabMaterials.Pages
 
                 var fastMovingItem = (from dr in dbContext.DisbursementRequests
                                       join i in dbContext.Items on dr.Itemcode equals i.ItemCode
-                                     group i by i.ItemName into g
+                                      group i by i.ItemName into g
                                       orderby g.Count() descending
                                       select new ItemInfo
-                                     {
-                                         ItemCode = g.Key,
-                                         Count = g.Count()
-                                     }).Take(1);
+                                      {
+                                          ItemCode = g.Key,
+                                          Count = g.Count()
+                                      }).Take(1);
                 FastMovingItem = fastMovingItem.ToList();
 
                 var lowInventory = (from i in dbContext.Items
-                                   group i by i.ItemName into g
-                                   select new ItemInfo
-                                   {
-                                       ItemName = g.Key,
-                                       Count = g.Sum(item => item.AvailableQuantity),
-                                   });
+                                    group i by i.ItemName into g
+                                    select new ItemInfo
+                                    {
+                                        ItemName = g.Key,
+                                        Count = g.Sum(item => item.AvailableQuantity),
+                                    });
                 var res = lowInventory.Where(e => e.Count <= 10);
 
                 LowInventoryItem = res.ToList();
@@ -193,8 +187,8 @@ namespace LabMaterials.Pages
 
                 var sss = dbContext.Database.ExecuteSqlRaw("PRC_GET_DATE_WISE_DATA @PDISBURSE_DATES  OUT, @PSUPPLY_DATES OUT," +
                                                 "@PDISBURSE_COUNT OUT, @PSUPPLY_COUNT OUT, @PCODE OUT," +
-                                                "@PDESC OUT, @PMSG  OUT",disbDates, suppDates, disbCount, suppCount,
-                                                code,desc,msg );
+                                                "@PDESC OUT, @PMSG  OUT", disbDates, suppDates, disbCount, suppCount,
+                                                code, desc, msg);
 
                 var disburseDates = disbDates.Value.ToString();
                 var supplyDates = suppDates.Value.ToString();
@@ -246,6 +240,7 @@ namespace LabMaterials.Pages
             this.lblSupplies = (Program.Translations["Supplies"])[Lang];
             this.lblSuppliesAndDisbursements = (Program.Translations["SuppliesAndDisbursements"])[Lang];
             this.lblItems = (Program.Translations["Items"])[Lang];
+            this.lblItemCards = (Program.Translations["ItemCards"])[Lang];
 
         }
 
