@@ -146,6 +146,19 @@
         @if (Model.CanManageItems)
         {
           <li
+            class="nav-item @(Context.Request.Path == "/ItemCards" )">
+                        <a asp-area="" asp-page="/ItemCards" class="nav-link">
+              <span class="sidebar-icon">
+                <img class="icon icon-xs mx-1" src="images/inventory.png" />
+              </span>
+                            <span class="sidebar-text">@Model.lblItemCards</span>
+            </a>
+          </li>
+        }
+
+        @if (Model.CanManageItems)
+        {
+          <li
             class="nav-item @(Context.Request.Path == "/ManageDamaged" ? "active" : "")">
             <a asp-area="" asp-page="/ManageDamaged" class="nav-link">
               <span class="sidebar-icon">
