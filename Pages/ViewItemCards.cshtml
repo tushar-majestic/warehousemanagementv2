@@ -17,20 +17,20 @@
                     <h6 class="card-subtitle mb-2 text-muted">Item Code: @card.ItemCode</h6>
 
                     <p class="card-text">
-                        <strong>Group:</strong> @card.ItemGroup? <br />
-                        <strong>Type:</strong> @card.ItemType? <br />
+                        <strong>Group:</strong> @card.GroupCode <br />
+                        <strong>Type:</strong> @card.ItemTypeCode <br />
                         <strong>Asset Type:</strong> @card.TypeOfAsset <br />
                         <strong>Description:</strong> @card.ItemDescription <br />
                         <strong>Unit:</strong> @card.UnitOfmeasure <br />
                         <strong>Chemical:</strong> @card.Chemical <br />
-                        <strong>Hazard:</strong> @card.HazardType?.HazardTypeName <br />
+                        <strong>Hazard:</strong> @card.HazardTypeName <br />
                         <strong>Expiry Date:</strong> @(card.ExpiryDate?.ToString("yyyy-MM-dd") ?? "N/A") <br />
                         <strong>Minimum:</strong> @card.Minimum <br />
                         <strong>Reorder Limit:</strong> @card.ReorderLimit <br />
                         <strong>Ceiling:</strong> @card.Ceiling <br />
                         <strong>Store:</strong> @card.Store?.StoreName <br />
                         <strong>Room:</strong> @card.Room?.RoomName <br />
-                        <strong>Shelf:</strong> @card.Shelf? <br />
+                        <strong>Shelf:</strong> @card.Shelf?.ShelfNo <br />
                         <strong>Supplier:</strong> @card.Supplier?.SupplierName <br />
                         <strong>Document Type:</strong> @card.DocumentType <br />
                         <strong>Receipt No:</strong> @card.ReceiptDocumentnumber <br />
