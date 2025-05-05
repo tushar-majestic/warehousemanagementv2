@@ -151,16 +151,16 @@ public partial class LabDBContext : DbContext
         {
             entity.Property(e => e.AttachmentPath).HasDefaultValue("");
             entity.Property(e => e.BasedOnDocument).HasDefaultValue("");
-            entity.Property(e => e.ChiefResponsible).HasDefaultValue("");
+            // entity.Property(e => e.ChiefResponsibleId).HasDefaultValue("");
             entity.Property(e => e.Comments).HasDefaultValue("");
             entity.Property(e => e.CreatedBy).HasDefaultValue("");
             entity.Property(e => e.DocumentNumber).HasDefaultValue("");
             entity.Property(e => e.FiscalYear).HasDefaultValue("");
             entity.Property(e => e.ReceivingWarehouse).HasDefaultValue("");
-            entity.Property(e => e.RecipientEmployeeId).HasDefaultValue("");
+            // entity.Property(e => e.RecipientEmployeeId).HasDefaultValue("");
             entity.Property(e => e.RecipientSector).HasDefaultValue("");
             entity.Property(e => e.SectorNumber).HasDefaultValue("");
-            entity.Property(e => e.TechnicalMember).HasDefaultValue("");
+            // entity.Property(e => e.TechnicalMemberId).HasDefaultValue("");
         });
 
         modelBuilder.Entity<Requester>(entity =>

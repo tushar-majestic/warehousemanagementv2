@@ -1272,6 +1272,95 @@
     "WarehouseMissing":{
         "en": "Warehouse is required",
         "ar": "Warehouse is required"  
+    },
+    "CreateReport": {
+        "en":"Create Receiving Report",
+        "ar":"Create Receiving Report"
+    },
+    "FiscalYear": {
+        "en":"Fiscal Year",
+        "ar":"Fiscal Year"
+    },
+    "SerialNumber": {
+        "en":"Serial Number",
+        "ar":"Serial Number"
+    },
+    "ReceivingDate": {
+        "en":"Receiving Date",
+        "ar":"Receiving Date"
+    },
+    "SectorNumber":{
+        "en":"Sector Number",
+        "ar":"Sector Number"
+    },
+    "ReceivingWarehouse":{
+        "en":"Receiving Warehouse",
+        "ar":"Receiving Warehouse"
+    },
+    "BasedOnDocument":{
+        "en":"Based On Document",
+        "ar":"Based On Document"
+    },
+    "DocumentNumber":{
+        "en":"Document Number",
+        "ar":"Document Number"
+    },
+    "DocumentDate":{
+        "en":"Document Date",
+        "ar":"Document Date"
+    },
+    "AddAttachment":{
+        "en":"Add Attachment",
+        "ar":"Add Attachment"
+    },
+
+    "ItemGroup":{
+        "en":"Item Group",
+        "ar":"Item Group"
+    },
+    "ItemNo":{
+        "en":"Item No.",
+        "ar":"Item No."
+    },
+    "UnitOfMeasure":{
+        "en":"Unit of Measure",
+        "ar":"Unit of Measure"
+    },
+    "UnitPrice": {
+        "en":"Unit Price",
+        "ar":"Unit Price"
+    },
+    "TotalPrice": {
+        "en":"Total Price",
+        "ar":"Total Price"
+    },
+    "RecipientID":{
+        "en":"Recipient Employee ID",
+        "ar":"Recipient Employee ID"
+    },
+    "RecipientName":{
+        "en":"Recipient Employee Name",
+        "ar":"Recipient Employee Name"
+    },
+    "TechnicalMember":{
+        "en":"Technical Member",
+        "ar":"Technical Member"
+    },
+    "ChiefResponsible":{
+        "en":"Chief Responsible (General Supervisor)",
+        "ar":"Chief Responsible (General Supervisor)"
+    },
+    "SubmitReport":{
+        "en":"Submit Report",
+        "ar":"Submit Report"
+    },
+    "RecipientSector":{
+        "en":"Recipient Sector",
+        "ar":"Recipient Sector"
     }
+   
+   
+
+
 
 }

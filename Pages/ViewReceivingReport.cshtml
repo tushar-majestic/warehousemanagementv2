@@ -6,7 +6,7 @@
 
 <h2>@ViewData["Title"]</h2>
 
-@if (Model.ReceivingReports?.Any() == true)
+@* @if (Model.ReceivingReports?.Any() == true)
 {
     foreach (var report in Model.ReceivingReports)
     {
@@ -15,7 +15,7 @@
                 <strong>Receiving Report - Serial No: @report.SerialNumber</strong>
                 <div>
                     <a asp-page="/EditReceivingReport" asp-route-id="@report.Id" class="btn btn-sm btn-warning me-2">Edit</a>
-                    @* <a asp-page="/DeleteReceivingReport" asp-route-id="@report.Id" class="btn btn-sm btn-danger me-2">Delete</a> *@
+                 
                     <a asp-page="/PrintReceivingReport" asp-route-id="@report.Id" class="btn btn-sm btn-secondary">Print</a>
                 </div>
             </div>
@@ -58,4 +58,54 @@
 else
 {
     <div class="alert alert-info text-center">No receiving reports available.</div>
+} *@
+@if (Model.Report != null)
+{
+    var report = Model.Report;
+    <div class="card mb-4 border-primary shadow-sm">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <strong>Receiving Report - Serial No: @report.SerialNumber</strong>
+            <div>
+                <a asp-page="/EditReceivingReport" asp-route-id="@report.Id" class="btn btn-sm btn-warning me-2">Edit</a>
+                <a asp-page="/PrintReceivingReport" asp-route-id="@report.Id" class="btn btn-sm btn-secondary">Print</a>
+            </div>
+        </div>
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-3">Fiscal Year</dt>
+                <dd class="col-sm-9">@report.FiscalYear</dd>
+
+                <dt class="col-sm-3">Receiving Date</dt>
+                <dd class="col-sm-9">@report.ReceivingDate.ToString("yyyy-MM-dd")</dd>
+
+                <dt class="col-sm-3">Recipient Sector</dt>
+                <dd class="col-sm-9">@report.RecipientSector</dd>
+
+                <dt class="col-sm-3">Sector No.</dt>
+                <dd class="col-sm-9">@report.SectorNumber</dd>
+
+                <dt class="col-sm-3">Warehouse</dt>
+                <dd class="col-sm-9">@report.ReceivingWarehouse</dd>
+
+                <dt class="col-sm-3">Supplier</dt>
+                <dd class="col-sm-9">@report.Supplier?.SupplierName</dd>
+
+                <dt class="col-sm-3">Supplier Type</dt>
+                <dd class="col-sm-9">@report.Supplier?.SupplierType</dd>
+
+                <dt class="col-sm-3">Document No.</dt>
+                <dd class="col-sm-9">@report.DocumentNumber</dd>
+
+                <dt class="col-sm-3">Document Date</dt>
+                <dd class="col-sm-9">@report.DocumentDate.ToString("yyyy-MM-dd")</dd>
+
+                <dt class="col-sm-3">Remarks</dt>
+                <dd class="col-sm-9">@report.Comments</dd>
+            </dl>
+        </div>
+    </div>
+}
+else
+{
+    <div class="alert alert-info text-center">No receiving report available.</div>
 }

@@ -5,7 +5,7 @@
     ViewData["Title"] = "Receiving Report";
 }
 
-<h2>Create Receiving Report</h2>
+<h2>@Model.lblCreateReport</h2>
 <div asp-validation-summary="All" class="text-danger"></div>
 <div class="row">
     <div class="col-8 mb-4 m-auto">
@@ -16,34 +16,40 @@
 
                     <div class="col-lg-12 col-sm-12">
                         <div class="form-group mb-4">
-                            <label>Serial Number: <b>0001</b></label>
+                            <label>@Model.lblSerialNumber <b>0001</b></label>
                         </div>
+                       @{
+                            var currentYear = DateTime.Now.Year;
+                            var previousYear = currentYear - 1;
+                        }
                         <div class="form-group mb-4">
-                            <label>Fiscal Year</label>
-                            <select class="form-select" id="FiscalYear" name="FiscalYear" required>
-                                <option value="2024">2024</option>
-                                <option value="2025">2025</option>
+                            <label>@Model.lblFiscalYear</label>
+                            <select class="form-select" id="FiscalYear" asp-for="Report.FiscalYear" name="FiscalYear">
+                                <option>Select Fiscal Year</option>
+                                <option value="@previousYear">@previousYear</option>
+                                <option value="@currentYear">@currentYear</option>
                             </select>
                         </div>
+
                         <div class="form-group mb-4">
-                            <label>Receiving Date</label>
-                            <input  type="date" class="form-control" required />
+                            <label>@Model.lblReceivingDate</label>
+                            <input  type="date" class="form-control" name="ReceivingDate"  />
                         </div>
 
                         <div class="form-group mb-4">
-                            <label>Recipient Sector</label>
-                            <input asp-for="Report.RecipientSector" class="form-control" required />
+                            <label>@Model.lblRecipientSector</label>
+                            <input asp-for="Report.RecipientSector" class="form-control"  />
                         </div>
                         <div class="form-group mb-4">
-                            <label>Sector Number</label>
-                            <input asp-for="Report.SectorNumber" class="form-control" required />
+                            <label>@Model.lblSectorNumber</label>
+                            <input asp-for="Report.SectorNumber" class="form-control"  />
                         </div>
 
                         <div class="form-group mb-4">
-                            <label>Receiving Warehouse</label>
+                            <label>@Model.lblReceivingWarehouse</label>
 
                             
-                            <select asp-for="Report.ReceivingWarehouse" class="form-control"  id="ReceivingWarehouse" required>
+                            <select asp-for="Report.ReceivingWarehouse" class="form-control"  id="ReceivingWarehouse" >
                                 <option value="">Select Receiving Warehouse</option>
                                 @foreach (var Warehouse in Model.Warehouses)
                                 {   var ManagerName = Model.Users.FirstOrDefault(u => u.UserId == Warehouse.WarehouseManagerId)?.   FullName ?? "";
@@ -55,9 +61,9 @@
                         </div>
 
                         <div class="form-group mb-4">
-                            <label>Based On Document</label>
+                            <label>@Model.lblBasedOnDocument</label>
                             @* <input asp-for="Report.BasedOnDocument" class="form-control" required /> *@
-                            <select class="form-select" id="BasedOnDocument" name="BasedOnDocument" required>
+                            <select asp-for="Report.BasedOnDocument" class="form-select" id="BasedOnDocument" name="BasedOnDocument" >
                                 <option value="">Select Based On document</option>
                                 <option value="Certification">Certification</option>
                                 <option value="Purchase order">Purchase order</option>
@@ -68,24 +74,24 @@
                         </div>
 
                         <div class="form-group mb-4">
-                            <label>Document Number</label>
-                            <input asp-for="Report.DocumentNumber" class="form-control" required />
+                            <label>@Model.lblDocumentNumber</label>
+                            <input asp-for="Report.DocumentNumber" class="form-control"  />
                         </div>
 
                         <div class="form-group mb-4">
-                            <label>Document Date</label>
-                            <input  type="date" class="form-control" required />
+                            <label>@Model.lblDocumentDate</label>
+                            <input  name="DocumentDate" type="date" class="form-control"  />
                         </div>
 
 
                         <div class="form-group mb-4">
-                            <label>Add Attachment</label>
-                            <input type="file" name="AttachmentFile" class="form-control" required />
+                            <label>@Model.lblAddAttachment</label>
+                            <input type="file" name="AttachmentFile" class="form-control"  />
                         </div>
 
                         <div class="form-group mb-4">
-                            <label>Supplier Type</label>
-                            <select class="form-select" id="SupplierType" name="SupplierType" required>
+                            <label>@Model.lblSupplierType</label>
+                            <select class="form-select" id="SupplierType" name="SupplierType" >
                                 <option value="Internal">Internal</option>
                                 <option value="External">External</option>
                             </select>
@@ -93,8 +99,8 @@
 
                         <div class="form-group mb-4">
 
-                            <label>Supplier Name</label>
-                            <select id="SupplierName" asp-for="Report.SupplierId" class="form-control" required>
+                            <label>@Model.lblSupplierName</label>
+                            <select id="SupplierName" asp-for="Report.SupplierId" class="form-control" >
                                 <option value="">Select Supplier Name</option>
                                 @foreach (var supplier in Model.Suppliers)
                                 {
@@ -105,8 +111,8 @@
 
 
                         <div class="form-group mb-4">
-                            <label>Item Group</label>
-                            <select class="form-select" id="ItemGroup" name="ItemGroup" required>
+                            <label>@Model.lblItemGroup</label>
+                            <select class="form-select" id="ItemGroup" name="ItemGroup" >
                                 @* <option value="Chemicals">Chemicals</option>
                                 <option value="Glass">Glass</option> *@
                                 <option value="">Select Item Group</option>
@@ -136,12 +142,12 @@
                             </select>
                         </div> *@
                         <div class="form-group mb-4">
-                            <label>Item No.</label>
-                            <input type="text" id="ItemNo" name="ItemNo" class="form-control" required />
+                            <label>@Model.lblItemNo</label>
+                            <input type="text" id="ItemNo" name="ItemNo" class="form-control"  />
                         </div>
                         <div class="form-group mb-4">
-                            <label>Item Name</label>
-                            <select class="form-control" id="ItemName" name="ItemsForReport[0].ItemId" required>
+                            <label>@Model.lblItemName</label>
+                            <select class="form-control" id="ItemName" name="ItemsForReport[0].ItemId" >
                                 <option value="">Select Item</option>
                                 @foreach (var item in Model.Items)
                                 {    var UnitCode = Model.Units.FirstOrDefault(u => u.Id == item.UnitId)?.UnitCode ?? "";
@@ -152,49 +158,49 @@
                         </div>
 
                         <div class="form-group mb-4">
-                            <label>Item Description</label>
+                            <label>@Model.lblItemDescription</label>
 
                             <textarea asp-for="Report.Comments" id="ItemDescription" class="form-control" readonly></textarea >
                         </div>
 
                         <div class="form-group mb-4">
-                            <label>Unit of Measure</label>
-                            <input type="text" id="UnitofMeasure" name="UnitofMeasure" class="form-control" readonly/>
+                            <label>@Model.lblUnitOfMeasure</label>
+                            <input  type="text" id="UnitofMeasure" name="UnitofMeasure" class="form-control" readonly/>
                         </div>
 
                         <div class="form-group mb-4">
-                            <label>Quantity</label>
-                            <input type="number" id="ItemQty" name="ItemsForReport[0].Quantity" class="form-control" required />
+                            <label>@Model.lblQuantity</label>
+                            <input type="number" id="ItemQty" name="ItemsForReport[0].Quantity" class="form-control"  />
                         </div>
                         <div class="form-group mb-4">
-                            <label>Unit Price</label>
-                            <input type="number" id="UnitPrice" step="0.01" name="ItemsForReport[0].UnitPrice" class="form-control" required />
-                        </div>
-
-                        <div class="form-group mb-4">
-                            <label>Total Price</label>
-                            <input type="number" id="TotalPrice" step="0.01" name="TotalPrice" class="form-control" />
+                            <label>@Model.lblUnitPrice</label>
+                            <input type="number"  id="UnitPrice" step="0.01" name="ItemsForReport[0].UnitPrice" class="form-control"  />
                         </div>
 
                         <div class="form-group mb-4">
-                            <label>Comments</label>
+                            <label>@Model.lblTotalPrice</label>
+                            <input type="number"  id="TotalPrice" step="0.01" name="TotalPrice" class="form-control" />
+                        </div>
+
+                        <div class="form-group mb-4">
+                            <label>@Model.lblComments</label>
                             <textarea asp-for="Report.Comments" class="form-control"></textarea>
                         </div>
 
 
                         <div class="form-group mb-4">
-                            <label>Recipient Employee ID</label>
-                            <input asp-for="Report.RecipientEmployeeId" id="RecipientEmployeeId" class="form-control" required />
+                            <label>@Model.lblRecipientID</label>
+                            <input asp-for="Report.RecipientEmployeeId" id="RecipientEmployeeId" class="form-control"  />
                         </div>
                         <div class="form-group mb-4">
-                            <label>Recipient Employee Name</label>
-                            <input asp-for="Report.RecipientEmployeeId" id="RecipientEmployeeName"  class="form-control" required />
+                            <label>@Model.lblRecipientName</label>
+                            <input  id="RecipientEmployeeName" type="text"  class="form-control"  />
                         </div>
 
 
                         <div class="form-group mb-4">
-                            <label>Technical Member</label>
-                            <select class="form-select" id="TechnicalMember" name="TechnicalMember" required>
+                            <label>@Model.lblTechnicalMember</label>
+                            <select class="form-select" asp-for="Report.TechnicalMemberId"    id="TechnicalMember" name="TechnicalMember" >
                                 @* <option value="FirstTechnical">First Technical Member</option>
                                 <option value="SecondTechnical">Second Technical Member</option> *@
                                 <option value="">Select Technical Member</option>
@@ -208,11 +214,9 @@
                             </select>
                         </div>
                         <div class="form-group mb-4">
-                            <label>Chief Responsible (General Supervisor)</label>
-                            <select class="form-select" id="ChiefResponsible" name="ChiefResponsible" required>
+                            <label>@Model.lblChiefResponsible</label>
+                            <select asp-for="Report.ChiefResponsibleId"  class="form-select" id="ChiefResponsible" name="ChiefResponsible" >
                                  <option value="">Select General Supervisor</option>
-                                @* <option value="FirstChief">First Chief Responsible</option>
-                                <option value="SecondChief">Second Chief Responsible</option> *@
                                 @if (Model.GeneralSupervisorList != null)
                                 {
                                     foreach (var item in Model.GeneralSupervisorList)
@@ -223,6 +227,7 @@
 
 
                             </select>
+                            
                         </div>
 
                        
@@ -248,7 +253,7 @@
                         @* <button type="button" class="btn btn-secondary" id="add-item-btn">Add Another Item</button> *@
                         <br /><br />
 
-                        <button type="submit" class="btn btn-primary">Submit Report</button>
+                        <button type="submit" class="btn btn-primary">@Model.lblSubmitReport</button>
                     </div>
                 </div>
             </form>
@@ -388,7 +393,7 @@
     });
 
     
-
+ 
     </script>
 
 }
