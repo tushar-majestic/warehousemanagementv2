@@ -51,7 +51,4 @@ public partial class Supplier
 
     [InverseProperty("Supplier")]
     public virtual ICollection<Supply> Supplies { get; set; } = new List<Supply>();
-
-
-    public string CoordinatorName { get; set; }
 }
