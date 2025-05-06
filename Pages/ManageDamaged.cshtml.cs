@@ -102,9 +102,8 @@ namespace LabMaterials.Pages
                     string pageName = "manageDamaged";
                     this.ItemName = ItemName;
                     FillData(ItemName, Group, CurrentPage);
-                    LoadSelectedColumns();
-
                     SaveSelectedColumns(userId.Value, pageName, selectedColumns);
+                    LoadSelectedColumns();
                 }
 
                 // After updating, redirect back to ManageStore with the StoreNumber and StoreName
