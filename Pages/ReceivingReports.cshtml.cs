@@ -3,6 +3,9 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using LabMaterials.DB;
 using System.Linq;
+using LabMaterials.DB;
+using LabMaterials.dtos;
+
 
 namespace LabMaterials.Pages
 {
@@ -10,6 +13,7 @@ namespace LabMaterials.Pages
     {
         private readonly LabDBContext _context;
         private readonly IWebHostEnvironment _environment;
+        public string lblCreateReport, lblSerialNumber, lblFiscalYear, lblReceivingDate, lblSectorNumber, lblReceivingWarehouse, lblBasedOnDocument, lblDocumentNumber, lblDocumentDate, lblAddAttachment, lblSupplierType, lblSupplierName, lblItemGroup, lblItemNo, lblItemName, lblItemDescription, lblUnitOfMeasure, lblQuantity, lblUnitPrice, lblTotalPrice, lblComments, lblRecipientID, lblRecipientName, lblTechnicalMember, lblChiefResponsible, lblSubmitReport, lblRecipientSector;
         public ReceivingReportsModel(LabDBContext context, IWebHostEnvironment environment)
         {
             _context = context;
@@ -22,7 +26,14 @@ namespace LabMaterials.Pages
         public List<ReceivingReport> Reports { get; set; }
         public List<Item> Items { get; set; }
         public List<User> GeneralSupervisorList {  get; set; }
+
+        public List<User> Users {  get; set; }
+
         public List<User> TechnicalMemberList {  get; set; }
+
+        public List<Unit> Units { get; set; } 
+        public List<ItemGroup> ItemGroupList { get; set; } 
+
 
         public int?  GeneralSupervisorId, TechnicalMemberId ;
         public int? ItemId;
@@ -38,6 +49,7 @@ namespace LabMaterials.Pages
         public async Task OnGetAsync()
         {
             base.ExtractSessionData();
+            FillLables();
             var dbContext = new LabDBContext();
             Suppliers = _context.Suppliers.ToList();  // Fetch suppliers
             Warehouses = _context.Stores.ToList();  // Fetch suppliers
@@ -51,6 +63,11 @@ namespace LabMaterials.Pages
 
             // If the session is set, use it; otherwise, fallback to "Unknown"
             Report.CreatedBy = string.IsNullOrEmpty(userName) ? "Unknown" : userName;
+
+            Units = dbContext.Units.ToList(); 
+            ItemGroupList = dbContext.ItemGroup.ToList(); 
+            Users = dbContext.Users.ToList(); 
+
 
             //General Supervisor of educational services list
             var GeneralSupervisorId = dbContext.UserGroups
@@ -80,14 +97,33 @@ namespace LabMaterials.Pages
             }
         }
 
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAsync(DateTime ReceivingDate, DateTime DocumentDate, [FromForm] int TechnicalMember, [FromForm] int ChiefResponsible,  [FromForm] string FiscalYear,  [FromForm] string BasedOnDocument)
         {
             // Ensure CreatedBy is populated, for example, from the session or user context
             Report.CreatedBy = HttpContext.Session.GetString("UserName") ?? "Unknown";
 
-           
+            var dbContext = new LabDBContext();
+
             this.ItemNo = ItemNo;
             this.ItemId = ItemId;
+            Report.ReceivingDate = ReceivingDate;
+            Warehouses = _context.Stores.ToList();
+            Users = dbContext.Users.ToList(); 
+            Suppliers = _context.Suppliers.ToList();  
+            Items = await _context.Items.ToListAsync();
+            Units = dbContext.Units.ToList(); 
+            ItemGroupList = dbContext.ItemGroup.ToList(); 
+            Report.ReceivingDate = ReceivingDate.Date;
+            Report.DocumentDate  = DocumentDate.Date;
+            Report.TechnicalMemberId = TechnicalMember;
+            Report.ChiefResponsibleId = ChiefResponsible;
+            Report.FiscalYear = FiscalYear;
+            Report.BasedOnDocument = BasedOnDocument;
+
+
+
+
+
 
             if (AttachmentFile != null)
             {
@@ -134,9 +170,43 @@ namespace LabMaterials.Pages
             }
             await _context.SaveChangesAsync();
 
-            return RedirectToPage();
+            return RedirectToPage("/Requests");
         }
 
+        private void FillLables()
+        {
 
+            this.lblCreateReport = (Program.Translations["CreateReport"])[Lang];
+            this.lblFiscalYear = (Program.Translations["FiscalYear"])[Lang];
+            this.lblSerialNumber = (Program.Translations["SerialNumber"])[Lang];
+            this.lblReceivingDate = (Program.Translations["ReceivingDate"])[Lang];
+            this.lblSectorNumber = (Program.Translations["SectorNumber"])[Lang];
+            this.lblReceivingWarehouse = (Program.Translations["ReceivingWarehouse"])[Lang];
+            this.lblBasedOnDocument = (Program.Translations["BasedOnDocument"])[Lang];
+            this.lblDocumentNumber= (Program.Translations["DocumentNumber"])[Lang];
+            this.lblDocumentDate= (Program.Translations["DocumentDate"])[Lang];
+            this.lblAddAttachment = (Program.Translations["AddAttachment"])[Lang];
+            this.lblSupplierType = (Program.Translations["SupplierType"])[Lang];
+            this.lblSupplierName = (Program.Translations["SupplierName"])[Lang];
+            this.lblItemGroup = (Program.Translations["ItemGroup"])[Lang];
+            this.lblItemNo = (Program.Translations["ItemNo"])[Lang];
+            this.lblItemName = (Program.Translations["ItemName"])[Lang];
+            this.lblItemDescription =  (Program.Translations["ItemDescription"])[Lang];
+            this.lblUnitOfMeasure = (Program.Translations["UnitOfMeasure"])[Lang];
+            this.lblQuantity = (Program.Translations["Quantity"])[Lang];
+            this.lblUnitPrice = (Program.Translations["UnitPrice"])[Lang];
+            this.lblTotalPrice = (Program.Translations["TotalPrice"])[Lang];
+            this.lblComments = (Program.Translations["Comments"])[Lang];
+            this.lblRecipientID = (Program.Translations["RecipientID"])[Lang];
+            this.lblRecipientName = (Program.Translations["RecipientName"])[Lang];
+            this.lblTechnicalMember = (Program.Translations["TechnicalMember"])[Lang];
+            this.lblChiefResponsible = (Program.Translations["ChiefResponsible"])[Lang];
+            this.lblSubmitReport =  (Program.Translations["SubmitReport"])[Lang];
+            this.lblRecipientSector =  (Program.Translations["RecipientSector"])[Lang];
+
+
+           
+        }
+    
     }
 }

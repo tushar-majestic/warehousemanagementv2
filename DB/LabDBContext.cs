@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace LabMaterials.DB;
 
@@ -63,6 +61,9 @@ public partial class LabDBContext : DbContext
 
     public virtual DbSet<Unit> Units { get; set; }
 
+    public virtual DbSet<ItemGroup> ItemGroup { get; set; }
+
+
     public virtual DbSet<User> Users { get; set; }
 
     public virtual DbSet<UserGroup> UserGroups { get; set; }
@@ -70,6 +71,9 @@ public partial class LabDBContext : DbContext
     public virtual DbSet<UserGroupPrivilege> UserGroupPrivileges { get; set; }
 
     public virtual DbSet<VActivityLog> VActivityLogs { get; set; }
+
+    public DbSet<ItemCard> ItemCards { get; set; }
+
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -148,16 +152,16 @@ public partial class LabDBContext : DbContext
         {
             entity.Property(e => e.AttachmentPath).HasDefaultValue("");
             entity.Property(e => e.BasedOnDocument).HasDefaultValue("");
-            entity.Property(e => e.ChiefResponsible).HasDefaultValue("");
+            // entity.Property(e => e.ChiefResponsibleId).HasDefaultValue("");
             entity.Property(e => e.Comments).HasDefaultValue("");
             entity.Property(e => e.CreatedBy).HasDefaultValue("");
             entity.Property(e => e.DocumentNumber).HasDefaultValue("");
             entity.Property(e => e.FiscalYear).HasDefaultValue("");
             entity.Property(e => e.ReceivingWarehouse).HasDefaultValue("");
-            entity.Property(e => e.RecipientEmployeeId).HasDefaultValue("");
+            // entity.Property(e => e.RecipientEmployeeId).HasDefaultValue("");
             entity.Property(e => e.RecipientSector).HasDefaultValue("");
             entity.Property(e => e.SectorNumber).HasDefaultValue("");
-            entity.Property(e => e.TechnicalMember).HasDefaultValue("");
+            // entity.Property(e => e.TechnicalMemberId).HasDefaultValue("");
         });
 
         modelBuilder.Entity<Requester>(entity =>

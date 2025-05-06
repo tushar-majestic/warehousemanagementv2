@@ -22,7 +22,6 @@ public partial class ReceivingReport
 
     public string BasedOnDocument { get; set; } = null!;
 
-    public string ChiefResponsible { get; set; } = null!;
 
     public string Comments { get; set; } = null!;
 
@@ -32,7 +31,7 @@ public partial class ReceivingReport
 
     public string DocumentNumber { get; set; } = null!;
 
-    public string RecipientEmployeeId { get; set; } = null!;
+    public int RecipientEmployeeId { get; set; }
 
     public string RecipientSector { get; set; } = null!;
 
@@ -40,9 +39,15 @@ public partial class ReceivingReport
 
     public int SerialNumber { get; set; }
 
-    public string TechnicalMember { get; set; } = null!;
+    public int TechnicalMemberId { get; set; }
+
+    public int ChiefResponsibleId { get; set; }
+
+    
+
 
     public int SupplierId { get; set; }
+
 
     [InverseProperty("ReceivingReport")]
     public virtual ICollection<ReceivingItem> ReceivingItems { get; set; } = new List<ReceivingItem>();

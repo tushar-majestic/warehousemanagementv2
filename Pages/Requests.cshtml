@@ -49,47 +49,66 @@
                     <tbody>
                         @if (Model.pagetype == "inbox")
                         {
-                        <tr>
-                            <td>
-                                <div class="m-2"><b>Ashwin Bose</b> sent Request for Items. Approve the request or add comments.</div>
-                                <button class="btn btn-info btn-sm p-1">
-                                    Accept
-                                </button>
-                                <button class="btn btn-warning btn-sm p-1">
-                                    Comment & Reject
-                                </button>
-                            </td>
-                            <td>12:35 AM</td>
-                            <td><input type="submit" value="@Model.lblView" class="btn btn-secondary" asp-page-handler="View" /></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="m-2"><b>Ashwin Bose</b> sent Request for Items. Approve the request or add comments.</div>
-                                <button class="btn btn-info btn-sm p-1">
-                                    Accept
-                                </button>
-                                <button class="btn btn-warning btn-sm p-1">
-                                    Comment & Reject
-                                </button>
-                            </td>
-                            <td>12:35 AM</td>
-                            <td><input type="submit" value="@Model.lblView" class="btn btn-secondary" asp-page-handler="View" /></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="m-2"><b>Ashwin Bose</b> sent Request for Items. Approve the request or add comments.</div>
-                                <button class="btn btn-info btn-sm p-1">
-                                    Accept
-                                </button>
-                                <button class="btn btn-warning btn-sm p-1">
-                                    Comment & Reject
-                                </button>
-                            </td>
-                            <td>12:35 AM</td>
-                            <td><input type="submit" value="@Model.lblView" class="btn btn-secondary" asp-page-handler="View" /></td>
-                        </tr>
+                            <tr>
+                                <td>
+                                    <div class="m-2"><b>Ashwin Bose</b> sent Request for Items. Approve the request or add comments.</div>
+                                    <button class="btn btn-info btn-sm p-1">
+                                        Accept
+                                    </button>
+                                    <button class="btn btn-warning btn-sm p-1">
+                                        Comment & Reject
+                                    </button>
+                                </td>
+                                <td>12:35 AM</td>
+                                <td><input type="submit" value="@Model.lblView" class="btn btn-secondary" asp-page-handler="View" /></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="m-2"><b>Ashwin Bose</b> sent Request for Items. Approve the request or add comments.</div>
+                                    <button class="btn btn-info btn-sm p-1">
+                                        Accept
+                                    </button>
+                                    <button class="btn btn-warning btn-sm p-1">
+                                        Comment & Reject
+                                    </button>
+                                </td>
+                                <td>12:35 AM</td>
+                                <td><input type="submit" value="@Model.lblView" class="btn btn-secondary" asp-page-handler="View" /></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="m-2"><b>Ashwin Bose</b> sent Request for Items. Approve the request or add comments.</div>
+                                    <button class="btn btn-info btn-sm p-1">
+                                        Accept
+                                    </button>
+                                    <button class="btn btn-warning btn-sm p-1">
+                                        Comment & Reject
+                                    </button>
+                                </td>
+                                <td>12:35 AM</td>
+                                <td><input type="submit" value="@Model.lblView" class="btn btn-secondary" asp-page-handler="View" /></td>
+                            </tr>
                         }
-                    <tr>
+
+                        @foreach (var req in Model.RequestSent){
+                            var ReceivingWarehouse = Model.Warehouses.FirstOrDefault(s => s.StoreId == int.Parse(req.ReceivingWarehouse))?.   StoreName ?? "";
+                            <tr>
+                                <td>Request for Warehouse <b>@ReceivingWarehouse</b> has been processed successfully.</td>
+                                <td>12:35 AM</td>
+                                    <td>
+                                        @* <input type="submit" value="@Model.lblView" class="btn btn-secondary" asp-page-handler="View" /><a asp-page="/ViewReceivingReport"  class="btn btn-info btn-sm">View</a> *@
+                                        <form method="post">
+                                            <input type="hidden" value="@req.Id" name="ReportId" />
+
+                                            <input type="submit" value="@Model.lblView" class="btn btn-secondary" asp-page-handler="View" />
+                                        </form>
+                                 
+                                    </td>
+                            </tr>
+                        }
+
+                        @* hardcoded *@
+                    @* <tr>
                         <td>Request for Warehouse <b>Dummy Warehouse</b> has been processed successfully.</td>
                         <td>12:35 AM</td>
                             <td><input type="submit" value="@Model.lblView" class="btn btn-secondary" asp-page-handler="View" /><a asp-page="/ViewReceivingReport"  class="btn btn-info btn-sm">View</a></td>
@@ -133,7 +152,7 @@
                         <td>Request for Warehouse <b>Dummy Warehouse</b> has been processed successfully.</td>
                         <td>12:35 AM</td>
                         <td><input type="submit" value="@Model.lblView" class="btn btn-secondary" asp-page-handler="View" /></td>
-                    </tr>
+                    </tr> *@
                     </tbody>
                 </table>
             </div>

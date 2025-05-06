@@ -1,0 +1,189 @@
+﻿@page
+@model LabMaterials.Pages.ItemCardsModel
+
+@{
+    ViewData["Title"] = "Create Item Card";
+}
+
+<h1>Create Item Card</h1>
+<div asp-validation-summary="All" class="text-danger"></div>
+<div class="row">
+    <div class="col-8 mb-4 m-auto">
+        <div class="card border-0 shadow components-section">
+<form method="post" class="card-body">
+    <div class="row mb-4">
+
+
+        <div class="col-lg-12 col-sm-12">
+    <div class="form-group mb-4">
+        <label asp-for="ItemCard.Item.ItemId"></label>
+        <select asp-for="ItemCard.Item.ItemId" class="form-control" asp-items="ViewBag.ItemIds" id="itemIdSelect"></select>
+    </div>
+    <div class="form-group">
+        <label asp-for="ItemCard.GroupCode"></label>
+        
+        <select asp-for="ItemCard.GroupCode" class="form-control" id="GroupCode" asp-items="ViewBag.ItemGroupId"></select>
+        <span asp-validation-for="ItemCard.GroupCode" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ItemCard.ItemTypeCode"></label>
+        
+        <select asp-for="ItemCard.ItemTypeCode" class="form-control" id="ItemTypeCode" asp-items="ViewBag.ItemType"></select>
+        <span asp-validation-for="ItemCard.ItemTypeCode" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ItemCard.ItemCode"></label>
+        
+        <select asp-for="ItemCard.ItemCode" class="form-control" id="ItemCode" asp-items="ViewBag.ItemId"></select>
+        <span asp-validation-for="ItemCard.ItemCode" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ItemCard.ItemName"></label>
+        <input asp-for="ItemCard.ItemName" class="form-control" id="ItemName" />
+        <span asp-validation-for="ItemCard.ItemName" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ItemCard.ItemDescription"></label>
+        <textarea asp-for="ItemCard.ItemDescription" class="form-control" id="ItemDescription"></textarea>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ItemCard.UnitOfmeasure"></label>
+        <input asp-for="ItemCard.UnitOfmeasure" class="form-control" id="UnitOfmeasure" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ItemCard.Chemical"></label>
+        <input asp-for="ItemCard.Chemical" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ItemCard.HazardTypeName"></label>
+        
+        <select asp-for="ItemCard.HazardTypeName" class="form-control" asp-items="ViewBag.HazardId" id="HazardTypeName"></select>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ItemCard.ExpiryDate"></label>
+        <input asp-for="ItemCard.ExpiryDate" class="form-control" type="date" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ItemCard.TypeOfAsset"></label>
+        <select asp-for="ItemCard.TypeOfAsset" class="form-control"
+                asp-items="Html.GetEnumSelectList<LabMaterials.DB.ItemCard.AssetType>()">
+            <option value="">Select asset type</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ItemCard.Minimum"></label>
+        <input asp-for="ItemCard.Minimum" class="form-control" type="number" />
+        <span asp-validation-for="ItemCard.Minimum" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ItemCard.ReorderLimit"></label>
+        <input asp-for="ItemCard.ReorderLimit" class="form-control" type="number" />
+        <span asp-validation-for="ItemCard.ReorderLimit" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ItemCard.Store" class="control-label"></label>
+        <select asp-for="ItemCard.Store.StoreId" class="form-control" asp-items="ViewBag.WarehouseId"></select>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ItemCard.QuantityReceived"></label>
+        <input asp-for="ItemCard.QuantityReceived" class="form-control" type="number" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ItemCard.DateOfEntry"></label>
+        <input asp-for="ItemCard.DateOfEntry" class="form-control" type="date" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ItemCard.RoomId"></label>
+        <select asp-for="ItemCard.RoomId" class="form-control" asp-items="ViewBag.RoomId"></select>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ItemCard.ShelfId"></label>
+        <select asp-for="ItemCard.ShelfId" class="form-control" asp-items="ViewBag.ShelfId"></select>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ItemCard.SupplierId"></label>
+        <select asp-for="ItemCard.SupplierId" class="form-control" asp-items="ViewBag.SupplierId"></select>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ItemCard.DocumentType"></label>
+        <select asp-for="ItemCard.DocumentType" class="form-control"
+                asp-items="Html.GetEnumSelectList<LabMaterials.DB.ItemCard.Receiptype>()">
+            <option value="">Select type</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="ItemCard.ReceiptDocumentnumber"></label>
+        <input asp-for="ItemCard.ReceiptDocumentnumber" class="form-control" />
+    </div>
+        </div>
+    </div>
+  
+
+    <button type="submit" class="btn btn-primary">Create</button>
+    <a asp-page="./Index" class="btn btn-secondary">Cancel</a>
+      
+</form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+   @using System.Text.Json
+
+    <script>
+        const itemData = @Html.Raw(JsonSerializer.Serialize(Model.AllItemsDto));
+        console.log("Loaded item data:", itemData);
+
+        document.getElementById('itemIdSelect').addEventListener('change', function () {
+            const selectedCode = this.value;
+            console.log("Selected ItemId:", selectedCode);
+
+            const selectedItem = itemData.find(item => item.ItemId == selectedCode);
+            console.log("Matched Item:", selectedItem);
+
+            if (selectedItem) {
+                document.getElementById('ItemName').value = selectedItem.ItemName || '';
+                document.getElementById('UnitOfmeasure').value = selectedItem.UnitOfMeasure || '';
+                document.getElementById('ItemDescription').value = selectedItem.ItemDescription || '';
+
+                setSelectValue('ItemCode', selectedItem.ItemCode);
+                setSelectValue('GroupCode', selectedItem.GroupCode);
+                setSelectValue('ItemTypeCode', selectedItem.ItemTypeCode);
+                setSelectValue('HazardTypeName', selectedItem.HazardTypeName);
+            }
+        });
+
+        function setSelectValue(selectId, value) {
+            const select = document.getElementById(selectId);
+            if (select) {
+                for (let option of select.options) {
+                    if (option.value.trim() === value?.toString().trim()) {
+                        select.value = option.value;
+                        break;
+                    }
+                }
+            }
+        }
+    </script>
+
+}
