@@ -5,6 +5,11 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Identity.Client.Extensions.Msal;
 using OfficeOpenXml;
 using OfficeOpenXml.FormulaParsing.Excel.Functions;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Http.Extensions;
+using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.Http; 
+using Microsoft.AspNetCore.Session;
 
 namespace LabMaterials.Pages
 {
