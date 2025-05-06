@@ -110,7 +110,8 @@ namespace LabMaterials.Pages
 
         public async Task<IActionResult> OnPostAsync(DateTime ReceivingDate, DateTime DocumentDate, [FromForm] int TechnicalMember, [FromForm] int ChiefResponsible,  [FromForm] string FiscalYear,  [FromForm] string BasedOnDocument, [FromForm] int SerialNumber)
         {   ModelState.Clear();
-            // Ensure CreatedBy is populated, for example, from the session or user context
+
+            base.ExtractSessionData();
             Report.CreatedBy = HttpContext.Session.GetString("UserName") ?? "Unknown";
 
             var dbContext = new LabDBContext();

@@ -1353,6 +1353,10 @@
     "DocumentDateMissing":{
       "en":"Document Date is required.",
       "ar":"Document Date is required."
+    },
+    "AddItemCard":{
+      "en":"Add Item Card",
+      "ar":"Add Item Card"
     }
     
 

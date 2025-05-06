@@ -1,0 +1,95 @@
+@page
+@model LabMaterials.Pages.ManageItemCardsModel
+@{
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4 pb-2">
+        <div class="d-block mb-4 mb-md-0">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb bg-transparent p-2 mb-0">
+                    <li class="breadcrumb-item d-flex align-items-center">
+                        <img src="images/home.png" alt="Home" width="16" height="16" class="me-2" />
+                        <a href="/Home" class="text-decoration-none">@Model.lblHome</a>
+                    </li>
+                    
+                    <li class="breadcrumb-item d-flex align-items-center">
+                        <img src="images/inventory.png" alt="Home" width="16" height="16" class="me-2" />
+                        @Model.lblItemCards
+                    </li>
+                    
+                </ol>
+            </nav>
+            <h2 class="h4">@Model.lblItemCards</h2>
+        </div>
+        <div class="btn-toolbar mb-2 mb-md-0">
+
+            <div class="btn-group ms-2 ms-lg-3">
+                <a href="ItemCards" class="btn btn-sm justify-content-center top-btn btn-gray-800 d-inline-flex align-items-center">
+
+                <img b-ie9pk9zf1q="" class="icon text-white icon-xs mx-2" src="images/plus.png">
+                    @Model.lblAddItemCard</a>
+            </div>
+        </div>
+    </div>
+    <div class="mb-4">
+        <button id="exportExcel" class="btn btn-success">Export Excel</button>
+        <button id="printBtn" class="btn btn-primary">Print Table</button>
+    </div>
+
+
+    @* Table  *@
+       <div class="card border-0 shadow mb-4">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-centered table-nowrap mb-0 rounded">
+                    <thead class="thead-light">
+                        <tr>
+                            <th scope="col" class="border-0 rounded-start">Item Name</th>
+                            <th scope="col" class="border-0 rounded-start">Warehouse Name</th>
+
+                            <th scope="col" class="border-0 rounded-end"></th>
+                           
+                        </tr>
+                    </thead>
+                    <tbody>
+           
+                    <tr>
+                        <th scope="row">Zinc</th>
+                        <th scope="row">Supply Warehouse</th>
+
+                        <td>
+                            <form method="post">
+                                @* <input type="hidden" value="@Model.CurrentPage" name="page" />
+                                <input type="hidden" value="@item.GroupCode" name="GroupCode" />
+                                 <input type="hidden" value="@Model.GroupName" name="GroupName" /> *@
+                                <input type="submit" value="View" class="btn btn-secondary" asp-page-handler="View" />
+                               
+                            </form>
+                        </td>
+                    </tr>
+
+
+                    <tr>
+                        <th scope="row">Chlorine</th>
+                        <th scope="row">Supply Warehouse</th>
+
+                        <td>
+                            <form method="post">
+                                @* <input type="hidden" value="@Model.CurrentPage" name="page" />
+                                <input type="hidden" value="@item.GroupCode" name="GroupCode" />
+                                 <input type="hidden" value="@Model.GroupName" name="GroupName" /> *@
+                                <input type="submit" value="View" class="btn btn-secondary" asp-page-handler="View" />
+                               
+                            </form>
+                        </td>
+                    </tr>
+
+                        <tr>
+                            <td colspan="4">
+                                <div>@Model.lblTotalItem : 2</div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+}

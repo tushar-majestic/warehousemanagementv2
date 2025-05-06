@@ -83,6 +83,82 @@
             XLSX.writeFile(wb, "DisbursementData.xlsx");
         });
     </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const filterButton = document.getElementById("toggleFilterDropdown");
+            const filterPanel = document.getElementById("filterDropdownPanel");
+
+            // Dummy data — replace with your actual Razor model values
+            const filterData = {
+                status: @Html.Raw(Json.Serialize(Model.UniqueStatus ?? new List<string>())),
+                storeName: @Html.Raw(Json.Serialize(Model.UniqueStoreName ?? new List<string>())),
+                requestingPlace: @Html.Raw(Json.Serialize(Model.UniqueRequestingPlace ?? new List<string>()))
+            };
+
+            // Show values inside the right panel
+            function showFilterValues(category) {
+                const container = document.getElementById("filterValues");
+                container.innerHTML = "";
+
+                const values = filterData[category] || [];
+
+                if (values.length === 0) {
+                    container.innerHTML = "<div class='text-muted'>No values found</div>";
+                    return;
+                }
+
+                values.forEach(function (value) {
+                    const div = document.createElement("div");
+                    div.className = "filter-value mb-1";
+                    const btn = document.createElement("button");
+                    btn.className = "btn btn-sm w-100 text-start";
+                    btn.innerText = value;
+                    btn.value = value;
+                    btn.onclick = function () {
+                        @* applyFilter(category, value); *@
+                    };
+                    div.appendChild(btn);
+                    container.appendChild(div);
+                });
+
+                document.querySelectorAll('.filter-option').forEach(el => el.classList.remove('fw-bold', 'text-dark'));
+                document.querySelector(`[onclick="showFilterValues('${category}')"]`).classList.add('fw-bold', 'text-dark');
+            }
+
+            @* function applyFilter(field, value) {
+                const url = new URL(window.location.href);
+
+                url.searchParams.delete("handler");
+
+                url.searchParams.set(field, value);
+
+                if (field === "typeName") url.searchParams.delete("damageReason");
+                if (field === "damageReason") url.searchParams.delete("typeName");
+
+                url.searchParams.set("page", "1");
+
+                window.location.href = url;
+            } *@
+
+
+            // Show/hide logic
+            filterButton.addEventListener("click", function (e) {
+                e.stopPropagation();
+                const isVisible = filterPanel.style.display === "flex";
+                filterPanel.style.display = isVisible ? "none" : "flex";
+                if (!isVisible) showFilterValues('status'); // default on open
+            });
+
+            document.addEventListener("click", function (e) {
+                if (!filterPanel.contains(e.target) && e.target !== filterButton) {
+                    filterPanel.style.display = "none";
+                }
+            });
+
+            // Make showFilterValues globally accessible
+            window.showFilterValues = showFilterValues;
+        });
+    </script>
     
 }
 @{
@@ -113,9 +189,43 @@
         </div>
     </div>
     @* <div style="text-align:center; color:maroon">@Model.Message</div>  *@
-    <button id="exportExcel" class="btn btn-success mb-3">Export Excel</button>
-    <button id="printBtn" class="btn btn-primary mb-3">Print Table</button>
+    
+<div class="row mb-4 align-items-start">
+    <div class="col-auto">
+        <button id="exportExcel" class="btn btn-success mb-3">Export Excel</button>
+        <button id="printBtn" class="btn btn-primary mb-3">Print Table</button>
+    </div>
 
+        @if (Model.TotalItems > 0)
+        {
+            <!-- Right: Filter button and dropdown -->
+            <div class="col text-end position-relative">
+                <button type="button" id="toggleFilterDropdown" class="btn btn-secondary">
+                    Filter
+                </button>
+
+                <!-- Filter Panel -->
+                <div id="filterDropdownPanel"
+                class="card shadow-sm position-absolute flex-row"
+                style="right: 0; top: 100%; width: 400px; display: none; z-index: 1000; height: 400px; overflow: hidden;">
+
+                    <!-- Left: Filter Categories -->
+                    <div class="border-end p-2" style="width: 40%; overflow-y: auto;">
+                        <div class="fw-bolder text-center mb-2">Filter By</div>
+                        <div class="filter-option text-primary mb-2" onclick="showFilterValues('status')" style="cursor: pointer;">Status</div>
+                        <div class="filter-option text-primary mb-2" onclick="showFilterValues('storeName')" style="cursor: pointer;">Warehouse Name</div>
+                        <div class="filter-option text-primary mb-2" onclick="showFilterValues('requestingPlace')" style="cursor: pointer;">Requesting Place</div>
+                    </div>
+
+                    <!-- Right: Unique Values -->
+                    <div class="p-2" id="filterValues"
+                    style="width: 60%; overflow-y: auto; border-left: 1px solid #eee;">
+                        <div class="text-muted">Select a filter from left</div>
+                    </div>
+                </div>
+            </div>
+        }
+</div>
     <div class="table-settings mb-4">
         <form method="post" asp-page-handler="Action" class="row align-items-center">
 
