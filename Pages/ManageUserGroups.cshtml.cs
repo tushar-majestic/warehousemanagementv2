@@ -53,7 +53,7 @@ namespace LabMaterials.Pages
                                  UserGroupID = g.UserGroupId,
                                  UserGroupName = g.UserGroupName
                              }); ;
-                
+
 
                 if (string.IsNullOrEmpty(UserGroupName) == false)
                     query = query.Where(i => i.UserGroupName.Contains(UserGroupName));
@@ -63,12 +63,19 @@ namespace LabMaterials.Pages
                 TotalItems = query.Count();
                 TotalPages = (int)Math.Ceiling((double)TotalItems / ItemsPerPage);
                 var list = query.ToList();
-                UserGroups = list.Skip((page - 1) * ItemsPerPage).Take(ItemsPerPage).ToList();    
-                UserGroupsAll = query.ToList();    
-                CurrentPage = page; 
-                foreach(var UG in UserGroups)
+                UserGroups = list.Skip((page - 1) * ItemsPerPage).Take(ItemsPerPage).ToList();
+                UserGroupsAll = query.ToList();
+                CurrentPage = page;
+                foreach (var UG in UserGroups)
                 {
                     UG.Privilages = String.Join(", ", (from p in dbContext.Privileges
+                                                       join ugp in dbContext.UserGroupPrivileges on p.PrivilegeId equals ugp.PrivilegeId
+                                                       where ugp.UserGroupId == UG.UserGroupID
+                                                       select p.PrivilegeName).ToList());
+                }
+                foreach (var UG in UserGroupsAll)
+                {
+                    UG.Privilages = string.Join(", ", (from p in dbContext.Privileges
                                                        join ugp in dbContext.UserGroupPrivileges on p.PrivilegeId equals ugp.PrivilegeId
                                                        where ugp.UserGroupId == UG.UserGroupID
                                                        select p.PrivilegeName).ToList());

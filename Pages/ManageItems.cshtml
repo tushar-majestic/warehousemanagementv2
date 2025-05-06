@@ -115,7 +115,8 @@
                 const container = document.getElementById("filterValues");
                 container.innerHTML = "";
 
-                const values = filterData[category] || [];
+                let values = filterData[category] || [];
+                values = values.filter(v => typeof v === 'string' && v.trim() !== "");
 
                 if (values.length === 0) {
                     container.innerHTML = "<div class='text-muted'>No values found</div>";

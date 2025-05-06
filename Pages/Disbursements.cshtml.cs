@@ -9,6 +9,9 @@ namespace LabMaterials.Pages
         public List<DisbursementInfo> Disbursement { get; set; }
         public List<DisbursementInfo> DisbursementAll { get; set; }
         public string Message { get; set; }
+        public List<string> UniqueStoreName { get; set; }
+        public List<string> UniqueStatus { get; set; }
+        public List<string> UniqueRequestingPlace { get; set; }
         public int TotalItems { get; set; }
         public DateTime? FromDate, ToDate;
         [BindProperty]
@@ -249,6 +252,11 @@ namespace LabMaterials.Pages
 
                 if (FromDate != null && FromDate >= DateTime.MinValue && ToDate != null && ToDate >= DateTime.MinValue)
                     query = query.Where(e => e.ReqReceivedAt.Date >= FromDate.Value.Date && e.ReqReceivedAt.Date <= ToDate.Value.Date);
+
+
+                UniqueRequestingPlace = query.Select(i => i.RequestingPlace).Distinct().ToList();
+                UniqueStatus = query.Select(i => i.Status).Distinct().ToList();
+                UniqueStoreName = query.Select(i => i.StoreName).Distinct().ToList();
 
                 // Get the total count of items
                 TotalItems = query.Count();
