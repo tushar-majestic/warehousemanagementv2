@@ -16,7 +16,8 @@
 
                     <div class="col-lg-12 col-sm-12">
                         <div class="form-group mb-4">
-                            <label>@Model.lblSerialNumber <b>0001</b></label>
+                           <label>@Model.lblSerialNumber <b id="Serial">----</b></label>
+                           <input type="number"  asp-for="Report.SerialNumber" id="SerialNumber" name="SerialNumber" hidden>
                         </div>
                        @{
                             var currentYear = DateTime.Now.Year;
@@ -24,8 +25,8 @@
                         }
                         <div class="form-group mb-4">
                             <label>@Model.lblFiscalYear</label>
-                            <select class="form-select" id="FiscalYear" asp-for="Report.FiscalYear" name="FiscalYear">
-                                <option>Select Fiscal Year</option>
+                            <select class="form-select" id="FiscalYear" asp-for="Report.FiscalYear" name="FiscalYear"  onchange="fetchSerialNumber()" >
+                                <option value="">Select Fiscal Year</option>
                                 <option value="@previousYear">@previousYear</option>
                                 <option value="@currentYear">@currentYear</option>
                             </select>
@@ -109,78 +110,89 @@
                             </select>
                         </div>
 
+                       @* Add ItemsForReport  *@
 
-                        <div class="form-group mb-4">
-                            <label>@Model.lblItemGroup</label>
-                            <select class="form-select" id="ItemGroup" name="ItemGroup" >
-                                @* <option value="Chemicals">Chemicals</option>
-                                <option value="Glass">Glass</option> *@
-                                <option value="">Select Item Group</option>
-                                 @if (Model.ItemGroupList != null)
-                                {
-                                    foreach (var item in Model.ItemGroupList)
-                                    {
-                                            <option value="@item.GroupDesc" >@item.GroupDesc</option>
-                                    }
-                                }
+                        <div class="addItems border p-2">
 
-                            </select>
-                        </div>
+                            <h3>Add Items</h3>
+                        
+                                <div class="form-group mb-4">
+                                    <label>@Model.lblItemGroup</label>
+                                    <select class="form-select" id="ItemGroup" name="ItemGroup" >
+                                        @* <option value="Chemicals">Chemicals</option>
+                                        <option value="Glass">Glass</option> *@
+                                        <option value="">Select Item Group</option>
+                                        @if (Model.ItemGroupList != null)
+                                        {
+                                            foreach (var item in Model.ItemGroupList)
+                                            {
+                                                    <option value="@item.GroupDesc" >@item.GroupDesc</option>
+                                            }
+                                        }
 
-                        @* <div class="form-group mb-4">
-                            <label>Item No.</label>
-                            <input type="text"  name="ItemNo" class="form-control" data-itemno="@Model.ItemId" />
-                        </div>
-                        <div class="form-group mb-4">
-                            <label>Item Name</label>
-                            <select class="form-control" id="ItemName" name="ItemsForReport[0].ItemId" required>
-                                <option value="">Select Item</option>
-                                @foreach (var item in Model.Items)
-                                {
-                                    <option value="@item.ItemId">@item.ItemName</option>
-                                }
-                            </select>
-                        </div> *@
-                        <div class="form-group mb-4">
-                            <label>@Model.lblItemNo</label>
-                            <input type="text" id="ItemNo" name="ItemNo" class="form-control"  />
-                        </div>
-                        <div class="form-group mb-4">
-                            <label>@Model.lblItemName</label>
-                            <select class="form-control" id="ItemName" name="ItemsForReport[0].ItemId" >
-                                <option value="">Select Item</option>
-                                @foreach (var item in Model.Items)
-                                {    var UnitCode = Model.Units.FirstOrDefault(u => u.Id == item.UnitId)?.UnitCode ?? "";
-                                    <option value="@item.ItemId" data-itemno="@item.ItemCode" data-itemdesc="@item.ItemDescription"  data-unitid="@item.UnitId"
-                                    data-unitname="@UnitCode">@item.ItemName</option>
-                                }
-                            </select>
-                        </div>
+                                    </select>
+                                </div>
 
-                        <div class="form-group mb-4">
-                            <label>@Model.lblItemDescription</label>
+                            
+                                <div class="d-flex">
+                                    <div class="form-group mb-4 me-2 ">
+                                        <label>@Model.lblItemNo</label>
+                                        <input type="text" id="ItemNo" name="ItemNo" class="form-control" />
+                                    </div>
+                                    <div class="form-group mb-4 ms-2 flex-fill">
+                                        <label>@Model.lblItemName</label>
+                                        <select class="form-control" id="ItemName" name="ItemsForReport[0].ItemId">
+                                            <option value="">Select Item</option>
+                                            @foreach (var item in Model.Items)
+                                            {
+                                                var UnitCode = Model.Units.FirstOrDefault(u => u.Id == item.UnitId)?.UnitCode ?? "";
+                                                <option value="@item.ItemId"
+                                                        data-itemno="@item.ItemCode"
+                                                        data-itemname="@item.ItemName"
+                                                        data-itemdesc="@item.ItemDescription"
+                                                        data-unitid="@item.UnitId"
+                                                        data-unitname="@UnitCode">
+                                                    @item.ItemName
+                                                </option>
+                                            }
+                                        </select>
+                                    </div>
+                                </div>
 
-                            <textarea asp-for="Report.Comments" id="ItemDescription" class="form-control" readonly></textarea >
-                        </div>
+                                <div class="form-group mb-4">
+                                    <label>@Model.lblItemDescription</label>
 
-                        <div class="form-group mb-4">
-                            <label>@Model.lblUnitOfMeasure</label>
-                            <input  type="text" id="UnitofMeasure" name="UnitofMeasure" class="form-control" readonly/>
-                        </div>
+                                    <textarea id="ItemDescription" class="form-control" readonly></textarea >
+                                </div>
 
-                        <div class="form-group mb-4">
-                            <label>@Model.lblQuantity</label>
-                            <input type="number" id="ItemQty" name="ItemsForReport[0].Quantity" class="form-control"  />
-                        </div>
-                        <div class="form-group mb-4">
-                            <label>@Model.lblUnitPrice</label>
-                            <input type="number"  id="UnitPrice" step="0.01" name="ItemsForReport[0].UnitPrice" class="form-control"  />
-                        </div>
+                                <div class="d-flex justify-content-between">
+                                    <div class="form-group mb-4" style="width: 48%;">
+                                        <label>@Model.lblUnitOfMeasure</label>
+                                        <input  type="text" id="UnitofMeasure" name="UnitofMeasure" class="form-control" readonly/>
+                                    </div>
 
-                        <div class="form-group mb-4">
-                            <label>@Model.lblTotalPrice</label>
-                            <input type="number"  id="TotalPrice" step="0.01" name="TotalPrice" class="form-control" />
+                                    <div class="form-group mb-4"  style="width: 48%;">
+                                        <label>@Model.lblQuantity</label>
+                                        <input type="number" id="ItemQty" name="ItemsForReport[0].Quantity" class="form-control"  />
+                                    </div>
+                                </div>
+                                
+                                <div class="d-flex justify-content-between">
+                                    <div class="form-group mb-4" style="width: 48%;">
+                                        <label>@Model.lblUnitPrice</label>
+                                        <input type="number"  id="UnitPrice" step="0.01" name="ItemsForReport[0].UnitPrice" class="form-control"  />
+                                    </div>
+
+                                    <div class="form-group mb-4" style="width: 48%;">
+                                        <label>@Model.lblTotalPrice</label>
+                                        <input type="number"  id="TotalPrice" step="0.01" name="TotalPrice" class="form-control" />
+                                    </div>
+                                </div>
+                                <div id="itemsContainer" class="mt-3"></div>
+
+                            <button type="button" class="btn btn-secondary" onclick="addItem()">Add</button>
                         </div>
+                       @* Add ItemsForReport ended  *@
 
                         <div class="form-group mb-4">
                             <label>@Model.lblComments</label>
@@ -290,8 +302,126 @@
         };
 
         function getItemOptions() {
-            return `@Html.Raw(string.Join("", Model.Items.Select(i => $"<option value='{i.ItemId}'>{i.ItemName}</option>")))`;
+            return `@Html.Raw(string.Join("", Model.Items.Select(i => $"<option value='{i.ItemId}'  data-itemno='{i.ItemCode}' data-itemname='{i.ItemName}' data-itemdesc='{i.ItemDescription}' data-unitid='{i.UnitId}' >{i.ItemName}</option>")))`;
         }
+
+      
+
+        function addItem() {
+            const container = document.getElementById('itemsContainer');
+            const div = document.createElement('div');
+            div.className = 'item-group border p-3 mb-3';
+            div.innerHTML = `
+                <h3>Add Items</h3>
+                <div class="form-group mb-4">
+                    <label>Item Group</label>
+                    <select class="form-select" name="ItemsForReport[${itemIndex}].ItemGroup">
+                        <option value="">Select Item Group</option>
+                        @foreach (var item in Model.ItemGroupList)
+                        {
+                            <text><option value="@item.GroupDesc">@item.GroupDesc</option></text>
+                        }
+                    </select>
+                </div>
+
+                <div class="d-flex">
+                    <div class="form-group mb-4 me-2">
+                        <label>Item No</label>
+                        <input type="text" name="ItemsForReport[${itemIndex}].ItemNo" class="form-control" />
+                    </div>
+                    <div class="form-group mb-4 ms-2 flex-fill">
+                        <label>Item Name</label>
+                        <select class="form-control" name="ItemsForReport[${itemIndex}].ItemId">
+                            <option value="">Select Item</option>
+                            ${getItemOptions()}
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group mb-4">
+                    <label>Item Description</label>
+                    <textarea name="ItemsForReport[${itemIndex}].ItemDescription" class="form-control" readonly></textarea>
+                </div>
+
+                <div class="d-flex justify-content-between">
+                    <div class="form-group mb-4" style="width: 48%;">
+                        <label>Unit of Measure</label>
+                        <input type="text" name="ItemsForReport[${itemIndex}].UnitofMeasure" class="form-control" readonly />
+                    </div>
+                    <div class="form-group mb-4" style="width: 48%;">
+                        <label>Quantity</label>
+                        <input type="number" name="ItemsForReport[${itemIndex}].Quantity" class="form-control" />
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between">
+                    <div class="form-group mb-4" style="width: 48%;">
+                        <label>Unit Price</label>
+                        <input type="number" step="0.01" name="ItemsForReport[${itemIndex}].UnitPrice" class="form-control" />
+                    </div>
+                    <div class="form-group mb-4" style="width: 48%;">
+                        <label>Total Price</label>
+                        <input type="number" step="0.01" name="ItemsForReport[${itemIndex}].TotalPrice" class="form-control" readonly />
+                    </div>
+                </div>
+            `;
+
+            container.appendChild(div);
+            bindEvents(div, itemIndex);
+            itemIndex++;
+        }
+
+
+        
+    function bindEvents(container, itemIndex) {
+        const itemNoInput = container.querySelector(`[name='ItemsForReport[${itemIndex}].ItemNo']`);
+        const itemDropdown = container.querySelector(`[name='ItemsForReport[${itemIndex}].ItemId']`);
+        const itemDescription = container.querySelector(`[name='ItemsForReport[${itemIndex}].ItemDescription']`);
+        const unitInput = container.querySelector(`[name='ItemsForReport[${itemIndex}].UnitofMeasure']`);
+        const quantityInput = container.querySelector(`[name='ItemsForReport[${itemIndex}].Quantity']`);
+        const unitPriceInput = container.querySelector(`[name='ItemsForReport[${itemIndex}].UnitPrice']`);
+        const totalPriceInput = container.querySelector(`[name='ItemsForReport[${itemIndex}].TotalPrice']`);
+
+        function updateTotal() {
+            const quantity = parseFloat(quantityInput.value) || 0;
+            const unitPrice = parseFloat(unitPriceInput.value) || 0;
+            totalPriceInput.value = (quantity * unitPrice).toFixed(2);
+        }
+
+        if (unitPriceInput) unitPriceInput.addEventListener("input", updateTotal);
+        if (quantityInput) quantityInput.addEventListener("input", updateTotal);
+
+        if (itemNoInput) {
+            itemNoInput.addEventListener("input", function () {
+                const enteredItemNo = itemNoInput.value;
+                const options = itemDropdown.options;
+
+                for (let i = 0; i < options.length; i++) {
+                    if (options[i].getAttribute("data-itemno") === enteredItemNo) {
+                        itemDropdown.value = options[i].value;
+                        itemDescription.value = options[i].getAttribute("data-itemdesc") || '';
+                        unitInput.value = options[i].getAttribute("data-unitname") || '';
+                        break;
+                    }
+                }
+            });
+        }
+
+        if (itemDropdown) {
+            itemDropdown.addEventListener("change", function () {
+                const selectedOption = itemDropdown.options[itemDropdown.selectedIndex];
+                itemNoInput.value = selectedOption.getAttribute("data-itemno") || '';
+                itemDescription.value = selectedOption.getAttribute("data-itemdesc") || '';
+                unitInput.value = selectedOption.getAttribute("data-unitname") || '';
+            });
+        }
+    }
+
+
+        document.addEventListener("DOMContentLoaded", function () {
+            bindEvents(document); 
+        });
+
     </script>
     <script>
         const allSuppliers = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.Suppliers));
@@ -343,6 +473,8 @@
         }
 
         unitPriceInput.addEventListener("input", updateTotal);
+        quantityInput.addEventListener("input", updateTotal);
+
 
       
 
@@ -391,9 +523,58 @@
 
 
     });
+    async function fetchSerialNumber() {
+        const year = document.getElementById("FiscalYear").value;
+        if (!isNaN(year)) {
+           fetch(`/ReceivingReports?handler=GetNextSerialNumber&fiscalYear=${year}`)
 
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("Serial").innerText = data.serial;
+                    document.getElementById("SerialNumber").value = data.serial;
+
+                });
+        } else {
+            document.getElementById("Serial").innerText = "-----";
+        }
+    }
+
+     const notyf = new Notyf({
+            position: {
+                x: 'center',
+                y: 'top',
+            },
+            types: [
+                {
+                    type: 'error',
+                    background: '#e3392c',
+                    icon: {
+                        className: 'fas fa-times',
+                        tagName: 'span',
+                        color: '#000000'
+                    },
+                    dismissible: true,
+                    duration: 0,
+                    ripple: true
+                }
+            ]
+        });
+
+        function showErrorNotification(message) {
+            notyf.open({
+                type: 'error',
+                message: message
+            });
+        }
+
+        @if (!string.IsNullOrEmpty(Model.ErrorMsg))
+        {
+            <text>
+                    var errorMessageFromServer = @Html.Raw(Json.Serialize(Model.ErrorMsg));
+                    showErrorNotification(errorMessageFromServer);
+            </text>
+        }
     
  
     </script>
-
 }

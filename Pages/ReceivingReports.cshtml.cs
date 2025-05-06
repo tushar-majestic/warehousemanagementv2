@@ -37,6 +37,7 @@ namespace LabMaterials.Pages
 
         public int?  GeneralSupervisorId, TechnicalMemberId ;
         public int? ItemId;
+        public string ErrorMsg { get; set; }
 
         public string ItemNo;
         [BindProperty]
@@ -97,8 +98,18 @@ namespace LabMaterials.Pages
             }
         }
 
-        public async Task<IActionResult> OnPostAsync(DateTime ReceivingDate, DateTime DocumentDate, [FromForm] int TechnicalMember, [FromForm] int ChiefResponsible,  [FromForm] string FiscalYear,  [FromForm] string BasedOnDocument)
+       public async Task<IActionResult> OnGetGetNextSerialNumberAsync(string fiscalYear)
         {
+            int lastSerial = await _context.ReceivingReports
+                .Where(r => r.FiscalYear == fiscalYear)
+                .MaxAsync(r => (int?)r.SerialNumber) ?? 0;
+
+            return new JsonResult(new { serial = lastSerial + 1 });
+        }
+
+
+        public async Task<IActionResult> OnPostAsync(DateTime ReceivingDate, DateTime DocumentDate, [FromForm] int TechnicalMember, [FromForm] int ChiefResponsible,  [FromForm] string FiscalYear,  [FromForm] string BasedOnDocument, [FromForm] int SerialNumber)
+        {   ModelState.Clear();
             // Ensure CreatedBy is populated, for example, from the session or user context
             Report.CreatedBy = HttpContext.Session.GetString("UserName") ?? "Unknown";
 
@@ -119,33 +130,73 @@ namespace LabMaterials.Pages
             Report.ChiefResponsibleId = ChiefResponsible;
             Report.FiscalYear = FiscalYear;
             Report.BasedOnDocument = BasedOnDocument;
+            Report.SerialNumber = SerialNumber;
+
+            Report.FiscalYear = FiscalYear;
+           
 
 
-
-
-
-
-            if (AttachmentFile != null)
-            {
-                var uploadsFolder = Path.Combine(_environment.WebRootPath, "uploads");
-                Directory.CreateDirectory(uploadsFolder); // ensure it exists
-                var uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(AttachmentFile.FileName);
-                var filePath = Path.Combine(uploadsFolder, uniqueFileName);
-
-                using (var stream = new FileStream(filePath, FileMode.Create))
-                {
-                    await AttachmentFile.CopyToAsync(stream);
-                }
-
-                Report.AttachmentPath = "/uploads/" + uniqueFileName;
-                ModelState.Remove("AttachmentPath"); // Removes the error for AttachmentPath
-
-            }
-            else
-            {
-                ModelState.AddModelError("AttachmentPath", "Attachment is required.");
+            if (string.IsNullOrEmpty(FiscalYear)){
+                ErrorMsg = (Program.Translations["FiscalYearMissing"])[Lang];
                 return Page();
             }
+            else if (ReceivingDate == default(DateTime))
+            {
+                ErrorMsg = (Program.Translations["ReceivingDateMissing"])[Lang];
+                return Page();
+            }
+            else if (string.IsNullOrEmpty(Report.RecipientSector))
+            {
+                ErrorMsg = (Program.Translations["RecipientSectorMissing"])[Lang];
+                return Page();
+            }
+            else if (string.IsNullOrEmpty(Report.SectorNumber))
+            {
+                ErrorMsg = (Program.Translations["SectorNumberMissing"])[Lang];
+                return Page();
+            }
+            else if (string.IsNullOrEmpty(Report.ReceivingWarehouse))
+            {
+                ErrorMsg = (Program.Translations["ReceivingWarehouseMissing"])[Lang];
+                return Page();
+            }
+            else if (string.IsNullOrEmpty(Report.BasedOnDocument))
+            {
+                ErrorMsg = (Program.Translations["BasedOnDocumentMissing"])[Lang];
+                return Page();
+            }
+            else if (string.IsNullOrEmpty(Report.DocumentNumber))
+            {
+                ErrorMsg = (Program.Translations["DocumentNumberMissing"])[Lang];
+                return Page();
+            }
+            else if (DocumentDate == default(DateTime))
+            {
+                ErrorMsg = (Program.Translations["DocumentDateMissing"])[Lang];
+                return Page();
+            }
+           
+           
+                if (AttachmentFile != null)
+                {
+                    var uploadsFolder = Path.Combine(_environment.WebRootPath, "uploads");
+                    Directory.CreateDirectory(uploadsFolder); // ensure it exists
+                    var uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(AttachmentFile.FileName);
+                    var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await AttachmentFile.CopyToAsync(stream);
+                    }
+
+                    Report.AttachmentPath = "/uploads/" + uniqueFileName;
+                    ModelState.Remove("AttachmentPath"); // Removes the error for AttachmentPath
+
+                }
+               
+            
+                
+            
 
 
             //if (!ModelState.IsValid)

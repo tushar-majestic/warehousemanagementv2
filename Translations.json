@@ -1170,10 +1170,6 @@
         "en": "Manager Job Number is missing.",
         "ar": "Manager Job Number is missing."
     },
-    "NewReceivingReport": {
-        "en": "New Receiving Report",
-        "ar": "إتقرير الاستلام الجديد"
-    },
     "Notifications": {
         "en": "Notifications",
         "ar": "منظر"
@@ -1326,133 +1322,50 @@
     "RecipientSector":{
         "en":"Recipient Sector",
         "ar":"Recipient Sector"
+    },
+    "FiscalYearMissing":{
+      "en":"Fiscal Year is required.",
+      "ar":"Fiscal Year is required."
+    },
+    "ReceivingDateMissing":{
+      "en":"Receiving Date is required.",
+      "ar":"Receiving Date is required."
+    },
+    "RecipientSectorMissing":{
+      "en":"Recipient Sector is required.",
+      "ar":"Recipient Sector is required."
+    },
+    "SectorNumberMissing":{
+      "en":"Sector Number is required.",
+      "ar":"Sector Number is required."
+    },
+    "ReceivingWarehouseMissing":{
+      "en":"Receiving Warehouse is required.",
+      "ar":"Receiving Warehouse is required."
+    },
+    "BasedOnDocumentMissing":{
+      "en":"Based On Document is required.",
+      "ar":"Based On Document is required."
+    },
+    "DocumentNumberMissing":{
+      "en":"Document Number is required.",
+      "ar":"Document Number is required."
+    },
+    "DocumentDateMissing":{
+      "en":"Document Date is required.",
+      "ar":"Document Date is required."
     }
-   
-   
+    
 
+
+    
+    
+   
+   
+    
 
 
 }
 
 
-  "ExpiryDateMissing": {
-    "en": "Expiry Date is Missing",
-    "ar": "تاريخ انتهاء الصلاحية مفقود"
-  },
-  "InvoiceNumberExists": {
-    "en": "The invoice number {0} already exists.",
-    "ar": "رقم الفاتورة {0} موجود بالفعل"
-  },
-  "PurchaseOrderNoExists": {
-    "en": "The purchase order number {0} already exists.",
-    "ar": "رقم أمر الشراء {0} موجود بالفعل"
-  },
-  "SupplierNameMissing": {
-    "en": "Supplier name is missing.",
-    "ar": "اسم المورد مفقود"
-  },
-  "SupplierPhoneNumber": {
-    "en": "Supplier Conatct Number",
-    "ar": "رقم التواصل للمورد"
-  },
-  "SupplierType": {
-    "en": "Supplier Type",
-    "ar": "نوع المورد"
-  },
-  "SupplierNameExists": {
-    "en": "The Supplier name {0} already exists.",
-    "ar": "اسم المورد {0} موجود بالفعل"
-  },
-  "StoreNumberMissing": {
-    "en": "Warehouse Number is missing.",
-    "ar": "رقم المستودع مفقود"
-  },
-  "StoreNameMissing": {
-    "en": "Warehouse Name is missing.",
-    "ar": "اسم المستودع مفقود"
-  },
-  "StoreTypeMissing": {
-    "en": "Warehouse Type is missing.",
-    "ar": "Warehouse Type is missing."
-  },
-  "ManagerNameMissing": {
-    "en": "Warehouse Manager Name is missing.",
-    "ar": "Warehouse Manager Name is missing."
-  },
-  "ManagerJobNumberMissing": {
-    "en": "Manager Job Number is missing.",
-    "ar": "Manager Job Number is missing."
-  },
-  "NewReceivingReport": {
-    "en": "New Receiving Report",
-    "ar": "إتقرير الاستلام الجديد"
-  },
-  "Notifications": {
-    "en": "Notifications",
-    "ar": "منظر"
-  },
-  "BuildingNumber": {
-    "en": "Building No.",
-    "ar": "Building No."
-  },
-  "NoOfShelves": {
-    "en": "Number of Shelves",
-    "ar": "Number of Shelves"
-  },
-  "RoomDesc": {
-    "en": "Room Description",
-    "ar": "Room Description"
-  },
-  "KeeperJobNum": {
-    "en": "Warehouse Keeper Job Number",
-    "ar": "Warehouse Keeper Job Number"
-  },
-  "KeeperName": {
-    "en": "Warehouse Keeper Name",
-    "ar": "Warehouse Keeper Name"
-  },
-  "RoomStatus": {
-    "en": "Room Status",
-    "ar": "Room Status"
-  },
-  "BuildingNumberMissing": {
-    "en": "Building Number is required.",
-    "ar": "Building Number is required."
-  },
-  "KeeperMissing": {
-    "en": "Warehouse Keeper required.",
-    "ar": "Warehouse Keeper required."
-  },
-  "WarehouseStatusMissing": {
-    "en": "Warehouse Status is required.",
-    "ar": "Warehouse Status is required."
-  },
-  "RoomStatusMissing": {
-    "en": "Room Status is required.",
-    "ar": "Room Status is required."
-  },
-  "RoomExists": {
-    "en": "Room Exists.",
-    "ar": "Room Exists."
-  },
-  "CoordinatorName": {
-    "en": "Coordinator Name",
-    "ar": "Coordinator Name"
-  },
-  "ManagerWarehouseOnly": {
-    "en": "Manager can add room to his warehouse only.",
-    "ar": "Manager can add room to his warehouse only."
-  },
-  "ManagerEditWarehouseOnly": {
-    "en": "Manager can edit room of his warehouse only.",
-    "ar": "Manager can edit room of his warehouse only."
-  },
-  "WarehouseManagerName": {
-    "en": "Warehouse Manager Name",
-    "ar": "Warehouse Manager Name"
-  },
-  "WarehouseMissing": {
-    "en": "Warehouse is required",
-    "ar": "Warehouse is required"
-  }
-
+  
