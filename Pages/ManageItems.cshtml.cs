@@ -17,6 +17,10 @@ namespace LabMaterials.Pages
         public DateTime? FromDate, ToDate;
         [BindProperty]
         public string ItemName { get; set; }
+        public List<string> UniqueTypeNames { get; set; }
+        public List<string> UniqueGroup { get; set; }
+        public List<string> UniqueUnitCode { get; set; }
+        public List<string> UniqueHazardType { get; set; }
         [BindProperty]
         public string Group { get; set; }
         public int CurrentPage { get; set; }
@@ -253,6 +257,12 @@ namespace LabMaterials.Pages
 
             if (FromDate != null && FromDate >= DateTime.MinValue && ToDate != null && ToDate >= DateTime.MinValue)
                 query = query.Where(e => e.ExpiryDate.Value.Date >= FromDate.Value.Date && e.ExpiryDate.Value.Date <= ToDate.Value.Date);
+
+
+            UniqueTypeNames = query.Select(i => i.TypeName).Distinct().ToList();
+            UniqueGroup = query.Select(i => i.GroupDesc).Distinct().ToList();
+            UniqueUnitCode = query.Select(i => i.UnitCode).Distinct().ToList();
+            UniqueHazardType = query.Select(i => i.HazardTypeName).Distinct().ToList();
 
             TotalItems = query.Count();
             TotalPages = (int)Math.Ceiling((double)TotalItems / ItemsPerPage);

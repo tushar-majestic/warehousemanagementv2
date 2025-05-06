@@ -102,9 +102,8 @@ namespace LabMaterials.Pages
                     string pageName = "manageDamaged";
                     this.ItemName = ItemName;
                     FillData(ItemName, Group, CurrentPage);
-                    LoadSelectedColumns();
-
                     SaveSelectedColumns(userId.Value, pageName, selectedColumns);
+                    LoadSelectedColumns();
                 }
 
                 // After updating, redirect back to ManageStore with the StoreNumber and StoreName
@@ -221,7 +220,7 @@ namespace LabMaterials.Pages
             TotalItems = query.Count();
             TotalPages = (int)Math.Ceiling((double)TotalItems / ItemsPerPage);
 
-            UniqueItemNames = query.Select(i => i.ItemName).Distinct().ToList();
+            // UniqueItemNames = query.Select(i => i.ItemName).Distinct().ToList();
             UniqueTypeNames = query.Select(i => i.TypeName).Distinct().ToList();
             UniqueDamageReasons = query.Select(i => i.DamageReason).Distinct().ToList();
 

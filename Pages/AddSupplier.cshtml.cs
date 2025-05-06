@@ -51,11 +51,15 @@ namespace LabMaterials.Pages
                     {
                         ErrorMsg = (Program.Translations["SupplierPhoneNumberMissing"])[Lang];
                     }
+                    else if (string.IsNullOrEmpty(CoordinatorName))
+                    {
+                        ErrorMsg = (Program.Translations["CoordinatorNameMissing"])[Lang];
+                    }
                     else if (string.IsNullOrEmpty(SupplierType))
                     {
                         ErrorMsg = (Program.Translations["SupplierTypeMissing"])[Lang];
                     }
-                    if (dbContext.Suppliers.Any(s => s.SupplierName == SupplierName))
+                    else if (dbContext.Suppliers.Any(s => s.SupplierName == SupplierName))
                     {
                         ErrorMsg = string.Format((Program.Translations["SupplierNameExists"])[Lang], SupplierName);
                     }

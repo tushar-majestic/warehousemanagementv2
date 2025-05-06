@@ -97,6 +97,88 @@
             XLSX.writeFile(wb, "ManageItems.xlsx");
         });
     </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const filterButton = document.getElementById("toggleFilterDropdown");
+            const filterPanel = document.getElementById("filterDropdownPanel");
+
+            // Dummy data — replace with your actual Razor model values
+            const filterData = {
+                typeName: @Html.Raw(Json.Serialize(Model.UniqueTypeNames ?? new List<string>())),
+                group: @Html.Raw(Json.Serialize(Model.UniqueGroup ?? new List<string>())),
+                unitCode: @Html.Raw(Json.Serialize(Model.UniqueUnitCode ?? new List<string>())),
+                hazardType: @Html.Raw(Json.Serialize(Model.UniqueHazardType ?? new List<string>()))
+            };
+
+            // Show values inside the right panel
+            function showFilterValues(category) {
+                const container = document.getElementById("filterValues");
+                container.innerHTML = "";
+
+                const values = filterData[category] || [];
+
+                if (values.length === 0) {
+                    container.innerHTML = "<div class='text-muted'>No values found</div>";
+                    return;
+                }
+
+                values.forEach(function (value) {
+                    const div = document.createElement("div");
+                    div.className = "filter-value mb-1";
+                    const btn = document.createElement("button");
+                    btn.className = "btn btn-sm w-100 text-start";
+                    btn.innerText = value;
+                    btn.value = value;
+                    btn.onclick = function () {
+                        applyFilter(category, value);
+                    };
+                    div.appendChild(btn);
+                    container.appendChild(div);
+                });
+
+                document.querySelectorAll('.filter-option').forEach(el => el.classList.remove('fw-bold', 'text-dark'));
+                document.querySelector(`[onclick="showFilterValues('${category}')"]`).classList.add('fw-bold', 'text-dark');
+            }
+            
+            function applyFilter(field, value) {
+                const url = new URL(window.location.href);
+
+                // Remove the 'handler' parameter if it exists
+                url.searchParams.delete("handler");
+
+                // Set the selected filter
+                url.searchParams.set(field, value);
+
+                // Optional: clear the other filter if you want only one active at a time
+                if (field === "typeName") url.searchParams.delete("group");
+                if (field === "group") url.searchParams.delete("typeName");
+
+                // Set or reset page to 1
+                url.searchParams.set("page", "1");
+
+                // Redirect with the updated query string
+                window.location.href = url;
+            }
+
+
+            // Show/hide logic
+            filterButton.addEventListener("click", function (e) {
+                e.stopPropagation();
+                const isVisible = filterPanel.style.display === "flex";
+                filterPanel.style.display = isVisible ? "none" : "flex";
+                if (!isVisible) showFilterValues('typeName'); // default on open
+            });
+
+            document.addEventListener("click", function (e) {
+                if (!filterPanel.contains(e.target) && e.target !== filterButton) {
+                    filterPanel.style.display = "none";
+                }
+            });
+
+            // Make showFilterValues globally accessible
+            window.showFilterValues = showFilterValues;
+        });
+    </script>
 }
 @{
 
@@ -209,11 +291,11 @@
 
 
             <div class="row align-items-center">
-                <div class="col-6 col-md-2 ps-md-0 mx-3">
+                <div class="col-4 col-md-2 ps-md-0 mx-3">
                     <button type="submit" name="action" value="search"class="btn btn-primary">@Model.lblSubmit</button>
                 </div>
 
-                <div class="col-6 col-md-3 text-end ms-auto">
+                <div class="col d-flex justify-content-end gap-2">
                     <div class="position-relative">
                         <button class="btn btn-secondary btn-sm" id="toggleDropdown" type="button">
                             @Model.lblShowHideColumn
@@ -272,6 +354,37 @@
                             </div>
                         </div>
                     </div>
+                    @if (Model.TotalItems > 0)
+                    {
+                        <!-- Right: Filter button and dropdown -->
+                        <div class="position-relative">
+                            <button type="button" id="toggleFilterDropdown" class="btn btn-secondary">
+                                Filter
+                            </button>
+
+                            <!-- Filter Panel -->
+                            <div id="filterDropdownPanel"
+                                class="card shadow-sm position-absolute flex-row"
+                                style="right: 0; top: 100%; width: 400px; display: none; z-index: 1000; height: 400px; overflow: hidden;">
+
+                                <!-- Left: Filter Categories -->
+                                <div class="border-end p-2" style="width: 40%; overflow-y: auto;">
+                                    <div class="fw-bolder text-center mb-2">Filter By</div>
+                                    @* <div class="filter-option text-primary mb-2" onclick="showFilterValues('itemName')" style="cursor: pointer;">Item Name</div> *@
+                                    <div class="filter-option text-primary mb-2" onclick="showFilterValues('typeName')" style="cursor: pointer;">Type Name</div>
+                                    <div class="filter-option text-primary mb-2" onclick="showFilterValues('hazardType')" style="cursor: pointer;">Hazard Type</div>
+                                    <div class="filter-option text-primary mb-2" onclick="showFilterValues('group')" style="cursor: pointer;">Group</div>
+                                    <div class="filter-option text-primary mb-2" onclick="showFilterValues('unitCode')" style="cursor: pointer;">Unit Code</div>
+                                </div>
+
+                                <!-- Right: Unique Values -->
+                                <div class="p-2" id="filterValues"
+                                style="width: 60%; overflow-y: auto; border-left: 1px solid #eee;">
+                                    <div class="text-muted">Select a filter from left</div>
+                                </div>
+                            </div>
+                        </div>
+                    }
                 </div>
             </div>
 

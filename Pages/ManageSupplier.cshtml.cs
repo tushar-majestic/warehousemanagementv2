@@ -82,6 +82,7 @@ namespace LabMaterials.Pages
             HttpContext.Session.SetInt32("SupplierId", SupplierId);
             HttpContext.Session.SetInt32("page", page);
             HttpContext.Session.SetString("SupplierName", string.IsNullOrEmpty(SupplierName) ? "" : SupplierName);
+            HttpContext.Session.SetString("CoordinatorName", string.IsNullOrEmpty(CoordinatorName) ? "" : CoordinatorName);
             return RedirectToPage("./EditSupplier");
         }
 
