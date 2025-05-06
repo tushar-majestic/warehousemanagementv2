@@ -89,9 +89,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Dummy data — replace with your actual Razor model values
     const filterData = {
-        itemName: @Html.Raw(Json.Serialize(Model.UniqueItemNames)),
-        typeName: @Html.Raw(Json.Serialize(Model.UniqueTypeNames)),
-        damageReason: @Html.Raw(Json.Serialize(Model.UniqueDamageReasons))
+        typeName: @Html.Raw(Json.Serialize(Model.UniqueTypeNames ?? new List<string>())),
+        damageReason: @Html.Raw(Json.Serialize(Model.UniqueDamageReasons ?? new List<string>()))
     };
 
     // Show values inside the right panel
@@ -112,27 +111,51 @@ document.addEventListener("DOMContentLoaded", function () {
             const btn = document.createElement("button");
             btn.className = "btn btn-sm w-100 text-start";
             btn.innerText = value;
+            btn.value = value;
             btn.onclick = function () {
                 applyFilter(category, value);
             };
             div.appendChild(btn);
             container.appendChild(div);
         });
+
+        document.querySelectorAll('.filter-option').forEach(el => el.classList.remove('fw-bold', 'text-dark'));
+        document.querySelector(`[onclick="showFilterValues('${category}')"]`).classList.add('fw-bold', 'text-dark');
     }
 
     // Apply the filter (navigate with query param)
-    function applyFilter(field, value) {
+    @* function applyFilter(field, value) {
         const url = new URL(window.location.href);
         url.searchParams.set(field, value);
         window.location.href = url;
-    }
+    } *@
+    function applyFilter(field, value) {
+    const url = new URL(window.location.href);
+
+    // Remove the 'handler' parameter if it exists
+    url.searchParams.delete("handler");
+
+    // Set the selected filter
+    url.searchParams.set(field, value);
+
+    // Optional: clear the other filter if you want only one active at a time
+    if (field === "typeName") url.searchParams.delete("damageReason");
+    if (field === "damageReason") url.searchParams.delete("typeName");
+
+    // Set or reset page to 1
+    url.searchParams.set("page", "1");
+
+    // Redirect with the updated query string
+    window.location.href = url;
+}
+
 
     // Show/hide logic
     filterButton.addEventListener("click", function (e) {
         e.stopPropagation();
         const isVisible = filterPanel.style.display === "flex";
         filterPanel.style.display = isVisible ? "none" : "flex";
-        if (!isVisible) showFilterValues('itemName'); // default on open
+        if (!isVisible) showFilterValues('typeName'); // default on open
     });
 
     document.addEventListener("click", function (e) {
@@ -175,33 +198,36 @@ document.addEventListener("DOMContentLoaded", function () {
         <button id="printBtn" class="btn btn-primary">Print Table</button>
     </div>
 
-    <!-- Right: Filter button and dropdown -->
-    <div class="col text-end position-relative">
-        <button type="button" id="toggleFilterDropdown" class="btn btn-secondary">
-            Filter
-        </button>
+        @if (Model.TotalItems > 0)
+        {
+            <!-- Right: Filter button and dropdown -->
+            <div class="col text-end position-relative">
+                <button type="button" id="toggleFilterDropdown" class="btn btn-secondary">
+                    Filter
+                </button>
 
-        <!-- Filter Panel -->
-        <div id="filterDropdownPanel"
-            class="card shadow-sm position-absolute flex-row"
-            style="right: 0; top: 100%; width: 400px; display: none; z-index: 1000; height: 400px; overflow: hidden;">
+                <!-- Filter Panel -->
+                <div id="filterDropdownPanel"
+                class="card shadow-sm position-absolute flex-row"
+                style="right: 0; top: 100%; width: 400px; display: none; z-index: 1000; height: 400px; overflow: hidden;">
 
-            <!-- Left: Filter Categories -->
-            <div class="border-end p-2" style="width: 40%; overflow-y: auto;">
-                <div class="fw-bold mb-2">Filter By</div>
-                <div class="filter-option text-primary mb-2" onclick="showFilterValues('itemName')">Item Name</div>
-                <div class="filter-option text-primary mb-2" onclick="showFilterValues('typeName')">Type Name</div>
-                <div class="filter-option text-primary mb-2" onclick="showFilterValues('damageReason')">Damage Reason</div>
+                    <!-- Left: Filter Categories -->
+                    <div class="border-end p-2" style="width: 40%; overflow-y: auto;">
+                        <div class="fw-bolder text-center mb-2">Filter By</div>
+                        @* <div class="filter-option text-primary mb-2" onclick="showFilterValues('itemName')" style="cursor: pointer;">Item Name</div> *@
+                        <div class="filter-option text-primary mb-2" onclick="showFilterValues('typeName')" style="cursor: pointer;">Type Name</div>
+                        <div class="filter-option text-primary mb-2" onclick="showFilterValues('damageReason')" style="cursor: pointer;">Damage Reason</div>
+                    </div>
+
+                    <!-- Right: Unique Values -->
+                    <div class="p-2" id="filterValues"
+                    style="width: 60%; overflow-y: auto; border-left: 1px solid #eee;">
+                        <div class="text-muted">Select a filter from left</div>
+                    </div>
+                </div>
             </div>
-
-            <!-- Right: Unique Values -->
-            <div class="p-2" id="filterValues"
-                style="width: 60%; overflow-y: auto; border-left: 1px solid #eee;">
-                <div class="text-muted">Select a filter from left</div>
-            </div>
-        </div>
+        }
     </div>
-</div>
 
     <div class="table-settings mb-4">
         <form method="post" asp-page-handler="Action" class="row align-items-center">
@@ -515,6 +541,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         </ul>
     </nav>
+}
     <div class="table-responsive" id="exportTableContainer" style="display: none;">
         <table class="table table-centered table-nowrap mb-0 rounded" id="exportTable">
             <thead class="thead-light">
@@ -583,6 +610,6 @@ document.addEventListener("DOMContentLoaded", function () {
             </tbody>
         </table>
     </div>
-}
+
 
 

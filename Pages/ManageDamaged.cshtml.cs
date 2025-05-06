@@ -221,7 +221,7 @@ namespace LabMaterials.Pages
             TotalItems = query.Count();
             TotalPages = (int)Math.Ceiling((double)TotalItems / ItemsPerPage);
 
-            UniqueItemNames = query.Select(i => i.ItemName).Distinct().ToList();
+            // UniqueItemNames = query.Select(i => i.ItemName).Distinct().ToList();
             UniqueTypeNames = query.Select(i => i.TypeName).Distinct().ToList();
             UniqueDamageReasons = query.Select(i => i.DamageReason).Distinct().ToList();
 
