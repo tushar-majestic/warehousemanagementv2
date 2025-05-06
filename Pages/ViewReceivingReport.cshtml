@@ -70,7 +70,7 @@ else
             <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
                 <strong>Receiving Report - Serial No: @report.SerialNumber</strong>
                 <div>
-                    <a asp-page="/EditReceivingReport" asp-route-id="@report.Id" class="btn btn-sm btn-warning me-2">Edit</a>
+                    @* <a asp-page="/EditReceivingReport" asp-route-id="@report.Id" class="btn btn-sm btn-warning me-2">Edit</a> *@
                     <a asp-page="/PrintReceivingReport" asp-route-id="@report.Id" class="btn btn-sm btn-secondary">Print</a>
                     
                     <button id="PrintReport" class="btn btn-primary" >Print Test</button>
