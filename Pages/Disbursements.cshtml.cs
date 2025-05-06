@@ -108,8 +108,8 @@ namespace LabMaterials.Pages
                     this.ToDate = ToDate;
 
                     FillData(RequesterName, FromDate, ToDate, CurrentPage);
-                    LoadSelectedColumns();
                     SaveSelectedColumns(userId.Value, pageName, selectedColumns);
+                    LoadSelectedColumns();
                 }
 
                 // After updating, redirect back to ManageStore with the StoreNumber and StoreName

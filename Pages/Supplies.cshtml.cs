@@ -13,6 +13,8 @@ namespace LabMaterials.Pages
         public string Message { get; set; }
         [BindProperty]
         public string SupplierName { get; set; }
+        public List<string> UniqueStoreName { get; set; }
+        public List<string> UniqueSupplierName { get; set; }
 
         [BindProperty]
         public string ItemName { get; set; }
@@ -27,27 +29,8 @@ namespace LabMaterials.Pages
         public string lblSupplies, lbltypeCode, lblStoreName, lblExpiryDate, lblItemType, lblRoomName, lblShelfNumber, lblManageSuppliers, lblSearch, lblSupplierName, lblItemName, lblSubmit, lblAddSupplies,
             lblQuantityReceived, lblPurchaseOrderNo, lblInvoiceNumber, lblReceivedAt, lblInventoryBalanced, lblEdit, lblDelete,
             lblTotalItem, lblFromDate, lblToDate, lblNewReceivingReport;
-        public void OnGet(string? SupplierName,string? ItemName, DateTime? FromDate, DateTime? ToDate, int page = 1)
-        {
-            base.ExtractSessionData();
-            if (this.CanManageSupplies)
-            {
-                FillLables();
-                LoadSelectedColumns();
-                if (HttpContext.Request.Query.ContainsKey("page")){
-                    string pagevalue = HttpContext.Request.Query["page"];
-                    page = int.Parse(pagevalue);
-                    this.SupplierName = SupplierName;
-                    this.ItemName = ItemName;
-                    this.FromDate = FromDate;
-                    this.ToDate = ToDate;
-                    FillData(SupplierName,ItemName, FromDate, ToDate, page);
 
-                }
-            }
-            else
-                RedirectToPage("./Index?lang=" + Lang);
-        }
+
 
         private void LoadSelectedColumns()
         {
@@ -69,6 +52,28 @@ namespace LabMaterials.Pages
                     }
                 }
             }
+        }
+        public void OnGet(string? SupplierName, string? ItemName, DateTime? FromDate, DateTime? ToDate, int page = 1)
+        {
+            base.ExtractSessionData();
+            if (this.CanManageSupplies)
+            {
+                FillLables();
+                LoadSelectedColumns();
+                if (HttpContext.Request.Query.ContainsKey("page"))
+                {
+                    string pagevalue = HttpContext.Request.Query["page"];
+                    page = int.Parse(pagevalue);
+                    this.SupplierName = SupplierName;
+                    this.ItemName = ItemName;
+                    this.FromDate = FromDate;
+                    this.ToDate = ToDate;
+                    FillData(SupplierName, ItemName, FromDate, ToDate, page);
+
+                }
+            }
+            else
+                RedirectToPage("./Index?lang=" + Lang);
         }
         /*private void FillData(string SupplierName, string ItemName, DateTime? FromDate, DateTime? ToDate)
         {
@@ -173,6 +178,10 @@ namespace LabMaterials.Pages
                     query = query.Where(e => e.ExpiryDate.Date >= FromDate.Value.Date && e.ExpiryDate.Date <= ToDate.Value.Date);
 
 
+                UniqueSupplierName = query.Select(i => i.SupplierName).Distinct().ToList();
+                UniqueStoreName = query.Select(i => i.StoreName).Distinct().ToList();
+
+
                 TotalItems = query.Count();
                 TotalPages = (int)Math.Ceiling((double)TotalItems / ItemsPerPage);
 
@@ -235,8 +244,8 @@ namespace LabMaterials.Pages
                     this.SupplierName = SupplierName;
                     this.ItemName = ItemName;
                     FillData(SupplierName, ItemName, FromDate, ToDate, CurrentPage);
-                    LoadSelectedColumns();
                     SaveSelectedColumns(userId.Value, pageName, selectedColumns);
+                    LoadSelectedColumns();
                 }
 
                 // After updating, redirect back to ManageStore with the StoreNumber and StoreName

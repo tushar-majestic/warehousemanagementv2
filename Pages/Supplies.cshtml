@@ -90,6 +90,86 @@
             XLSX.writeFile(wb, "Supplies.xlsx");
         });
     </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const filterButton = document.getElementById("toggleFilterDropdown");
+            const filterPanel = document.getElementById("filterDropdownPanel");
+
+            // Dummy data — replace with your actual Razor model values
+            const filterData = {
+                supplierName: @Html.Raw(Json.Serialize(Model.UniqueSupplierName ?? new List<string>())),
+                warehouseName: @Html.Raw(Json.Serialize(Model.UniqueStoreName ?? new List<string>())),
+            };
+
+            // Show values inside the right panel
+            function showFilterValues(category) {
+                const container = document.getElementById("filterValues");
+                container.innerHTML = "";
+
+                const values = filterData[category] || [];
+
+                if (values.length === 0) {
+                    container.innerHTML = "<div class='text-muted'>No values found</div>";
+                    return;
+                }
+
+                values.forEach(function (value) {
+                    const div = document.createElement("div");
+                    div.className = "filter-value mb-1";
+                    const btn = document.createElement("button");
+                    btn.className = "btn btn-sm w-100 text-start";
+                    btn.innerText = value;
+                    btn.value = value;
+                    btn.onclick = function () {
+                        applyFilter(category, value);
+                    };
+                    div.appendChild(btn);
+                    container.appendChild(div);
+                });
+
+                document.querySelectorAll('.filter-option').forEach(el => el.classList.remove('fw-bold', 'text-dark'));
+                document.querySelector(`[onclick="showFilterValues('${category}')"]`).classList.add('fw-bold', 'text-dark');
+            }
+            
+            function applyFilter(field, value) {
+                const url = new URL(window.location.href);
+
+                // Remove the 'handler' parameter if it exists
+                url.searchParams.delete("handler");
+
+                // Set the selected filter
+                url.searchParams.set(field, value);
+
+                // Optional: clear the other filter if you want only one active at a time
+                if (field === "supplierName") url.searchParams.delete("warehouseName");
+                if (field === "warehouseName") url.searchParams.delete("supplierName");
+
+                // Set or reset page to 1
+                url.searchParams.set("page", "1");
+
+                // Redirect with the updated query string
+                window.location.href = url;
+            }
+
+
+            // Show/hide logic
+            filterButton.addEventListener("click", function (e) {
+                e.stopPropagation();
+                const isVisible = filterPanel.style.display === "flex";
+                filterPanel.style.display = isVisible ? "none" : "flex";
+                if (!isVisible) showFilterValues('supplierName'); // default on open
+            });
+
+            document.addEventListener("click", function (e) {
+                if (!filterPanel.contains(e.target) && e.target !== filterButton) {
+                    filterPanel.style.display = "none";
+                }
+            });
+
+            // Make showFilterValues globally accessible
+            window.showFilterValues = showFilterValues;
+        });
+    </script>
 }
 @{
    
@@ -191,96 +271,127 @@
                 </div>
 
                 <!-- Show/Hide Column button -->
-                <div class="col-4 col-md-2 mb-3 text-end ms-auto position-relative">
-                    <button type="button" id="toggleDropdown" class="btn btn-secondary">@Model.lblShowHideColumn</button>
+                <div class="col d-flex justify-content-end gap-2">
+                    <div class="position-relative">
+                        <button type="button" id="toggleDropdown" class="btn btn-secondary">@Model.lblShowHideColumn</button>
 
-                    <!-- Dropdown panel -->
-                    <div id="dropdownPanel" class="card p-2 shadow-sm position-absolute bg-white"
-                        style="right: 0; top: 100%; width: 250px; display: none; z-index: 1000;">
+                        <!-- Dropdown panel -->
+                        <div id="dropdownPanel" class="card p-2 shadow-sm position-absolute bg-white"
+                            style="right: 0; top: 100%; width: 250px; display: none; z-index: 1000;">
 
-                        <div class="form-check mb-1">
-                            <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="SupplierName" id="SupplierName"
-                            @(Model.SelectedColumns.Contains("SupplierName") ? "checked" : "")>
-                            <label class="form-check-label" for="SupplierName">@Model.lblSupplierName</label>
+                            <div class="form-check mb-1">
+                                <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="SupplierName" id="SupplierName"
+                                @(Model.SelectedColumns.Contains("SupplierName") ? "checked" : "")>
+                                <label class="form-check-label" for="SupplierName">@Model.lblSupplierName</label>
+                            </div>
+
+                            <div class="form-check mb-1">
+                                <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="itemName" id="itemName"
+                                @(Model.SelectedColumns.Contains("itemName") ? "checked" : "")>
+                                <label class="form-check-label" for="itemName">@Model.lblItemName</label>
+                            </div>
+
+                            <div class="form-check mb-1">
+                                <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="typeCode" id="typeCode"
+                                @(Model.SelectedColumns.Contains("typeCode") ? "checked" : "")>
+                                <label class="form-check-label" for="typeCode">@Model.lbltypeCode</label>
+                            </div>
+
+                            <div class="form-check mb-1">
+                                <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="ItemType" id="ItemType"
+                                @(Model.SelectedColumns.Contains("ItemType") ? "checked" : "")>
+                                <label class="form-check-label" for="ItemType">@Model.lblItemType</label>
+                            </div>
+
+                            <div class="form-check mb-1">
+                                <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="StoreName" id="StoreName"
+                                @(Model.SelectedColumns.Contains("StoreName") ? "checked" : "")>
+                                <label class="form-check-label" for="StoreName">@Model.lblStoreName</label>
+                            </div>
+
+                            <div class="form-check mb-1">
+                                <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="RoomName" id="RoomName"
+                                @(Model.SelectedColumns.Contains("RoomName") ? "checked" : "")>
+                                <label class="form-check-label" for="RoomName">@Model.lblRoomName</label>
+                            </div>
+
+                            <div class="form-check mb-1">
+                                <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="ShelfNumber" id="ShelfNumber"
+                                @(Model.SelectedColumns.Contains("ShelfNumber") ? "checked" : "")>
+                                <label class="form-check-label" for="ShelfNumber">@Model.lblShelfNumber</label>
+                            </div>
+
+                            <div class="form-check mb-1">
+                                <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="QuantityReceived" id="QuantityReceived"
+                                @(Model.SelectedColumns.Contains("QuantityReceived") ? "checked" : "")>
+                                <label class="form-check-label" for="QuantityReceived">@Model.lblQuantityReceived</label>
+                            </div>
+
+                            <div class="form-check mb-1">
+                                <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="PurchaseOrderNo" id="PurchaseOrderNo"
+                                @(Model.SelectedColumns.Contains("PurchaseOrderNo") ? "checked" : "")>
+                                <label class="form-check-label" for="PurchaseOrderNo">@Model.lblPurchaseOrderNo</label>
+                            </div>
+
+                            <div class="form-check mb-1">
+                                <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="InvoiceNumber" id="InvoiceNumber"
+                                @(Model.SelectedColumns.Contains("InvoiceNumber") ? "checked" : "")>
+                                <label class="form-check-label" for="InvoiceNumber">@Model.lblInvoiceNumber</label>
+                            </div>
+
+                            <div class="form-check mb-1">
+                                <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="ReceivedAt" id="ReceivedAt"
+                                @(Model.SelectedColumns.Contains("ReceivedAt") ? "checked" : "")>
+                                <label class="form-check-label" for="ReceivedAt">@Model.lblReceivedAt</label>
+                            </div>
+
+                            <div class="form-check mb-1">
+                                <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="expiry" id="expiry"
+                                @(Model.SelectedColumns.Contains("expiry") ? "checked" : "")>
+                                <label class="form-check-label" for="expiry">@Model.lblExpiryDate</label>
+                            </div>
+
+                            <div class="form-check mb-1">
+                                <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="InventoryBalanced" id="InventoryBalanced"
+                                @(Model.SelectedColumns.Contains("InventoryBalanced") ? "checked" : "")>
+                                <label class="form-check-label" for="InventoryBalanced">@Model.lblInventoryBalanced</label>
+                            </div>
+
+                            <div class="form-check mb-1 text-center mt-2">
+                                <button type="submit" name="action" value="updateColumns" class="btn btn-success btn-sm">Ok</button>
+                            </div>
+
+                        </div> <!-- dropdownPanel -->
+                    </div>
+
+                    @if (Model.TotalItems > 0)
+                    {
+                        <!-- Right: Filter button and dropdown -->
+                        <div class="position-relative">
+                            <button type="button" id="toggleFilterDropdown" class="btn btn-secondary">
+                                Filter
+                            </button>
+
+                            <!-- Filter Panel -->
+                            <div id="filterDropdownPanel"
+                            class="card shadow-sm position-absolute flex-row"
+                            style="right: 0; top: 100%; width: 400px; display: none; z-index: 1000; height: 400px; overflow: hidden;">
+
+                                <!-- Left: Filter Categories -->
+                                <div class="border-end p-2" style="width: 40%; overflow-y: auto;">
+                                    <div class="fw-bolder text-center mb-2">Filter By</div>
+                                    <div class="filter-option text-primary mb-2" onclick="showFilterValues('supplierName')" style="cursor: pointer;">Supplier Name</div>
+                                    <div class="filter-option text-primary mb-2" onclick="showFilterValues('warehouseName')" style="cursor: pointer;">Warehouse Name</div>
+                                </div>
+
+                                <!-- Right: Unique Values -->
+                                <div class="p-2" id="filterValues"
+                                style="width: 60%; overflow-y: auto; border-left: 1px solid #eee;">
+                                    <div class="text-muted">Select a filter from left</div>
+                                </div>
+                            </div>
                         </div>
-
-                        <div class="form-check mb-1">
-                            <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="itemName" id="itemName"
-                            @(Model.SelectedColumns.Contains("itemName") ? "checked" : "")>
-                            <label class="form-check-label" for="itemName">@Model.lblItemName</label>
-                        </div>
-
-                        <div class="form-check mb-1">
-                            <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="typeCode" id="typeCode"
-                            @(Model.SelectedColumns.Contains("typeCode") ? "checked" : "")>
-                            <label class="form-check-label" for="typeCode">@Model.lbltypeCode</label>
-                        </div>
-
-                        <div class="form-check mb-1">
-                            <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="ItemType" id="ItemType"
-                            @(Model.SelectedColumns.Contains("ItemType") ? "checked" : "")>
-                            <label class="form-check-label" for="ItemType">@Model.lblItemType</label>
-                        </div>
-
-                        <div class="form-check mb-1">
-                            <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="StoreName" id="StoreName"
-                            @(Model.SelectedColumns.Contains("StoreName") ? "checked" : "")>
-                            <label class="form-check-label" for="StoreName">@Model.lblStoreName</label>
-                        </div>
-
-                        <div class="form-check mb-1">
-                            <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="RoomName" id="RoomName"
-                            @(Model.SelectedColumns.Contains("RoomName") ? "checked" : "")>
-                            <label class="form-check-label" for="RoomName">@Model.lblRoomName</label>
-                        </div>
-
-                        <div class="form-check mb-1">
-                            <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="ShelfNumber" id="ShelfNumber"
-                            @(Model.SelectedColumns.Contains("ShelfNumber") ? "checked" : "")>
-                            <label class="form-check-label" for="ShelfNumber">@Model.lblShelfNumber</label>
-                        </div>
-
-                        <div class="form-check mb-1">
-                            <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="QuantityReceived" id="QuantityReceived"
-                            @(Model.SelectedColumns.Contains("QuantityReceived") ? "checked" : "")>
-                            <label class="form-check-label" for="QuantityReceived">@Model.lblQuantityReceived</label>
-                        </div>
-
-                        <div class="form-check mb-1">
-                            <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="PurchaseOrderNo" id="PurchaseOrderNo"
-                            @(Model.SelectedColumns.Contains("PurchaseOrderNo") ? "checked" : "")>
-                            <label class="form-check-label" for="PurchaseOrderNo">@Model.lblPurchaseOrderNo</label>
-                        </div>
-
-                        <div class="form-check mb-1">
-                            <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="InvoiceNumber" id="InvoiceNumber"
-                            @(Model.SelectedColumns.Contains("InvoiceNumber") ? "checked" : "")>
-                            <label class="form-check-label" for="InvoiceNumber">@Model.lblInvoiceNumber</label>
-                        </div>
-
-                        <div class="form-check mb-1">
-                            <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="ReceivedAt" id="ReceivedAt"
-                            @(Model.SelectedColumns.Contains("ReceivedAt") ? "checked" : "")>
-                            <label class="form-check-label" for="ReceivedAt">@Model.lblReceivedAt</label>
-                        </div>
-
-                        <div class="form-check mb-1">
-                            <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="expiry" id="expiry"
-                            @(Model.SelectedColumns.Contains("expiry") ? "checked" : "")>
-                            <label class="form-check-label" for="expiry">@Model.lblExpiryDate</label>
-                        </div>
-
-                        <div class="form-check mb-1">
-                            <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="InventoryBalanced" id="InventoryBalanced"
-                            @(Model.SelectedColumns.Contains("InventoryBalanced") ? "checked" : "")>
-                            <label class="form-check-label" for="InventoryBalanced">@Model.lblInventoryBalanced</label>
-                        </div>
-
-                        <div class="form-check mb-1 text-center mt-2">
-                            <button type="submit" name="action" value="updateColumns" class="btn btn-success btn-sm">Ok</button>
-                        </div>
-
-                    </div> <!-- dropdownPanel -->
+                    }
                 </div>
             </div>
         </form>
