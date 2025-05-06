@@ -516,6 +516,10 @@
         "en": "Supplier Phone Number Is Missing",
         "ar": "رقم تواصل المورد مفقود"
     },
+    "CoordinatorNameMissing": {
+        "en": "Coordinator Name Is Missing",
+        "ar": "Coordinator Name Is Missing"
+    },
 
 
     "SupplierContactNumber": {
