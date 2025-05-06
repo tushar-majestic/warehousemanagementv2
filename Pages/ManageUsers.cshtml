@@ -497,42 +497,100 @@
     }
     <div class="table-responsive" id="exportTableContainer" style="display: none;">
         <table class="table table-centered table-nowrap mb-0 rounded" id="exportTable">
-            <thead class="thead-light">
-                <tr>
-                    <th>@Model.lblUserName</th>
-                    <th>@Model.lblFullName</th>
-                    <th>@Model.lblEmail</th>
-                    <th>@Model.lblUserType</th>
-                    <th>@Model.lblIsDomainUser</th>
-                    <th>@Model.lblJobNumber</th>
-                    <th>@Model.lblEmpAffiliation</th>
-                    <th>@Model.lblTransfer</th>
-
-                    <th>@Model.lblUserEnabled</th>
-                    <th>@Model.lblIsLocked</th>
-                </tr>  
-            </thead>
-            <tbody>
-                @if (Model.UsersAll != null)
-                {
-                    
-                    foreach (var item in Model.UsersAll)
-                    {
+                    <thead class="thead-light">
                         <tr>
-                        <th>@item.UserName</th>
-                        <td>@item.FullName</td>
-                        <td>@item.Email</td>
-                   
-                        <td>@item.GroupName</td>
-                        <td>@item.IsADUser</td>
-                        <td>@item.JobNumber</td>
-                        <td>@item.EmpAffiliation</td>
-                        <td>@item.Transfer</td>
-                        <td>@item.IsActive</td>
-                        <td>@item.IsLocked</td>
+                            @if (Model.SelectedColumns.Contains("userName"))
+                            {
+                            <th scope="col" class="border-0 rounded-start">@Model.lblUserName</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("fullName"))
+                            {
+                            <th scope="col" class="border-0">@Model.lblFullName</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("email"))
+                            {
+                            <th scope="col" class="border-0">@Model.lblEmail</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("userType"))
+                            {
+                            <th scope="col" class="border-0">@Model.lblUserType</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("domainUser"))
+                            {
+                            <th scope="col" class="border-0">@Model.lblIsDomainUser</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("jobNumber"))
+                            {
+                            <th scope="col" class="border-0">@Model.lblJobNumber</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("empAffiliation"))
+                            {
+                            <th scope="col" class="border-0">@Model.lblEmpAffiliation</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("transfer"))
+                            {
+                            <th scope="col" class="border-0">@Model.lblTransfer</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("userEnabled"))
+                            {
+                            <th scope="col" class="border-0">@Model.lblUserEnabled</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("isLocked"))
+                            {
+                            <th scope="col" class="border-0">@Model.lblIsLocked</th>
+                            }
                         </tr>
-                    }
+                    </thead>
+                    <tbody>
+
+            @if (Model.UsersAll != null)
+            {
+                foreach (var item in Model.UsersAll)
+                {
+                    <tr>
+                        @if (Model.SelectedColumns.Contains("userName"))
+                        {
+                        <th class="fw-bold" scope="row">@item.UserName</th>
+                        }
+                        @if (Model.SelectedColumns.Contains("fullName"))
+                        {
+                        <td>@item.FullName</td>
+                        }
+                        @if (Model.SelectedColumns.Contains("email"))
+                        {
+                        <td>@item.Email</td>
+                        }
+                        @if (Model.SelectedColumns.Contains("userType"))
+                        {
+                        <td>@item.GroupName</td>
+                        }
+                        @if (Model.SelectedColumns.Contains("domainUser"))
+                        {
+                        <td>@item.IsADUser</td>
+                        }
+                        @if (Model.SelectedColumns.Contains("jobNumber"))
+                        {
+                        <td>@item.JobNumber</td>
+                        }
+                        @if (Model.SelectedColumns.Contains("empAffiliation"))
+                        {
+                        <td>@item.EmpAffiliation</td>
+                        }
+                        @if (Model.SelectedColumns.Contains("transfer"))
+                        {
+                        <td>@item.Transfer</td>
+                        }
+                        @if (Model.SelectedColumns.Contains("userEnabled"))
+                        {
+                        <td>@item.IsActive</td>
+                        }
+                        @if (Model.SelectedColumns.Contains("isLocked"))
+                        {
+                        <td>@item.IsLocked</td>
+                        }
+                    </tr>
                 }
+            }
             </tbody>
         </table>
     </div>

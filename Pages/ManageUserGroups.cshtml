@@ -262,12 +262,11 @@
             <tbody>
                 @if (Model.UserGroupsAll != null)
                 {
-                    
                     foreach (var item in Model.UserGroupsAll)
                     {
                         <tr>
-                         <td>@item.UserGroupName</td>
-                        <td>@item.Privilages</td>
+                            <td>@item.UserGroupName</td>
+                            <td>@item.Privilages</td>
                         </tr>
                     }
                 }

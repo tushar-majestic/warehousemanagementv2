@@ -101,9 +101,8 @@ namespace LabMaterials.Pages
                     string pageName = "manageUsers";
                     this.UserName = UserName;
                     FillData(UserName, CurrentPage);
-                    LoadSelectedColumns();
-
                     SaveSelectedColumns(userId.Value, pageName, selectedColumns);
+                    LoadSelectedColumns();
                 }
 
                 // After updating, redirect back to ManageStore with the StoreNumber and StoreName
