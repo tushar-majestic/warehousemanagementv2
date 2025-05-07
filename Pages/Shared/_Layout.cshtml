@@ -161,8 +161,7 @@
           </li>
         }
 
-        @if (Model.CanManageItems)
-        {
+        
           <li
             class="nav-item @(Context.Request.Path == "/ManageItemCards" )">
                         <a asp-area="" asp-page="/ManageItemCards" class="nav-link">
@@ -172,7 +171,7 @@
                             <span class="sidebar-text">@Model.lblItemCards</span>
             </a>
           </li>
-        }
+        
 
         @if (Model.CanManageItems)
         {
