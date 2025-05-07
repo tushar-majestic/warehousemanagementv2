@@ -35,7 +35,7 @@ public partial class Supplier
     [Column("UpdatedByID")]
     public int? UpdatedById { get; set; }
 
-    
+
 
     [Column(TypeName = "datetime")]
     public DateTime? Created { get; set; }

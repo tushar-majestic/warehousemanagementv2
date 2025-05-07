@@ -14,12 +14,17 @@ namespace LabMaterials.Pages
         /*public int ItemId;*/
         public int DamagedQuantity { get; set; }
         public List<DamageInfo> DamagedItem { get; set; }
+        public List<Store> Stores { get; set; }
+        public DateTime CurrentDate;
 
-        public string lblItemName, lblDamagedQuantity, lblDamageReason, lblAdd, lblCancel, lblDamageItem, lblItems;
+        public string lblItemName, lblDamagedQuantity, lblDamageReason, lblAdd, lblCancel, lblDamageItem, lblItems, lblItemCode, lblQuantity, lblStoreName;
         public void OnGet(int id)
         {
             base.ExtractSessionData();
             FillLables();
+            CurrentDate = DateTime.Now;
+            var dbContext = new LabDBContext();
+            Stores = dbContext.Stores.ToList();
             if (CanManageStore == false)
             {
                 RedirectToPage("./Index?lang=" + Lang);
@@ -132,11 +137,15 @@ namespace LabMaterials.Pages
 
 
             this.lblItemName = (Program.Translations["ItemName"])[Lang];
+            this.lblItemCode = (Program.Translations["ItemCode"])[Lang];
             this.lblDamagedQuantity = (Program.Translations["DamagedQuantity"])[Lang];
+            this.lblQuantity = (Program.Translations["Quantity"])[Lang];
             this.lblDamageReason = (Program.Translations["DamageReason"])[Lang];
             this.lblAdd = (Program.Translations["Add"])[Lang];
             this.lblCancel = (Program.Translations["Cancel"])[Lang];
             this.lblItems = (Program.Translations["Items"])[Lang];
+            this.lblDamageItem = (Program.Translations["DamageItem"])[Lang];
+            this.lblStoreName = (Program.Translations["StoreName"])[Lang];
         }
     }
 }

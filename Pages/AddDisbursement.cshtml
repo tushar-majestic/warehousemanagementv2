@@ -124,6 +124,42 @@
 
 
     </script>
+    <script>
+        let entryIndex = 1;
+
+        document.getElementById("addEntryBtn").addEventListener("click", function () {
+            let wrapper = document.getElementById("returnEntriesWrapper");
+            let firstEntry = wrapper.querySelector(".return-entry");
+            let newEntry = firstEntry.cloneNode(true);
+
+            // Update radio button names to make them unique
+            newEntry.querySelectorAll('input[type="radio"]').forEach(function (input) {
+                let newName = `ReasonForReturn_${entryIndex}`;
+                input.name = newName;
+                input.checked = false;
+            });
+
+            // Clear all input/select/textarea values
+            newEntry.querySelectorAll("input, select, textarea").forEach(function (input) {
+                if (input.type !== "radio" && input.type !== "checkbox") input.value = "";
+            });
+
+            wrapper.appendChild(newEntry);
+            entryIndex++;
+        });
+
+        // Remove button handler using event delegation
+        document.getElementById("returnEntriesWrapper").addEventListener("click", function (e) {
+            if (e.target.classList.contains("remove-entry")) {
+                let allEntries = document.querySelectorAll(".return-entry");
+                if (allEntries.length > 1) {
+                    e.target.closest(".return-entry").remove();
+                } else {
+                    alert("At least one entry is required.");
+                }
+            }
+        });
+    </script>
 }
 @{
     <div class="py-4">
@@ -157,85 +193,117 @@
                 <form method="post" class="card-body">
                     <div class="row mb-4">
 
-                        @* <div class="col-lg-12 col-sm-12">
+                        <div class="col-lg-12 col-sm-12">
+                            <div id="returnEntriesWrapper">
+                                <div class="return-entry border p-3 mb-3 rounded position-relative">
+                                    <div class="my-4">
+                                        <label for="RequestingPlace">Item Group</label>
+                                        <select class="form-select" name="itemGroup">
+                                            <option value="1">item group1</option>
+                                            <option value="2">item group2</option>
+                                            <option value="3">item group3</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label for="itemCode">@Model.lblItemCode</label>
+                                        <input type="text" class="form-control" id="ItemCode" readonly>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label for="ItemId">@Model.lblItemName (Arabic)</label>
+                                        <select class="form-select" id="ItemId" name="ItemId"></select>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label for="ItemId">@Model.lblItemName (English)</label>
+                                        <select class="form-select" id="ItemId" name="ItemId"></select>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label for="itemDescription">Item Description</label>
+                                        <input type="text" class="form-control" id="ItemDescription" readonly>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label for="typeofAsset">Type of Asset</label>
+                                        <input type="text" class="form-control" id="typeofAsset" readonly>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label for="chemical">Chemical</label>
+                                        <input type="text" class="form-control" id="chemical" readonly>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label for="RiskRating">Risk Rating</label>
+                                        <input type="text" class="form-control" id="RiskRating" readonly>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label for="UnitofMeasure">Unit of Measure</label>
+                                        <input type="text" class="form-control" id="UnitofMeasure" readonly>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label for="Quantity">@Model.lblQuantity</label>
+                                        <input type="text" name="Quantity" value="@Model.Quantity" class="form-control" id="Quantity">
+                                    </div>
+                                    <div class="mb-4">
+                                        <label for="amountSpent">Amount Spent</label>
+                                        <input type="text" name="amountSpent" value="" class="form-control" id="amountSpent">
+                                    </div>
+                                    <div class="mb-4">
+                                        <label for="UnitPrice">Unit Price</label>
+                                        <input type="text" name="UnitPrice" value="" class="form-control" id="UnitPrice">
+                                    </div>
+                                    <div class="mb-4">
+                                        <label for="TotalPrice">Total Price</label>
+                                        <input type="text" name="TotalPrice" value="" class="form-control" id="TotalPrice">
+                                    </div>
+                                    <div class="mb-4">
+                                        <label for="Comments">@Model.lblComments</label>
+                                        <input type="text" class="form-control" id="Comments" name="Comments" value="@Model.Comments" />
+                                    </div>
+                                    <button type="button" class="btn btn-danger btn-sm remove-entry me-3" style="position: absolute; top: 0; right: 0;">
+                                        Remove
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <button type="button" class="btn btn-primary" id="addEntryBtn">Add More</button>
+                            </div
                             <div class="mb-4">
-                                <label for="RequestingPlace">ItemGroup/label>
-                                <select class="form-select" name="itemGroup">
+                                <label for="SerialNumber">Serial Number</label>
+                                <input type="text" name="SerialNumber" value="" class="form-control" id="SerialNumber">
+                            </div>
+                            <div class="mb-4">
+                                <label for="FiscalYear">Fiscal Year</label>
+                                <select class="form-select" name="FiscalYear">
+                                    <option value="1">fiscal1</option>
+                                    <option value="2">fiscal2</option>
+                                    <option value="3">fiscal3</option>
+                                </select>
+                            </div>
+                            <div class="mb-4">
+                                <label for="OrderDate">Order Date</label>
+                                <input asp-for="RequestRecievedAt" type="date" class="form-control" name="OrderDate"
+                                    value="@Model.RequestRecievedAt.ToString("yyyy-MM-dd")" />
+                            </div>
+                            <div class="mb-4">
+                                <label for="RequestingSector">Requesting Sector</label>
+                                <select class="form-select" name="RequestingSector">
                                     <option value="1">item group1</option>
                                     <option value="2">item group2</option>
                                     <option value="3">item group3</option>
                                 </select>
                             </div>
                             <div class="mb-4">
-                                <label for="itemCode">@Model.lblItemCode</label>
-                                <input type="text" class="form-control" id="ItemCode" readonly>
-                            </div>
-                            <div class="mb-4">
-                                <label for="ItemId">@Model.lblItemName (Arabic)</label>
-                                <select class="form-select" id="ItemId" name="ItemId"></select>
-                            </div>
-                            <div class="mb-4">
-                                <label for="ItemId">@Model.lblItemName (English)</label>
-                                <select class="form-select" id="ItemId" name="ItemId"></select>
-                            </div>
-                            <div class="mb-4">
-                                <label for="itemDescription">Item Description</label>
-                                <input type="text" class="form-control" id="ItemDescription" readonly>
-                            </div>
-                            <div class="mb-4">
-                                <label for="typeofAsset">Type of Asset</label>
-                                <input type="text" class="form-control" id="typeofAsset" readonly>
-                            </div>
-                            <div class="mb-4">
-                                <label for="chemical">Chemical</label>
-                                <input type="text" class="form-control" id="chemical" readonly>
-                            </div>
-                            <div class="mb-4">
-                                <label for="RiskRating">Risk Rating</label>
-                                <input type="text" class="form-control" id="RiskRating" readonly>
-                            </div>
-                            <div class="mb-4">
-                                <label for="UnitofMeasure">Unit of Measure</label>
-                                <input type="text" class="form-control" id="UnitofMeasure" readonly>
-                            </div>
-                            <div class="mb-4">
-                                <label for="Quantity">@Model.lblQuantity</label>
-                                <input type="text" name="Quantity" value="@Model.Quantity" class="form-control" id="Quantity">
-                            </div>
-                            <div class="mb-4">
-                                <label for="amountSpent">Amount Spent</label>
-                                <input type="text" name="amountSpent" value="" class="form-control" id="amountSpent">
-                            </div>
-                            <div class="mb-4">
-                                <label for="UnitPrice">Unit Price</label>
-                                <input type="text" name="UnitPrice" value="" class="form-control" id="UnitPrice">
-                            </div>
-                            <div class="mb-4">
-                                <label for="TotalPrice">Total Price</label>
-                                <input type="text" name="TotalPrice" value="" class="form-control" id="TotalPrice">
-                            </div>
-
-
-
-                            <div class="mb-4">
-                                <label for="RequesterName">@Model.lblRequesterName</label>
-                                <select class="form-select" id="RequesterName" name="RequesterName"></select>
-                            </div>
-                            <div class="mb-4">
-                                <label for="RequestRecievedAt">@Model.lblRequestReceivedDate</label>
-                                <input asp-for="RequestRecievedAt" type="date" class="form-control" name="RequestRecievedAt" value="@Model.RequestRecievedAt.ToString("yyyy-MM-dd")" />
-                            </div>
-                            <div class="mb-4">
-                                <label class="my-1 me-2" for="Status">@Model.lblDisbursementStatus</label>
-                                <select class="form-select" id="Status" name="Status">
-                                    @if (Model.StatusList != null)
-                                    {
-                                        foreach (var item in Model.StatusList)
-                                        {
-                                            <option value="@item.Value">@item.Text</option>
-                                        }
-                                    }
+                                <label for="RequestDocumentType">Request Document Type</label>
+                                <select class="form-select" name="RequestDocumentType">
+                                    <option value="1">item group1</option>
+                                    <option value="2">item group2</option>
+                                    <option value="3">item group3</option>
                                 </select>
+                            </div>
+                            <div class="mb-4">
+                                <label for="RequestDocumentNumber">Request Document Number</label>
+                                <input type="text" name="RequestDocumentNumber" value="" class="form-control" id="RequestDocumentNumber">
+                            </div>
+                            <div class="mb-4">
+                                <label for="sector">Sector</label>
+                                <input type="text" class="form-control" id="sector" readonly>
                             </div>
                             <div class="mb-4">
                                 <label for="storeNumber">@Model.lblStoreName</label>
@@ -254,43 +322,15 @@
 
                             </div>
                             <div class="mb-4">
-                                <label for="ItemId">@Model.lblItemName</label>
-                                <select class="form-select" id="ItemId" name="ItemId"></select>
-                            </div>
-                            <div class="mb-4">
-                                <label for="itemCode">@Model.lblItemCode</label>
-                                <input type="text" class="form-control" id="ItemCode" readonly>
-                            </div>
-                            <div class="mb-4">
-                                <label for="itemTypeCode">@Model.lblItemTypeCode</label>
-                                <input type="text" class="form-control" id="ItemTypeCode" readonly>
-                            </div>
-                            <div class="mb-4">
-                                <label for="Quantity">@Model.lblQuantity</label>
-                                <input type="text" name="Quantity" value="@Model.Quantity" class="form-control" id="Quantity">
-                            </div>
-                            <div class="mb-4">
-                                <label for="Comments">@Model.lblComments</label>
-                                <input type="text" class="form-control" id="Comments" name="Comments" value="@Model.Comments" />
-
-                            </div>
-                            <div class="mb-4">
-                                <div class="form-check">
-                                    <label class="form-check-label" for="InventoryBalanced"> @Model.lblInventoryBalanced </label>
-                                    <input id="InventoryBalanced" class="form-check-input" type="checkbox" name="InventoryBalanced" asp-for="InventoryBalanced">
-                                </div>
-                            </div>
-
-                            <div class="mb-4">
                                 <div class="d-flex mb-2 mb-md-0" style="gap: 10px">
                                     <a href="Disbursements" class="btn btn-outline-gray-600  align-items-center w-100">@Model.lblCancel</a>
                                     <input type="submit" value="@Model.lblAdd" class="btn btn-sm btn-gray-800 align-items-center w-100" style="text-align:center;" />
                                 </div>
                             </div>
-                        </div> *@
+                        </div>
 
 
-                        <div class="col-lg-12 col-sm-12">
+                        @* <div class="col-lg-12 col-sm-12">
                             <div class="mb-4">
                                 <label for="RequestingPlace">@Model.lblRequestingPlace</label>
                                 <select class="form-select" id="DId" name="DId">
@@ -373,7 +413,7 @@
                                     <input type="submit" value="@Model.lblAdd" class="btn btn-sm btn-gray-800 align-items-center w-100" style="text-align:center;" />
                                 </div>
                             </div>
-                        </div>
+                        </div> *@
                     </div>
 
                 </form>
