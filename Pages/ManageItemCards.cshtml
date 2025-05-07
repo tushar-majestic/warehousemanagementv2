@@ -34,7 +34,150 @@
         <button id="printBtn" class="btn btn-primary">Print Table</button>
     </div>
 
+    <div class="table-settings mb-4">
+        <form method="post" asp-page-handler="Search" class="row align-items-center">
+            
+            <div class="col col-md-6 col-lg-3 col-xl-4">
+                <div class="input-group me-2 me-lg-3 fmxw-400">
+                    <span class="input-group-text">
+                        <svg class="icon icon-xs" x-description="Heroicon name: solid/search"
+                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                            <path fill-rule="evenodd"
+                                d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                                clip-rule="evenodd"></path>
+                        </svg>
+                    </span>
+                    <input type="text" name="ItemCards" class="form-control" placeholder="@Model.lblItemCards" value="@Model.lblItemCards">
+                </div>
+            </div>
+            <div class="col-4 col-md-2 col-xl-1 ps-md-0 text-end">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
 
+             <div class="col-0 col-md-0 col-lg-2 col-xl-3"></div>
+
+            <div class="col-6 col-md-3 col-lg-2 col-xl-4 d-grid text-end">
+                <div class="position-relative">
+                    <button class="btn btn-secondary btn-sm" id="toggleDropdown" type="button">
+                        @Model.lblShowHideColumn
+                    </button>
+
+                    <div id="dropdownPanel" class="card p-2 shadow-sm position-absolute"
+                        style="right: 0; top: 100%; width: 407px; display: none; z-index: 1000;">
+                        <div style="width:50%">
+                            <div class="form-check mb-1">
+                                <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="itemGroup"
+                                id="itemGroup"  @(Model.SelectedColumns.Contains("itemGroup") ? "checked" : "")>
+                                <label class="form-check-label" for="itemGroup">Item Group</label>
+                            </div>
+                            <div class="form-check mb-1">
+                                <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="itemCode"
+                                    id="itemCode"  @(Model.SelectedColumns.Contains("itemCode") ? "checked" : "")>
+                                <label class="form-check-label" for="itemCode">Item Code</label>
+                            </div>
+                            <div class="form-check mb-1">
+                                <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="itemName"
+                                    @(Model.SelectedColumns.Contains("itemName") ? "checked" : "")>
+                                <label class="form-check-label" for="itemName">Item Name</label>
+                            </div>
+                            <div class="form-check mb-1">
+                                <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="itemDesc"
+                                    @(Model.SelectedColumns.Contains("itemDesc") ? "checked" : "")>
+                                <label class="form-check-label" for="itemDesc">Item Description</label>
+                            </div>
+                            <div class="form-check mb-1">
+                                <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="unitOfMeasure"
+                                    @(Model.SelectedColumns.Contains("unitOfMeasure") ? "checked" : "")>
+                                <label class="form-check-label" for="unitOfMeasure">Unit Of Measure</label>
+                            </div>
+                            <div class="form-check mb-1">
+                                <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="chemical"
+                                    @(Model.SelectedColumns.Contains("chemical") ? "checked" : "")>
+                                <label class="form-check-label" for="chemical">Chemical</label>
+                            </div>
+                            <div class="form-check mb-1">
+                                <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="hazardType"
+                                    @(Model.SelectedColumns.Contains("hazardType") ? "checked" : "")>
+                                <label class="form-check-label" for="hazardType">Hazard Type</label>
+                            </div>
+                            <div class="form-check mb-1">
+                                <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="expDate"
+                                    id="expDate"  @(Model.SelectedColumns.Contains("expDate") ? "checked" : "")>
+                                <label class="form-check-label" for="expDate">Expiry Date</label>
+                            </div>
+                            <div class="form-check mb-1">
+                                <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="typeOfAsset"
+                                    id="typeOfAsset"  @(Model.SelectedColumns.Contains("typeOfAsset") ? "checked" : "")>
+                                <label class="form-check-label" for="typeOfAsset">Type Of Asset</label>
+                            </div>
+                            <div class="form-check mb-1">
+                                <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="minimum"
+                                    id="minimum"  @(Model.SelectedColumns.Contains("minimum") ? "checked" : "")>
+                                <label class="form-check-label" for="minimum">Minimum</label>
+                            </div>
+                        </div>
+                       
+                        <div style="width:50%">
+                            <div class="form-check mb-1">
+                                <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="reorderLimit"
+                                    id="reorderLimit"  @(Model.SelectedColumns.Contains("reorderLimit") ? "checked" : "")>
+                                <label class="form-check-label" for="reorderLimit">Reorder Limit</label>
+                            </div>
+                            <div class="form-check mb-1">
+                                <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="warehouseName"
+                                    id="warehouseName"  @(Model.SelectedColumns.Contains("warehouseName") ? "checked" : "")>
+                                <label class="form-check-label" for="warehouseName">Warehouse Name</label>
+                            </div>
+                            <div class="form-check mb-1">
+                                <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="Quanitiy"
+                                    id="Quanitiy"  @(Model.SelectedColumns.Contains("Quanitiy") ? "checked" : "")>
+                                <label class="form-check-label" for="Quanitiy">Quantity Received</label>
+                            </div>
+                            <div class="form-check mb-1">
+                                <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="dateOfEntry"
+                                    id="dateOfEntry"  @(Model.SelectedColumns.Contains("dateOfEntry") ? "checked" : "")>
+                                <label class="form-check-label" for="dateOfEntry">Date Of Entry</label>
+                            </div>
+                            <div class="form-check mb-1">
+                                <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="room"
+                                    id="room"  @(Model.SelectedColumns.Contains("room") ? "checked" : "")>
+                                <label class="form-check-label" for="room">Room</label>
+                            </div>
+                            <div class="form-check mb-1">
+                                <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="shelf"
+                                    id="shelf"  @(Model.SelectedColumns.Contains("shelf") ? "checked" : "")>
+                                <label class="form-check-label" for="shelf">Shelf</label>
+                            </div>
+                            <div class="form-check mb-1">
+                                <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="supplier"
+                                    id="supplier"  @(Model.SelectedColumns.Contains("supplier") ? "checked" : "")>
+                                <label class="form-check-label" for="supplier">Supplier</label>
+                            </div>
+                            <div class="form-check mb-1">
+                                <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="docType"
+                                    id="docType"  @(Model.SelectedColumns.Contains("docType") ? "checked" : "")>
+                                <label class="form-check-label" for="docType">Receipt Document Type</label>
+                            </div>
+                            <div class="form-check mb-1">
+                                <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="docNumber"
+                                    id="docNumber"  @(Model.SelectedColumns.Contains("docNumber") ? "checked" : "")>
+                                <label class="form-check-label" for="docNumber">Receipt Document Number</label>
+                            </div>
+
+                            <div class="form-check mb-1 text-center">
+                                <button type="submit" name="action" value="updateColumns"
+                                    class="btn btn-success btn-sm">Ok</button>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+ 
+
+                       
     @* Table  *@
        <div class="card border-0 shadow mb-4">
         <div class="card-body">
@@ -42,9 +185,31 @@
                 <table class="table table-centered table-nowrap mb-0 rounded">
                     <thead class="thead-light">
                         <tr>
+                            <th scope="col" class="border-0 rounded-start">Item Group</th>
+                            <th scope="col" class="border-0 rounded-start">Item Code</th>
                             <th scope="col" class="border-0 rounded-start">Item Name</th>
-                            <th scope="col" class="border-0 rounded-start">Warehouse Name</th>
+                            <th scope="col" class="border-0 rounded-start">Item Description</th>
+                            <th scope="col" class="border-0 rounded-start">Unit Of Measure</th>
+                            <th scope="col" class="border-0 rounded-start">Chemical</th>
                             <th scope="col" class="border-0 rounded-start">Hazard Type</th>
+                            <th scope="col" class="border-0 rounded-start">Expiry Date</th>
+                            <th scope="col" class="border-0 rounded-start">Type Of Asset</th>
+                            <th scope="col" class="border-0 rounded-start">Minimum</th>
+                            <th scope="col" class="border-0 rounded-start">Reorder Limit</th>
+                            <th scope="col" class="border-0 rounded-start">Warehouse Name</th>
+                            <th scope="col" class="border-0 rounded-start">Quantity Received</th>
+                            <th scope="col" class="border-0 rounded-start">Date Of Entry</th>
+                            <th scope="col" class="border-0 rounded-start">Room</th>
+                            <th scope="col" class="border-0 rounded-start">Shelf</th>
+                            <th scope="col" class="border-0 rounded-start">Supplier</th>
+                            <th scope="col" class="border-0 rounded-start">Receipt Document Type</th>
+                            <th scope="col" class="border-0 rounded-start">Receipt Document Number</th>
+
+
+
+
+
+
 
 
                             <th scope="col" class="border-0 rounded-end"></th>
@@ -54,9 +219,27 @@
                     <tbody>
            
                     <tr>
+                        <td scope="row">Chemicals</td>
+                        <td scope="row">102</td>
                         <td scope="row">Zinc</td>
-                        <td scope="row">Supply Warehouse</td>
+                        <td scope="row">High purity zinc sulfide powder.</td>
+                        <td scope="row">ml</td>
+                        <td scope="row">Zinc</td>
                         <td>Non Hazardous</td>
+                        <td>26-08-29</td>
+                        <td>Sustainable</td>
+                        <td>12</td>
+                        <td>5</td>
+                        <td scope="row">Supply Warehouse</td>
+                        <td>12</td>
+                        <td>07-05-25</td>
+                        <td>Material Room</td>
+                        <td>R2-S1</td>
+                        <td>Shah Abdul Wali</td>
+                        <td>Certification</td>
+                        <td>89456</td>
+
+
 
 
                         <td>
@@ -72,9 +255,25 @@
 
 
                     <tr>
-                        <th scope="row">Chlorine</th>
-                        <th scope="row">Supply Warehouse</th>
+                        <td scope="row">Chemicals</td>
+                        <td scope="row">105</td>
+                        <td scope="row">Chlorine</td>
+                        <td scope="row">High purity Chlorine</td>
+                        <td scope="row">ml</td>
+                        <td scope="row">Chlorine</td>
                         <td>Hazardous</td>
+                        <td>15-05-29</td>
+                        <td>Sustainable</td>
+                        <td>12</td>
+                        <td>5</td>
+                        <td scope="row">Supply Warehouse</td>
+                        <td>12</td>
+                        <td>07-05-25</td>
+                        <td>Material Room</td>
+                        <td>R2-S1</td>
+                        <td>Shah Abdul Wali</td>
+                        <td>Certification</td>
+                        <td>89456</td>
 
 
                         <td>
@@ -98,4 +297,31 @@
             </div>
         </div>
     </div>
+}
+
+@section Scripts{
+    <script type="text/javascript" language="javascript">
+  const toggleButton = document.getElementById('toggleDropdown');
+  const dropdownPanel = document.getElementById('dropdownPanel');
+
+  toggleButton.addEventListener('click', function () {
+    const isHidden = dropdownPanel.style.display === 'none' || dropdownPanel.style.display === '';
+    
+    if (isHidden) {
+      dropdownPanel.style.display = 'flex';
+      dropdownPanel.style.flexDirection = 'row';
+      dropdownPanel.style.gap = '10px'; // adjust the gap as needed
+    } else {
+      dropdownPanel.style.display = 'none';
+    }
+  });
+
+  // Optional: hide when click outside
+  document.addEventListener('click', function (e) {
+    if (!toggleButton.contains(e.target) && !dropdownPanel.contains(e.target)) {
+      dropdownPanel.style.display = 'none';
+    }
+  });
+</script>
+
 }
