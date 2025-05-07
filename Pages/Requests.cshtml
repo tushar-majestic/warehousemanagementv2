@@ -87,6 +87,23 @@
                                 <td>12:35 AM</td>
                                 <td><input type="submit" value="@Model.lblView" class="btn btn-secondary" asp-page-handler="View" /></td>
                             </tr>
+                            @if(userGroupName == "Technical Member"){
+                                @foreach( var inbox in Model.ManagerInboxList){
+                                    <tr>
+                                        <td>
+                                            <div class="m-2"><b>@inbox.CreatedBy</b> sent Request for Items. Approve the request or add comments.</div>
+                                            <button class="btn btn-info btn-sm p-1">
+                                                Accept
+                                            </button>
+                                            <button class="btn btn-warning btn-sm p-1" data-toggle="modal" data-target="#commentRejectModal">
+                                                Comment & Reject
+                                            </button>
+                                        </td>
+                                        <td>12:35 AM</td>
+                                        <td><input type="submit" value="@Model.lblView" class="btn btn-secondary" asp-page-handler="View" /></td>
+                                    </tr>
+                                }
+                            }
                           
                         }
                         else{

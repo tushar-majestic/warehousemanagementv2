@@ -134,6 +134,7 @@ namespace LabMaterials.Pages
             Report.SerialNumber = SerialNumber;
 
             Report.FiscalYear = FiscalYear;
+            Report.KeeperApproval = true;
            
 
 

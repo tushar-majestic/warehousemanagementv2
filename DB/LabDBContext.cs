@@ -74,6 +74,9 @@ public partial class LabDBContext : DbContext
 
     public DbSet<ItemCard> ItemCards { get; set; }
 
+    public DbSet<Message> Messages { get; set; }
+
+
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
