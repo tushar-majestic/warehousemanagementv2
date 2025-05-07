@@ -112,6 +112,7 @@ namespace LabMaterials.Pages
         {   ModelState.Clear();
 
             base.ExtractSessionData();
+            FillLables();
             Report.CreatedBy = HttpContext.Session.GetString("UserName") ?? "Unknown";
 
             var dbContext = new LabDBContext();
