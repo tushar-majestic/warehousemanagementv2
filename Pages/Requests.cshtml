@@ -1,5 +1,6 @@
 ﻿@page
 @model LabMaterials.Pages.RequestsModel
+@using Microsoft.AspNetCore.Http
 @{
     <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4">
         <div class="d-block mb-4 mb-md-0">
@@ -21,19 +22,30 @@
             <!-- <p class="mb-0">Your web analytics dashboard template.</p>-->
         </div>
 
-        <div class="btn-toolbar mb-2 mb-md-0">
-            <a href="ReceivingReports" class="btn btn-sm justify-content-center btn-gray-800 mx-2 d-inline-flex align-items-center">
-                <img b-ie9pk9zf1q="" class="icon text-white icon-xs mx-2" src="images/plus.png">
-                @Model.lblNewReceivingReport
-            </a>
-        </div>
+        @{
+            var userGroupName = HttpContext.Session.GetString("UserGroup");
+        }
+        @if (userGroupName == "Warehouse Keeper")
+        {
+            <div class="btn-toolbar mb-2 mb-md-0">
+                <a href="ReceivingReports" class="btn btn-sm justify-content-center btn-gray-800 mx-2 d-inline-flex align-items-center">
+                    <img b-ie9pk9zf1q="" class="icon text-white icon-xs mx-2" src="images/plus.png">
+                    @Model.lblNewReceivingReport
+                </a>
+            </div>
+
+        }
     </div>
 
 
 
     <nav class="nav">
-        <a class="nav-link @Model.inboxClass border border-bottom-0" href="?type=inbox">Inbox <sup><span class="badge rounded-pill badge-notification bg-danger">9</span></sup></a>
-        <a class="nav-link @Model.outboxClass border border-bottom-0" href="?type=outbox">Request Sent</a>
+        <a class="nav-link @Model.inboxClass border border-bottom-0" href="?type=inbox">Inbox <sup><span class="badge rounded-pill badge-notification bg-danger">2</span></sup></a>
+        
+        @if (userGroupName == "Warehouse Keeper")
+        {
+            <a class="nav-link @Model.outboxClass border border-bottom-0" href="?type=outbox">Request Sent</a>
+        }
     </nav>
     <div class="card border-0 shadow mb-4">
         <div>
@@ -55,46 +67,51 @@
                                     <button class="btn btn-info btn-sm p-1">
                                         Accept
                                     </button>
-                                    <button class="btn btn-warning btn-sm p-1">
+                                    <button class="btn btn-warning btn-sm p-1" data-toggle="modal" data-target="#commentRejectModal">
                                         Comment & Reject
                                     </button>
                                 </td>
                                 <td>12:35 AM</td>
                                 <td><input type="submit" value="@Model.lblView" class="btn btn-secondary" asp-page-handler="View" /></td>
                             </tr>
-                            <tr>
+                              <tr>
                                 <td>
-                                    <div class="m-2"><b>Ashwin Bose</b> sent Request for Items. Approve the request or add comments.</div>
-                                    <button class="btn btn-info btn-sm p-1">
-                                        Accept
-                                    </button>
-                                    <button class="btn btn-warning btn-sm p-1">
-                                        Comment & Reject
-                                    </button>
-                                </td>
-                                <td>12:35 AM</td>
-                                <td><input type="submit" value="@Model.lblView" class="btn btn-secondary" asp-page-handler="View" /></td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="m-2"><b>Ashwin Bose</b> sent Request for Items. Approve the request or add comments.</div>
-                                    <button class="btn btn-info btn-sm p-1">
-                                        Accept
-                                    </button>
-                                    <button class="btn btn-warning btn-sm p-1">
-                                        Comment & Reject
-                                    </button>
-                                </td>
-                                <td>12:35 AM</td>
-                                <td><input type="submit" value="@Model.lblView" class="btn btn-secondary" asp-page-handler="View" /></td>
-                            </tr>
-                        }
+                                    <div class="m-2">Request for <b>Ashwin Bose</b> is accepted by all.</div>
+                                   
+                                    <a href="/ItemCards" class="btn btn-info btn-sm p-1">
+                                        Add Order to Item Card
+                                    </a>
 
-                        @foreach (var req in Model.RequestSent){
-                            var ReceivingWarehouse = Model.Warehouses.FirstOrDefault(s => s.StoreId == int.Parse(req.ReceivingWarehouse))?.   StoreName ?? "";
-                            <tr>
-                                <td>Request for Warehouse <b>@ReceivingWarehouse</b> has been processed successfully.</td>
+                                   
+                                </td>
                                 <td>12:35 AM</td>
+                                <td><input type="submit" value="@Model.lblView" class="btn btn-secondary" asp-page-handler="View" /></td>
+                            </tr>
+                            @if(userGroupName == "Technical Member"){
+                                @foreach( var inbox in Model.ManagerInboxList){
+                                    <tr>
+                                        <td>
+                                            <div class="m-2"><b>@inbox.CreatedBy</b> sent Request for Items. Approve the request or add comments.</div>
+                                            <button class="btn btn-info btn-sm p-1">
+                                                Accept
+                                            </button>
+                                            <button class="btn btn-warning btn-sm p-1" data-toggle="modal" data-target="#commentRejectModal">
+                                                Comment & Reject
+                                            </button>
+                                        </td>
+                                        <td>12:35 AM</td>
+                                        <td><input type="submit" value="@Model.lblView" class="btn btn-secondary" asp-page-handler="View" /></td>
+                                    </tr>
+                                }
+                            }
+                          
+                        }
+                        else{
+                            @foreach (var req in Model.RequestSent){
+                                var ReceivingWarehouse = Model.Warehouses.FirstOrDefault(s => s.StoreId == int.Parse(req.ReceivingWarehouse))?.   StoreName ?? "";
+                                <tr>
+                                    <td>Request for Warehouse <b>@ReceivingWarehouse</b> has been processed successfully.</td>
+                                    <td>12:35 AM</td>
                                     <td>
                                         @* <input type="submit" value="@Model.lblView" class="btn btn-secondary" asp-page-handler="View" /><a asp-page="/ViewReceivingReport"  class="btn btn-info btn-sm">View</a> *@
                                         <form method="post">
@@ -102,60 +119,79 @@
 
                                             <input type="submit" value="@Model.lblView" class="btn btn-secondary" asp-page-handler="View" />
                                         </form>
-                                 
+                                    
                                     </td>
-                            </tr>
+                                </tr>
+                            }
                         }
 
-                        @* hardcoded *@
-                    @* <tr>
-                        <td>Request for Warehouse <b>Dummy Warehouse</b> has been processed successfully.</td>
-                        <td>12:35 AM</td>
-                            <td><input type="submit" value="@Model.lblView" class="btn btn-secondary" asp-page-handler="View" /><a asp-page="/ViewReceivingReport"  class="btn btn-info btn-sm">View</a></td>
-                    </tr>
-                    <tr>
-                        <td>Request for Warehouse <b>Dummy Warehouse</b> has been processed successfully.</td>
-                        <td>12:35 AM</td>
-                        <td><input type="submit" value="@Model.lblView" class="btn btn-secondary" asp-page-handler="View" /></td>
-                    </tr>
-                    <tr>
-                        <td>Request for Warehouse <b>Dummy Warehouse</b> has been processed successfully.</td>
-                        <td>12:35 AM</td>
-                        <td><input type="submit" value="@Model.lblView" class="btn btn-secondary" asp-page-handler="View" /></td>
-                    </tr>
-                    <tr>
-                        <td>Request for Warehouse <b>Dummy Warehouse</b> has been processed successfully.</td>
-                        <td>12:35 AM</td>
-                        <td><input type="submit" value="@Model.lblView" class="btn btn-secondary" asp-page-handler="View" /></td>
-                    </tr>
-                    <tr>
-                        <td>Request for Warehouse <b>Dummy Warehouse</b> has been processed successfully.</td>
-                        <td>12:35 AM</td>
-                        <td><input type="submit" value="@Model.lblView" class="btn btn-secondary" asp-page-handler="View" /></td>
-                    </tr>
-                    <tr>
-                        <td>Request for Warehouse <b>Dummy Warehouse</b> has been processed successfully.</td>
-                        <td>12:35 AM</td>
-                        <td><input type="submit" value="@Model.lblView" class="btn btn-secondary" asp-page-handler="View" /></td>
-                    </tr>
-                    <tr>
-                        <td>Request for Warehouse <b>Dummy Warehouse</b> has been processed successfully.</td>
-                        <td>12:35 AM</td>
-                        <td><input type="submit" value="@Model.lblView" class="btn btn-secondary" asp-page-handler="View" /></td>
-                    </tr>
-                    <tr>
-                        <td>Request for Warehouse <b>Dummy Warehouse</b> has been processed successfully.</td>
-                        <td>12:35 AM</td>
-                        <td><input type="submit" value="@Model.lblView" class="btn btn-secondary" asp-page-handler="View" /></td>
-                    </tr>
-                    <tr>
-                        <td>Request for Warehouse <b>Dummy Warehouse</b> has been processed successfully.</td>
-                        <td>12:35 AM</td>
-                        <td><input type="submit" value="@Model.lblView" class="btn btn-secondary" asp-page-handler="View" /></td>
-                    </tr> *@
+                    <!-- Modal for Comment & Reject -->
+                    <div class="modal fade" id="commentRejectModal" tabindex="-1" role="dialog" aria-labelledby="commentRejectModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="commentRejectModalLabel">Comment & Reject Request</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <!-- Input field for comment -->
+                                    <div class="form-group">
+                                        <label for="commentInput">Your Comment</label>
+                                        <textarea id="commentInput" class="form-control" rows="3"></textarea>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <!-- Button to submit the comment and reject -->
+                                    <button type="button" class="btn btn-danger" id="rejectBtn" data-dismiss="modal">Reject</button>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
+}
+
+@section Scripts{
+    <script>
+        $('#commentRejectModal').on('show.bs.modal', function (event) {
+            // Optionally, you can pass data to the modal here, like the request's ID, etc.
+            const button = $(event.relatedTarget); // Button that triggered the modal
+            const recipient = button.data('whatever'); // Extract info from data-* attributes (if needed)
+
+            // You can initialize the comment input or perform other actions here if necessary
+        });
+
+        // Handle the 'Reject' button inside the modal
+         $('#rejectBtn').click(function () {
+            const comment = $('#commentInput').val(); // Get the comment entered by the user
+
+            @* Use in future *@
+            @* if (comment.trim() === '') {
+                alert('Please enter a comment before rejecting the request.');
+                return;
+            } *@
+
+            // Submit the comment and reject action here
+            // Example: Make an AJAX request or handle form submission
+            console.log('Rejecting with comment:', comment);
+
+            // Close the modal after submission
+            $('#commentRejectModal').modal('hide');
+
+            // Optionally, update the UI or trigger other actions
+        }); 
+
+      
+
+
+
+    </script>
 }
