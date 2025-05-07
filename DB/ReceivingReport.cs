@@ -48,6 +48,12 @@ public partial class ReceivingReport
 
     public int SupplierId { get; set; }
 
+    public DateTime CreatedAt { get; set; }
+    public bool KeeperApproval { get; set; }
+    public bool TechnicalMemberApproval { get; set; }
+    public bool StoreManagerApproval { get; set; }
+    public bool GeneralSupApproval { get; set; }
+
 
     [InverseProperty("ReceivingReport")]
     public virtual ICollection<ReceivingItem> ReceivingItems { get; set; } = new List<ReceivingItem>();

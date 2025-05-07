@@ -16,7 +16,7 @@ namespace LabMaterials.Pages
         public async Task OnGetAsync()
         {
             base.ExtractSessionData();
-            ItemCards = await _context.ItemCards.ToListAsync();
+            // ItemCards = await _context.ItemCards.ToListAsync();
         }
     }
 }

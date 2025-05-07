@@ -7,7 +7,7 @@
 
 <h1 class="mb-4">Item Cards</h1>
 
-<div class="row row-cols-1 row-cols-md-3 g-4">
+@* <div class="row row-cols-1 row-cols-md-3 g-4">
     @foreach (var card in Model.ItemCards)
     {
         <div class="col">
@@ -42,4 +42,97 @@
             </div>
         </div>
     }
+</div> *@
+<button id="printBtn" class="btn btn-primary">Print Table</button>
+
+<div id="exportTableContainer" >
+
+
+
+  <!-- Header Layout Table -->
+    <table class="table w-100 mb-4">
+        <tr>
+            <td colspan="2">
+            <h4 class="text-center mb-0">Item Card</h4>
+            </td>
+        </tr>
+
+        <tr>
+            <!-- Left Column -->
+            <td class="w-50 align-top">
+                <div class="p-2">
+                    <div class="mb-1">Ceiling: 200</div>
+                    <div class="mb-1">Reorder Limit: 50</div>
+                    <div>Minimum: 20</div>
+                </div>
+            </td>
+
+            <!-- Right Column -->
+            <td class="w-50 align-top">
+            <div class="p-2">
+                <div class="mb-1 text-end">Recipient Sector: Health Dept</div>
+                <div class="mb-1 text-end">Room Name & Number: Room A12</div>
+                <div class="mb-1 text-end">Receiving Warehouse: Central Store</div>
+            </div>
+            </td>
+        </tr>
+    </table>
+
+  <!-- Item Information Row -->
+  <table class="table w-100 mb-4">
+    <tr>
+      <td class="subheading w-25">Item No. (Item Code)</td>
+      <td class="w-25">ITM-00123</td>
+      <td class="subheading w-25">Item Name (Arabic)</td>
+      <td class="w-25">جهاز قياس الحرارة</td>
+    </tr>
+    <tr>
+      <td class="subheading">Unit of Measure</td>
+      <td>Box</td>
+      <td class="no-border" colspan="2"></td>
+    </tr>
+  </table>
+
+  <!-- Main Data Table -->
+  <table class="table table-bordered w-100">
+    <thead class="table-secondary">
+      <tr>
+        <th>Date of Entry into Warehouse</th>
+        <th>Document Number</th>
+        <th>Quantity Received</th>
+        <th>Source (Supplier)</th>
+        <th>Amount Spent</th>
+        <th>Party to Whom It Is Directed</th>
+        <th>Remaining Balance</th>
+        <th>Dispensing Document No.</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>2025-05-01</td>
+        <td>RR-2025-001</td>
+        <td>100</td>
+        <td>Medical Supply Co.</td>
+        <td>30</td>
+        <td>Ward 3A</td>
+        <td>70</td>
+        <td>DD-2025-023</td>
+      </tr>
+      <tr>
+        <td>2025-05-03</td>
+        <td>RR-2025-002</td>
+        <td>50</td>
+        <td>PharmaTech</td>
+        <td>10</td>
+        <td>ER Dept</td>
+        <td>110</td>
+        <td>DD-2025-024</td>
+      </tr>
+    </tbody>
+  </table>
+
+
+
+
 </div>
+

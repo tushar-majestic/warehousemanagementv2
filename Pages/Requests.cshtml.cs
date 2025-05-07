@@ -18,6 +18,9 @@ namespace LabMaterials.Pages
         public string lblRequests, lblNewReceivingReport, pagetype = "inbox", inboxClass = "btn-dark text-white", outboxClass = "btn-light";
 
         public List<ReceivingReport> RequestSent { get; set; }
+
+        public List<ReceivingReport> ManagerInboxList { get; set; }
+
         public IList<Store> Warehouses { get; set; }
 
         public void OnGet()
@@ -39,6 +42,9 @@ namespace LabMaterials.Pages
             }
             var dbContext = new LabDBContext();
             RequestSent = dbContext.ReceivingReports.ToList(); 
+            ManagerInboxList = dbContext.ReceivingReports
+                .Where(r => r.KeeperApproval == true)
+                .ToList();
             Warehouses = dbContext.Stores.ToList();  // Fetch suppliers
  
             base.ExtractSessionData();

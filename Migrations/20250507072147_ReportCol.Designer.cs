@@ -4,6 +4,7 @@ using LabMaterials.DB;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LabMaterials.Migrations
 {
     [DbContext(typeof(LabDBContext))]
-    partial class LabDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250507072147_ReportCol")]
+    partial class ReportCol
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -560,39 +563,6 @@ namespace LabMaterials.Migrations
                     b.HasIndex(new[] { "RequestedByUserId" }, "IX_MaterialRequests_RequestedByUserId");
 
                     b.ToTable("MaterialRequests");
-                });
-
-            modelBuilder.Entity("LabMaterials.DB.Message", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("ReceivingReportId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Recipient")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Sender")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ReceivingReportId");
-
-                    b.ToTable("Messages");
                 });
 
             modelBuilder.Entity("LabMaterials.DB.PrimaryKey", b =>
@@ -1777,17 +1747,6 @@ namespace LabMaterials.Migrations
                     b.Navigation("CurrentApproverUser");
 
                     b.Navigation("RequestedByUser");
-                });
-
-            modelBuilder.Entity("LabMaterials.DB.Message", b =>
-                {
-                    b.HasOne("LabMaterials.DB.ReceivingReport", "ReceivingReport")
-                        .WithMany()
-                        .HasForeignKey("ReceivingReportId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ReceivingReport");
                 });
 
             modelBuilder.Entity("LabMaterials.DB.ReceivingItem", b =>
