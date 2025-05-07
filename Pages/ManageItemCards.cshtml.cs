@@ -8,7 +8,10 @@ namespace LabMaterials.Pages
 {
     public class ManageItemCardsModel : BasePageModel
     {
-        public string lblGroupCode, lblGroupName, lblEdit, lblDelete, lblTotalItem, lblAddItemCard, lblItemGroups, lblSearch, lblItems;
+        public string    lblTotalItem, lblAddItemCard, lblItemGroups, lblSearch, lblItems;
+
+        public List<string> SelectedColumns { get; set; } = new List<string>();
+
 
         public void OnGet() 
         {   base.ExtractSessionData();
@@ -22,17 +25,19 @@ namespace LabMaterials.Pages
             // HttpContext.Session.SetString("ReportId", ReportId);
 
 
-            return RedirectToPage();
+            return RedirectToPage("/viewItemCards");
+        }
+
+        public void OnPostSearch([FromForm] string itemcard)
+        {   
+            base.ExtractSessionData();
         }
 
          private void FillLables()
         {
             this.Lang =  HttpContext.Session.GetString("Lang");
 
-            this.lblGroupName = (Program.Translations["GroupName"])[Lang];
-            this.lblGroupCode = (Program.Translations["GroupCode"])[Lang];
-            this.lblEdit = (Program.Translations["Edit"])[Lang];
-            this.lblDelete = (Program.Translations["Delete"])[Lang];
+         
             this.lblTotalItem = (Program.Translations["TotalItem"])[Lang];
             this.lblAddItemCard = (Program.Translations["AddItemCard"])[Lang];
             this.lblItemGroups = (Program.Translations["ItemGroups"])[Lang];
