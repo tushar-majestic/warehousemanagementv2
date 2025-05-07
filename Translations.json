@@ -1353,6 +1353,10 @@
     "DocumentDateMissing":{
       "en":"Document Date is required.",
       "ar":"Document Date is required."
+    },
+    "DamageItem":{
+      "en":"Return Item Request",
+      "ar":"Return Item Request"
     }
     
 
