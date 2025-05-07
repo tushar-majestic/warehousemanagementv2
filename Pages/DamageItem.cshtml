@@ -90,7 +90,7 @@
                         </li>
                         <li class="breadcrumb-item d-flex align-items-center">
                             <img src="images/inventory.png" alt="Home" width="16" height="16" class="me-2" />
-                            <a href="/ManageItems" class="text-decoration-none">@Model.lblItems</a>
+                            <a href="/ManageDamaged" class="text-decoration-none">@Model.lblDamagedItems</a>
                         </li>
                         <li class="breadcrumb-item d-flex align-items-center">
                             <img src="images/inventory.png" alt="Home" width="16" height="16" class="me-2" />
@@ -99,7 +99,7 @@
                         
                     </ol>
                 </nav>
-                <h1 class="h4">@Model.lblDamageItem</h1>
+                <h1 class="h4">@Model.lblDamagedItems</h1>
                 <!-- <p class="mb-0">Dozens of reusable components built to provide buttons, alerts, popovers, and more.</p> -->
             </div>
         </div>
@@ -116,7 +116,7 @@
                             <div id="returnEntriesWrapper">
                                 <div class="return-entry border p-3 mb-3 rounded position-relative">
                                     <div class="my-4">
-                                        <label for="RequestingPlace">Item Group</label>
+                                        <label for="RequestingPlace">@Model.lblManageItemGroups</label>
                                         <select class="form-select" name="itemGroup">
                                             <option value="1">item group1</option>
                                             <option value="2">item group2</option>
@@ -132,11 +132,11 @@
                                         </select>
                                     </div>
                                     <div class="mb-4">
-                                        <label for="ItemId">@Model.lblItemName (Arabic)</label>
+                                        <label for="ItemId">@Model.lblItemName (@Model.lblArabicLanguage)</label>
                                         <select class="form-select" id="ItemId" name="ItemId"></select>
                                     </div>
                                     <div class="mb-4">
-                                        <label for="ItemId">@Model.lblItemName (English)</label>
+                                        <label for="ItemId">@Model.lblItemName (@Model.lblEnglishLanguage)</label>
                                         <select class="form-select" id="ItemId" name="ItemId"></select>
                                     </div>
                                     <div class="mb-4">

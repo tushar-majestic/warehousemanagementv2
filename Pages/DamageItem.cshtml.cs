@@ -17,7 +17,8 @@ namespace LabMaterials.Pages
         public List<Store> Stores { get; set; }
         public DateTime CurrentDate;
 
-        public string lblItemName, lblDamagedQuantity, lblDamageReason, lblAdd, lblCancel, lblDamageItem, lblItems, lblItemCode, lblQuantity, lblStoreName;
+        public string lblItemName, lblDamagedQuantity, lblDamageReason, lblAdd, lblCancel, lblDamageItem, lblItems, lblItemCode, lblQuantity, lblStoreName, lblDamagedItems,
+        lblManageItemGroups, lblEnglishLanguage, lblArabicLanguage;
         public void OnGet(int id)
         {
             base.ExtractSessionData();
@@ -145,7 +146,11 @@ namespace LabMaterials.Pages
             this.lblCancel = (Program.Translations["Cancel"])[Lang];
             this.lblItems = (Program.Translations["Items"])[Lang];
             this.lblDamageItem = (Program.Translations["DamageItem"])[Lang];
+            this.lblDamagedItems = (Program.Translations["DamagedItems"])[Lang];
             this.lblStoreName = (Program.Translations["StoreName"])[Lang];
+            this.lblManageItemGroups = (Program.Translations["ManageItemGroups"])[Lang];
+            this.lblArabicLanguage = (Program.Translations["ArabicLanguage"])[Lang];
+            this.lblEnglishLanguage = (Program.Translations["EnglishLanguage"])[Lang];
         }
     }
 }

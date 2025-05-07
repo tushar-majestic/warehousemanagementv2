@@ -1357,10 +1357,18 @@
     "DamageItem":{
       "en":"Return Item Request",
       "ar":"Return Item Request"
-  },
+    },
     "AddItemCard":{
       "en":"Add Item Card",
       "ar":"Add Item Card"
+    },
+    "ArabicLanguage":{
+      "en":"Arabic",
+      "ar":"Arabic"
+    },
+    "EnglishLanguage":{
+      "en":"English",
+      "ar":"English"
     }
     
 
