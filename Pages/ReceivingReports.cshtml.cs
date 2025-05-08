@@ -80,7 +80,7 @@ namespace LabMaterials.Pages
                         .Where(u => u.UserGroupId == GeneralSupervisorId)
                         .ToList();
 
-            //General Supervisor list
+            //Technical Member list
             var TechnicalMemberId = dbContext.UserGroups
                     .Where(g => g.UserGroupName == "Technical Member")
                     .Select(g => g.UserGroupId)
@@ -113,7 +113,7 @@ namespace LabMaterials.Pages
 
             base.ExtractSessionData();
             FillLables();
-            Report.CreatedBy = HttpContext.Session.GetString("UserName") ?? "Unknown";
+            Report.CreatedBy = HttpContext.Session.GetString("FullName") ?? "Unknown";
 
             var dbContext = new LabDBContext();
 
@@ -126,6 +126,26 @@ namespace LabMaterials.Pages
             Items = await _context.Items.ToListAsync();
             Units = dbContext.Units.ToList(); 
             ItemGroupList = dbContext.ItemGroup.ToList(); 
+            //General Supervisor list
+            var GeneralSupervisorId = dbContext.UserGroups
+                    .Where(g => g.UserGroupName == "General Supervisor")
+                    .Select(g => g.UserGroupId)
+                    .FirstOrDefault();
+
+            GeneralSupervisorList = dbContext.Users
+                        .Where(u => u.UserGroupId == GeneralSupervisorId)
+                        .ToList();
+
+            //Technical Member list
+            var TechnicalMemberId = dbContext.UserGroups
+                    .Where(g => g.UserGroupName == "Technical Member")
+                    .Select(g => g.UserGroupId)
+                    .FirstOrDefault();
+
+            TechnicalMemberList = dbContext.Users
+                        .Where(u => u.UserGroupId == TechnicalMemberId)
+                        .ToList();
+
             Report.ReceivingDate = ReceivingDate.Date;
             Report.DocumentDate  = DocumentDate.Date;
             Report.TechnicalMemberId = TechnicalMember;
@@ -137,6 +157,10 @@ namespace LabMaterials.Pages
             Report.FiscalYear = FiscalYear;
             Report.KeeperApproval = true;
            
+            var TechnicalMemberName = dbContext.Users
+                    .Where(u => u.UserId == Report.TechnicalMemberId)
+                    .Select(u => u.FullName)
+                    .FirstOrDefault();
 
 
             if (string.IsNullOrEmpty(FiscalYear)){
@@ -178,24 +202,38 @@ namespace LabMaterials.Pages
                 ErrorMsg = (Program.Translations["DocumentDateMissing"])[Lang];
                 return Page();
             }
+            else if(Report.SupplierId==0){
+                ErrorMsg = (Program.Translations["SupplierMissing"])[Lang];
+                return Page();
+            }
+            else if(Report.RecipientEmployeeId==0){
+                ErrorMsg = (Program.Translations["ReceipientMissing"])[Lang];
+                return Page();
+            }
+            
+            else if(Report.TechnicalMemberId==0){
+                ErrorMsg = (Program.Translations["TechnicalMemberMissing"])[Lang];
+                return Page();
+            }
            
            
-                if (AttachmentFile != null)
-                {
-                    var uploadsFolder = Path.Combine(_environment.WebRootPath, "uploads");
+           
+            if (AttachmentFile != null)
+            {
+                var uploadsFolder = Path.Combine(_environment.WebRootPath, "uploads");
                     Directory.CreateDirectory(uploadsFolder); // ensure it exists
-                    var uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(AttachmentFile.FileName);
-                    var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                var uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(AttachmentFile.FileName);
+                var filePath = Path.Combine(uploadsFolder, uniqueFileName);
 
-                    using (var stream = new FileStream(filePath, FileMode.Create))
-                    {
-                        await AttachmentFile.CopyToAsync(stream);
-                    }
-
-                    Report.AttachmentPath = "/uploads/" + uniqueFileName;
-                    ModelState.Remove("AttachmentPath"); // Removes the error for AttachmentPath
-
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await AttachmentFile.CopyToAsync(stream);
                 }
+
+                Report.AttachmentPath = "/uploads/" + uniqueFileName;
+                ModelState.Remove("AttachmentPath"); // Removes the error for AttachmentPath
+
+            }
                
             
                 
@@ -215,6 +253,11 @@ namespace LabMaterials.Pages
 
             foreach (var item in ItemsForReport)
             {
+                // if (item.ItemId == 0 || item.Quantity <= 0 || item.UnitPrice <= 0)
+                // {
+                //     ErrorMsg = "Please ensure all item details are filled correctly.";
+                //     return Page();
+                // }
                 item.ReceivingReportId = Report.Id; // Ensure the ReceivingReportId is set correctly
                 item.ItemId = item.ItemId; // Ensure the ItemId is set correctly
 
@@ -223,6 +266,18 @@ namespace LabMaterials.Pages
                 _context.ReceivingItems.Add(item); // Add the item to the context
             }
             await _context.SaveChangesAsync();
+
+            string Message = string.Format("Sent Request for Items. Approve the request or add comments.");
+            var msg = new  Message
+            {
+                ReceivingReportId = Report.Id,
+                Sender = Report.CreatedBy,
+                Recipient = TechnicalMemberName,
+                Content = Message
+            };
+            dbContext.Messages.Add(msg);
+            dbContext.SaveChanges();
+
 
             return RedirectToPage("/Requests");
         }

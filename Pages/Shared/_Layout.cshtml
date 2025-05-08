@@ -529,33 +529,33 @@
     };
 
     document.addEventListener('DOMContentLoaded', function () {
-    const printReportBtn = document.getElementById('PrintReport');
-    if (printReportBtn) {
+      const printReportBtn = document.getElementById('PrintReport');
+      if (printReportBtn) {
         printReportBtn.addEventListener('click', function () {
-            console.log("PrintReport button clicked");
+          console.log("PrintReport button clicked");
 
-            const printContentElement = document.getElementById('printArea');
-            if (!printContentElement) {
-                console.error("printArea not found");
-                return;
-            }
+          const printContentElement = document.getElementById('printArea');
+          if (!printContentElement) {
+            console.error("printArea not found");
+            return;
+          }
 
-            const printContent = printContentElement.innerHTML;
-            const printWindow = window.open('', '', 'width=800,height=600');
-            printWindow.document.write('<html><head><title>Receiving Report</title>');
-            printWindow.document.write('<style>body{font-family: Arial;} table{width:100%;border-collapse:collapse;} th, td{border:1px solid #ddd;padding:8px;} th{background:#f2f2f2;} .text-center{text-align:center;}</style>');
-            printWindow.document.write('</head><body>');
-            printWindow.document.write('<h1>Receiving Report - Serial No: 15</h1>');
-            printWindow.document.write(printContent);
-            printWindow.document.write('</body></html>');
-            printWindow.document.close();
-            printWindow.focus();
-            printWindow.print();
+          const printContent = printContentElement.innerHTML;
+          const printWindow = window.open('', '', 'width=800,height=600');
+          printWindow.document.write('<html><head><title>Receiving Report</title>');
+          printWindow.document.write('<style>body{font-family: Arial;} table{width:100%;border-collapse:collapse;} th, td{border:1px solid #ddd;padding:8px;} th{background:#f2f2f2;} .text-center{text-align:center;}</style>');
+          printWindow.document.write('</head><body>');
+          @* printWindow.document.write('<h1>Receiving Report - Serial No: 15</h1>'); *@
+          printWindow.document.write(printContent);
+          printWindow.document.write('</body></html>');
+          printWindow.document.close();
+          printWindow.focus();
+          printWindow.print();
         });
-    } else {
+      } else {
         console.warn("PrintReport button not found");
-    }
-});
+      }
+    });
 
 </script>
 </body>

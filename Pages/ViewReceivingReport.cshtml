@@ -94,21 +94,36 @@ else
 
                     <dt class="col-sm-3">Sector No.</dt>
                     <dd class="col-sm-9">@report.SectorNumber</dd>
+                    
+                    
+                    <dt class="col-sm-3">Receiving Warehouse</dt>
+                    <dd class="col-sm-9">@Model.ReceivingWarehouse</dd>
 
-                    <dt class="col-sm-3">Warehouse</dt>
-                    <dd class="col-sm-9">@report.ReceivingWarehouse</dd>
-
-                    <dt class="col-sm-3">Supplier</dt>
-                    <dd class="col-sm-9">@report.Supplier?.SupplierName</dd>
-
-                    <dt class="col-sm-3">Supplier Type</dt>
-                    <dd class="col-sm-9">@report.Supplier?.SupplierType</dd>
+                    <dt class="col-sm-3">Based On Document</dt>
+                    <dd class="col-sm-9">@report.BasedOnDocument</dd>
 
                     <dt class="col-sm-3">Document No.</dt>
                     <dd class="col-sm-9">@report.DocumentNumber</dd>
 
                     <dt class="col-sm-3">Document Date</dt>
                     <dd class="col-sm-9">@report.DocumentDate.ToString("yyyy-MM-dd")</dd>
+
+                    <dt class="col-sm-3">Supplier Type</dt>
+                    <dd class="col-sm-9">@report.Supplier?.SupplierType</dd>
+
+                    <dt class="col-sm-3">Supplier</dt>
+                    <dd class="col-sm-9">@report.Supplier?.SupplierName</dd>
+                    
+                    <dt class="col-sm-3">Receipient</dt>
+                    <dd class="col-sm-9"></dd>
+
+                    <dt class="col-sm-3">Technical Member</dt>
+                    <dd class="col-sm-9"></dd>
+
+                    <dt class="col-sm-3">General Supervisor</dt>
+                    <dd class="col-sm-9"></dd>
+
+                    
 
                     <dt class="col-sm-3">Remarks</dt>
                     <dd class="col-sm-9">@report.Comments</dd>
