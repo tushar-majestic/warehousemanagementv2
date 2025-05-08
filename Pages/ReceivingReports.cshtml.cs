@@ -70,9 +70,9 @@ namespace LabMaterials.Pages
             Users = dbContext.Users.ToList(); 
 
 
-            //General Supervisor of educational services list
+            //General Supervisor list
             var GeneralSupervisorId = dbContext.UserGroups
-                    .Where(g => g.UserGroupName == "General Supervisor of Educational Services")
+                    .Where(g => g.UserGroupName == "General Supervisor")
                     .Select(g => g.UserGroupId)
                     .FirstOrDefault();
 
@@ -80,7 +80,7 @@ namespace LabMaterials.Pages
                         .Where(u => u.UserGroupId == GeneralSupervisorId)
                         .ToList();
 
-            //General Supervisor of educational services list
+            //General Supervisor list
             var TechnicalMemberId = dbContext.UserGroups
                     .Where(g => g.UserGroupName == "Technical Member")
                     .Select(g => g.UserGroupId)
