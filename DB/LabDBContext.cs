@@ -156,7 +156,7 @@ public partial class LabDBContext : DbContext
             entity.Property(e => e.AttachmentPath).HasDefaultValue("");
             entity.Property(e => e.BasedOnDocument).HasDefaultValue("");
             // entity.Property(e => e.ChiefResponsibleId).HasDefaultValue("");
-            entity.Property(e => e.Comments).HasDefaultValue("");
+            // entity.Property(e => e.Comments).HasDefaultValue("");
             entity.Property(e => e.CreatedBy).HasDefaultValue("");
             entity.Property(e => e.DocumentNumber).HasDefaultValue("");
             entity.Property(e => e.FiscalYear).HasDefaultValue("");

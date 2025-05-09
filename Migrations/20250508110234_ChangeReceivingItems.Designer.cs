@@ -4,6 +4,7 @@ using LabMaterials.DB;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LabMaterials.Migrations
 {
     [DbContext(typeof(LabDBContext))]
-    partial class LabDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250508110234_ChangeReceivingItems")]
+    partial class ChangeReceivingItems
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -588,10 +591,6 @@ namespace LabMaterials.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("ReceivingReportId");
@@ -685,7 +684,7 @@ namespace LabMaterials.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasDefaultValue("");
 
-                    b.Property<int?>("ChiefResponsibleId")
+                    b.Property<int>("ChiefResponsibleId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
@@ -736,9 +735,6 @@ namespace LabMaterials.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasDefaultValue("");
 
-                    b.Property<int?>("RejectedById")
-                        .HasColumnType("int");
-
                     b.Property<string>("SectorNumber")
                         .IsRequired()
                         .ValueGeneratedOnAdd()
@@ -747,6 +743,9 @@ namespace LabMaterials.Migrations
 
                     b.Property<int>("SerialNumber")
                         .HasColumnType("int");
+
+                    b.Property<bool>("StoreManagerApproval")
+                        .HasColumnType("bit");
 
                     b.Property<int>("SupplierId")
                         .HasColumnType("int");

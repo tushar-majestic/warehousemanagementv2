@@ -5,7 +5,28 @@
     ViewData["Title"] = "Receiving Report";
 }
 
-<h2>@Model.lblCreateReport</h2>
+<div class="d-block mb-4 mb-md-0">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb bg-transparent p-2 mb-0">
+            <li class="breadcrumb-item d-flex align-items-center">
+                <img src="images/home.png" alt="Home" width="16" height="16" class="me-2" />
+                <a href="/Home" class="text-decoration-none">@Model.lblHome</a>
+            </li>
+            <li class="breadcrumb-item d-flex align-items-center">
+                <img src="images/inventory.png" alt="Home" width="16" height="16" class="me-2" />
+                        
+                <a href="/Requests" class="text-decoration-none">@Model.lblRequests</a>
+            </li>
+            <li class="breadcrumb-item d-flex align-items-center">
+                <img src="images/inventory.png" alt="Home" width="16" height="16" class="me-2" />
+                 @Model.lblNewReceivingReport
+            </li>
+
+        </ol>
+    </nav>
+
+    <h1 class="h4">@Model.lblCreateReport</h1>
+</div>
 <div asp-validation-summary="All" class="text-danger"></div>
 <div class="row">
     <div class="col-8 mb-4 m-auto">
@@ -24,7 +45,7 @@
                             var previousYear = currentYear - 1;
                         }
                         <div class="form-group mb-4">
-                            <label>@Model.lblFiscalYear</label>
+                            <label>@Model.lblFiscalYear</label> <span class="text-danger">*</span>
                             <select class="form-select" id="FiscalYear" asp-for="Report.FiscalYear" name="FiscalYear"  onchange="fetchSerialNumber()" >
                                 <option value="">Select Fiscal Year</option>
                                 <option value="@previousYear">@previousYear</option>
@@ -33,21 +54,21 @@
                         </div>
 
                         <div class="form-group mb-4">
-                            <label>@Model.lblReceivingDate</label>
-                            <input  type="date" class="form-control" name="ReceivingDate"  />
+                            <label>@Model.lblReceivingDate</label> <span class="text-danger">*</span>
+                            <input  type="date" class="form-control" name="ReceivingDate" value="@(Model.Report.ReceivingDate != DateTime.MinValue ? Model.Report.ReceivingDate.ToString("yyyy-MM-dd") : "")"  />
                         </div>
 
                         <div class="form-group mb-4">
-                            <label>@Model.lblRecipientSector</label>
+                            <label>@Model.lblRecipientSector</label> <span class="text-danger">*</span>
                             <input asp-for="Report.RecipientSector" class="form-control"  />
                         </div>
                         <div class="form-group mb-4">
-                            <label>@Model.lblSectorNumber</label>
+                            <label>@Model.lblSectorNumber</label> <span class="text-danger">*</span>
                             <input asp-for="Report.SectorNumber" class="form-control"  />
                         </div>
 
                         <div class="form-group mb-4">
-                            <label>@Model.lblReceivingWarehouse</label>
+                            <label>@Model.lblReceivingWarehouse</label> <span class="text-danger">*</span>
 
                             
                             <select asp-for="Report.ReceivingWarehouse" class="form-control"  id="ReceivingWarehouse" >
@@ -62,7 +83,7 @@
                         </div>
 
                         <div class="form-group mb-4">
-                            <label>@Model.lblBasedOnDocument</label>
+                            <label>@Model.lblBasedOnDocument</label> <span class="text-danger">*</span>
                             @* <input asp-for="Report.BasedOnDocument" class="form-control" required /> *@
                             <select asp-for="Report.BasedOnDocument" class="form-select" id="BasedOnDocument" name="BasedOnDocument" >
                                 <option value="">Select Based On document</option>
@@ -75,13 +96,13 @@
                         </div>
 
                         <div class="form-group mb-4">
-                            <label>@Model.lblDocumentNumber</label>
+                            <label>@Model.lblDocumentNumber</label> <span class="text-danger">*</span>
                             <input asp-for="Report.DocumentNumber" class="form-control"  />
                         </div>
 
                         <div class="form-group mb-4">
-                            <label>@Model.lblDocumentDate</label>
-                            <input  name="DocumentDate" type="date" class="form-control"  />
+                            <label>@Model.lblDocumentDate</label> <span class="text-danger">*</span>
+                            <input  name="DocumentDate" type="date" class="form-control"  value="@(Model.Report.DocumentDate != DateTime.MinValue ? Model.Report.DocumentDate.ToString("yyyy-MM-dd") : "")" />
                         </div>
 
 
@@ -91,7 +112,7 @@
                         </div>
 
                         <div class="form-group mb-4">
-                            <label>@Model.lblSupplierType</label>
+                            <label>@Model.lblSupplierType</label> <span class="text-danger">*</span>
                             <select class="form-select" id="SupplierType" name="SupplierType" >
                                 <option value="Internal">Internal</option>
                                 <option value="External">External</option>
@@ -100,7 +121,7 @@
 
                         <div class="form-group mb-4">
 
-                            <label>@Model.lblSupplierName</label>
+                            <label>@Model.lblSupplierName</label> <span class="text-danger">*</span>
                             <select id="SupplierName" asp-for="Report.SupplierId" class="form-control" >
                                 <option value="">Select Supplier Name</option>
                                 @foreach (var supplier in Model.Suppliers)
@@ -113,12 +134,12 @@
                        @* Add ItemsForReport  *@
 
                         <div class="addItems border p-2">
-
-                            <h3>Add Items</h3>
+                           
+                            <h3>Items</h3>
                         
                                 <div class="form-group mb-4">
-                                    <label>@Model.lblItemGroup</label>
-                                    <select class="form-select" id="ItemGroup" name="ItemGroup" >
+                                    <label>@Model.lblItemGroup</label> <span class="text-danger">*</span>
+                                    <select class="form-select" id="ItemGroup" name="ItemsForReport[0].ItemGroup" >
                                         @* <option value="Chemicals">Chemicals</option>
                                         <option value="Glass">Glass</option> *@
                                         <option value="">Select Item Group</option>
@@ -136,22 +157,25 @@
                             
                                 <div class="d-flex">
                                     <div class="form-group mb-4 me-2 ">
-                                        <label>@Model.lblItemNo</label>
-                                        <input type="text" id="ItemNo" name="ItemNo" class="form-control" />
+                                        <label>@Model.lblItemNo</label> <span class="text-danger">*</span>
+                                        <input type="text" id="ItemNo" name="ItemNo" class="form-control"  />
                                     </div>
                                     <div class="form-group mb-4 ms-2 flex-fill">
-                                        <label>@Model.lblItemName</label>
-                                        <select class="form-control" id="ItemName" name="ItemsForReport[0].ItemId">
+                                        <label>@Model.lblItemName</label> <span class="text-danger">*</span>
+                                        <select  class="form-control" id="ItemName" asp-for="@Model.ItemsForReport[0].ItemId" name="ItemsForReport[0].ItemId" >
                                             <option value="">Select Item</option>
                                             @foreach (var item in Model.Items)
                                             {
                                                 var UnitCode = Model.Units.FirstOrDefault(u => u.Id == item.UnitId)?.UnitCode ?? "";
+                                                var ItemGroup = Model.ItemGroupList.FirstOrDefault(g => g.GroupCode == item.GroupCode)?.GroupDesc ?? "";
+                                            
                                                 <option value="@item.ItemId"
                                                         data-itemno="@item.ItemCode"
                                                         data-itemname="@item.ItemName"
                                                         data-itemdesc="@item.ItemDescription"
                                                         data-unitid="@item.UnitId"
-                                                        data-unitname="@UnitCode">
+                                                        data-unitname="@UnitCode"
+                                                        data-groupcode="@ItemGroup">
                                                     @item.ItemName
                                                 </option>
                                             }
@@ -172,46 +196,49 @@
                                     </div>
 
                                     <div class="form-group mb-4"  style="width: 48%;">
-                                        <label>@Model.lblQuantity</label>
-                                        <input type="number" id="ItemQty" name="ItemsForReport[0].Quantity" class="form-control"  />
+                                        <label>@Model.lblQuantity</label> <span class="text-danger">*</span>
+                                        <input asp-for="ItemsForReport[0].Quantity"  type="number" id="ItemQty" name="ItemsForReport[0].Quantity" class="form-control"  />
                                     </div>
                                 </div>
                                 
                                 <div class="d-flex justify-content-between">
                                     <div class="form-group mb-4" style="width: 48%;">
-                                        <label>@Model.lblUnitPrice</label>
-                                        <input type="number"  id="UnitPrice" step="0.01" name="ItemsForReport[0].UnitPrice" class="form-control"  />
+                                        <label>@Model.lblUnitPrice</label> <span class="text-danger">*</span>
+                                        <input asp-for="ItemsForReport[0].UnitPrice" type="number"  id="UnitPrice" step="0.01" name="ItemsForReport[0].UnitPrice" class="form-control"  />
                                     </div>
 
                                     <div class="form-group mb-4" style="width: 48%;">
                                         <label>@Model.lblTotalPrice</label>
-                                        <input type="number"  id="TotalPrice" step="0.01" name="TotalPrice" class="form-control" />
+                                        <input type="number"  id="TotalPrice" step="0.01" name="TotalPrice" class="form-control" readonly/>
                                     </div>
                                 </div>
+
+                                
+                                <div class="form-group mb-4">
+                                    <label>@Model.lblComments</label>
+                                    <textarea asp-for="ItemsForReport[0].Comments" class="form-control" name="ItemsForReport[0].Comments"></textarea>
+                                </div>
+
                                 <div id="itemsContainer" class="mt-3"></div>
 
-                            <button type="button" class="btn btn-secondary" onclick="addItem()">Add</button>
+                            <button type="button" id="addButton" class="btn btn-secondary" onclick="addItem()" disabled>Add More</button>
                         </div>
                        @* Add ItemsForReport ended  *@
 
+
+
                         <div class="form-group mb-4">
-                            <label>@Model.lblComments</label>
-                            <textarea asp-for="Report.Comments" class="form-control"></textarea>
+                            <label>@Model.lblRecipientID</label> <span class="text-danger">*</span>
+                            <input asp-for="Report.RecipientEmployeeId" id="RecipientEmployeeId" class="form-control"  readonly/>
+                        </div>
+                        <div class="form-group mb-4">
+                            <label>@Model.lblRecipientName</label> <span class="text-danger">*</span>
+                            <input  id="RecipientEmployeeName" name="RecipientEmployeeName" value="@Model.RecipientEmployeeName" type="text"  class="form-control"  readonly/>
                         </div>
 
 
                         <div class="form-group mb-4">
-                            <label>@Model.lblRecipientID</label>
-                            <input asp-for="Report.RecipientEmployeeId" id="RecipientEmployeeId" class="form-control"  />
-                        </div>
-                        <div class="form-group mb-4">
-                            <label>@Model.lblRecipientName</label>
-                            <input  id="RecipientEmployeeName" type="text"  class="form-control"  />
-                        </div>
-
-
-                        <div class="form-group mb-4">
-                            <label>@Model.lblTechnicalMember</label>
+                            <label>@Model.lblTechnicalMember</label> <span class="text-danger">*</span>
                             <select class="form-select" asp-for="Report.TechnicalMemberId"    id="TechnicalMember" name="TechnicalMember" >
                                 @* <option value="FirstTechnical">First Technical Member</option>
                                 <option value="SecondTechnical">Second Technical Member</option> *@
@@ -273,49 +300,36 @@
     </div>
 </div>
 
+
+
 @section Scripts {
     <script>
-        let itemIndex = 1; // since [0] is seeded on GET
+        // Initialize item index
+        let itemIndex = 1; // [0] is seeded on GET
 
-        document.getElementById('add-item-btn').onclick = () => {
-            const container = document.getElementById('items-container');
-            const div = document.createElement('div');
-            div.className = 'item-group border p-3 mb-3';
-            div.innerHTML = `
-                <div class="form-group">
-                  <label>Item</label>
-                  <select class="form-control" name="ItemsForReport[${itemIndex}].ItemId" required>
-                    <option value="">Select Item</option>
-                    ${getItemOptions()}
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label>Quantity</label>
-                  <input type="number" name="ItemsForReport[${itemIndex}].Quantity" class="form-control" required />
-                </div>
-                <div class="form-group">
-                  <label>Unit Price</label>
-                  <input type="number" step="0.01" name="ItemsForReport[${itemIndex}].UnitPrice" class="form-control" required />
-                </div>`;
-            container.appendChild(div);
-            itemIndex++;
-        };
-
+        // Function to generate item options
         function getItemOptions() {
-            return `@Html.Raw(string.Join("", Model.Items.Select(i => $"<option value='{i.ItemId}'  data-itemno='{i.ItemCode}' data-itemname='{i.ItemName}' data-itemdesc='{i.ItemDescription}' data-unitid='{i.UnitId}' >{i.ItemName}</option>")))`;
+            @* return `@Html.Raw(string.Join("", Model.Items.Select(i => $"<option value='{i.ItemId}' data-itemno='{i.ItemCode}' data-itemname='{i.ItemName}' data-itemdesc='{i.ItemDescription}' data-unitid='{i.UnitId}'>{i.ItemName}</option>")))`; *@
+              return `@Html.Raw(string.Join("", Model.Items.Select(item => {
+                var unitCode = Model.Units.FirstOrDefault(u => u.Id == item.UnitId)?.UnitCode ?? "";
+                var ItemGroup = Model.ItemGroupList.FirstOrDefault(g => g.GroupCode == item.GroupCode)?.GroupDesc ?? "";
+                return $"<option value='{item.ItemId}' data-itemno='{item.ItemCode}' data-itemname='{item.ItemName}' data-itemdesc='{item.ItemDescription}' data-unitid='{item.UnitId}' data-unitname='{unitCode}' data-groupcode='{ItemGroup}'>{item.ItemName}</option>";
+            })))`;
         }
 
-      
-
+        // Function to add a new item
         function addItem() {
             const container = document.getElementById('itemsContainer');
             const div = document.createElement('div');
             div.className = 'item-group border p-3 mb-3';
             div.innerHTML = `
                 <h3>Add Items</h3>
+                <div class="text-end">
+                    <button type="button" class="btn btn-danger btn-sm remove-entry me-3">Remove</button>
+                </div>
                 <div class="form-group mb-4">
-                    <label>Item Group</label>
-                    <select class="form-select" name="ItemsForReport[${itemIndex}].ItemGroup">
+                    <label>Item Group</label> <span class="text-danger">*</span>
+                    <select class="form-select" name="ItemsForReport[${itemIndex}].ItemGroup" required>
                         <option value="">Select Item Group</option>
                         @foreach (var item in Model.ItemGroupList)
                         {
@@ -323,107 +337,137 @@
                         }
                     </select>
                 </div>
-
                 <div class="d-flex">
                     <div class="form-group mb-4 me-2">
-                        <label>Item No</label>
-                        <input type="text" name="ItemsForReport[${itemIndex}].ItemNo" class="form-control" />
+                        <label>Item No</label> <span class="text-danger">*</span>
+                        <input type="text" name="ItemsForReport[${itemIndex}].ItemNo" class="form-control" required/>
                     </div>
                     <div class="form-group mb-4 ms-2 flex-fill">
-                        <label>Item Name</label>
-                        <select class="form-control" name="ItemsForReport[${itemIndex}].ItemId">
+                        <label>Item Name</label> <span class="text-danger">*</span>
+                        <select class="form-control" name="ItemsForReport[${itemIndex}].ItemId" required>
                             <option value="">Select Item</option>
                             ${getItemOptions()}
                         </select>
                     </div>
                 </div>
-
                 <div class="form-group mb-4">
                     <label>Item Description</label>
                     <textarea name="ItemsForReport[${itemIndex}].ItemDescription" class="form-control" readonly></textarea>
                 </div>
-
                 <div class="d-flex justify-content-between">
                     <div class="form-group mb-4" style="width: 48%;">
                         <label>Unit of Measure</label>
                         <input type="text" name="ItemsForReport[${itemIndex}].UnitofMeasure" class="form-control" readonly />
                     </div>
                     <div class="form-group mb-4" style="width: 48%;">
-                        <label>Quantity</label>
-                        <input type="number" name="ItemsForReport[${itemIndex}].Quantity" class="form-control" />
+                        <label>Quantity</label> <span class="text-danger">*</span>
+                        <input type="number" name="ItemsForReport[${itemIndex}].Quantity" class="form-control" required/>
                     </div>
                 </div>
-
                 <div class="d-flex justify-content-between">
                     <div class="form-group mb-4" style="width: 48%;">
-                        <label>Unit Price</label>
-                        <input type="number" step="0.01" name="ItemsForReport[${itemIndex}].UnitPrice" class="form-control" />
+                        <label>Unit Price</label> <span class="text-danger">*</span>
+                        <input type="number" step="0.01" name="ItemsForReport[${itemIndex}].UnitPrice" class="form-control" required/>
                     </div>
                     <div class="form-group mb-4" style="width: 48%;">
                         <label>Total Price</label>
                         <input type="number" step="0.01" name="ItemsForReport[${itemIndex}].TotalPrice" class="form-control" readonly />
                     </div>
                 </div>
+                <div class="form-group mb-4">
+                    <label>@Model.lblComments</label>
+                    <textarea  class="form-control" name="ItemsForReport[${itemIndex}].Comments"></textarea>
+                </div>
             `;
-
             container.appendChild(div);
             bindEvents(div, itemIndex);
             itemIndex++;
         }
 
+        // Function to bind events to the newly added item
+        function bindEvents(container, index) {
+            const itemNoInput = container.querySelector(`[name='ItemsForReport[${index}].ItemNo']`);
+            const itemDropdown = container.querySelector(`[name='ItemsForReport[${index}].ItemId']`);
+            const itemDescription = container.querySelector(`[name='ItemsForReport[${index}].ItemDescription']`);
+            const unitInput = container.querySelector(`[name='ItemsForReport[${index}].UnitofMeasure']`);
+            const quantityInput = container.querySelector(`[name='ItemsForReport[${index}].Quantity']`);
+            const unitPriceInput = container.querySelector(`[name='ItemsForReport[${index}].UnitPrice']`);
+            const totalPriceInput = container.querySelector(`[name='ItemsForReport[${index}].TotalPrice']`);
+            const itemGroup = container.querySelector(`[name='ItemsForReport[${index}].ItemGroup']`)
 
-        
-    function bindEvents(container, itemIndex) {
-        const itemNoInput = container.querySelector(`[name='ItemsForReport[${itemIndex}].ItemNo']`);
-        const itemDropdown = container.querySelector(`[name='ItemsForReport[${itemIndex}].ItemId']`);
-        const itemDescription = container.querySelector(`[name='ItemsForReport[${itemIndex}].ItemDescription']`);
-        const unitInput = container.querySelector(`[name='ItemsForReport[${itemIndex}].UnitofMeasure']`);
-        const quantityInput = container.querySelector(`[name='ItemsForReport[${itemIndex}].Quantity']`);
-        const unitPriceInput = container.querySelector(`[name='ItemsForReport[${itemIndex}].UnitPrice']`);
-        const totalPriceInput = container.querySelector(`[name='ItemsForReport[${itemIndex}].TotalPrice']`);
+            function updateTotal() {
+                const quantity = parseFloat(quantityInput.value) || 0;
+                const unitPrice = parseFloat(unitPriceInput.value) || 0;
+                totalPriceInput.value = (quantity * unitPrice).toFixed(2);
+            }
 
-        function updateTotal() {
-            const quantity = parseFloat(quantityInput.value) || 0;
-            const unitPrice = parseFloat(unitPriceInput.value) || 0;
-            totalPriceInput.value = (quantity * unitPrice).toFixed(2);
+            if (unitPriceInput) unitPriceInput.addEventListener("input", updateTotal);
+            if (quantityInput) quantityInput.addEventListener("input", updateTotal);
+
+            if (itemNoInput) {
+                itemNoInput.addEventListener("input", function () {
+                    const enteredItemNo = itemNoInput.value;
+                    const options = itemDropdown.options;
+
+                    for (let i = 0; i < options.length; i++) {
+                        if (options[i].getAttribute("data-itemno") === enteredItemNo) {
+                            itemDropdown.value = options[i].value;
+                            itemDescription.value = options[i].getAttribute("data-itemdesc") || '';
+                            unitInput.value = options[i].getAttribute("data-unitname") || '';
+                            break;
+                        }
+                    }
+                });
+            }
+
+            if (itemDropdown) {
+                itemDropdown.addEventListener("change", function () {
+                    const selectedOption = itemDropdown.options[itemDropdown.selectedIndex];
+                    itemNoInput.value = selectedOption.getAttribute("data-itemno") || '';
+                    itemDescription.value = selectedOption.getAttribute("data-itemdesc") || '';
+                    unitInput.value = selectedOption.getAttribute("data-unitname") || '';
+                    itemGroup.value = selectedOption.getAttribute("data-groupcode") || '';
+                });
+            }
         }
 
-        if (unitPriceInput) unitPriceInput.addEventListener("input", updateTotal);
-        if (quantityInput) quantityInput.addEventListener("input", updateTotal);
+        // Function to check required fields and enable/disable the add button
+        function checkRequiredFields() {
+            const requiredSelectors = ['#ItemGroup', '#ItemNo', '#ItemName', '#ItemQty', '#UnitPrice'];
+            const addButton = document.getElementById('addButton');
 
-        if (itemNoInput) {
-            itemNoInput.addEventListener("input", function () {
-                const enteredItemNo = itemNoInput.value;
-                const options = itemDropdown.options;
+            const allFilled = requiredSelectors.every(selector => {
+                const el = document.querySelector(selector);
+                return el && el.value.trim() !== '';
+            });
 
-                for (let i = 0; i < options.length; i++) {
-                    if (options[i].getAttribute("data-itemno") === enteredItemNo) {
-                        itemDropdown.value = options[i].value;
-                        itemDescription.value = options[i].getAttribute("data-itemdesc") || '';
-                        unitInput.value = options[i].getAttribute("data-unitname") || '';
-                        break;
-                    }
+            addButton.disabled = !allFilled;
+        }
+
+
+        //deletem item group
+        document.addEventListener('click', function (e) {
+            if (e.target && e.target.classList.contains('remove-entry')) {
+                const itemGroup = e.target.closest('.item-group');
+                if (itemGroup) {
+                    itemGroup.remove();
+                }
+            }
+        });
+        // Event listeners for required fields
+        document.addEventListener('DOMContentLoaded', function () {
+            const requiredSelectors = ['#ItemGroup', '#ItemNo', '#ItemName', '#ItemQty', '#UnitPrice', '#TotalPrice'];
+            requiredSelectors.forEach(selector => {
+                const element = document.querySelector(selector);
+                if (element) {
+                    element.addEventListener('input', checkRequiredFields);
+                    element.addEventListener('change', checkRequiredFields);
                 }
             });
-        }
-
-        if (itemDropdown) {
-            itemDropdown.addEventListener("change", function () {
-                const selectedOption = itemDropdown.options[itemDropdown.selectedIndex];
-                itemNoInput.value = selectedOption.getAttribute("data-itemno") || '';
-                itemDescription.value = selectedOption.getAttribute("data-itemdesc") || '';
-                unitInput.value = selectedOption.getAttribute("data-unitname") || '';
-            });
-        }
-    }
-
-
-        document.addEventListener("DOMContentLoaded", function () {
-            bindEvents(document); 
+            checkRequiredFields(); // Initial check
         });
 
-    </script>
-    <script>
+        // Supplier filtering based on type
         const allSuppliers = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.Suppliers));
 
         function filterSuppliersByType() {
@@ -438,108 +482,44 @@
                 .filter(s => s.SupplierType === selectedType)
                 .forEach(s => {
                     const option = document.createElement('option');
-                    option.value = s.supplierId; // match C# casing
+                    option.value = s.supplierId;
                     option.textContent = s.supplierName;
                     option.setAttribute("data-type", s.supplierType);
                     supplierSelect.appendChild(option);
                 });
-
-            // Clear SupplierType textbox if you use a separate input
-            // document.getElementById("SupplierTypeTextBox").value = '';
         }
+
         document.getElementById("SupplierName").addEventListener("change", function () {
-    const selected = this.options[this.selectedIndex];
-    document.getElementById("SupplierType").value = selected.getAttribute("data-type") || "";
+            const selected = this.options[this.selectedIndex];
+            document.getElementById("SupplierType").value = selected.getAttribute("data-type") || "";
+        });
 
-
-    
-});
-
-    document.addEventListener("DOMContentLoaded", function () {
-        const itemNoInput = document.getElementById("ItemNo");
-        const itemDropdown = document.getElementById("ItemName");
-        const itemDescription = document.getElementById("ItemDescription");
-        const unitInput = document.getElementById("UnitofMeasure");
-        const quantityInput = document.getElementById("ItemQty");
-        const unitPriceInput = document.getElementById("UnitPrice");
-        const totalPriceInput = document.getElementById("TotalPrice");
-       
-
-         function updateTotal() {
-            const quantity = parseFloat(quantityInput.value) || 0;
-            const unitPrice = parseFloat(unitPriceInput.value) || 0;
-            const total = quantity * unitPrice;
-            totalPriceInput.value = total.toFixed(2);
+        // Fetch serial number based on fiscal year
+        async function fetchSerialNumber() {
+            const year = document.getElementById("FiscalYear").value;
+            if (!isNaN(year)) {
+                try {
+                    const response = await fetch(`/ReceivingReports?handler=GetNextSerialNumber&fiscalYear=${year}`);
+                    const data = await response.json();
+                    document.getElementById("Serial").innerText = data.serial;
+                    document.getElementById("SerialNumber").value = data.serial;
+                } catch (error) {
+                    console.error('Error fetching serial number:', error);
+                }
+            } else {
+                document.getElementById("Serial").innerText = "-----";
+            }
         }
 
-        unitPriceInput.addEventListener("input", updateTotal);
-        quantityInput.addEventListener("input", updateTotal);
-
-
-      
-
-        itemNoInput.addEventListener("input", function () {
-            const enteredItemNo = itemNoInput.value;
-            const options = itemDropdown.options;
-
-            for (let i = 0; i < options.length; i++) {
-                if (options[i].getAttribute("data-itemno") === enteredItemNo) {
-                    itemDropdown.value = options[i].value;
-                    itemDescription.value = options[i].getAttribute("data-itemdesc") || '';
-                    unitInput.value = options[i].getAttribute("data-unitname") || '';
-                    break;
-                }
+        window.addEventListener("DOMContentLoaded", function () {
+            const yearInput = document.getElementById("FiscalYear");
+            if (yearInput && yearInput.value) {
+                fetchSerialNumber();
             }
         });
 
-      
-
-        document.getElementById("ItemName").addEventListener("change", function () {
-            const selectedOption = this.options[this.selectedIndex];
-            const itemno = selectedOption.getAttribute("data-itemno");
-            const itemdesc = selectedOption.getAttribute("data-itemdesc");
-            const unitname = selectedOption.getAttribute("data-unitname");
-
-
-            document.getElementById("ItemNo").value = itemno || '';
-            document.getElementById("ItemDescription").value = itemdesc || '';
-            document.getElementById("UnitofMeasure").value = unitname || '';
-
-
-        });
-
-        
-        document.getElementById("ReceivingWarehouse").addEventListener("change", function () {
-            const selectedOption = this.options[this.selectedIndex];
-            const manager = selectedOption.getAttribute("data-manager");
-            const jobnumber = selectedOption.getAttribute("data-jobnumber");
-
-
-            document.getElementById("RecipientEmployeeId").value = jobnumber || '';
-            document.getElementById("RecipientEmployeeName").value = manager || '';
-
-
-        });
-
-
-    });
-    async function fetchSerialNumber() {
-        const year = document.getElementById("FiscalYear").value;
-        if (!isNaN(year)) {
-           fetch(`/ReceivingReports?handler=GetNextSerialNumber&fiscalYear=${year}`)
-
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById("Serial").innerText = data.serial;
-                    document.getElementById("SerialNumber").value = data.serial;
-
-                });
-        } else {
-            document.getElementById("Serial").innerText = "-----";
-        }
-    }
-
-     const notyf = new Notyf({
+        // Notyf notification for errors
+        const notyf = new Notyf({
             position: {
                 x: 'center',
                 y: 'top',
@@ -570,11 +550,81 @@
         @if (!string.IsNullOrEmpty(Model.ErrorMsg))
         {
             <text>
-                    var errorMessageFromServer = @Html.Raw(Json.Serialize(Model.ErrorMsg));
-                    showErrorNotification(errorMessageFromServer);
+                var errorMessageFromServer = @Html.Raw(Json.Serialize(Model.ErrorMsg));
+                showErrorNotification(errorMessageFromServer);
             </text>
         }
-    
- 
+
+        //filling related inputs
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const itemNoInput = document.getElementById("ItemNo");
+            const itemDropdown = document.getElementById("ItemName");
+            const itemDescription = document.getElementById("ItemDescription");
+            const unitInput = document.getElementById("UnitofMeasure");
+            const quantityInput = document.getElementById("ItemQty");
+            const unitPriceInput = document.getElementById("UnitPrice");
+            const totalPriceInput = document.getElementById("TotalPrice");
+       
+
+            function updateTotal() {
+                const quantity = parseFloat(quantityInput.value) || 0;
+                const unitPrice = parseFloat(unitPriceInput.value) || 0;
+                const total = quantity * unitPrice;
+                totalPriceInput.value = total.toFixed(2);
+            }
+
+            unitPriceInput.addEventListener("input", updateTotal);
+            quantityInput.addEventListener("input", updateTotal);
+
+
+      
+
+            itemNoInput.addEventListener("input", function () {
+                const enteredItemNo = itemNoInput.value;
+                const options = itemDropdown.options;
+
+                for (let i = 0; i < options.length; i++) {
+                    if (options[i].getAttribute("data-itemno") === enteredItemNo) {
+                        itemDropdown.value = options[i].value;
+                        itemDescription.value = options[i].getAttribute("data-itemdesc") || '';
+                        unitInput.value = options[i].getAttribute("data-unitname") || '';
+                        break;
+                    }
+                }
+            });
+
+      
+
+            document.getElementById("ItemName").addEventListener("change", function () {
+                const selectedOption = this.options[this.selectedIndex];
+                const itemno = selectedOption.getAttribute("data-itemno");
+                const itemdesc = selectedOption.getAttribute("data-itemdesc");
+                const unitname = selectedOption.getAttribute("data-unitname");
+                const groupcode = selectedOption.getAttribute("data-groupcode")
+
+                document.getElementById("ItemNo").value = itemno || '';
+                document.getElementById("ItemDescription").value = itemdesc || '';
+                document.getElementById("UnitofMeasure").value = unitname || '';
+                document.getElementById("ItemGroup").value = groupcode || "";
+
+
+            });
+
+        
+            document.getElementById("ReceivingWarehouse").addEventListener("change", function () {
+                const selectedOption = this.options[this.selectedIndex];
+                const manager = selectedOption.getAttribute("data-manager");
+                const jobnumber = selectedOption.getAttribute("data-jobnumber");
+
+
+                document.getElementById("RecipientEmployeeId").value = jobnumber || '';
+                document.getElementById("RecipientEmployeeName").value = manager || '';
+
+
+            });
+        });
+        //filling related inputs ends
+
     </script>
 }

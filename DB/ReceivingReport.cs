@@ -23,7 +23,6 @@ public partial class ReceivingReport
     public string BasedOnDocument { get; set; } = null!;
 
 
-    public string Comments { get; set; } = null!;
 
     public string CreatedBy { get; set; } = null!;
 
@@ -41,18 +40,19 @@ public partial class ReceivingReport
 
     public int TechnicalMemberId { get; set; }
 
-    public int ChiefResponsibleId { get; set; }
+    public int? ChiefResponsibleId { get; set; }
 
     
 
 
     public int SupplierId { get; set; }
-
-    public DateTime CreatedAt { get; set; }
     public bool KeeperApproval { get; set; }
     public bool TechnicalMemberApproval { get; set; }
-    public bool StoreManagerApproval { get; set; }
     public bool GeneralSupApproval { get; set; }
+
+    public int? RejectedById { get; set; }
+
+    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
 
     [InverseProperty("ReceivingReport")]

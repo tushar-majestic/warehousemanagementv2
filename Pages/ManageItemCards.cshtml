@@ -179,7 +179,7 @@
 
                        
     @* Table  *@
-       <div class="card border-0 shadow mb-4">
+    <div class="card border-0 shadow mb-4">
         <div class="card-body">
             <div class="table-responsive">
                 <table class="table table-centered table-nowrap mb-0 rounded">
@@ -204,88 +204,76 @@
                             <th scope="col" class="border-0 rounded-start">Supplier</th>
                             <th scope="col" class="border-0 rounded-start">Receipt Document Type</th>
                             <th scope="col" class="border-0 rounded-start">Receipt Document Number</th>
-
-
-
-
-
-
-
-
-                            <th scope="col" class="border-0 rounded-end"></th>
-                           
+                            <th scope="col" class="border-0 rounded-end"></th>                         
                         </tr>
                     </thead>
                     <tbody>
            
-                    <tr>
-                        <td scope="row">Chemicals</td>
-                        <td scope="row">102</td>
-                        <td scope="row">Zinc</td>
-                        <td scope="row">High purity zinc sulfide powder.</td>
-                        <td scope="row">ml</td>
-                        <td scope="row">Zinc</td>
-                        <td>Non Hazardous</td>
-                        <td>26-08-29</td>
-                        <td>Sustainable</td>
-                        <td>12</td>
-                        <td>5</td>
-                        <td scope="row">Supply Warehouse</td>
-                        <td>12</td>
-                        <td>07-05-25</td>
-                        <td>Material Room</td>
-                        <td>R2-S1</td>
-                        <td>Shah Abdul Wali</td>
-                        <td>Certification</td>
-                        <td>89456</td>
+                        <tr>
+                            <td scope="row">Chemicals</td>
+                            <td scope="row">102</td>
+                            <td scope="row">Zinc</td>
+                            <td scope="row">High purity zinc sulfide powder.</td>
+                            <td scope="row">ml</td>
+                            <td scope="row">Zinc</td>
+                            <td>Non Hazardous</td>
+                            <td>26-08-29</td>
+                            <td>Sustainable</td>
+                            <td>12</td>
+                            <td>5</td>
+                            <td scope="row">Supply Warehouse</td>
+                            <td>12</td>
+                            <td>07-05-25</td>
+                            <td>Material Room</td>
+                            <td>R2-S1</td>
+                            <td>Shah Abdul Wali</td>
+                            <td>Certification</td>
+                            <td>89456</td>
+
+                            <td>
+                                <form method="post">
+                                    @* <input type="hidden" value="@Model.CurrentPage" name="page" />
+                                    <input type="hidden" value="@item.GroupCode" name="GroupCode" />
+                                    <input type="hidden" value="@Model.GroupName" name="GroupName" /> *@
+                                    <input type="submit" value="View" class="btn btn-secondary" asp-page-handler="View" />
+                                
+                                </form>
+                            </td>
+                        </tr>
 
 
+                        <tr>
+                            <td scope="row">Chemicals</td>
+                            <td scope="row">105</td>
+                            <td scope="row">Chlorine</td>
+                            <td scope="row">High purity Chlorine</td>
+                            <td scope="row">ml</td>
+                            <td scope="row">Chlorine</td>
+                            <td>Hazardous</td>
+                            <td>15-05-29</td>
+                            <td>Sustainable</td>
+                            <td>12</td>
+                            <td>5</td>
+                            <td scope="row">Supply Warehouse</td>
+                            <td>12</td>
+                            <td>07-05-25</td>
+                            <td>Material Room</td>
+                            <td>R2-S1</td>
+                            <td>Shah Abdul Wali</td>
+                            <td>Certification</td>
+                            <td>89456</td>
 
 
-                        <td>
-                            <form method="post">
-                                @* <input type="hidden" value="@Model.CurrentPage" name="page" />
-                                <input type="hidden" value="@item.GroupCode" name="GroupCode" />
-                                 <input type="hidden" value="@Model.GroupName" name="GroupName" /> *@
-                                <input type="submit" value="View" class="btn btn-secondary" asp-page-handler="View" />
-                               
-                            </form>
-                        </td>
-                    </tr>
-
-
-                    <tr>
-                        <td scope="row">Chemicals</td>
-                        <td scope="row">105</td>
-                        <td scope="row">Chlorine</td>
-                        <td scope="row">High purity Chlorine</td>
-                        <td scope="row">ml</td>
-                        <td scope="row">Chlorine</td>
-                        <td>Hazardous</td>
-                        <td>15-05-29</td>
-                        <td>Sustainable</td>
-                        <td>12</td>
-                        <td>5</td>
-                        <td scope="row">Supply Warehouse</td>
-                        <td>12</td>
-                        <td>07-05-25</td>
-                        <td>Material Room</td>
-                        <td>R2-S1</td>
-                        <td>Shah Abdul Wali</td>
-                        <td>Certification</td>
-                        <td>89456</td>
-
-
-                        <td>
-                            <form method="post">
-                                @* <input type="hidden" value="@Model.CurrentPage" name="page" />
-                                <input type="hidden" value="@item.GroupCode" name="GroupCode" />
-                                 <input type="hidden" value="@Model.GroupName" name="GroupName" /> *@
-                                <input type="submit" value="View" class="btn btn-secondary" asp-page-handler="View" />
-                               
-                            </form>
-                        </td>
-                    </tr>
+                            <td>
+                                <form method="post">
+                                    @* <input type="hidden" value="@Model.CurrentPage" name="page" />
+                                    <input type="hidden" value="@item.GroupCode" name="GroupCode" />
+                                    <input type="hidden" value="@Model.GroupName" name="GroupName" /> *@
+                                    <input type="submit" value="View" class="btn btn-secondary" asp-page-handler="View" />
+                                
+                                </form>
+                            </td>
+                        </tr>
 
                         <tr>
                             <td colspan="4">
@@ -300,28 +288,28 @@
 }
 
 @section Scripts{
-    <script type="text/javascript" language="javascript">
-  const toggleButton = document.getElementById('toggleDropdown');
-  const dropdownPanel = document.getElementById('dropdownPanel');
+    <script >
+        const toggleButton = document.getElementById('toggleDropdown');
+        const dropdownPanel = document.getElementById('dropdownPanel');
 
-  toggleButton.addEventListener('click', function () {
-    const isHidden = dropdownPanel.style.display === 'none' || dropdownPanel.style.display === '';
-    
-    if (isHidden) {
-      dropdownPanel.style.display = 'flex';
-      dropdownPanel.style.flexDirection = 'row';
-      dropdownPanel.style.gap = '10px'; // adjust the gap as needed
-    } else {
-      dropdownPanel.style.display = 'none';
-    }
-  });
+        toggleButton.addEventListener('click', function () {
+            const isHidden = dropdownPanel.style.display === 'none' || dropdownPanel.style.display === '';
+            
+            if (isHidden) {
+            dropdownPanel.style.display = 'flex';
+            dropdownPanel.style.flexDirection = 'row';
+            dropdownPanel.style.gap = '10px'; // adjust the gap as needed
+            } else {
+            dropdownPanel.style.display = 'none';
+            }
+        });
 
-  // Optional: hide when click outside
-  document.addEventListener('click', function (e) {
-    if (!toggleButton.contains(e.target) && !dropdownPanel.contains(e.target)) {
-      dropdownPanel.style.display = 'none';
-    }
-  });
-</script>
+        // Optional: hide when click outside
+        document.addEventListener('click', function (e) {
+            if (!toggleButton.contains(e.target) && !dropdownPanel.contains(e.target)) {
+            dropdownPanel.style.display = 'none';
+            }
+        });
+    </script>
 
 }

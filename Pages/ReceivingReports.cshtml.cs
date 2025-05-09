@@ -13,7 +13,7 @@ namespace LabMaterials.Pages
     {
         private readonly LabDBContext _context;
         private readonly IWebHostEnvironment _environment;
-        public string lblCreateReport, lblSerialNumber, lblFiscalYear, lblReceivingDate, lblSectorNumber, lblReceivingWarehouse, lblBasedOnDocument, lblDocumentNumber, lblDocumentDate, lblAddAttachment, lblSupplierType, lblSupplierName, lblItemGroup, lblItemNo, lblItemName, lblItemDescription, lblUnitOfMeasure, lblQuantity, lblUnitPrice, lblTotalPrice, lblComments, lblRecipientID, lblRecipientName, lblTechnicalMember, lblChiefResponsible, lblSubmitReport, lblRecipientSector;
+        public string lblCreateReport, lblSerialNumber, lblFiscalYear, lblReceivingDate, lblSectorNumber, lblReceivingWarehouse, lblBasedOnDocument, lblDocumentNumber, lblDocumentDate, lblAddAttachment, lblSupplierType, lblSupplierName, lblItemGroup, lblItemNo, lblItemName, lblItemDescription, lblUnitOfMeasure, lblQuantity, lblUnitPrice, lblTotalPrice, lblComments, lblRecipientID, lblRecipientName, lblTechnicalMember, lblChiefResponsible, lblSubmitReport, lblRecipientSector, lblNewReceivingReport;
         public ReceivingReportsModel(LabDBContext context, IWebHostEnvironment environment)
         {
             _context = context;
@@ -38,6 +38,7 @@ namespace LabMaterials.Pages
         public int?  GeneralSupervisorId, TechnicalMemberId ;
         public int? ItemId;
         public string ErrorMsg { get; set; }
+        public string RecipientEmployeeName;
 
         public string ItemNo;
         [BindProperty]
@@ -70,9 +71,9 @@ namespace LabMaterials.Pages
             Users = dbContext.Users.ToList(); 
 
 
-            //General Supervisor of educational services list
+            //General Supervisor list
             var GeneralSupervisorId = dbContext.UserGroups
-                    .Where(g => g.UserGroupName == "General Supervisor of Educational Services")
+                    .Where(g => g.UserGroupName == "General Supervisor")
                     .Select(g => g.UserGroupId)
                     .FirstOrDefault();
 
@@ -80,7 +81,7 @@ namespace LabMaterials.Pages
                         .Where(u => u.UserGroupId == GeneralSupervisorId)
                         .ToList();
 
-            //General Supervisor of educational services list
+            //Technical Member list
             var TechnicalMemberId = dbContext.UserGroups
                     .Where(g => g.UserGroupName == "Technical Member")
                     .Select(g => g.UserGroupId)
@@ -108,12 +109,12 @@ namespace LabMaterials.Pages
         }
 
 
-        public async Task<IActionResult> OnPostAsync(DateTime ReceivingDate, DateTime DocumentDate, [FromForm] int TechnicalMember, [FromForm] int ChiefResponsible,  [FromForm] string FiscalYear,  [FromForm] string BasedOnDocument, [FromForm] int SerialNumber)
+        public async Task<IActionResult> OnPostAsync(DateTime ReceivingDate, DateTime DocumentDate, [FromForm] int TechnicalMember, [FromForm] int ChiefResponsible,  [FromForm] string FiscalYear,  [FromForm] string BasedOnDocument, [FromForm] int SerialNumber, [FromForm] string RecipientEmployeeName)
         {   ModelState.Clear();
 
             base.ExtractSessionData();
             FillLables();
-            Report.CreatedBy = HttpContext.Session.GetString("UserName") ?? "Unknown";
+            Report.CreatedBy = HttpContext.Session.GetString("FullName") ?? "Unknown";
 
             var dbContext = new LabDBContext();
 
@@ -126,6 +127,26 @@ namespace LabMaterials.Pages
             Items = await _context.Items.ToListAsync();
             Units = dbContext.Units.ToList(); 
             ItemGroupList = dbContext.ItemGroup.ToList(); 
+            //General Supervisor list
+            var GeneralSupervisorId = dbContext.UserGroups
+                    .Where(g => g.UserGroupName == "General Supervisor")
+                    .Select(g => g.UserGroupId)
+                    .FirstOrDefault();
+
+            GeneralSupervisorList = dbContext.Users
+                        .Where(u => u.UserGroupId == GeneralSupervisorId)
+                        .ToList();
+
+            //Technical Member list
+            var TechnicalMemberId = dbContext.UserGroups
+                    .Where(g => g.UserGroupName == "Technical Member")
+                    .Select(g => g.UserGroupId)
+                    .FirstOrDefault();
+
+            TechnicalMemberList = dbContext.Users
+                        .Where(u => u.UserGroupId == TechnicalMemberId)
+                        .ToList();
+
             Report.ReceivingDate = ReceivingDate.Date;
             Report.DocumentDate  = DocumentDate.Date;
             Report.TechnicalMemberId = TechnicalMember;
@@ -136,8 +157,15 @@ namespace LabMaterials.Pages
 
             Report.FiscalYear = FiscalYear;
             Report.KeeperApproval = true;
-           
 
+            this.RecipientEmployeeName = RecipientEmployeeName;
+           
+            var TechnicalMemberName = dbContext.Users
+                    .Where(u => u.UserId == Report.TechnicalMemberId)
+                    .Select(u => u.FullName)
+                    .FirstOrDefault();
+
+            
 
             if (string.IsNullOrEmpty(FiscalYear)){
                 ErrorMsg = (Program.Translations["FiscalYearMissing"])[Lang];
@@ -178,30 +206,42 @@ namespace LabMaterials.Pages
                 ErrorMsg = (Program.Translations["DocumentDateMissing"])[Lang];
                 return Page();
             }
+            else if(Report.SupplierId==0){
+                ErrorMsg = (Program.Translations["SupplierMissing"])[Lang];
+                return Page();
+            }
+            else if(Report.RecipientEmployeeId==0){
+                ErrorMsg = (Program.Translations["ReceipientMissing"])[Lang];
+                return Page();
+            }
+            if (!ItemsForReport.Any(item => item.ItemId != 0 && item.Quantity > 0 && item.UnitPrice > 0))
+            {
+                ErrorMsg = "At least one item must have the required fields filled (Item Group, Quantity, Unit Price, Item Name).";
+                return Page();
+            }
+            else if(Report.TechnicalMemberId==0){
+                ErrorMsg = (Program.Translations["TechnicalMemberMissing"])[Lang];
+                return Page();
+            }
+          
            
            
-                if (AttachmentFile != null)
-                {
-                    var uploadsFolder = Path.Combine(_environment.WebRootPath, "uploads");
+            if (AttachmentFile != null)
+            {
+                var uploadsFolder = Path.Combine(_environment.WebRootPath, "uploads");
                     Directory.CreateDirectory(uploadsFolder); // ensure it exists
-                    var uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(AttachmentFile.FileName);
-                    var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                var uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(AttachmentFile.FileName);
+                var filePath = Path.Combine(uploadsFolder, uniqueFileName);
 
-                    using (var stream = new FileStream(filePath, FileMode.Create))
-                    {
-                        await AttachmentFile.CopyToAsync(stream);
-                    }
-
-                    Report.AttachmentPath = "/uploads/" + uniqueFileName;
-                    ModelState.Remove("AttachmentPath"); // Removes the error for AttachmentPath
-
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await AttachmentFile.CopyToAsync(stream);
                 }
-               
-            
-                
-            
 
+                Report.AttachmentPath = "/uploads/" + uniqueFileName;
+                ModelState.Remove("AttachmentPath"); // Removes the error for AttachmentPath
 
+            }
             //if (!ModelState.IsValid)
             //{
             //    base.ExtractSessionData();
@@ -209,20 +249,45 @@ namespace LabMaterials.Pages
             //    return Page();
             //}
 
+            if (Report.ChiefResponsibleId == 0)
+            {
+                Report.ChiefResponsibleId = null;
+            }
+
             _context.ReceivingReports.Add(Report);
             await _context.SaveChangesAsync();
 
 
             foreach (var item in ItemsForReport)
             {
+                // if (item.ItemId == 0 || item.Quantity <= 0 || item.UnitPrice <= 0)
+                // {
+                //     ErrorMsg = "Please ensure all item details are filled correctly.";
+                //     return Page();
+                // }
                 item.ReceivingReportId = Report.Id; // Ensure the ReceivingReportId is set correctly
                 item.ItemId = item.ItemId; // Ensure the ItemId is set correctly
+                if(item.Comments == null)
+                    item.Comments = "";
 
                 ModelState.Remove("AttachmentPath"); // Removes the error for AttachmentPath
 
                 _context.ReceivingItems.Add(item); // Add the item to the context
             }
             await _context.SaveChangesAsync();
+
+            string Message = string.Format("Sent Request for Items. Approve the request or add comments.");
+            var msg = new  Message
+            {
+                ReceivingReportId = Report.Id,
+                Sender = Report.CreatedBy,
+                Recipient = TechnicalMemberName,
+                Content = Message,
+                Type = "Request"
+            };
+            dbContext.Messages.Add(msg);
+            dbContext.SaveChanges();
+
 
             return RedirectToPage("/Requests");
         }
@@ -257,6 +322,8 @@ namespace LabMaterials.Pages
             this.lblChiefResponsible = (Program.Translations["ChiefResponsible"])[Lang];
             this.lblSubmitReport =  (Program.Translations["SubmitReport"])[Lang];
             this.lblRecipientSector =  (Program.Translations["RecipientSector"])[Lang];
+            this.lblNewReceivingReport = (Program.Translations["NewReceivingReport"])[Lang];
+
 
 
            

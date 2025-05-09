@@ -1481,6 +1481,22 @@
     "PrintTable":{
       "en":"Print Table",
       "ar":"Print Table"
+    },
+    "SupplierMissing":{
+      "en":"Supplier is required.",
+      "ar":"Supplier is required"
+    },
+    "ReceipientMissing":{
+      "en":"Receipient is required",
+      "ar":"Receipient is required"
+    },
+    "TechnicalMemberMissing":{
+      "en":"TechnicalMember is required",
+      "ar":"TechnicalMember is required"
+    },
+    "CommentMissing":{
+      "en": "Enter Comment to reject request.",
+      "ar": "Enter Comment to reject request.",
     }
     
 
