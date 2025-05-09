@@ -38,7 +38,7 @@
 
 
     <nav class="nav">
-        <a class="nav-link @Model.inboxClass border border-bottom-0" href="?type=inbox">Inbox <sup><span class="badge rounded-pill badge-notification bg-danger">2</span></sup></a>
+        <a class="nav-link @Model.inboxClass border border-bottom-0" href="?type=inbox">Inbox <sup><span class="badge rounded-pill badge-notification bg-danger">@Model.InboxCount</span></sup></a>
         
         @if (@Model.UserGroupName == "Warehouse Keeper")
         {
@@ -59,33 +59,7 @@
                     <tbody>
                         @if (Model.pagetype == "inbox")
                         {
-                            @* hardcoded message  *@
-                            @* <tr>
-                                <td>
-                                    <div class="m-2"><b>Ashwin Bose</b> sent Request for Items. Approve the request or add comments.</div>
-                                    <button class="btn btn-info btn-sm p-1">
-                                        Accept
-                                    </button>
-                                    <button class="btn btn-warning btn-sm p-1" data-toggle="modal" data-target="#commentRejectModal">
-                                        Comment & Reject
-                                    </button>
-                                </td>
-                                <td>12:35 AM</td>
-                                <td><input type="submit" value="@Model.lblView" class="btn btn-secondary" asp-page-handler="View" /></td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <div class="m-2">Request for <b>Ashwin Bose</b> is accepted by all.</div>
-                                   
-                                    <a href="/ItemCards" class="btn btn-info btn-sm p-1">
-                                        Add Order to Item Card
-                                    </a>
-
-                                   
-                                </td>
-                                <td>12:35 AM</td>
-                                <td><input type="submit" value="@Model.lblView" class="btn btn-secondary" asp-page-handler="View" /></td>
-                            </tr> *@
+                            
                                 @foreach( var inbox in Model.InboxList){
                                     <tr>
                                         <td>
@@ -131,7 +105,13 @@
 
                                         </td>
                                         <td>12:35 AM</td>
-                                        <td><input type="submit" value="@Model.lblView" class="btn btn-secondary" asp-page-handler="View" /></td>
+
+                                        <td>
+                                            <form method="post">
+                                                <input type="hidden" value="@inbox.ReceivingReportId" name="ReportId" />
+                                                <input type="submit" value="@Model.lblView" class="btn btn-secondary" asp-page-handler="View" />
+                                            </form>   
+                                        </td>
                                     </tr>
                                 }
                             
@@ -156,7 +136,7 @@
                             }
                         }
 
-                    <!-- Modal for Comment & Reject -->
+                     @* Modal for Comment & Reject *@
                     <div class="modal fade" id="commentRejectModal" tabindex="-1" role="dialog" aria-labelledby="commentRejectModalLabel" aria-hidden="true">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
