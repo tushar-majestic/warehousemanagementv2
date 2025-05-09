@@ -5,7 +5,28 @@
     ViewData["Title"] = "Receiving Report";
 }
 
-<h2>@Model.lblCreateReport</h2>
+<div class="d-block mb-4 mb-md-0">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb bg-transparent p-2 mb-0">
+            <li class="breadcrumb-item d-flex align-items-center">
+                <img src="images/home.png" alt="Home" width="16" height="16" class="me-2" />
+                <a href="/Home" class="text-decoration-none">@Model.lblHome</a>
+            </li>
+            <li class="breadcrumb-item d-flex align-items-center">
+                <img src="images/inventory.png" alt="Home" width="16" height="16" class="me-2" />
+                        
+                <a href="/Requests" class="text-decoration-none">@Model.lblRequests</a>
+            </li>
+            <li class="breadcrumb-item d-flex align-items-center">
+                <img src="images/inventory.png" alt="Home" width="16" height="16" class="me-2" />
+                 @Model.lblNewReceivingReport
+            </li>
+
+        </ol>
+    </nav>
+
+    <h1 class="h4">@Model.lblCreateReport</h1>
+</div>
 <div asp-validation-summary="All" class="text-danger"></div>
 <div class="row">
     <div class="col-8 mb-4 m-auto">
@@ -34,7 +55,7 @@
 
                         <div class="form-group mb-4">
                             <label>@Model.lblReceivingDate</label> <span class="text-danger">*</span>
-                            <input  type="date" class="form-control" name="ReceivingDate" value="Report.ReceivingDate" />
+                            <input  type="date" class="form-control" name="ReceivingDate" value="@(Model.Report.ReceivingDate != DateTime.MinValue ? Model.Report.ReceivingDate.ToString("yyyy-MM-dd") : "")"  />
                         </div>
 
                         <div class="form-group mb-4">
@@ -81,7 +102,7 @@
 
                         <div class="form-group mb-4">
                             <label>@Model.lblDocumentDate</label> <span class="text-danger">*</span>
-                            <input  name="DocumentDate" type="date" class="form-control"  />
+                            <input  name="DocumentDate" type="date" class="form-control"  value="@(Model.Report.DocumentDate != DateTime.MinValue ? Model.Report.DocumentDate.ToString("yyyy-MM-dd") : "")" />
                         </div>
 
 
@@ -141,7 +162,7 @@
                                     </div>
                                     <div class="form-group mb-4 ms-2 flex-fill">
                                         <label>@Model.lblItemName</label> <span class="text-danger">*</span>
-                                        <select asp-for="ItemsForReport[0].ItemId" class="form-control" id="ItemName" name="ItemsForReport[0].ItemId" >
+                                        <select  class="form-control" id="ItemName" asp-for="@Model.ItemsForReport[0].ItemId" name="ItemsForReport[0].ItemId" >
                                             <option value="">Select Item</option>
                                             @foreach (var item in Model.Items)
                                             {
@@ -188,7 +209,7 @@
 
                                     <div class="form-group mb-4" style="width: 48%;">
                                         <label>@Model.lblTotalPrice</label>
-                                        <input type="number"  id="TotalPrice" step="0.01" name="TotalPrice" class="form-control" />
+                                        <input type="number"  id="TotalPrice" step="0.01" name="TotalPrice" class="form-control" readonly/>
                                     </div>
                                 </div>
 
@@ -212,7 +233,7 @@
                         </div>
                         <div class="form-group mb-4">
                             <label>@Model.lblRecipientName</label> <span class="text-danger">*</span>
-                            <input  id="RecipientEmployeeName" value="@Model.RecipientEmployeeName" type="text"  class="form-control"  readonly/>
+                            <input  id="RecipientEmployeeName" name="RecipientEmployeeName" value="@Model.RecipientEmployeeName" type="text"  class="form-control"  readonly/>
                         </div>
 
 
@@ -489,6 +510,13 @@
                 document.getElementById("Serial").innerText = "-----";
             }
         }
+
+        window.addEventListener("DOMContentLoaded", function () {
+            const yearInput = document.getElementById("FiscalYear");
+            if (yearInput && yearInput.value) {
+                fetchSerialNumber();
+            }
+        });
 
         // Notyf notification for errors
         const notyf = new Notyf({

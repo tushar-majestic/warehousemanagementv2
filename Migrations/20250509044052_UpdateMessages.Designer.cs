@@ -4,6 +4,7 @@ using LabMaterials.DB;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LabMaterials.Migrations
 {
     [DbContext(typeof(LabDBContext))]
-    partial class LabDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250509044052_UpdateMessages")]
+    partial class UpdateMessages
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -685,7 +688,7 @@ namespace LabMaterials.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasDefaultValue("");
 
-                    b.Property<int?>("ChiefResponsibleId")
+                    b.Property<int>("ChiefResponsibleId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreatedAt")
@@ -735,9 +738,6 @@ namespace LabMaterials.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(max)")
                         .HasDefaultValue("");
-
-                    b.Property<int?>("RejectedById")
-                        .HasColumnType("int");
 
                     b.Property<string>("SectorNumber")
                         .IsRequired()

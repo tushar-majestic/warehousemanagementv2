@@ -1381,6 +1381,10 @@
     "TechnicalMemberMissing":{
       "en":"TechnicalMember is required",
       "ar":"TechnicalMember is required"
+    },
+    "CommentMissing":{
+      "en": "Enter Comment to reject request.",
+      "ar": "Enter Comment to reject request.",
     }
     
 

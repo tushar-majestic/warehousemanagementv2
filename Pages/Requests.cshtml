@@ -38,7 +38,14 @@
 
 
     <nav class="nav">
-        <a class="nav-link @Model.inboxClass border border-bottom-0" href="?type=inbox">Inbox <sup><span class="badge rounded-pill badge-notification bg-danger">@Model.InboxCount</span></sup></a>
+        <a class="nav-link @Model.inboxClass border border-bottom-0" href="?type=inbox">Inbox 
+            @if(@Model.InboxCount > 0){
+                <sup>
+                    <span class="badge rounded-pill badge-notification bg-danger">@Model.InboxCount</span>
+                </sup>
+            }
+            
+        </a>
         
         @if (@Model.UserGroupName == "Warehouse Keeper")
         {
@@ -59,52 +66,68 @@
                     <tbody>
                         @if (Model.pagetype == "inbox")
                         {
-                            
+                            @if (Model.InboxList != null)
+                            {
                                 @foreach( var inbox in Model.InboxList){
                                     <tr>
                                         <td>
-                                            @* <div class="m-2"><b>@inbox.CreatedBy</b> sent Request for Items. Approve the request or add comments.</div> *@
-                                            <form method="post">
-                                                <input type="text" value="@inbox.ReceivingReportId" name="ReceivingReportId" hidden/>
+                                         
                                                 <div  class="m-2"><b>@inbox.Sender- </b>@inbox.Content</div>
                                                 @{
-                                                     var technicalMemberApproval = Model.RequestSent
-                                                        .FirstOrDefault(r => r.Id == inbox.ReceivingReportId)?.TechnicalMemberApproval;
-                                                    var generalSupApproval =  Model.RequestSent
-                                                        .FirstOrDefault(r => r.Id == inbox.ReceivingReportId)?.GeneralSupApproval;
+                                                    var request = Model.AllRequest.FirstOrDefault(r => r.Id == inbox.ReceivingReportId);
+                                                    var technicalMemberApproval = request?.TechnicalMemberApproval;
+                                                    var generalSupApproval = request?.GeneralSupApproval;
+                                                    var rejectedById = request?.RejectedById;
                                                 }
                                                
                                                 @if (@Model.UserGroupName == "Technical Member" || @Model.UserGroupName == "General Supervisor")
                                                 {
                                                     
+                                                    if ( @Model.UserId == rejectedById){
+                                                        <span class="bg-danger p-2 rounded text-white">Rejected</span>
+                                                    }
+                                                    else{
+                                                        bool isTechMember = Model.UserGroupName == "Technical Member";
+                                                        bool isGenSup = Model.UserGroupName == "General Supervisor";
 
-                                                    if ((@Model.UserGroupName == "Technical Member" && technicalMemberApproval == false)||(@Model.UserGroupName == "General Supervisor" && generalSupApproval == false))
-                                                    {
-                                                        <button class="btn btn-info btn-sm p-1" asp-page-handler="Accept">
-                                                            Accept
-                                                        </button>
-                                                        <button class="btn btn-warning btn-sm p-1" data-toggle="modal" data-target="#commentRejectModal">
-                                                            Comment & Reject
-                                                        </button>
+                                                        bool techPending = technicalMemberApproval == false && isTechMember;
+                                                        bool genSupPending = generalSupApproval == false && isGenSup;
+
+                                                        bool techAccepted = technicalMemberApproval == true && isTechMember;
+                                                        bool genSupAccepted = generalSupApproval == true && isGenSup;
+
+                                                        if (techPending || genSupPending)
+                                                        {
+                                                            <form method="post" class="d-inline">
+                                                                <input type="text" value="@inbox.ReceivingReportId" name="ReceivingReportId" hidden />
+                                                                <button class="btn btn-info btn-sm p-1" asp-page-handler="Accept">
+                                                                    Accept
+                                                                </button>
+                                                            </form>
+
+                                                            <button class="btn btn-warning btn-sm p-1" data-toggle="modal" data-target="#commentRejectModal" onclick="setRejectReportId(@inbox.ReceivingReportId)">
+                                                                Comment & Reject
+                                                            </button>
+                                                        }
+                                                        else if ((techAccepted || genSupAccepted) && inbox.Type != "Information")
+                                                        {
+                                                            <span class="bg-success p-2 rounded text-white">Accepted</span>
+                                                        }
                                                     }
-                                                    else if ((@Model.UserGroupName == "Technical Member" && technicalMemberApproval == true) ||
-                                                    (@Model.UserGroupName == "General Supervisor" && generalSupApproval == true))
-                                                    {
-                                                        <span class="bg-success p-2 rounded text-white">Accepted</span>
-                                                    }
+                                                
                                                 }
-                                               
-                                             
-                                                else if(@Model.UserGroupName == "Warehouse Keeper" && technicalMemberApproval == true && generalSupApproval == true){
-                                                     <a href="/ItemCards" class="btn btn-info btn-sm p-1">
+                                                else if (Model.UserGroupName == "Warehouse Keeper" && technicalMemberApproval == true && generalSupApproval == true)
+                                                {
+                                                    <a href="/ItemCards" class="btn btn-info btn-sm p-1">
                                                         Add Order to Item Card
                                                     </a>
                                                 }
-                                            </form>
-                                                    
 
                                         </td>
-                                        <td>12:35 AM</td>
+                                        @{
+                                            var localTime = inbox.CreatedAt.ToLocalTime();
+                                        }
+                                        <td>@localTime</td>
 
                                         <td>
                                             <form method="post">
@@ -114,6 +137,9 @@
                                         </td>
                                     </tr>
                                 }
+                            }
+                            
+                            
                             
                           
                         }
@@ -122,7 +148,10 @@
                                 var ReceivingWarehouse = Model.Warehouses.FirstOrDefault(s => s.StoreId == int.Parse(req.ReceivingWarehouse))?.   StoreName ?? "";
                                 <tr>
                                     <td>Request for Warehouse <b>@ReceivingWarehouse</b> has been sent successfully.</td>
-                                    <td>12:35 AM</td>
+                                    @{
+                                        var localTime = req.CreatedAt.ToLocalTime();
+                                    }
+                                    <td>@localTime</td>
                                     <td>
                                         @* <input type="submit" value="@Model.lblView" class="btn btn-secondary" asp-page-handler="View" /><a asp-page="/ViewReceivingReport"  class="btn btn-info btn-sm">View</a> *@
                                         <form method="post">
@@ -146,18 +175,21 @@
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
-                                <div class="modal-body">
-                                    <!-- Input field for comment -->
-                                    <div class="form-group">
-                                        <label for="commentInput">Your Comment</label>
-                                        <textarea id="commentInput" class="form-control" rows="3"></textarea>
+                                <form method="post" >
+                                    <div class="modal-body">
+                                        <!-- Input field for comment -->
+                                        <div class="form-group">
+                                             <input type="hidden" id="RejectReceivingReportId" name="RejectReceivingReportId" />
+                                            <label for="Comment">Your Comment</label>
+                                            <textarea id="Comment" name="Comment" class="form-control" rows="3"></textarea>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <!-- Button to submit the comment and reject -->
-                                    <button type="button" class="btn btn-danger" id="rejectBtn" data-dismiss="modal">Reject</button>
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                </div>
+                                    <div class="modal-footer">
+                                        <!-- Button to submit the comment and reject -->
+                                        <button type="submit" class="btn btn-danger" id="rejectBtn"  asp-page-handler="RejectWithComment">Reject</button>
+                                       
+                                    </div>
+                                </form>
                             </div>
                         </div>
                     </div>
@@ -172,36 +204,12 @@
 
 @section Scripts{
     <script>
-        $('#commentRejectModal').on('show.bs.modal', function (event) {
-            // Optionally, you can pass data to the modal here, like the request's ID, etc.
-            const button = $(event.relatedTarget); // Button that triggered the modal
-            const recipient = button.data('whatever'); // Extract info from data-* attributes (if needed)
-
-            // You can initialize the comment input or perform other actions here if necessary
-        });
-
-        // Handle the 'Reject' button inside the modal
-         $('#rejectBtn').click(function () {
-            const comment = $('#commentInput').val(); // Get the comment entered by the user
-
-            @* Use in future *@
-            @* if (comment.trim() === '') {
-                alert('Please enter a comment before rejecting the request.');
-                return;
-            } *@
-
-            // Submit the comment and reject action here
-            // Example: Make an AJAX request or handle form submission
-            console.log('Rejecting with comment:', comment);
-
-            // Close the modal after submission
-            $('#commentRejectModal').modal('hide');
-
-            // Optionally, update the UI or trigger other actions
-        }); 
+   
 
       
-
+        function setRejectReportId(id) {
+            document.getElementById("RejectReceivingReportId").value = id;
+        }
 
 
     </script>

@@ -13,7 +13,7 @@ namespace LabMaterials.Pages
     {
         private readonly LabDBContext _context;
         private readonly IWebHostEnvironment _environment;
-        public string lblCreateReport, lblSerialNumber, lblFiscalYear, lblReceivingDate, lblSectorNumber, lblReceivingWarehouse, lblBasedOnDocument, lblDocumentNumber, lblDocumentDate, lblAddAttachment, lblSupplierType, lblSupplierName, lblItemGroup, lblItemNo, lblItemName, lblItemDescription, lblUnitOfMeasure, lblQuantity, lblUnitPrice, lblTotalPrice, lblComments, lblRecipientID, lblRecipientName, lblTechnicalMember, lblChiefResponsible, lblSubmitReport, lblRecipientSector;
+        public string lblCreateReport, lblSerialNumber, lblFiscalYear, lblReceivingDate, lblSectorNumber, lblReceivingWarehouse, lblBasedOnDocument, lblDocumentNumber, lblDocumentDate, lblAddAttachment, lblSupplierType, lblSupplierName, lblItemGroup, lblItemNo, lblItemName, lblItemDescription, lblUnitOfMeasure, lblQuantity, lblUnitPrice, lblTotalPrice, lblComments, lblRecipientID, lblRecipientName, lblTechnicalMember, lblChiefResponsible, lblSubmitReport, lblRecipientSector, lblNewReceivingReport;
         public ReceivingReportsModel(LabDBContext context, IWebHostEnvironment environment)
         {
             _context = context;
@@ -165,6 +165,7 @@ namespace LabMaterials.Pages
                     .Select(u => u.FullName)
                     .FirstOrDefault();
 
+            
 
             if (string.IsNullOrEmpty(FiscalYear)){
                 ErrorMsg = (Program.Translations["FiscalYearMissing"])[Lang];
@@ -213,12 +214,16 @@ namespace LabMaterials.Pages
                 ErrorMsg = (Program.Translations["ReceipientMissing"])[Lang];
                 return Page();
             }
-            
+            if (!ItemsForReport.Any(item => item.ItemId != 0 && item.Quantity > 0 && item.UnitPrice > 0))
+            {
+                ErrorMsg = "At least one item must have the required fields filled (Item Group, Quantity, Unit Price, Item Name).";
+                return Page();
+            }
             else if(Report.TechnicalMemberId==0){
                 ErrorMsg = (Program.Translations["TechnicalMemberMissing"])[Lang];
                 return Page();
             }
-           
+          
            
            
             if (AttachmentFile != null)
@@ -237,18 +242,17 @@ namespace LabMaterials.Pages
                 ModelState.Remove("AttachmentPath"); // Removes the error for AttachmentPath
 
             }
-               
-            
-                
-            
-
-
             //if (!ModelState.IsValid)
             //{
             //    base.ExtractSessionData();
             //    Items = await _context.Items.ToListAsync();
             //    return Page();
             //}
+
+            if (Report.ChiefResponsibleId == 0)
+            {
+                Report.ChiefResponsibleId = null;
+            }
 
             _context.ReceivingReports.Add(Report);
             await _context.SaveChangesAsync();
@@ -263,6 +267,8 @@ namespace LabMaterials.Pages
                 // }
                 item.ReceivingReportId = Report.Id; // Ensure the ReceivingReportId is set correctly
                 item.ItemId = item.ItemId; // Ensure the ItemId is set correctly
+                if(item.Comments == null)
+                    item.Comments = "";
 
                 ModelState.Remove("AttachmentPath"); // Removes the error for AttachmentPath
 
@@ -276,7 +282,8 @@ namespace LabMaterials.Pages
                 ReceivingReportId = Report.Id,
                 Sender = Report.CreatedBy,
                 Recipient = TechnicalMemberName,
-                Content = Message
+                Content = Message,
+                Type = "Request"
             };
             dbContext.Messages.Add(msg);
             dbContext.SaveChanges();
@@ -315,6 +322,8 @@ namespace LabMaterials.Pages
             this.lblChiefResponsible = (Program.Translations["ChiefResponsible"])[Lang];
             this.lblSubmitReport =  (Program.Translations["SubmitReport"])[Lang];
             this.lblRecipientSector =  (Program.Translations["RecipientSector"])[Lang];
+            this.lblNewReceivingReport = (Program.Translations["NewReceivingReport"])[Lang];
+
 
 
            

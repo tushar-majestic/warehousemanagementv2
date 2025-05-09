@@ -10,61 +10,31 @@
     }
 </style>
 
-<h2>@ViewData["Title"]</h2>
 
-@* @if (Model.ReceivingReports?.Any() == true)
-{
-    foreach (var report in Model.ReceivingReports)
-    {
-        <div class="card mb-4 border-primary shadow-sm">
-            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-                <strong>Receiving Report - Serial No: @report.SerialNumber</strong>
-                <div>
-                    <a asp-page="/EditReceivingReport" asp-route-id="@report.Id" class="btn btn-sm btn-warning me-2">Edit</a>
-                 
-                    <a asp-page="/PrintReceivingReport" asp-route-id="@report.Id" class="btn btn-sm btn-secondary">Print</a>
-                </div>
-            </div>
-            <div class="card-body">
-                <dl class="row">
-                    <dt class="col-sm-3">Fiscal Year</dt>
-                    <dd class="col-sm-9">@report.FiscalYear</dd>
+<div class="d-block mb-4 mb-md-0">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb bg-transparent p-2 mb-0">
+            <li class="breadcrumb-item d-flex align-items-center">
+                <img src="images/home.png" alt="Home" width="16" height="16" class="me-2" />
+                <a href="/Home" class="text-decoration-none">@Model.lblHome</a>
+            </li>
+            <li class="breadcrumb-item d-flex align-items-center">
+                <img src="images/inventory.png" alt="Home" width="16" height="16" class="me-2" />
+                        
+                <a href="/Requests" class="text-decoration-none">@Model.lblRequests</a>
+            </li>
+            <li class="breadcrumb-item d-flex align-items-center">
+                <img src="images/inventory.png" alt="Home" width="16" height="16" class="me-2" />
+                 @ViewData["Title"]
+            </li>
 
-                    <dt class="col-sm-3">Receiving Date</dt>
-                    <dd class="col-sm-9">@report.ReceivingDate.ToString("yyyy-MM-dd")</dd>
+        </ol>
+    </nav>
 
-                    <dt class="col-sm-3">Recipient Sector</dt>
-                    <dd class="col-sm-9">@report.RecipientSector</dd>
+    <h1 class="h4">@ViewData["Title"]</h1>
+</div>
 
-                    <dt class="col-sm-3">Sector No.</dt>
-                    <dd class="col-sm-9">@report.SectorNumber</dd>
 
-                    <dt class="col-sm-3">Warehouse</dt>
-                    <dd class="col-sm-9">@report.ReceivingWarehouse</dd>
-
-                    <dt class="col-sm-3">Supplier</dt>
-                    <dd class="col-sm-9">@report.Supplier?.SupplierName</dd>
-
-                    <dt class="col-sm-3">Supplier Type</dt>
-                    <dd class="col-sm-9">@report.Supplier?.SupplierType</dd>
-
-                    <dt class="col-sm-3">Document No.</dt>
-                    <dd class="col-sm-9">@report.DocumentNumber</dd>
-
-                    <dt class="col-sm-3">Document Date</dt>
-                    <dd class="col-sm-9">@report.DocumentDate.ToString("yyyy-MM-dd")</dd>
-
-                    <dt class="col-sm-3">Remarks</dt>
-                    <dd class="col-sm-9">@report.Comments</dd>
-                </dl>
-            </div>
-        </div>
-    }
-}
-else
-{
-    <div class="alert alert-info text-center">No receiving reports available.</div>
-} *@
 
 <div>
     @if (Model.Report != null)
@@ -75,58 +45,71 @@ else
                 <strong>Receiving Report - Serial No: @report.SerialNumber</strong>
                 <div>
                     @* <a asp-page="/EditReceivingReport" asp-route-id="@report.Id" class="btn btn-sm btn-warning me-2">Edit</a> *@
-                    <a asp-page="/PrintReceivingReport" asp-route-id="@report.Id" class="btn btn-sm btn-secondary">Print</a>
+                    @* <a asp-page="/PrintReceivingReport" asp-route-id="@report.Id" class="btn btn-sm btn-secondary">Print</a> *@
                     
                     <button id="PrintReport" class="btn btn-primary" >Print Test</button>
 
                 </div>
             </div>
-            <div class="card-body" >
+            <div class="card-body">
+                @* <div>
+                    <p>Approval Status</p>
+                    <p>Technical Member: @report.TechnicalMemberApproval</p>
+                    @if(Model.GeneralSupervisor != null){
+                        <p>General Supervisor: @report.TechnicalMemberApproval</p>
+
+                    }
+                    
+                </div> *@
+
                 <dl class="row">
                     <dt class="col-sm-3">Fiscal Year</dt>
-                    <dd class="col-sm-9">@report.FiscalYear</dd>
+                    <dd class="col-sm-3">@report.FiscalYear</dd>
 
                     <dt class="col-sm-3">Receiving Date</dt>
-                    <dd class="col-sm-9">@report.ReceivingDate.ToString("yyyy-MM-dd")</dd>
+                    <dd class="col-sm-3">@report.ReceivingDate.ToString("yyyy-MM-dd")</dd>
 
                     <dt class="col-sm-3">Recipient Sector</dt>
-                    <dd class="col-sm-9">@report.RecipientSector</dd>
+                    <dd class="col-sm-3">@report.RecipientSector</dd>
 
                     <dt class="col-sm-3">Sector No.</dt>
-                    <dd class="col-sm-9">@report.SectorNumber</dd>
+                    <dd class="col-sm-3">@report.SectorNumber</dd>
                     
                     
                     <dt class="col-sm-3">Receiving Warehouse</dt>
-                    <dd class="col-sm-9">@Model.ReceivingWarehouse</dd>
+                    <dd class="col-sm-3">@Model.ReceivingWarehouse</dd>
 
                     <dt class="col-sm-3">Based On Document</dt>
-                    <dd class="col-sm-9">@report.BasedOnDocument</dd>
+                    <dd class="col-sm-3">@report.BasedOnDocument</dd>
 
                     <dt class="col-sm-3">Document No.</dt>
-                    <dd class="col-sm-9">@report.DocumentNumber</dd>
+                    <dd class="col-sm-3">@report.DocumentNumber</dd>
 
                     <dt class="col-sm-3">Document Date</dt>
-                    <dd class="col-sm-9">@report.DocumentDate.ToString("yyyy-MM-dd")</dd>
+                    <dd class="col-sm-3">@report.DocumentDate.ToString("yyyy-MM-dd")</dd>
 
                     <dt class="col-sm-3">Supplier Type</dt>
-                    <dd class="col-sm-9">@report.Supplier?.SupplierType</dd>
+                    <dd class="col-sm-3">@report.Supplier?.SupplierType</dd>
 
                     <dt class="col-sm-3">Supplier</dt>
-                    <dd class="col-sm-9">@report.Supplier?.SupplierName</dd>
+                    <dd class="col-sm-3">@report.Supplier?.SupplierName</dd>
                     
                     <dt class="col-sm-3">Receipient</dt>
-                    <dd class="col-sm-9">@Model.ReceipientManager</dd>
+                    <dd class="col-sm-3">@Model.ReceipientManager</dd>
 
                     <dt class="col-sm-3">Technical Member</dt>
-                    <dd class="col-sm-9">@Model.TechnicalMember</dd>
+                    <dd class="col-sm-3">@Model.TechnicalMember</dd>
 
                     <dt class="col-sm-3">General Supervisor</dt>
-                    <dd class="col-sm-9">@Model.GeneralSupervisor</dd>
+                        @if(Model.GeneralSupervisor != null){
+                            <dd class="col-sm-3">@Model.GeneralSupervisor</dd>
+                        }
+                        else
+                        { <dd class="col-sm-3">  none</dd>
+                        }
 
-                    
-
-                   
                 </dl>
+
 
                 <table class="table table-bordered table-striped">
                     <thead>
