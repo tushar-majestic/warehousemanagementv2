@@ -25,7 +25,9 @@ namespace LabMaterials.Pages
         public List<ItemInfoByStoreId> ItemInfoByStore { get; set; }
 
         public string lblAddDisbursement, lblRequesterName, lblRequestReceivedDate, lblQuantity, lblItemCode, lblItemTypeCode, lblItemName, lblStoreName, lblRequestingPlace, lblComments,
-            lblDisbursementStatus, lblInventoryBalanced, lblAdd, lblCancel, lblDisbursements;
+            lblDisbursementStatus, lblInventoryBalanced, lblAdd, lblCancel, lblDisbursements, lblItemGroups, lblArabicLanguage, lblEnglishLanguage, lblItemDescription,
+            lblTypeofAsset, lblChemical, lblRiskRating, lblUnitOfMeasure, lblAmountSpent, lblUnitPrice, lblTotalPrice, lblRemove, lblAddMore, lblSerialNumber,
+            lblFiscalYear, lblOrderDate, lblRequestingSector, lblRequestDocumentType, lblRequestDocumentNumber, lblSector;
 
         public void OnGet()
         {
@@ -204,6 +206,26 @@ namespace LabMaterials.Pages
             this.lblItemTypeCode = (Program.Translations["ItemTypeCode"])[Lang]; 
             this.lblQuantity = (Program.Translations["Quantity"])[Lang];
             this.lblDisbursements = (Program.Translations["Disbursements"])[Lang];
+            this.lblItemGroups = (Program.Translations["ItemGroups"])[Lang];
+            this.lblArabicLanguage = (Program.Translations["ArabicLanguage"])[Lang];
+            this.lblEnglishLanguage = (Program.Translations["EnglishLanguage"])[Lang];
+            this.lblItemDescription = (Program.Translations["ItemDescription"])[Lang];
+            this.lblTypeofAsset = (Program.Translations["TypeofAsset"])[Lang];
+            this.lblChemical = (Program.Translations["Chemical"])[Lang];
+            this.lblRiskRating = (Program.Translations["RiskRating"])[Lang];
+            this.lblUnitOfMeasure = (Program.Translations["UnitOfMeasure"])[Lang];
+            this.lblAmountSpent = (Program.Translations["AmountSpent"])[Lang];
+            this.lblUnitPrice = (Program.Translations["UnitPrice"])[Lang];
+            this.lblTotalPrice = (Program.Translations["TotalPrice"])[Lang];
+            this.lblRemove = (Program.Translations["Remove"])[Lang];
+            this.lblAddMore = (Program.Translations["AddMore"])[Lang];
+            this.lblSerialNumber = (Program.Translations["SerialNumber"])[Lang];
+            this.lblFiscalYear = (Program.Translations["FiscalYear"])[Lang];
+            this.lblOrderDate = (Program.Translations["OrderDate"])[Lang];
+            this.lblRequestingSector = (Program.Translations["RequestingSector"])[Lang];
+            this.lblRequestDocumentType = (Program.Translations["RequestDocumentType"])[Lang];
+            this.lblRequestDocumentNumber = (Program.Translations["RequestDocumentNumber"])[Lang];
+            this.lblSector = (Program.Translations["Sector"])[Lang];
         }
     }
 }

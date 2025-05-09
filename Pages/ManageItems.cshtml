@@ -98,88 +98,126 @@
         });
     </script>
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const filterButton = document.getElementById("toggleFilterDropdown");
-            const filterPanel = document.getElementById("filterDropdownPanel");
+document.addEventListener("DOMContentLoaded", function () {
+    const filterButton = document.getElementById("toggleFilterDropdown");
+    const filterPanel = document.getElementById("filterDropdownPanel");
 
-            // Dummy data — replace with your actual Razor model values
-            const filterData = {
-                typeName: @Html.Raw(Json.Serialize(Model.UniqueTypeNames ?? new List<string>())),
-                group: @Html.Raw(Json.Serialize(Model.UniqueGroup ?? new List<string>())),
-                unitCode: @Html.Raw(Json.Serialize(Model.UniqueUnitCode ?? new List<string>())),
-                hazardType: @Html.Raw(Json.Serialize(Model.UniqueHazardType ?? new List<string>()))
-            };
+    const filterData = {
+        typeName: @Html.Raw(Json.Serialize(Model.UniqueTypeNames ?? new List<string>())),
+        unitCode: @Html.Raw(Json.Serialize(Model.UniqueUnitCode ?? new List<string>())),
+        hazardType: @Html.Raw(Json.Serialize(Model.UniqueHazardType ?? new List<string>()))
+    };
 
-            // Show values inside the right panel
-            function showFilterValues(category) {
-                const container = document.getElementById("filterValues");
-                container.innerHTML = "";
+    // Load selected filters from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const selectedFilters = {};
+    for (const key in filterData) {
+        const value = urlParams.get(key);
+        if (value) {
+            selectedFilters[key] = decodeURIComponent(value.trim());
+        }
+    }
 
-                let values = filterData[category] || [];
-                values = values.filter(v => typeof v === 'string' && v.trim() !== "");
+    function showFilterValues(category) {
+        const container = document.getElementById("filterValues");
+        container.innerHTML = "";
 
-                if (values.length === 0) {
-                    container.innerHTML = "<div class='text-muted'>No values found</div>";
-                    return;
-                }
+        let values = filterData[category] || [];
+        values = values.filter(v => typeof v === 'string' && v.trim() !== "");
 
-                values.forEach(function (value) {
-                    const div = document.createElement("div");
-                    div.className = "filter-value mb-1";
-                    const btn = document.createElement("button");
-                    btn.className = "btn btn-sm w-100 text-start";
-                    btn.innerText = value;
-                    btn.value = value;
-                    btn.onclick = function () {
-                        applyFilter(category, value);
-                    };
-                    div.appendChild(btn);
-                    container.appendChild(div);
-                });
+        if (values.length === 0) {
+            container.innerHTML = "<div class='text-muted'>No values found</div>";
+            return;
+        }
 
-                document.querySelectorAll('.filter-option').forEach(el => el.classList.remove('fw-bold', 'text-dark'));
-                document.querySelector(`[onclick="showFilterValues('${category}')"]`).classList.add('fw-bold', 'text-dark');
-            }
-            
-            function applyFilter(field, value) {
-                const url = new URL(window.location.href);
+        const list = document.createElement("div");
 
-                // Remove the 'handler' parameter if it exists
-                url.searchParams.delete("handler");
+        values.forEach(function (value) {
+            const checkboxId = `${category}_${value}`;
+            const div = document.createElement("div");
+            div.className = "form-check mb-1";
 
-                // Set the selected filter
-                url.searchParams.set(field, value);
+            const input = document.createElement("input");
+            input.className = "form-check-input";
+            input.type = "checkbox";
+            input.name = category;
+            input.value = value;
+            input.id = checkboxId;
 
-                // Optional: clear the other filter if you want only one active at a time
-                if (field === "typeName") url.searchParams.delete("group");
-                if (field === "group") url.searchParams.delete("typeName");
+            input.checked = selectedFilters[category] === value;
 
-                // Set or reset page to 1
-                url.searchParams.set("page", "1");
-
-                // Redirect with the updated query string
-                window.location.href = url;
-            }
-
-
-            // Show/hide logic
-            filterButton.addEventListener("click", function (e) {
-                e.stopPropagation();
-                const isVisible = filterPanel.style.display === "flex";
-                filterPanel.style.display = isVisible ? "none" : "flex";
-                if (!isVisible) showFilterValues('typeName'); // default on open
-            });
-
-            document.addEventListener("click", function (e) {
-                if (!filterPanel.contains(e.target) && e.target !== filterButton) {
-                    filterPanel.style.display = "none";
+            input.addEventListener("change", function () {
+                if (input.checked) {
+                    document.querySelectorAll(`input[name="${category}"]`).forEach(cb => {
+                        if (cb !== input) cb.checked = false;
+                    });
+                    selectedFilters[category] = value;
+                } else {
+                    delete selectedFilters[category];
                 }
             });
 
-            // Make showFilterValues globally accessible
-            window.showFilterValues = showFilterValues;
+            const label = document.createElement("label");
+            label.className = "form-check-label";
+            label.htmlFor = checkboxId;
+            label.innerText = value;
+
+            div.appendChild(input);
+            div.appendChild(label);
+            list.appendChild(div);
         });
-    </script>
+
+        container.appendChild(list);
+
+        // Apply button
+        const applyDiv = document.createElement("div");
+        applyDiv.className = "mt-3 text-end";
+        const applyBtn = document.createElement("button");
+        applyBtn.type = "button";
+        applyBtn.className = "btn btn-success btn-sm";
+        applyBtn.innerText = "Apply";
+        applyBtn.onclick = function () {
+            applyFilters();
+        };
+        applyDiv.appendChild(applyBtn);
+        container.appendChild(applyDiv);
+
+        // Highlight current filter type
+        document.querySelectorAll('.filter-option').forEach(el => el.classList.remove('fw-bold', 'text-dark'));
+        document.querySelector(`[onclick="showFilterValues('${category}')"]`)?.classList.add('fw-bold', 'text-dark');
+    }
+
+    function applyFilters() {
+        const url = new URL(window.location.href);
+        url.searchParams.delete("handler");
+        url.searchParams.set("page", "1");
+
+        Object.entries(selectedFilters).forEach(([key, value]) => {
+            if (value) {
+                url.searchParams.set(key, value);
+            }
+        });
+
+        window.location.href = url;
+    }
+
+    filterButton.addEventListener("click", function (e) {
+        e.stopPropagation();
+        const isVisible = filterPanel.style.display === "flex";
+        filterPanel.style.display = isVisible ? "none" : "flex";
+        if (!isVisible) showFilterValues('typeName'); // default on open
+    });
+
+    document.addEventListener("click", function (e) {
+        if (!filterPanel.contains(e.target) && e.target !== filterButton) {
+            filterPanel.style.display = "none";
+        }
+    });
+
+    window.showFilterValues = showFilterValues;
+});
+</script>
+
 }
 @{
 
@@ -293,7 +331,7 @@
 
                 <div class="col d-flex justify-content-end gap-2">
                     <div class="position-relative">
-                        <button class="btn btn-secondary btn-sm" id="toggleDropdown" type="button">
+                        <button class="btn btn-secondary" id="toggleDropdown" type="button">
                             @Model.lblShowHideColumn
                         </button>
 
@@ -352,8 +390,7 @@
                     </div>
                     @if (Model.TotalItems > 0)
                     {
-                        <!-- Right: Filter button and dropdown -->
-                        <div class="position-relative">
+                        <div class="text-end position-relative">
                             <button type="button" id="toggleFilterDropdown" class="btn btn-secondary">
                                 Filter
                             </button>
@@ -364,18 +401,23 @@
                                 style="right: 0; top: 100%; width: 400px; display: none; z-index: 1000; height: 400px; overflow: hidden;">
 
                                 <!-- Left: Filter Categories -->
-                                <div class="border-end p-2" style="width: 40%; overflow-y: auto;">
+                                <div class="border-end p-2" style="width: 40%; overflow-y: auto; position: relative;">
                                     <div class="fw-bolder text-center mb-2">Filter By</div>
-                                    @* <div class="filter-option text-primary mb-2" onclick="showFilterValues('itemName')" style="cursor: pointer;">Item Name</div> *@
                                     <div class="filter-option text-primary mb-2" onclick="showFilterValues('typeName')" style="cursor: pointer;">Type Name</div>
                                     <div class="filter-option text-primary mb-2" onclick="showFilterValues('hazardType')" style="cursor: pointer;">Hazard Type</div>
-                                    <div class="filter-option text-primary mb-2" onclick="showFilterValues('group')" style="cursor: pointer;">Group</div>
                                     <div class="filter-option text-primary mb-2" onclick="showFilterValues('unitCode')" style="cursor: pointer;">Unit Code</div>
+
+                                    <!-- Clear Filters Button -->
+                                    <button type="button" class="btn btn-primary"
+                                        style="position: absolute; bottom: 10px; left: 10px;"
+                                        onclick="window.location.href='/ManageItems'">
+                                        Clear Filters
+                                    </button>
                                 </div>
 
-                                <!-- Right: Unique Values -->
+                                <!-- Right: Dynamic Filter Values + Apply Button -->
                                 <div class="p-2" id="filterValues"
-                                style="width: 60%; overflow-y: auto; border-left: 1px solid #eee;">
+                                    style="width: 60%; overflow-y: auto; border-left: 1px solid #eee;">
                                     <div class="text-muted">Select a filter from left</div>
                                 </div>
                             </div>
@@ -420,7 +462,7 @@
 
                     <li class="page-item">
                         <a class="page-link"
-                            href="?page=@(Model.CurrentPage - 1)&ItemName=@Model.ItemName&Group=@Model.Group&FromDate=@Model.FromDate?.ToString("yyyy-MM-dd")&ToDate=@Model.ToDate?.ToString("yyyy-MM-dd")">&laquo;</a>
+                            href="?page=@(Model.CurrentPage - 1)&ItemName=@Model.ItemName&Group=@Model.Group&typeName=@Model.TypeName&hazardType=@Model.HazardType&unitCode=@Model.UnitCode&FromDate=@Model.FromDate?.ToString("yyyy-MM-dd")&ToDate=@Model.ToDate?.ToString("yyyy-MM-dd")">&laquo;</a>
                     </li>
                 }
 
@@ -431,7 +473,7 @@
                     {
                         <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
                             <a class="page-link"
-                                href="?page=@i&ItemName=@Model.ItemName&Group=@Model.Group&FromDate=@Model.FromDate?.ToString("yyyy-MM-dd")&ToDate=@Model.ToDate?.ToString("yyyy-MM-dd")">@i</a>
+                                href="?page=@i&ItemName=@Model.ItemName&Group=@Model.Group&typeName=@Model.TypeName&hazardType=@Model.HazardType&unitCode=@Model.UnitCode&FromDate=@Model.FromDate?.ToString("yyyy-MM-dd")&ToDate=@Model.ToDate?.ToString("yyyy-MM-dd")">@i</a>
                         </li>
                     }
                 }
@@ -442,7 +484,7 @@
                     {
                         <li class="page-item">
                             <a class="page-link"
-                                href="?page=1&ItemName=@Model.ItemName&Group=@Model.Group&FromDate=@Model.FromDate?.ToString("yyyy-MM-dd")&ToDate=@Model.ToDate?.ToString("yyyy-MM-dd")">1</a>
+                                href="?page=1&ItemName=@Model.ItemName&Group=@Model.Group&typeName=@Model.TypeName&hazardType=@Model.HazardType&unitCode=@Model.UnitCode&FromDate=@Model.FromDate?.ToString("yyyy-MM-dd")&ToDate=@Model.ToDate?.ToString("yyyy-MM-dd")">1</a>
                         </li>
                         <li class="page-item disabled">
                             <span class="page-link">...</span>
@@ -454,7 +496,7 @@
                     {
                         <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
                             <a class="page-link"
-                                href="?page=@i&ItemName=@Model.ItemName&Group=@Model.Group&FromDate=@Model.FromDate?.ToString("yyyy-MM-dd")&ToDate=@Model.ToDate?.ToString("yyyy-MM-dd")">@i</a>
+                                href="?page=@i&ItemName=@Model.ItemName&Group=@Model.Group&typeName=@Model.TypeName&hazardType=@Model.HazardType&unitCode=@Model.UnitCode&FromDate=@Model.FromDate?.ToString("yyyy-MM-dd")&ToDate=@Model.ToDate?.ToString("yyyy-MM-dd")">@i</a>
                         </li>
                     }
 
@@ -471,7 +513,7 @@
                     {
                         <li class="page-item">
                             <a class="page-link"
-                                href="?page=@Model.TotalPages&ItemName=@Model.ItemName&Group=@Model.Group&FromDate=@Model.FromDate?.ToString("yyyy-MM-dd")&ToDate=@Model.ToDate?.ToString("yyyy-MM-dd")">@Model.TotalPages</a>
+                                href="?page=@Model.TotalPages&ItemName=@Model.ItemName&Group=@Model.Group&typeName=@Model.TypeName&hazardType=@Model.HazardType&unitCode=@Model.UnitCode&FromDate=@Model.FromDate?.ToString("yyyy-MM-dd")&ToDate=@Model.ToDate?.ToString("yyyy-MM-dd")">@Model.TotalPages</a>
                         </li>
                     }
                 }
@@ -481,7 +523,7 @@
                 {
                     <li class="page-item">
                         <a class="page-link"
-                            href="?page=@(Model.CurrentPage + 1)&ItemName=@Model.ItemName&Group=@Model.Group&FromDate=@Model.FromDate?.ToString("yyyy-MM-dd")&ToDate=@Model.ToDate?.ToString("yyyy-MM-dd")">&raquo;</a>
+                            href="?page=@(Model.CurrentPage + 1)&ItemName=@Model.ItemName&Group=@Model.Group&typeName=@Model.TypeName&hazardType=@Model.HazardType&unitCode=@Model.UnitCode&FromDate=@Model.FromDate?.ToString("yyyy-MM-dd")&ToDate=@Model.ToDate?.ToString("yyyy-MM-dd")">&raquo;</a>
                     </li>
 
                 }
@@ -621,7 +663,7 @@
 
                     <li class="page-item">
                         <a class="page-link"
-                            href="?page=@(Model.CurrentPage - 1)&ItemName=@Model.ItemName&Group=@Model.Group&FromDate=@Model.FromDate?.ToString("yyyy-MM-dd")&ToDate=@Model.ToDate?.ToString("yyyy-MM-dd")">&laquo;</a>
+                            href="?page=@(Model.CurrentPage - 1)&ItemName=@Model.ItemName&Group=@Model.Group&typeName=@Model.TypeName&hazardType=@Model.HazardType&unitCode=@Model.UnitCode&FromDate=@Model.FromDate?.ToString("yyyy-MM-dd")&ToDate=@Model.ToDate?.ToString("yyyy-MM-dd")">&laquo;</a>
                     </li>
                 }
 
@@ -632,7 +674,7 @@
                     {
                         <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
                             <a class="page-link"
-                                href="?page=@i&ItemName=@Model.ItemName&Group=@Model.Group&FromDate=@Model.FromDate?.ToString("yyyy-MM-dd")&ToDate=@Model.ToDate?.ToString("yyyy-MM-dd")">@i</a>
+                                href="?page=@i&ItemName=@Model.ItemName&Group=@Model.Group&typeName=@Model.TypeName&hazardType=@Model.HazardType&unitCode=@Model.UnitCode&FromDate=@Model.FromDate?.ToString("yyyy-MM-dd")&ToDate=@Model.ToDate?.ToString("yyyy-MM-dd")">@i</a>
                         </li>
                     }
                 }
@@ -643,7 +685,7 @@
                     {
                         <li class="page-item">
                             <a class="page-link"
-                                href="?page=1&ItemName=@Model.ItemName&Group=@Model.Group&FromDate=@Model.FromDate?.ToString("yyyy-MM-dd")&ToDate=@Model.ToDate?.ToString("yyyy-MM-dd")">1</a>
+                                href="?page=1&ItemName=@Model.ItemName&Group=@Model.Group&typeName=@Model.TypeName&hazardType=@Model.HazardType&unitCode=@Model.UnitCode&FromDate=@Model.FromDate?.ToString("yyyy-MM-dd")&ToDate=@Model.ToDate?.ToString("yyyy-MM-dd")">1</a>
                         </li>
                         <li class="page-item disabled">
                             <span class="page-link">...</span>
@@ -655,7 +697,7 @@
                     {
                         <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
                             <a class="page-link"
-                                href="?page=@i&ItemName=@Model.ItemName&Group=@Model.Group&FromDate=@Model.FromDate?.ToString("yyyy-MM-dd")&ToDate=@Model.ToDate?.ToString("yyyy-MM-dd")">@i</a>
+                                href="?page=@i&ItemName=@Model.ItemName&Group=@Model.Group&typeName=@Model.TypeName&hazardType=@Model.HazardType&unitCode=@Model.UnitCode&FromDate=@Model.FromDate?.ToString("yyyy-MM-dd")&ToDate=@Model.ToDate?.ToString("yyyy-MM-dd")">@i</a>
                         </li>
                     }
 
@@ -672,7 +714,7 @@
                     {
                         <li class="page-item">
                             <a class="page-link"
-                                href="?page=@Model.TotalPages&ItemName=@Model.ItemName&Group=@Model.Group&FromDate=@Model.FromDate?.ToString("yyyy-MM-dd")&ToDate=@Model.ToDate?.ToString("yyyy-MM-dd")">@Model.TotalPages</a>
+                                href="?page=@Model.TotalPages&ItemName=@Model.ItemName&Group=@Model.Group&typeName=@Model.TypeName&hazardType=@Model.HazardType&unitCode=@Model.UnitCode&FromDate=@Model.FromDate?.ToString("yyyy-MM-dd")&ToDate=@Model.ToDate?.ToString("yyyy-MM-dd")">@Model.TotalPages</a>
                         </li>
                     }
                 }
@@ -682,7 +724,7 @@
                 {
                     <li class="page-item">
                         <a class="page-link"
-                            href="?page=@(Model.CurrentPage + 1)&ItemName=@Model.ItemName&Group=@Model.Group&FromDate=@Model.FromDate?.ToString("yyyy-MM-dd")&ToDate=@Model.ToDate?.ToString("yyyy-MM-dd")">&raquo;</a>
+                            href="?page=@(Model.CurrentPage + 1)&ItemName=@Model.ItemName&Group=@Model.Group&typeName=@Model.TypeName&hazardType=@Model.HazardType&unitCode=@Model.UnitCode&FromDate=@Model.FromDate?.ToString("yyyy-MM-dd")&ToDate=@Model.ToDate?.ToString("yyyy-MM-dd")">&raquo;</a>
                     </li>
 
                 }

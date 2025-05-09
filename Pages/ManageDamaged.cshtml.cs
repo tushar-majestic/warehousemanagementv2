@@ -15,6 +15,10 @@ namespace LabMaterials.Pages
         public List<string> UniqueItemNames { get; set; }
         public List<string> UniqueTypeNames { get; set; }
         public List<string> UniqueDamageReasons { get; set; }
+        [BindProperty(SupportsGet = true)]
+        public string? TypeName { get; set; }
+        [BindProperty(SupportsGet = true)]
+        public string? DamageReason { get; set; }
         public int CurrentPage { get; set; }
         public int ItemsPerPage { get; set; } = 10;
         public int TotalPages { get; set; }
@@ -33,7 +37,7 @@ namespace LabMaterials.Pages
                     string pagevalue = HttpContext.Request.Query["page"];
                     page = int.Parse(pagevalue);
                     this.ItemName = ItemName;
-                    FillData(ItemName, Group, page);
+                    FillData(ItemName, Group, page, TypeName, DamageReason);
 
                 }
             }
@@ -181,7 +185,8 @@ namespace LabMaterials.Pages
             TotalItems = Items.Count();
         }*/
 
-        private void FillData(string ItemName, string Group, int page = 1)
+        private void FillData(string ItemName, string Group, int page = 1, string? typeName = null, string? damageReason = null)
+
         {
             FillLables();
             var dbContext = new LabDBContext();
@@ -217,12 +222,29 @@ namespace LabMaterials.Pages
             if (string.IsNullOrEmpty(Group) == false)
                 query = query.Where(i => i.GroupDesc.Contains(Group));
 
+            if (!string.IsNullOrEmpty(typeName))
+                query = query.Where(i => i.TypeName == typeName);
+
+            if (!string.IsNullOrEmpty(damageReason))
+                query = query.Where(i => i.DamageReason == damageReason);
+
+
             TotalItems = query.Count();
             TotalPages = (int)Math.Ceiling((double)TotalItems / ItemsPerPage);
 
-            // UniqueItemNames = query.Select(i => i.ItemName).Distinct().ToList();
-            UniqueTypeNames = query.Select(i => i.TypeName).Distinct().ToList();
-            UniqueDamageReasons = query.Select(i => i.DamageReason).Distinct().ToList();
+            var allItemsQuery = (from i in dbContext.Items
+                                 join g in dbContext.ItemGroups on i.GroupCode equals g.GroupCode
+                                 join t in dbContext.ItemTypes on i.ItemTypeCode equals t.ItemTypeCode
+                                 join u in dbContext.Units on i.UnitId equals u.Id
+                                 join d in dbContext.DamagedItems on i.ItemId equals d.ItemId
+                                 select new ItemInfo
+                                 {
+                                     TypeName = t.TypeName,
+                                     DamageReason = d.DamagedReason
+                                 });
+
+            UniqueTypeNames = allItemsQuery.Select(i => i.TypeName).Where(x => !string.IsNullOrEmpty(x)).Distinct().ToList();
+            UniqueDamageReasons = allItemsQuery.Select(i => i.DamageReason).Where(x => !string.IsNullOrEmpty(x)).Distinct().ToList();
 
             var list = query.ToList();
 

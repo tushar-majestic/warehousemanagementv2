@@ -18,7 +18,9 @@ namespace LabMaterials.Pages
         public DateTime CurrentDate;
 
         public string lblItemName, lblDamagedQuantity, lblDamageReason, lblAdd, lblCancel, lblDamageItem, lblItems, lblItemCode, lblQuantity, lblStoreName, lblDamagedItems,
-        lblManageItemGroups, lblEnglishLanguage, lblArabicLanguage;
+        lblManageItemGroups, lblEnglishLanguage, lblArabicLanguage, lblItemDescription, lblTypeofContract, lblChemical, lblRiskRating, lblStateofMatter, lblExpiryDate,
+        lblUnitOfMeasure, lblReturned, lblReturnNotes, lblAddMore, lblRemove, lblOrderNumber, lblOrderDate, lblRequestingSector, lblApplicantsSector, lblReasonForReturn,
+        lblDamaged, lblInvalid, lblExpired, lblSurPlus;
         public void OnGet(int id)
         {
             base.ExtractSessionData();
@@ -151,6 +153,26 @@ namespace LabMaterials.Pages
             this.lblManageItemGroups = (Program.Translations["ManageItemGroups"])[Lang];
             this.lblArabicLanguage = (Program.Translations["ArabicLanguage"])[Lang];
             this.lblEnglishLanguage = (Program.Translations["EnglishLanguage"])[Lang];
+            this.lblItemDescription = (Program.Translations["ItemDescription"])[Lang];
+            this.lblTypeofContract = (Program.Translations["TypeofContract"])[Lang];
+            this.lblChemical = (Program.Translations["Chemical"])[Lang];
+            this.lblRiskRating = (Program.Translations["RiskRating"])[Lang];
+            this.lblStateofMatter = (Program.Translations["StateofMatter"])[Lang];
+            this.lblExpiryDate = (Program.Translations["ExpiryDate"])[Lang];
+            this.lblUnitOfMeasure = (Program.Translations["UnitOfMeasure"])[Lang];
+            this.lblReturned = (Program.Translations["Returned"])[Lang];
+            this.lblReturnNotes = (Program.Translations["ReturnNotes"])[Lang];
+            this.lblRemove = (Program.Translations["Remove"])[Lang];
+            this.lblAddMore = (Program.Translations["AddMore"])[Lang];
+            this.lblOrderNumber = (Program.Translations["OrderNumber"])[Lang];
+            this.lblOrderDate = (Program.Translations["OrderDate"])[Lang];
+            this.lblRequestingSector = (Program.Translations["RequestingSector"])[Lang];
+            this.lblApplicantsSector = (Program.Translations["ApplicantsSector"])[Lang];
+            this.lblReasonForReturn = (Program.Translations["ReasonForReturn"])[Lang];
+            this.lblSurPlus = (Program.Translations["SurPlus"])[Lang];
+            this.lblExpired = (Program.Translations["Expired"])[Lang];
+            this.lblInvalid = (Program.Translations["Invalid"])[Lang];
+            this.lblDamaged = (Program.Translations["Damaged"])[Lang];
         }
     }
 }

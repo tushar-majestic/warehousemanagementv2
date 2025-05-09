@@ -27,6 +27,12 @@ namespace LabMaterials.Pages
         public int ItemsPerPage { get; set; } = 10;
         public int TotalPages { get; set; }
         public List<string> SelectedColumns { get; set; } = new List<string>();
+        [BindProperty(SupportsGet = true)]
+        public string? TypeName { get; set; }
+        [BindProperty(SupportsGet = true)]
+        public string? HazardType { get; set; }
+        [BindProperty(SupportsGet = true)]
+        public string? UnitCode { get; set; }
 
 
         public string lblItems, lblItemName, lblGroupName, lblItemCode, lblQuantity, lblHazardType, lblTypeName,
@@ -48,7 +54,7 @@ namespace LabMaterials.Pages
                     this.FromDate = FromDate;
                     this.ToDate = ToDate;
                     Console.WriteLine("FromDate", this.FromDate);
-                    FillData(ItemName, Group, FromDate, ToDate, page);
+                    FillData(ItemName, Group, FromDate, ToDate, page,TypeName, HazardType, UnitCode);
 
                 }
             }
@@ -212,7 +218,7 @@ namespace LabMaterials.Pages
             TotalItems = Items.Count();
         }*/
 
-        private void FillData(string ItemName, string Group, DateTime? FromDate, DateTime? ToDate, int page = 1)
+        private void FillData(string ItemName, string Group, DateTime? FromDate, DateTime? ToDate, int page = 1, string? TypeName = null, string? HazardType = null, string? UnitCode = null)
         {
             if (HttpContext.Request.Query.ContainsKey("page"))
             {
@@ -252,17 +258,36 @@ namespace LabMaterials.Pages
             if (string.IsNullOrEmpty(Group) == false)
                 query = query.Where(i => i.GroupDesc.Contains(Group));
 
+            if (string.IsNullOrEmpty(HazardType) == false)
+                query = query.Where(i => i.HazardTypeName.Contains(HazardType));
+
+            if (string.IsNullOrEmpty(UnitCode) == false)
+                query = query.Where(i => i.UnitCode.Contains(UnitCode));
+
+            if (string.IsNullOrEmpty(TypeName) == false)
+                query = query.Where(i => i.TypeName.Contains(TypeName));
+
             if (string.IsNullOrEmpty(ItemName) == false && string.IsNullOrEmpty(Group) == false)
                 query = query.Where(i => i.ItemName.Contains(ItemName) && i.GroupDesc.Contains(Group));
 
             if (FromDate != null && FromDate >= DateTime.MinValue && ToDate != null && ToDate >= DateTime.MinValue)
                 query = query.Where(e => e.ExpiryDate.Value.Date >= FromDate.Value.Date && e.ExpiryDate.Value.Date <= ToDate.Value.Date);
 
+            var allItemsQuery = (from i in dbContext.Items
+                                 join g in dbContext.ItemGroups on i.GroupCode equals g.GroupCode
+                                 join t in dbContext.ItemTypes on i.ItemTypeCode equals t.ItemTypeCode
+                                 join u in dbContext.Units on i.UnitId equals u.Id
+                                 where i.Ended == null
+                                 select new ItemInfo
+                                 {
+                                     HazardTypeName = i.HazardTypeName,
+                                     TypeName = t.TypeName,
+                                     UnitCode = u.UnitCode,
+                                 });
 
-            UniqueTypeNames = query.Select(i => i.TypeName).Distinct().ToList();
-            UniqueGroup = query.Select(i => i.GroupDesc).Distinct().ToList();
-            UniqueUnitCode = query.Select(i => i.UnitCode).Distinct().ToList();
-            UniqueHazardType = query.Select(i => i.HazardTypeName).Distinct().ToList();
+            UniqueTypeNames = allItemsQuery.Select(i => i.TypeName).Where(x => !string.IsNullOrEmpty(x)).Distinct().ToList();
+            UniqueUnitCode = allItemsQuery.Select(i => i.UnitCode).Where(x => !string.IsNullOrEmpty(x)).Distinct().ToList();
+            UniqueHazardType = allItemsQuery.Select(i => i.HazardTypeName).Where(x => !string.IsNullOrEmpty(x)).Distinct().ToList();
 
             TotalItems = query.Count();
             TotalPages = (int)Math.Ceiling((double)TotalItems / ItemsPerPage);

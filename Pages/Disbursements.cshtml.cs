@@ -21,6 +21,12 @@ namespace LabMaterials.Pages
         public int ItemsPerPage { get; set; } = 10;
         public int TotalPages { get; set; }
         public List<string> SelectedColumns { get; set; } = new List<string>();
+        [BindProperty(SupportsGet = true)]
+        public string? Status { get; set; }
+        [BindProperty(SupportsGet = true)]
+        public string? StoreName { get; set; }
+        [BindProperty(SupportsGet = true)]
+        public string? RequestingPlace { get; set; }
         public void OnGet(string? RequesterName, DateTime? FromDate, DateTime? ToDate, int page = 1) 
         {
             base.ExtractSessionData();
@@ -34,7 +40,7 @@ namespace LabMaterials.Pages
                         this.RequesterName = RequesterName;
                         this.FromDate = FromDate;
                         this.ToDate = ToDate;
-                        FillData(RequesterName, FromDate, ToDate, page);
+                        FillData(RequesterName, FromDate, ToDate, page, Status, StoreName, RequestingPlace);
 
                     }
 
@@ -215,7 +221,7 @@ namespace LabMaterials.Pages
                 RedirectToPage("./Index?lang=" + Lang);
         }*/
 
-        private void FillData(string? RequesterName, DateTime? FromDate, DateTime? ToDate, int page = 1)
+        private void FillData(string? RequesterName, DateTime? FromDate, DateTime? ToDate, int page = 1, string? Status = null, string? StoreName = null, string? RequestingPlace = null)
         {
             if (HttpContext.Request.Query.ContainsKey("page"))
             {
@@ -253,10 +259,28 @@ namespace LabMaterials.Pages
                 if (FromDate != null && FromDate >= DateTime.MinValue && ToDate != null && ToDate >= DateTime.MinValue)
                     query = query.Where(e => e.ReqReceivedAt.Date >= FromDate.Value.Date && e.ReqReceivedAt.Date <= ToDate.Value.Date);
 
+                if (string.IsNullOrEmpty(Status) == false)
+                    query = query.Where(i => i.Status.Contains(Status));
 
-                UniqueRequestingPlace = query.Select(i => i.RequestingPlace).Distinct().ToList();
-                UniqueStatus = query.Select(i => i.Status).Distinct().ToList();
-                UniqueStoreName = query.Select(i => i.StoreName).Distinct().ToList();
+                if (string.IsNullOrEmpty(StoreName) == false)
+                    query = query.Where(i => i.StoreName.Contains(StoreName));
+
+                if (string.IsNullOrEmpty(RequestingPlace) == false)
+                    query = query.Where(i => i.RequestingPlace.Contains(RequestingPlace));
+
+                var allItemsQuery = from d in dbContext.DisbursementRequests
+                                    join s in dbContext.Stores on d.StoreId equals s.StoreId
+                                    join i in dbContext.Items on d.Itemcode equals i.ItemCode
+                                    select new DisbursementInfo
+                                    {
+                                        RequestingPlace = d.RequestingPlace,
+                                        Status = d.Status,
+                                        StoreName = s.StoreName,
+                                    };
+
+                UniqueRequestingPlace = allItemsQuery.Select(i => i.RequestingPlace).Where(x => !string.IsNullOrEmpty(x)).Distinct().ToList();
+                UniqueStatus = allItemsQuery.Select(i => i.Status).Where(x => !string.IsNullOrEmpty(x)).Distinct().ToList();
+                UniqueStoreName = allItemsQuery.Select(i => i.StoreName).Where(x => !string.IsNullOrEmpty(x)).Distinct().ToList();
 
                 // Get the total count of items
                 TotalItems = query.Count();

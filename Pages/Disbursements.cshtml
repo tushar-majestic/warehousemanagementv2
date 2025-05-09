@@ -84,81 +84,125 @@
         });
     </script>
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const filterButton = document.getElementById("toggleFilterDropdown");
-            const filterPanel = document.getElementById("filterDropdownPanel");
+document.addEventListener("DOMContentLoaded", function () {
+    const filterButton = document.getElementById("toggleFilterDropdown");
+    const filterPanel = document.getElementById("filterDropdownPanel");
 
-            // Dummy data — replace with your actual Razor model values
-            const filterData = {
-                status: @Html.Raw(Json.Serialize(Model.UniqueStatus ?? new List<string>())),
-                storeName: @Html.Raw(Json.Serialize(Model.UniqueStoreName ?? new List<string>())),
-                requestingPlace: @Html.Raw(Json.Serialize(Model.UniqueRequestingPlace ?? new List<string>()))
-            };
+    const filterData = {
+        status: @Html.Raw(Json.Serialize(Model.UniqueStatus ?? new List<string>())),
+        storeName: @Html.Raw(Json.Serialize(Model.UniqueStoreName ?? new List<string>())),
+        requestingPlace: @Html.Raw(Json.Serialize(Model.UniqueRequestingPlace ?? new List<string>()))
+    };
 
-            // Show values inside the right panel
-            function showFilterValues(category) {
-                const container = document.getElementById("filterValues");
-                container.innerHTML = "";
+    // Load selected filters from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const selectedFilters = {};
+    for (const key in filterData) {
+        const value = urlParams.get(key);
+        if (value) {
+            selectedFilters[key] = decodeURIComponent(value.trim());
+        }
+    }
 
-                const values = filterData[category] || [];
+    function showFilterValues(category) {
+        const container = document.getElementById("filterValues");
+        container.innerHTML = "";
 
-                if (values.length === 0) {
-                    container.innerHTML = "<div class='text-muted'>No values found</div>";
-                    return;
-                }
+        let values = filterData[category] || [];
+        values = values.filter(v => typeof v === 'string' && v.trim() !== "");
 
-                values.forEach(function (value) {
-                    const div = document.createElement("div");
-                    div.className = "filter-value mb-1";
-                    const btn = document.createElement("button");
-                    btn.className = "btn btn-sm w-100 text-start";
-                    btn.innerText = value;
-                    btn.value = value;
-                    btn.onclick = function () {
-                        @* applyFilter(category, value); *@
-                    };
-                    div.appendChild(btn);
-                    container.appendChild(div);
-                });
+        if (values.length === 0) {
+            container.innerHTML = "<div class='text-muted'>No values found</div>";
+            return;
+        }
 
-                document.querySelectorAll('.filter-option').forEach(el => el.classList.remove('fw-bold', 'text-dark'));
-                document.querySelector(`[onclick="showFilterValues('${category}')"]`).classList.add('fw-bold', 'text-dark');
-            }
+        const list = document.createElement("div");
 
-            @* function applyFilter(field, value) {
-                const url = new URL(window.location.href);
+        values.forEach(function (value) {
+            const checkboxId = `${category}_${value}`;
+            const div = document.createElement("div");
+            div.className = "form-check mb-1";
 
-                url.searchParams.delete("handler");
+            const input = document.createElement("input");
+            input.className = "form-check-input";
+            input.type = "checkbox";
+            input.name = category;
+            input.value = value;
+            input.id = checkboxId;
 
-                url.searchParams.set(field, value);
+            input.checked = selectedFilters[category] === value;
 
-                if (field === "typeName") url.searchParams.delete("damageReason");
-                if (field === "damageReason") url.searchParams.delete("typeName");
-
-                url.searchParams.set("page", "1");
-
-                window.location.href = url;
-            } *@
-
-
-            // Show/hide logic
-            filterButton.addEventListener("click", function (e) {
-                e.stopPropagation();
-                const isVisible = filterPanel.style.display === "flex";
-                filterPanel.style.display = isVisible ? "none" : "flex";
-                if (!isVisible) showFilterValues('status'); // default on open
-            });
-
-            document.addEventListener("click", function (e) {
-                if (!filterPanel.contains(e.target) && e.target !== filterButton) {
-                    filterPanel.style.display = "none";
+            input.addEventListener("change", function () {
+                if (input.checked) {
+                    document.querySelectorAll(`input[name="${category}"]`).forEach(cb => {
+                        if (cb !== input) cb.checked = false;
+                    });
+                    selectedFilters[category] = value;
+                } else {
+                    delete selectedFilters[category];
                 }
             });
 
-            // Make showFilterValues globally accessible
-            window.showFilterValues = showFilterValues;
+            const label = document.createElement("label");
+            label.className = "form-check-label";
+            label.htmlFor = checkboxId;
+            label.innerText = value;
+
+            div.appendChild(input);
+            div.appendChild(label);
+            list.appendChild(div);
         });
-    </script>
+
+        container.appendChild(list);
+
+        // Apply button
+        const applyDiv = document.createElement("div");
+        applyDiv.className = "mt-3 text-end";
+        const applyBtn = document.createElement("button");
+        applyBtn.type = "button";
+        applyBtn.className = "btn btn-success btn-sm";
+        applyBtn.innerText = "Apply";
+        applyBtn.onclick = function () {
+            applyFilters();
+        };
+        applyDiv.appendChild(applyBtn);
+        container.appendChild(applyDiv);
+
+        // Highlight current filter type
+        document.querySelectorAll('.filter-option').forEach(el => el.classList.remove('fw-bold', 'text-dark'));
+        document.querySelector(`[onclick="showFilterValues('${category}')"]`)?.classList.add('fw-bold', 'text-dark');
+    }
+
+    function applyFilters() {
+        const url = new URL(window.location.href);
+        url.searchParams.delete("handler");
+        url.searchParams.set("page", "1");
+
+        Object.entries(selectedFilters).forEach(([key, value]) => {
+            if (value) {
+                url.searchParams.set(key, value);
+            }
+        });
+
+        window.location.href = url;
+    }
+
+    filterButton.addEventListener("click", function (e) {
+        e.stopPropagation();
+        const isVisible = filterPanel.style.display === "flex";
+        filterPanel.style.display = isVisible ? "none" : "flex";
+        if (!isVisible) showFilterValues('status'); // default on open
+    });
+
+    document.addEventListener("click", function (e) {
+        if (!filterPanel.contains(e.target) && e.target !== filterButton) {
+            filterPanel.style.display = "none";
+        }
+    });
+
+    window.showFilterValues = showFilterValues;
+});
+</script>
     
 }
 @{
@@ -198,7 +242,6 @@
 
         @if (Model.TotalItems > 0)
         {
-            <!-- Right: Filter button and dropdown -->
             <div class="col text-end position-relative">
                 <button type="button" id="toggleFilterDropdown" class="btn btn-secondary">
                     Filter
@@ -206,20 +249,27 @@
 
                 <!-- Filter Panel -->
                 <div id="filterDropdownPanel"
-                class="card shadow-sm position-absolute flex-row"
-                style="right: 0; top: 100%; width: 400px; display: none; z-index: 1000; height: 400px; overflow: hidden;">
+                    class="card shadow-sm position-absolute flex-row"
+                    style="right: 0; top: 100%; width: 400px; display: none; z-index: 1000; height: 400px; overflow: hidden;">
 
                     <!-- Left: Filter Categories -->
-                    <div class="border-end p-2" style="width: 40%; overflow-y: auto;">
+                    <div class="border-end p-2" style="width: 40%; overflow-y: auto; position: relative;">
                         <div class="fw-bolder text-center mb-2">Filter By</div>
                         <div class="filter-option text-primary mb-2" onclick="showFilterValues('status')" style="cursor: pointer;">Status</div>
                         <div class="filter-option text-primary mb-2" onclick="showFilterValues('storeName')" style="cursor: pointer;">Warehouse Name</div>
                         <div class="filter-option text-primary mb-2" onclick="showFilterValues('requestingPlace')" style="cursor: pointer;">Requesting Place</div>
+
+                        <!-- Clear Filters Button -->
+                        <button type="button" class="btn btn-primary"
+                            style="position: absolute; bottom: 10px; left: 10px;"
+                            onclick="window.location.href='/Disbursements'">
+                            Clear Filters
+                        </button>
                     </div>
 
-                    <!-- Right: Unique Values -->
+                    <!-- Right: Dynamic Filter Values + Apply Button -->
                     <div class="p-2" id="filterValues"
-                    style="width: 60%; overflow-y: auto; border-left: 1px solid #eee;">
+                        style="width: 60%; overflow-y: auto; border-left: 1px solid #eee;">
                         <div class="text-muted">Select a filter from left</div>
                     </div>
                 </div>
@@ -362,7 +412,7 @@
                         {
                         
                             <li class="page-item">
-                                <a class="page-link" href="?page=@(Model.CurrentPage - 1)&RequesterName=@Model.RequesterName&FromDate=@Model.FromDate?.ToString("yyyy-MM-dd")&ToDate=@Model.ToDate?.ToString("yyyy-MM-dd")">&laquo;</a>
+                                <a class="page-link" href="?page=@(Model.CurrentPage - 1)&RequesterName=@Model.RequesterName&status=@Model.Status&storeName=@Model.StoreName&requestingPlace=@Model.RequestingPlace&FromDate=@Model.FromDate?.ToString("yyyy-MM-dd")&ToDate=@Model.ToDate?.ToString("yyyy-MM-dd")">&laquo;</a>
                             </li>
                         }
 
@@ -372,7 +422,7 @@
                             @for (int i = 1; i <= Model.TotalPages; i++)
                             {
                                 <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
-                                    <a class="page-link" href="?page=@i&RequesterName=@Model.RequesterName&FromDate=@Model.FromDate?.ToString("yyyy-MM-dd")&ToDate=@Model.ToDate?.ToString("yyyy-MM-dd")">@i</a>
+                                    <a class="page-link" href="?page=@i&RequesterName=@Model.RequesterName&status=@Model.Status&storeName=@Model.StoreName&requestingPlace=@Model.RequestingPlace&FromDate=@Model.FromDate?.ToString("yyyy-MM-dd")&ToDate=@Model.ToDate?.ToString("yyyy-MM-dd")">@i</a>
                                 </li>
                             }
                         }
@@ -382,7 +432,7 @@
                             @if (Model.CurrentPage > 3)
                             {
                                 <li class="page-item">
-                                    <a class="page-link" href="?page=1&RequesterName=@Model.RequesterName&FromDate=@Model.FromDate?.ToString("yyyy-MM-dd")&ToDate=@Model.ToDate?.ToString("yyyy-MM-dd")">1</a>
+                                    <a class="page-link" href="?page=1&RequesterName=@Model.RequesterName&status=@Model.Status&storeName=@Model.StoreName&requestingPlace=@Model.RequestingPlace&FromDate=@Model.FromDate?.ToString("yyyy-MM-dd")&ToDate=@Model.ToDate?.ToString("yyyy-MM-dd")">1</a>
                                 </li>
                                 <li class="page-item disabled">
                                     <span class="page-link">...</span>
@@ -393,7 +443,7 @@
                             @for (int i = Math.Max(1, Model.CurrentPage - 1); i <= Math.Min(Model.TotalPages, Model.CurrentPage + 1); i++)
                             {
                                 <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
-                                    <a class="page-link" href="?page=@i&RequesterName=@Model.RequesterName&FromDate=@Model.FromDate?.ToString("yyyy-MM-dd")&ToDate=@Model.ToDate?.ToString("yyyy-MM-dd")">@i</a>
+                                    <a class="page-link" href="?page=@i&RequesterName=@Model.RequesterName&status=@Model.Status&storeName=@Model.StoreName&requestingPlace=@Model.RequestingPlace&FromDate=@Model.FromDate?.ToString("yyyy-MM-dd")&ToDate=@Model.ToDate?.ToString("yyyy-MM-dd")">@i</a>
                                 </li>
                             }
 
@@ -409,7 +459,7 @@
                             @if (Model.CurrentPage < Model.TotalPages - 2)
                             {   
                                 <li class="page-item">
-                                    <a class="page-link" href="?page=@Model.TotalPages&RequesterName=@Model.RequesterName&FromDate=@Model.FromDate?.ToString("yyyy-MM-dd")&ToDate=@Model.ToDate?.ToString("yyyy-MM-dd")">@Model.TotalPages</a>
+                                    <a class="page-link" href="?page=@Model.TotalPages&RequesterName=@Model.RequesterName&status=@Model.Status&storeName=@Model.StoreName&requestingPlace=@Model.RequestingPlace&FromDate=@Model.FromDate?.ToString("yyyy-MM-dd")&ToDate=@Model.ToDate?.ToString("yyyy-MM-dd")">@Model.TotalPages</a>
                                 </li>
                             }
                         }
@@ -418,7 +468,7 @@
                         @if (Model.CurrentPage < Model.TotalPages)
                         {
                             <li class="page-item">
-                                <a class="page-link" href="?page=@(Model.CurrentPage + 1)&RequesterName=@Model.RequesterName&FromDate=@Model.FromDate?.ToString("yyyy-MM-dd")&ToDate=@Model.ToDate?.ToString("yyyy-MM-dd")">&raquo;</a>
+                                <a class="page-link" href="?page=@(Model.CurrentPage + 1)&RequesterName=@Model.RequesterName&status=@Model.Status&storeName=@Model.StoreName&requestingPlace=@Model.RequestingPlace&FromDate=@Model.FromDate?.ToString("yyyy-MM-dd")&ToDate=@Model.ToDate?.ToString("yyyy-MM-dd")">&raquo;</a>
                             </li>
                         
                         }
@@ -575,7 +625,7 @@
                 {
                    
                     <li class="page-item">
-                        <a class="page-link" href="?page=@(Model.CurrentPage - 1)&RequesterName=@Model.RequesterName&FromDate=@Model.FromDate?.ToString("yyyy-MM-dd")&ToDate=@Model.ToDate?.ToString("yyyy-MM-dd")">&laquo;</a>
+                        <a class="page-link" href="?page=@(Model.CurrentPage - 1)&RequesterName=@Model.RequesterName&status=@Model.Status&storeName=@Model.StoreName&requestingPlace=@Model.RequestingPlace&FromDate=@Model.FromDate?.ToString("yyyy-MM-dd")&ToDate=@Model.ToDate?.ToString("yyyy-MM-dd")">&laquo;</a>
                     </li>
                 }
 
@@ -585,7 +635,7 @@
                     @for (int i = 1; i <= Model.TotalPages; i++)
                     {
                         <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
-                            <a class="page-link" href="?page=@i&RequesterName=@Model.RequesterName&FromDate=@Model.FromDate?.ToString("yyyy-MM-dd")&ToDate=@Model.ToDate?.ToString("yyyy-MM-dd")">@i</a>
+                            <a class="page-link" href="?page=@i&RequesterName=@Model.RequesterName&status=@Model.Status&storeName=@Model.StoreName&requestingPlace=@Model.RequestingPlace&FromDate=@Model.FromDate?.ToString("yyyy-MM-dd")&ToDate=@Model.ToDate?.ToString("yyyy-MM-dd")">@i</a>
                         </li>
                     }
                 }
@@ -595,7 +645,7 @@
                     @if (Model.CurrentPage > 3)
                     {
                         <li class="page-item">
-                            <a class="page-link" href="?page=1&RequesterName=@Model.RequesterName&FromDate=@Model.FromDate?.ToString("yyyy-MM-dd")&ToDate=@Model.ToDate?.ToString("yyyy-MM-dd")">1</a>
+                            <a class="page-link" href="?page=1&RequesterName=@Model.RequesterName&status=@Model.Status&storeName=@Model.StoreName&requestingPlace=@Model.RequestingPlace&FromDate=@Model.FromDate?.ToString("yyyy-MM-dd")&ToDate=@Model.ToDate?.ToString("yyyy-MM-dd")">1</a>
                         </li>
                         <li class="page-item disabled">
                             <span class="page-link">...</span>
@@ -606,7 +656,7 @@
                     @for (int i = Math.Max(1, Model.CurrentPage - 1); i <= Math.Min(Model.TotalPages, Model.CurrentPage + 1); i++)
                     {
                         <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
-                            <a class="page-link" href="?page=@i&RequesterName=@Model.RequesterName&FromDate=@Model.FromDate?.ToString("yyyy-MM-dd")&ToDate=@Model.ToDate?.ToString("yyyy-MM-dd")">@i</a>
+                            <a class="page-link" href="?page=@i&RequesterName=@Model.RequesterName&status=@Model.Status&storeName=@Model.StoreName&requestingPlace=@Model.RequestingPlace&FromDate=@Model.FromDate?.ToString("yyyy-MM-dd")&ToDate=@Model.ToDate?.ToString("yyyy-MM-dd")">@i</a>
                         </li>
                     }
 
@@ -622,7 +672,7 @@
                     @if (Model.CurrentPage < Model.TotalPages - 2)
                     {   
                         <li class="page-item">
-                            <a class="page-link" href="?page=@Model.TotalPages&RequesterName=@Model.RequesterName&FromDate=@Model.FromDate?.ToString("yyyy-MM-dd")&ToDate=@Model.ToDate?.ToString("yyyy-MM-dd")">@Model.TotalPages</a>
+                            <a class="page-link" href="?page=@Model.TotalPages&RequesterName=@Model.RequesterName&status=@Model.Status&storeName=@Model.StoreName&requestingPlace=@Model.RequestingPlace&FromDate=@Model.FromDate?.ToString("yyyy-MM-dd")&ToDate=@Model.ToDate?.ToString("yyyy-MM-dd")">@Model.TotalPages</a>
                         </li>
                     }
                 }
@@ -631,7 +681,7 @@
                 @if (Model.CurrentPage < Model.TotalPages)
                 {
                     <li class="page-item">
-                        <a class="page-link" href="?page=@(Model.CurrentPage + 1)&RequesterName=@Model.RequesterName&FromDate=@Model.FromDate?.ToString("yyyy-MM-dd")&ToDate=@Model.ToDate?.ToString("yyyy-MM-dd")">&raquo;</a>
+                        <a class="page-link" href="?page=@(Model.CurrentPage + 1)&RequesterName=@Model.RequesterName&status=@Model.Status&storeName=@Model.StoreName&requestingPlace=@Model.RequestingPlace&FromDate=@Model.FromDate?.ToString("yyyy-MM-dd")&ToDate=@Model.ToDate?.ToString("yyyy-MM-dd")">&raquo;</a>
                     </li>
                    
                 }

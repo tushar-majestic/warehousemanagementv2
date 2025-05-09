@@ -1370,6 +1370,118 @@
       "en":"English",
       "ar":"English"
     },
+    "TypeofContract":{
+      "en":"Type of Contract",
+      "ar":"Type of Contract"
+    },
+    "TypeofAsset":{
+      "en":"Type of Asset",
+      "ar":"Type of Asset"
+    },
+    "Chemical":{
+      "en":"Chemical",
+      "ar":"Chemical"
+    },
+    "RiskRating":{
+      "en":"Risk Rating",
+      "ar":"Risk Rating"
+    },
+    "StateofMatter":{
+      "en":"State of Matter",
+      "ar":"State of Matter"
+    },
+    "Returned":{
+      "en":"Returned",
+      "ar":"Returned"
+    },
+    "ReturnNotes":{
+      "en":"Return Notes",
+      "ar":"Return Notes"
+    },
+    "Remove":{
+      "en":"Remove",
+      "ar":"Remove"
+    },
+    "AddMore":{
+      "en":"Add More",
+      "ar":"Add More"
+    },
+    "OrderNumber":{
+      "en":"Order Number",
+      "ar":"Order Number"
+    },
+    "OrderDate":{
+      "en":"Order Date",
+      "ar":"Order Date"
+    },
+    "RequestingSector":{
+      "en":"Requesting Sector",
+      "ar":"Requesting Sector"
+    },
+    "ApplicantsSector":{
+      "en":"Applicant's Sector",
+      "ar":"Applicant's Sector"
+    },
+    "ReasonForReturn":{
+      "en":"Reason For Return",
+      "ar":"Reason For Return"
+    },
+    "SurPlus":{
+      "en":"SurPlus",
+      "ar":"SurPlus"
+    },
+    "Expired":{
+      "en":"Expired",
+      "ar":"Expired"
+    },
+    "Invalid":{
+      "en":"Invalid",
+      "ar":"Invalid"
+    },
+    "Damaged":{
+      "en":"Damaged",
+      "ar":"Damaged"
+    },
+    "AmountSpent":{
+      "en":"Amount Spent",
+      "ar":"Amount Spent"
+    },
+    "RequestDocumentType":{
+      "en":"Request Document Type",
+      "ar":"Request Document Type"
+    },
+    "RequestDocumentNumber":{
+      "en":"Request Document Number",
+      "ar":"Request Document Number"
+    },
+    "Sector":{
+      "en":"Sector",
+      "ar":"Sector"
+    },
+    "Filter":{
+      "en":"Filter",
+      "ar":"Filter"
+    },
+    "FilterBy":{
+      "en":"Filter By",
+      "ar":"Filter By"
+    },
+    "Apply":{
+      "en":"Apply",
+      "ar":"Apply"
+    },
+    "ClearFilters":{
+      "en":"Clear Filters",
+      "ar":"Clear Filters"
+    },
+    "ExportExcel":{
+      "en":"Export Excel",
+      "ar":"Export Excel"
+    },
+    "PrintTable":{
+      "en":"Print Table",
+      "ar":"Print Table"
+    },
     "SupplierMissing":{
       "en":"Supplier is required.",
       "ar":"Supplier is required"
@@ -1393,7 +1505,6 @@
     
    
    
-    
 
 
 }
