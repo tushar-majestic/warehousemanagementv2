@@ -271,7 +271,7 @@
                 </div>
 
                 <!-- Show/Hide Column button -->
-                <div class="col d-flex justify-content-end gap-2">
+                <div class="col d-flex justify-content-end">
                     <div class="position-relative">
                         <button type="button" id="toggleDropdown" class="btn btn-secondary">@Model.lblShowHideColumn</button>
 
@@ -366,25 +366,21 @@
 
                     @if (Model.TotalItems > 0)
                     {
-                        <!-- Right: Filter button and dropdown -->
                         <div class="position-relative">
-                            <button type="button" id="toggleFilterDropdown" class="btn btn-secondary">
+                            @* <button type="button" id="toggleFilterDropdown" class="btn btn-secondary">
                                 Filter
-                            </button>
+                            </button> *@
 
-                            <!-- Filter Panel -->
                             <div id="filterDropdownPanel"
                             class="card shadow-sm position-absolute flex-row"
                             style="right: 0; top: 100%; width: 400px; display: none; z-index: 1000; height: 400px; overflow: hidden;">
 
-                                <!-- Left: Filter Categories -->
                                 <div class="border-end p-2" style="width: 40%; overflow-y: auto;">
                                     <div class="fw-bolder text-center mb-2">Filter By</div>
                                     <div class="filter-option text-primary mb-2" onclick="showFilterValues('supplierName')" style="cursor: pointer;">Supplier Name</div>
                                     <div class="filter-option text-primary mb-2" onclick="showFilterValues('warehouseName')" style="cursor: pointer;">Warehouse Name</div>
                                 </div>
 
-                                <!-- Right: Unique Values -->
                                 <div class="p-2" id="filterValues"
                                 style="width: 60%; overflow-y: auto; border-left: 1px solid #eee;">
                                     <div class="text-muted">Select a filter from left</div>

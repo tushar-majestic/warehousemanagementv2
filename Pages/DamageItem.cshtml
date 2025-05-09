@@ -34,8 +34,8 @@
         @if (!string.IsNullOrEmpty(Model.ErrorMsg))
         {
             <text>
-                                            var errorMessageFromServer = @Html.Raw(Json.Serialize(Model.ErrorMsg));
-            showErrorNotification(errorMessageFromServer);
+                var errorMessageFromServer = @Html.Raw(Json.Serialize(Model.ErrorMsg));
+                showErrorNotification(errorMessageFromServer);
             </text>
         }
     </script>
@@ -70,7 +70,7 @@
                 if (allEntries.length > 1) {
                     e.target.closest(".return-entry").remove();
                 } else {
-                    alert("At least one entry is required.");
+                    showErrorNotification("At least one Item is required.");
                 }
             }
         });
@@ -140,23 +140,23 @@
                                         <select class="form-select" id="ItemId" name="ItemId"></select>
                                     </div>
                                     <div class="mb-4">
-                                        <label for="itemDescription">Item Description</label>
+                                        <label for="itemDescription">@Model.lblItemDescription</label>
                                         <input type="text" class="form-control" id="ItemDescription" readonly>
                                     </div>
                                     <div class="mb-4">
-                                        <label for="typeofAsset">Type of Contract</label>
+                                        <label for="typeofAsset">@Model.lblTypeofContract</label>
                                         <input type="text" class="form-control" id="typeofAsset" readonly>
                                     </div>
                                     <div class="mb-4">
-                                        <label for="chemical">Chemical</label>
+                                        <label for="chemical">@Model.lblChemical</label>
                                         <input type="text" class="form-control" id="chemical" readonly>
                                     </div>
                                     <div class="mb-4">
-                                        <label for="RiskRating">Risk Rating</label>
+                                        <label for="RiskRating">@Model.lblRiskRating</label>
                                         <input type="text" class="form-control" id="RiskRating" readonly>
                                     </div>
                                     <div class="mb-4">
-                                        <label for="stateofMatter">State of Matter</label>
+                                        <label for="stateofMatter">@Model.lblStateofMatter</label>
                                         <select class="form-select" name="stateofMatter">
                                             <option value="1">item group1</option>
                                             <option value="2">item group2</option>
@@ -164,42 +164,42 @@
                                         </select>
                                     </div>
                                     <div class="mb-4">
-                                        <label for="ExpiryDate">Expiry Date</label>
+                                        <label for="ExpiryDate">@Model.lblExpiryDate</label>
                                         <input type="date" class="form-control" name="ExpiryDate"
                                             value="@Model.CurrentDate.ToString("yyyy-MM-dd")"/>
                                     </div>
                                     <div class="mb-4">
-                                        <label for="UnitofMeasure">Unit of Measure</label>
+                                        <label for="UnitofMeasure">@Model.lblUnitOfMeasure</label>
                                         <input type="text" class="form-control" id="UnitofMeasure" readonly>
                                     </div>
                                     <div class="mb-4">
-                                        <label for="ReturnQuantity">Returned @Model.lblQuantity</label>
+                                        <label for="ReturnQuantity">@Model.lblReturned @Model.lblQuantity</label>
                                         <input type="text" name="ReturnQuantity" value="" class="form-control" id="ReturnQuantity">
                                     </div>
                                     <div class="mb-4">
-                                        <label for="ReturnNotes">Return Notes</label>
+                                        <label for="ReturnNotes">@Model.lblReturnNotes</label>
                                         <textarea class="form-control" id="ReturnNotes" name="ReturnNotes" rows="2"></textarea>
                                     </div>
                                     <button type="button" class="btn btn-danger btn-sm remove-entry me-3" style="position: absolute; top: 0; right: 0;">
-                                        Remove
+                                        @Model.lblRemove
                                     </button>
                                 </div>
                             </div>
                             <div class="mb-3">
-                                <button type="button" class="btn btn-primary" id="addEntryBtn">Add More</button>
+                                <button type="button" class="btn btn-primary" id="addEntryBtn">@Model.lblAddMore</button>
                             </div
 
                             <div class="mb-4">
-                                <label for="OrderNumber">Order Number</label>
+                                <label for="OrderNumber">@Model.lblOrderNumber</label>
                                 <input type="text" name="OrderNumber" value="" class="form-control" id="OrderNumber">
                             </div>
                             <div class="mb-4">
-                                <label for="OrderDate">Order Date</label>
+                            <label for="OrderDate">@Model.lblOrderDate</label>
                                 <input type="date" class="form-control" name="OrderDate"
                                     value="@Model.CurrentDate.ToString("yyyy-MM-dd")" />
                             </div>
                             <div class="mb-4">
-                                <label for="RequestingSector">Requesting Sector</label>
+                            <label for="RequestingSector">@Model.lblRequestingSector</label>
                                 <select class="form-select" name="RequestingSector">
                                     <option value="1">item group1</option>
                                     <option value="2">item group2</option>
@@ -207,7 +207,7 @@
                                 </select>
                             </div>
                             <div class="mb-4">
-                                <label for="ApplicantsSector">Applicant's Sector</label>
+                            <label for="ApplicantsSector">@Model.lblApplicantsSector</label>
                                 <input type="text" name="ApplicantsSector" value="" class="form-control"
                                     id="ApplicantsSector">
                             </div>
@@ -228,26 +228,26 @@
 
                             </div>
                             <div class="mb-4">
-                                <label class="form-label d-block mb-2">Reason for Return</label>
+                            <label class="form-label d-block mb-2">@Model.lblReasonForReturn</label>
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="ReasonForReturn" id="reason2"
                                         value="SurPlus">
-                                    <label class="form-check-label" for="reason2">SurPlus</label>
+                                <label class="form-check-label" for="reason2">@Model.lblSurPlus</label>
                                 </div>
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="ReasonForReturn" id="reason3"
                                         value="Expired">
-                                    <label class="form-check-label" for="reason3">Expired</label>
+                                <label class="form-check-label" for="reason3">@Model.lblExpired</label>
                                 </div>
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="ReasonForReturn" id="reason4"
                                         value="Invalid">
-                                    <label class="form-check-label" for="reason4">Invalid</label>
+                                <label class="form-check-label" for="reason4">@Model.lblInvalid</label>
                                 </div>
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="ReasonForReturn" id="reason1"
                                         value="Damaged">
-                                    <label class="form-check-label" for="reason1">Damaged</label>
+                                <label class="form-check-label" for="reason1">@Model.lblDamaged</label>
                                 </div>
                             </div>
                             <div class="mb-4">
