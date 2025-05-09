@@ -38,6 +38,7 @@ namespace LabMaterials.Pages
         public int?  GeneralSupervisorId, TechnicalMemberId ;
         public int? ItemId;
         public string ErrorMsg { get; set; }
+        public string RecipientEmployeeName;
 
         public string ItemNo;
         [BindProperty]
@@ -108,7 +109,7 @@ namespace LabMaterials.Pages
         }
 
 
-        public async Task<IActionResult> OnPostAsync(DateTime ReceivingDate, DateTime DocumentDate, [FromForm] int TechnicalMember, [FromForm] int ChiefResponsible,  [FromForm] string FiscalYear,  [FromForm] string BasedOnDocument, [FromForm] int SerialNumber)
+        public async Task<IActionResult> OnPostAsync(DateTime ReceivingDate, DateTime DocumentDate, [FromForm] int TechnicalMember, [FromForm] int ChiefResponsible,  [FromForm] string FiscalYear,  [FromForm] string BasedOnDocument, [FromForm] int SerialNumber, [FromForm] string RecipientEmployeeName)
         {   ModelState.Clear();
 
             base.ExtractSessionData();
@@ -156,6 +157,8 @@ namespace LabMaterials.Pages
 
             Report.FiscalYear = FiscalYear;
             Report.KeeperApproval = true;
+
+            this.RecipientEmployeeName = RecipientEmployeeName;
            
             var TechnicalMemberName = dbContext.Users
                     .Where(u => u.UserId == Report.TechnicalMemberId)

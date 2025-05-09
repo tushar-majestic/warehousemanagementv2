@@ -23,7 +23,6 @@ public partial class ReceivingReport
     public string BasedOnDocument { get; set; } = null!;
 
 
-    public string Comments { get; set; } = null!;
 
     public string CreatedBy { get; set; } = null!;
 
