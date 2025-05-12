@@ -160,59 +160,62 @@
                 }
                 <table class="nested-table" border="0" width="100%">
                     <tr >
-                        <td style="width: 15%;border: none;">@Model.lblSerialNo</td>
-                        <td style="width: 15%;border: none;">@rep.SerialNumber</td>
+                       <td style="width: 15%;border: none;" >@Model.lblRecipientSector</td>
+                        <td style="width: 15%;border: none;">@rep.RecipientSector</td>
                         <td style="width: 15%;border: none;"></td>
                         <td style="width: 15%;border: none;" align="center">@Model.lblSupplierName</td>
                         <td style="width: 15%;border: none;">@rep.Supplier?.SupplierName</td>
-                        <td style="width: 15%;border: none;" align="right">@Model.lblRecipientSector</td>
-                        <td style="width: 15%;border: none;">@rep.RecipientSector</td>
+                        <td style="width: 15%;border: none;" align="right">@Model.lblSerialNo</td>
+                        <td style="width: 15%;border: none;">@rep.SerialNumber</td>
+                        
                     </tr>
                     <tr>
-                        <td style="width: 15%;border: none;">@Model.lblPageCount</td>
-                        <td style="width: 15%;border: none;"></td>
-                        <td style="width: 15%;border: none;"></td>
-                        <td style="width: 15%;border: none;"></td>
-                        <td style="width: 15%;border: none;"></td>
-                        <td style="width: 15%;border: none;" align="right">@Model.lblSectorNo</td>
+                       <td style="width: 15%;border: none;">@Model.lblSectorNo</td>
                         <td style="width: 15%;border: none;">@rep.SectorNumber</td>
+                        <td style="width: 15%;border: none;"></td>
+                        <td style="width: 15%;border: none;"></td>
+                        <td style="width: 15%;border: none;"></td>
+                        <td style="width: 15%;border: none;"  align="right">@Model.lblPageCount</td>
+                        <td style="width: 15%;border: none;"></td>
+                        
                     </tr>
                     <tr>
-                        <td style="width: 15%;border: none;">@Model.lblDateOfReceipt</td>
-                        <td style="width: 15%;border: none;">@rep.ReceivingDate.ToString("yyyy-MM-dd")</td>
-                        <td style="width: 15%;border: none;"></td>
-                        <td style="width: 15%;border: none;"></td>
-                        <td style="width: 15%;border: none;"></td>
-                        <td style="width: 15%;border: none;" align="right">@Model.lblRecipientWarehouse</td>
+                        <td style="width: 15%;border: none;" >@Model.lblRecipientWarehouse</td>
                         <td style="width: 15%;border: none;">@Model.ReceivingWarehouse</td>
+                        <td style="width: 15%;border: none;"></td>
+                        <td style="width: 15%;border: none;"></td>
+                        <td style="width: 15%;border: none;"></td>
+                        <td style="width: 15%;border: none;" align="right">@Model.lblDateOfReceipt</td>
+                        <td style="width: 15%;border: none;">@rep.ReceivingDate.ToString("yyyy-MM-dd")</td>
+                        
                     </tr>
                     <tr>
-                        <td style="width: 15%;border: none;">Fiscal Year</td>
-                        <td style="width: 15%;border: none;">@rep.FiscalYear</td>
-                        <td style="width: 15%;border: none;" align="center">Document Date</td>
-                        <td style="width: 15%;border: none;">@rep.DocumentDate.ToString("yyyy-MM-dd")</td>
-                        <td style="width: 15%;border: none;" align="center">Document No.</td>
-                        <td style="width: 15%;border: none;">@rep.DocumentNumber</td>
-                        <td style="width: 15%;border: none;" align="right">Based On Document</td>
+                        <td style="width: 15%;border: none;">@Model.lblBasedOnDocument</td>
                         <td style="width: 15%;border: none;">@rep.BasedOnDocument</td>
+                        <td style="width: 15%;border: none;" align="center">@Model.lblDocumentNo</td>
+                        <td style="width: 15%;border: none;">@rep.DocumentNumber</td>
+                        <td style="width: 15%;border: none;" align="center">@Model.lblDocumentDate</td>
+                        <td style="width: 15%;border: none;">@rep.DocumentDate.ToString("yyyy-MM-dd")</td>
+                        <td style="width: 15%;border: none;"  align="right">@Model.lblFiscalYear</td>
+                        <td style="width: 15%;border: none;">@rep.FiscalYear</td>
                     </tr>
                 </table>
             </td>
         </tr>
         <tr>
-            <th style="width: 25%;" rowspan="2">Comments</th>
-            <th style="width: 7%;" colspan="2">Unit Price</th>
-            <th style="width: 7%;" colspan="2">Total Price</th>
-            <th style="width: 3%;" rowspan="2">Quantity</th>
-            <th style="width: 3%;" rowspan="2">Unit Of Measure</th>
-            <th style="width: 10%;" rowspan="2">Item Name-Description</th>
-            <th style="width: 5%;" rowspan="2">Item No</th>
-            <th style="width: 5%;" rowspan="2">Count</th>
+            <th style="width: 25%;" rowspan="2">@Model.lblComments</th>
+            <th style="width: 7%;" colspan="2">@Model.lblUnitPrice</th>
+            <th style="width: 7%;" colspan="2">@Model.lblTotalPrice</th>
+            <th style="width: 3%;" rowspan="2">@Model.lblQuantity</th>
+            <th style="width: 3%;" rowspan="2">@Model.lblUnitOfMeasure</th>
+            <th style="width: 10%;" rowspan="2">@Model.lblItemNameDescription</th>
+            <th style="width: 5%;" rowspan="2">@Model.lblItemNo</th>
+            <th style="width: 5%;" rowspan="2">@Model.lblCount</th>
         </tr>
         <tr>
-            <td style="width: 3.5%; text-align: center;">SAR</td>
+            <td style="width: 3.5%; text-align: center;">@Model.lblSAR</td>
             <td style="width: 3.5%; text-align: center;"></td>
-            <td style="width: 3.5%; text-align: center;">SAR</td>
+            <td style="width: 3.5%; text-align: center;">@Model.lblSAR</td>
             <td style="width: 3.5%; text-align: center;"></td>
         </tr>
         @foreach(var item in Model.ReceivingItems){
@@ -235,7 +238,7 @@
             <td>&nbsp;</td>
             <td>&nbsp;</td>
             <td>&nbsp;</td>
-            <td colspan="7">Total Price</td>
+            <td colspan="7">@Model.lblTotalPrice</td>
         </tr>
 
        
@@ -243,16 +246,17 @@
       
        
         <tr>
-            <td colspan="2" style=" text-align: center;"><b>Chief Responsible</b></td>
-            <td colspan="4" style="text-align: center;"><b>Technical Member</b></td>
-            <td colspan="3" style="text-align: center;"><b>Recipient</b></td>
+            <td colspan="4" style="text-align: center;"><b>@Model.lblTechnicalMember</b></td>
+            <td colspan="3" style="text-align: center;"><b>@Model.lblRecipient</b></td>
+            <td colspan="2" style=" text-align: center;"><b>@Model.lblChiefResponsible</b></td>
+
             <td>&nbsp;</td>
         </tr>
         <tr>
             <td rowspan="2" colspan="2" style="text-align: center;"></td>
             <td colspan="4">&nbsp;</td>
             <td colspan="3">&nbsp;</td>
-            <td style=" text-align: center;">Name<br>Signature<br>Date</td>
+            <td style=" text-align: center;">@Model.lblName<br>@Model.lblSignature<br>@Model.lblDate</td>
         </tr>
     </table>
 </div>

@@ -19,8 +19,7 @@ namespace LabMaterials.Pages
         public string dir { get; set; } = "rtl";
         public string Lang { get; set; } = "ar";
 
-
-        public string lblView, lblRequests, lblLabMaterials, lblHome, lblNotifications, lblShowHideColumn, lblDisbursement, lblReports, lblManageUsers, lblManageItems, lblManageSupplies, lblManageStores, lblUserProfile, lblLogout, lblDamagedItems, lblLanguage, lblWarehouseType, lblManagerName, lblBuildingNumber, lblRoomDesc, lblStatus, lblRoomStatus, lblOpen, lblClosed, lblRoomNumber, lblNoOfShelves, lblKeeperName, lblKeeperJobNum, lblWarehouseManagerName, lblItemCards, lblReceivingItems, lblSerialNo, lblSupplierName, lblRecipientSector, lblPageCount, lblSectorNo, lblDateOfReceipt, lblRecipientWarehouse;
+        public string lblView, lblRequests, lblLabMaterials, lblHome, lblNotifications, lblShowHideColumn, lblDisbursement, lblReports, lblManageUsers, lblManageItems, lblManageSupplies, lblManageStores, lblUserProfile, lblLogout, lblDamagedItems, lblLanguage, lblWarehouseType, lblManagerName, lblBuildingNumber, lblRoomDesc, lblStatus, lblRoomStatus, lblOpen, lblClosed, lblRoomNumber, lblNoOfShelves, lblKeeperName, lblKeeperJobNum, lblWarehouseManagerName, lblItemCards, lblReceivingItems, lblSerialNo, lblSupplierName, lblRecipientSector, lblPageCount, lblSectorNo, lblDateOfReceipt, lblRecipientWarehouse, lblFiscalYear, lblDocumentDate, lblDocumentNo, lblBasedOnDocument, lblComments, lblUnitPrice, lblTotalPrice, lblQuantity, lblUnitOfMeasure, lblItemNameDescription, lblItemNo, lblCount, lblSAR, lblChiefResponsible, lblTechnicalMember, lblRecipient, lblSignature, lblName, lblDate;
 
 
         public void ExtractSessionData()
@@ -104,6 +103,25 @@ namespace LabMaterials.Pages
             this.lblSectorNo = (Program.Translations["SectorNo"])[Lang];
             this.lblDateOfReceipt = (Program.Translations["DateOfReceipt"])[Lang];
             this.lblRecipientWarehouse = (Program.Translations["RecipientWarehouse"])[Lang];
+            this.lblFiscalYear = (Program.Translations["FiscalYear"])[Lang];
+            this.lblDocumentDate =  (Program.Translations["DocumentDate"])[Lang];
+            this.lblDocumentNo = (Program.Translations["DocumentNo"])[Lang];
+            this.lblBasedOnDocument = (Program.Translations["BasedOnDocument"])[Lang];
+            this.lblComments = (Program.Translations["Comm"])[Lang];
+            this.lblUnitPrice = (Program.Translations["UnitPrice"])[Lang];
+            this.lblTotalPrice = (Program.Translations["TotalPrice"])[Lang];
+            this.lblQuantity = (Program.Translations["Quantity"])[Lang];
+            this.lblUnitOfMeasure = (Program.Translations["UnitOfMeasure"])[Lang];
+            this.lblItemNameDescription = (Program.Translations["ItemNameDescription"])[Lang];
+            this.lblItemNo = (Program.Translations["ItemNo"])[Lang];
+            this.lblCount = (Program.Translations["Count"])[Lang];
+            this.lblSAR =  (Program.Translations["SAR"])[Lang];
+            this.lblChiefResponsible = (Program.Translations["ChiefRes"])[Lang];
+            this.lblTechnicalMember = (Program.Translations["TechnicalMember"])[Lang];
+            this.lblRecipient = (Program.Translations["Recipient"])[Lang];
+            this.lblName = (Program.Translations["Name"])[Lang];
+            this.lblSignature = (Program.Translations["Signature"])[Lang];
+            this.lblDate = (Program.Translations["Date"])[Lang];
 
         }
     }
