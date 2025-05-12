@@ -44,7 +44,7 @@
             <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
                 <strong>Receiving Report - Serial No: @report.SerialNumber</strong>
                 <div>
-                    @* <a asp-page="/EditReceivingReport" asp-route-id="@report.Id" class="btn btn-sm btn-warning me-2">Edit</a> *@
+                    <a asp-page="/EditReceivingReport" asp-route-id="@report.Id" class="btn btn-sm btn-success me-2 text-white">Edit</a>
                     @* <a asp-page="/PrintReceivingReport" asp-route-id="@report.Id" class="btn btn-sm btn-secondary">Print</a> *@
                     
                     <button id="PrintReport" class="btn btn-primary" >Print Test</button>
@@ -111,7 +111,7 @@
                 </dl>
 
 
-                <table class="table table-bordered table-striped" style="width: 826px;">
+                <table class="table table-bordered table-striped" >
                     <thead>
                         <tr>
                             <th>Comments</th>
@@ -203,35 +203,36 @@
             </td>
         </tr>
         <tr>
-            <th style="width: 25%;" rowspan="2">@Model.lblComments</th>
+            <th style="width: 5%;" rowspan="2">@Model.lblCount</th>
+            <th style="width: 5%;" rowspan="2">@Model.lblItemNo</th>
+            <th style="width: 10%;" rowspan="2">@Model.lblItemNameDescription</th>
+            <th style="width: 3%;" rowspan="2">@Model.lblUnitOfMeasure</th>
+            <th style="width: 3%;" rowspan="2">@Model.lblQuantity</th>
             <th style="width: 7%;" colspan="2">@Model.lblUnitPrice</th>
             <th style="width: 7%;" colspan="2">@Model.lblTotalPrice</th>
-            <th style="width: 3%;" rowspan="2">@Model.lblQuantity</th>
-            <th style="width: 3%;" rowspan="2">@Model.lblUnitOfMeasure</th>
-            <th style="width: 10%;" rowspan="2">@Model.lblItemNameDescription</th>
-            <th style="width: 5%;" rowspan="2">@Model.lblItemNo</th>
-            <th style="width: 5%;" rowspan="2">@Model.lblCount</th>
+            <th style="width: 25%;" rowspan="2">@Model.lblComments</th>
         </tr>
         <tr>
-            <td style="width: 3.5%; text-align: center;">@Model.lblSAR</td>
             <td style="width: 3.5%; text-align: center;"></td>
             <td style="width: 3.5%; text-align: center;">@Model.lblSAR</td>
             <td style="width: 3.5%; text-align: center;"></td>
+            <td style="width: 3.5%; text-align: center;">@Model.lblSAR</td>
         </tr>
         @foreach(var item in Model.ReceivingItems){
             var Item = Model.Items.FirstOrDefault(i => i.ItemId == item.ItemId);      
             var UnitMeasure = Model.Units.FirstOrDefault(u => u.Id == Item.UnitId).UnitCode ?? "";;
             <tr>
-                <td>@item.Comments</td>
-                <td>@item.UnitPrice</td>
-                <td></td>
-                <td>@(item.Quantity * item.UnitPrice)</td>
                 <td>&nbsp;</td>
-                <td>@item.Quantity</td>
-                <td>@UnitMeasure</td>
-                <td>@Item.ItemName- @Item.ItemDescription</td>
                 <td>@Item.ItemCode</td>
+                <td>@Item.ItemName- @Item.ItemDescription</td>
+                <td>@UnitMeasure</td>
+                <td>@item.Quantity</td>
+                <td></td>
+                <td>@item.UnitPrice</td>
                 <td>&nbsp;</td>
+                <td>@(item.Quantity * item.UnitPrice)</td>
+                <td>@item.Comments</td>
+
             </tr>
         }
         <tr>
@@ -253,9 +254,9 @@
             <td>&nbsp;</td>
         </tr>
         <tr>
-            <td rowspan="2" colspan="2" style="text-align: center;"></td>
-            <td colspan="4">&nbsp;</td>
+            <td rowspan="2" colspan="4" style="text-align: center;"></td>
             <td colspan="3">&nbsp;</td>
+            <td colspan="2">&nbsp;</td>
             <td style=" text-align: center;">@Model.lblName<br>@Model.lblSignature<br>@Model.lblDate</td>
         </tr>
     </table>

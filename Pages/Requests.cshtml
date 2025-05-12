@@ -78,6 +78,8 @@
                                                     var technicalMemberApproval = request?.TechnicalMemberApproval;
                                                     var generalSupApproval = request?.GeneralSupApproval;
                                                     var rejectedById = request?.RejectedById;
+                                                    var IsReplied = request?.IsReplied;
+                                                    var IsRejected = request?.IsRejected;
                                                 }
                                                
                                                 @if (@Model.UserGroupName == "Technical Member" || @Model.UserGroupName == "General Supervisor")
@@ -115,37 +117,50 @@
                                                         }
                                                         else if(inbox.Type == "Rejected")
                                                         {     
-                                                            
-                                                            var justRepliedId = TempData["JustRepliedReportId"] != null ? Convert.ToInt32(TempData["JustRepliedReportId"]) : -1;
-                                                                var hasJustReplied = inbox.ReceivingReportId == justRepliedId;
-                                                            
-
-                                                            @if (!hasJustReplied)
+                                                            @if (IsReplied==false)
                                                             {
-                                                                <button class="btn btn-info btn-sm p-1" data-toggle="modal" data-target="#ReplyModal"
-                                                                        onclick="setReplyReportId(@inbox.ReceivingReportId, '@inbox.Sender')">
-                                                                    Reply & Resend
-                                                                </button>
+                                                                <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#ReplyModal" onclick="setReplyReportId(@inbox.ReceivingReportId,'@inbox.Sender')">Reply & Resend</button>
 
-                                                                <button class="btn btn-warning btn-sm p-1" data-toggle="modal" data-target="#commentRejectModal"
-                                                                        onclick="setRejectReportId(@inbox.ReceivingReportId)">
-                                                                    Comment & Reject
-                                                                </button>
+                                                                <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#commentRejectModal" onclick="setRejectReportId(@inbox.ReceivingReportId)">Comment & Reject</button>
                                                             }
-                                                            else
+                                                            else if (IsReplied == true)
                                                             {
-                                                                <span class="badge badge-success">Reply submitted</span>
+                                                                <span class="bg-success p-2 rounded text-white">Replied</span>
                                                             }
+                                                           
 
+                                                            @* <button class="btn btn-info btn-sm p-1" data-toggle="modal" data-target="#ReplyModal" onclick="setReplyReportId(@inbox.ReceivingReportId,'@inbox.Sender')">
+                                                                Reply & resend
+                                                            </button>
+
+                                                            <button class="btn btn-warning btn-sm p-1" data-toggle="modal" data-target="#commentRejectModal" onclick="setRejectReportId(@inbox.ReceivingReportId)">
+                                                                Comment & Reject
+                                                            </button> *@
                                                         }
                                                     }
                                                 
                                                 }
-                                                else if (Model.UserGroupName == "Warehouse Keeper" && technicalMemberApproval == true && generalSupApproval == true)
+                                                else if (Model.UserGroupName == "Warehouse Keeper")
                                                 {
-                                                    <a href="/ItemCards" class="btn btn-info btn-sm p-1">
-                                                        Add Order to Item Card
-                                                    </a>
+                                                  
+                                                    if(@inbox.Type == "Rejected"){
+                                                        @if (IsReplied==false)
+                                                        {
+                                                            <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#ReplyModal" onclick="setReplyReportId(@inbox.ReceivingReportId,'@inbox.Sender')">Reply & Resend</button>
+
+                                                        }
+                                                        else if (IsReplied == true)
+                                                        {
+                                                                <span class="bg-success p-2 rounded text-white">Replied</span>
+                                                        }
+                                                    }
+                                                    else if(technicalMemberApproval == true && generalSupApproval == true){
+                                                        <a href="/ItemCards" class="btn btn-info btn-sm p-1">
+                                                            Add Order to Item Card
+                                                        </a>
+                                                    }
+
+                                                    
                                                 }
 
                                         </td>
