@@ -79,13 +79,13 @@ namespace LabMaterials.Pages
         public string lblDisbursements, lblSearch, lblRequesterName, lblFromStore, lblSubmit, lblItemName, lblStoreName, lblDestination, lblItemType, lblQuantity, lblItemCode, lblAddDisbursement, lblRequestReceivedDate, lblRequestingPlace, lblComments,
             lblDisbursementStatus, lblInventoryBalanced, lblEdit, lblTotalItem, lblFromDate, lblToDate, lblExportExcel, lblPrintTable;
 
-        public void OnPostSearch([FromForm] string RequesterName, [FromForm] DateTime? FromDate, [FromForm] DateTime? ToDate)
-        {   CurrentPage = 1; 
-              this.RequesterName = RequesterName;
-                this.FromDate = FromDate;
-                this.ToDate = ToDate;
-            FillData(RequesterName,FromDate,ToDate, CurrentPage);
-        }
+        // public void OnPostSearch([FromForm] string RequesterName, [FromForm] DateTime? FromDate, [FromForm] DateTime? ToDate)
+        // {   CurrentPage = 1; 
+        //       this.RequesterName = RequesterName;
+        //         this.FromDate = FromDate;
+        //         this.ToDate = ToDate;
+        //     FillData(RequesterName,FromDate,ToDate, CurrentPage);
+        // }
 
         public IActionResult OnPostAction(string RequesterName, DateTime? FromDate, DateTime? ToDate, string action, List<string> columns)
         {
