@@ -83,7 +83,7 @@
                                                 @if (@Model.UserGroupName == "Technical Member" || @Model.UserGroupName == "General Supervisor")
                                                 {
                                                     
-                                                    if ( @Model.UserId == rejectedById){
+                                                    if ( @Model.UserId == rejectedById && inbox.Type != "Reply"){
                                                         <span class="bg-danger p-2 rounded text-white">Rejected</span>
                                                     }
                                                     else{
@@ -109,9 +109,34 @@
                                                                 Comment & Reject
                                                             </button>
                                                         }
-                                                        else if ((techAccepted || genSupAccepted) && inbox.Type != "Information")
+                                                        else if ((techAccepted || genSupAccepted) && inbox.Type != "Information" && inbox.Type != "Rejected")
                                                         {
                                                             <span class="bg-success p-2 rounded text-white">Accepted</span>
+                                                        }
+                                                        else if(inbox.Type == "Rejected")
+                                                        {     
+                                                            
+                                                            var justRepliedId = TempData["JustRepliedReportId"] != null ? Convert.ToInt32(TempData["JustRepliedReportId"]) : -1;
+                                                                var hasJustReplied = inbox.ReceivingReportId == justRepliedId;
+                                                            
+
+                                                            @if (!hasJustReplied)
+                                                            {
+                                                                <button class="btn btn-info btn-sm p-1" data-toggle="modal" data-target="#ReplyModal"
+                                                                        onclick="setReplyReportId(@inbox.ReceivingReportId, '@inbox.Sender')">
+                                                                    Reply & Resend
+                                                                </button>
+
+                                                                <button class="btn btn-warning btn-sm p-1" data-toggle="modal" data-target="#commentRejectModal"
+                                                                        onclick="setRejectReportId(@inbox.ReceivingReportId)">
+                                                                    Comment & Reject
+                                                                </button>
+                                                            }
+                                                            else
+                                                            {
+                                                                <span class="badge badge-success">Reply submitted</span>
+                                                            }
+
                                                         }
                                                     }
                                                 
@@ -194,6 +219,36 @@
                         </div>
                     </div>
 
+                    @* Model for reply *@
+                    <div class="modal fade" id="ReplyModal" tabindex="-1" role="dialog" aria-labelledby="ReplyModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="ReplyModalLabel">Reply & Resend Request</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <form method="post" asp-page-handler="Reply">
+                                    <div class="modal-body">
+                                        <!-- Input field for comment -->
+                                        <div class="form-group">
+                                            <input type="hidden" id="ReplyReportId" name="ReplyReportId" />
+                                            <input type="hidden" id="ReplySender" name="ReplySender" />
+
+                                            <label for="Reply">Your Reply</label>
+                                            <textarea id="Reply" name="Reply" class="form-control" rows="3"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <!-- Button to submit the message and reply -->
+                                        <button type="submit" class="btn btn-danger" id="replyBtn" >Reply</button>
+                                       
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                     
                     </tbody>
                 </table>
@@ -209,6 +264,10 @@
       
         function setRejectReportId(id) {
             document.getElementById("RejectReceivingReportId").value = id;
+        }
+        function setReplyReportId(id, receiver) {
+            document.getElementById("ReplyReportId").value = id;
+            document.getElementById("ReplySender").value = receiver;
         }
 
 

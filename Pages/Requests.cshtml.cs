@@ -253,21 +253,11 @@ namespace LabMaterials.Pages
                     Sender = this.UserFullName ,
                     Recipient = technicalMember.FullName, 
                     Content = TechMemMessage,
-                    Type = "Information"
+                    Type = "Rejected"
                 };
                 _context.Messages.Add(msgToTechMem);
 
-                //send message to keeper
-                string keeperMessage = string.Format("Your request is rejected with comment: {0}", Comment);
-                var msgToKee = new Message
-                {
-                    ReceivingReportId = RejectReceivingReportId,
-                    Sender = this.UserFullName ,
-                    Recipient = report.CreatedBy, 
-                    Content = keeperMessage,
-                    Type = "Rejected"
-                };
-                _context.Messages.Add(msgToKee);
+           
 
                 
             }
@@ -285,6 +275,38 @@ namespace LabMaterials.Pages
             return RedirectToPage(); 
         }
 
+        public async Task<IActionResult> OnPostReply([FromForm] int ReplyReportId, [FromForm] string Reply, [FromForm] string ReplySender ){
+            base.ExtractSessionData();
+            FillLables();
+            Console.WriteLine("reply function");
+            var dbContext = new LabDBContext();
+            this.UserFullName = HttpContext.Session.GetString("FullName");
+            this.UserGroupName = HttpContext.Session.GetString("UserGroup");
+            this.UserId = HttpContext.Session.GetInt32("UserId");
+            var report = await _context.ReceivingReports.FindAsync(ReplyReportId);
+            if (report == null)
+            {
+                // handle error
+                return NotFound();
+            }
+            if (string.IsNullOrEmpty(Reply))
+                ErrorMsg = (Program.Translations["CommentMissing"])[Lang];
+
+            string ReplyMessage = string.Format("Replied with comment: {0}", Reply);
+            var msgToTechMem = new Message
+            {
+                ReceivingReportId = ReplyReportId,
+                Sender = this.UserFullName ,
+                Recipient = ReplySender, 
+                Content = ReplyMessage,
+                Type = "Reply"
+            };
+            _context.Messages.Add(msgToTechMem);
+            await _context.SaveChangesAsync(); 
+            TempData["JustRepliedReportId"] = ReplyReportId;
+            return RedirectToPage(); 
+
+        }
         private void FillLables()
         {
             this.lblRequests = (Program.Translations["Requests"])[Lang];
