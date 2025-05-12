@@ -36,7 +36,7 @@ namespace LabMaterials.Pages
         }
 
         public string lblDestinations, lblSearch, lblDestinationName, lblManageRequestor, lblSubmit, lblAddDestination,
-            lblEdit, lblDelete, lblStores;
+            lblEdit, lblDelete, lblStores, lblExportExcel, lblPrintTable;
 
         public void OnPostSearch([FromForm] string DestinationName)
         {   CurrentPage = 1;
@@ -134,6 +134,8 @@ namespace LabMaterials.Pages
             this.lblDelete = (Program.Translations["Delete"])[Lang]; 
             this.lblManageRequestor = (Program.Translations["ManageRequestor"])[Lang];
             this.lblStores = (Program.Translations["Stores"])[Lang];
+            this.lblExportExcel = (Program.Translations["ExportExcel"])[Lang];
+            this.lblPrintTable = (Program.Translations["PrintTable"])[Lang];
 
         }
     }

@@ -19,7 +19,7 @@ namespace LabMaterials.Pages
         public int ItemsPerPage { get; set; } = 10;
         public int TotalPages { get; set; }
         public string lblUnitCode, lblUnitDescription, lblGroupName, lblEdit, lblDelete, lblTotalItem, lblAddUnit, 
-        lblUnits, lblSearch, lblItems;
+        lblUnits, lblSearch, lblItems, lblExportExcel, lblPrintTable;
         public void OnGet(string? UnitDesc, int page = 1) 
         {
             base.ExtractSessionData();
@@ -133,6 +133,8 @@ namespace LabMaterials.Pages
             this.lblUnits = (Program.Translations["Units"])[Lang];
             this.lblSearch = (Program.Translations["Search"])[Lang];
             this.lblItems = (Program.Translations["Items"])[Lang];
+            this.lblExportExcel = (Program.Translations["ExportExcel"])[Lang];
+            this.lblPrintTable = (Program.Translations["PrintTable"])[Lang];
         }
 
     }

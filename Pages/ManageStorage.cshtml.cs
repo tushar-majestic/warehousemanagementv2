@@ -41,7 +41,7 @@ namespace LabMaterials.Pages
         }
         
         public string lblStorage, lblSearch, lblStoreNumber, lblStoreName, lblItemName, lblSubmit, lblAddStorage,
-            lblShelveNumber, lblAvailableQuantity, lblEdit, lblDelete, lblTotalItem, lblStores;
+            lblShelveNumber, lblAvailableQuantity, lblEdit, lblDelete, lblTotalItem, lblStores, lblExportExcel, lblPrintTable;
 
         public void OnPostSearch([FromForm] string StoreNumber, [FromForm] string StoreName, [FromForm] string Item)
         {   CurrentPage = 1;
@@ -153,6 +153,8 @@ namespace LabMaterials.Pages
             this.lblDelete = (Program.Translations["Delete"])[Lang];
             this.lblTotalItem = (Program.Translations["TotalItem"])[Lang];
             this.lblStores = (Program.Translations["Stores"])[Lang];
+            this.lblExportExcel = (Program.Translations["ExportExcel"])[Lang];
+            this.lblPrintTable = (Program.Translations["PrintTable"])[Lang];
         }
     }
 }

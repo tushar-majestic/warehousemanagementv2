@@ -64,7 +64,7 @@ namespace LabMaterials.Pages
         }
 
         public string lblView, lblUsers, lblSearch, lblAddUser, lblManageUserGroups, lblUserName, lblFullName, lblEmail, lblIsDomainUser, lblJobNumber, lblEmpAffiliation, lblTransfer,
-            lblUserEnabled, lblIsLocked, lblUserType, lblUserGroupName, lblEdit, lblUnlock, lblTotalItem;
+            lblUserEnabled, lblIsLocked, lblUserType, lblUserGroupName, lblEdit, lblUnlock, lblTotalItem, lblExportExcel, lblPrintTable;
 
 
         public void OnPostSearch([FromForm] string UserName)
@@ -357,6 +357,8 @@ namespace LabMaterials.Pages
             this.lblJobNumber = (Program.Translations["JobNumber"])[Lang];
             this.lblEmpAffiliation = (Program.Translations["EmpAffiliation"])[Lang];
             this.lblTransfer = (Program.Translations["Transfer"])[Lang];
+            this.lblExportExcel = (Program.Translations["ExportExcel"])[Lang];
+            this.lblPrintTable = (Program.Translations["PrintTable"])[Lang];
 
         }
     }
