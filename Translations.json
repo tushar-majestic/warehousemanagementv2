@@ -459,7 +459,7 @@
     "en": "Destination Deleted",
     "ar": "تم حذف الوجهة"
   },
-  //Storage
+  // Storage
   "Storages": {
     "en": "Storages",
     "ar": "المخازن"
@@ -1384,8 +1384,33 @@
     },
     "CommentMissing":{
       "en": "Enter Comment to reject request.",
-      "ar": "Enter Comment to reject request.",
+      "ar": "Enter Comment to reject request."
+    },
+    "ReceivingItems":{
+      "en": "ReceivingItems",
+      "ar": "ReceivingItems"
+    },
+    "SerialNo":{
+      "en": "Serial No.",
+      "ar": "Serial No."
+    },
+    "PageCount":{
+      "en": "Page Count",
+      "ar": "عدد الصفحات"
+    },
+    "SectorNo":{
+      "en": "Sector No.",
+      "ar": "Sector No."
+    },
+    "DateOfReceipt":{
+      "en": "Date Of Receipt",
+      "ar": "Date Of Receipt"
+    },
+    "RecipientWarehouse":{
+      "en": "Recipient Warehouse",
+      "ar": "Recipient Warehouse"
     }
+   
     
 
 

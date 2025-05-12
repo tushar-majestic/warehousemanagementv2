@@ -111,7 +111,7 @@
                 </dl>
 
 
-                <table class="table table-bordered table-striped">
+                <table class="table table-bordered table-striped" style="width: 826px;">
                     <thead>
                         <tr>
                             <th>Comments</th>
@@ -149,41 +149,41 @@
 </div>
 
 <div id="printArea" style="display: none;">
-    <table class="table-format border"" align="center"  id="printArea">
+    <table class="table-format border"" align="center"  id="printArea" style="width: 826px;"  dir="@Model.dir">
         <tr>
             <td colspan="10">
                 <div align="center" style=" margin-top: 20px; margin-bottom: 40px; font-weight: bold;">
-                    Receiving Items
+                   @Model.lblReceivingItems
                 </div>
                 @{
                     var rep = Model.Report;
                 }
                 <table class="nested-table" border="0" width="100%">
                     <tr >
-                        <td style="width: 15%;border: none;">Serial No.</td>
+                        <td style="width: 15%;border: none;">@Model.lblSerialNo</td>
                         <td style="width: 15%;border: none;">@rep.SerialNumber</td>
                         <td style="width: 15%;border: none;"></td>
-                        <td style="width: 15%;border: none;" align="center">Supplier Name</td>
+                        <td style="width: 15%;border: none;" align="center">@Model.lblSupplierName</td>
                         <td style="width: 15%;border: none;">@rep.Supplier?.SupplierName</td>
-                        <td style="width: 15%;border: none;" align="right">Recipient Sector</td>
+                        <td style="width: 15%;border: none;" align="right">@Model.lblRecipientSector</td>
                         <td style="width: 15%;border: none;">@rep.RecipientSector</td>
                     </tr>
                     <tr>
-                        <td style="width: 15%;border: none;">Page Count</td>
+                        <td style="width: 15%;border: none;">@Model.lblPageCount</td>
                         <td style="width: 15%;border: none;"></td>
                         <td style="width: 15%;border: none;"></td>
                         <td style="width: 15%;border: none;"></td>
                         <td style="width: 15%;border: none;"></td>
-                        <td style="width: 15%;border: none;" align="right">Sector No.</td>
+                        <td style="width: 15%;border: none;" align="right">@Model.lblSectorNo</td>
                         <td style="width: 15%;border: none;">@rep.SectorNumber</td>
                     </tr>
                     <tr>
-                        <td style="width: 15%;border: none;">Date Of Receipt</td>
+                        <td style="width: 15%;border: none;">@Model.lblDateOfReceipt</td>
                         <td style="width: 15%;border: none;">@rep.ReceivingDate.ToString("yyyy-MM-dd")</td>
                         <td style="width: 15%;border: none;"></td>
                         <td style="width: 15%;border: none;"></td>
                         <td style="width: 15%;border: none;"></td>
-                        <td style="width: 15%;border: none;" align="right">Recipient Warehouse</td>
+                        <td style="width: 15%;border: none;" align="right">@Model.lblRecipientWarehouse</td>
                         <td style="width: 15%;border: none;">@Model.ReceivingWarehouse</td>
                     </tr>
                     <tr>
@@ -231,6 +231,12 @@
                 <td>&nbsp;</td>
             </tr>
         }
+        <tr>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td colspan="7">Total Price</td>
+        </tr>
 
        
        
@@ -243,7 +249,7 @@
             <td>&nbsp;</td>
         </tr>
         <tr>
-            <td rowspan="2" colspan="2" style="text-align: center;">Approve</td>
+            <td rowspan="2" colspan="2" style="text-align: center;"></td>
             <td colspan="4">&nbsp;</td>
             <td colspan="3">&nbsp;</td>
             <td style=" text-align: center;">Name<br>Signature<br>Date</td>
