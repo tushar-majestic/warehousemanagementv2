@@ -53,6 +53,10 @@ public partial class ReceivingReport
     public int? RejectedById { get; set; }
 
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public bool IsReplied { get; set; }
+    public bool IsRejected { get; set; }
+    public DateTime? TechnicalMemberApprovalDate { get; set; }
+    public DateTime? GeneralSupervisorApprovalDate { get; set; }
 
 
     [InverseProperty("ReceivingReport")]
