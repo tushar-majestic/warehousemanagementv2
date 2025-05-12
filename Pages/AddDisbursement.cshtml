@@ -38,89 +38,6 @@
                     showErrorNotification(errorMessageFromServer);
             </text>
         }
-            $(document).ready(function () {
-    var initialStoreId = $('#StoreId').val();
-    var ItemInfoByStore;
-
-    function loadRoomsForStore(storeId) {
-        $.ajax({
-            url: '?handler=ItemsFromStore',
-            method: 'GET',
-            data: { storeId: storeId },
-            success: function (data) {
-                console.log('Data:', data);
-                ItemInfoByStore = data;
-                console.log('Received ItemInfoByStore:', ItemInfoByStore);
-                var itemDropdown = $('#ItemId');
-                itemDropdown.empty();
-                ItemInfoByStore.forEach(function (item) {
-                    console.log('Appending item:', item);
-                    itemDropdown.append($('<option></option>').val(item.itemId).text(item.itemName));
-                });
-                // Call function to populate item code and item type code
-                updateItemFields();
-            },
-            error: function (xhr, textStatus, errorThrown) {
-                console.error('Error:', textStatus);
-            }
-        });
-    }
-
-    function updateItemFields() {
-        var selectedItemId = $('#ItemId').val();
-        console.log('Selected ItemId:', selectedItemId);
-        var selectedItem = ItemInfoByStore.find(item => item.itemId == selectedItemId);
-        console.log('Selected Item:', selectedItem);
-        if (selectedItem) {
-            console.log('Selected :', selectedItem);
-            $('#ItemCode').val(selectedItem.itemCode);
-            $('#ItemTypeCode').val(selectedItem.itemTypeCode);
-        }
-    }
-
-
-                function loadRequesterName(selectedDId) {
-                    $.ajax({
-                        url: '?handler=RequesterName',
-                        method: 'GET',
-                        data: { DId: selectedDId },
-
-                        success: function (data) {
-                            console.log(data, "jhadsgfeaghfkjsdkg");
-                            var requesterDropdown = $('#RequesterName');
-                            requesterDropdown.empty(); // Clear existing options
-                            data.forEach(function (room) {
-                                console.log("Req:", room.reqName);
-
-                                requesterDropdown.append($('<option></option>').text(room.reqName));
-
-                            });
-                        },
-                        error: function (xhr, textStatus, errorThrown) {
-                            console.error('Error:', textStatus);
-                        }
-                    });
-                }
-
-
-
-    loadRoomsForStore(initialStoreId);
-
-    $('#StoreId').on('change', function () {
-        var storeId = $(this).val();
-        loadRoomsForStore(storeId);
-    });
-
-                $('#DId').on('change', function () {
-                    var selectedDId = $(this).val();
-                    loadRequesterName(selectedDId);
-                });
-
-    // Update non-editable fields when the item dropdown changes
-    $('#ItemId').on('change', function () {
-        updateItemFields();
-    });
-});
 
 
     </script>
@@ -160,6 +77,47 @@
             }
         });
     </script>
+    <script>
+        function filterItemsByGroup() {
+            var group = document.getElementById("itemGroup").value;
+            var itemSelects = [document.getElementById("ArabicItemName"), document.getElementById("EnglishArabicName")];
+
+            itemSelects.forEach(select => {
+                var options = select.options;
+                for (var i = 0; i < options.length; i++) {
+                    var option = options[i];
+                    if (!option.value) continue;
+                    var itemGroup = option.getAttribute("data-group");
+                    option.style.display = itemGroup === group ? "block" : "none";
+                }
+                select.value = ""; // Reset selection
+            });
+        }
+
+        function onItemChange(sourceSelect, targetSelectId) {
+            var selectedOption = sourceSelect.options[sourceSelect.selectedIndex];
+            if (!selectedOption) return;
+
+            var selectedId = selectedOption.getAttribute("data-id");
+
+            // Sync with the other dropdown
+            var targetSelect = document.getElementById(targetSelectId);
+            for (var i = 0; i < targetSelect.options.length; i++) {
+                if (targetSelect.options[i].getAttribute("data-id") === selectedId) {
+                    targetSelect.selectedIndex = i;
+                    break;
+                }
+            }
+
+            // Fill in other fields
+            document.getElementById("ItemCode").value = selectedOption.getAttribute("data-code") || "";
+            document.getElementById("ItemDescription").value = selectedOption.getAttribute("data-description") || "";
+            document.getElementById("typeofAsset").value = selectedOption.getAttribute("data-asset") || "";
+            document.getElementById("chemical").value = selectedOption.getAttribute("data-chemical") || "";
+            document.getElementById("RiskRating").value = selectedOption.getAttribute("data-risk") || "";
+            document.getElementById("UnitofMeasure").value = selectedOption.getAttribute("data-unit") || "";
+        }
+    </script>
 }
 @{
     <div class="py-4">
@@ -198,23 +156,59 @@
                                 <div class="return-entry border p-3 mb-3 rounded position-relative">
                                     <div class="my-4">
                                         <label for="RequestingPlace">@Model.lblItemGroups</label>
-                                        <select class="form-select" name="itemGroup">
-                                            <option value="1">item group1</option>
-                                            <option value="2">item group2</option>
-                                            <option value="3">item group3</option>
+                                        <select class="form-select" id="itemGroup" name="itemGroup" onchange="filterItemsByGroup()">
+                                            @if (Model.ItemGroups != null)
+                                            {
+                                                foreach (var item in Model.ItemGroups)
+                                                {
+                                                    <option value="@item.GroupCode">@item.GroupDesc</option>
+                                                }
+                                            }
+                                        </select>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label>@Model.lblItemName (@Model.lblArabicLanguage)</label>
+                                        <select class="form-select" id="ArabicItemName" name="ArabicItemName" onchange="onItemChange(this, 'EnglishArabicName')">
+                                            <option value="">Select Item </option>
+                                            @foreach (var item in Model.Items)
+                                            {
+                                                if (item.Ended == null)
+                                                {
+                                                    <option value="@item.ItemId"
+                                                            data-id="@item.ItemId"
+                                                            data-group="@item.GroupCode"
+                                                            data-code="@item.ItemCode"
+                                                            data-description="@item.ItemDescription"
+                                                            data-unit="@item.UnitId">
+                                                        @item.ItemName
+                                                    </option>
+                                                }
+                                            }
+                                        </select>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label for="EnglishArabicName">@Model.lblItemName (@Model.lblEnglishLanguage)</label>
+                                        <select class="form-select" id="EnglishArabicName" name="EnglishArabicName" onchange="onItemChange(this, 'ArabicItemName')">
+                                            <option value="">Select Item </option>
+                                            @foreach (var item in Model.Items)
+                                            {
+                                                if (item.Ended == null)
+                                                {
+                                                    <option value="@item.ItemId"
+                                                            data-id="@item.ItemId"
+                                                            data-group="@item.GroupCode"
+                                                            data-code="@item.ItemCode"
+                                                            data-description="@item.ItemDescription"
+                                                            data-unit="@item.Unit?.UnitCode">
+                                                        @item.ItemName
+                                                    </option>
+                                                }
+                                            }
                                         </select>
                                     </div>
                                     <div class="mb-4">
                                         <label for="itemCode">@Model.lblItemCode</label>
                                         <input type="text" class="form-control" id="ItemCode" readonly>
-                                    </div>
-                                    <div class="mb-4">
-                                        <label for="ArabicItemName">@Model.lblItemName (@Model.lblArabicLanguage)</label>
-                                        <select class="form-select" id="ArabicItemName" name="ArabicItemName"></select>
-                                    </div>
-                                    <div class="mb-4">
-                                        <label for="EnglishArabicName">@Model.lblItemName (@Model.lblEnglishLanguage)</label>
-                                        <select class="form-select" id="EnglishArabicName" name="EnglishArabicName"></select>
                                     </div>
                                     <div class="mb-4">
                                         <label for="itemDescription">@Model.lblItemDescription</label>

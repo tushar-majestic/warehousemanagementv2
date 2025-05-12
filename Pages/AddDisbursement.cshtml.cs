@@ -22,6 +22,9 @@ namespace LabMaterials.Pages
         public List<SelectListItem> StatusList;
         public List<Destination> Destinations { get; set; }
         public List<Store> Stores { get; set; }
+        public List<Item> Items { get; set; }
+        public List<Unit> Units { get; set; }
+        public List<ItemGroup> ItemGroups { get; set; }
         public List<ItemInfoByStoreId> ItemInfoByStore { get; set; }
 
         public string lblAddDisbursement, lblRequesterName, lblRequestReceivedDate, lblQuantity, lblItemCode, lblItemTypeCode, lblItemName, lblStoreName, lblRequestingPlace, lblComments,
@@ -40,6 +43,12 @@ namespace LabMaterials.Pages
             var dbContext = new LabDBContext();
             Destinations = dbContext.Destinations.ToList();
             Stores = dbContext.Stores.ToList();
+            Items = dbContext.Items
+                .Include(i => i.Unit)
+                .Where(i => i.Ended == null)
+                .ToList();
+            Units = dbContext.Units.ToList();
+            ItemGroups = dbContext.ItemGroups.Where(g => g.Units.Count() > 0).ToList();
 
 
 

@@ -172,6 +172,7 @@ namespace LabMaterials.Pages
                 dbContext.Stores.Update(store);
                 dbContext.SaveChanges();
                 FillData(null, null);
+                LoadSelectedColumns();
                 Message = string.Format((Program.Translations["StoreDeleted"])[Lang], store.StoreName);
                 Helper.AddActivityLog(HttpContext.Session.GetInt32("UserId").Value, Message, "Delete", Helper.ExtractIP(Request), dbContext, true);
             }
@@ -181,6 +182,7 @@ namespace LabMaterials.Pages
                 Message = string.Format((Program.Translations["StoreNotDeleted"])[Lang], itemsInstore,
                     dbContext.Items.Single(i => i.ItemId == itemId).ItemName);
                 FillData(null, null);
+                LoadSelectedColumns();
             }
 
         }
