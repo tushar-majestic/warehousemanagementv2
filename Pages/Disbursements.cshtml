@@ -1,4 +1,5 @@
 ﻿@page
+@using Microsoft.AspNetCore.Http
 @model LabMaterials.Pages.DisbursementsModel
 @section Scripts
 {
@@ -223,21 +224,29 @@ document.addEventListener("DOMContentLoaded", function () {
             <h2 class="h4">@Model.lblDisbursements</h2>
              <!-- <p class="mb-0">Your web analytics dashboard template.</p>-->
         </div>
-        <div class="btn-toolbar mb-2 mb-md-0">
+        @{
+            var userGroup = HttpContext.Session.GetString("UserGroup");
+        }
 
-            <div class="btn-group ms-2 ms-lg-3">
-                <a href="AddDisbursement" class="btn btn-sm d-flex btn-gray-800 justify-content-center top-big-btn d-inline-flex align-items-center">
-                    <img b-ie9pk9zf1q="" class="icon text-white icon-xs mx-2" src="images/plus.png">    @Model.lblAddDisbursement
-                </a>
+        @if (userGroup == "Warehouse Manager")
+        {
+            <div class="btn-toolbar mb-2 mb-md-0">
+                <div class="btn-group ms-2 ms-lg-3">
+                    <a href="AddDisbursement" class="btn btn-sm d-flex btn-gray-800 justify-content-center top-big-btn d-inline-flex align-items-center">
+                        <img class="icon text-white icon-xs mx-2" src="images/plus.png" />
+                        @Model.lblAddDisbursement
+                    </a>
+                </div>
             </div>
-        </div>
+        }
+
     </div>
     @* <div style="text-align:center; color:maroon">@Model.Message</div>  *@
     
 <div class="row mb-4 align-items-start">
     <div class="col-auto">
-        <button id="exportExcel" class="btn btn-success mb-3">Export Excel</button>
-        <button id="printBtn" class="btn btn-primary mb-3">Print Table</button>
+        <button id="exportExcel" class="btn btn-success mb-3">@Model.lblExportExcel</button>
+        <button id="printBtn" class="btn btn-primary mb-3">@Model.lblPrintTable</button>
     </div>
 
         @if (Model.TotalItems > 0)

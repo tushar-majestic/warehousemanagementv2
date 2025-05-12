@@ -77,7 +77,7 @@ namespace LabMaterials.Pages
         }
 
         public string lblDisbursements, lblSearch, lblRequesterName, lblFromStore, lblSubmit, lblItemName, lblStoreName, lblDestination, lblItemType, lblQuantity, lblItemCode, lblAddDisbursement, lblRequestReceivedDate, lblRequestingPlace, lblComments,
-            lblDisbursementStatus, lblInventoryBalanced, lblEdit, lblTotalItem, lblFromDate, lblToDate;
+            lblDisbursementStatus, lblInventoryBalanced, lblEdit, lblTotalItem, lblFromDate, lblToDate, lblExportExcel, lblPrintTable;
 
         public void OnPostSearch([FromForm] string RequesterName, [FromForm] DateTime? FromDate, [FromForm] DateTime? ToDate)
         {   CurrentPage = 1; 
@@ -328,6 +328,8 @@ namespace LabMaterials.Pages
 
             this.lblFromDate = (Program.Translations["FromDate"])[Lang];
             this.lblToDate = (Program.Translations["ToDate"])[Lang];
+            this.lblExportExcel = (Program.Translations["ExportExcel"])[Lang];
+            this.lblPrintTable = (Program.Translations["PrintTable"])[Lang];
 
 
         }

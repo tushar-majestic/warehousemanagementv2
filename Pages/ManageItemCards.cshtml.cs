@@ -8,7 +8,7 @@ namespace LabMaterials.Pages
 {
     public class ManageItemCardsModel : BasePageModel
     {
-        public string    lblTotalItem, lblAddItemCard, lblItemGroups, lblSearch, lblItems;
+        public string    lblTotalItem, lblAddItemCard, lblItemGroups, lblSearch, lblItems, lblExportExcel, lblPrintTable;
 
         public List<string> SelectedColumns { get; set; } = new List<string>();
 
@@ -43,6 +43,8 @@ namespace LabMaterials.Pages
             this.lblItemGroups = (Program.Translations["ItemGroups"])[Lang];
             this.lblSearch = (Program.Translations["Search"])[Lang];
             this.lblItemCards = (Program.Translations["ItemCards"])[Lang];
+            this.lblExportExcel = (Program.Translations["ExportExcel"])[Lang];
+            this.lblPrintTable = (Program.Translations["PrintTable"])[Lang];
         }
     }
 

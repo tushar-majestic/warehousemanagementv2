@@ -28,7 +28,7 @@ namespace LabMaterials.Pages
 
         public string lblSupplies, lbltypeCode, lblStoreName, lblExpiryDate, lblItemType, lblRoomName, lblShelfNumber, lblManageSuppliers, lblSearch, lblSupplierName, lblItemName, lblSubmit, lblAddSupplies,
             lblQuantityReceived, lblPurchaseOrderNo, lblInvoiceNumber, lblReceivedAt, lblInventoryBalanced, lblEdit, lblDelete,
-            lblTotalItem, lblFromDate, lblToDate, lblNewReceivingReport;
+            lblTotalItem, lblFromDate, lblToDate, lblNewReceivingReport, lblExportExcel, lblPrintTable;
 
 
 
@@ -357,6 +357,8 @@ namespace LabMaterials.Pages
 
             this.lblFromDate = (Program.Translations["FromDate"])[Lang];
             this.lblToDate = (Program.Translations["ToDate"])[Lang];
+            this.lblExportExcel = (Program.Translations["ExportExcel"])[Lang];
+            this.lblPrintTable = (Program.Translations["PrintTable"])[Lang];
         }
     }
 }

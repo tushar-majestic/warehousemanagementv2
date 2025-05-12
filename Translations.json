@@ -1498,6 +1498,10 @@
       "en": "Enter Comment to reject request.",
       "ar": "Enter Comment to reject request."
     },
+    "Print":{
+      "en": "Print",
+      "ar": "Print"
+},
     "ReceivingItems":{
       "en": "Receiving Items",
       "ar": "Receiving Items"

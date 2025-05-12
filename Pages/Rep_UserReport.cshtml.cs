@@ -14,7 +14,7 @@ namespace LabMaterials.Pages
             lblHazardousMaterials, lblUserActivity, lblDistributedMaterials, lblHazardTypeName, 
             lblItemCode, lblItemName, lblStoreName, lblGroupName, lblAvailableQuantity, lblHazardType, 
             lblTypeName, lblUnitCode, lblSearch, lblSubmit, lblTotalItem, lblDamagedItems, lblUserReport,
-            lblUserId, lblUserName, lblUserGroup, lblCreatedBy, lblCreationDate, lblExport;
+            lblUserId, lblUserName, lblUserGroup, lblCreatedBy, lblCreationDate, lblExport, lblPrint;
         public int TotalUsers { get; set; }
 
         [BindProperty]
@@ -170,6 +170,7 @@ namespace LabMaterials.Pages
             this.lblCreatedBy = (Program.Translations["CreatedBy"])[Lang];
             this.lblCreationDate = (Program.Translations["CreationDate"])[Lang];
             this.lblExport = (Program.Translations["Export"])[Lang];
+            this.lblPrint = (Program.Translations["Print"])[Lang];
 
         }
     }
