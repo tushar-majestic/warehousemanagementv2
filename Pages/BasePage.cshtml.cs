@@ -20,7 +20,7 @@ namespace LabMaterials.Pages
         public string Lang { get; set; } = "ar";
 
 
-        public string lblView, lblRequests, lblLabMaterials, lblHome, lblNotifications, lblShowHideColumn, lblDisbursement, lblReports, lblManageUsers, lblManageItems, lblManageSupplies, lblManageStores, lblUserProfile, lblLogout, lblDamagedItems, lblLanguage, lblWarehouseType, lblManagerName, lblBuildingNumber, lblRoomDesc, lblStatus, lblRoomStatus, lblOpen, lblClosed, lblRoomNumber, lblNoOfShelves, lblKeeperName, lblKeeperJobNum, lblWarehouseManagerName, lblItemCards;
+        public string lblView, lblRequests, lblLabMaterials, lblHome, lblNotifications, lblShowHideColumn, lblDisbursement, lblReports, lblManageUsers, lblManageItems, lblManageSupplies, lblManageStores, lblUserProfile, lblLogout, lblDamagedItems, lblLanguage, lblWarehouseType, lblManagerName, lblBuildingNumber, lblRoomDesc, lblStatus, lblRoomStatus, lblOpen, lblClosed, lblRoomNumber, lblNoOfShelves, lblKeeperName, lblKeeperJobNum, lblWarehouseManagerName, lblItemCards, lblReceivingItems, lblSerialNo, lblSupplierName, lblRecipientSector, lblPageCount, lblSectorNo, lblDateOfReceipt, lblRecipientWarehouse;
 
 
         public void ExtractSessionData()
@@ -52,6 +52,11 @@ namespace LabMaterials.Pages
 
         }
 
+        public bool IsMajesticUser()
+        {
+            var fullName = HttpContext.Session.GetString("FullName") ?? "";
+            return fullName.StartsWith("majestic", StringComparison.OrdinalIgnoreCase);
+        }
         private void FillLables()
         {
 
@@ -91,6 +96,14 @@ namespace LabMaterials.Pages
             this.lblItemCards = (Program.Translations["ItemCards"])[Lang];
 
 
+            this.lblReceivingItems = (Program.Translations["ReceivingItems"])[Lang];
+            this.lblSerialNo = (Program.Translations["SerialNo"])[Lang];
+            this.lblSupplierName = (Program.Translations["SupplierName"])[Lang];
+            this.lblRecipientSector = (Program.Translations["RecipientSector"])[Lang];
+            this.lblPageCount =  (Program.Translations["PageCount"])[Lang];
+            this.lblSectorNo = (Program.Translations["SectorNo"])[Lang];
+            this.lblDateOfReceipt = (Program.Translations["DateOfReceipt"])[Lang];
+            this.lblRecipientWarehouse = (Program.Translations["RecipientWarehouse"])[Lang];
 
         }
     }
