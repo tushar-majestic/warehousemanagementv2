@@ -236,8 +236,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     <div class="row mb-4 align-items-start">
         <div class="col-auto">
-            <button id="exportExcel" class="btn btn-success me-2">Export Excel</button>
-            <button id="printBtn" class="btn btn-primary">Print Table</button>
+            <button id="exportExcel" class="btn btn-success me-2">@Model.lblExportExcel</button>
+            <button id="printBtn" class="btn btn-primary">@Model.lblPrintTable</button>
         </div>
 
         @if (Model.TotalItems > 0)

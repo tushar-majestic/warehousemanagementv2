@@ -24,7 +24,9 @@ namespace LabMaterials.Pages
         public int TotalPages { get; set; }
         public List<string> SelectedColumns { get; set; } = new List<string>();
         public string lblItems, lblItemName, lblGroupName, lblItemCode, lblAvailableQuantity, lblHazardType, lblTypeName,
-            lblUnitCode, lblSearch, lblSubmit, lblDamageReason, lblDamagedQuantity, lblManageItemGroup, lblManageUnit, lblAddItem, lblEdit, lblDelete, lblTotalItem, lblExpiryDate, lblBatchNo, lblDamage, lblDamagedItems;
+            lblUnitCode, lblSearch, lblSubmit, lblDamageReason, lblDamagedQuantity, lblManageItemGroup, lblManageUnit,
+            lblAddItem, lblEdit, lblDelete, lblTotalItem, lblExpiryDate, lblBatchNo, lblDamage, lblDamagedItems, lblExportExcel,
+            lblPrintTable;
         public void OnGet(string? ItemName,string? Group, int page = 1)
         {
             base.ExtractSessionData();
@@ -320,6 +322,8 @@ namespace LabMaterials.Pages
             this.lblDamagedQuantity = (Program.Translations["DamagedQuantity"])[Lang];
             this.lblDamageReason = (Program.Translations["DamageReason"])[Lang]; 
             this.lblDamagedItems = (Program.Translations["DamagedItems"])[Lang];
+            this.lblExportExcel = (Program.Translations["ExportExcel"])[Lang];
+            this.lblPrintTable = (Program.Translations["PrintTable"])[Lang];
 
 
 

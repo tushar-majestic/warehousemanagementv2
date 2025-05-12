@@ -34,7 +34,10 @@ namespace LabMaterials.Pages
         public List<string> SelectedColumns { get; set; } = new List<string>();
         public List<Room> Rooms { get; set; }
 
-        public string lblStores, lblManageStorage, lblSearch, lblRoomName, lblManageShelves, lblUnlock, lblLock, lblRoomNumber, lblManageRooms, lblStoreNumber, lblAddRoom, lblAddShelf, lblStoreName, lblSubmit, lblAddStore, lblShelves, lblEdit, lblDelete, lblTotalItem, lblAddDestination, lblManageDestination, lblWarehouseType, lblManagerName, lblManagerJobNumber, lblStatus;
+        public string lblStores, lblManageStorage, lblSearch, lblRoomName, lblManageShelves, lblUnlock, lblLock, lblRoomNumber,
+        lblManageRooms, lblStoreNumber, lblAddRoom, lblAddShelf, lblStoreName, lblSubmit, lblAddStore, lblShelves, lblEdit,
+        lblDelete, lblTotalItem, lblAddDestination, lblManageDestination, lblWarehouseType, lblManagerName, lblManagerJobNumber,
+        lblStatus, lblExportExcel, lblPrintTable;
 
         private void LoadSelectedColumns()
         {
@@ -364,6 +367,8 @@ namespace LabMaterials.Pages
             this.lblManagerName = (Program.Translations["ManagerName"])[Lang];
             this.lblManagerJobNumber = (Program.Translations["ManagerJobNumber"])[Lang];
             this.lblStatus = (Program.Translations["WarehouseStatus"])[Lang];
+            this.lblExportExcel = (Program.Translations["ExportExcel"])[Lang];
+            this.lblPrintTable = (Program.Translations["PrintTable"])[Lang];
 
 
 

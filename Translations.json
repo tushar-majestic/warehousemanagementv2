@@ -459,7 +459,7 @@
     "en": "Destination Deleted",
     "ar": "تم حذف الوجهة"
   },
-  //Storage
+  // Storage
   "Storages": {
     "en": "Storages",
     "ar": "المخازن"
@@ -1243,35 +1243,35 @@
     },
     "FiscalYear": {
         "en":"Fiscal Year",
-        "ar":"Fiscal Year"
+        "ar":"السنة المالية"
     },
     "SerialNumber": {
         "en":"Serial Number",
-        "ar":"Serial Number"
+        "ar":"رقم سري"
     },
     "ReceivingDate": {
         "en":"Receiving Date",
-        "ar":"Receiving Date"
+        "ar":"تاريخ الاستلام"
     },
     "SectorNumber":{
         "en":"Sector Number",
-        "ar":"Sector Number"
+        "ar":"رقم القطاع"
     },
     "ReceivingWarehouse":{
         "en":"Receiving Warehouse",
-        "ar":"Receiving Warehouse"
+        "ar":"مستودع الاستلام"
     },
     "BasedOnDocument":{
         "en":"Based On Document",
-        "ar":"Based On Document"
+        "ar":"بناء على الوثيقة"
     },
     "DocumentNumber":{
         "en":"Document Number",
-        "ar":"Document Number"
+        "ar":"رقم المستند"
     },
     "DocumentDate":{
         "en":"Document Date",
-        "ar":"Document Date"
+        "ar":"تاريخ الوثيقة"
     },
     "AddAttachment":{
         "en":"Add Attachment",
@@ -1280,23 +1280,23 @@
 
     "ItemGroup":{
         "en":"Item Group",
-        "ar":"Item Group"
+        "ar":"مجموعة العناصر"
     },
     "ItemNo":{
         "en":"Item No.",
-        "ar":"Item No."
+        "ar":"رقم الصنف"
     },
     "UnitOfMeasure":{
         "en":"Unit of Measure",
-        "ar":"Unit of Measure"
+        "ar":"وحدة القياس"
     },
     "UnitPrice": {
         "en":"Unit Price",
-        "ar":"Unit Price"
+        "ar":"سعر الوحدة"
     },
     "TotalPrice": {
         "en":"Total Price",
-        "ar":"Total Price"
+        "ar":"السعر الإجمالي"
     },
     "RecipientID":{
         "en":"Recipient Employee ID",
@@ -1308,7 +1308,7 @@
     },
     "TechnicalMember":{
         "en":"Technical Member",
-        "ar":"Technical Member"
+        "ar":"عضو فني"
     },
     "ChiefResponsible":{
         "en":"Chief Responsible (General Supervisor)",
@@ -1320,7 +1320,7 @@
     },
     "RecipientSector":{
         "en":"Recipient Sector",
-        "ar":"Recipient Sector"
+        "ar":"القطاع المتلقي"
     },
     "FiscalYearMissing":{
       "en":"Fiscal Year is required.",
@@ -1496,7 +1496,71 @@
     },
     "CommentMissing":{
       "en": "Enter Comment to reject request.",
-      "ar": "Enter Comment to reject request.",
+      "ar": "Enter Comment to reject request."
+    },
+    "Print":{
+      "en": "Print",
+      "ar": "Print"
+},
+    "ReceivingItems":{
+      "en": "Receiving Items",
+      "ar": "Receiving Items"
+    },
+    "SerialNo":{
+      "en": "Serial No.",
+      "ar": "الرقم التسلسلي"
+    },
+    "PageCount":{
+      "en": "Page Count",
+      "ar": "عدد الصفحات"
+    },
+    "SectorNo":{
+      "en": "Sector No.",
+      "ar": "رقم القطاع"
+    },
+    "DateOfReceipt":{
+      "en": "Date Of Receipt",
+      "ar": "تاريخ الاستلام"
+    },
+    "RecipientWarehouse":{
+      "en": "Recipient Warehouse",
+      "ar": "مستودع المستلم"
+    },
+    "DocumentNo":{
+      "en": "Document No.",
+      "ar": "رقم الوثيقة"
+    },
+    "Comm":{
+      "en":"Comments",
+      "ar":"تعليقات"
+    },
+    "ItemNameDescription":{
+      "en" : "Item Name-Description",
+      "ar" : "اسم العنصر-الوصف"
+    },
+    "SAR":{
+      "en":"SAR",
+      "ar":"ريال سعودي"
+    },
+    "ChiefRes":{
+      "en": "Chief Responsible",
+      "ar":"المسؤول الرئيسي"
+    },
+    "Recipient":{
+      "en" : "Recipient",
+      "ar" : "متلقي"
+    },
+    "Name":{
+      "en" : "Name",
+      "ar" : "اسم"
+    },
+    "Signature":{
+      "en" : "Signature",
+      "ar" : "إمضاء"
+    },
+    "Date" : {
+      "en" : "Date",
+      "ar" : "تاريخ"
     }
     
 
