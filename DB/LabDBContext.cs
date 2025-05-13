@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 
 namespace LabMaterials.DB;
 
@@ -23,13 +25,20 @@ public partial class LabDBContext : DbContext
 
     public virtual DbSet<Item> Items { get; set; }
 
+    public virtual DbSet<ItemCard> ItemCards { get; set; }
+
+    public virtual DbSet<ItemCardBatch> ItemCardBatches { get; set; }
+
     public virtual DbSet<ItemGroup> ItemGroups { get; set; }
+    public virtual DbSet<ItemGroup> ItemGroup { get; set; }
 
     public virtual DbSet<ItemInfoByStoreId> ItemInfoByStoreIds { get; set; }
 
     public virtual DbSet<ItemType> ItemTypes { get; set; }
 
     public virtual DbSet<MaterialRequest> MaterialRequests { get; set; }
+
+    public virtual DbSet<Message> Messages { get; set; }
 
     public virtual DbSet<PrimaryKey> PrimaryKeys { get; set; }
 
@@ -61,9 +70,6 @@ public partial class LabDBContext : DbContext
 
     public virtual DbSet<Unit> Units { get; set; }
 
-    public virtual DbSet<ItemGroup> ItemGroup { get; set; }
-
-
     public virtual DbSet<User> Users { get; set; }
 
     public virtual DbSet<UserGroup> UserGroups { get; set; }
@@ -71,12 +77,6 @@ public partial class LabDBContext : DbContext
     public virtual DbSet<UserGroupPrivilege> UserGroupPrivileges { get; set; }
 
     public virtual DbSet<VActivityLog> VActivityLogs { get; set; }
-
-    public DbSet<ItemCard> ItemCards { get; set; }
-
-    public DbSet<Message> Messages { get; set; }
-
-
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -146,25 +146,31 @@ public partial class LabDBContext : DbContext
             entity.HasKey(e => e.ItemTypeCode).HasName("PK_ItemType_1");
         });
 
+        modelBuilder.Entity<Message>(entity =>
+        {
+            entity.Property(e => e.Type).HasDefaultValue("");
+        });
+
         modelBuilder.Entity<PrimaryKey>(entity =>
         {
             entity.HasKey(e => e.TableName).HasName("PK__PrimaryK__733652EFA4AA236C");
+        });
+
+        modelBuilder.Entity<ReceivingItem>(entity =>
+        {
+            entity.Property(e => e.Comments).HasDefaultValue("");
         });
 
         modelBuilder.Entity<ReceivingReport>(entity =>
         {
             entity.Property(e => e.AttachmentPath).HasDefaultValue("");
             entity.Property(e => e.BasedOnDocument).HasDefaultValue("");
-            // entity.Property(e => e.ChiefResponsibleId).HasDefaultValue("");
-            // entity.Property(e => e.Comments).HasDefaultValue("");
-            entity.Property(e => e.CreatedBy).HasDefaultValue("");
+            // entity.Property(e => e.CreatedBy).HasDefaultValue("");
             entity.Property(e => e.DocumentNumber).HasDefaultValue("");
             entity.Property(e => e.FiscalYear).HasDefaultValue("");
             entity.Property(e => e.ReceivingWarehouse).HasDefaultValue("");
-            // entity.Property(e => e.RecipientEmployeeId).HasDefaultValue("");
             entity.Property(e => e.RecipientSector).HasDefaultValue("");
             entity.Property(e => e.SectorNumber).HasDefaultValue("");
-            // entity.Property(e => e.TechnicalMemberId).HasDefaultValue("");
         });
 
         modelBuilder.Entity<Requester>(entity =>
@@ -232,6 +238,7 @@ public partial class LabDBContext : DbContext
         modelBuilder.Entity<Supplier>(entity =>
         {
             entity.Property(e => e.SupplierId).ValueGeneratedNever();
+            entity.Property(e => e.CoordinatorName).HasDefaultValue("");
         });
 
         modelBuilder.Entity<Supply>(entity =>

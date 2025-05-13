@@ -22,9 +22,7 @@ public partial class ReceivingReport
 
     public string BasedOnDocument { get; set; } = null!;
 
-
-
-    public string CreatedBy { get; set; } = null!;
+    public int? CreatedBy { get; set; }
 
     public DateTime DocumentDate { get; set; }
 
@@ -38,26 +36,34 @@ public partial class ReceivingReport
 
     public int SerialNumber { get; set; }
 
-    public int TechnicalMemberId { get; set; }
+    public int SupplierId { get; set; }
 
     public int? ChiefResponsibleId { get; set; }
 
-    
+    public int TechnicalMemberId { get; set; }
 
-
-    public int SupplierId { get; set; }
-    public bool KeeperApproval { get; set; }
-    public bool TechnicalMemberApproval { get; set; }
     public bool GeneralSupApproval { get; set; }
+
+    public bool KeeperApproval { get; set; }
+
+    public bool TechnicalMemberApproval { get; set; }
 
     public int? RejectedById { get; set; }
 
-    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-    public bool IsReplied { get; set; }
-    public bool IsRejected { get; set; }
-    public DateTime? TechnicalMemberApprovalDate { get; set; }
+    public DateTime CreatedAt { get; set; } 
+
     public DateTime? GeneralSupervisorApprovalDate { get; set; }
 
+    public bool IsRejectedByTechnicalMember { get; set; }
+
+    public bool IsReplied { get; set; }
+
+    public DateTime? TechnicalMemberApprovalDate { get; set; }
+
+    public bool IsRejectedByGeneralSupervisor { get; set; }
+
+    [InverseProperty("ReceivingReport")]
+    public virtual ICollection<Message> Messages { get; set; } = new List<Message>();
 
     [InverseProperty("ReceivingReport")]
     public virtual ICollection<ReceivingItem> ReceivingItems { get; set; } = new List<ReceivingItem>();

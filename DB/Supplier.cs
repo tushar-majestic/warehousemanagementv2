@@ -35,13 +35,16 @@ public partial class Supplier
     [Column("UpdatedByID")]
     public int? UpdatedById { get; set; }
 
-
-
     [Column(TypeName = "datetime")]
     public DateTime? Created { get; set; }
 
     [Column("CreatedByID")]
     public int? CreatedById { get; set; }
+
+    public string CoordinatorName { get; set; } = null!;
+
+    [InverseProperty("Supplier")]
+    public virtual ICollection<ItemCardBatch> ItemCardBatches { get; set; } = new List<ItemCardBatch>();
 
     [InverseProperty("Supply")]
     public virtual ICollection<Item> Items { get; set; } = new List<Item>();
@@ -51,6 +54,4 @@ public partial class Supplier
 
     [InverseProperty("Supplier")]
     public virtual ICollection<Supply> Supplies { get; set; } = new List<Supply>();
-
-    public string CoordinatorName { get; set; }
 }

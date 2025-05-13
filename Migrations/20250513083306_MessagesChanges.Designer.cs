@@ -4,6 +4,7 @@ using LabMaterials.DB;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LabMaterials.Migrations
 {
     [DbContext(typeof(LabDBContext))]
-    partial class LabDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250513083306_MessagesChanges")]
+    partial class MessagesChanges
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -560,46 +563,21 @@ namespace LabMaterials.Migrations
                     b.Property<int?>("CurrentApproverUserId")
                         .HasColumnType("int");
 
-                    b.Property<bool>("DepartmentManagerApproval")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("DocumentNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FiscalYear")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("KeeperApproval")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime>("OrderDate")
-                        .HasColumnType("datetime");
-
-                    b.Property<int>("RequestDocumentType")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RequestedByUserId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("RequestingSector")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.Property<string>("Sector")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SerialNumber")
+                    b.Property<string>("MaterialName")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<string>("WarehouseName")
+                    b.Property<int>("RequestedByUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("RequestedDate")
+                        .HasColumnType("datetime");
+
+                    b.Property<string>("Status")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.HasKey("RequestId");
 
@@ -625,6 +603,9 @@ namespace LabMaterials.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("ReceivingReportId")
+                        .HasColumnType("int");
+
                     b.Property<int?>("RecipientId")
                         .HasColumnType("int");
 
@@ -646,7 +627,7 @@ namespace LabMaterials.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex(new[] { "ReportId" }, "IX_Messages_ReportId");
+                    b.HasIndex(new[] { "ReceivingReportId" }, "IX_Messages_ReceivingReportId");
 
                     b.ToTable("Messages");
                 });
@@ -1864,7 +1845,9 @@ namespace LabMaterials.Migrations
                 {
                     b.HasOne("LabMaterials.DB.ReceivingReport", "ReceivingReport")
                         .WithMany("Messages")
-                        .HasForeignKey("ReportId");
+                        .HasForeignKey("ReceivingReportId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("ReceivingReport");
                 });

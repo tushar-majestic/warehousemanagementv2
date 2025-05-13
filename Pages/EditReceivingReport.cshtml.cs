@@ -81,8 +81,8 @@ namespace LabMaterials.Pages
                         .Where(r => r.ReceivingReportId == ReceivingReportId.Value)
                         .ToList();
             // var userName = HttpContext.Session.GetString("UserName");
-
             // Report.CreatedBy = string.IsNullOrEmpty(userName) ? "Unknown" : userName;
+
 
             Units = dbContext.Units.ToList();
             ItemGroupList = dbContext.ItemGroup.ToList();

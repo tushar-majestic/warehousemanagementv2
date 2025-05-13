@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -6,18 +6,27 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LabMaterials.DB;
 
-public class Message
+[Index("ReportId", Name = "IX_Messages_ReportId")]
+public partial class Message
 {
     [Key]
     public int Id { get; set; }
-    public int ReceivingReportId { get; set; }
-    public string Sender { get; set; } = null!; 
-    public string Recipient { get; set; } = null!; 
+
+    public int? ReportId { get; set; }
+
+    public string ReportType {get; set;}
+
+    public int? SenderId { get; set; }
+
+    public int? RecipientId { get; set; }
+
     public string Content { get; set; } = null!;
+
+    public DateTime CreatedAt { get; set; }
 
     public string Type { get; set; } = null!;
 
-    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-    [ForeignKey("ReceivingReportId")]
+    [ForeignKey("ReportId")]
+    [InverseProperty("Messages")]
     public virtual ReceivingReport ReceivingReport { get; set; } = null!;
 }

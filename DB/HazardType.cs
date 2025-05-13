@@ -14,5 +14,8 @@ public partial class HazardType
     public string HazardTypeName { get; set; } = null!;
 
     [InverseProperty("HazardTypeNameNavigation")]
+    public virtual ICollection<ItemCard> ItemCards { get; set; } = new List<ItemCard>();
+
+    [InverseProperty("HazardTypeNameNavigation")]
     public virtual ICollection<Item> Items { get; set; } = new List<Item>();
 }
