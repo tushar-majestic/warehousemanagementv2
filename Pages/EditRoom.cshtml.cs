@@ -114,7 +114,7 @@ namespace LabMaterials.Pages
                 if (CanManageStore)
                 {
                     FillLables();
-                    // this.RoomName = RoomName;
+                     this.RoomName = RoomName;
                     this.RoomNumber = RoomNumber;
                      this.StoreType = StoreType;
                     this.ManagerName = ManagerName;
@@ -166,8 +166,8 @@ namespace LabMaterials.Pages
 
                         }
                     }
-                    // else if (string.IsNullOrEmpty(RoomName))
-                    //     ErrorMsg = (Program.Translations["StoreNameMissing"])[Lang];
+                    else if (string.IsNullOrEmpty(RoomName))
+                        ErrorMsg = (Program.Translations["StoreNameMissing"])[Lang];
                     else
                     {
                         var selectedStore = dbContext.Stores.FirstOrDefault(X => X.StoreId == StoreId);
@@ -205,7 +205,7 @@ namespace LabMaterials.Pages
                                 }
                             }*/
 
-                            // room.RoomName = RoomName;
+                             room.RoomName = RoomName;
                             room.RoomNo = RoomNumber;
                             room.StoreId = StoreId;
                             room.BuildingNumber = BuildingNumber;
