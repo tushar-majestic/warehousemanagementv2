@@ -323,7 +323,7 @@ namespace LabMaterials.Pages
 
             if (message != null)
             {
-                message.Type = "Rejected"; 
+                message.Type = "Accepted"; 
             }
             dbContext.SaveChanges();
 
@@ -377,6 +377,8 @@ namespace LabMaterials.Pages
         }
         public IActionResult OnPostAddOrder([FromForm] int ReportId){
             HttpContext.Session.SetInt32("ReportId", ReportId);
+            // HttpContext.Session.SetInt32("InboxId", InboxId);
+
 
             return RedirectToPage("./ItemCards");
         }
