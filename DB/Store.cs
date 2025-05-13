@@ -1,5 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace LabMaterials.DB;
 
@@ -58,6 +61,9 @@ public partial class Store
     public virtual ICollection<DisbursementRequest> DisbursementRequests { get; set; } = new List<DisbursementRequest>();
 
     [InverseProperty("Store")]
+    public virtual ICollection<ItemCard> ItemCards { get; set; } = new List<ItemCard>();
+
+    [InverseProperty("Store")]
     public virtual ICollection<Room> Rooms { get; set; } = new List<Room>();
 
     [InverseProperty("Store")]
@@ -71,5 +77,4 @@ public partial class Store
 
     [InverseProperty("ToStore")]
     public virtual ICollection<StoreMovement> StoreMovementToStores { get; set; } = new List<StoreMovement>();
-    public virtual ICollection<ItemCard> ItemCards { get; set; }
 }

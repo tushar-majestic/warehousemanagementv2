@@ -1,6 +1,11 @@
+using DocumentFormat.OpenXml.Office.CustomUI;
+using LabMaterials.DB;
+using LabMaterials.dtos;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 
 namespace LabMaterials.Pages
 {
@@ -13,8 +18,13 @@ namespace LabMaterials.Pages
         }
         [BindProperty]
         public ItemCard ItemCard { get; set; } = default!;
+
+        // public ItemCardBatch ItemCardBatch {get; set;} =default!;
+         public ItemCardBatch ItemCardBatch { get; set; } = new ItemCardBatch();
         public List<SelectListItem> ItemList { get; set; }
-        public List<Item> AllItems { get; set; }
+        // public List<Item> AllItems { get; set; }
+
+        public int? ReportId;
         public class ItemDto
         {
             public string ItemCode { get; set; }
@@ -28,6 +38,9 @@ namespace LabMaterials.Pages
             // Add more fields as needed
         }
         public List<ItemDto> AllItemsDto { get; set; }
+         [BindProperty]
+         public List<ItemCard> ItemCardsFromReport { get; set; } = new();
+
 
         public async Task<IActionResult> OnGetAsync()
         {
@@ -37,20 +50,56 @@ namespace LabMaterials.Pages
             .Select(i => new SelectListItem { Value = i.ItemCode, Text = i.ItemCode })
             .ToList();
 
-            AllItems = _context.Items.ToList();
+            // AllItems = _context.Items.ToList();
+            this.ReportId = HttpContext.Session.GetInt32("ReportId");
 
-            ViewData["ItemId"] = ItemList;
-            AllItemsDto = _context.Items.Select(i => new ItemDto
+            if (ReportId.HasValue)
             {
-                ItemCode = i.ItemCode,
-                ItemName = i.ItemName,
-                UnitOfMeasure = i.UnitId,
-                ItemId = i.ItemId,
-                GroupCode = i.GroupCode,
-                ItemTypeCode = i.ItemTypeCode,
-                ItemDescription = i.ItemDescription,
-                HazardTypeName = i.HazardTypeName
-            }).ToList();
+                var receivingItems = await _context.ReceivingItems
+                .Include(ri => ri.Item)
+                .Include(ri => ri.ReceivingReport)
+                .Where(ri => ri.ReceivingReportId == ReportId.Value)
+                .ToListAsync();
+
+                ItemCardsFromReport = receivingItems.Select(ri => new ItemCard
+                {
+                    ItemCode = ri.Item.ItemCode,
+                    ItemName = ri.Item.ItemName,
+                    GroupCode = ri.Item.GroupCode,
+                    ItemTypeCode = ri.Item.ItemTypeCode,
+                    ItemDescription = ri.Item.ItemDescription,
+                    // UnitOfmeasure = ri.Item.UnitId,
+                    HazardTypeName = ri.Item.HazardTypeName,
+                    ExpiryDate = ri.Item.ExpiryDate,
+                    QuantityReceived = ri.Quantity,
+                    // Chemical = ri.Item.Chemical
+                }).ToList();
+
+                var ReceivingReport = _context.ReceivingReports
+                .Where(ri => ri.Id == ReportId.Value).FirstOrDefault();
+              
+                if (ReceivingReport != null)
+                {
+                    // ItemCardBatch =  new ItemCardBatch {
+                    //     DateOfEntry = ReceivingReport.CreatedAt,
+                    //     SupplierId = ReceivingReport.SupplierId
+                    // };
+                    
+
+                }
+            }
+            ViewData["ItemId"] = ItemList;
+            // AllItemsDto = _context.Items.Select(i => new ItemDto
+            // {
+            //     ItemCode = i.ItemCode,
+            //     ItemName = i.ItemName,
+            //     UnitOfMeasure = i.UnitId,
+            //     ItemId = i.ItemId,
+            //     GroupCode = i.GroupCode,
+            //     ItemTypeCode = i.ItemTypeCode,
+            //     ItemDescription = i.ItemDescription,
+            //     HazardTypeName = i.HazardTypeName
+            // }).ToList();
 
             ViewData["ItemId"] = _context.Items
                 .Select(i => new SelectListItem { Value = i.ItemCode, Text = i.ItemCode })
@@ -68,18 +117,56 @@ namespace LabMaterials.Pages
             //}
 
             // Attach related entities if necessary
-            if (ItemCard.Item != null && ItemCard.Item.ItemId != 0)
-            {
-                ItemCard.Item = await _context.Items.FindAsync(ItemCard.Item.ItemId);
-            }
+            // if (ItemCard.Item != null && ItemCard.Item.ItemId != 0)
+            // {
+            //     ItemCard.Item = await _context.Items.FindAsync(ItemCard.Item.ItemId);
+            // }
 
-            if (ItemCard.Store != null && ItemCard.Store.StoreId != 0)
-            {
-                ItemCard.Store = await _context.Stores.FindAsync(ItemCard.Store.StoreId);
-            }
+            // if (ItemCard.Store != null && ItemCard.Store.StoreId != 0)
+            // {
+            //     ItemCard.Store = await _context.Stores.FindAsync(ItemCard.Store.StoreId);
+            // }
 
-            _context.ItemCards.Add(ItemCard);
-            await _context.SaveChangesAsync();
+            // _context.ItemCards.Add(ItemCard);
+            // await _context.SaveChangesAsync();
+
+            foreach (var itemCard in ItemCardsFromReport)
+            {
+                // Optional: Fetch related entities again if needed (Item, Store, etc.)
+                if (itemCard.Item != null && itemCard.Item.ItemId != 0)
+                {
+                    itemCard.Item = await _context.Items.FindAsync(itemCard.Item.ItemId);
+                }
+
+                if (ItemCard.Store != null && ItemCard.Store.StoreId != 0)
+                {
+                    itemCard.Store = await _context.Stores.FindAsync(ItemCard.Store.StoreId);
+                }
+
+                // Set additional fields if needed
+                itemCard.Store = ItemCard.Store;
+                // itemCard.DocumentType = ItemCard.DocumentType;
+                // itemCard.ReceiptDocumentnumber = ItemCard.ReceiptDocumentnumber;
+
+                _context.ItemCards.Add(itemCard);
+                await _context.SaveChangesAsync();
+
+                // Now add the corresponding ItemCardBatch
+                // var itemCardBatch = new ItemCardBatch
+                // {
+                //     ItemCardId = itemCard.ItemCardId, // After save, this will have value
+                //     TypeOfAsset = ItemCardBatch.TypeOfAsset,
+                //     Minimum = ItemCardBatch.Minimum,
+                //     ReorderLimit = ItemCardBatch.ReorderLimit,
+                //     Ceiling = ItemCardBatch.Ceiling,
+                //     RoomId = ItemCardBatch.RoomId,
+                //     ShelfId = ItemCardBatch.ShelfId,
+                //     SupplierId = ItemCardBatch.SupplierId
+                // };
+
+                // _context.ItemCardBatches.Add(itemCardBatch);
+                // await _context.SaveChangesAsync();
+            }
 
             return RedirectToPage();
         }

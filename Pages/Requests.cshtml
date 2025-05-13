@@ -79,16 +79,12 @@
                                                     var generalSupApproval = request?.GeneralSupApproval;
                                                     var rejectedById = request?.RejectedById;
                                                     var IsReplied = request?.IsReplied;
-                                                    var IsRejected = request?.IsRejected;
+                                                    var IsRejectedByTechMem = request?.IsRejectedByTechnicalMember;
+                                                    var IsRejectedByGenSup = request?.IsRejectedByGeneralSupervisor;
                                                 }
                                                
                                                 @if (@Model.UserGroupName == "Technical Member" || @Model.UserGroupName == "General Supervisor")
                                                 {
-                                                    
-                                                    if ( @Model.UserId == rejectedById && inbox.Type != "Reply"){
-                                                        <span class="bg-danger p-2 rounded text-white">Rejected</span>
-                                                    }
-                                                    else{
                                                         bool isTechMember = Model.UserGroupName == "Technical Member";
                                                         bool isGenSup = Model.UserGroupName == "General Supervisor";
 
@@ -97,8 +93,15 @@
 
                                                         bool techAccepted = technicalMemberApproval == true && isTechMember;
                                                         bool genSupAccepted = generalSupApproval == true && isGenSup;
-
-                                                        if (techPending || genSupPending)
+                                                        if(isTechMember && IsRejectedByTechMem==true && @inbox.Type != "Reply")
+                                                        {
+                                                            <span class="bg-danger p-2 rounded text-white">Rejected</span>
+                                                        }
+                                                        else if(isGenSup && IsRejectedByGenSup ==  true  && @inbox.Type != "Reply")
+                                                        {
+                                                            <span class="bg-danger p-2 rounded text-white">Rejected</span>
+                                                        }
+                                                        else if (techPending || genSupPending)
                                                         {
                                                             <form method="post" class="d-inline">
                                                                 <input type="text" value="@inbox.ReceivingReportId" name="ReceivingReportId" hidden />
@@ -117,16 +120,11 @@
                                                         }
                                                         else if(inbox.Type == "Rejected")
                                                         {     
-                                                            @if (IsReplied==false)
-                                                            {
+                                                         
                                                                 <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#ReplyModal" onclick="setReplyReportId(@inbox.ReceivingReportId,'@inbox.Sender')">Reply & Resend</button>
 
                                                                 <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#commentRejectModal" onclick="setRejectReportId(@inbox.ReceivingReportId)">Comment & Reject</button>
-                                                            }
-                                                            else if (IsReplied == true)
-                                                            {
-                                                                <span class="bg-success p-2 rounded text-white">Replied</span>
-                                                            }
+                                                           
                                                            
 
                                                             @* <button class="btn btn-info btn-sm p-1" data-toggle="modal" data-target="#ReplyModal" onclick="setReplyReportId(@inbox.ReceivingReportId,'@inbox.Sender')">
@@ -137,7 +135,7 @@
                                                                 Comment & Reject
                                                             </button> *@
                                                         }
-                                                    }
+                                                    
                                                 
                                                 }
                                                 else if (Model.UserGroupName == "Warehouse Keeper")
@@ -155,9 +153,12 @@
                                                         }
                                                     }
                                                     else if(technicalMemberApproval == true && generalSupApproval == true){
-                                                        <a href="/ItemCards" class="btn btn-info btn-sm p-1">
-                                                            Add Order to Item Card
-                                                        </a>
+                                                        <form method="post">
+                                                            <input type="hidden" value="@inbox.ReceivingReportId" name="ReportId" />
+
+                                                            <button asp-page-handler="AddOrder" class="btn btn-info btn-sm p-1"> Add Order to Item Card</button>
+                                                           
+                                                        </form>
                                                     }
 
                                                     

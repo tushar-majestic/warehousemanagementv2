@@ -45,7 +45,7 @@
                             var previousYear = currentYear - 1;
                         }
                         <div class="form-group mb-4">
-                            <label>@Model.lblFiscalYear</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "")">*</span>
+                            <label>@Model.lblFiscalYear</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
 
                             <select class="form-select" id="FiscalYear" asp-for="Report.FiscalYear" name="FiscalYear"  onchange="fetchSerialNumber()" >
                                 <option value="">Select Fiscal Year</option>
@@ -55,21 +55,21 @@
                         </div>
 
                         <div class="form-group mb-4">
-                            <label>@Model.lblReceivingDate</label> <span class="majestic">*</span>
+                            <label>@Model.lblReceivingDate</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
                             <input  type="date" class="form-control" name="ReceivingDate" value="@(Model.Report.ReceivingDate != DateTime.MinValue ? Model.Report.ReceivingDate.ToString("yyyy-MM-dd") : "")"  />
                         </div>
 
                         <div class="form-group mb-4">
-                            <label>@Model.lblRecipientSector</label> <span class="majestic">*</span>
+                            <label>@Model.lblRecipientSector</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
                             <input asp-for="Report.RecipientSector" class="form-control"  />
                         </div>
                         <div class="form-group mb-4">
-                            <label>@Model.lblSectorNumber</label> <span class="majestic">*</span>
+                            <label>@Model.lblSectorNumber</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
                             <input asp-for="Report.SectorNumber" class="form-control"  />
                         </div>
 
                         <div class="form-group mb-4">
-                            <label>@Model.lblReceivingWarehouse</label> <span class="majestic">*</span>
+                            <label>@Model.lblReceivingWarehouse</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
 
                             
                             <select asp-for="Report.ReceivingWarehouse" class="form-control"  id="ReceivingWarehouse" >
@@ -84,7 +84,7 @@
                         </div>
 
                         <div class="form-group mb-4">
-                            <label>@Model.lblBasedOnDocument</label> <span class="majestic">*</span>
+                            <label>@Model.lblBasedOnDocument</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
                             @* <input asp-for="Report.BasedOnDocument" class="form-control" required /> *@
                             <select asp-for="Report.BasedOnDocument" class="form-select" id="BasedOnDocument" name="BasedOnDocument" >
                                 <option value="">Select Based On document</option>
@@ -97,12 +97,12 @@
                         </div>
 
                         <div class="form-group mb-4">
-                            <label>@Model.lblDocumentNumber</label> <span class="majestic">*</span>
+                            <label>@Model.lblDocumentNumber</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
                             <input asp-for="Report.DocumentNumber" class="form-control"  />
                         </div>
 
                         <div class="form-group mb-4">
-                            <label>@Model.lblDocumentDate</label> <span class="majestic">*</span>
+                            <label>@Model.lblDocumentDate</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
                             <input  name="DocumentDate" type="date" class="form-control"  value="@(Model.Report.DocumentDate != DateTime.MinValue ? Model.Report.DocumentDate.ToString("yyyy-MM-dd") : "")" />
                         </div>
 
@@ -113,7 +113,7 @@
                         </div>
 
                         <div class="form-group mb-4">
-                            <label>@Model.lblSupplierType</label> <span class="majestic">*</span>
+                            <label>@Model.lblSupplierType</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
                             <select class="form-select" id="SupplierType" name="SupplierType" >
                                 <option value="Internal">Internal</option>
                                 <option value="External">External</option>
@@ -122,7 +122,7 @@
 
                         <div class="form-group mb-4">
 
-                            <label>@Model.lblSupplierName</label> <span class="majestic">*</span>
+                            <label>@Model.lblSupplierName</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
                             <select id="SupplierName" asp-for="Report.SupplierId" class="form-control" >
                                 <option value="">Select Supplier Name</option>
                                 @foreach (var supplier in Model.Suppliers)
@@ -139,7 +139,7 @@
                             <h3>Items</h3>
                         
                                 <div class="form-group mb-4">
-                                    <label>@Model.lblItemGroup</label> <span class="majestic">*</span>
+                                    <label>@Model.lblItemGroup</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
                                     <select class="form-select" id="ItemGroup" name="ItemsForReport[0].ItemGroup" >
                                         @* <option value="Chemicals">Chemicals</option>
                                         <option value="Glass">Glass</option> *@
@@ -158,11 +158,11 @@
                             
                                 <div class="d-flex">
                                     <div class="form-group mb-4 me-2 ">
-                                        <label>@Model.lblItemNo</label> <span class="majestic">*</span>
+                                        <label>@Model.lblItemNo</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
                                         <input type="text" id="ItemNo" name="ItemNo" class="form-control"  />
                                     </div>
                                     <div class="form-group mb-4 ms-2 flex-fill">
-                                        <label>@Model.lblItemName</label> <span class="majestic">*</span>
+                                        <label>@Model.lblItemName</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
                                         <select  class="form-control" id="ItemName" asp-for="@Model.ItemsForReport[0].ItemId" name="ItemsForReport[0].ItemId" >
                                             <option value="">Select Item</option>
                                             @foreach (var item in Model.Items)
@@ -197,14 +197,14 @@
                                     </div>
 
                                     <div class="form-group mb-4"  style="width: 48%;">
-                                        <label>@Model.lblQuantity</label> <span class="majestic">*</span>
+                                        <label>@Model.lblQuantity</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
                                         <input asp-for="ItemsForReport[0].Quantity"  type="number" id="ItemQty" name="ItemsForReport[0].Quantity" class="form-control"  />
                                     </div>
                                 </div>
                                 
                                 <div class="d-flex justify-content-between">
                                     <div class="form-group mb-4" style="width: 48%;">
-                                        <label>@Model.lblUnitPrice</label> <span class="majestic">*</span>
+                                        <label>@Model.lblUnitPrice</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
                                         <input asp-for="ItemsForReport[0].UnitPrice" type="number"  id="UnitPrice" step="0.01" name="ItemsForReport[0].UnitPrice" class="form-control"  />
                                     </div>
 
@@ -229,17 +229,17 @@
 
 
                         <div class="form-group mb-4">
-                            <label>@Model.lblRecipientID</label> <span class="majestic">*</span>
+                            <label>@Model.lblRecipientID</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
                             <input asp-for="Report.RecipientEmployeeId" id="RecipientEmployeeId" class="form-control"  readonly/>
                         </div>
                         <div class="form-group mb-4">
-                            <label>@Model.lblRecipientName</label> <span class="majestic">*</span>
+                            <label>@Model.lblRecipientName</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
                             <input  id="RecipientEmployeeName" name="RecipientEmployeeName" value="@Model.RecipientEmployeeName" type="text"  class="form-control"  readonly/>
                         </div>
 
 
                         <div class="form-group mb-4">
-                            <label>@Model.lblTechnicalMember</label> <span class="majestic">*</span>
+                            <label>@Model.lblTechnicalMember</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
                             <select class="form-select" asp-for="Report.TechnicalMemberId"    id="TechnicalMember" name="TechnicalMember" >
                                 @* <option value="FirstTechnical">First Technical Member</option>
                                 <option value="SecondTechnical">Second Technical Member</option> *@
@@ -329,7 +329,7 @@
                     <button type="button" class="btn btn-danger btn-sm remove-entry me-3">Remove</button>
                 </div>
                 <div class="form-group mb-4">
-                    <label>Item Group</label> <span class="text-danger">*</span>
+                    <label>Item Group</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
                     <select class="form-select" name="ItemsForReport[${itemIndex}].ItemGroup" required>
                         <option value="">Select Item Group</option>
                         @foreach (var item in Model.ItemGroupList)
@@ -340,11 +340,11 @@
                 </div>
                 <div class="d-flex">
                     <div class="form-group mb-4 me-2">
-                        <label>Item No</label> <span class="text-danger">*</span>
+                        <label>Item No</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
                         <input type="text" name="ItemsForReport[${itemIndex}].ItemNo" class="form-control" required/>
                     </div>
                     <div class="form-group mb-4 ms-2 flex-fill">
-                        <label>Item Name</label> <span class="text-danger">*</span>
+                        <label>Item Name</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
                         <select class="form-control" name="ItemsForReport[${itemIndex}].ItemId" required>
                             <option value="">Select Item</option>
                             ${getItemOptions()}
@@ -361,13 +361,13 @@
                         <input type="text" name="ItemsForReport[${itemIndex}].UnitofMeasure" class="form-control" readonly />
                     </div>
                     <div class="form-group mb-4" style="width: 48%;">
-                        <label>Quantity</label> <span class="text-danger">*</span>
+                        <label>Quantity</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
                         <input type="number" name="ItemsForReport[${itemIndex}].Quantity" class="form-control" required/>
                     </div>
                 </div>
                 <div class="d-flex justify-content-between">
                     <div class="form-group mb-4" style="width: 48%;">
-                        <label>Unit Price</label> <span class="text-danger">*</span>
+                        <label>Unit Price</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
                         <input type="number" step="0.01" name="ItemsForReport[${itemIndex}].UnitPrice" class="form-control" required/>
                     </div>
                     <div class="form-group mb-4" style="width: 48%;">
