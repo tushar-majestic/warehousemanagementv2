@@ -68,6 +68,7 @@ namespace LabMaterials.Pages
                     GroupCode = ri.Item.GroupCode,
                     ItemTypeCode = ri.Item.ItemTypeCode,
                     ItemDescription = ri.Item.ItemDescription,
+                    ItemId = ri.ItemId,
                     // UnitOfmeasure = ri.Item.UnitId,
                     HazardTypeName = ri.Item.HazardTypeName,
                     ExpiryDate = ri.Item.ExpiryDate,
@@ -113,41 +114,16 @@ namespace LabMaterials.Pages
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync()
-        {
-            //if (!ModelState.IsValid)
-            //{
-            //    base.ExtractSessionData();
-            //    await PopulateDropdownsAsync();
-            //    return Page();
-            //}
-
-            // Attach related entities if necessary
-            // if (ItemCard.Item != null && ItemCard.Item.ItemId != 0)
-            // {
-            //     ItemCard.Item = await _context.Items.FindAsync(ItemCard.Item.ItemId);
-            // }
-
-            // if (ItemCard.Store != null && ItemCard.Store.StoreId != 0)
-            // {
-            //     ItemCard.Store = await _context.Stores.FindAsync(ItemCard.Store.StoreId);
-            // }
-
-            // _context.ItemCards.Add(ItemCard);
-            // await _context.SaveChangesAsync();
+        public async Task<IActionResult> OnPostAsync([FromForm] int StoreId)
+        {   
+            
 
             foreach (var itemCard in ItemCardsFromReport)
             {
-                
-
-                // Set additional fields if needed
-                // itemCard.StoreId = ItemCard.StoreId;
-                // itemCard.GroupCode = 
-                // itemCard.DocumentType = ItemCard.DocumentType;
-                // itemCard.ReceiptDocumentnumber = ItemCard.ReceiptDocumentnumber;
-
-                _context.ItemCards.Add(itemCard);
-                await _context.SaveChangesAsync();
+               
+                    itemCard.StoreId = StoreId;
+                    _context.ItemCards.Add(itemCard);
+                    await _context.SaveChangesAsync();
 
                 // Now add the corresponding ItemCardBatch
                 // var itemCardBatch = new ItemCardBatch

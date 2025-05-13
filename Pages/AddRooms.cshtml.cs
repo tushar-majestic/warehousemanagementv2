@@ -70,7 +70,7 @@ namespace LabMaterials.Pages
                 if (CanManageStore)
                 {
                     FillLables();
-                    // this.RoomName = RoomName;
+                     this.RoomName = RoomName;
                     this.RoomNumber = RoomNumber;
                     this.StoreType = StoreType;
                     this.ManagerName = ManagerName;
@@ -117,8 +117,8 @@ namespace LabMaterials.Pages
                         ErrorMsg = (Program.Translations["BuildingNumberMissing"])[Lang];
                     else if (string.IsNullOrEmpty(RoomNumber))
                         ErrorMsg = (Program.Translations["RoomNumberMissing"])[Lang];
-                    // else if (string.IsNullOrEmpty(RoomName))
-                    //     ErrorMsg = (Program.Translations["RoomNameMissing"])[Lang];
+                    else if (string.IsNullOrEmpty(RoomName))
+                        ErrorMsg = (Program.Translations["RoomNameMissing"])[Lang];
                     else if (!KeeperId.HasValue)
                         ErrorMsg = (Program.Translations["KeeperMissing"])[Lang];
                     else if (string.IsNullOrEmpty(Status))
@@ -140,7 +140,7 @@ namespace LabMaterials.Pages
                         {
                             var room = new Room
                             {
-                                // RoomName = RoomName,
+                                RoomName = RoomName,
                                 StoreId = StoreId,
                                 /*RoomNumber = RoomNumber,*/
                                 RoomNo = RoomNumber,

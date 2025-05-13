@@ -209,6 +209,7 @@
                                                 else if(senderGroupName == "General Supervisor" && Model.UserGroupName == "Warehouse Keeper"){
                                                     <form method="post">
                                                         <input type="hidden" value="@inbox.ReportId" name="ReportId" />
+                                                        <input type="hidden" value="@inbox.Id" name="ReportId" />
 
                                                         <button asp-page-handler="AddOrder" class="btn btn-info btn-sm p-1"> Add Order to Item Card</button>
                                                            
@@ -234,6 +235,17 @@
                                             else if(inbox.Type == "Replied"){
                                                 <span class="bg-success p-2 rounded text-white">Replied</span>
                                             }
+                                            @{
+                                            var localTime = inbox.CreatedAt.ToLocalTime();
+                                            }
+                                            <td>@localTime</td>
+
+                                            <td>
+                                                <form method="post">
+                                                    <input type="hidden" value="@inbox.ReportId" name="ReportId" />
+                                                    <input type="submit" value="@Model.lblView" class="btn btn-secondary" asp-page-handler="View" />
+                                                </form>   
+                                            </td>
 
                                            
 
@@ -252,11 +264,11 @@
                                 var ReceivingWarehouse = Model.Warehouses.FirstOrDefault(s => s.StoreId == int.Parse(req.ReceivingWarehouse))?.   StoreName ?? "";
                                 <tr>
                                     <td>Request for Warehouse <b>@ReceivingWarehouse</b> has been sent successfully.</td>
-                                    @* @{
+                                    @{
                                         var localTime = req.CreatedAt.ToLocalTime();
                                     }
-                                    <td>@localTime</td> *@
-                                    <td>@req.CreatedAt</td>
+                                    <td>@localTime</td>
+                                    @* <td>@req.CreatedAt</td> *@
                                     <td>
                                         @* <input type="submit" value="@Model.lblView" class="btn btn-secondary" asp-page-handler="View" /><a asp-page="/ViewReceivingReport"  class="btn btn-info btn-sm">View</a> *@
                                         <form method="post">

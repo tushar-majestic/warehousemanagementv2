@@ -158,6 +158,7 @@
 
                     <div class="card mb-4 p-3 ">
                         <h4>Item @(i + 1)</h4>
+                         <input asp-for="@Model.ItemCardsFromReport[i].ItemId" class="form-control" hidden />
                         <div class="d-flex justify-content-between">
                             <div class="form-group w-23">
                                 <label>Item Group</label>
@@ -260,7 +261,7 @@
                     <div class="form-group" style="width: 48%;">
                         <label asp-for="ItemCard.StoreId" class="control-label">Warehouse Name</label>
                         @* <input type="text" asp-for="ItemCard.StoreId" class="form-control"/> *@
-                        <select asp-for="ItemCard.StoreId" class="form-control" asp-items="ViewBag.WarehouseId"></select>
+                        <select asp-for="ItemCard.StoreId" name="StoreId" class="form-control" asp-items="ViewBag.WarehouseId"></select>
                     </div>
 
                     <div class="form-group" style="width: 48%;">
