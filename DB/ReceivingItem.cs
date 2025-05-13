@@ -19,11 +19,10 @@ public partial class ReceivingItem
 
     public int Quantity { get; set; }
 
-    public string Comments { get; set; } = null!;
-
-
     [Column(TypeName = "decimal(18, 2)")]
     public decimal UnitPrice { get; set; }
+
+    public string Comments { get; set; } = null!;
 
     [ForeignKey("ItemId")]
     [InverseProperty("ReceivingItems")]

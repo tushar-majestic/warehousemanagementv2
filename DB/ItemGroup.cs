@@ -17,6 +17,9 @@ public partial class ItemGroup
     public string GroupDesc { get; set; } = null!;
 
     [InverseProperty("GroupCodeNavigation")]
+    public virtual ICollection<ItemCard> ItemCards { get; set; } = new List<ItemCard>();
+
+    [InverseProperty("GroupCodeNavigation")]
     public virtual ICollection<Item> Items { get; set; } = new List<Item>();
 
     [InverseProperty("GroupCodeNavigation")]

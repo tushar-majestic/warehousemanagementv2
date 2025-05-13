@@ -79,6 +79,9 @@ public partial class Item
     [InverseProperty("Items")]
     public virtual HazardType? HazardTypeNameNavigation { get; set; }
 
+    [InverseProperty("Item")]
+    public virtual ICollection<ItemCard> ItemCards { get; set; } = new List<ItemCard>();
+
     [ForeignKey("ItemTypeCode")]
     [InverseProperty("Items")]
     public virtual ItemType ItemTypeCodeNavigation { get; set; } = null!;

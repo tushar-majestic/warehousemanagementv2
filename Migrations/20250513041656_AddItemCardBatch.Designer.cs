@@ -4,6 +4,7 @@ using LabMaterials.DB;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LabMaterials.Migrations
 {
     [DbContext(typeof(LabDBContext))]
-    partial class LabDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250513041656_AddItemCardBatch")]
+    partial class AddItemCardBatch
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -374,6 +377,13 @@ namespace LabMaterials.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
+                    b.Property<DateOnly>("DateOfEntry")
+                        .HasColumnType("date");
+
+                    b.Property<string>("DocumentType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime?>("ExpiryDate")
                         .HasColumnType("datetime");
 
@@ -411,6 +421,9 @@ namespace LabMaterials.Migrations
                     b.Property<int>("QuantityReceived")
                         .HasColumnType("int");
 
+                    b.Property<int>("ReceiptDocumentnumber")
+                        .HasColumnType("int");
+
                     b.Property<int>("StoreId")
                         .HasColumnType("int");
 
@@ -420,15 +433,15 @@ namespace LabMaterials.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex(new[] { "GroupCode" }, "IX_ItemCards_GroupCode");
+                    b.HasIndex("GroupCode");
 
-                    b.HasIndex(new[] { "HazardTypeName" }, "IX_ItemCards_HazardTypeName");
+                    b.HasIndex("HazardTypeName");
 
-                    b.HasIndex(new[] { "ItemId" }, "IX_ItemCards_ItemId");
+                    b.HasIndex("ItemId");
 
-                    b.HasIndex(new[] { "ItemTypeCode" }, "IX_ItemCards_ItemTypeCode");
+                    b.HasIndex("ItemTypeCode");
 
-                    b.HasIndex(new[] { "StoreId" }, "IX_ItemCards_StoreId");
+                    b.HasIndex("StoreId");
 
                     b.ToTable("ItemCards");
                 });
@@ -441,13 +454,6 @@ namespace LabMaterials.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("DateOfEntry")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("DocumentType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("ItemCardId")
                         .HasColumnType("int");
 
@@ -456,10 +462,6 @@ namespace LabMaterials.Migrations
 
                     b.Property<int>("QuantityReceived")
                         .HasColumnType("int");
-
-                    b.Property<string>("ReceiptDocumentnumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ReorderLimit")
                         .HasColumnType("int");
@@ -478,13 +480,13 @@ namespace LabMaterials.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex(new[] { "ItemCardId" }, "IX_ItemCardBatches_ItemCardId");
+                    b.HasIndex("ItemCardId");
 
-                    b.HasIndex(new[] { "RoomId" }, "IX_ItemCardBatches_RoomId");
+                    b.HasIndex("RoomId");
 
-                    b.HasIndex(new[] { "ShelfId" }, "IX_ItemCardBatches_ShelfId");
+                    b.HasIndex("ShelfId");
 
-                    b.HasIndex(new[] { "SupplierId" }, "IX_ItemCardBatches_SupplierId");
+                    b.HasIndex("SupplierId");
 
                     b.ToTable("ItemCardBatches");
                 });
@@ -613,13 +615,11 @@ namespace LabMaterials.Migrations
 
                     b.Property<string>("Type")
                         .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(max)")
-                        .HasDefaultValue("");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex(new[] { "ReceivingReportId" }, "IX_Messages_ReceivingReportId");
+                    b.HasIndex("ReceivingReportId");
 
                     b.ToTable("Messages");
                 });
@@ -667,9 +667,7 @@ namespace LabMaterials.Migrations
 
                     b.Property<string>("Comments")
                         .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(max)")
-                        .HasDefaultValue("");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ItemId")
                         .HasColumnType("int");
@@ -1315,9 +1313,7 @@ namespace LabMaterials.Migrations
 
                     b.Property<string>("CoordinatorName")
                         .IsRequired()
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("nvarchar(max)")
-                        .HasDefaultValue("");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("Created")
                         .HasColumnType("datetime");
@@ -1745,24 +1741,24 @@ namespace LabMaterials.Migrations
 
             modelBuilder.Entity("LabMaterials.DB.ItemCard", b =>
                 {
-                    b.HasOne("LabMaterials.DB.ItemGroup", "GroupCodeNavigation")
-                        .WithMany("ItemCards")
+                    b.HasOne("LabMaterials.DB.ItemGroup", "ItemGroup")
+                        .WithMany()
                         .HasForeignKey("GroupCode")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LabMaterials.DB.HazardType", "HazardTypeNameNavigation")
-                        .WithMany("ItemCards")
+                    b.HasOne("LabMaterials.DB.HazardType", "HazardType")
+                        .WithMany()
                         .HasForeignKey("HazardTypeName");
 
                     b.HasOne("LabMaterials.DB.Item", "Item")
-                        .WithMany("ItemCards")
+                        .WithMany()
                         .HasForeignKey("ItemId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LabMaterials.DB.ItemType", "ItemTypeCodeNavigation")
-                        .WithMany("ItemCards")
+                    b.HasOne("LabMaterials.DB.ItemType", "ItemType")
+                        .WithMany()
                         .HasForeignKey("ItemTypeCode")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1773,13 +1769,13 @@ namespace LabMaterials.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("GroupCodeNavigation");
-
-                    b.Navigation("HazardTypeNameNavigation");
+                    b.Navigation("HazardType");
 
                     b.Navigation("Item");
 
-                    b.Navigation("ItemTypeCodeNavigation");
+                    b.Navigation("ItemGroup");
+
+                    b.Navigation("ItemType");
 
                     b.Navigation("Store");
                 });
@@ -1787,25 +1783,25 @@ namespace LabMaterials.Migrations
             modelBuilder.Entity("LabMaterials.DB.ItemCardBatch", b =>
                 {
                     b.HasOne("LabMaterials.DB.ItemCard", "ItemCard")
-                        .WithMany("ItemCardBatches")
+                        .WithMany()
                         .HasForeignKey("ItemCardId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("LabMaterials.DB.Room", "Room")
-                        .WithMany("ItemCardBatches")
+                        .WithMany()
                         .HasForeignKey("RoomId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("LabMaterials.DB.Shelf", "Shelf")
-                        .WithMany("ItemCardBatches")
+                        .WithMany()
                         .HasForeignKey("ShelfId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("LabMaterials.DB.Supplier", "Supplier")
-                        .WithMany("ItemCardBatches")
+                        .WithMany()
                         .HasForeignKey("SupplierId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -1839,7 +1835,7 @@ namespace LabMaterials.Migrations
             modelBuilder.Entity("LabMaterials.DB.Message", b =>
                 {
                     b.HasOne("LabMaterials.DB.ReceivingReport", "ReceivingReport")
-                        .WithMany("Messages")
+                        .WithMany()
                         .HasForeignKey("ReceivingReportId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -2051,8 +2047,6 @@ namespace LabMaterials.Migrations
 
             modelBuilder.Entity("LabMaterials.DB.HazardType", b =>
                 {
-                    b.Navigation("ItemCards");
-
                     b.Navigation("Items");
                 });
 
@@ -2062,8 +2056,6 @@ namespace LabMaterials.Migrations
 
                     b.Navigation("DamagedItems");
 
-                    b.Navigation("ItemCards");
-
                     b.Navigation("ReceivingItems");
 
                     b.Navigation("Storages");
@@ -2071,15 +2063,8 @@ namespace LabMaterials.Migrations
                     b.Navigation("StoreMovements");
                 });
 
-            modelBuilder.Entity("LabMaterials.DB.ItemCard", b =>
-                {
-                    b.Navigation("ItemCardBatches");
-                });
-
             modelBuilder.Entity("LabMaterials.DB.ItemGroup", b =>
                 {
-                    b.Navigation("ItemCards");
-
                     b.Navigation("Items");
 
                     b.Navigation("Units");
@@ -2087,8 +2072,6 @@ namespace LabMaterials.Migrations
 
             modelBuilder.Entity("LabMaterials.DB.ItemType", b =>
                 {
-                    b.Navigation("ItemCards");
-
                     b.Navigation("Items");
                 });
 
@@ -2099,15 +2082,11 @@ namespace LabMaterials.Migrations
 
             modelBuilder.Entity("LabMaterials.DB.ReceivingReport", b =>
                 {
-                    b.Navigation("Messages");
-
                     b.Navigation("ReceivingItems");
                 });
 
             modelBuilder.Entity("LabMaterials.DB.Room", b =>
                 {
-                    b.Navigation("ItemCardBatches");
-
                     b.Navigation("Shelves");
 
                     b.Navigation("Storages");
@@ -2117,8 +2096,6 @@ namespace LabMaterials.Migrations
 
             modelBuilder.Entity("LabMaterials.DB.Shelf", b =>
                 {
-                    b.Navigation("ItemCardBatches");
-
                     b.Navigation("Storages");
 
                     b.Navigation("StoreMovements");
@@ -2143,8 +2120,6 @@ namespace LabMaterials.Migrations
 
             modelBuilder.Entity("LabMaterials.DB.Supplier", b =>
                 {
-                    b.Navigation("ItemCardBatches");
-
                     b.Navigation("Items");
 
                     b.Navigation("ReceivingReports");

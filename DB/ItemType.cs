@@ -17,5 +17,8 @@ public partial class ItemType
     public string TypeName { get; set; } = null!;
 
     [InverseProperty("ItemTypeCodeNavigation")]
+    public virtual ICollection<ItemCard> ItemCards { get; set; } = new List<ItemCard>();
+
+    [InverseProperty("ItemTypeCodeNavigation")]
     public virtual ICollection<Item> Items { get; set; } = new List<Item>();
 }

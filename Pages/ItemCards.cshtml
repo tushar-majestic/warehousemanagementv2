@@ -7,144 +7,374 @@
 
 <h1>Create Item Card</h1>
 <div asp-validation-summary="All" class="text-danger"></div>
-<div class="row">
+@* <div class="row">
     <div class="col-8 mb-4 m-auto">
         <div class="card border-0 shadow components-section">
-<form method="post" class="card-body">
-    <div class="row mb-4">
+            <form method="post" class="card-body">
+                <div class="row mb-4">
 
 
-        <div class="col-lg-12 col-sm-12">
-    <div class="form-group mb-4">
-        <label asp-for="ItemCard.Item.ItemId"></label>
-        <select asp-for="ItemCard.Item.ItemId" class="form-control" asp-items="ViewBag.ItemIds" id="itemIdSelect"></select>
-    </div>
-    <div class="form-group">
-        <label asp-for="ItemCard.GroupCode"></label>
-        
-        <select asp-for="ItemCard.GroupCode" class="form-control" id="GroupCode" asp-items="ViewBag.ItemGroupId"></select>
-        <span asp-validation-for="ItemCard.GroupCode" class="text-danger"></span>
-    </div>
+                    <div class="col-lg-12 col-sm-12">
+                <div class="form-group mb-4">
+                    <label asp-for="ItemCard.Item.ItemId"></label>
+                    <select asp-for="ItemCard.Item.ItemId" class="form-control" asp-items="ViewBag.ItemIds" id="itemIdSelect"></select>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ItemCard.GroupCode"></label>
+                    
+                    <select asp-for="ItemCard.GroupCode" class="form-control" id="GroupCode" asp-items="ViewBag.ItemGroupId"></select>
+                    <span asp-validation-for="ItemCard.GroupCode" class="text-danger"></span>
+                </div>
 
-    <div class="form-group">
-        <label asp-for="ItemCard.ItemTypeCode"></label>
-        
-        <select asp-for="ItemCard.ItemTypeCode" class="form-control" id="ItemTypeCode" asp-items="ViewBag.ItemType"></select>
-        <span asp-validation-for="ItemCard.ItemTypeCode" class="text-danger"></span>
-    </div>
+                <div class="form-group">
+                    <label asp-for="ItemCard.ItemTypeCode"></label>
+                    
+                    <select asp-for="ItemCard.ItemTypeCode" class="form-control" id="ItemTypeCode" asp-items="ViewBag.ItemType"></select>
+                    <span asp-validation-for="ItemCard.ItemTypeCode" class="text-danger"></span>
+                </div>
 
-    <div class="form-group">
-        <label asp-for="ItemCard.ItemCode"></label>
-        
-        <select asp-for="ItemCard.ItemCode" class="form-control" id="ItemCode" asp-items="ViewBag.ItemId"></select>
-        <span asp-validation-for="ItemCard.ItemCode" class="text-danger"></span>
-    </div>
+                <div class="form-group">
+                    <label asp-for="ItemCard.ItemCode"></label>
+                    <input type="text" asp-for="ItemCard.ItemCode" class="form-control" id="ItemCode">
+                            
+                    <select asp-for="ItemCard.ItemCode" class="form-control" id="ItemCode" asp-items="ViewBag.ItemId"></select>
+                    <span asp-validation-for="ItemCard.ItemCode" class="text-danger"></span>
+                </div>
 
-    <div class="form-group">
-        <label asp-for="ItemCard.ItemName"></label>
-        <input asp-for="ItemCard.ItemName" class="form-control" id="ItemName" />
-        <span asp-validation-for="ItemCard.ItemName" class="text-danger"></span>
-    </div>
+                <div class="form-group">
+                    <label asp-for="ItemCard.ItemName"></label>
+                    <input asp-for="ItemCard.ItemName" class="form-control" id="ItemName" />
+                    <span asp-validation-for="ItemCard.ItemName" class="text-danger"></span>
+                </div>
 
-    <div class="form-group">
-        <label asp-for="ItemCard.ItemDescription"></label>
-        <textarea asp-for="ItemCard.ItemDescription" class="form-control" id="ItemDescription"></textarea>
-    </div>
+                <div class="form-group">
+                    <label asp-for="ItemCard.ItemDescription"></label>
+                    <textarea asp-for="ItemCard.ItemDescription" class="form-control" id="ItemDescription"></textarea>
+                </div>
 
-    <div class="form-group">
-        <label asp-for="ItemCard.UnitOfmeasure"></label>
-        <input asp-for="ItemCard.UnitOfmeasure" class="form-control" id="UnitOfmeasure" />
-    </div>
+                <div class="form-group">
+                    <label asp-for="ItemCard.UnitOfmeasure"></label>
+                    <input asp-for="ItemCard.UnitOfmeasure" class="form-control" id="UnitOfmeasure" />
+                </div>
 
-    <div class="form-group">
-        <label asp-for="ItemCard.Chemical"></label>
-        <input asp-for="ItemCard.Chemical" class="form-control" />
-    </div>
+                <div class="form-group">
+                    <label asp-for="ItemCard.Chemical"></label>
+                    <input asp-for="ItemCard.Chemical" class="form-control" />
+                </div>
 
-    <div class="form-group">
-        <label asp-for="ItemCard.HazardTypeName"></label>
-        
-        <select asp-for="ItemCard.HazardTypeName" class="form-control" asp-items="ViewBag.HazardId" id="HazardTypeName"></select>
-    </div>
+                <div class="form-group">
+                    <label asp-for="ItemCard.HazardTypeName"></label>
+                    
+                    <select asp-for="ItemCard.HazardTypeName" class="form-control" asp-items="ViewBag.HazardId" id="HazardTypeName"></select>
+                </div>
 
-    <div class="form-group">
-        <label asp-for="ItemCard.ExpiryDate"></label>
-        <input asp-for="ItemCard.ExpiryDate" class="form-control" type="date" />
-    </div>
+                <div class="form-group">
+                    <label asp-for="ItemCard.ExpiryDate"></label>
+                    <input asp-for="ItemCard.ExpiryDate" class="form-control" type="date" />
+                </div>
 
-    <div class="form-group">
-        <label asp-for="ItemCard.TypeOfAsset"></label>
-        <select asp-for="ItemCard.TypeOfAsset" class="form-control"
-                asp-items="Html.GetEnumSelectList<LabMaterials.DB.ItemCard.AssetType>()">
-            <option value="">Select asset type</option>
-        </select>
-    </div>
+                 <div class="form-group">
+                    <label asp-for="ItemCard.TypeOfAsset"></label>
+                    <select asp-for="ItemCard.TypeOfAsset" class="form-control"
+                            asp-items="Html.GetEnumSelectList<LabMaterials.DB.ItemCard.AssetType>()">
+                        <option value="">Select asset type</option>
+                    </select>
+                </div> 
 
-    <div class="form-group">
-        <label asp-for="ItemCard.Minimum"></label>
-        <input asp-for="ItemCard.Minimum" class="form-control" type="number" />
-        <span asp-validation-for="ItemCard.Minimum" class="text-danger"></span>
-    </div>
+                <div class="form-group">
+                    <label asp-for="ItemCard.Minimum"></label>
+                    <input asp-for="ItemCard.Minimum" class="form-control" type="number" />
+                    <span asp-validation-for="ItemCard.Minimum" class="text-danger"></span>
+                </div>
 
-    <div class="form-group">
-        <label asp-for="ItemCard.ReorderLimit"></label>
-        <input asp-for="ItemCard.ReorderLimit" class="form-control" type="number" />
-        <span asp-validation-for="ItemCard.ReorderLimit" class="text-danger"></span>
-    </div>
+                <div class="form-group">
+                    <label asp-for="ItemCard.ReorderLimit"></label>
+                    <input asp-for="ItemCard.ReorderLimit" class="form-control" type="number" />
+                    <span asp-validation-for="ItemCard.ReorderLimit" class="text-danger"></span>
+                </div>  
 
-    <div class="form-group">
-        <label asp-for="ItemCard.Store" class="control-label"></label>
-        <select asp-for="ItemCard.Store.StoreId" class="form-control" asp-items="ViewBag.WarehouseId"></select>
-    </div>
+                <div class="form-group">
+                    <label asp-for="ItemCard.Store" class="control-label"></label>
+                    <select asp-for="ItemCard.Store.StoreId" class="form-control" asp-items="ViewBag.WarehouseId"></select>
+                </div>
 
-    <div class="form-group">
-        <label asp-for="ItemCard.QuantityReceived"></label>
-        <input asp-for="ItemCard.QuantityReceived" class="form-control" type="number" />
-    </div>
+                <div class="form-group">
+                    <label asp-for="ItemCard.QuantityReceived"></label>
+                    <input asp-for="ItemCard.QuantityReceived" class="form-control" type="number" />
+                </div>
 
-    <div class="form-group">
-        <label asp-for="ItemCard.DateOfEntry"></label>
-        <input asp-for="ItemCard.DateOfEntry" class="form-control" type="date" />
-    </div>
+                <div class="form-group">
+                    <label asp-for="ItemCard.DateOfEntry"></label>
+                    <input asp-for="ItemCard.DateOfEntry" class="form-control" type="date" />
+                </div>
 
-    <div class="form-group">
-        <label asp-for="ItemCard.RoomId"></label>
-        <select asp-for="ItemCard.RoomId" class="form-control" asp-items="ViewBag.RoomId"></select>
-    </div>
+                 <div class="form-group">
+                    <label asp-for="ItemCard.RoomId"></label>
+                    <select asp-for="ItemCard.RoomId" class="form-control" asp-items="ViewBag.RoomId"></select>
+                </div>
 
-    <div class="form-group">
-        <label asp-for="ItemCard.ShelfId"></label>
-        <select asp-for="ItemCard.ShelfId" class="form-control" asp-items="ViewBag.ShelfId"></select>
-    </div>
+                <div class="form-group">
+                    <label asp-for="ItemCard.ShelfId"></label>
+                    <select asp-for="ItemCard.ShelfId" class="form-control" asp-items="ViewBag.ShelfId"></select>
+                </div>
 
-    <div class="form-group">
-        <label asp-for="ItemCard.SupplierId"></label>
-        <select asp-for="ItemCard.SupplierId" class="form-control" asp-items="ViewBag.SupplierId"></select>
-    </div>
+                <div class="form-group">
+                    <label asp-for="ItemCard.SupplierId"></label>
+                    <select asp-for="ItemCard.SupplierId" class="form-control" asp-items="ViewBag.SupplierId"></select>
+                </div>
 
-    <div class="form-group">
-        <label asp-for="ItemCard.DocumentType"></label>
-        <select asp-for="ItemCard.DocumentType" class="form-control"
-                asp-items="Html.GetEnumSelectList<LabMaterials.DB.ItemCard.Receiptype>()">
-            <option value="">Select type</option>
-        </select>
-    </div>
+                 <div class="form-group">
+                    <label asp-for="ItemCard.DocumentType"></label>
+                    <select asp-for="ItemCard.DocumentType" class="form-control"
+                            asp-items="Html.GetEnumSelectList<LabMaterials.DB.ItemCard.Receiptype>()">
+                        <option value="">Select type</option>
+                    </select>
+                </div>  
 
-    <div class="form-group">
-        <label asp-for="ItemCard.ReceiptDocumentnumber"></label>
-        <input asp-for="ItemCard.ReceiptDocumentnumber" class="form-control" />
-    </div>
+                <div class="form-group">
+                    <label asp-for="ItemCard.ReceiptDocumentnumber"></label>
+                    <input asp-for="ItemCard.ReceiptDocumentnumber" class="form-control" />
+                </div>
+                    </div>
+                </div>
+            
+
+                <button type="submit" class="btn btn-primary">Create</button>
+                <a asp-page="./Index" class="btn btn-secondary">Cancel</a>
+                
+            </form>
         </div>
     </div>
-  
+</div> *@
 
-    <button type="submit" class="btn btn-primary">Create</button>
-    <a asp-page="./Index" class="btn btn-secondary">Cancel</a>
-      
-</form>
+<div class="row">
+    <div class="col-12 mb-4 m-auto">
+        <div class="card border-0 shadow components-section p-3">
+            <form>
+
+                @for (int i = 0; i < Model.ItemCardsFromReport.Count; i++)
+                {
+                    var item = Model.ItemCardsFromReport[i];
+
+                    <div class="card mb-4 p-3 ">
+                        <h4>Item @(i + 1)</h4>
+                        <div class="d-flex justify-content-between">
+                            <div class="form-group w-23">
+                                <label>Item Group</label>
+                                <input asp-for="@Model.ItemCardsFromReport[i].GroupCode" class="form-control" readonly />
+                            </div>
+                            <div class="form-group w-23">
+                                <label>Item Code</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
+                                <input asp-for="@Model.ItemCardsFromReport[i].ItemCode" class="form-control" readonly />
+                            </div>
+                        
+                            <div class="form-group w-23">
+                                <label>Item Name(Arabic)</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
+                                <input asp-for="@Model.ItemCardsFromReport[i].ItemName" class="form-control" readonly />
+                            </div>
+                            <div class="form-group w-23">
+                                <label>Item Name(English)</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
+                                <input asp-for="@Model.ItemCardsFromReport[i].ItemName" class="form-control" readonly />
+                            </div>
+                            @* <div class="form-group w-23">
+                                <label>Item Type Code</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>  
+                                <input asp-for="@Model.ItemCardsFromReport[i].ItemTypeCode" class="form-control" readonly />
+                            </div> *@
+                        </div>
+                    
+
+                        
+
+                        <div class="form-group">
+                            <label>Description</label>
+                            <textarea asp-for="@Model.ItemCardsFromReport[i].ItemDescription" class="form-control" readonly></textarea>
+                        </div>
+                        
+                        <div class="d-flex justify-content-between">
+
+                        
+
+                            <div class="form-group w-23">
+                                <label>Unit of Measure</label>
+                                <input asp-for="@Model.ItemCardsFromReport[i].UnitOfmeasure" class="form-control" readonly />
+                            </div>
+
+                            <div class="form-group w-23">
+                                <label>Chemical</label>
+                                <input asp-for="@Model.ItemCardsFromReport[i].Chemical" class="form-control" readonly />
+                            </div>
+
+                            <div class="form-group w-23">
+                                <label>Risk Rating</label>
+                                <input asp-for="@Model.ItemCardsFromReport[i].HazardTypeName" class="form-control" readonly />
+                            </div>
+                            <div class="form-group w-23">
+                                <label>Expiry Date</label>
+                                <input type="date" asp-for="@Model.ItemCardsFromReport[i].ExpiryDate" class="form-control" readonly />
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+
+                        
+
+                            <div class="form-group w-23">
+                            <label asp-for="ItemCardBatch.TypeOfAsset"></label>
+                                <select asp-for="ItemCardBatch.TypeOfAsset" class="form-control"
+                                        asp-items="Html.GetEnumSelectList<LabMaterials.DB.ItemCardBatch.AssetType>()">
+                                    <option value="">Select asset type</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group w-23">
+                                <label asp-for="ItemCardBatch.Minimum"></label>
+                                <input asp-for="ItemCardBatch.Minimum" class="form-control" type="number" />
+                                <span asp-validation-for="ItemCardBatch.Minimum" class="text-danger"></span>
+                            </div>
+
+                            <div class="form-group w-23">
+                                <label asp-for="ItemCardBatch.ReorderLimit">Reorder Limit</label>
+                                <input asp-for="ItemCardBatch.ReorderLimit" class="form-control" type="number" />
+                                <span asp-validation-for="ItemCardBatch.ReorderLimit" class="text-danger"></span>
+                            </div>
+                            <div class="form-group w-23">
+                                <label asp-for="ItemCardBatch.Ceiling">Ceiling</label>
+                                <input asp-for="ItemCardBatch.Ceiling" class="form-control" type="number" />
+                                <span asp-validation-for="ItemCardBatch.Ceiling" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="d-flex gap-4">
+                        
+                            <div class="form-group w-23">
+                                <label asp-for="@Model.ItemCardsFromReport[i].QuantityReceived">Quantity Received</label>
+                                <input asp-for="@Model.ItemCardsFromReport[i].QuantityReceived" class="form-control" type="number" readonly/>
+                                <span asp-validation-for="@Model.ItemCardsFromReport[i].QuantityReceived" class="text-danger"></span>
+                            </div>
+
+                        </div>
+                    </div>
+                }
+
+                <div class="d-flex justify-content-between">
+                    <div class="form-group" style="width: 48%;">
+                        <label asp-for="ItemCard.StoreId" class="control-label">Warehouse Name</label>
+                        @* <input type="text" asp-for="ItemCard.StoreId" class="form-control"/> *@
+                        <select asp-for="ItemCard.StoreId" class="form-control" asp-items="ViewBag.WarehouseId"></select>
+                    </div>
+
+                    <div class="form-group" style="width: 48%;">
+                        <label asp-for="ItemCardBatch.DateOfEntry"></label>
+                        <input asp-for="ItemCardBatch.DateOfEntry" class="form-control" type="date" readonly />
+                    </div>
+                </div>
+          
+                <div class="d-flex justify-content-between">
+                    <div class="form-group" style="width:31%;">
+                        <label asp-for="ItemCardBatch.RoomId"></label>
+                        <select asp-for="ItemCardBatch.RoomId" class="form-control" asp-items="ViewBag.RoomId"></select>
+                    </div>
+
+                    <div class="form-group" style="width:31%;">
+                        <label asp-for="ItemCardBatch.ShelfId"></label>
+                        <select asp-for="ItemCardBatch.ShelfId" class="form-control" asp-items="ViewBag.ShelfId"></select>
+                    </div>
+
+                    <div class="form-group" style="width:31%;">
+                        <label asp-for="ItemCardBatch.SupplierId"></label>
+                        <select asp-for="ItemCardBatch.SupplierId" class="form-control" asp-items="ViewBag.SupplierId" readonly></select>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <div class="form-group" style="width:48%;">
+                        <label asp-for="ItemCardBatch.DocumentType"></label>
+                        <input asp-for="ItemCardBatch.DocumentType" class="form-control"/>
+                        
+                    </div>  
+
+                    <div class="form-group" style="width:48%;">
+                        <label asp-for="ItemCardBatch.ReceiptDocumentnumber"></label>
+                        <input asp-for="ItemCardBatch.ReceiptDocumentnumber" class="form-control" />
+                    </div>
+
+                </div>
+
+                <button type="submit" class="btn btn-primary">Create</button>
+                <a asp-page="./Index" class="btn btn-secondary">Cancel</a>
+            </form>
+         
         </div>
     </div>
 </div>
+
+
+@* table form *@
+@* <div class="row">
+    <div class="col-12 mb-4 m-auto">
+        <div class="card border-0 shadow components-section p-4">
+            <h4 class="mb-3">Item List</h4>
+            <table class="table table-bordered table-striped">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>#</th>
+                        <th>Item Code</th>
+                        <th>Name (AR)</th>
+                        <th>Name (EN)</th>
+                        <th>Type Code</th>
+                        <th>Description</th>
+                        <th>Group</th>
+                        <th>UOM</th>
+                        <th>Chemical</th>
+                        <th>Risk</th>
+                        <th>Expiry Date</th>
+                        <th>Asset Type</th>
+                        <th>Min</th>
+                        <th>Reorder</th>
+                        <th>Ceiling</th>
+                        <th>Qty Received</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < Model.ItemCardsFromReport.Count; i++)
+                    {
+                        var item = Model.ItemCardsFromReport[i];
+                        <tr>
+                            <td>@(i + 1)</td>
+                            <td><input asp-for="@Model.ItemCardsFromReport[i].ItemCode" class="form-control" readonly /></td>
+                            <td><input asp-for="@Model.ItemCardsFromReport[i].ItemName" class="form-control" readonly /></td>
+                            <td><input asp-for="@Model.ItemCardsFromReport[i].ItemName" class="form-control" readonly /></td>
+                            <td><input asp-for="@Model.ItemCardsFromReport[i].ItemTypeCode" class="form-control" readonly /></td>
+                            <td><textarea asp-for="@Model.ItemCardsFromReport[i].ItemDescription" class="form-control" readonly></textarea></td>
+                            <td><input asp-for="@Model.ItemCardsFromReport[i].GroupCode" class="form-control" readonly /></td>
+                            <td><input asp-for="@Model.ItemCardsFromReport[i].UnitOfmeasure" class="form-control" readonly /></td>
+                            <td><input asp-for="@Model.ItemCardsFromReport[i].Chemical" class="form-control" readonly /></td>
+                            <td><input asp-for="@Model.ItemCardsFromReport[i].HazardTypeName" class="form-control" readonly /></td>
+                            <td><input asp-for="@Model.ItemCardsFromReport[i].ExpiryDate" class="form-control" type="date" readonly /></td>
+                            <td>
+                                <select asp-for="ItemCardBatch.TypeOfAsset" class="form-control"
+                                        asp-items="Html.GetEnumSelectList<LabMaterials.DB.ItemCardBatch.AssetType>()">
+                                    <option value="">Select asset type</option>
+                                </select>
+                            </td>
+                            <td>
+                                <input asp-for="ItemCardBatch.Minimum" class="form-control" type="number" />
+                            </td>
+                            <td>
+                                <input asp-for="ItemCardBatch.ReorderLimit" class="form-control" type="number" />
+                            </td>
+                            <td>
+                                <input asp-for="ItemCardBatch.Ceiling" class="form-control" type="number" />
+                            </td>
+                            <td>
+                                <input asp-for="ItemCardBatch.QuantityReceived" class="form-control" type="number" />
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div> *@
+
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

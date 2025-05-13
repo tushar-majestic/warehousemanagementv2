@@ -39,6 +39,9 @@ public partial class Shelf
     [Unicode(false)]
     public string? ShelfNo { get; set; }
 
+    [InverseProperty("Shelf")]
+    public virtual ICollection<ItemCardBatch> ItemCardBatches { get; set; } = new List<ItemCardBatch>();
+
     [ForeignKey("RoomId")]
     [InverseProperty("Shelves")]
     public virtual Room? Room { get; set; }

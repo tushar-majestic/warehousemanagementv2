@@ -56,6 +56,9 @@ public partial class Room
     public string? RoomStatus { get; set; }
 
     [InverseProperty("Room")]
+    public virtual ICollection<ItemCardBatch> ItemCardBatches { get; set; } = new List<ItemCardBatch>();
+
+    [InverseProperty("Room")]
     public virtual ICollection<Shelf> Shelves { get; set; } = new List<Shelf>();
 
     [InverseProperty("Room")]
