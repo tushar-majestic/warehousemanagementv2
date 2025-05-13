@@ -153,6 +153,10 @@
     "en": "New Receiving Report",
     "ar": "إتقرير الاستلام الجديد"
   },
+  "EditReceivingReport": {
+    "en": "Edit Receiving Report",
+    "ar": "إتقرير الاستلام تعديل"
+  },
   "ManageStore": {
     "en": "Warehouse Control Panel",
     "ar": "لوحة تحكم المستودعات"

@@ -14,16 +14,21 @@ public partial class MaterialRequest
     public int RequestId { get; set; }
 
     [StringLength(100)]
-    public string MaterialName { get; set; } = null!;
+    public string SerialNumber { get; set; } = null!;
 
     [Column(TypeName = "datetime")]
-    public DateTime RequestedDate { get; set; }
+    public DateTime OrderDate { get; set; }
+    public string FiscalYear { get; set; } = null;
 
-    [StringLength(20)]
-    public string Status { get; set; } = null!;
+    [StringLength(200)]
+    public string RequestingSector { get; set; } = null;
 
-    public int RequestedByUserId { get; set; }
-
+    public int RequestDocumentType { get; set; }
+    public string DocumentNumber { get; set; } = null;
+    public string Sector { get; set; } = null!;
+    public string WarehouseName { get; set; } = null;
+    public bool KeeperApproval { get; set; }
+    public bool DepartmentManagerApproval { get; set; }
     public int? CurrentApproverUserId { get; set; }
 
     [ForeignKey("CurrentApproverUserId")]

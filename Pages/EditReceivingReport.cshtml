@@ -19,7 +19,7 @@
             </li>
             <li class="breadcrumb-item d-flex align-items-center">
                 <img src="images/inventory.png" alt="Home" width="16" height="16" class="me-2" />
-                 @Model.lblNewReceivingReport
+                 @Model.lblEditReceivingReport
             </li>
 
         </ol>
@@ -37,7 +37,7 @@
 
                     <div class="col-lg-12 col-sm-12">
                         <div class="form-group mb-4">
-                           <label>@Model.lblSerialNumber <b id="Serial">----</b></label>
+                           <label>@Model.lblSerialNumber <b id="Serial"> @Model.serialNo </b></label>
                            <input type="number"  asp-for="Report.SerialNumber" id="SerialNumber" name="SerialNumber" hidden>
                         </div>
                        @{
@@ -159,7 +159,7 @@
                                 <div class="d-flex">
                                     <div class="form-group mb-4 me-2 ">
                                         <label>@Model.lblItemNo</label> <span class="majestic">*</span>
-                                        <input type="text" id="ItemNo" name="ItemNo" class="form-control"  />
+                                        <input type="text" id="ItemNo" name="ItemNo" class="form-control" value="@Model.ItemsForReport[0].ItemId" />
                                     </div>
                                     <div class="form-group mb-4 ms-2 flex-fill">
                                         <label>@Model.lblItemName</label> <span class="majestic">*</span>
@@ -198,14 +198,14 @@
 
                                     <div class="form-group mb-4"  style="width: 48%;">
                                         <label>@Model.lblQuantity</label> <span class="majestic">*</span>
-                                        <input asp-for="ItemsForReport[0].Quantity"  type="number" id="ItemQty" name="ItemsForReport[0].Quantity" class="form-control"  />
+                                        <input asp-for="ItemsForReport[0].Quantity"  type="number" id="ItemQty" name="ItemsForReport[0].Quantity" class="form-control" value="@Model.ItemsForReport[0].Quantity" />
                                     </div>
                                 </div>
                                 
                                 <div class="d-flex justify-content-between">
                                     <div class="form-group mb-4" style="width: 48%;">
                                         <label>@Model.lblUnitPrice</label> <span class="majestic">*</span>
-                                        <input asp-for="ItemsForReport[0].UnitPrice" type="number"  id="UnitPrice" step="0.01" name="ItemsForReport[0].UnitPrice" class="form-control"  />
+                                        <input asp-for="ItemsForReport[0].UnitPrice" type="number"  id="UnitPrice" step="0.01" name="ItemsForReport[0].UnitPrice" class="form-control" value="@Model.ItemsForReport[0].UnitPrice" />
                                     </div>
 
                                     <div class="form-group mb-4" style="width: 48%;">
@@ -248,7 +248,7 @@
                                 {
                                     foreach (var item in Model.TechnicalMemberList)
                                     {
-                                            <option value="@item.UserId" data-UserName="@item.FullName" selected="@(item.UserId == Model.TechnicalMemberId)">@item.FullName</option>
+                                            <option value="@item.UserId" data-UserName="@item.FullName" selected="@(item.UserId == Model.Report.TechnicalMemberId)">@item.FullName</option>
                                     }
                                 }
                             </select>
@@ -261,7 +261,7 @@
                                 {
                                     foreach (var item in Model.GeneralSupervisorList)
                                     {
-                                            <option value="@item.UserId" data-UserName="@item.FullName" selected="@(item.UserId == Model.GeneralSupervisorId)">@item.FullName</option>
+                                            <option value="@item.UserId" data-UserName="@item.FullName" selected="@(item.UserId == Model.Report.ChiefResponsibleId)">@item.FullName</option>
                                     }
                                 }
 
@@ -496,7 +496,7 @@
         });
 
         // Fetch serial number based on fiscal year
-        async function fetchSerialNumber() {
+        @* async function fetchSerialNumber() {
             const year = document.getElementById("FiscalYear").value;
             if (!isNaN(year)) {
                 try {
@@ -510,7 +510,7 @@
             } else {
                 document.getElementById("Serial").innerText = "-----";
             }
-        }
+        } *@
 
         window.addEventListener("DOMContentLoaded", function () {
             const yearInput = document.getElementById("FiscalYear");
