@@ -254,6 +254,7 @@ namespace LabMaterials.Pages
                 report.IsRejectedByTechnicalMember = true;
                 if(report.TechnicalMemberApproval == true)
                     report.TechnicalMemberApproval = false;
+                
                 string keeperMessage = string.Format("Your request is rejected with comment: {0}", Comment);
                 var msgToKeeper = new Message
                 {
@@ -283,7 +284,7 @@ namespace LabMaterials.Pages
                     ReportId = RejectReceivingReportId,
                     ReportType = "Receiving",
                     SenderId = this.UserId ,
-                    RecipientId = report.RecipientEmployeeId, 
+                    RecipientId = manager.UserId, 
                     Content = ManagerMessage,
                     Type = "",
                     CreatedAt = DateTime.UtcNow
@@ -377,7 +378,7 @@ namespace LabMaterials.Pages
         }
         public IActionResult OnPostAddOrder([FromForm] int ReportId){
             HttpContext.Session.SetInt32("ReportId", ReportId);
-            // HttpContext.Session.SetInt32("InboxId", InboxId);
+            //  HttpContext.Session.SetInt32("InboxId", InboxId);
 
 
             return RedirectToPage("./ItemCards");
