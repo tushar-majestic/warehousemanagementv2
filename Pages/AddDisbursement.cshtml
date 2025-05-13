@@ -42,82 +42,92 @@
 
     </script>
     <script>
-        let entryIndex = 1;
+    let entryIndex = 1;
 
-        document.getElementById("addEntryBtn").addEventListener("click", function () {
-            let wrapper = document.getElementById("returnEntriesWrapper");
-            let firstEntry = wrapper.querySelector(".return-entry");
-            let newEntry = firstEntry.cloneNode(true);
+    const wrapper = document.getElementById("returnEntriesWrapper");
+    const addEntryBtn = document.getElementById("addEntryBtn");
 
-            // Update radio button names to make them unique
-            newEntry.querySelectorAll('input[type="radio"]').forEach(function (input) {
-                let newName = `ReasonForReturn_${entryIndex}`;
-                input.name = newName;
-                input.checked = false;
-            });
+    // --- Add Entry ---
+    addEntryBtn.addEventListener("click", function () {
+        const firstEntry = wrapper.querySelector(".return-entry");
+        const newEntry = firstEntry.cloneNode(true);
 
-            // Clear all input/select/textarea values
-            newEntry.querySelectorAll("input, select, textarea").forEach(function (input) {
-                if (input.type !== "radio" && input.type !== "checkbox") input.value = "";
-            });
-
-            wrapper.appendChild(newEntry);
-            entryIndex++;
-        });
-
-        // Remove button handler using event delegation
-        document.getElementById("returnEntriesWrapper").addEventListener("click", function (e) {
-            if (e.target.classList.contains("remove-entry")) {
-                let allEntries = document.querySelectorAll(".return-entry");
-                if (allEntries.length > 1) {
-                    e.target.closest(".return-entry").remove();
-                } else {
-                    showErrorNotification("At least one Item is required.");
-                }
+        // Clear all values
+        newEntry.querySelectorAll("input, select").forEach(input => {
+            if (input.tagName === "SELECT") {
+                input.selectedIndex = 0;
+            } else if (input.type !== "radio" && input.type !== "checkbox") {
+                input.value = "";
             }
         });
-    </script>
-    <script>
-        function filterItemsByGroup() {
-            var group = document.getElementById("itemGroup").value;
-            var itemSelects = [document.getElementById("ArabicItemName"), document.getElementById("EnglishArabicName")];
 
-            itemSelects.forEach(select => {
-                var options = select.options;
-                for (var i = 0; i < options.length; i++) {
-                    var option = options[i];
-                    if (!option.value) continue;
-                    var itemGroup = option.getAttribute("data-group");
-                    option.style.display = itemGroup === group ? "block" : "none";
-                }
-                select.value = ""; // Reset selection
-            });
-        }
+        wrapper.appendChild(newEntry);
+        initializeEntry(newEntry);
+        entryIndex++;
+    });
 
-        function onItemChange(sourceSelect, targetSelectId) {
-            var selectedOption = sourceSelect.options[sourceSelect.selectedIndex];
-            if (!selectedOption) return;
-
-            var selectedId = selectedOption.getAttribute("data-id");
-
-            // Sync with the other dropdown
-            var targetSelect = document.getElementById(targetSelectId);
-            for (var i = 0; i < targetSelect.options.length; i++) {
-                if (targetSelect.options[i].getAttribute("data-id") === selectedId) {
-                    targetSelect.selectedIndex = i;
-                    break;
-                }
+    // --- Remove Entry ---
+    wrapper.addEventListener("click", function (e) {
+        if (e.target.classList.contains("remove-entry")) {
+            const entries = wrapper.querySelectorAll(".return-entry");
+            if (entries.length > 1) {
+                e.target.closest(".return-entry").remove();
+            } else {
+                alert("At least one Item is required.");
             }
-
-            // Fill in other fields
-            document.getElementById("ItemCode").value = selectedOption.getAttribute("data-code") || "";
-            document.getElementById("ItemDescription").value = selectedOption.getAttribute("data-description") || "";
-            document.getElementById("typeofAsset").value = selectedOption.getAttribute("data-asset") || "";
-            document.getElementById("chemical").value = selectedOption.getAttribute("data-chemical") || "";
-            document.getElementById("RiskRating").value = selectedOption.getAttribute("data-risk") || "";
-            document.getElementById("UnitofMeasure").value = selectedOption.getAttribute("data-unit") || "";
         }
-    </script>
+    });
+
+    // --- Handle Select Change ---
+    function handleChange(e) {
+        const entry = e.target.closest(".return-entry");
+        const sourceSelect = e.target;
+        const selectedOption = sourceSelect.options[sourceSelect.selectedIndex];
+        if (!selectedOption) return;
+
+        const selectedId = selectedOption.dataset.id;
+        const targetSelect = entry.querySelector(
+            sourceSelect.classList.contains("ArabicItemName") ? ".EnglishArabicName" : ".ArabicItemName"
+        );
+
+        for (const option of targetSelect.options) {
+            if (option.dataset.id === selectedId) {
+                targetSelect.value = option.value;
+                break;
+            }
+        }
+
+        // Populate fields
+        entry.querySelector(".ItemCode").value = selectedOption.dataset.code || "";
+        entry.querySelector(".ItemDescription").value = selectedOption.dataset.description || "";
+        entry.querySelector(".typeofAsset").value = selectedOption.dataset.asset || "";
+        entry.querySelector(".chemical").value = selectedOption.dataset.chemical || "";
+        entry.querySelector(".RiskRating").value = selectedOption.dataset.risk || "";
+        entry.querySelector(".UnitofMeasure").value = selectedOption.dataset.unit || "";
+    }
+
+    // --- Auto Calculate Total ---
+    function calculateTotalPrice(entry) {
+        const qty = parseFloat(entry.querySelector(".Quantity")?.value) || 0;
+        const unit = parseFloat(entry.querySelector(".UnitPrice")?.value) || 0;
+        entry.querySelector(".TotalPrice").value = (qty * unit).toFixed(2);
+    }
+
+    // --- Setup for New Entry ---
+    function initializeEntry(entry) {
+        // Avoid duplicate listeners by cloning a fresh node (safe for modern browsers)
+        entry.querySelectorAll("select").forEach(select => {
+            select.removeEventListener("change", handleChange);
+            select.addEventListener("change", handleChange);
+        });
+
+        entry.querySelector(".Quantity").addEventListener("input", () => calculateTotalPrice(entry));
+        entry.querySelector(".UnitPrice").addEventListener("input", () => calculateTotalPrice(entry));
+    }
+
+    // --- Init All Existing Entries on Load ---
+    wrapper.querySelectorAll(".return-entry").forEach(initializeEntry);
+</script>
 }
 @{
     <div class="py-4">
@@ -168,7 +178,7 @@
                                     </div>
                                     <div class="mb-4">
                                         <label>@Model.lblItemName (@Model.lblArabicLanguage)</label>
-                                        <select class="form-select" id="ArabicItemName" name="ArabicItemName" onchange="onItemChange(this, 'EnglishArabicName')">
+                                        <select class="ArabicItemName form-select" id="ArabicItemName" name="ArabicItemName" onchange="onItemChange(this, 'EnglishArabicName')">
                                             <option value="">Select Item </option>
                                             @foreach (var item in Model.Items)
                                             {
@@ -179,7 +189,7 @@
                                                             data-group="@item.GroupCode"
                                                             data-code="@item.ItemCode"
                                                             data-description="@item.ItemDescription"
-                                                            data-unit="@item.UnitId">
+                                                            data-unit="@item.Unit?.UnitCode">
                                                         @item.ItemName
                                                     </option>
                                                 }
@@ -188,7 +198,7 @@
                                     </div>
                                     <div class="mb-4">
                                         <label for="EnglishArabicName">@Model.lblItemName (@Model.lblEnglishLanguage)</label>
-                                        <select class="form-select" id="EnglishArabicName" name="EnglishArabicName" onchange="onItemChange(this, 'ArabicItemName')">
+                                        <select class="EnglishArabicName form-select" id="EnglishArabicName" name="EnglishArabicName" onchange="onItemChange(this, 'ArabicItemName')">
                                             <option value="">Select Item </option>
                                             @foreach (var item in Model.Items)
                                             {
@@ -208,31 +218,31 @@
                                     </div>
                                     <div class="mb-4">
                                         <label for="itemCode">@Model.lblItemCode</label>
-                                        <input type="text" class="form-control" id="ItemCode" readonly>
+                                        <input type="text" class="ItemCode form-control" id="ItemCode" readonly>
                                     </div>
                                     <div class="mb-4">
                                         <label for="itemDescription">@Model.lblItemDescription</label>
-                                        <input type="text" class="form-control" id="ItemDescription" readonly>
+                                        <input type="text" class="ItemDescription form-control" id="ItemDescription" readonly>
                                     </div>
                                     <div class="mb-4">
                                         <label for="typeofAsset">@Model.lblTypeofAsset</label>
-                                        <input type="text" class="form-control" id="typeofAsset" readonly>
+                                        <input type="text" class="typeofAsset form-control" id="typeofAsset" readonly>
                                     </div>
                                     <div class="mb-4">
                                         <label for="chemical">@Model.lblChemical</label>
-                                        <input type="text" class="form-control" id="chemical" readonly>
+                                        <input type="text" class="chemical form-control" id="chemical" readonly>
                                     </div>
                                     <div class="mb-4">
                                         <label for="RiskRating">@Model.lblRiskRating</label>
-                                        <input type="text" class="form-control" id="RiskRating" readonly>
+                                        <input type="text" class="RiskRating form-control" id="RiskRating" readonly>
                                     </div>
                                     <div class="mb-4">
                                         <label for="UnitofMeasure">@Model.lblUnitOfMeasure</label>
-                                        <input type="text" class="form-control" id="UnitofMeasure" readonly>
+                                        <input type="text" class="UnitofMeasure form-control" id="UnitofMeasure" readonly>
                                     </div>
                                     <div class="mb-4">
                                         <label for="Quantity">@Model.lblQuantity</label>
-                                        <input type="text" name="Quantity" value="@Model.Quantity" class="form-control" id="Quantity">
+                                        <input type="text" name="Quantity" value="@Model.Quantity" class="form-control Quantity" id="Quantity">
                                     </div>
                                     <div class="mb-4">
                                         <label for="amountSpent">@Model.lblAmountSpent</label>
@@ -240,11 +250,11 @@
                                     </div>
                                     <div class="mb-4">
                                         <label for="UnitPrice">@Model.lblUnitPrice</label>
-                                        <input type="text" name="UnitPrice" value="" class="form-control" id="UnitPrice">
+                                        <input type="text" name="UnitPrice" value="" class="form-control UnitPrice" id="UnitPrice">
                                     </div>
                                     <div class="mb-4">
                                         <label for="TotalPrice">@Model.lblTotalPrice</label>
-                                        <input type="text" name="TotalPrice" value="" class="form-control" id="TotalPrice">
+                                        <input type="text" name="TotalPrice" value="" class="form-control TotalPrice" id="TotalPrice">
                                     </div>
                                     <div class="mb-4">
                                         <label for="Comments">@Model.lblComments</label>
@@ -262,12 +272,16 @@
                                 <label for="SerialNumber">@Model.lblSerialNumber</label>
                                 <input type="text" name="SerialNumber" value="" class="form-control" id="SerialNumber">
                             </div>
+                            @{
+                                var currentYear = DateTime.Now.Year;
+                                var previousYear = currentYear - 1;
+                            }
                             <div class="mb-4">
                                 <label for="FiscalYear">@Model.lblFiscalYear</label>
                                 <select class="form-select" name="FiscalYear">
-                                    <option value="1">fiscal1</option>
-                                    <option value="2">fiscal2</option>
-                                    <option value="3">fiscal3</option>
+                                    <option value="">Select Fiscal Year</option>
+                                    <option value="@previousYear">@previousYear</option>
+                                    <option value="@currentYear">@currentYear</option>
                                 </select>
                             </div>
                             <div class="mb-4">

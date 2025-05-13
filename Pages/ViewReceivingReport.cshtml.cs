@@ -1,5 +1,14 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using LabMaterials.DB;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Data.SqlClient;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Session;
+
+using SkiaSharp;
+using System.Data;
 
 namespace LabMaterials.Pages
 {
@@ -20,24 +29,25 @@ namespace LabMaterials.Pages
         }
 
         public List<ReceivingReport> ReceivingReports { get; set; }
-        public List<ReceivingItem> ReceivingItems {get; set;}
-        public List<Item> Items {get; set;}
-        public List<Unit> Units {get; set;}
+        public List<ReceivingItem> ReceivingItems { get; set; }
+        public List<Item> Items { get; set; }
+        public List<Unit> Units { get; set; }
 
-        public List<Store> Stores {get; set;}
+        public List<Store> Stores { get; set; }
         public ReceivingReport? Report { get; set; }
         public async Task OnGetAsync(int id)
         {
             base.ExtractSessionData();
             this.ReportId = HttpContext.Session.GetString("ReportId");
-            if(ReportId == null){
+            if (ReportId == null)
+            {
                 Report = null;
                 return;
             }
             var dbContext = new LabDBContext();
             Stores = dbContext.Stores.ToList();
             Items = dbContext.Items.ToList();
-            Units =  dbContext.Units.ToList();
+            Units = dbContext.Units.ToList();
 
             Report = await _context.ReceivingReports
                     .Include(r => r.Supplier)
@@ -45,25 +55,34 @@ namespace LabMaterials.Pages
 
             ReceivingItems = dbContext.ReceivingItems.Where(r => r.ReceivingReportId == Report.Id).ToList();
 
-            #pragma warning disable CS8601
-                this.ReceivingWarehouse = dbContext.Stores.Where(s => s.StoreId == int.Parse(Report.ReceivingWarehouse)).Select(s => s.StoreName)
-                        .FirstOrDefault();
-           
-                this.ReceipientManager = dbContext.Users.Where(u => u.JobNumber == Report.RecipientEmployeeId).Select(s => s.FullName).FirstOrDefault();
+#pragma warning disable CS8601
+            this.ReceivingWarehouse = dbContext.Stores.Where(s => s.StoreId == int.Parse(Report.ReceivingWarehouse)).Select(s => s.StoreName)
+                    .FirstOrDefault();
 
-                this.TechnicalMember = dbContext.Users.Where(u => u.UserId == Report.TechnicalMemberId).Select(s => s.FullName).FirstOrDefault();
+            this.ReceipientManager = dbContext.Users.Where(u => u.JobNumber == Report.RecipientEmployeeId).Select(s => s.FullName).FirstOrDefault();
 
-                var GeneralSupervisor = dbContext.Users.FirstOrDefault(u => u.UserId == Report.ChiefResponsibleId);
+            this.TechnicalMember = dbContext.Users.Where(u => u.UserId == Report.TechnicalMemberId).Select(s => s.FullName).FirstOrDefault();
 
-                if(GeneralSupervisor != null){
-                    this.GeneralSupervisor = GeneralSupervisor.FullName;
-                }
-            #pragma warning restore CS8601 
+            var GeneralSupervisor = dbContext.Users.FirstOrDefault(u => u.UserId == Report.ChiefResponsibleId);
+
+            if (GeneralSupervisor != null)
+            {
+                this.GeneralSupervisor = GeneralSupervisor.FullName;
+            }
+#pragma warning restore CS8601
 
 
             // ReceivingReports = await _context.ReceivingReports
             //     .Include(r => r.Supplier)
             //     .ToListAsync();
+        }
+
+        public IActionResult OnPostEdit([FromForm] int serialNumber, [FromForm] int ReceivingReportId)
+        {
+            HttpContext.Session.SetInt32("SerialNo", serialNumber);
+            HttpContext.Session.SetInt32("ReceivingReportId", ReceivingReportId);
+
+            return RedirectToPage("./EditReceivingReport");
         }
     }
 }

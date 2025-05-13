@@ -13,7 +13,7 @@ namespace LabMaterials.Pages
     {
         private readonly LabDBContext _context;
         private readonly IWebHostEnvironment _environment;
-        public string lblCreateReport, lblSerialNumber, lblFiscalYear, lblReceivingDate, lblSectorNumber, lblReceivingWarehouse, lblBasedOnDocument, lblDocumentNumber, lblDocumentDate, lblAddAttachment, lblSupplierType, lblSupplierName, lblItemGroup, lblItemNo, lblItemName, lblItemDescription, lblUnitOfMeasure, lblQuantity, lblUnitPrice, lblTotalPrice, lblComments, lblRecipientID, lblRecipientName, lblTechnicalMember, lblChiefResponsible, lblSubmitReport, lblRecipientSector, lblNewReceivingReport;
+        public string lblCreateReport, lblSerialNumber, lblFiscalYear, lblReceivingDate, lblSectorNumber, lblReceivingWarehouse, lblBasedOnDocument, lblDocumentNumber, lblDocumentDate, lblAddAttachment, lblSupplierType, lblSupplierName, lblItemGroup, lblItemNo, lblItemName, lblItemDescription, lblUnitOfMeasure, lblQuantity, lblUnitPrice, lblTotalPrice, lblComments, lblRecipientID, lblRecipientName, lblTechnicalMember, lblChiefResponsible, lblSubmitReport, lblRecipientSector, lblNewReceivingReport, lblEditReceivingReport;
         public EditReceivingReportsModel(LabDBContext context, IWebHostEnvironment environment)
         {
             _context = context;
@@ -47,28 +47,46 @@ namespace LabMaterials.Pages
 
         [BindProperty]
         public List<ReceivingItem> ItemsForReport { get; set; } = new List<ReceivingItem>();
+        public int serialNo { get; set; }
+        public int ReceivingReportId { get; set; }
+        public int reportId { get; set; }
+
 
         public async Task OnGetAsync()
         {
             base.ExtractSessionData();
             FillLables();
+
+            int? serialNo = HttpContext.Session.GetInt32("SerialNo");
+            int? ReceivingReportId = HttpContext.Session.GetInt32("ReceivingReportId");
+
+            this.serialNo = serialNo.Value;
+            this.ReceivingReportId = ReceivingReportId.Value;
+
+            // ReportDet = await _context.ReceivingReports
+            // .Include(r => r.Supplier)
+            // .FirstOrDefaultAsync(r => r.Id == ReceivingReportId.Value);
+
             var dbContext = new LabDBContext();
+            Report = dbContext.ReceivingReports
+                .Include(r => r.Supplier) 
+                .FirstOrDefault(r => r.Id == ReceivingReportId.Value);
             Suppliers = _context.Suppliers.ToList();  // Fetch suppliers
             Warehouses = _context.Stores.ToList();  // Fetch suppliers
             // Reports = await _context.ReceivingReports.Include(r => r.Items).ToListAsync();
             Items = await _context.Items.ToListAsync();
-            Report ??= new ReceivingReport();
-            // **Important**: seed one blank ReceivingItem so index [0] exists
-            ItemsForReport = new List<ReceivingItem> { new ReceivingItem() };
-            // Ensure that session is available
-            var userName = HttpContext.Session.GetString("UserName");
+            // Report ??= new ReceivingReport();
+            // ItemsForReport = new List<ReceivingItem> { new ReceivingItem() };
+            ItemsForReport = dbContext.ReceivingItems
+                        .Where(r => r.ReceivingReportId == ReceivingReportId.Value)
+                        .ToList();
+            // var userName = HttpContext.Session.GetString("UserName");
+            // Report.CreatedBy = string.IsNullOrEmpty(userName) ? "Unknown" : userName;
 
-            // If the session is set, use it; otherwise, fallback to "Unknown"
-            Report.CreatedBy =  HttpContext.Session.GetInt32("UserId");
 
-            Units = dbContext.Units.ToList(); 
-            ItemGroupList = dbContext.ItemGroup.ToList(); 
-            Users = dbContext.Users.ToList(); 
+            Units = dbContext.Units.ToList();
+            ItemGroupList = dbContext.ItemGroup.ToList();
+            Users = dbContext.Users.ToList();
 
 
             //General Supervisor list
@@ -130,6 +148,7 @@ namespace LabMaterials.Pages
             this.lblSubmitReport =  (Program.Translations["SubmitReport"])[Lang];
             this.lblRecipientSector =  (Program.Translations["RecipientSector"])[Lang];
             this.lblNewReceivingReport = (Program.Translations["NewReceivingReport"])[Lang];
+            this.lblEditReceivingReport = (Program.Translations["EditReceivingReport"])[Lang];
 
 
 
