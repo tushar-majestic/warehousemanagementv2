@@ -25,6 +25,7 @@ namespace LabMaterials.Pages
         // public List<Item> AllItems { get; set; }
 
         public int? ReportId;
+        // public int? MessageId;
         public class ItemDto
         {
             public string ItemCode { get; set; }
@@ -52,6 +53,7 @@ namespace LabMaterials.Pages
 
             // AllItems = _context.Items.ToList();
             this.ReportId = HttpContext.Session.GetInt32("ReportId");
+            // this.MessageId = HttpContext.Session.GetInt32("MessageId");
 
             if (ReportId.HasValue)
             {
@@ -141,6 +143,15 @@ namespace LabMaterials.Pages
                 // _context.ItemCardBatches.Add(itemCardBatch);
                 // await _context.SaveChangesAsync();
             }
+            // var dbContext = new LabDBContext();
+
+            // var message = dbContext.Messages.FirstOrDefault(m => m.Id == this.MessageId);
+
+            // if (message != null)
+            // {
+            //     message.Type = "Added"; 
+            // }
+            // dbContext.SaveChanges();
 
             return RedirectToPage("/ManageItemCards");
         }

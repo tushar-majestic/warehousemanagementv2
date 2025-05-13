@@ -209,7 +209,7 @@
                                                 else if(senderGroupName == "General Supervisor" && Model.UserGroupName == "Warehouse Keeper"){
                                                     <form method="post">
                                                         <input type="hidden" value="@inbox.ReportId" name="ReportId" />
-                                                        <input type="hidden" value="@inbox.Id" name="ReportId" />
+                                                        <input type="hidden" value="@inbox.Id" id="InboxId" name="InboxId" />
 
                                                         <button asp-page-handler="AddOrder" class="btn btn-info btn-sm p-1"> Add Order to Item Card</button>
                                                            
@@ -234,6 +234,9 @@
                                             }
                                             else if(inbox.Type == "Replied"){
                                                 <span class="bg-success p-2 rounded text-white">Replied</span>
+                                            }
+                                            else if(inbox.Type == "Added"){
+                                                <span class="bg-success p-2 rounded text-white">Added Order to Item Card</span>
                                             }
                                             @{
                                             var localTime = inbox.CreatedAt.ToLocalTime();
