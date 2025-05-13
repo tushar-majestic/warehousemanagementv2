@@ -80,10 +80,16 @@ namespace LabMaterials.Pages
               
                 if (ReceivingReport != null)
                 {
-                    // ItemCardBatch =  new ItemCardBatch {
-                    //     DateOfEntry = ReceivingReport.CreatedAt,
-                    //     SupplierId = ReceivingReport.SupplierId
-                    // };
+                    ItemCardBatch =  new ItemCardBatch {
+                        DateOfEntry = ReceivingReport.CreatedAt,
+                        SupplierId = ReceivingReport.SupplierId,
+                        DocumentType = ReceivingReport.BasedOnDocument,
+                        ReceiptDocumentnumber =ReceivingReport.DocumentNumber
+                    };
+
+                    ItemCard = new ItemCard{
+                        StoreId = int.Parse(ReceivingReport.ReceivingWarehouse)
+                    };
                     
 
                 }
@@ -132,19 +138,11 @@ namespace LabMaterials.Pages
 
             foreach (var itemCard in ItemCardsFromReport)
             {
-                // Optional: Fetch related entities again if needed (Item, Store, etc.)
-                if (itemCard.Item != null && itemCard.Item.ItemId != 0)
-                {
-                    itemCard.Item = await _context.Items.FindAsync(itemCard.Item.ItemId);
-                }
-
-                if (ItemCard.Store != null && ItemCard.Store.StoreId != 0)
-                {
-                    itemCard.Store = await _context.Stores.FindAsync(ItemCard.Store.StoreId);
-                }
+                
 
                 // Set additional fields if needed
-                itemCard.Store = ItemCard.Store;
+                // itemCard.StoreId = ItemCard.StoreId;
+                // itemCard.GroupCode = 
                 // itemCard.DocumentType = ItemCard.DocumentType;
                 // itemCard.ReceiptDocumentnumber = ItemCard.ReceiptDocumentnumber;
 
@@ -168,7 +166,7 @@ namespace LabMaterials.Pages
                 // await _context.SaveChangesAsync();
             }
 
-            return RedirectToPage();
+            return RedirectToPage("/ManageItemCards");
         }
 
         private async Task PopulateDropdownsAsync()

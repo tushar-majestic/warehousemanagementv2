@@ -22,7 +22,7 @@ public partial class ReceivingReport
 
     public string BasedOnDocument { get; set; } = null!;
 
-    public string CreatedBy { get; set; } = null!;
+    public int? CreatedBy { get; set; }
 
     public DateTime DocumentDate { get; set; }
 
@@ -50,7 +50,7 @@ public partial class ReceivingReport
 
     public int? RejectedById { get; set; }
 
-    public DateTime CreatedAt { get; set; }
+    public DateTime CreatedAt { get; set; } 
 
     public DateTime? GeneralSupervisorApprovalDate { get; set; }
 

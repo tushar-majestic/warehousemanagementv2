@@ -64,7 +64,7 @@ namespace LabMaterials.Pages
             var userName = HttpContext.Session.GetString("UserName");
 
             // If the session is set, use it; otherwise, fallback to "Unknown"
-            Report.CreatedBy = string.IsNullOrEmpty(userName) ? "Unknown" : userName;
+            Report.CreatedBy = HttpContext.Session.GetInt32("UserId");
 
             Units = dbContext.Units.ToList(); 
             ItemGroupList = dbContext.ItemGroup.ToList(); 
@@ -114,7 +114,7 @@ namespace LabMaterials.Pages
 
             base.ExtractSessionData();
             FillLables();
-            Report.CreatedBy = HttpContext.Session.GetString("FullName") ?? "Unknown";
+            Report.CreatedBy = HttpContext.Session.GetInt32("UserId");
 
             var dbContext = new LabDBContext();
 
@@ -157,6 +157,8 @@ namespace LabMaterials.Pages
 
             Report.FiscalYear = FiscalYear;
             Report.KeeperApproval = true;
+            Report.CreatedAt =  DateTime.UtcNow;
+
 
             this.RecipientEmployeeName = RecipientEmployeeName;
            
@@ -279,11 +281,13 @@ namespace LabMaterials.Pages
             string Message = string.Format("Sent Request for Items. Approve the request or add comments.");
             var msg = new  Message
             {
-                ReceivingReportId = Report.Id,
-                Sender = Report.CreatedBy,
-                Recipient = TechnicalMemberName,
+                ReportId = Report.Id,
+                ReportType = "Receiving",
+                SenderId = Report.CreatedBy,
+                RecipientId = Report.TechnicalMemberId,
                 Content = Message,
-                Type = "Request"
+                Type = "",
+                CreatedAt = DateTime.UtcNow
             };
             dbContext.Messages.Add(msg);
             dbContext.SaveChanges();

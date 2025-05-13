@@ -64,7 +64,7 @@ namespace LabMaterials.Pages
             var userName = HttpContext.Session.GetString("UserName");
 
             // If the session is set, use it; otherwise, fallback to "Unknown"
-            Report.CreatedBy = string.IsNullOrEmpty(userName) ? "Unknown" : userName;
+            Report.CreatedBy =  HttpContext.Session.GetInt32("UserId");
 
             Units = dbContext.Units.ToList(); 
             ItemGroupList = dbContext.ItemGroup.ToList(); 

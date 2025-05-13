@@ -68,13 +68,15 @@
                         {
                             @if (Model.InboxList != null)
                             {
-                                @foreach( var inbox in Model.InboxList){
+                                @* @foreach( var inbox in Model.InboxList){
                                     <tr>
                                         <td>
-                                         
-                                                <div  class="m-2"><b>@inbox.Sender- </b>@inbox.Content</div>
+                                               @{
+                                                 var sender = Model.AllUsers.FirstOrDefault(u => u.UserId == inbox.SenderId);                                               
+                                                }
+                                                <div  class="m-2"><b>@sender?.FullName- </b>@inbox.Content</div>
                                                 @{
-                                                    var request = Model.AllRequest.FirstOrDefault(r => r.Id == inbox.ReceivingReportId);
+                                                    var request = Model.AllRequest.FirstOrDefault(r => r.Id == inbox.ReportId);
                                                     var technicalMemberApproval = request?.TechnicalMemberApproval;
                                                     var generalSupApproval = request?.GeneralSupApproval;
                                                     var rejectedById = request?.RejectedById;
@@ -104,13 +106,13 @@
                                                         else if (techPending || genSupPending)
                                                         {
                                                             <form method="post" class="d-inline">
-                                                                <input type="text" value="@inbox.ReceivingReportId" name="ReceivingReportId" hidden />
+                                                                <input type="text" value="@inbox.ReportId" name="ReceivingReportId" hidden />
                                                                 <button class="btn btn-info btn-sm p-1" asp-page-handler="Accept">
                                                                     Accept
                                                                 </button>
                                                             </form>
 
-                                                            <button class="btn btn-warning btn-sm p-1" data-toggle="modal" data-target="#commentRejectModal" onclick="setRejectReportId(@inbox.ReceivingReportId)">
+                                                            <button class="btn btn-warning btn-sm p-1" data-toggle="modal" data-target="#commentRejectModal" onclick="setRejectReportId(@inbox.ReportId)">
                                                                 Comment & Reject
                                                             </button>
                                                         }
@@ -121,19 +123,13 @@
                                                         else if(inbox.Type == "Rejected")
                                                         {     
                                                          
-                                                                <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#ReplyModal" onclick="setReplyReportId(@inbox.ReceivingReportId,'@inbox.Sender')">Reply & Resend</button>
+                                                                <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#ReplyModal" onclick="setReplyReportId(@inbox.ReportId,'@inbox.SenderId')">Reply & Resend</button>
 
-                                                                <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#commentRejectModal" onclick="setRejectReportId(@inbox.ReceivingReportId)">Comment & Reject</button>
+                                                                <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#commentRejectModal" onclick="setRejectReportId(@inbox.ReportId)">Comment & Reject</button>
                                                            
                                                            
 
-                                                            @* <button class="btn btn-info btn-sm p-1" data-toggle="modal" data-target="#ReplyModal" onclick="setReplyReportId(@inbox.ReceivingReportId,'@inbox.Sender')">
-                                                                Reply & resend
-                                                            </button>
-
-                                                            <button class="btn btn-warning btn-sm p-1" data-toggle="modal" data-target="#commentRejectModal" onclick="setRejectReportId(@inbox.ReceivingReportId)">
-                                                                Comment & Reject
-                                                            </button> *@
+                                                           
                                                         }
                                                     
                                                 
@@ -144,7 +140,7 @@
                                                     if(@inbox.Type == "Rejected"){
                                                         @if (IsReplied==false)
                                                         {
-                                                            <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#ReplyModal" onclick="setReplyReportId(@inbox.ReceivingReportId,'@inbox.Sender')">Reply & Resend</button>
+                                                            <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#ReplyModal" onclick="setReplyReportId(@inbox.ReportId,'@inbox.SenderId')">Reply & Resend</button>
 
                                                         }
                                                         else if (IsReplied == true)
@@ -154,7 +150,7 @@
                                                     }
                                                     else if(technicalMemberApproval == true && generalSupApproval == true){
                                                         <form method="post">
-                                                            <input type="hidden" value="@inbox.ReceivingReportId" name="ReportId" />
+                                                            <input type="hidden" value="@inbox.ReportId" name="ReportId" />
 
                                                             <button asp-page-handler="AddOrder" class="btn btn-info btn-sm p-1"> Add Order to Item Card</button>
                                                            
@@ -172,10 +168,77 @@
 
                                         <td>
                                             <form method="post">
-                                                <input type="hidden" value="@inbox.ReceivingReportId" name="ReportId" />
+                                                <input type="hidden" value="@inbox.ReportId" name="ReportId" />
                                                 <input type="submit" value="@Model.lblView" class="btn btn-secondary" asp-page-handler="View" />
                                             </form>   
                                         </td>
+                                    </tr>
+                                } *@
+
+                                @foreach( var inbox in Model.InboxList){
+                                    <tr>
+                                        <td>
+                                            @{
+                                                var sender = Model.AllUsers.FirstOrDefault(u => u.UserId == inbox.SenderId);  
+                                                var senderGroupName = sender != null 
+                                                ? Model.UserGroups.FirstOrDefault(g => g.UserGroupId == sender.UserGroupId)?.UserGroupName:"";  
+                                                                                        
+                                            }
+                                            <div  class="m-2"><b>@sender?.FullName- </b>@inbox.Content</div>
+                                            @if(inbox.Type == ""){
+                                                @* case 1 Sender:keeper Receiver: tech mem and case 4 combined *@
+                                                @if((senderGroupName == "Warehouse Keeper" && Model.UserGroupName == "Technical Member") || (senderGroupName == "Technical Member" && Model.UserGroupName == "General Supervisor")){
+                                                    <form method="post" class="d-inline">
+                                                        <input type="text" value="@inbox.ReportId" name="ReceivingReportId" hidden />
+                                                        <input type="hidden" value="@inbox.Id" name="MessageId">
+                                                        <button class="btn btn-info btn-sm p-1" asp-page-handler="Accept">
+                                                            Accept
+                                                        </button>
+                                                    </form>
+
+                                                    <button class="btn btn-warning btn-sm p-1" data-toggle="modal" data-target="#commentRejectModal" onclick="setRejectReportId(@inbox.ReportId, @inbox.Id)">
+                                                        Comment & Reject
+                                                    </button>
+                                                }
+                                                @* case 2 Sender:Tech Mem Receiver: keeper *@
+                                                else if(senderGroupName == "Technical Member" && Model.UserGroupName == "Warehouse Keeper"){
+                                                    <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#ReplyModal" onclick="setReplyReportId(@inbox.ReportId,'@inbox.SenderId',@inbox.Id)">Reply & Resend</button>
+
+                                                }
+                                                @* case 5 Sender:General Supervisor Receiver: keeper *@
+                                                else if(senderGroupName == "General Supervisor" && Model.UserGroupName == "Warehouse Keeper"){
+                                                    <form method="post">
+                                                        <input type="hidden" value="@inbox.ReportId" name="ReportId" />
+
+                                                        <button asp-page-handler="AddOrder" class="btn btn-info btn-sm p-1"> Add Order to Item Card</button>
+                                                           
+                                                    </form>
+                                                }
+                                                @* case 6 Sender:General Supervisor Receiver: Tech Mem *@
+                                                else if(senderGroupName == "General Supervisor" && Model.UserGroupName == "Technical Member"){
+                                                    <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#ReplyModal" onclick="setReplyReportId(@inbox.ReportId,'@inbox.SenderId',@inbox.Id)">Reply & Resend</button>
+
+                                                    <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#commentRejectModal" onclick="setRejectReportId(@inbox.ReportId,setRejectReportId @inbox.Id)">Comment & Reject</button>
+                                                }
+
+
+
+                                            } 
+                                            else if(inbox.Type == "Accepted")
+                                            {
+                                                <span class="bg-success p-2 rounded text-white">Accepted</span>
+                                            }
+                                            else if(inbox.Type == "Rejected"){
+                                                <span class="bg-danger p-2 rounded text-white">Rejected</span>
+                                            }
+                                            else if(inbox.Type == "Replied"){
+                                                <span class="bg-success p-2 rounded text-white">Replied</span>
+                                            }
+
+                                           
+
+                                        </td>                                                
+
                                     </tr>
                                 }
                             }
@@ -189,10 +252,11 @@
                                 var ReceivingWarehouse = Model.Warehouses.FirstOrDefault(s => s.StoreId == int.Parse(req.ReceivingWarehouse))?.   StoreName ?? "";
                                 <tr>
                                     <td>Request for Warehouse <b>@ReceivingWarehouse</b> has been sent successfully.</td>
-                                    @{
+                                    @* @{
                                         var localTime = req.CreatedAt.ToLocalTime();
                                     }
-                                    <td>@localTime</td>
+                                    <td>@localTime</td> *@
+                                    <td>@req.CreatedAt</td>
                                     <td>
                                         @* <input type="submit" value="@Model.lblView" class="btn btn-secondary" asp-page-handler="View" /><a asp-page="/ViewReceivingReport"  class="btn btn-info btn-sm">View</a> *@
                                         <form method="post">
@@ -216,18 +280,19 @@
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
-                                <form method="post" >
+                                <form method="post">
                                     <div class="modal-body">
                                         <!-- Input field for comment -->
                                         <div class="form-group">
-                                             <input type="hidden" id="RejectReceivingReportId" name="RejectReceivingReportId" />
+                                            <input type="hidden" id="RejectReceivingReportId" name="RejectReceivingReportId" />
+                                            <input type="hidden" id="RejectMessageId" name="RejectMessageId" />
                                             <label for="Comment">Your Comment</label>
                                             <textarea id="Comment" name="Comment" class="form-control" rows="3"></textarea>
                                         </div>
                                     </div>
                                     <div class="modal-footer">
                                         <!-- Button to submit the comment and reject -->
-                                        <button type="submit" class="btn btn-danger" id="rejectBtn"  asp-page-handler="RejectWithComment">Reject</button>
+                                        <button type="submit" asp-page="/Requests" asp-page-handler="RejectWithComment" class="btn btn-danger" id="rejectBtn"  >Reject</button>
                                        
                                     </div>
                                 </form>
@@ -251,6 +316,8 @@
                                         <div class="form-group">
                                             <input type="hidden" id="ReplyReportId" name="ReplyReportId" />
                                             <input type="hidden" id="ReplySender" name="ReplySender" />
+                                            <input type="hidden" id="ReplyMessageId" name="ReplyMessageId" />
+
 
                                             <label for="Reply">Your Reply</label>
                                             <textarea id="Reply" name="Reply" class="form-control" rows="3"></textarea>
@@ -278,12 +345,16 @@
    
 
       
-        function setRejectReportId(id) {
+        function setRejectReportId(id, messageId) {
             document.getElementById("RejectReceivingReportId").value = id;
+            document.getElementById("RejectMessageId").value = messageId;
+
         }
-        function setReplyReportId(id, receiver) {
+        function setReplyReportId(id, receiver, messageId) {
             document.getElementById("ReplyReportId").value = id;
             document.getElementById("ReplySender").value = receiver;
+            document.getElementById("ReplyMessageId").value = messageId;
+
         }
 
 

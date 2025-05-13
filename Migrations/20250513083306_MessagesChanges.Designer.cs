@@ -4,6 +4,7 @@ using LabMaterials.DB;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LabMaterials.Migrations
 {
     [DbContext(typeof(LabDBContext))]
-    partial class LabDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250513083306_MessagesChanges")]
+    partial class MessagesChanges
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -600,6 +603,9 @@ namespace LabMaterials.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("ReceivingReportId")
+                        .HasColumnType("int");
+
                     b.Property<int?>("RecipientId")
                         .HasColumnType("int");
 
@@ -621,7 +627,7 @@ namespace LabMaterials.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex(new[] { "ReportId" }, "IX_Messages_ReportId");
+                    b.HasIndex(new[] { "ReceivingReportId" }, "IX_Messages_ReceivingReportId");
 
                     b.ToTable("Messages");
                 });
@@ -1839,7 +1845,9 @@ namespace LabMaterials.Migrations
                 {
                     b.HasOne("LabMaterials.DB.ReceivingReport", "ReceivingReport")
                         .WithMany("Messages")
-                        .HasForeignKey("ReportId");
+                        .HasForeignKey("ReceivingReportId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("ReceivingReport");
                 });
