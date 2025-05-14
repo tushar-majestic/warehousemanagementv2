@@ -1,6 +1,7 @@
 using DocumentFormat.OpenXml.Office.CustomUI;
 using LabMaterials.DB;
 using LabMaterials.dtos;
+using LabMaterials.Migrations;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -36,8 +37,9 @@ namespace LabMaterials.Pages
         }
         public List<ItemDto> AllItemsDto { get; set; }
          [BindProperty]
-         public List<ItemCard> ItemCardsFromReport { get; set; } = new();
+        public List<ItemCard> ItemCardsFromReport { get; set; } = new();
 
+        // public List<string> ItemCardsFromReport { get; set; } 
 
         public async Task<IActionResult> OnGetAsync()
         {
@@ -112,7 +114,7 @@ namespace LabMaterials.Pages
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync([FromForm] int StoreId, [FromForm] string DocumentType, [FromForm] string ReceiptDocumentnumber, [FromForm] int RoomId, [FromForm] int ShelfId, [FromForm] int SupplierId)
+        public async Task<IActionResult> OnPostAsync([FromForm] int StoreId, [FromForm] string DocumentType, [FromForm] string ReceiptDocumentnumber, [FromForm] int RoomId, [FromForm] int ShelfId, [FromForm] int SupplierId, [FromForm] DateTime DateOfEntry)
         {   
             var reportId = HttpContext.Session.GetInt32("ReportId");
             this.InboxId = HttpContext.Session.GetInt32("InboxId");
@@ -142,6 +144,8 @@ namespace LabMaterials.Pages
             {
                
                     itemCard.StoreId = StoreId;
+
+
                      _context.ItemCards.Add(itemCard);
                     await _context.SaveChangesAsync();
 
@@ -158,7 +162,7 @@ namespace LabMaterials.Pages
                     SupplierId = SupplierId,
                     // Minimum = 0,
                     // ReorderLimit =0,
-                    // DateOfEntry =DateTime.UtcNow    ,
+                     DateOfEntry = DateOfEntry   ,
 
                 };
 
