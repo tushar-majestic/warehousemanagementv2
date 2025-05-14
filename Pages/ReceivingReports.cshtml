@@ -114,7 +114,8 @@
 
                         <div class="form-group mb-4">
                             <label>@Model.lblSupplierType</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
-                            <select class="form-select" id="SupplierType" name="SupplierType" >
+                            <select class="form-select" id="SupplierType" name="SupplierType" onchange="filterSuppliersByType()" >
+                                <option value="">Select Supplier Type</option>
                                 <option value="Internal">Internal</option>
                                 <option value="External">External</option>
                             </select>
@@ -140,7 +141,7 @@
                         
                                 <div class="form-group mb-4">
                                     <label>@Model.lblItemGroup</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
-                                    <select class="form-select" id="ItemGroup" name="ItemsForReport[0].ItemGroup" >
+                                    <select class="form-select" id="ItemGroup" name="ItemsForReport[0].ItemGroup" onchange="filterItemByGroup()" >
                                         @* <option value="Chemicals">Chemicals</option>
                                         <option value="Glass">Glass</option> *@
                                         <option value="">Select Item Group</option>
@@ -148,7 +149,7 @@
                                         {
                                             foreach (var item in Model.ItemGroupList)
                                             {
-                                                    <option value="@item.GroupDesc" >@item.GroupDesc</option>
+                                                <option value="@item.GroupCode" >@item.GroupDesc</option>
                                             }
                                         }
 
@@ -168,7 +169,7 @@
                                             @foreach (var item in Model.Items)
                                             {
                                                 var UnitCode = Model.Units.FirstOrDefault(u => u.Id == item.UnitId)?.UnitCode ?? "";
-                                                var ItemGroup = Model.ItemGroupList.FirstOrDefault(g => g.GroupCode == item.GroupCode)?.GroupDesc ?? "";
+                                                var ItemGroup = Model.ItemGroupList.FirstOrDefault(g => g.GroupCode == item.GroupCode)?.GroupCode ?? "";
                                             
                                                 <option value="@item.ItemId"
                                                         data-itemno="@item.ItemCode"
@@ -331,11 +332,11 @@
                 </div>
                 <div class="form-group mb-4">
                     <label>Item Group</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
-                    <select class="form-select" name="ItemsForReport[${itemIndex}].ItemGroup" required>
+                    <select class="form-select" name="ItemsForReport[${itemIndex}].ItemGroup" onchange="filterItemByGroup()" required>
                         <option value="">Select Item Group</option>
                         @foreach (var item in Model.ItemGroupList)
                         {
-                            <text><option value="@item.GroupDesc">@item.GroupDesc</option></text>
+                            <text><option value="@item.GroupCode">@item.GroupDesc</option></text>
                         }
                     </select>
                 </div>
@@ -468,7 +469,46 @@
             });
             checkRequiredFields(); // Initial check
         });
+        //Items filtering based on groupcode
+        const allItems = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.Items));
+        function filterItemByGroup() {
+            const selectedGroup = document.getElementById("ItemGroup").value;
+            const itemSelect = document.getElementById("ItemName");
 
+            // Clear current items
+            itemSelect.innerHTML = '<option value="">Select Item</option>';
+            console.log("selectedgroup",selectedGroup )
+            // Filter and repopulate
+            allItems
+                .filter(item => item.GroupCode === selectedGroup)
+                .forEach(item => {
+                    const option = document.createElement("option");
+                    option.value = item.ItemId;
+                    option.textContent = item.ItemName;
+
+                    option.setAttribute("data-itemno", item.ItemCode);
+                    option.setAttribute("data-itemname", item.ItemName);
+                    option.setAttribute("data-itemdesc", item.ItemDescription);
+                    option.setAttribute("data-unitid", item.UnitId);
+                    option.setAttribute("data-unitname", getUnitName(item.UnitId));
+                    option.setAttribute("data-groupcode", item.GroupCode);
+
+                    itemSelect.appendChild(option);
+                });
+        }
+        @{
+            var unitData = Model.Units.Select(unit => new {
+                unit.Id,
+                unit.UnitCode
+            });
+        }
+     
+
+        const allUnits = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(unitData));
+        function getUnitName(unitId) {
+            const unit = allUnits.find(u => u.Id === unitId);
+            return unit ? unit.UnitCode : '';
+        }
         // Supplier filtering based on type
         const allSuppliers = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.Suppliers));
 
@@ -476,25 +516,24 @@
             const selectedType = document.getElementById("SupplierType").value;
             const supplierSelect = document.getElementById("SupplierName");
 
-            // Clear existing options
             supplierSelect.innerHTML = '<option value="">Select Supplier Name</option>';
 
-            // Filter and repopulate
             allSuppliers
                 .filter(s => s.SupplierType === selectedType)
                 .forEach(s => {
                     const option = document.createElement('option');
-                    option.value = s.supplierId;
-                    option.textContent = s.supplierName;
-                    option.setAttribute("data-type", s.supplierType);
+                    option.value = s.SupplierId;
+                    option.textContent = s.SupplierName;
+                    option.setAttribute("data-type", s.SupplierType);
                     supplierSelect.appendChild(option);
                 });
         }
 
-        document.getElementById("SupplierName").addEventListener("change", function () {
-            const selected = this.options[this.selectedIndex];
-            document.getElementById("SupplierType").value = selected.getAttribute("data-type") || "";
-        });
+    // Optional: If you want to re-sync the type when a supplier is manually chosen
+    document.getElementById("SupplierName").addEventListener("change", function () {
+        const selected = this.options[this.selectedIndex];
+        document.getElementById("SupplierType").value = selected.getAttribute("data-type") || "";
+    });
 
         // Fetch serial number based on fiscal year
         async function fetchSerialNumber() {

@@ -273,29 +273,35 @@
                 <div class="d-flex justify-content-between">
                     <div class="form-group" style="width:31%;">
                         <label asp-for="ItemCardBatch.RoomId"></label>
-                        <select asp-for="ItemCardBatch.RoomId" class="form-control" asp-items="ViewBag.RoomId"></select>
+                        <select asp-for="ItemCardBatch.RoomId" class="form-control" asp-items="ViewBag.RoomId" name="RoomId" id="RoomId">
+                            <option value="">Select Room</option>
+
+                        </select>
                     </div>
 
                     <div class="form-group" style="width:31%;">
                         <label asp-for="ItemCardBatch.ShelfId"></label>
-                        <select asp-for="ItemCardBatch.ShelfId" class="form-control" asp-items="ViewBag.ShelfId"></select>
+                        <select asp-for="ItemCardBatch.ShelfId" name="ShelfId" id="ShelfId" class="form-control" asp-items="ViewBag.ShelfId">
+                            <option value="">Select Shelf</option>
+
+                        </select>
                     </div>
 
                     <div class="form-group" style="width:31%;">
                         <label asp-for="ItemCardBatch.SupplierId"></label>
-                        <select asp-for="ItemCardBatch.SupplierId" class="form-control" asp-items="ViewBag.SupplierId" readonly></select>
+                        <select asp-for="ItemCardBatch.SupplierId" name="SupplierId" id="SupplierId" class="form-control" asp-items="ViewBag.SupplierId" readonly></select>
                     </div>
                 </div>
                 <div class="d-flex justify-content-between">
                     <div class="form-group" style="width:48%;">
                         <label asp-for="ItemCardBatch.DocumentType"></label>
-                        <input asp-for="ItemCardBatch.DocumentType" class="form-control"/>
+                        <input asp-for="ItemCardBatch.DocumentType" name="DocumentType" id="DocumentType" class="form-control"/>
                         
                     </div>  
 
                     <div class="form-group" style="width:48%;">
                         <label asp-for="ItemCardBatch.ReceiptDocumentnumber"></label>
-                        <input asp-for="ItemCardBatch.ReceiptDocumentnumber" class="form-control" />
+                        <input asp-for="ItemCardBatch.ReceiptDocumentnumber" name="ReceiptDocumentnumber" id="ReceiptDocumentnumber" class="form-control" />
                     </div>
 
                 </div>
