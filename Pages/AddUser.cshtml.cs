@@ -83,6 +83,8 @@ namespace LabMaterials.Pages
                     {
                         if (dbContext.Users.Count(s => s.UserName == UserName.ToLower()) > 0)
                             ErrorMsg = string.Format((Program.Translations["UserNameExist"])[Lang], UserName);
+                        else if (dbContext.Users.Any(s => s.JobNumber == int.Parse(JobNumber)))
+                            ErrorMsg = string.Format((Program.Translations["JobNumberExist"])[Lang], JobNumber);
                         else
                         {
                             var user = new User
