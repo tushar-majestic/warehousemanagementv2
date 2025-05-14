@@ -124,24 +124,20 @@ namespace LabMaterials.Pages
             {
                
                     itemCard.StoreId = StoreId;
-                    _context.ItemCards.Add(itemCard);
-                    await _context.SaveChangesAsync();
+                     _context.ItemCards.Add(itemCard);
+                      await _context.SaveChangesAsync();
 
                 // Now add the corresponding ItemCardBatch
-                // var itemCardBatch = new ItemCardBatch
-                // {
-                //     ItemCardId = itemCard.ItemCardId, // After save, this will have value
-                //     TypeOfAsset = ItemCardBatch.TypeOfAsset,
-                //     Minimum = ItemCardBatch.Minimum,
-                //     ReorderLimit = ItemCardBatch.ReorderLimit,
-                //     Ceiling = ItemCardBatch.Ceiling,
-                //     RoomId = ItemCardBatch.RoomId,
-                //     ShelfId = ItemCardBatch.ShelfId,
-                //     SupplierId = ItemCardBatch.SupplierId
-                // };
+                var itemCardBatch = new ItemCardBatch
+                {
+                    ItemCardId = 51, // After save, this will have value
+                    DocumentType = "Certification",
+                    ReceiptDocumentnumber = "7895"
 
-                // _context.ItemCardBatches.Add(itemCardBatch);
-                // await _context.SaveChangesAsync();
+                };
+
+                _context.ItemCardBatches.Add(itemCardBatch);
+                await _context.SaveChangesAsync();
             }
             // var dbContext = new LabDBContext();
 

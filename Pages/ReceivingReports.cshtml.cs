@@ -39,6 +39,7 @@ namespace LabMaterials.Pages
         public int? ItemId;
         public string ErrorMsg { get; set; }
         public string RecipientEmployeeName;
+        public int RecipientJobNumber;
 
         public string ItemNo;
         [BindProperty]
@@ -109,7 +110,7 @@ namespace LabMaterials.Pages
         }
 
 
-        public async Task<IActionResult> OnPostAsync(DateTime ReceivingDate, DateTime DocumentDate, [FromForm] int TechnicalMember, [FromForm] int ChiefResponsible,  [FromForm] string FiscalYear,  [FromForm] string BasedOnDocument, [FromForm] int SerialNumber, [FromForm] string RecipientEmployeeName)
+        public async Task<IActionResult> OnPostAsync(DateTime ReceivingDate, DateTime DocumentDate, [FromForm] int TechnicalMember, [FromForm] int ChiefResponsible,  [FromForm] string FiscalYear,  [FromForm] string BasedOnDocument, [FromForm] int SerialNumber, [FromForm] string RecipientEmployeeName, [FromForm] int RecipientJobNumber)
         {   ModelState.Clear();
 
             base.ExtractSessionData();
@@ -161,6 +162,7 @@ namespace LabMaterials.Pages
 
 
             this.RecipientEmployeeName = RecipientEmployeeName;
+            this.RecipientJobNumber = RecipientJobNumber;
            
             var TechnicalMemberName = dbContext.Users
                     .Where(u => u.UserId == Report.TechnicalMemberId)
