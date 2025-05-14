@@ -22,7 +22,7 @@ public class ItemCardView
     public int Minimum { get; set; }
     public int ReorderLimit { get; set; }
 
-    public string WarehouseName { get; set; }  // Assuming a lookup table exists
+    public string WarehouseName { get; set; }  
     public int QuantityReceived { get; set; }
     public DateTime DateOfEntry { get; set; }
 

@@ -315,7 +315,7 @@
             @* return `@Html.Raw(string.Join("", Model.Items.Select(i => $"<option value='{i.ItemId}' data-itemno='{i.ItemCode}' data-itemname='{i.ItemName}' data-itemdesc='{i.ItemDescription}' data-unitid='{i.UnitId}'>{i.ItemName}</option>")))`; *@
               return `@Html.Raw(string.Join("", Model.Items.Select(item => {
                 var unitCode = Model.Units.FirstOrDefault(u => u.Id == item.UnitId)?.UnitCode ?? "";
-                var ItemGroup = Model.ItemGroupList.FirstOrDefault(g => g.GroupCode == item.GroupCode)?.GroupDesc ?? "";
+                var ItemGroup = Model.ItemGroupList.FirstOrDefault(g => g.GroupCode == item.GroupCode)?.GroupCode ?? "";
                 return $"<option value='{item.ItemId}' data-itemno='{item.ItemCode}' data-itemname='{item.ItemName}' data-itemdesc='{item.ItemDescription}' data-unitid='{item.UnitId}' data-unitname='{unitCode}' data-groupcode='{ItemGroup}'>{item.ItemName}</option>";
             })))`;
         }
