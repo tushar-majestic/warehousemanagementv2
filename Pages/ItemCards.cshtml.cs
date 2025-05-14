@@ -18,14 +18,10 @@ namespace LabMaterials.Pages
         }
         [BindProperty]
         public ItemCard ItemCard { get; set; } = default!;
-
-        // public ItemCardBatch ItemCardBatch {get; set;} =default!;
          public ItemCardBatch ItemCardBatch { get; set; } = new ItemCardBatch();
         public List<SelectListItem> ItemList { get; set; }
-        // public List<Item> AllItems { get; set; }
-
         public int? ReportId;
-        // public int? MessageId;
+         public int? InboxId;
         public class ItemDto
         {
             public string ItemCode { get; set; }
@@ -116,32 +112,62 @@ namespace LabMaterials.Pages
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync([FromForm] int StoreId)
+        public async Task<IActionResult> OnPostAsync([FromForm] int StoreId, [FromForm] string DocumentType, [FromForm] string ReceiptDocumentnumber, [FromForm] int RoomId, [FromForm] int ShelfId, [FromForm] int SupplierId)
         {   
-            
+            var reportId = HttpContext.Session.GetInt32("ReportId");
+            this.InboxId = HttpContext.Session.GetInt32("InboxId");
+            if (reportId.HasValue)
+            {
+                var receivingItems = await _context.ReceivingItems
+                    .Include(ri => ri.Item)
+                    .Where(ri => ri.ReceivingReportId == reportId.Value)
+                    .ToListAsync();
+
+                ItemCardsFromReport = receivingItems.Select(ri => new ItemCard
+                {
+                    ItemCode = ri.Item.ItemCode,
+                    ItemName = ri.Item.ItemName,
+                    GroupCode = ri.Item.GroupCode,
+                    ItemTypeCode = ri.Item.ItemTypeCode,
+                    ItemDescription = ri.Item.ItemDescription,
+                    ItemId = ri.ItemId,
+                    HazardTypeName = ri.Item.HazardTypeName,
+                    ExpiryDate = ri.Item.ExpiryDate,
+                    QuantityReceived = ri.Quantity,
+                }).ToList();
+            }
+
 
             foreach (var itemCard in ItemCardsFromReport)
             {
                
                     itemCard.StoreId = StoreId;
                      _context.ItemCards.Add(itemCard);
-                      await _context.SaveChangesAsync();
+                    await _context.SaveChangesAsync();
+
 
                 // Now add the corresponding ItemCardBatch
                 var itemCardBatch = new ItemCardBatch
                 {
-                    ItemCardId = 51, // After save, this will have value
-                    DocumentType = "Certification",
-                    ReceiptDocumentnumber = "7895"
+                    ItemCardId = itemCard.Id,
+                    DocumentType = DocumentType,
+                    ReceiptDocumentnumber = ReceiptDocumentnumber,
+                    RoomId = RoomId,
+                    ShelfId = ShelfId,
+                    QuantityReceived = itemCard.QuantityReceived,
+                    SupplierId = SupplierId,
+                    // Minimum = 0,
+                    // ReorderLimit =0,
+                    // DateOfEntry =DateTime.UtcNow    ,
 
                 };
 
                 _context.ItemCardBatches.Add(itemCardBatch);
                 await _context.SaveChangesAsync();
             }
-            // var dbContext = new LabDBContext();
+            var dbContext = new LabDBContext();
 
-            // var message = dbContext.Messages.FirstOrDefault(m => m.Id == this.MessageId);
+            // var message = dbContext.Messages.FirstOrDefault(m => m.Id == this.InboxId);
 
             // if (message != null)
             // {

@@ -30,6 +30,9 @@ public partial class LabDBContext : DbContext
     public virtual DbSet<ItemCardBatch> ItemCardBatches { get; set; }
 
     public virtual DbSet<ItemGroup> ItemGroups { get; set; }
+    public virtual DbSet<ItemCardView> ItemCardViewModels { get; set; }
+
+
     public virtual DbSet<ItemGroup> ItemGroup { get; set; }
 
     public virtual DbSet<ItemInfoByStoreId> ItemInfoByStoreIds { get; set; }

@@ -14,6 +14,7 @@
                         <img src="images/inventory.png" alt="Home" width="16" height="16" class="me-2" />
                         @Model.lblItemCards
                     </li>
+    using Microsoft.CodeAnalysis.CSharp.Syntax;
                     
                 </ol>
             </nav>
@@ -209,76 +210,35 @@
                         </tr>
                     </thead>
                     <tbody>
-           
-                        <tr>
-                            <td scope="row">Chemicals</td>
-                            <td scope="row">102</td>
-                            <td scope="row">Zinc</td>
-                            <td scope="row">High purity zinc sulfide powder.</td>
-                            <td scope="row">ml</td>
-                            <td scope="row">Zinc</td>
-                            <td>Non Hazardous</td>
-                            <td>26-08-29</td>
-                            <td>Sustainable</td>
-                            <td>12</td>
-                            <td>5</td>
-                            <td scope="row">Supply Warehouse</td>
-                            <td>12</td>
-                            <td>07-05-25</td>
-                            <td>Material Room</td>
-                            <td>R2-S1</td>
-                            <td>Shah Abdul Wali</td>
-                            <td>Certification</td>
-                            <td>89456</td>
+                        @foreach(var item in Model.ItemCardView){
+                            <tr>
+                                <td scope="row">@item.GroupCode</td>
+                                <td scope="row">@item.ItemName</td>
+                                <td scope="row">@item.ItemCode</td>
+                                <td scope="row">@item.ItemDescription</td>
+                                <td scope="row">@item.UnitOfMeasure</td>
+                                <td scope="row">@item.Chemical</td>
+                                <td scope="row">@item.HazardTypeName</td>
+                                <td scope="row">@item.ExpiryDate?.ToString("yyyy-MM-dd")</td>
+                                <td scope="row">@item.TypeOfAsset</td>
+                                <td scope="row">@item.Minimum</td>
+                                <td scope="row">@item.ReorderLimit</td>
+                                <td scope="row">@item.WarehouseName</td>
+                                <td scope="row">@item.QuantityReceived</td>
+                                <td scope="row">@item.DateOfEntry</td>
+                                <td scope="row">@item.RoomName</td>
+                                <td scope="row">@item.ShelfName</td>
+                                <td scope="row">@item.SupplierName</td>
+                                <td scope="row">@item.DocumentType</td>
+                                <td scope="row">@item.ReceiptDocumentNumber</td>
 
-                            <td>
-                                <form method="post">
-                                    @* <input type="hidden" value="@Model.CurrentPage" name="page" />
-                                    <input type="hidden" value="@item.GroupCode" name="GroupCode" />
-                                    <input type="hidden" value="@Model.GroupName" name="GroupName" /> *@
-                                    <input type="submit" value="View" class="btn btn-secondary" asp-page-handler="View" />
-                                
-                                </form>
-                            </td>
-                        </tr>
-
-
-                        <tr>
-                            <td scope="row">Chemicals</td>
-                            <td scope="row">105</td>
-                            <td scope="row">Chlorine</td>
-                            <td scope="row">High purity Chlorine</td>
-                            <td scope="row">ml</td>
-                            <td scope="row">Chlorine</td>
-                            <td>Hazardous</td>
-                            <td>15-05-29</td>
-                            <td>Sustainable</td>
-                            <td>12</td>
-                            <td>5</td>
-                            <td scope="row">Supply Warehouse</td>
-                            <td>12</td>
-                            <td>07-05-25</td>
-                            <td>Material Room</td>
-                            <td>R2-S1</td>
-                            <td>Shah Abdul Wali</td>
-                            <td>Certification</td>
-                            <td>89456</td>
-
-
-                            <td>
-                                <form method="post">
-                                    @* <input type="hidden" value="@Model.CurrentPage" name="page" />
-                                    <input type="hidden" value="@item.GroupCode" name="GroupCode" />
-                                    <input type="hidden" value="@Model.GroupName" name="GroupName" /> *@
-                                    <input type="submit" value="View" class="btn btn-secondary" asp-page-handler="View" />
-                                
-                                </form>
-                            </td>
-                        </tr>
+                            </tr>
+                        }
+                       
 
                         <tr>
                             <td colspan="4">
-                                <div>@Model.lblTotalItem : 2</div>
+                                <div>@Model.lblTotalItem : @Model.TotalItems</div>
                             </td>
                         </tr>
                     </tbody>
