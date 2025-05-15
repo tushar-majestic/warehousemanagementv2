@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 
 namespace LabMaterials.DB;
-public class ItemCardView
+public class ItemCardViewModels
 {
     public int Id { get; set; }
     public string GroupCode { get; set; }
@@ -24,6 +24,9 @@ public class ItemCardView
 
     public string WarehouseName { get; set; }  
     public int QuantityReceived { get; set; }
+
+    public int QuantityAvailable { get; set; }
+
     public DateTime DateOfEntry { get; set; }
 
     public string RoomName { get; set; }

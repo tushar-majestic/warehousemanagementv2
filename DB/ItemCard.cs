@@ -40,6 +40,7 @@ public partial class ItemCard
     [StringLength(50)]
     public string? HazardTypeName { get; set; }
 
+    public int CreatedBy { get; set; }
 
     public int StoreId { get; set; }
 

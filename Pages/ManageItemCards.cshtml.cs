@@ -13,7 +13,7 @@ namespace LabMaterials.Pages
         public string    lblTotalItem, lblAddItemCard, lblItemGroups, lblSearch, lblItems, lblExportExcel, lblPrintTable;
 
         public List<string> SelectedColumns { get; set; } = new List<string>();
-        public List<ItemCard> ItemCardView {get; set;}
+        public List<ItemCardViewModels> ItemCardView {get; set;}
         public int? UserId;
         private readonly LabDBContext _context;
         public int TotalItems { get; set; }
@@ -71,16 +71,17 @@ namespace LabMaterials.Pages
             ItemCardView = await (from item in _context.ItemCards
                       join store in _context.Stores on item.StoreId equals store.StoreId into storeGroup
                       from store in storeGroup.DefaultIfEmpty()
-                      select new ItemCard
+                      select new ItemCardViewModels
                       {
                           GroupCode = item.GroupCode,
                           ItemCode = item.ItemCode,
                           ItemName = item.ItemName,
                           ItemDescription = item.ItemDescription,
-                          UnitOfmeasure = item.UnitOfmeasure,
+                          UnitOfMeasure = item.UnitOfmeasure,
                           Chemical = item.Chemical,
                           HazardTypeName = item.HazardTypeName,
-                          QuantityAvailable = item.QuantityAvailable
+                        //   QuantityAvailable = item.QuantityAvailable,
+                          WarehouseName = store.StoreName
                     }).ToListAsync();
 
             TotalItems = ItemCardView.Count();

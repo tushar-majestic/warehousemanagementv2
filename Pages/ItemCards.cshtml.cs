@@ -169,7 +169,7 @@ namespace LabMaterials.Pages
             {
                 // Try to find existing ItemCard based on ItemId 
                 var existingItemCard = await _context.ItemCards
-                    .FirstOrDefaultAsync(ic => ic.ItemId == extendedCard.ItemId);
+                    .FirstOrDefaultAsync(ic => ic.ItemId == extendedCard.ItemId  && ic.StoreId == StoreId);
 
                 int itemCardId;
 
@@ -199,7 +199,8 @@ namespace LabMaterials.Pages
                         HazardTypeName = extendedCard.HazardTypeName,
                         UnitOfmeasure = extendedCard.UnitOfmeasure,
                         // Chemical = extendedCard.Chemical,
-                        QuantityAvailable = extendedCard.QuantityReceived
+                        QuantityAvailable = extendedCard.QuantityReceived,
+                        CreatedBy = HttpContext.Session.GetInt32("UserId").Value
                     };
 
                     _context.ItemCards.Add(newItemCard);
