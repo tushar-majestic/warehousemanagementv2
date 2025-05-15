@@ -23,6 +23,8 @@ namespace LabMaterials.Pages
         public List<Destination> Destinations { get; set; }
         public List<Store> Stores { get; set; }
         public List<Item> Items { get; set; }
+
+        public List<ItemCard> ItemCards { get; set;}
         public List<Unit> Units { get; set; }
         public List<ItemGroup> ItemGroups { get; set; }
         public List<ItemInfoByStoreId> ItemInfoByStore { get; set; }
@@ -47,6 +49,8 @@ namespace LabMaterials.Pages
                 .Include(i => i.Unit)
                 .Where(i => i.Ended == null)
                 .ToList();
+
+            ItemCards = dbContext.ItemCards.ToList();
             Units = dbContext.Units.ToList();
             ItemGroups = dbContext.ItemGroups.Where(g => g.Units.Count() > 0).ToList();
 
