@@ -80,7 +80,7 @@ namespace LabMaterials.Pages
                           UnitOfMeasure = item.UnitOfmeasure,
                           Chemical = item.Chemical,
                           HazardTypeName = item.HazardTypeName,
-                        //   QuantityAvailable = item.QuantityAvailable,
+                          QuantityAvailable = item.QuantityAvailable,
                           WarehouseName = store.StoreName
                     }).ToListAsync();
 

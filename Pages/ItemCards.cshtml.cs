@@ -231,13 +231,13 @@ namespace LabMaterials.Pages
             }
             var dbContext = new LabDBContext();
 
-            // var message = dbContext.Messages.FirstOrDefault(m => m.Id == this.InboxId);
+            var message = dbContext.Messages.FirstOrDefault(m => m.Id == this.InboxId);
 
-            // if (message != null)
-            // {
-            //     message.Type = "Added"; 
-            // }
-            // dbContext.SaveChanges();
+            if (message != null)
+            {
+                message.Type = "Added"; 
+            }
+            dbContext.SaveChanges();
 
             return RedirectToPage("/ManageItemCards");
         }

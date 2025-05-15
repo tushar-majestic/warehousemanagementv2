@@ -14,22 +14,12 @@
                         <img src="images/inventory.png" alt="Home" width="16" height="16" class="me-2" />
                         @Model.lblItemCards
                     </li>
-    using Microsoft.CodeAnalysis.CSharp.Syntax;
                     
                 </ol>
             </nav>
             <h2 class="h4">@Model.lblItemCards</h2>
         </div>
-        <div class="btn-toolbar mb-2 mb-md-0">
-            <!--
-            <div class="btn-group ms-2 ms-lg-3">
-                <a href="ItemCards" class="btn btn-sm justify-content-center top-btn btn-gray-800 d-inline-flex align-items-center">
-
-                <img b-ie9pk9zf1q="" class="icon text-white icon-xs mx-2" src="images/plus.png">
-                    @Model.lblAddItemCard</a>
-            </div>
-            -->
-        </div>
+        
     </div>
     <div class="mb-4">
         <button id="exportExcel" class="btn btn-success">@Model.lblExportExcel</button>
@@ -184,7 +174,7 @@
     <div class="card border-0 shadow mb-4">
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-centered table-nowrap mb-0 rounded">
+                <table class="table table-centered table-nowrap mb-0 rounded" >
                     <thead class="thead-light">
                         <tr>
                             <th scope="col" class="border-0 rounded-start">Item Group</th>
@@ -198,7 +188,7 @@
                             <th scope="col" class="border-0 rounded-start">Type Of Asset</th> *@
                             @* <th scope="col" class="border-0 rounded-start">Minimum</th>
                             <th scope="col" class="border-0 rounded-start">Reorder Limit</th> *@
-                            @* <th scope="col" class="border-0 rounded-start">Quantity Available</th> *@
+                            <th scope="col" class="border-0 rounded-start">Quantity Available</th>
                             <th scope="col" class="border-0 rounded-start">Warehouse Name</th>
 
                             @* <th scope="col" class="border-0 rounded-start">Date Of Entry</th>
@@ -224,7 +214,7 @@
                                 @* <td scope="row">@item.TypeOfAsset</td>  *@
                                 @* <td scope="row">@item.Minimum</td>
                                 <td scope="row">@item.ReorderLimit</td>  *@
-                                @* <td scope="row">@item.QuantityAvailable</td> *@
+                                <td scope="row">@item.QuantityAvailable</td>
                                 <td scope="row">@item.WarehouseName</td>
                                 @* <td scope="row">@item.DateOfEntry</td>
                                 <td scope="row">@item.RoomName</td>
