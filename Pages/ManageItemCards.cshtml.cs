@@ -1,3 +1,4 @@
+using DocumentFormat.OpenXml.Spreadsheet;
 using LabMaterials.dtos;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -12,7 +13,7 @@ namespace LabMaterials.Pages
         public string    lblTotalItem, lblAddItemCard, lblItemGroups, lblSearch, lblItems, lblExportExcel, lblPrintTable;
 
         public List<string> SelectedColumns { get; set; } = new List<string>();
-        public List<ItemCardView> ItemCardView {get; set;}
+        public List<ItemCard> ItemCardView {get; set;}
         public int? UserId;
         private readonly LabDBContext _context;
         public int TotalItems { get; set; }
@@ -27,42 +28,62 @@ namespace LabMaterials.Pages
         {   base.ExtractSessionData();
             this.UserId =  HttpContext.Session.GetInt32("UserId");
             var dbContext = new LabDBContext();
+
+            // Old query with batch 
+            // ItemCardView = await (from item in _context.ItemCards
+            //           join batch in _context.ItemCardBatches on item.Id equals batch.ItemCardId
+            //           join room in _context.Rooms on batch.RoomId equals room.RoomId into roomGroup
+            //           from room in roomGroup.DefaultIfEmpty()
+            //           join shelf in _context.Shelves on batch.ShelfId equals shelf.ShelfId into shelfGroup
+            //           from shelf in shelfGroup.DefaultIfEmpty()
+            //           join supplier in _context.Suppliers on batch.SupplierId equals supplier.SupplierId into supplierGroup
+            //           from supplier in supplierGroup.DefaultIfEmpty()
+            //           join store in _context.Stores on item.StoreId equals store.StoreId into storeGroup
+            //           from store in storeGroup.DefaultIfEmpty()
+            //           select new ItemCardView
+            //           {
+            //               GroupCode = item.GroupCode,
+            //               ItemCode = item.ItemCode,
+            //               ItemName = item.ItemName,
+            //               ItemDescription = item.ItemDescription,
+            //               UnitOfMeasure = item.UnitOfmeasure,
+            //               Chemical = item.Chemical,
+            //               HazardTypeName = item.HazardTypeName,
+            //               ExpiryDate = batch.ExpiryDate,
+
+            //               TypeOfAsset = batch.TypeOfAsset,
+            //                 Minimum = batch.Minimum,
+            //                 ReorderLimit = batch.ReorderLimit,
+            //               WarehouseName = store.StoreName,
+
+            //               QuantityReceived = item.QuantityAvailable,
+            //               DateOfEntry = batch.DateOfEntry,
+
+            //               RoomName = room.RoomName,
+            //                ShelfName = shelf.ShelfId.ToString(),
+            //               SupplierName = supplier.SupplierName,
+            //               DocumentType = batch.DocumentType,
+            //               ReceiptDocumentNumber = batch.ReceiptDocumentnumber
+            //           }).ToListAsync();
+
+
+            // new 
             ItemCardView = await (from item in _context.ItemCards
-                      join batch in _context.ItemCardBatches on item.Id equals batch.ItemCardId
-                      join room in _context.Rooms on batch.RoomId equals room.RoomId into roomGroup
-                      from room in roomGroup.DefaultIfEmpty()
-                      join shelf in _context.Shelves on batch.ShelfId equals shelf.ShelfId into shelfGroup
-                      from shelf in shelfGroup.DefaultIfEmpty()
-                      join supplier in _context.Suppliers on batch.SupplierId equals supplier.SupplierId into supplierGroup
-                      from supplier in supplierGroup.DefaultIfEmpty()
                       join store in _context.Stores on item.StoreId equals store.StoreId into storeGroup
                       from store in storeGroup.DefaultIfEmpty()
-                      select new ItemCardView
+                      select new ItemCard
                       {
                           GroupCode = item.GroupCode,
                           ItemCode = item.ItemCode,
                           ItemName = item.ItemName,
                           ItemDescription = item.ItemDescription,
-                          UnitOfMeasure = item.UnitOfmeasure,
+                          UnitOfmeasure = item.UnitOfmeasure,
                           Chemical = item.Chemical,
                           HazardTypeName = item.HazardTypeName,
-                          ExpiryDate = item.ExpiryDate,
+                          QuantityAvailable = item.QuantityAvailable
+                    }).ToListAsync();
 
-                        //   TypeOfAsset = batch.TypeOfAsset,
-                          Minimum = batch.Minimum,
-                          ReorderLimit = batch.ReorderLimit,
-                          WarehouseName = store.StoreName,
-                          QuantityReceived = batch.QuantityReceived,
-                          DateOfEntry = batch.DateOfEntry,
-
-                          RoomName = room.RoomName,
-                           ShelfName = shelf.ShelfId.ToString(),
-                          SupplierName = supplier.SupplierName,
-                          DocumentType = batch.DocumentType,
-                          ReceiptDocumentNumber = batch.ReceiptDocumentnumber
-                      }).ToListAsync();
-
-                TotalItems = ItemCardView.Count();
+            TotalItems = ItemCardView.Count();
 
             FillLables();
         }

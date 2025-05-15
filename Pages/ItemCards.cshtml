@@ -74,7 +74,7 @@
                             </div>
                             <div class="form-group w-23">
                                 <label>Expiry Date</label>
-                                <input type="date" asp-for="@Model.ItemCardsFromReport[i].ExpiryDate" class="form-control" readonly />
+                                <input type="date" asp-for="@Model.ItemCardsFromReport[i].ExpiryDate" class="form-control"  />
                             </div>
                         </div>
 
@@ -83,29 +83,38 @@
                         
 
                             <div class="form-group w-23">
-                            <label asp-for="ItemCardBatch.TypeOfAsset"></label>
-                                <select asp-for="ItemCardBatch.TypeOfAsset" class="form-control"
-                                        asp-items="Html.GetEnumSelectList<LabMaterials.DB.ItemCardBatch.AssetType>()">
+                            <label asp-for="@Model.ItemCardsFromReport[i].TypeOfAsset"></label>
+                                <select asp-for="@Model.ItemCardsFromReport[i].TypeOfAsset" class="form-control">
                                     <option value="">Select asset type</option>
+                                    <option value="Sustainable">Sustainable</option>
+                                    <option value="Consumable">Consumable</option>
+
                                 </select>
                             </div>
-
                             <div class="form-group w-23">
-                                <label asp-for="ItemCardBatch.Minimum"></label>
-                                <input asp-for="ItemCardBatch.Minimum" class="form-control" type="number" />
-                                <span asp-validation-for="ItemCardBatch.Minimum" class="text-danger"></span>
+                                <label asp-for="@Model.ItemCardsFromReport[i].Minimum"></label>
+                                <input asp-for="@Model.ItemCardsFromReport[i].Minimum"
+                                    class="form-control minimum-input"
+                                    type="number"
+                                    data-index="@i" />
                             </div>
 
                             <div class="form-group w-23">
-                                <label asp-for="ItemCardBatch.ReorderLimit">Reorder Limit</label>
-                                <input asp-for="ItemCardBatch.ReorderLimit" class="form-control" type="number" />
-                                <span asp-validation-for="ItemCardBatch.ReorderLimit" class="text-danger"></span>
+                                <label asp-for="@Model.ItemCardsFromReport[i].ReorderLimit">Reorder Limit</label>
+                                <input asp-for="@Model.ItemCardsFromReport[i].ReorderLimit"
+                                    class="form-control reorder-limit-input"
+                                    type="number"
+                                    data-index="@i" />
                             </div>
+
                             <div class="form-group w-23">
-                                <label asp-for="ItemCardBatch.Ceiling">Ceiling</label>
-                                <input asp-for="ItemCardBatch.Ceiling" class="form-control" type="number" />
-                                <span asp-validation-for="ItemCardBatch.Ceiling" class="text-danger"></span>
+                                <label>Ceiling</label>
+                                <input class="form-control ceiling-output"
+                                    type="number"
+                                    readonly
+                                    id="ceiling-@i" />
                             </div>
+
                         </div>
                         <div class="d-flex gap-4">
                         
@@ -123,7 +132,7 @@
                     <div class="form-group" style="width: 48%;">
                         <label asp-for="ItemCard.StoreId" class="control-label">Warehouse Name</label>
                         @* <input type="text" asp-for="ItemCard.StoreId" class="form-control"/> *@
-                        <select asp-for="ItemCard.StoreId" name="StoreId" class="form-control" asp-items="ViewBag.WarehouseId"></select>
+                        <select asp-for="ItemCard.StoreId" name="StoreId" class="form-control" asp-items="ViewBag.WarehouseId" readonly></select>
                     </div>
 
                     <div class="form-group" style="width: 48%;">
@@ -157,13 +166,13 @@
                 <div class="d-flex justify-content-between">
                     <div class="form-group" style="width:48%;">
                         <label asp-for="ItemCardBatch.DocumentType"></label>
-                        <input asp-for="ItemCardBatch.DocumentType" name="DocumentType" id="DocumentType" class="form-control"/>
+                        <input asp-for="ItemCardBatch.DocumentType" name="DocumentType" id="DocumentType" class="form-control" readonly/>
                         
                     </div>  
 
                     <div class="form-group" style="width:48%;">
                         <label asp-for="ItemCardBatch.ReceiptDocumentnumber"></label>
-                        <input asp-for="ItemCardBatch.ReceiptDocumentnumber" name="ReceiptDocumentnumber" id="ReceiptDocumentnumber" class="form-control" />
+                        <input asp-for="ItemCardBatch.ReceiptDocumentnumber" name="ReceiptDocumentnumber" id="ReceiptDocumentnumber" class="form-control" readonly />
                     </div>
 
                 </div>
@@ -285,5 +294,33 @@
             }
         }
     </script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const minInputs = document.querySelectorAll('.minimum-input');
+        const reorderInputs = document.querySelectorAll('.reorder-limit-input');
+
+        function calculateCeiling(index) {
+            const minVal = parseFloat(document.querySelector(`.minimum-input[data-index='${index}']`).value) || 0;
+            const reorderVal = parseFloat(document.querySelector(`.reorder-limit-input[data-index='${index}']`).value) || 0;
+            const ceilingInput = document.getElementById(`ceiling-${index}`);
+            ceilingInput.value = minVal * reorderVal;
+        }
+
+        minInputs.forEach(input => {
+            input.addEventListener('input', () => {
+                const index = input.getAttribute('data-index');
+                calculateCeiling(index);
+            });
+        });
+
+        reorderInputs.forEach(input => {
+            input.addEventListener('input', () => {
+                const index = input.getAttribute('data-index');
+                calculateCeiling(index);
+            });
+        });
+    });
+</script>
+
 
 }

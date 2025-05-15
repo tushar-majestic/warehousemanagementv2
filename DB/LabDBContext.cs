@@ -32,6 +32,7 @@ public partial class LabDBContext : DbContext
     public virtual DbSet<ItemGroup> ItemGroups { get; set; }
     public virtual DbSet<ItemCardView> ItemCardViewModels { get; set; }
 
+    public DbSet<ItemCardExtended> ItemCardExtended { get; set; }
 
     public virtual DbSet<ItemGroup> ItemGroup { get; set; }
 
