@@ -23,18 +23,20 @@ public partial class ItemCardBatch
 
 
     public int QuantityReceived { get; set; }
-    public enum AssetType
-    {
-        Sustainable,
-        Consumable
-    }
-    public AssetType TypeOfAsset { get; set; }
+    public DateTime? ExpiryDate { get; set; }
+
+    // public enum AssetType
+    // {
+    //     Sustainable,
+    //     Consumable
+    // }
+    public string TypeOfAsset { get; set; } = null!;
     public int Minimum { get; set; }
 
     public int ReorderLimit { get; set; }
 
     public int RoomId { get; set; }
-    public int Ceiling => Minimum + ReorderLimit;
+    public int Ceiling  { get; set; }
     public int ShelfId { get; set; }
 
     public int SupplierId { get; set; }

@@ -36,8 +36,9 @@ namespace LabMaterials.Pages
             // Add more fields as needed
         }
         public List<ItemDto> AllItemsDto { get; set; }
-         [BindProperty]
-        public List<ItemCard> ItemCardsFromReport { get; set; } = new();
+       [BindProperty]
+        public List<LabMaterials.DB.ItemCardExtended> ItemCardsFromReport { get; set; }
+
 
         // public List<string> ItemCardsFromReport { get; set; } 
 
@@ -61,20 +62,23 @@ namespace LabMaterials.Pages
                 .Where(ri => ri.ReceivingReportId == ReportId.Value)
                 .ToListAsync();
 
-                ItemCardsFromReport = receivingItems.Select(ri => new ItemCard
-                {
-                    ItemCode = ri.Item.ItemCode,
-                    ItemName = ri.Item.ItemName,
-                    GroupCode = ri.Item.GroupCode,
-                    ItemTypeCode = ri.Item.ItemTypeCode,
-                    ItemDescription = ri.Item.ItemDescription,
-                    ItemId = ri.ItemId,
-                    // UnitOfmeasure = ri.Item.UnitId,
-                    HazardTypeName = ri.Item.HazardTypeName,
-                    ExpiryDate = ri.Item.ExpiryDate,
-                    QuantityReceived = ri.Quantity,
-                    // Chemical = ri.Item.Chemical
-                }).ToList();
+                ItemCardsFromReport = (from ri in receivingItems
+                       join unit in _context.Units on ri.Item.UnitId equals unit.Id
+                       select new LabMaterials.DB.ItemCardExtended
+                       {
+                           ItemCode = ri.Item.ItemCode,
+                           ItemName = ri.Item.ItemName,
+                           GroupCode = ri.Item.GroupCode,
+                           ItemTypeCode = ri.Item.ItemTypeCode,
+                           ItemDescription = ri.Item.ItemDescription,
+                           ItemId = ri.ItemId,
+                           HazardTypeName = ri.Item.HazardTypeName,
+                           ExpiryDate = ri.Item.ExpiryDate,
+                           QuantityReceived = ri.Quantity,
+                           UnitOfmeasure = unit.UnitCode
+                           //Chemical = ri.Item.Chemical
+                       }).ToList();
+
 
                 var ReceivingReport = _context.ReceivingReports
                 .Where(ri => ri.Id == ReportId.Value).FirstOrDefault();
@@ -118,52 +122,107 @@ namespace LabMaterials.Pages
         {   
             var reportId = HttpContext.Session.GetInt32("ReportId");
             this.InboxId = HttpContext.Session.GetInt32("InboxId");
-            if (reportId.HasValue)
-            {
-                var receivingItems = await _context.ReceivingItems
-                    .Include(ri => ri.Item)
-                    .Where(ri => ri.ReceivingReportId == reportId.Value)
-                    .ToListAsync();
 
-                ItemCardsFromReport = receivingItems.Select(ri => new ItemCard
+            // foreach (var extendedCard  in ItemCardsFromReport)
+            // {
+            //     var itemCard = new ItemCard
+            //     {
+            //         ItemId = extendedCard.ItemId,
+            //         ItemCode = extendedCard.ItemCode,
+            //         ItemName = extendedCard.ItemName,
+            //         GroupCode = extendedCard.GroupCode,
+            //         ItemTypeCode = extendedCard.ItemTypeCode,
+            //         ItemDescription = extendedCard.ItemDescription,
+            //         StoreId = StoreId,
+            //         HazardTypeName = extendedCard.HazardTypeName,
+            //         QuantityAvailable = extendedCard.QuantityReceived
+
+
+            //     };
+
+            //         _context.ItemCards.Add(itemCard);
+            //         await _context.SaveChangesAsync();
+
+            //     // Now add the corresponding ItemCardBatch
+            //     var itemCardBatch = new ItemCardBatch
+            //     {
+            //         ItemCardId = itemCard.Id,
+            //         DocumentType = DocumentType,
+            //         ReceiptDocumentnumber = ReceiptDocumentnumber,
+            //         RoomId = RoomId,
+            //         ShelfId = ShelfId,
+            //         QuantityReceived = extendedCard.QuantityReceived,
+            //         SupplierId = SupplierId,
+            //         Minimum = extendedCard.Minimum,
+            //         ReorderLimit = extendedCard.ReorderLimit,
+            //         ExpiryDate = extendedCard.ExpiryDate,
+            //         TypeOfAsset = extendedCard.TypeOfAsset,
+            //         Ceiling = extendedCard.Minimum * extendedCard.ReorderLimit,
+            //         DateOfEntry = DateOfEntry   ,
+
+            //     };
+
+            //     _context.ItemCardBatches.Add(itemCardBatch);
+            //     await _context.SaveChangesAsync();
+            // }
+            foreach (var extendedCard in ItemCardsFromReport)
+            {
+                // Try to find existing ItemCard based on ItemId 
+                var existingItemCard = await _context.ItemCards
+                    .FirstOrDefaultAsync(ic => ic.ItemId == extendedCard.ItemId);
+
+                int itemCardId;
+
+                if (existingItemCard != null)
                 {
-                    ItemCode = ri.Item.ItemCode,
-                    ItemName = ri.Item.ItemName,
-                    GroupCode = ri.Item.GroupCode,
-                    ItemTypeCode = ri.Item.ItemTypeCode,
-                    ItemDescription = ri.Item.ItemDescription,
-                    ItemId = ri.ItemId,
-                    HazardTypeName = ri.Item.HazardTypeName,
-                    ExpiryDate = ri.Item.ExpiryDate,
-                    QuantityReceived = ri.Quantity,
-                }).ToList();
-            }
-
-
-            foreach (var itemCard in ItemCardsFromReport)
-            {
-               
-                    itemCard.StoreId = StoreId;
-
-
-                     _context.ItemCards.Add(itemCard);
+                    Console.WriteLine("Item already exists");
+                    // Item already exists : update QuantityAvailable
+                    existingItemCard.QuantityAvailable += extendedCard.QuantityReceived;
+                    _context.ItemCards.Update(existingItemCard);
                     await _context.SaveChangesAsync();
+                    itemCardId = existingItemCard.Id; 
+                }
+                else
+                {
+                    Console.WriteLine("Item does not exists");
 
+                    // New item create ItemCard
+                    var newItemCard = new ItemCard
+                    {
+                        ItemId = extendedCard.ItemId,
+                        ItemCode = extendedCard.ItemCode,
+                        ItemName = extendedCard.ItemName,
+                        GroupCode = extendedCard.GroupCode,
+                        ItemTypeCode = extendedCard.ItemTypeCode,
+                        ItemDescription = extendedCard.ItemDescription,
+                        StoreId = StoreId,
+                        HazardTypeName = extendedCard.HazardTypeName,
+                        UnitOfmeasure = extendedCard.UnitOfmeasure,
+                        // Chemical = extendedCard.Chemical,
+                        QuantityAvailable = extendedCard.QuantityReceived
+                    };
 
-                // Now add the corresponding ItemCardBatch
+                    _context.ItemCards.Add(newItemCard);
+                    await _context.SaveChangesAsync();
+                    itemCardId = newItemCard.Id; // Needed for batch
+                }
+
+                // Insert ItemCardBatch regardless
                 var itemCardBatch = new ItemCardBatch
                 {
-                    ItemCardId = itemCard.Id,
+                    ItemCardId = itemCardId,
                     DocumentType = DocumentType,
                     ReceiptDocumentnumber = ReceiptDocumentnumber,
                     RoomId = RoomId,
                     ShelfId = ShelfId,
-                    QuantityReceived = itemCard.QuantityReceived,
+                    QuantityReceived = extendedCard.QuantityReceived,
                     SupplierId = SupplierId,
-                    // Minimum = 0,
-                    // ReorderLimit =0,
-                     DateOfEntry = DateOfEntry   ,
-
+                    Minimum = extendedCard.Minimum,
+                    ReorderLimit = extendedCard.ReorderLimit,
+                    ExpiryDate = extendedCard.ExpiryDate,
+                    TypeOfAsset = extendedCard.TypeOfAsset,
+                    Ceiling = extendedCard.Minimum * extendedCard.ReorderLimit,
+                    DateOfEntry = DateOfEntry
                 };
 
                 _context.ItemCardBatches.Add(itemCardBatch);

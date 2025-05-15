@@ -40,12 +40,10 @@ public partial class ItemCard
     [StringLength(50)]
     public string? HazardTypeName { get; set; }
 
-    [Column(TypeName = "datetime")]
-    public DateTime? ExpiryDate { get; set; }
 
     public int StoreId { get; set; }
 
-    public int QuantityReceived { get; set; }
+    public int QuantityAvailable { get; set; }
 
     // public string DocumentType { get; set; } = null!;
 
