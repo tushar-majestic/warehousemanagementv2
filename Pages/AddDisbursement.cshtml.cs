@@ -202,6 +202,13 @@ namespace LabMaterials.Pages
                         return Page();
                     }
 
+
+                    if (!ItemsForReport.Any(item => item.ItemCardId != 0 && item.Quantity > 0 && item.UnitPrice > 0))
+                    {
+                        ErrorMsg = "At least one item must have the required fields filled (Item Group, Quantity, Unit Price, Item Name).";
+                        return Page();
+                    }
+
                     _context.MaterialRequests.Add(Report);
                     await _context.SaveChangesAsync();
 
