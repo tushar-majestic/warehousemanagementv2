@@ -63,6 +63,7 @@
             </text>
         }
 
+        
 
     </script>
     <script>
@@ -211,8 +212,8 @@
                             </div>
                             <div class="mb-4">
                                 <label for="OrderDate">@Model.lblOrderDate</label>
-                                <input asp-for="RequestRecievedAt" name="RequestRecievedAt" type="date" class="form-control" name="OrderDate"
-                                    value="@Model.RequestRecievedAt.ToString("yyyy-MM-dd")" />
+                                <input  name="OrderDate" value="@(Model.Report.OrderDate != DateTime.MinValue ? Model.Report.OrderDate.ToString("yyyy-MM-dd") : "")" type="date" class="form-control" 
+                                     />
                             </div>
                             <div class="mb-4">
                                 <label for="RequestingSector">@Model.lblRequestingSector</label>
@@ -222,7 +223,7 @@
                                     {   <option>Select Requesting Sector</option>
                                         foreach (var item in Model.Destinations)
                                         {
-                                            <option value="@item.DId" selected="@(item.DId == Model.DId)">@item.DestinationName</option>
+                                            <option value="@item.DId" >@item.DestinationName</option>
                                         }
                                     }
                                
@@ -238,15 +239,15 @@
                             </div>
                             <div class="mb-4">
                                 <label for="DocumentNumber">@Model.lblRequestDocumentNumber</label>
-                                <input type="text" name="DocumentNumber" value="" class="form-control" id="DocumentNumber" asp-for="Report.DocumentNumber">
+                                <input type="text"   class="form-control" asp-for="Report.DocumentNumber">
                             </div>
                             <div class="mb-4">
-                                <label for="sector">@Model.lblSector</label>
-                                <input type="text" class="form-control" id="sector" asp-for="Report.Sector" readonly>
+                                <label for="Sector">@Model.lblSector</label>
+                                <input type="text" class="form-control" id="Sector" name="Sector" asp-for="Report.Sector" >
                             </div>
                             <div class="mb-4">
-                                <label for="storeNumber">@Model.lblStoreName</label>
-                                <select class="form-select" id="StoreId" name="StoreId" asp-for="Report.WarehouseName">
+                                <label for="WarehouseName">@Model.lblStoreName</label>
+                                <select class="form-select" id="WarehouseName" asp-for="Report.WarehouseName">
                                     @if (Model.Stores != null)
                                     {
                                         foreach (var item in Model.Stores)
@@ -290,12 +291,12 @@
                                     <div class="d-flex">
                                         <div class="form-group  me-2 " style="width: 49%;">
                                             <label>@Model.lblItemName (@Model.lblArabicLanguage)</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
-                                            <select class="ArabicItemName form-select" id="ArabicItemName" name="ItemsForReport[0].ItemId" onchange="onItemChange(this, 'EnglishArabicName')">
+                                            <select class="ArabicItemName form-select" id="ArabicItemName" asp-for="@Model.ItemsForReport[0].ItemCardId"name="ItemsForReport[0].ItemCardId" onchange="onItemChange(this, 'EnglishArabicName')">
                                                 <option value="">Select Item </option>
                                                 @foreach (var item in Model.ItemCards)
                                                 {
                                                     
-                                                        <option value="@item.ItemId"
+                                                        <option value="@item.Id"
                                                             data-id="@item.ItemId"
                                                             data-group="@item.GroupCode"
                                                             data-code="@item.ItemCode"
@@ -316,7 +317,7 @@
                                                 <option value="">Select Item </option>
                                                 @foreach (var item in Model.ItemCards)
                                                 {
-                                                    <option value="@item.ItemId"
+                                                    <option value="@item.Id"
                                                         data-id="@item.ItemId"
                                                         data-group="@item.GroupCode"
                                                         data-code="@item.ItemCode"

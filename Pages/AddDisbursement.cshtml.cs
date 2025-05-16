@@ -57,6 +57,7 @@ namespace LabMaterials.Pages
             Stores = dbContext.Stores.ToList();
             ItemCards = dbContext.ItemCards.ToList();
             Units = dbContext.Units.ToList();
+            Report ??= new MaterialRequest();
             ItemGroups = dbContext.ItemGroups.Where(g => g.Units.Count() > 0).ToList();
             // **Important**: seed one blank DespensedItem so index [0] exists
             ItemsForReport = new List<DespensedItem> { new DespensedItem() };
@@ -128,7 +129,7 @@ namespace LabMaterials.Pages
             return new JsonResult(requesterName);
         }
 
-        public async Task<IActionResult> OnPostAsync([FromForm] DateTime RequestRecievedAt, [FromForm] int SerialNumber, [FromForm] string FiscalYear)
+        public async Task<IActionResult> OnPostAsync([FromForm] DateTime OrderDate, [FromForm] int SerialNumber, [FromForm] string FiscalYear, [FromForm] string RequestDocumentType, [FromForm] int RequestingSector, [FromForm] string Sector)
         {
             LogableTask task = LogableTask.NewTask("AddDisbursement");
             try
@@ -149,14 +150,57 @@ namespace LabMaterials.Pages
                 if (CanDisburseItems)
                 {
                     FillLables();
-                    if (!ItemsForReport.Any(item => item.Id != 0 && item.Quantity > 0 && item.UnitPrice > 0))
+                    Report.OrderDate = OrderDate;
+                    int userId = HttpContext.Session.GetInt32("UserId").Value;
+                    var user = dbContext.Users.FirstOrDefault(u => u.UserId == userId);
+                    if (user == null)
                     {
-                        ErrorMsg = "At least one item must have the required fields filled (Item Group, Quantity, Unit Price, Item Name).";
+                        ErrorMsg = "User not found.";
                         return Page();
                     }
-                    Report.OrderDate = RequestRecievedAt;
                     Report.SerialNumber = SerialNumber;
+                    Report.OrderDate = OrderDate.Date;
+                    // Report.RequestedByUser = user;
+                     Report.RequestedByUserId = user.UserId;
                     Report.FiscalYear = FiscalYear;
+                    Report.RequestDocumentType = RequestDocumentType;
+                    Report.RequestingSector = RequestingSector;
+                    Report.Sector = Sector;
+                    // Report.DocumentNumber = DocumentNumber;
+
+                    if (string.IsNullOrEmpty(FiscalYear))
+                    {
+                        ErrorMsg = (Program.Translations["FiscalYearMissing"])[Lang];
+                        return Page();
+                    }
+                    else if (OrderDate == default(DateTime))
+                    {
+                        ErrorMsg = (Program.Translations["ReceivingDateMissing"])[Lang];
+                        return Page();
+                    }
+                    else if (Report.RequestingSector == 0)
+                    {
+                        ErrorMsg = (Program.Translations["RecipientSectorMissing"])[Lang];
+                        return Page();
+                    }
+                    if (string.IsNullOrEmpty(Report.DocumentNumber)){
+                        ErrorMsg = (Program.Translations["DocumentNumberMissing"])[Lang];
+                        return Page();
+                    }
+                    if (string.IsNullOrEmpty(Report.Sector)){
+                        ErrorMsg = (Program.Translations["SectorNumberMissing"])[Lang];
+                        return Page();
+                    }
+                    if (string.IsNullOrEmpty(Report.WarehouseName)){
+                        ErrorMsg = (Program.Translations["WarehouseNameMissing"])[Lang];
+                        return Page();
+                    }
+                    
+                    if (Report.RequestingSector == 0)
+                    {
+                        ErrorMsg = (Program.Translations["ReceivingWarehouseMissing"])[Lang];
+                        return Page();
+                    }
 
                     _context.MaterialRequests.Add(Report);
                     await _context.SaveChangesAsync();
@@ -165,6 +209,7 @@ namespace LabMaterials.Pages
                     {
 
                         item.MaterialRequestId = Report.RequestId; // Ensure the ReceivingReportId is set correctly
+                        item.ItemCardId = item.ItemCardId;
                         if (item.Comments == null)
                             item.Comments = "";
 
@@ -180,11 +225,17 @@ namespace LabMaterials.Pages
             catch (Exception ex)
             {
                 task.LogError(MethodBase.GetCurrentMethod(), ex);
-                ErrorMsg = ex.Message;
-                if (ItemsForReport == null || !ItemsForReport.Any())
+                ErrorMsg = ex.Message ;
+                //for seeing inner exception errors
+                if (ex.InnerException != null)
                 {
-                    ItemsForReport = new List<DespensedItem> { new DespensedItem() };
+                    ErrorMsg += " Inner Exception: " + ex.InnerException.Message;
                 }
+
+                // if (ItemsForReport == null || !ItemsForReport.Any())
+                // {
+                //     ItemsForReport = new List<DespensedItem> { new DespensedItem() };
+                // }
                 return Page();
             }
             finally { task.EndTask(); }
