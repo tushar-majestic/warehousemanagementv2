@@ -77,7 +77,10 @@
                                 @foreach (var Warehouse in Model.Warehouses)
                                 {   var ManagerName = Model.Users.FirstOrDefault(u => u.UserId == Warehouse.WarehouseManagerId)?.   FullName ?? "";
                                 var JobNumber = Model.Users.FirstOrDefault(u => u.UserId == Warehouse.WarehouseManagerId)?.   JobNumber ;
-                                    <option value="@Warehouse.StoreId" data-manager ="@ManagerName" data-jobnumber="@JobNumber" data-managerid="@Warehouse.WarehouseManagerId">@Warehouse.StoreName</option>
+                                    @if(Warehouse.IsActive == 1 && Warehouse.Ended == null)
+                                    {
+                                        <option value="@Warehouse.StoreId" data-manager ="@ManagerName" data-jobnumber="@JobNumber" data-managerid="@Warehouse.WarehouseManagerId">@Warehouse.StoreName</option>
+                                    } 
                                 }
 
                             </select>
@@ -149,7 +152,8 @@
                                         {
                                             foreach (var item in Model.ItemGroupList)
                                             {
-                                                <option value="@item.GroupCode" >@item.GroupDesc</option>
+                                               <option value="@item.GroupCode" >@item.GroupDesc</option>
+
                                             }
                                         }
 
@@ -599,6 +603,7 @@
         //filling related inputs
 
         document.addEventListener("DOMContentLoaded", function () {
+            console.log("script called");
             const itemNoInput = document.getElementById("ItemNo");
             const itemDropdown = document.getElementById("ItemName");
             const itemDescription = document.getElementById("ItemDescription");
@@ -606,7 +611,21 @@
             const quantityInput = document.getElementById("ItemQty");
             const unitPriceInput = document.getElementById("UnitPrice");
             const totalPriceInput = document.getElementById("TotalPrice");
-       
+
+            const selectedIndex = itemDropdown.selectedIndex;
+            if (selectedIndex > 0) {
+                const selectedOption = itemDropdown.options[selectedIndex];
+
+                const itemno = selectedOption.getAttribute("data-itemno");
+                const itemdesc = selectedOption.getAttribute("data-itemdesc");
+                const unitname = selectedOption.getAttribute("data-unitname");
+                const groupcode = selectedOption.getAttribute("data-groupcode");
+
+                itemNoInput.value = itemno || '';
+                itemDescription.value = itemdesc || '';
+                unitInput.value = unitname || '';
+                document.getElementById("ItemGroup").value = groupcode || '';
+            }
 
             function updateTotal() {
                 const quantity = parseFloat(quantityInput.value) || 0;

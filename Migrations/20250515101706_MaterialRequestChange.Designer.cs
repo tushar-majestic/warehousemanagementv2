@@ -4,6 +4,7 @@ using LabMaterials.DB;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LabMaterials.Migrations
 {
     [DbContext(typeof(LabDBContext))]
-    partial class LabDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250515101706_MaterialRequestChange")]
+    partial class MaterialRequestChange
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -153,45 +156,6 @@ namespace LabMaterials.Migrations
                     b.HasIndex("ItemId");
 
                     b.ToTable("DAMAGED_ITEMS");
-                });
-
-            modelBuilder.Entity("LabMaterials.DB.DespensedItem", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("AmountSpent")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Comments")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ItemCardId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("MaterialRequestId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("TotalPrice")
-                        .HasColumnType("decimal(18, 2)");
-
-                    b.Property<decimal>("UnitPrice")
-                        .HasColumnType("decimal(18, 2)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex(new[] { "ItemCardId" }, "IX_ItemCards_ItemCardId");
-
-                    b.HasIndex(new[] { "MaterialRequestId" }, "IX_MaterialRequests_MaterialRequestId");
-
-                    b.ToTable("DespensedItems");
                 });
 
             modelBuilder.Entity("LabMaterials.DB.Destination", b =>
@@ -1913,25 +1877,6 @@ namespace LabMaterials.Migrations
                         .HasConstraintName("FK__DAMAGED_I__ItemI__797309D9");
 
                     b.Navigation("Item");
-                });
-
-            modelBuilder.Entity("LabMaterials.DB.DespensedItem", b =>
-                {
-                    b.HasOne("LabMaterials.DB.ItemCard", "ItemCard")
-                        .WithMany()
-                        .HasForeignKey("ItemCardId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("LabMaterials.DB.MaterialRequest", "MaterialRequest")
-                        .WithMany()
-                        .HasForeignKey("MaterialRequestId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ItemCard");
-
-                    b.Navigation("MaterialRequest");
                 });
 
             modelBuilder.Entity("LabMaterials.DB.DisbursementRequest", b =>

@@ -90,7 +90,7 @@ namespace LabMaterials.Pages
         public IActionResult OnPostAction(string RequesterName, DateTime? FromDate, DateTime? ToDate, string action, List<string> columns)
         {
             base.ExtractSessionData();
-
+            FillLables();
             if (action == "search")
             {
                 CurrentPage = 1;

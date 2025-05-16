@@ -41,6 +41,8 @@ public partial class LabDBContext : DbContext
     public virtual DbSet<ItemType> ItemTypes { get; set; }
 
     public virtual DbSet<MaterialRequest> MaterialRequests { get; set; }
+    public virtual DbSet<DespensedItem> DespensedItems { get; set; }
+
 
     public virtual DbSet<Message> Messages { get; set; }
 
