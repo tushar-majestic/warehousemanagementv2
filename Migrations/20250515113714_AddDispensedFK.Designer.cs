@@ -4,6 +4,7 @@ using LabMaterials.DB;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LabMaterials.Migrations
 {
     [DbContext(typeof(LabDBContext))]
-    partial class LabDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250515113714_AddDispensedFK")]
+    partial class AddDispensedFK
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -323,9 +326,6 @@ namespace LabMaterials.Migrations
                         .IsUnicode(false)
                         .HasColumnType("varchar(255)");
 
-                    b.Property<bool>("Chemical")
-                        .HasColumnType("bit");
-
                     b.Property<DateTime?>("Created")
                         .HasColumnType("datetime");
 
@@ -369,24 +369,10 @@ namespace LabMaterials.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.Property<string>("ItemNameAr")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
                     b.Property<string>("ItemTypeCode")
                         .IsRequired()
                         .HasMaxLength(15)
                         .HasColumnType("nvarchar(15)");
-
-                    b.Property<string>("RiskRating")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("StateofMatter")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
 
                     b.Property<int?>("SupplyId")
                         .HasColumnType("int")
@@ -795,16 +781,16 @@ namespace LabMaterials.Migrations
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("datetime");
 
-                    b.Property<string>("RequestDocumentType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("RequestDocumentType")
+                        .HasColumnType("int");
 
                     b.Property<int>("RequestedByUserId")
                         .HasColumnType("int");
 
-                    b.Property<int>("RequestingSector")
+                    b.Property<string>("RequestingSector")
+                        .IsRequired()
                         .HasMaxLength(200)
-                        .HasColumnType("int");
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("Sector")
                         .IsRequired()

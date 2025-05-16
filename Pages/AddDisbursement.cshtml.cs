@@ -16,6 +16,13 @@ namespace LabMaterials.Pages
         public string ErrorMsg { get; set; }
         public string RequesterName, Status, Comments, RequestingPlace, StoreName, ItemName, ItemCode, ItemTypeCode;
         public int DId;
+        private readonly LabDBContext _context;
+        private readonly IWebHostEnvironment _environment;
+         public AddDisbursementModel(LabDBContext context, IWebHostEnvironment environment)
+        {
+            _context = context;
+            _environment = environment;
+        }
         public int StoreId, Quantity;
         public bool InventoryBalanced;
         public DateTime RequestRecievedAt;
@@ -23,9 +30,15 @@ namespace LabMaterials.Pages
         public List<Destination> Destinations { get; set; }
         public List<Store> Stores { get; set; }
         public List<Item> Items { get; set; }
+
+        public List<ItemCard> ItemCards { get; set;}
         public List<Unit> Units { get; set; }
         public List<ItemGroup> ItemGroups { get; set; }
         public List<ItemInfoByStoreId> ItemInfoByStore { get; set; }
+        [BindProperty]
+        public MaterialRequest Report { get; set; }
+        public List<DespensedItem> ItemsForReport { get; set; } = new List<DespensedItem>();
+
 
         public string lblAddDisbursement, lblRequesterName, lblRequestReceivedDate, lblQuantity, lblItemCode, lblItemTypeCode, lblItemName, lblStoreName, lblRequestingPlace, lblComments,
             lblDisbursementStatus, lblInventoryBalanced, lblAdd, lblCancel, lblDisbursements, lblItemGroups, lblArabicLanguage, lblEnglishLanguage, lblItemDescription,
@@ -33,6 +46,24 @@ namespace LabMaterials.Pages
             lblFiscalYear, lblOrderDate, lblRequestingSector, lblRequestDocumentType, lblRequestDocumentNumber, lblSector;
 
         public void OnGet()
+        {
+            base.ExtractSessionData();
+            if (CanManageStore == false)
+                RedirectToPage("./Index?lang=" + Lang);
+            FillLables();
+            RequestRecievedAt = DateTime.Now;
+            var dbContext = new LabDBContext();
+            Destinations = dbContext.Destinations.ToList();
+            Stores = dbContext.Stores.ToList();
+            ItemCards = dbContext.ItemCards.ToList();
+            Units = dbContext.Units.ToList();
+            Report ??= new MaterialRequest();
+            ItemGroups = dbContext.ItemGroups.Where(g => g.Units.Count() > 0).ToList();
+            // **Important**: seed one blank DespensedItem so index [0] exists
+            ItemsForReport = new List<DespensedItem> { new DespensedItem() };
+
+        }
+        public void OnGetOld()
         {
             base.ExtractSessionData();
             if (CanManageStore == false)
@@ -47,6 +78,8 @@ namespace LabMaterials.Pages
                 .Include(i => i.Unit)
                 .Where(i => i.Ended == null)
                 .ToList();
+
+            ItemCards = dbContext.ItemCards.ToList();
             Units = dbContext.Units.ToList();
             ItemGroups = dbContext.ItemGroups.Where(g => g.Units.Count() > 0).ToList();
 
@@ -74,6 +107,16 @@ namespace LabMaterials.Pages
 
         }
 
+        public async Task<IActionResult> OnGetGetNextSerialNumberAsync(string fiscalYear)
+        {
+            
+            int lastSerial = await _context.MaterialRequests
+                .Where(r => r.FiscalYear == fiscalYear)
+                .MaxAsync(r => (int?)r.SerialNumber) ?? 0;
+
+            return new JsonResult(new { serial = lastSerial + 1 });
+        }
+
         public IActionResult OnGetRequesterName(int DId)
         {
             var dbContext = new LabDBContext();
@@ -86,7 +129,126 @@ namespace LabMaterials.Pages
             return new JsonResult(requesterName);
         }
 
-        public IActionResult OnPost([FromForm] string RequesterName, [FromForm] string Status, [FromForm] string Comments,
+        public async Task<IActionResult> OnPostAsync([FromForm] DateTime OrderDate, [FromForm] int SerialNumber, [FromForm] string FiscalYear, [FromForm] string RequestDocumentType, [FromForm] int RequestingSector, [FromForm] string Sector)
+        {
+            LogableTask task = LogableTask.NewTask("AddDisbursement");
+            try
+            {
+                task.LogInfo(MethodBase.GetCurrentMethod(), "Called");
+                base.ExtractSessionData();
+                var dbContext = new LabDBContext();
+                Destinations = dbContext.Destinations.ToList();
+                Stores = dbContext.Stores.ToList();
+                ItemCards = dbContext.ItemCards.ToList();
+                Units = dbContext.Units.ToList();
+                ItemGroups = dbContext.ItemGroups.Where(g => g.Units.Count() > 0).ToList();
+                 if (ItemsForReport == null || !ItemsForReport.Any())
+                {
+                    ItemsForReport = new List<DespensedItem> { new DespensedItem() };
+                }
+
+                if (CanDisburseItems)
+                {
+                    FillLables();
+                    Report.OrderDate = OrderDate;
+                    int userId = HttpContext.Session.GetInt32("UserId").Value;
+                    var user = dbContext.Users.FirstOrDefault(u => u.UserId == userId);
+                    if (user == null)
+                    {
+                        ErrorMsg = "User not found.";
+                        return Page();
+                    }
+                    Report.SerialNumber = SerialNumber;
+                    Report.OrderDate = OrderDate.Date;
+                    // Report.RequestedByUser = user;
+                     Report.RequestedByUserId = user.UserId;
+                    Report.FiscalYear = FiscalYear;
+                    Report.RequestDocumentType = RequestDocumentType;
+                    Report.RequestingSector = RequestingSector;
+                    Report.Sector = Sector;
+                    // Report.DocumentNumber = DocumentNumber;
+
+                    if (string.IsNullOrEmpty(FiscalYear))
+                    {
+                        ErrorMsg = (Program.Translations["FiscalYearMissing"])[Lang];
+                        return Page();
+                    }
+                    else if (OrderDate == default(DateTime))
+                    {
+                        ErrorMsg = (Program.Translations["ReceivingDateMissing"])[Lang];
+                        return Page();
+                    }
+                    else if (Report.RequestingSector == 0)
+                    {
+                        ErrorMsg = (Program.Translations["RecipientSectorMissing"])[Lang];
+                        return Page();
+                    }
+                    if (string.IsNullOrEmpty(Report.DocumentNumber)){
+                        ErrorMsg = (Program.Translations["DocumentNumberMissing"])[Lang];
+                        return Page();
+                    }
+                    if (string.IsNullOrEmpty(Report.Sector)){
+                        ErrorMsg = (Program.Translations["SectorNumberMissing"])[Lang];
+                        return Page();
+                    }
+                    if (string.IsNullOrEmpty(Report.WarehouseName)){
+                        ErrorMsg = (Program.Translations["WarehouseNameMissing"])[Lang];
+                        return Page();
+                    }
+                    
+                    if (Report.RequestingSector == 0)
+                    {
+                        ErrorMsg = (Program.Translations["ReceivingWarehouseMissing"])[Lang];
+                        return Page();
+                    }
+
+
+                    if (!ItemsForReport.Any(item => item.ItemCardId != 0 && item.Quantity > 0 && item.UnitPrice > 0))
+                    {
+                        ErrorMsg = "At least one item must have the required fields filled (Item Group, Quantity, Unit Price, Item Name).";
+                        return Page();
+                    }
+
+                    _context.MaterialRequests.Add(Report);
+                    await _context.SaveChangesAsync();
+
+                    foreach (var item in ItemsForReport)
+                    {
+
+                        item.MaterialRequestId = Report.RequestId; // Ensure the ReceivingReportId is set correctly
+                        item.ItemCardId = item.ItemCardId;
+                        if (item.Comments == null)
+                            item.Comments = "";
+
+
+                        _context.DespensedItems.Add(item); // Add the item to the context
+                    }
+                    await _context.SaveChangesAsync();
+                }
+                return RedirectToPage("/Disbursements");
+
+
+            }
+            catch (Exception ex)
+            {
+                task.LogError(MethodBase.GetCurrentMethod(), ex);
+                ErrorMsg = ex.Message ;
+                //for seeing inner exception errors
+                if (ex.InnerException != null)
+                {
+                    ErrorMsg += " Inner Exception: " + ex.InnerException.Message;
+                }
+
+                // if (ItemsForReport == null || !ItemsForReport.Any())
+                // {
+                //     ItemsForReport = new List<DespensedItem> { new DespensedItem() };
+                // }
+                return Page();
+            }
+            finally { task.EndTask(); }
+
+        }
+        public IActionResult OnPostold([FromForm] string RequesterName, [FromForm] string Status, [FromForm] string Comments,
             [FromForm] int DId, [FromForm] bool InventoryBalanced, [FromForm] DateTime RequestRecievedAt, [FromForm] int StoreId,
             [FromForm] int ItemId, [FromForm] int Quantity)
         {
@@ -102,7 +264,7 @@ namespace LabMaterials.Pages
                     this.RequesterName = RequesterName;
                     this.Status = Status;
                     this.Comments = Comments;
-                    
+
                     StatusList = (new[] { "NewRequest", "InPreparation", "Dispatched", "Delivered" }).ToList().Select(x => new SelectListItem() { Text = x, Value = x }).ToList();
 
                     var dbContext = new LabDBContext();
@@ -169,9 +331,9 @@ namespace LabMaterials.Pages
 
                         var st = dbContext.Database
                             .ExecuteSqlRaw("EXEC PRC_ADD_DISBURSEMENT @PITEM_ID, @PSTORE_ID,@PQUANTITY, @PDIS_DATE, @PDIS_STATUS, @PDIS_COMMENT, @PINV_BALANCE, @PREQ_NAME, @PREQ_PLACE, @PITEM_CODE, @PITEM_TYPE_CODE, @PCODE OUTPUT, @PDESC OUTPUT, @PMSG OUTPUT",
-                                        itemIdParam,storeIdParam, quantityParam, disbDate, disbStatus, disbComment, disbInvBalance, disbReqName, disbReqPlace, disbItemCode, disbItemTypeCode, codeParam, descParam, msgParam);
-                        
-                        
+                                        itemIdParam, storeIdParam, quantityParam, disbDate, disbStatus, disbComment, disbInvBalance, disbReqName, disbReqPlace, disbItemCode, disbItemTypeCode, codeParam, descParam, msgParam);
+
+
                         task.LogInfo(MethodBase.GetCurrentMethod(), "Disbursement added");
 
                         string Message = string.Format("Disbursement  added");

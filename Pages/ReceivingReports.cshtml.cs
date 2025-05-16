@@ -55,7 +55,7 @@ namespace LabMaterials.Pages
             FillLables();
             var dbContext = new LabDBContext();
             Suppliers = _context.Suppliers.ToList();  // Fetch suppliers
-            Warehouses = _context.Stores.ToList();  // Fetch suppliers
+            Warehouses = _context.Stores.ToList();  // Fetch Warehouses
             // Reports = await _context.ReceivingReports.Include(r => r.Items).ToListAsync();
             Items = await _context.Items.ToListAsync();
             Report ??= new ReceivingReport();

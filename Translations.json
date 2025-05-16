@@ -1569,6 +1569,10 @@
     "JobNumberExist":{
       "en" : "Job Number Exists",
       "ar" : "Job Number Exists"
+    },
+    "WarehouseNameMissing":{
+      "en" : "Warehouse Name Missing",
+      "ar" : "Warehouse Name Missing"
     }
     
 
