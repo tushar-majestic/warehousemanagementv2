@@ -188,40 +188,39 @@ namespace LabMaterials.Pages
         }*/
 
         private void FillData(string ItemName, string Group, int page = 1, string? typeName = null, string? damageReason = null)
-
         {
             FillLables();
             var dbContext = new LabDBContext();
+
             var query = (from i in dbContext.Items
                          join g in dbContext.ItemGroups on i.GroupCode equals g.GroupCode
                          join t in dbContext.ItemTypes on i.ItemTypeCode equals t.ItemTypeCode
                          join u in dbContext.Units on i.UnitId equals u.Id
                          join d in dbContext.DamagedItems on i.ItemId equals d.ItemId
-
                          select new ItemInfo
                          {
                              AvailableQuantity = i.AvailableQuantity,
                              GroupCode = g.GroupCode,
                              GroupDesc = g.GroupDesc,
-                             HazardTypeName = i.HazardTypeName,
+                             HazardTypeName = i.HazardTypeName ?? "",
                              IsHazardous = i.IsHazardous,
                              ItemCode = i.ItemCode,
                              ItemId = i.ItemId,
                              ItemName = i.ItemName,
                              ItemTypeCode = t.ItemTypeCode,
-                             TypeName = t.TypeName,
-                             UnitCode = u.UnitCode,
-                             UnitDesc = u.UnitDesc,
-                             BatchNo = i.BatchNo,
+                             TypeName = t.TypeName ?? "",
+                             UnitCode = u.UnitCode ?? "",
+                             UnitDesc = u.UnitDesc ?? "",
+                             BatchNo = i.BatchNo ?? "",
                              ExpiryDate = i.ExpiryDate,
-                             DamagedQuantity = (int)d.DamagedQuantity,
-                             DamageReason = d.DamagedReason,
+                             DamagedQuantity = d.DamagedQuantity ?? 0,
+                             DamageReason = d.DamagedReason ?? "",
                          });
 
-            if (string.IsNullOrEmpty(ItemName) == false)
+            if (!string.IsNullOrEmpty(ItemName))
                 query = query.Where(i => i.ItemName.Contains(ItemName));
 
-            if (string.IsNullOrEmpty(Group) == false)
+            if (!string.IsNullOrEmpty(Group))
                 query = query.Where(i => i.GroupDesc.Contains(Group));
 
             if (!string.IsNullOrEmpty(typeName))
@@ -229,7 +228,6 @@ namespace LabMaterials.Pages
 
             if (!string.IsNullOrEmpty(damageReason))
                 query = query.Where(i => i.DamageReason == damageReason);
-
 
             TotalItems = query.Count();
             TotalPages = (int)Math.Ceiling((double)TotalItems / ItemsPerPage);
@@ -241,8 +239,8 @@ namespace LabMaterials.Pages
                                  join d in dbContext.DamagedItems on i.ItemId equals d.ItemId
                                  select new ItemInfo
                                  {
-                                     TypeName = t.TypeName,
-                                     DamageReason = d.DamagedReason
+                                     TypeName = t.TypeName ?? "",
+                                     DamageReason = d.DamagedReason ?? ""
                                  });
 
             UniqueTypeNames = allItemsQuery.Select(i => i.TypeName).Where(x => !string.IsNullOrEmpty(x)).Distinct().ToList();
@@ -251,8 +249,7 @@ namespace LabMaterials.Pages
             var list = query.ToList();
 
             Items = list.Skip((page - 1) * ItemsPerPage).Take(ItemsPerPage).ToList();
-            ItemsAll = query.ToList();
-
+            ItemsAll = list;
             CurrentPage = page;
         }
 
