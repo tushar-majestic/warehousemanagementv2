@@ -16,12 +16,38 @@ namespace LabMaterials.Pages
         public List<DamageInfo> DamagedItem { get; set; }
         public List<Store> Stores { get; set; }
         public DateTime CurrentDate;
+        public List<ItemGroup> ItemGroups { get; set; }
+        public List<ItemCard> ItemCards { get; set;}
+
+
 
         public string lblItemName, lblDamagedQuantity, lblDamageReason, lblAdd, lblCancel, lblDamageItem, lblItems, lblItemCode, lblQuantity, lblStoreName, lblDamagedItems,
         lblManageItemGroups, lblEnglishLanguage, lblArabicLanguage, lblItemDescription, lblTypeofContract, lblChemical, lblRiskRating, lblStateofMatter, lblExpiryDate,
         lblUnitOfMeasure, lblReturned, lblReturnNotes, lblAddMore, lblRemove, lblOrderNumber, lblOrderDate, lblRequestingSector, lblApplicantsSector, lblReasonForReturn,
         lblDamaged, lblInvalid, lblExpired, lblSurPlus;
-        public void OnGet(int id)
+
+        public void OnGet()
+        {
+            base.ExtractSessionData();
+            FillLables();
+            CurrentDate = DateTime.Now;
+            var dbContext = new LabDBContext();
+            Stores = dbContext.Stores.ToList();
+            if (CanManageItems == false)
+            {
+                RedirectToPage("./Index?lang=" + Lang);
+            }
+            else
+            {
+                ItemGroups = dbContext.ItemGroups.Where(g => g.Units.Count() > 0).ToList();
+                ItemCards = dbContext.ItemCards.ToList();
+
+
+            }
+
+
+        }
+        public void OnGetOld(int id)
         {
             base.ExtractSessionData();
             FillLables();
@@ -37,7 +63,7 @@ namespace LabMaterials.Pages
                 ItemId = id;
                 FillData(id);
             }
-            
+
         }
 
         public IActionResult OnPost([FromForm] int itemId,[FromForm] int DamagedQuantity, [FromForm] string DamageReason)

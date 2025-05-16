@@ -60,6 +60,7 @@
             });
 
             wrapper.appendChild(newEntry);
+            initializeEntry(newEntry);
             entryIndex++;
         });
 
@@ -74,6 +75,58 @@
                 }
             }
         });
+
+        
+    // --- Handle Select Change ---
+    function handleChange(e) {
+        const entry = e.target.closest(".return-entry");
+        const sourceSelect = e.target;
+        const selectedOption = sourceSelect.options[sourceSelect.selectedIndex];
+        if (!selectedOption) return;
+
+        const selectedId = selectedOption.dataset.id;
+        const targetSelect = entry.querySelector(
+            sourceSelect.classList.contains("ArabicItemName") ? ".EnglishArabicName" : ".ArabicItemName"
+        );
+
+        for (const option of targetSelect.options) {
+            if (option.dataset.id === selectedId) {
+                targetSelect.value = option.value;
+                break;
+            }
+        }
+
+        // Populate fields
+        entry.querySelector(".ItemCode").value = selectedOption.dataset.code || "";
+        entry.querySelector(".ItemDescription").value = selectedOption.dataset.description || "";
+        entry.querySelector(".typeofAsset").value = selectedOption.dataset.asset || "";
+        entry.querySelector(".chemical").value = selectedOption.dataset.chemical || "";
+        entry.querySelector(".RiskRating").value = selectedOption.dataset.risk || "";
+        entry.querySelector(".UnitofMeasure").value = selectedOption.dataset.unit || "";
+    }
+
+    // --- Auto Calculate Total ---
+    function calculateTotalPrice(entry) {
+        const qty = parseFloat(entry.querySelector(".Quantity")?.value) || 0;
+        const unit = parseFloat(entry.querySelector(".UnitPrice")?.value) || 0;
+        entry.querySelector(".TotalPrice").value = (qty * unit).toFixed(2);
+    }
+
+    // --- Setup for New Entry ---
+    function initializeEntry(entry) {
+        // Avoid duplicate listeners by cloning a fresh node (safe for modern browsers)
+        entry.querySelectorAll("select").forEach(select => {
+            select.removeEventListener("change", handleChange);
+            select.addEventListener("change", handleChange);
+        });
+
+        entry.querySelector(".Quantity").addEventListener("input", () => calculateTotalPrice(entry));
+        entry.querySelector(".UnitPrice").addEventListener("input", () => calculateTotalPrice(entry));
+    }
+
+    // --- Init All Existing Entries on Load ---
+    wrapper.querySelectorAll(".return-entry").forEach(initializeEntry);
+</script>
     </script>
 
 }
@@ -116,11 +169,16 @@
                             <div id="returnEntriesWrapper">
                                 <div class="return-entry border p-3 mb-3 rounded position-relative">
                                     <div class="my-4">
-                                        <label for="RequestingPlace">@Model.lblManageItemGroups</label>
-                                        <select class="form-select" name="itemGroup">
-                                            <option value="1">item group1</option>
-                                            <option value="2">item group2</option>
-                                            <option value="3">item group3</option>
+                                        <label for="itemGroup">Item groups</label>
+                                        <select class="form-select" name="itemGroup" id="itemGroup">
+                                           @if (Model.ItemGroups != null)
+                                                {
+                                                    <option value="">Select Item Group</option>
+                                                    foreach (var item in Model.ItemGroups)
+                                                    {
+                                                        <option value="@item.GroupCode">@item.GroupDesc</option>
+                                                    }
+                                                }
                                         </select>
                                     </div>
                                     <div class="mb-4">
@@ -132,20 +190,54 @@
                                         </select>
                                     </div>
                                     <div class="mb-4">
-                                        <label for="ItemId">@Model.lblItemName (@Model.lblArabicLanguage)</label>
-                                        <select class="form-select" id="ItemId" name="ItemId"></select>
+                                        <label>@Model.lblItemName (@Model.lblArabicLanguage)</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
+                                        <select class="ArabicItemName form-select" id="ArabicItemName">
+                                                <option value="">Select Item </option>
+                                                @foreach (var item in Model.ItemCards)
+                                                {
+                                                    
+                                                        <option value="@item.Id"
+                                                            data-id="@item.ItemId"
+                                                            data-group="@item.GroupCode"
+                                                            data-code="@item.ItemCode"
+                                                            data-description="@item.ItemDescription"
+                                                            data-chemical="@item.Chemical" data-risk="@item.HazardTypeName"
+                                                            data-unit="@item.UnitOfmeasure" 
+                                                            >
+                                                            @item.ItemName
+                                                        </option>
+                                                    
+                                                }
+                                        </select>
                                     </div>
+                                       
                                     <div class="mb-4">
-                                        <label for="ItemId">@Model.lblItemName (@Model.lblEnglishLanguage)</label>
-                                        <select class="form-select" id="ItemId" name="ItemId"></select>
+                                         <label for="EnglishArabicName">@Model.lblItemName (@Model.lblEnglishLanguage)</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
+                                            <select class="EnglishArabicName form-select" id="EnglishArabicName">
+                                                <option value="">Select Item </option>
+                                                @foreach (var item in Model.ItemCards)
+                                                {
+                                                    <option value="@item.Id"
+                                                        data-id="@item.ItemId"
+                                                        data-group="@item.GroupCode"
+                                                        data-code="@item.ItemCode"
+                                                        data-description="@item.ItemDescription"
+                                                        data-chemical="@item.Chemical" data-risk="@item.HazardTypeName"
+                                                        data-unit="@item.UnitOfmeasure" 
+                                                        >
+                                                        @item.ItemName
+                                                    </option>
+                                                    
+                                                }
+                                            </select>
                                     </div>
                                     <div class="mb-4">
                                         <label for="itemDescription">@Model.lblItemDescription</label>
-                                        <input type="text" class="form-control" id="ItemDescription" readonly>
+                                        <input type="text" class="ItemDescription form-control" id="ItemDescription" readonly>
                                     </div>
                                     <div class="mb-4">
                                         <label for="typeofAsset">@Model.lblTypeofContract</label>
-                                        <input type="text" class="form-control" id="typeofAsset" readonly>
+                                        <input type="text" class="typeofAsset form-control" id="typeofAsset" readonly>
                                     </div>
                                     <div class="mb-4">
                                         <label for="chemical">@Model.lblChemical</label>
