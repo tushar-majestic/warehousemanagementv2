@@ -262,12 +262,13 @@
 
                             </div>
                         <div class="col-lg-12 col-sm-12">
+                            
                             <div id="returnEntriesWrapper">
                                
                                 <div class="return-entry border p-3 mb-3 rounded position-relative">
                                     <div class="d-flex my-4">
                                         <div class=" me-2" style="width: 49%;">
-                                            <label for="RequestingPlace">@Model.lblItemGroups</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
+                                            <label for="itemGroup">@Model.lblItemGroups</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
                                             <select class="form-select" id="itemGroup" name="ItemsForReport[0].ItemGroup" onchange="filterItemsByGroup()">
                                                 @if (Model.ItemGroups != null)
                                                 {

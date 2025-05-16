@@ -37,6 +37,7 @@ namespace LabMaterials.Pages
         public List<ItemInfoByStoreId> ItemInfoByStore { get; set; }
         [BindProperty]
         public MaterialRequest Report { get; set; }
+        [BindProperty]
         public List<DespensedItem> ItemsForReport { get; set; } = new List<DespensedItem>();
 
 
@@ -203,28 +204,50 @@ namespace LabMaterials.Pages
                     }
 
 
-                    if (!ItemsForReport.Any(item => item.ItemCardId != 0 && item.Quantity > 0 && item.UnitPrice > 0))
-                    {
-                        ErrorMsg = "At least one item must have the required fields filled (Item Group, Quantity, Unit Price, Item Name).";
-                        return Page();
-                    }
+                    // if (!ItemsForReport.Any(item => item.ItemCardId != 0 && item.Quantity > 0 && item.UnitPrice > 0))
+                    // {
+                    //     ErrorMsg = "At least one item must have the required fields filled (Item Group, Quantity, Unit Price, Item Name).";
+                    //     return Page();
+                    // }
 
                     _context.MaterialRequests.Add(Report);
                     await _context.SaveChangesAsync();
 
+ 
                     foreach (var item in ItemsForReport)
                     {
 
-                        item.MaterialRequestId = Report.RequestId; // Ensure the ReceivingReportId is set correctly
+                        item.MaterialRequestId = Report.RequestId;
                         item.ItemCardId = item.ItemCardId;
                         if (item.Comments == null)
                             item.Comments = "";
 
 
                         _context.DespensedItems.Add(item); // Add the item to the context
+                        //reduce quantity when request is approved
+                        // var itemCard = await _context.ItemCards.FindAsync(item.ItemCardId);
+                        // if (itemCard == null)
+                        // {   //ItemCard not found
+                        //     return Page();
+                        // }
+                        // itemCard.QuantityAvailable -= item.Quantity;
                     }
                     await _context.SaveChangesAsync();
                 }
+
+                // string Message = string.Format("Sent Material Dispensing Request Approve the request or add comments.");
+                // var msg = new  Message
+                // {
+                //     ReportId = Report.RequestId,
+                //     ReportType = "Dispensing",
+                //     SenderId = Report.RequestedByUserId,
+                //     RecipientId = Report.TechnicalMemberId,
+                //     Content = Message,
+                //     Type = "",
+                //     CreatedAt = DateTime.UtcNow
+                // };
+                // dbContext.Messages.Add(msg);
+                // dbContext.SaveChanges();
                 return RedirectToPage("/Disbursements");
 
 
