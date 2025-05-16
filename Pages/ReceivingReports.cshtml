@@ -137,14 +137,14 @@
                         </div>
 
                        @* Add ItemsForReport  *@
-
+                       @for(int i =0; i < Model.ItemsForReport.Count; i++){
                         <div class="addItems border p-2">
                            
                             <h3>Items</h3>
                         
                                 <div class="form-group mb-4">
                                     <label>@Model.lblItemGroup</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
-                                    <select class="form-select" id="ItemGroup" name="ItemsForReport[0].ItemGroup" onchange="filterItemByGroup()" >
+                                    <select class="form-select" id="ItemGroup_@i" name="ItemsForReport[@i].ItemGroup" onchange="filterItemByGroup()" >
                                         @* <option value="Chemicals">Chemicals</option>
                                         <option value="Glass">Glass</option> *@
                                         <option value="">Select Item Group</option>
@@ -152,7 +152,7 @@
                                         {
                                             foreach (var item in Model.ItemGroupList)
                                             {
-                                               <option value="@item.GroupCode" >@item.GroupDesc</option>
+                                               <option value="@item.GroupCode">@item.GroupDesc</option>
 
                                             }
                                         }
@@ -164,12 +164,14 @@
                                 <div class="d-flex">
                                     <div class="form-group mb-4 me-2 ">
                                         <label>@Model.lblItemNo</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
-                                        <input type="text" id="ItemNo" name="ItemNo" class="form-control"  />
+                                        <input type="text" id="ItemNo_@i" name="ItemNo" class="form-control"  />
                                     </div>
                                     <div class="form-group mb-4 ms-2 flex-fill">
                                         <label>@Model.lblItemName</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
-                                        <select  class="form-control" id="ItemName" asp-for="@Model.ItemsForReport[0].ItemId" name="ItemsForReport[0].ItemId" >
-                                            <option value="">Select Item</option>
+                                        <select  class="form-control" id="ItemName_@i" name="ItemsForReport[@i].ItemId" >
+                                            <option value="" selected="@(Model.ItemsForReport[i].ItemId == null || Model.ItemsForReport[i].ItemId == 0 ? "selected" : null)">
+                                                Select Item
+                                            </option>
                                             @foreach (var item in Model.Items)
                                             {
                                                 var UnitCode = Model.Units.FirstOrDefault(u => u.Id == item.UnitId)?.UnitCode ?? "";
@@ -181,7 +183,8 @@
                                                         data-itemdesc="@item.ItemDescription"
                                                         data-unitid="@item.UnitId"
                                                         data-unitname="@UnitCode"
-                                                        data-groupcode="@ItemGroup">
+                                                        data-groupcode="@ItemGroup"
+                                                        selected="@(item.ItemId == Model.ItemsForReport[i].ItemId ? "selected" : null)">
                                                     @item.ItemName
                                                 </option>
                                             }
@@ -192,43 +195,44 @@
                                 <div class="form-group mb-4">
                                     <label>@Model.lblItemDescription</label>
 
-                                    <textarea id="ItemDescription" class="form-control" readonly></textarea >
+                                    <textarea id="ItemDescription_@i" class="form-control" readonly></textarea >
                                 </div>
 
                                 <div class="d-flex justify-content-between">
                                     <div class="form-group mb-4" style="width: 48%;">
                                         <label>@Model.lblUnitOfMeasure</label>
-                                        <input  type="text" id="UnitofMeasure" name="UnitofMeasure" class="form-control" readonly/>
+                                        <input  type="text" id="UnitofMeasure_@i"  name="UnitofMeasure" class="form-control" readonly/>
                                     </div>
 
                                     <div class="form-group mb-4"  style="width: 48%;">
                                         <label>@Model.lblQuantity</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
-                                        <input asp-for="ItemsForReport[0].Quantity"  type="number" id="ItemQty" name="ItemsForReport[0].Quantity" class="form-control"  />
+                                        <input asp-for="ItemsForReport[@i].Quantity"  type="number" id="ItemQty_@i" name="ItemsForReport[@i].Quantity" class="form-control"  />
                                     </div>
                                 </div>
                                 
                                 <div class="d-flex justify-content-between">
                                     <div class="form-group mb-4" style="width: 48%;">
                                         <label>@Model.lblUnitPrice</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
-                                        <input asp-for="ItemsForReport[0].UnitPrice" type="number"  id="UnitPrice"  name="ItemsForReport[0].UnitPrice" class="form-control"  />
+                                        <input asp-for="ItemsForReport[@i].UnitPrice" type="number"  id="UnitPrice_@i"  name="ItemsForReport[@i].UnitPrice" class="form-control"  />
                                     </div>
 
                                     <div class="form-group mb-4" style="width: 48%;">
                                         <label>@Model.lblTotalPrice</label>
-                                        <input type="number"  id="TotalPrice"  name="TotalPrice" class="form-control" readonly/>
+                                        <input type="number"  id="TotalPrice_@i"  name="TotalPrice" class="form-control" readonly/>
                                     </div>
                                 </div>
 
                                 
                                 <div class="form-group mb-4">
                                     <label>@Model.lblComments</label>
-                                    <textarea asp-for="ItemsForReport[0].Comments" class="form-control" name="ItemsForReport[0].Comments"></textarea>
+                                    <textarea asp-for="ItemsForReport[@i].Comments" class="form-control" name="ItemsForReport[@i].Comments"></textarea>
                                 </div>
 
                                 <div id="itemsContainer" class="mt-3"></div>
 
-                            <button type="button" id="addButton" class="btn btn-secondary" onclick="addItem()" disabled>Add More</button>
+                            <button type="button" id="addButton" class="btn btn-secondary" onclick="addItem()">Add More</button>
                         </div>
+                         }
                        @* Add ItemsForReport ended  *@
 
 
@@ -462,7 +466,7 @@
             }
         });
         // Event listeners for required fields
-        document.addEventListener('DOMContentLoaded', function () {
+   /*      document.addEventListener('DOMContentLoaded', function () {
             const requiredSelectors = ['#ItemGroup', '#ItemNo', '#ItemName', '#ItemQty', '#UnitPrice', '#TotalPrice'];
             requiredSelectors.forEach(selector => {
                 const element = document.querySelector(selector);
@@ -472,7 +476,7 @@
                 }
             });
             checkRequiredFields(); // Initial check
-        });
+        }); */
         //Items filtering based on groupcode
         const allItems = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.Items));
         function filterItemByGroup() {
@@ -604,13 +608,16 @@
 
         document.addEventListener("DOMContentLoaded", function () {
             console.log("script called");
-            const itemNoInput = document.getElementById("ItemNo");
-            const itemDropdown = document.getElementById("ItemName");
-            const itemDescription = document.getElementById("ItemDescription");
-            const unitInput = document.getElementById("UnitofMeasure");
-            const quantityInput = document.getElementById("ItemQty");
-            const unitPriceInput = document.getElementById("UnitPrice");
-            const totalPriceInput = document.getElementById("TotalPrice");
+            const itemCount = @Model.ItemsForReport.Count;
+        for (let i = 0; i < itemCount; i++) {
+            const itemNoInput = document.getElementById("ItemNo_" + i);
+            const itemDropdown = document.getElementById("ItemName_" + i);
+            const itemDescription = document.getElementById("ItemDescription_" + i);
+            const unitInput = document.getElementById("UnitofMeasure_" + i);
+            const quantityInput = document.getElementById("ItemQty_" + i);
+            const unitPriceInput = document.getElementById("UnitPrice_" + i);
+            const totalPriceInput = document.getElementById("TotalPrice_" + i);
+        if (itemDropdown) {
 
             const selectedIndex = itemDropdown.selectedIndex;
             if (selectedIndex > 0) {
@@ -620,22 +627,24 @@
                 const itemdesc = selectedOption.getAttribute("data-itemdesc");
                 const unitname = selectedOption.getAttribute("data-unitname");
                 const groupcode = selectedOption.getAttribute("data-groupcode");
-
                 itemNoInput.value = itemno || '';
                 itemDescription.value = itemdesc || '';
                 unitInput.value = unitname || '';
-                document.getElementById("ItemGroup").value = groupcode || '';
+                document.getElementById("ItemGroup_" + i).value = groupcode || '';
             }
 
             function updateTotal() {
                 const quantity = parseFloat(quantityInput.value) || 0;
                 const unitPrice = parseFloat(unitPriceInput.value) || 0;
                 const total = quantity * unitPrice;
+                console.log( 'updateTotal')
                 totalPriceInput.value = total.toFixed(2);
             }
 
             unitPriceInput.addEventListener("input", updateTotal);
             quantityInput.addEventListener("input", updateTotal);
+        }
+        
 
 
       
@@ -656,20 +665,22 @@
 
       
 
-            document.getElementById("ItemName").addEventListener("change", function () {
+            document.getElementById("ItemName_" + i).addEventListener("change", function () {
+                console.log("ItemName")
                 const selectedOption = this.options[this.selectedIndex];
                 const itemno = selectedOption.getAttribute("data-itemno");
                 const itemdesc = selectedOption.getAttribute("data-itemdesc");
                 const unitname = selectedOption.getAttribute("data-unitname");
                 const groupcode = selectedOption.getAttribute("data-groupcode")
 
-                document.getElementById("ItemNo").value = itemno || '';
-                document.getElementById("ItemDescription").value = itemdesc || '';
-                document.getElementById("UnitofMeasure").value = unitname || '';
-                document.getElementById("ItemGroup").value = groupcode || "";
+                document.getElementById("ItemNo_" + i).value = itemno || '';
+                document.getElementById("ItemDescription_" + i).value = itemdesc || '';
+                document.getElementById("UnitofMeasure_" + i).value = unitname || '';
+                document.getElementById("ItemGroup_" + i).value = groupcode || "";
 
 
             });
+        }
 
         
             document.getElementById("ReceivingWarehouse").addEventListener("change", function () {
