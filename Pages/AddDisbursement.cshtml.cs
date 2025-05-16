@@ -39,6 +39,10 @@ namespace LabMaterials.Pages
         public MaterialRequest Report { get; set; }
         [BindProperty]
         public List<DespensedItem> ItemsForReport { get; set; } = new List<DespensedItem>();
+        public List<User> DeptManagerList {  get; set; }
+
+        public int?  GeneralSupervisorId, DeptManagerId ;
+
 
 
         public string lblAddDisbursement, lblRequesterName, lblRequestReceivedDate, lblQuantity, lblItemCode, lblItemTypeCode, lblItemName, lblStoreName, lblRequestingPlace, lblComments,
@@ -62,6 +66,16 @@ namespace LabMaterials.Pages
             ItemGroups = dbContext.ItemGroups.Where(g => g.Units.Count() > 0).ToList();
             // **Important**: seed one blank DespensedItem so index [0] exists
             ItemsForReport = new List<DespensedItem> { new DespensedItem() };
+
+            //Department Manager list
+            var DeptManagerId = dbContext.UserGroups
+                    .Where(g => g.UserGroupName == "Department Manager")
+                    .Select(g => g.UserGroupId)
+                    .FirstOrDefault();
+
+            DeptManagerList = dbContext.Users
+                        .Where(u => u.UserGroupId == DeptManagerId)
+                        .ToList();
 
         }
         public void OnGetOld()
