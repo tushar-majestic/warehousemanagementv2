@@ -19,10 +19,11 @@ public partial class MaterialRequest
     public DateTime OrderDate { get; set; }
     public string FiscalYear { get; set; } = null;
 
-    [StringLength(200)]
-    public string RequestingSector { get; set; } = null;
+    public int RequestingSector { get; set; } 
+    public int RequestedByUserId { get; set; }
 
-    public int RequestDocumentType { get; set; }
+
+    public string RequestDocumentType { get; set; } = null;
     public string DocumentNumber { get; set; } = null;
     public string Sector { get; set; } = null!;
     public string WarehouseName { get; set; } = null;

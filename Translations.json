@@ -1571,6 +1571,10 @@
       "ar" : "Job Number Exists"
 
 
+    },
+    "WarehouseNameMissing":{
+      "en" : "Warehouse Name Missing",
+      "ar" : "Warehouse Name Missing"
     }
     
 
