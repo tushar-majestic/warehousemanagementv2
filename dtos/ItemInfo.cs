@@ -21,5 +21,11 @@
         public string DamageReason { get; set; }
         public int Count { get; set; }
         public string? Ended { get; set; }
+        public string ItemNameAr { get; internal set; }
+        public bool Chemical { get; internal set; }
+        public string RiskRating { get; internal set; }
+        public string StateofMatter { get; internal set; }
+        public int UnitId { get; internal set; }
+        public string ItemDescription { get; internal set; }
     }
 }

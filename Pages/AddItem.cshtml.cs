@@ -13,17 +13,18 @@ namespace LabMaterials.Pages
     public class AddItemModel : BasePageModel
     {
         public string ErrorMsg { get; set; }
-        public string ItemCode, ItemName, GroupCode, ItemTypeCode, HazardTypeName, ItemDescription, BatchNo;
+        public string ItemCode, ItemName, ItemNameAr, GroupCode, ItemTypeCode, HazardTypeName, ItemDescription, BatchNo;
         public bool IsHazardous;
         public DateTime ExpiryDate;
         public int AvailableQuantity, UnitId;
-        public List<ItemGroup> ItemGroups {  get; set; }
+        public List<ItemGroup> ItemGroups { get; set; }
         public List<ItemType> ItemTypes { get; set; }
         public List<HazardType> HazardTypes { get; set; }
         public List<Unit> UnitTypes { get; set; }
-        
-        public string  lblItemName, lblGroupName, lblItemCode, lblItemDescription, lblAvailableQuantity, lblHazardType, lblTypeName,
-            lblUnit, lblAddItem, lblAdd, lblCancel, lblIsHazardous, lblExpiryDate, lblBatchNo, lblItems;
+
+        public string lblItemName, lblGroupName, lblItemCode, lblItemDescription, lblAvailableQuantity, lblHazardType, lblTypeName,
+            lblUnit, lblAddItem, lblAdd, lblCancel, lblIsHazardous, lblExpiryDate, lblBatchNo, lblItems, lblEnglishLanguage, lblArabicLanguage,
+            lblChemical, lblRiskRating, lblStateofMatter;
 
         public void OnGet()
         {
@@ -52,9 +53,9 @@ namespace LabMaterials.Pages
             return UnitTypes;
         }
 
-        public IActionResult OnPost([FromForm] string ItemCode, [FromForm] string ItemName, [FromForm] string GroupCode, 
-            [FromForm] string ItemTypeCode, [FromForm] bool IsHazardous, [FromForm] string HazardTypeName, 
-            [FromForm] int UnitId, [FromForm] int AvailableQuantity, [FromForm] string ItemDescription, [FromForm] string BatchNo, [FromForm] DateTime ExpiryDate)
+        public IActionResult OnPost([FromForm] string ItemCode, [FromForm] string ItemName, [FromForm] string ItemNameAr, [FromForm] string GroupCode,
+            [FromForm] string ItemTypeCode, [FromForm] bool IsHazardous, [FromForm] string HazardTypeName,
+            [FromForm] int UnitId, [FromForm] int? AvailableQuantity, [FromForm] string ItemDescription, [FromForm] string BatchNo, [FromForm] DateTime ExpiryDate)
         {
             LogableTask task = LogableTask.NewTask("AddStore");
 
@@ -67,12 +68,13 @@ namespace LabMaterials.Pages
                     FillLables();
                     this.ItemCode = ItemCode;
                     this.ItemName = ItemName;
+                    this.ItemNameAr = ItemNameAr;
                     this.IsHazardous = IsHazardous;
                     this.GroupCode = GroupCode;
                     this.ItemTypeCode = ItemTypeCode;
                     this.HazardTypeName = HazardTypeName;
                     this.UnitId = UnitId;
-                    this.AvailableQuantity = AvailableQuantity;
+                    this.AvailableQuantity = AvailableQuantity ?? 0;
                     this.ItemDescription = ItemDescription;
                     this.ExpiryDate = ExpiryDate;
                     this.BatchNo = BatchNo;
@@ -87,6 +89,8 @@ namespace LabMaterials.Pages
                         ErrorMsg = (Program.Translations["ItemCodeMissing"])[Lang];
                     else if (string.IsNullOrEmpty(ItemName))
                         ErrorMsg = (Program.Translations["ItemNameMissing"])[Lang];
+                    else if (string.IsNullOrEmpty(ItemNameAr))
+                        ErrorMsg = (Program.Translations["ItemNameMissing"])[Lang];
                     else
                     {
                         if (dbContext.Items.Count(s => s.ItemCode == ItemCode) > 0)
@@ -100,12 +104,16 @@ namespace LabMaterials.Pages
                                 ItemId = PrimaryKeyManager.GetNextId(),
                                 ItemCode = ItemCode,
                                 ItemName = ItemName,
+                                ItemNameAr = ItemNameAr,
                                 IsHazardous = IsHazardous,
+                                Chemical = IsHazardous,
                                 HazardTypeName = IsHazardous ? HazardTypeName : "NonHazarduos",
+                                RiskRating = IsHazardous ? HazardTypeName : "NonHazarduos",
                                 GroupCode = GroupCode,
                                 ItemTypeCode = ItemTypeCode,
+                                StateofMatter = ItemTypeCode,
                                 UnitId = UnitId,
-                                AvailableQuantity = AvailableQuantity,
+                                AvailableQuantity = AvailableQuantity ?? 0,
                                 ItemDescription = ItemDescription,
                                 BatchNo = BatchNo,
                                 ExpiryDate = ExpiryDate,
@@ -118,7 +126,7 @@ namespace LabMaterials.Pages
                             {
                                 byte[] bytes = new byte[3];
                                 rng.GetBytes(bytes);
-                                color =  Color.FromArgb(bytes[0], bytes[1], bytes[2]);
+                                color = Color.FromArgb(bytes[0], bytes[1], bytes[2]);
                             }
                             string colorCode = ColorTranslator.ToHtml(color);
 
@@ -156,7 +164,7 @@ namespace LabMaterials.Pages
 
         private void FillLables()
         {
-            
+
 
             this.lblItemName = (Program.Translations["ItemName"])[Lang];
             this.lblGroupName = (Program.Translations["GroupName"])[Lang];
@@ -173,6 +181,11 @@ namespace LabMaterials.Pages
             this.lblBatchNo = (Program.Translations["BatchNo"])[Lang];
             this.lblExpiryDate = (Program.Translations["ExpiryDate"])[Lang];
             this.lblItems = (Program.Translations["Items"])[Lang];
+            this.lblArabicLanguage = (Program.Translations["ArabicLanguage"])[Lang];
+            this.lblEnglishLanguage = (Program.Translations["EnglishLanguage"])[Lang];
+            this.lblChemical = (Program.Translations["Chemical"])[Lang];
+            this.lblRiskRating = (Program.Translations["RiskRating"])[Lang];
+            this.lblStateofMatter = (Program.Translations["StateofMatter"])[Lang];
 
         }
     }

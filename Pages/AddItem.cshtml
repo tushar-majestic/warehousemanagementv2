@@ -6,10 +6,16 @@
         if (document.getElementById("IsHazardous").checked == false) {
             document.getElementById("HazardTypeName").disabled = true;
             document.getElementById("HazrdTypeSelections").style = 'display:none;';
+            document.getElementById("ItemTypeCode").disabled = true;
+            document.getElementById("StateofMatter").style = 'display:none;';
+            document.getElementById("expiryDate").style = 'display:none;';
         }
         else {
             document.getElementById("HazardTypeName").disabled = false;
-            document.getElementById("HazrdTypeSelections").style = 'display:table-row;';
+            document.getElementById("HazrdTypeSelections").style = 'display:block;';
+            document.getElementById("ItemTypeCode").disabled = false;
+            document.getElementById("StateofMatter").style = 'display:block;';
+            document.getElementById("expiryDate").style = 'display:block;';
         }
 
         $("#IsHazardous").change(function () {
@@ -17,10 +23,16 @@
             if (document.getElementById("IsHazardous").checked == false) {
                 document.getElementById("HazardTypeName").disabled = true;
                 document.getElementById("HazrdTypeSelections").style = 'display:none;';
+                document.getElementById("ItemTypeCode").disabled = true;
+                document.getElementById("StateofMatter").style = 'display:none;';
+                document.getElementById("expiryDate").style = 'display:none;';
             }
             else {
                 document.getElementById("HazardTypeName").disabled = false;
                 document.getElementById("HazrdTypeSelections").style = 'display:block;';
+                document.getElementById("ItemTypeCode").disabled = false;
+                document.getElementById("StateofMatter").style = 'display:block;';
+                document.getElementById("expiryDate").style = 'display:block;';
             }
 
         });
@@ -97,11 +109,11 @@
         }
 
         @if (!string.IsNullOrEmpty(Model.ErrorMsg))
-        {
-            <text>
+            {
+                <text>
                     var errorMessageFromServer = @Html.Raw(Json.Serialize(Model.ErrorMsg));
                     showErrorNotification(errorMessageFromServer);
-            </text>
+                </text>
         }
             $(function () {
                 $("#ExpiryDate").datepicker({
@@ -134,11 +146,11 @@
                             <img src="images/inventory.png" alt="Home" width="16" height="16" class="me-2" />
                             @Model.lblAddItem
                         </li>
-                        
+
                     </ol>
                 </nav>
                 <h1 class="h4">@Model.lblAddItem</h1>
-               <!-- <p class="mb-0">Dozens of reusable components built to provide buttons, alerts, popovers, and more.</p> -->
+                <!-- <p class="mb-0">Dozens of reusable components built to provide buttons, alerts, popovers, and more.</p> -->
             </div>
         </div>
     </div>
@@ -159,10 +171,17 @@
 
                             </div>
                             <div class="mb-4">
-                                <label for="ItemName">@Model.lblItemName</label>
+                                <label for="ItemName">@Model.lblItemName (@Model.lblEnglishLanguage)</label>
 
                                 <input type="text" class="form-control" id="ItemName" name="ItemName"
                                     value="@Model.ItemName" />
+
+                            </div>
+                            <div class="mb-4">
+                                <label for="ItemNameAr">@Model.lblItemName (@Model.lblArabicLanguage)</label>
+
+                                <input type="text" class="form-control" id="ItemNameAr" name="ItemNameAr"
+                                    value="@Model.ItemNameAr" />
 
                             </div>
                             <div class="mb-4">
@@ -172,50 +191,6 @@
                                     value="@Model.ItemDescription" />
 
                             </div>
-
-
-
-
-                            <div class="mb-4">
-                                <div class="form-check">
-                                    <label class="form-check-label" for="IsHazardous">
-                                        @Model.lblIsHazardous
-                                    </label>
-                                    <input id="IsHazardous" class="form-check-input" type="checkbox" name="IsHazardous"
-                                        asp-for="IsHazardous">
-
-                                </div>
-                            </div>
-
-                            <div class="mb-4" id="HazrdTypeSelections">
-                                <label class="my-1 me-2" for="HazardTypeName">@Model.lblHazardType</label>
-                                <select class="form-select" id="HazardTypeName" name="HazardTypeName"
-                                    aria-label="Default select example">
-
-                                    @if (Model.HazardTypes != null)
-                                    {
-                                        foreach (var item in Model.HazardTypes)
-                                        {
-                                            <option value="@item.HazardTypeName">@item.HazardTypeName</option>
-                                        }
-                                    }
-                                </select>
-                            </div>
-                            <div class="mb-4">
-                                <label class="my-1 me-2" for="ItemTypeCode">@Model.lblTypeName</label>
-                                <select class="form-select" id="ItemTypeCode" name="ItemTypeCode"
-                                    aria-label="Default select example">
-
-                                    @if (Model.ItemTypes != null)
-                                    {
-                                        foreach (var item in Model.ItemTypes)
-                                        {
-                                            <option value="@item.ItemTypeCode">@item.TypeName</option>
-                                        }
-                                    }
-                                </select>
-                            </div>
-
                             <div class="mb-4">
                                 <label class="my-1 me-2" for="GroupCode">@Model.lblGroupName</label>
                                 <select class="form-select" id="GroupCode" name="GroupCode"
@@ -246,7 +221,55 @@
 
 
 
-                            <div class="mb-4" id="PasswordRow">
+
+                            <div class="mb-4">
+                                <div class="form-check">
+                                    <label class="form-check-label" for="IsHazardous">
+                                        @Model.lblChemical
+                                    </label>
+                                    <input id="IsHazardous" class="form-check-input" type="checkbox" name="IsHazardous"
+                                        asp-for="IsHazardous">
+
+                                </div>
+                            </div>
+
+                            <div class="mb-4" id="HazrdTypeSelections">
+                                <label class="my-1 me-2" for="HazardTypeName">@Model.lblRiskRating</label>
+                                <select class="form-select" id="HazardTypeName" name="HazardTypeName"
+                                    aria-label="Default select example">
+
+                                    @if (Model.HazardTypes != null)
+                                    {
+                                        foreach (var item in Model.HazardTypes)
+                                        {
+                                            <option value="@item.HazardTypeName">@item.HazardTypeName</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                            <div class="mb-4" id="StateofMatter">
+                                <label class="my-1 me-2" for="ItemTypeCode">@Model.lblStateofMatter</label>
+                                <select class="form-select" id="ItemTypeCode" name="ItemTypeCode"
+                                    aria-label="Default select example">
+                                    @* <option value="Solid">Solid</option>
+                                    <option value="Liquid">Liquid</option>
+                                    <option value="gas">Gas</option> *@
+
+                                    @if (Model.ItemTypes != null)
+                                    {
+                                        foreach (var item in Model.ItemTypes)
+                                        {
+                                            <option value="@item.ItemTypeCode">@item.TypeName</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+
+
+
+
+
+                            @* <div class="mb-4" id="PasswordRow">
                                 <label for="AvailableQuantity">@Model.lblAvailableQuantity</label>
                                 <input type="number" name="AvailableQuantity" value="@Model.AvailableQuantity"
                                     class="form-control" id="Password">
@@ -257,14 +280,14 @@
                                 <label for="BatchNo">@Model.lblBatchNo</label>
 
                                 <input type="text" class="form-control" id="BatchNo" name="BatchNo"
-                                       value="@Model.BatchNo" />
+                                    value="@Model.BatchNo" />
 
-                            </div>
+                            </div> *@
 
-                            <div class="mb-4">
+                            <div class="mb-4" id="expiryDate">
                                 <label for="ExpiryDate">Expiry Date</label>
                                 <input asp-for="ExpiryDate" class="form-control" type="date" name="ExpiryDate"
-                                       value="@Model.ExpiryDate.ToString("yyyy-MM-dd")" />
+                                    value="@Model.ExpiryDate.ToString("yyyy-MM-dd")" />
                             </div>
                             <div class="mb-4">
 

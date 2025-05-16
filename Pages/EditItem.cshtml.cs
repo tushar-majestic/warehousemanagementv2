@@ -6,9 +6,9 @@ namespace LabMaterials.Pages
     public class EditItemModel : BasePageModel
     {
         public string ErrorMsg { get; set; }
-        public string ItemCode, ItemName, GroupCode, ItemTypeCode, HazardTypeName, ItemDescription, BatchNo, ItemNameSearch, GroupSearch;
+        public string ItemCode, ItemName, ItemNameAr, GroupCode, ItemTypeCode, RiskRating, StateofMatter, HazardTypeName, ItemDescription, BatchNo, ItemNameSearch, GroupSearch;
         public DateTime ExpiryDate;
-        public bool IsHazardous;
+        public bool IsHazardous, Chemical;
         public int AvailableQuantity, UnitId, ItemID;
         public List<ItemGroup> ItemGroups { get; set; }
         public List<ItemType> ItemTypes { get; set; }
@@ -16,52 +16,72 @@ namespace LabMaterials.Pages
         public List<Unit> UnitTypes { get; set; }
         public string FromDate, ToDate;
         public int page { get; set; }
-        
+
         public string lblItemName, lblGroupName, lblItemCode, lblItemDescription, lblAvailableQuantity, lblHazardType, lblTypeName,
-            lblUnit, lblUpdateItem, lblUpdate, lblCancel, lblIsHazardous, lblItemType, lblBatchNo, lblExpiryDate, lblItems;
+            lblUnit, lblUpdateItem, lblUpdate, lblCancel, lblIsHazardous, lblItemType, lblBatchNo, lblExpiryDate, lblItems,
+            lblStateofMatter, lblRiskRating, lblChemical, lblEnglishLanguage, lblArabicLanguage;
 
         public void OnGet()
         {
             base.ExtractSessionData();
             FillLables();
-            this.page = (int)HttpContext.Session.GetInt32("page");
+
+            this.page = HttpContext.Session.GetInt32("page") ?? 1;
             this.FromDate = HttpContext.Session.GetString("FromDate");
             this.ToDate = HttpContext.Session.GetString("ToDate");
             this.ItemNameSearch = HttpContext.Session.GetString("ItemName");
             this.GroupSearch = HttpContext.Session.GetString("Group");
-            if (CanManageItems == false)
-                RedirectToPage("./Index?lang=" + Lang);
-            else
-            {
-                using (var dbContext = new LabDBContext())
-                {
-                    ItemGroups = dbContext.ItemGroups.Where(g => g.Units.Count() > 0).ToList();
-                    ItemTypes = dbContext.ItemTypes.ToList();
-                    HazardTypes = dbContext.HazardTypes.ToList();
-                    UnitTypes = dbContext.Units.ToList();
-                    
-                    var item = dbContext.Items.Single(i => i.ItemId == HttpContext.Session.GetInt32("ItemId"));
 
-                    ItemID = item.ItemId;
-                    ItemCode = item.ItemCode; 
-                    ItemName = item.ItemName;
-                    GroupCode = item.GroupCode;
-                    ItemTypeCode = item.ItemTypeCode;
-                    HazardTypeName = item.HazardTypeName;
-                    IsHazardous = item.IsHazardous;
-                    AvailableQuantity = item.AvailableQuantity;
-                    UnitId = item.UnitId;
-                    ItemDescription = item.ItemDescription;
-                    BatchNo = item.BatchNo;
-                    ExpiryDate = (DateTime)item.ExpiryDate;
+            if (!CanManageItems)
+            {
+                RedirectToPage("./Index?lang=" + Lang);
+                return;
+            }
+
+            using (var dbContext = new LabDBContext())
+            {
+                ItemGroups = dbContext.ItemGroups.Where(g => g.Units.Count() > 0).ToList();
+                ItemTypes = dbContext.ItemTypes.ToList();
+                HazardTypes = dbContext.HazardTypes.ToList();
+                UnitTypes = dbContext.Units.ToList();
+
+                int? itemId = HttpContext.Session.GetInt32("ItemId");
+
+                if (!itemId.HasValue)
+                {
+                    ErrorMsg = "ItemId not found in session.";
+                    return;
                 }
-               
+
+                var item = dbContext.Items.FirstOrDefault(i => i.ItemId == itemId.Value);
+                if (item == null)
+                {
+                    ErrorMsg = $"Item with ID {itemId.Value} not found.";
+                    return;
+                }
+
+                ItemID = item.ItemId;
+                ItemCode = item.ItemCode;
+                ItemName = item.ItemName;
+                ItemNameAr = item.ItemNameAr ?? "";
+                GroupCode = item.GroupCode;
+                ItemTypeCode = item.ItemTypeCode;
+                StateofMatter = item.StateofMatter ?? "";
+                HazardTypeName = item.HazardTypeName ?? "";
+                RiskRating = item.RiskRating ?? "";
+                IsHazardous = item.IsHazardous;
+                Chemical = item.Chemical;
+                AvailableQuantity = item.AvailableQuantity;
+                UnitId = item.UnitId;
+                ItemDescription = item.ItemDescription ?? "";
+                BatchNo = item.BatchNo ?? "";
+                ExpiryDate = item.ExpiryDate.GetValueOrDefault(DateTime.MinValue);
             }
         }
 
-        public IActionResult OnPost([FromForm] int ItemId, [FromForm] string ItemCode, [FromForm] string ItemName, [FromForm] string GroupCode,
+        public IActionResult OnPost([FromForm] int ItemId, [FromForm] string ItemCode, [FromForm] string ItemName, [FromForm] string ItemNameAr, [FromForm] string GroupCode,
             [FromForm] string ItemTypeCode, [FromForm] bool IsHazardous, [FromForm] string HazardTypeName,
-            [FromForm] int UnitId, [FromForm] int AvailableQuantity, [FromForm] string ItemDescription,
+            [FromForm] int UnitId, [FromForm] int? AvailableQuantity, [FromForm] string ItemDescription,
             [FromForm] string BatchNo, [FromForm] DateTime ExpiryDate)
         {
             LogableTask task = LogableTask.NewTask("EditSupplier");
@@ -76,12 +96,13 @@ namespace LabMaterials.Pages
                     this.ItemID = ItemId;
                     this.ItemCode = ItemCode;
                     this.ItemName = ItemName;
+                    this.ItemNameAr = ItemNameAr;
                     this.IsHazardous = IsHazardous;
                     this.GroupCode = GroupCode;
                     this.ItemTypeCode = ItemTypeCode;
                     this.HazardTypeName = HazardTypeName;
                     this.UnitId = UnitId;
-                    this.AvailableQuantity = AvailableQuantity;
+                    this.AvailableQuantity = AvailableQuantity ?? 0;
                     this.ItemDescription = ItemDescription;
                     this.BatchNo = BatchNo;
                     this.ExpiryDate = ExpiryDate;
@@ -93,6 +114,8 @@ namespace LabMaterials.Pages
                     UnitTypes = dbContext.Units.ToList();
 
                     if (string.IsNullOrEmpty(ItemName))
+                        ErrorMsg = (Program.Translations["ItemNameMissing"])[Lang];
+                    else if (string.IsNullOrEmpty(ItemNameAr))
                         ErrorMsg = (Program.Translations["ItemNameMissing"])[Lang];
                     else if(string.IsNullOrEmpty(ItemCode))
                         ErrorMsg = (Program.Translations["ItemCodeMissing"])[Lang];
@@ -107,12 +130,16 @@ namespace LabMaterials.Pages
                         {       
                             item.ItemCode = ItemCode;
                             item.ItemName = ItemName;
+                            item.ItemNameAr = ItemNameAr;
                             item.IsHazardous = IsHazardous;
+                            Chemical = IsHazardous;
                             item.HazardTypeName = IsHazardous ? HazardTypeName : "NonHazarduos";
+                            item.RiskRating = IsHazardous ? HazardTypeName : "NonHazarduos";
                             item.GroupCode = GroupCode;
                             item.ItemTypeCode = ItemTypeCode;
+                            item.StateofMatter = ItemTypeCode;
                             item.UnitId = UnitId;
-                            item.AvailableQuantity = AvailableQuantity;
+                            item.AvailableQuantity = AvailableQuantity ?? 0;
                             item.ItemDescription = ItemDescription;
                             item.BatchNo = BatchNo;
                             item.ExpiryDate = ExpiryDate;
@@ -157,6 +184,11 @@ namespace LabMaterials.Pages
             this.lblUpdateItem = (Program.Translations["UpdateItem"])[Lang];
             this.lblIsHazardous = (Program.Translations["IsHazardous"])[Lang];
             this.lblItems = (Program.Translations["Items"])[Lang];
+            this.lblArabicLanguage = (Program.Translations["ArabicLanguage"])[Lang];
+            this.lblEnglishLanguage = (Program.Translations["EnglishLanguage"])[Lang];
+            this.lblChemical = (Program.Translations["Chemical"])[Lang];
+            this.lblRiskRating = (Program.Translations["RiskRating"])[Lang];
+            this.lblStateofMatter = (Program.Translations["StateofMatter"])[Lang];
 
         }
     }
