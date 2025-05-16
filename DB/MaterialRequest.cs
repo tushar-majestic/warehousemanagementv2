@@ -13,8 +13,7 @@ public partial class MaterialRequest
     [Key]
     public int RequestId { get; set; }
 
-    [StringLength(100)]
-    public string SerialNumber { get; set; } = null!;
+    public int SerialNumber { get; set; }
 
     [Column(TypeName = "datetime")]
     public DateTime OrderDate { get; set; }

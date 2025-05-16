@@ -24,6 +24,30 @@
             ]
         });
 
+            // Fetch serial number based on fiscal year
+        async function fetchSerialNumber() {
+            const year = document.getElementById("FiscalYear").value;
+            if (!isNaN(year)) {
+                try {
+                    const response = await fetch(`/AddDisbursement?handler=GetNextSerialNumber&fiscalYear=${year}`);
+                    const data = await response.json();
+                    document.getElementById("Serial").innerText = data.serial;
+                    document.getElementById("SerialNumber").value = data.serial;
+                } catch (error) {
+                    console.error('Error fetching serial number:', error);
+                }
+            } else {
+                document.getElementById("Serial").innerText = "-----";
+            }
+        }
+
+        window.addEventListener("DOMContentLoaded", function () {
+            const yearInput = document.getElementById("FiscalYear");
+            if (yearInput && yearInput.value) {
+                fetchSerialNumber();
+            }
+        });
+
         function showErrorNotification(message) {
             notyf.open({
                 type: 'error',
@@ -58,6 +82,11 @@
                 input.selectedIndex = 0;
             } else if (input.type !== "radio" && input.type !== "checkbox") {
                 input.value = "";
+            }
+
+            // Update name attributes with the new index
+            if (input.name) {
+                input.name = input.name.replace(/\[\d+\]/, `[${entryIndex}]`);
             }
         });
 
@@ -160,16 +189,88 @@
             <div class="card border-0 shadow components-section">
                 <form method="post" class="card-body">
                     <div class="row mb-4">
+                            @* <div class="mb-4">
+                                <label for="SerialNumber">@Model.lblSerialNumber</label>
+                                <input type="text" name="SerialNumber" value="" class="form-control" id="SerialNumber">
+                            </div> *@
+                            <div class="form-group mb-4">
+                                <label>@Model.lblSerialNumber <b id="Serial">----</b></label>
+                                <input type="number"  asp-for="Report.SerialNumber"  id="SerialNumber" name="SerialNumber" hidden>
+                            </div>
+                            @{
+                                var currentYear = DateTime.Now.Year;
+                                var previousYear = currentYear - 1;
+                            }
+                            <div class="mb-4">
+                                <label for="FiscalYear">@Model.lblFiscalYear</label>
+                                <select class="form-select" asp-for="Report.FiscalYear" name="FiscalYear" id="FiscalYear" onchange="fetchSerialNumber()">
+                                    <option value="">Select Fiscal Year</option>
+                                    <option value="@previousYear">@previousYear</option>
+                                    <option value="@currentYear">@currentYear</option>
+                                </select>
+                            </div>
+                            <div class="mb-4">
+                                <label for="OrderDate">@Model.lblOrderDate</label>
+                                <input asp-for="RequestRecievedAt" name="RequestRecievedAt" type="date" class="form-control" name="OrderDate"
+                                    value="@Model.RequestRecievedAt.ToString("yyyy-MM-dd")" />
+                            </div>
+                            <div class="mb-4">
+                                <label for="RequestingSector">@Model.lblRequestingSector</label>
+                                <select class="form-select" name="RequestingSector" asp-for="Report.RequestingSector">
+                                    @* <select class="form-select" id="DId" name="DId"> *@
+                                    @if (Model.Destinations != null)
+                                    {   <option>Select Requesting Sector</option>
+                                        foreach (var item in Model.Destinations)
+                                        {
+                                            <option value="@item.DId" selected="@(item.DId == Model.DId)">@item.DestinationName</option>
+                                        }
+                                    }
+                               
+                                </select>
+                            </div>
+                            <div class="mb-4">
+                                <label for="RequestDocumentType">@Model.lblRequestDocumentType</label>
+                                <select class="form-select" name="RequestDocumentType" asp-for="Report.RequestDocumentType">
+                                    <option>Select Request document Type</option>
+                                    <option value="Completion">Completion</option>
+                                    <option value="Speech">Speech</option>
+                                </select>
+                            </div>
+                            <div class="mb-4">
+                                <label for="DocumentNumber">@Model.lblRequestDocumentNumber</label>
+                                <input type="text" name="DocumentNumber" value="" class="form-control" id="DocumentNumber" asp-for="Report.DocumentNumber">
+                            </div>
+                            <div class="mb-4">
+                                <label for="sector">@Model.lblSector</label>
+                                <input type="text" class="form-control" id="sector" asp-for="Report.Sector" readonly>
+                            </div>
+                            <div class="mb-4">
+                                <label for="storeNumber">@Model.lblStoreName</label>
+                                <select class="form-select" id="StoreId" name="StoreId" asp-for="Report.WarehouseName">
+                                    @if (Model.Stores != null)
+                                    {
+                                        foreach (var item in Model.Stores)
+                                        {
+                                            if (item.IsActive == 1 && item.Ended == null)
+                                            {
+                                                <option value="@item.StoreId" selected="@(item.StoreId == Model.StoreId)">@item.StoreName</option>
+                                            }
+                                        }
+                                    }
+                                </select>
 
+                            </div>
                         <div class="col-lg-12 col-sm-12">
                             <div id="returnEntriesWrapper">
+                               
                                 <div class="return-entry border p-3 mb-3 rounded position-relative">
                                     <div class="d-flex my-4">
                                         <div class=" me-2" style="width: 49%;">
-                                            <label for="RequestingPlace">@Model.lblItemGroups</label>
-                                            <select class="form-select" id="itemGroup" name="itemGroup" onchange="filterItemsByGroup()">
+                                            <label for="RequestingPlace">@Model.lblItemGroups</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
+                                            <select class="form-select" id="itemGroup" name="ItemsForReport[0].ItemGroup" onchange="filterItemsByGroup()">
                                                 @if (Model.ItemGroups != null)
                                                 {
+                                                    <option value="">Select Item Group</option>
                                                     foreach (var item in Model.ItemGroups)
                                                     {
                                                         <option value="@item.GroupCode">@item.GroupDesc</option>
@@ -177,10 +278,19 @@
                                                 }
                                             </select>
                                         </div>
+                                        <div class="ms-2" style="width: 49%;">
+                                            <label for="itemCode">@Model.lblItemCode</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
+                                            <input type="text" class="ItemCode form-control" id="ItemCode" readonly >
+                                        </div>
 
-                                        <div class="form-group  ms-2 " style="width: 49%;">
-                                            <label>@Model.lblItemName (@Model.lblArabicLanguage)</label>
-                                            <select class="ArabicItemName form-select" id="ArabicItemName" name="ArabicItemName" onchange="onItemChange(this, 'EnglishArabicName')">
+                                      
+                                    </div>
+                                   
+
+                                    <div class="d-flex">
+                                        <div class="form-group  me-2 " style="width: 49%;">
+                                            <label>@Model.lblItemName (@Model.lblArabicLanguage)</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
+                                            <select class="ArabicItemName form-select" id="ArabicItemName" name="ItemsForReport[0].ItemId" onchange="onItemChange(this, 'EnglishArabicName')">
                                                 <option value="">Select Item </option>
                                                 @foreach (var item in Model.ItemCards)
                                                 {
@@ -199,14 +309,10 @@
                                                 }
                                             </select>
                                         </div>
-                                    </div>
-                                   
-
-                                    <div class="d-flex">
                                        
-                                        <div class="form-group mb-4 me-2" style="width: 49%;">
-                                            <label for="EnglishArabicName">@Model.lblItemName (@Model.lblEnglishLanguage)</label>
-                                            <select class="EnglishArabicName form-select" id="EnglishArabicName" name="EnglishArabicName" onchange="onItemChange(this, 'ArabicItemName')">
+                                        <div class="form-group mb-4 ms-2" style="width: 49%;">
+                                            <label for="EnglishArabicName">@Model.lblItemName (@Model.lblEnglishLanguage)</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
+                                            <select class="EnglishArabicName form-select" id="EnglishArabicName"  onchange="onItemChange(this, 'ArabicItemName')">
                                                 <option value="">Select Item </option>
                                                 @foreach (var item in Model.ItemCards)
                                                 {
@@ -225,10 +331,7 @@
                                             </select>
                                         </div>
 
-                                        <div class="mb-4 ms-2" style="width: 49%;">
-                                        <label for="itemCode">@Model.lblItemCode</label>
-                                            <input type="text" class="ItemCode form-control" id="ItemCode" readonly>
-                                        </div>
+                                        
                                     </div>
                                    
                                     <div class="mb-4">
@@ -253,7 +356,7 @@
                                             <input type="text" class="RiskRating form-control" id="RiskRating" readonly>
                                         </div>
                                         <div class="mb-4 ms-2" style="width: 49%;">
-                                            <label for="UnitofMeasure">@Model.lblUnitOfMeasure</label>
+                                            <label for="UnitofMeasure">@Model.lblUnitOfMeasure</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
                                             <input type="text" class="UnitofMeasure form-control" id="UnitofMeasure" readonly>
                                         </div>
 
@@ -261,29 +364,29 @@
                                     
                                     <div class="d-flex">
                                         <div class="mb-4 me-2" style="width: 49%;">
-                                            <label for="Quantity">@Model.lblQuantity</label>
-                                            <input type="text" name="Quantity" value="@Model.Quantity" class="form-control Quantity" id="Quantity">
+                                            <label for="Quantity">@Model.lblQuantity</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
+                                            <input type="text" name="ItemsForReport[0].Quantity" asp-for="ItemsForReport[0].Quantity"  class="form-control Quantity" id="Quantity">
                                         </div>
                                         <div class="mb-4 ms-2" style="width: 49%;">
                                             <label for="amountSpent">@Model.lblAmountSpent</label>
-                                            <input type="text" name="amountSpent" value="" class="form-control" id="amountSpent">
+                                            <input type="text" asp-for="ItemsForReport[0].AmountSpent" name="ItemsForReport[0].AmountSpent" value="" class="form-control" id="AmountSpent">
                                         </div>
                                     </div>
                                     
                                     <div class="d-flex">
                                         <div class="mb-4 me-2" style="width: 49%;">
-                                            <label for="UnitPrice">@Model.lblUnitPrice</label>
-                                            <input type="text" name="UnitPrice" value="" class="form-control UnitPrice" id="UnitPrice">
+                                            <label for="UnitPrice">@Model.lblUnitPrice</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
+                                            <input type="text" asp-for="ItemsForReport[0].UnitPrice" name="ItemsForReport[0].UnitPrice" class="form-control UnitPrice" id="UnitPrice">
                                         </div>
                                         <div class="mb-4 ms-2" style="width: 49%;">
-                                            <label for="TotalPrice">@Model.lblTotalPrice</label>
-                                            <input type="text" name="TotalPrice" value="" class="form-control TotalPrice" id="TotalPrice">
+                                            <label for="TotalPrice">@Model.lblTotalPrice</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
+                                            <input type="text" asp-for="ItemsForReport[0].TotalPrice" name="ItemsForReport[0].TotalPrice" class="form-control TotalPrice" id="TotalPrice">
                                         </div>
                                     </div>
                                     
                                     <div class="mb-4">
                                         <label for="Comments">@Model.lblComments</label>
-                                        <input type="text" class="form-control" id="Comments" name="Comments" value="@Model.Comments" />
+                                        <input type="text" class="form-control" id="Comments" asp-for="ItemsForReport[0].Comments" name="ItemsForReport[0].Comments"  />
                                     </div>
                                     <button type="button" class="btn btn-danger btn-sm remove-entry me-3" style="position: absolute; top: 0; right: 0;">
                                         @Model.lblRemove
@@ -293,67 +396,7 @@
                             <div class="mb-3">
                                 <button type="button" class="btn btn-primary" id="addEntryBtn">@Model.lblAddMore</button>
                             </div
-                            <div class="mb-4">
-                                <label for="SerialNumber">@Model.lblSerialNumber</label>
-                                <input type="text" name="SerialNumber" value="" class="form-control" id="SerialNumber">
-                            </div>
-                            @{
-                                var currentYear = DateTime.Now.Year;
-                                var previousYear = currentYear - 1;
-                            }
-                            <div class="mb-4">
-                                <label for="FiscalYear">@Model.lblFiscalYear</label>
-                                <select class="form-select" name="FiscalYear">
-                                    <option value="">Select Fiscal Year</option>
-                                    <option value="@previousYear">@previousYear</option>
-                                    <option value="@currentYear">@currentYear</option>
-                                </select>
-                            </div>
-                            <div class="mb-4">
-                                <label for="OrderDate">@Model.lblOrderDate</label>
-                                <input asp-for="RequestRecievedAt" type="date" class="form-control" name="OrderDate"
-                                    value="@Model.RequestRecievedAt.ToString("yyyy-MM-dd")" />
-                            </div>
-                            <div class="mb-4">
-                                <label for="RequestingSector">@Model.lblRequestingSector</label>
-                                <select class="form-select" name="RequestingSector">
-                                    <option value="1">item group1</option>
-                                    <option value="2">item group2</option>
-                                    <option value="3">item group3</option>
-                                </select>
-                            </div>
-                            <div class="mb-4">
-                                <label for="RequestDocumentType">@Model.lblRequestDocumentType</label>
-                                <select class="form-select" name="RequestDocumentType">
-                                    <option value="1">item group1</option>
-                                    <option value="2">item group2</option>
-                                    <option value="3">item group3</option>
-                                </select>
-                            </div>
-                            <div class="mb-4">
-                                <label for="RequestDocumentNumber">@Model.lblRequestDocumentNumber</label>
-                                <input type="text" name="RequestDocumentNumber" value="" class="form-control" id="RequestDocumentNumber">
-                            </div>
-                            <div class="mb-4">
-                                <label for="sector">@Model.lblSector</label>
-                                <input type="text" class="form-control" id="sector" readonly>
-                            </div>
-                            <div class="mb-4">
-                                <label for="storeNumber">@Model.lblStoreName</label>
-                                <select class="form-select" id="StoreId" name="StoreId">
-                                    @if (Model.Stores != null)
-                                    {
-                                        foreach (var item in Model.Stores)
-                                        {
-                                            if (item.IsActive == 1 && item.Ended == null)
-                                            {
-                                                <option value="@item.StoreId" selected="@(item.StoreId == Model.StoreId)">@item.StoreName</option>
-                                            }
-                                        }
-                                    }
-                                </select>
-
-                            </div>
+                            
                             <div class="mb-4">
                                 <div class="d-flex mb-2 mb-md-0" style="gap: 10px">
                                     <a href="Disbursements" class="btn btn-outline-gray-600  align-items-center w-100">@Model.lblCancel</a>
