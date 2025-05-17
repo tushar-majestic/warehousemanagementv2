@@ -31,6 +31,8 @@ namespace LabMaterials.Pages
 
         public List<ReceivingReport> AllRequest {get; set;}
         public List<ReceivingReport> RequestSent { get; set; }
+        public List<MaterialRequest> ManagerRequestSent { get; set; }
+
 
         public List<Message> InboxList { get; set; }
 
@@ -110,8 +112,16 @@ namespace LabMaterials.Pages
             AllUsers = dbContext.Users.ToList();
             UserGroups = dbContext.UserGroups.ToList();
 
-            RequestSent = dbContext.ReceivingReports.Where(r => r.CreatedBy == UserId)
-            .OrderByDescending(r => r.CreatedAt).ToList();
+            if (this.UserGroupName == "Warehouse Keeper")
+            {
+                RequestSent = dbContext.ReceivingReports.Where(r => r.CreatedBy == UserId)
+                .OrderByDescending(r => r.CreatedAt).ToList();
+            }
+            else if (this.UserGroupName == "Warehouse Manager") {
+                ManagerRequestSent = dbContext.MaterialRequests.Where(r => r.RequestedByUserId == UserId)
+                .OrderByDescending(r => r.OrderDate).ToList();
+            }
+            
             // ManagerInboxList = dbContext.ReceivingReports
             //     .Where(r => r.KeeperApproval == true)
             //     .ToList();

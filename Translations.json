@@ -1573,6 +1573,10 @@
     "WarehouseNameMissing":{
       "en" : "Warehouse Name Missing",
       "ar" : "Warehouse Name Missing"
+    },
+    "DeptManagerMissing":{
+      "en" : "Department Manager Missing",
+      "ar" : "Department Manager Missing"
     }
     
 

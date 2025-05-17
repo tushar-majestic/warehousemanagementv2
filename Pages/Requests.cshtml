@@ -47,7 +47,7 @@
             
         </a>
         
-        @if (@Model.UserGroupName == "Warehouse Keeper")
+        @if (Model.UserGroupName == "Warehouse Keeper")
         {
             <a class="nav-link @Model.outboxClass border border-bottom-0" href="?type=outbox">Request Sent</a>
         }
@@ -226,25 +226,49 @@
                           
                         }
                         else{
-                            @foreach (var req in Model.RequestSent){
-                                var ReceivingWarehouse = Model.Warehouses.FirstOrDefault(s => s.StoreId == int.Parse(req.ReceivingWarehouse))?.   StoreName ?? "";
-                                <tr>
-                                    <td>Request for Warehouse <b>@ReceivingWarehouse</b> has been sent successfully.</td>
-                                    @{
-                                        var localTime = req.CreatedAt.ToLocalTime();
-                                    }
-                                    <td>@localTime</td>
-                                    @* <td>@req.CreatedAt</td> *@
-                                    <td>
-                                        @* <input type="submit" value="@Model.lblView" class="btn btn-secondary" asp-page-handler="View" /><a asp-page="/ViewReceivingReport"  class="btn btn-info btn-sm">View</a> *@
-                                        <form method="post">
-                                            <input type="hidden" value="@req.Id" name="InboxId" />
+                            if(Model.UserGroupName == "Warehouse Keeper"){
+                                @foreach (var req in Model.RequestSent){
+                                    var ReceivingWarehouse = Model.Warehouses.FirstOrDefault(s => s.StoreId == int.Parse(req.ReceivingWarehouse))?.   StoreName ?? "";
+                                    <tr>
+                                        <td>Request for Warehouse <b>@ReceivingWarehouse</b> has been sent successfully.</td>
+                                        @{
+                                            var localTime = req.CreatedAt.ToLocalTime();
+                                        }
+                                        <td>@localTime</td>
+                                        @* <td>@req.CreatedAt</td> *@
+                                        <td>
+                                            @* <input type="submit" value="@Model.lblView" class="btn btn-secondary" asp-page-handler="View" /><a asp-page="/ViewReceivingReport"  class="btn btn-info btn-sm">View</a> *@
+                                            <form method="post">
+                                                <input type="hidden" value="@req.Id" name="InboxId" />
 
-                                            <input type="submit" value="@Model.lblView" class="btn btn-secondary" asp-page-handler="View" />
-                                        </form>
+                                                <input type="submit" value="@Model.lblView" class="btn btn-secondary" asp-page-handler="View" />
+                                            </form>
+                                        
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else if (Model.UserGroupName == "Warehouse Manager"){
+                                @foreach (var req in Model.ManagerRequestSent){
                                     
-                                    </td>
-                                </tr>
+                                    <tr>
+                                        <td>Dispensing Request  has been sent successfully.</td>
+                                        @{
+                                            var localTime = req.OrderDate.ToLocalTime();
+                                        }
+                                        <td>@localTime</td>
+                                        @* <td>@req.CreatedAt</td> *@
+                                        <td>
+                                          
+                                            @* <form method="post">
+                                                <input type="hidden" value="@req.RequestId" name="InboxId" />
+
+                                                <input type="submit" value="@Model.lblView" class="btn btn-secondary" asp-page-handler="View" />
+                                            </form> *@
+                                        
+                                        </td>
+                                    </tr>
+                                }
                             }
                         }
 
