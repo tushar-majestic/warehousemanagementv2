@@ -331,6 +331,7 @@
                                 {
                                 <td scope="row">@item.HazardTypeName</td>
                                 }
+
                                 @* <td scope="row">@item.ExpiryDate?.ToString("yyyy-MM-dd")</td> *@
                                 @* <td scope="row">@item.TypeOfAsset</td>  *@
                                 @* <td scope="row">@item.Minimum</td>
@@ -349,9 +350,14 @@
                                 <td scope="row">@item.SupplierName</td>
                                 <td scope="row">@item.DocumentType</td>
                                 <td scope="row">@item.ReceiptDocumentNumber</td> *@
-                                @* <td>
-                                    <a href="/ViewItemCards">View</a>
-                                </td> *@
+                                
+                                <td>
+                                <form method="post">
+                                    <input type="hidden" value="@item.ItemCardId" name="ItemCardId" />
+                                    <input type="submit" value="@Model.lblView" class="btn btn-secondary" asp-page-handler="View" />
+                                </form>  
+                                   
+                                </td>
 
                             </tr>
                         }

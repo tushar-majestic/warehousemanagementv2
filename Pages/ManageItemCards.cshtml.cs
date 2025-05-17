@@ -56,6 +56,65 @@ namespace LabMaterials.Pages
 
         //     TotalItems = ItemCardView.Count();
 
+        
+            // Old query with batch 
+            // ItemCardView = await (from item in _context.ItemCards
+            //           join batch in _context.ItemCardBatches on item.Id equals batch.ItemCardId
+            //           join room in _context.Rooms on batch.RoomId equals room.RoomId into roomGroup
+            //           from room in roomGroup.DefaultIfEmpty()
+            //           join shelf in _context.Shelves on batch.ShelfId equals shelf.ShelfId into shelfGroup
+            //           from shelf in shelfGroup.DefaultIfEmpty()
+            //           join supplier in _context.Suppliers on batch.SupplierId equals supplier.SupplierId into supplierGroup
+            //           from supplier in supplierGroup.DefaultIfEmpty()
+            //           join store in _context.Stores on item.StoreId equals store.StoreId into storeGroup
+            //           from store in storeGroup.DefaultIfEmpty()
+            //           select new ItemCardView
+            //           {
+            //               GroupCode = item.GroupCode,
+            //               ItemCode = item.ItemCode,
+            //               ItemName = item.ItemName,
+            //               ItemDescription = item.ItemDescription,
+            //               UnitOfMeasure = item.UnitOfmeasure,
+            //               Chemical = item.Chemical,
+            //               HazardTypeName = item.HazardTypeName,
+            //               ExpiryDate = batch.ExpiryDate,
+
+            //               TypeOfAsset = batch.TypeOfAsset,
+            //                 Minimum = batch.Minimum,
+            //                 ReorderLimit = batch.ReorderLimit,
+            //               WarehouseName = store.StoreName,
+
+            //               QuantityReceived = item.QuantityAvailable,
+            //               DateOfEntry = batch.DateOfEntry,
+
+            //               RoomName = room.RoomName,
+            //                ShelfName = shelf.ShelfId.ToString(),
+            //               SupplierName = supplier.SupplierName,
+            //               DocumentType = batch.DocumentType,
+            //               ReceiptDocumentNumber = batch.ReceiptDocumentnumber
+            //           }).ToListAsync();
+
+
+            // new 
+            // ItemCardView = await (from item in _context.ItemCards
+            //           join store in _context.Stores on item.StoreId equals store.StoreId into storeGroup
+            //           from store in storeGroup.DefaultIfEmpty()
+            //           select new ItemCardViewModels
+            //           {
+            //               GroupCode = item.GroupCode,
+            //               ItemCardId = item.Id,
+            //               ItemCode = item.ItemCode,
+            //               ItemName = item.ItemName,
+            //               ItemDescription = item.ItemDescription,
+            //               UnitOfMeasure = item.UnitOfmeasure,
+            //               Chemical = item.Chemical,
+            //               HazardTypeName = item.HazardTypeName,
+            //               QuantityAvailable = item.QuantityAvailable,
+            //               WarehouseName = store.StoreName,
+                          
+            //         }).ToListAsync();
+
+            // TotalItems = ItemCardView.Count();
         //     FillLables();
         // }
 
@@ -100,15 +159,12 @@ namespace LabMaterials.Pages
                 }
             }
         }
-
-        public IActionResult OnPostView([FromForm] string ReportId)
+      
+        public IActionResult OnPostView([FromForm] string ItemCardId)
         {
             var dbContext = new LabDBContext();
-
-            // HttpContext.Session.SetString("ReportId", ReportId);
-
-
-            return RedirectToPage("/viewItemCards");
+            HttpContext.Session.SetString("ItemCardId", ItemCardId);
+            return RedirectToPage("./viewItemCards");
         }
 
         // public void OnPostSearch([FromForm] string ItemName)

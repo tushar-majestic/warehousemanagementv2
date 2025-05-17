@@ -47,7 +47,7 @@
             let firstEntry = wrapper.querySelector(".return-entry");
             let newEntry = firstEntry.cloneNode(true);
 
-            // Update radio button names to make them unique
+            @* // Update radio button names to make them unique
             newEntry.querySelectorAll('input[type="radio"]').forEach(function (input) {
                 let newName = `ReasonForReturn_${entryIndex}`;
                 input.name = newName;
@@ -57,9 +57,23 @@
             // Clear all input/select/textarea values
             newEntry.querySelectorAll("input, select, textarea").forEach(function (input) {
                 if (input.type !== "radio" && input.type !== "checkbox") input.value = "";
+            }); *@
+             // Clear all values
+            newEntry.querySelectorAll("input, select").forEach(input => {
+                if (input.tagName === "SELECT") {
+                    input.selectedIndex = 0;
+                } else if (input.type !== "radio" && input.type !== "checkbox") {
+                    input.value = "";
+                }
+
+                // Update name attributes with the new index
+                if (input.name) {
+                    input.name = input.name.replace(/\[\d+\]/, `[${entryIndex}]`);
+                }
             });
 
             wrapper.appendChild(newEntry);
+            initializeEntry(newEntry);
             entryIndex++;
         });
 
@@ -74,6 +88,58 @@
                 }
             }
         });
+
+        
+    // --- Handle Select Change ---
+    function handleChange(e) {
+        const entry = e.target.closest(".return-entry");
+        const sourceSelect = e.target;
+        const selectedOption = sourceSelect.options[sourceSelect.selectedIndex];
+        if (!selectedOption) return;
+
+        const selectedId = selectedOption.dataset.id;
+        const targetSelect = entry.querySelector(
+            sourceSelect.classList.contains("ArabicItemName") ? ".EnglishArabicName" : ".ArabicItemName"
+        );
+
+        for (const option of targetSelect.options) {
+            if (option.dataset.id === selectedId) {
+                targetSelect.value = option.value;
+                break;
+            }
+        }
+
+        // Populate fields
+        entry.querySelector(".ItemCode").value = selectedOption.dataset.code || "";
+        entry.querySelector(".ItemDescription").value = selectedOption.dataset.description || "";
+        entry.querySelector(".typeofAsset").value = selectedOption.dataset.asset || "";
+        entry.querySelector(".chemical").value = selectedOption.dataset.chemical || "";
+        entry.querySelector(".RiskRating").value = selectedOption.dataset.risk || "";
+        entry.querySelector(".UnitofMeasure").value = selectedOption.dataset.unit || "";
+    }
+
+    // --- Auto Calculate Total ---
+    function calculateTotalPrice(entry) {
+        const qty = parseFloat(entry.querySelector(".Quantity")?.value) || 0;
+        const unit = parseFloat(entry.querySelector(".UnitPrice")?.value) || 0;
+        entry.querySelector(".TotalPrice").value = (qty * unit).toFixed(2);
+    }
+
+    // --- Setup for New Entry ---
+    function initializeEntry(entry) {
+        // Avoid duplicate listeners by cloning a fresh node (safe for modern browsers)
+        entry.querySelectorAll("select").forEach(select => {
+            select.removeEventListener("change", handleChange);
+            select.addEventListener("change", handleChange);
+        });
+
+        entry.querySelector(".Quantity").addEventListener("input", () => calculateTotalPrice(entry));
+        entry.querySelector(".UnitPrice").addEventListener("input", () => calculateTotalPrice(entry));
+    }
+
+    // --- Init All Existing Entries on Load ---
+    wrapper.querySelectorAll(".return-entry").forEach(initializeEntry);
+</script>
     </script>
 
 }
@@ -115,49 +181,92 @@
 
                             <div id="returnEntriesWrapper">
                                 <div class="return-entry border p-3 mb-3 rounded position-relative">
-                                    <div class="my-4">
-                                        <label for="RequestingPlace">@Model.lblManageItemGroups</label>
-                                        <select class="form-select" name="itemGroup">
-                                            <option value="1">item group1</option>
-                                            <option value="2">item group2</option>
-                                            <option value="3">item group3</option>
+                                    <div class="d-flex my-4">
+                                        <div class="">
+                                        <label for="itemGroup">Item groups</label>
+                                        <select class="form-select" name="itemGroup" id="itemGroup">
+                                           @if (Model.ItemGroups != null)
+                                                {
+                                                    <option value="">Select Item Group</option>
+                                                    foreach (var item in Model.ItemGroups)
+                                                    {
+                                                        <option value="@item.GroupCode">@item.GroupDesc</option>
+                                                    }
+                                                }
                                         </select>
                                     </div>
-                                    <div class="mb-4">
+                                    <div class="">
                                         <label for="itemCode">@Model.lblItemCode</label>
-                                        <select class="form-select" name="ItemCode">
+                                        <input type="text" class="ItemCode form-control" id="ItemCode" readonly >
+                                        @* <select class="form-select" name="ItemCode" class="ItemCode">
                                             <option value="1">item group1</option>
                                             <option value="2">item group2</option>
                                             <option value="3">item group3</option>
+                                        </select> *@
+                                    </div>
+                                    </div>
+                                    
+                                    <div class="mb-4">
+                                        <label>@Model.lblItemName (@Model.lblArabicLanguage)</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
+                                        <select class="ArabicItemName form-select" id="ArabicItemName"  onchange="onItemChange(this, 'ArabicItemName')">
+                                                <option value="">Select Item </option>
+                                                @foreach (var item in Model.ItemCards)
+                                                {
+                                                    
+                                                        <option value="@item.Id"
+                                                            data-id="@item.ItemId"
+                                                            data-group="@item.GroupCode"
+                                                            data-code="@item.ItemCode"
+                                                            data-description="@item.ItemDescription"
+                                                            data-chemical="@item.Chemical" data-risk="@item.HazardTypeName"
+                                                            data-unit="@item.UnitOfmeasure" 
+                                                            >
+                                                            @item.ItemName
+                                                        </option>
+                                                    
+                                                }
                                         </select>
                                     </div>
+                                       
                                     <div class="mb-4">
-                                        <label for="ItemId">@Model.lblItemName (@Model.lblArabicLanguage)</label>
-                                        <select class="form-select" id="ItemId" name="ItemId"></select>
-                                    </div>
-                                    <div class="mb-4">
-                                        <label for="ItemId">@Model.lblItemName (@Model.lblEnglishLanguage)</label>
-                                        <select class="form-select" id="ItemId" name="ItemId"></select>
+                                         <label for="EnglishArabicName">@Model.lblItemName (@Model.lblEnglishLanguage)</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
+                                            <select class="EnglishArabicName form-select" id="EnglishArabicName" onchange="onItemChange(this, 'EnglishArabicName')">
+                                                <option value="">Select Item </option>
+                                                @foreach (var item in Model.ItemCards)
+                                                {
+                                                    <option value="@item.Id"
+                                                        data-id="@item.ItemId"
+                                                        data-group="@item.GroupCode"
+                                                        data-code="@item.ItemCode"
+                                                        data-description="@item.ItemDescription"
+                                                        data-chemical="@item.Chemical" data-risk="@item.HazardTypeName"
+                                                        data-unit="@item.UnitOfmeasure" 
+                                                        >
+                                                        @item.ItemName
+                                                    </option>
+                                                    
+                                                }
+                                            </select>
                                     </div>
                                     <div class="mb-4">
                                         <label for="itemDescription">@Model.lblItemDescription</label>
-                                        <input type="text" class="form-control" id="ItemDescription" readonly>
+                                        <input type="text" class="ItemDescription form-control" id="ItemDescription" readonly>
                                     </div>
                                     <div class="mb-4">
                                         <label for="typeofAsset">@Model.lblTypeofContract</label>
-                                        <input type="text" class="form-control" id="typeofAsset" readonly>
+                                        <input type="text" class="typeofAsset form-control" id="typeofAsset" readonly>
                                     </div>
                                     <div class="mb-4">
                                         <label for="chemical">@Model.lblChemical</label>
-                                        <input type="text" class="form-control" id="chemical" readonly>
+                                        <input type="text" class="chemical form-control" id="chemical" readonly>
                                     </div>
                                     <div class="mb-4">
                                         <label for="RiskRating">@Model.lblRiskRating</label>
-                                        <input type="text" class="form-control" id="RiskRating" readonly>
+                                        <input type="text" class="RiskRating form-control" id="RiskRating" readonly>
                                     </div>
                                     <div class="mb-4">
                                         <label for="stateofMatter">@Model.lblStateofMatter</label>
-                                        <select class="form-select" name="stateofMatter">
+                                        <select class="stateofMatter form-select" name="stateofMatter">
                                             <option value="1">item group1</option>
                                             <option value="2">item group2</option>
                                             <option value="3">item group3</option>
@@ -170,15 +279,15 @@
                                     </div>
                                     <div class="mb-4">
                                         <label for="UnitofMeasure">@Model.lblUnitOfMeasure</label>
-                                        <input type="text" class="form-control" id="UnitofMeasure" readonly>
+                                        <input type="text" class="UnitofMeasure form-control" id="UnitofMeasure" readonly>
                                     </div>
                                     <div class="mb-4">
                                         <label for="ReturnQuantity">@Model.lblReturned @Model.lblQuantity</label>
-                                        <input type="text" name="ReturnQuantity" value="" class="form-control" id="ReturnQuantity">
+                                        <input type="text" name="ReturnQuantity" value="" class="ReturnQuantity form-control" id="ReturnQuantity">
                                     </div>
                                     <div class="mb-4">
                                         <label for="ReturnNotes">@Model.lblReturnNotes</label>
-                                        <textarea class="form-control" id="ReturnNotes" name="ReturnNotes" rows="2"></textarea>
+                                        <textarea class="ReturnNotes form-control" id="ReturnNotes" name="ReturnNotes" rows="2"></textarea>
                                     </div>
                                     <button type="button" class="btn btn-danger btn-sm remove-entry me-3" style="position: absolute; top: 0; right: 0;">
                                         @Model.lblRemove

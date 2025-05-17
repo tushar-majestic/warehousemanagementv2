@@ -202,72 +202,136 @@
                                 var currentYear = DateTime.Now.Year;
                                 var previousYear = currentYear - 1;
                             }
-                            <div class="mb-4">
-                                <label for="FiscalYear">@Model.lblFiscalYear</label>
-                                <select class="form-select" asp-for="Report.FiscalYear" name="FiscalYear" id="FiscalYear" onchange="fetchSerialNumber()">
-                                    <option value="">Select Fiscal Year</option>
-                                    <option value="@previousYear">@previousYear</option>
-                                    <option value="@currentYear">@currentYear</option>
-                                </select>
+                            <div class="d-flex">
+                                <div class="mb-4 me-2" style="width: 48%;">
+                                    <label for="FiscalYear">@Model.lblFiscalYear</label>
+                                    <select class="form-select" asp-for="Report.FiscalYear" name="FiscalYear" id="FiscalYear" onchange="fetchSerialNumber()">
+                                        <option value="">Select Fiscal Year</option>
+                                        <option value="@previousYear">@previousYear</option>
+                                        <option value="@currentYear">@currentYear</option>
+                                    </select>
+                                </div>
+                                <div class="mb-4 ms-2" style="width: 48%;">
+                                    <label for="OrderDate">@Model.lblOrderDate</label>
+                                    <input  name="OrderDate" value="@(Model.Report.OrderDate != DateTime.MinValue ? Model.Report.OrderDate.ToString("yyyy-MM-dd") : "")" type="date" class="form-control" 
+                                        />
+                                </div>
                             </div>
-                            <div class="mb-4">
-                                <label for="OrderDate">@Model.lblOrderDate</label>
-                                <input  name="OrderDate" value="@(Model.Report.OrderDate != DateTime.MinValue ? Model.Report.OrderDate.ToString("yyyy-MM-dd") : "")" type="date" class="form-control" 
-                                     />
-                            </div>
-                            <div class="mb-4">
-                                <label for="RequestingSector">@Model.lblRequestingSector</label>
-                                <select class="form-select" name="RequestingSector" asp-for="Report.RequestingSector">
-                                    @* <select class="form-select" id="DId" name="DId"> *@
-                                    @if (Model.Destinations != null)
-                                    {   <option>Select Requesting Sector</option>
-                                        foreach (var item in Model.Destinations)
-                                        {
-                                            <option value="@item.DId" >@item.DestinationName</option>
-                                        }
-                                    }
-                               
-                                </select>
-                            </div>
-                            <div class="mb-4">
-                                <label for="RequestDocumentType">@Model.lblRequestDocumentType</label>
-                                <select class="form-select" name="RequestDocumentType" asp-for="Report.RequestDocumentType">
-                                    <option>Select Request document Type</option>
-                                    <option value="Completion">Completion</option>
-                                    <option value="Speech">Speech</option>
-                                </select>
-                            </div>
-                            <div class="mb-4">
-                                <label for="DocumentNumber">@Model.lblRequestDocumentNumber</label>
-                                <input type="text"   class="form-control" asp-for="Report.DocumentNumber">
-                            </div>
-                            <div class="mb-4">
-                                <label for="Sector">@Model.lblSector</label>
-                                <input type="text" class="form-control" id="Sector" name="Sector" asp-for="Report.Sector" >
-                            </div>
-                            <div class="mb-4">
-                                <label for="WarehouseName">@Model.lblStoreName</label>
-                                <select class="form-select" id="WarehouseName" asp-for="Report.WarehouseName">
-                                    @if (Model.Stores != null)
-                                    {
-                                        foreach (var item in Model.Stores)
-                                        {
-                                            if (item.IsActive == 1 && item.Ended == null)
+                            
+                            <div class="d-flex">
+                                <div class="mb-4 me-2" style="width: 48%;">
+                                    <label for="RequestingSector">@Model.lblRequestingSector</label>
+                                    <select class="form-select" name="RequestingSector" asp-for="Report.RequestingSector">
+                                        @* <select class="form-select" id="DId" name="DId"> *@
+                                        @if (Model.Destinations != null)
+                                        {   <option>Select Requesting Sector</option>
+                                            foreach (var item in Model.Destinations)
                                             {
-                                                <option value="@item.StoreId" selected="@(item.StoreId == Model.StoreId)">@item.StoreName</option>
+                                                <option value="@item.DId" >@item.DestinationName</option>
                                             }
                                         }
-                                    }
-                                </select>
+                                
+                                    </select>
+                                </div>
+                                <div class="mb-4 ms-2" style="width: 48%;">
+                                    <label for="RequestDocumentType">@Model.lblRequestDocumentType</label>
+                                    <select class="form-select" name="RequestDocumentType" asp-for="Report.RequestDocumentType">
+                                        <option>Select Request document Type</option>
+                                        <option value="Completion">Completion</option>
+                                        <option value="Speech">Speech</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="d-flex">
+                                <div class="mb-4 me-2" style="width: 48%;">
+                                    <label for="DocumentNumber">@Model.lblRequestDocumentNumber</label>
+                                    <input type="text"   class="form-control" asp-for="Report.DocumentNumber">
+                                </div>
+                                <div class="mb-4 ms-2" style="width: 48%;">
+                                    <label for="Sector">@Model.lblSector</label>
+                                    <input type="text" class="form-control" id="Sector" name="Sector" asp-for="Report.Sector" >
+                                </div>
+                            </div>
+                            
+                            <div class=" mb-4">
+                                <div class="me-2" >
+                                    <label for="WarehouseName">@Model.lblStoreName</label>
+                                    <select class="form-select" id="WarehouseName" asp-for="Report.WarehouseName">
+                                        @if (Model.Stores != null)
+                                        {
+                                            foreach (var item in Model.Stores)
+                                            {
+                                                if (item.IsActive == 1 && item.Ended == null)
+                                                {
+                                                    <option value="@item.StoreId" selected="@(item.StoreId == Model.StoreId)">@item.StoreName</option>
+                                                }
+                                            }
+                                        }
+                                    </select>
+
+                                </div>
+                                
+                                @* <div class="form-group ms-2" style="width: 48%;">
+                                    <label>Warehouse Keeper</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
+                                    <select class="form-select" asp-for="Report.KeeperId"    id="KeeperId" name="KeeperId" >
+                                       
+                                        <option value="">Select Warehouse Keeper</option>
+                                        @if (Model.KeeperList != null)
+                                        {
+                                            foreach (var item in Model.KeeperList)
+                                            {
+                                                    <option value="@item.UserId" data-UserName="@item.FullName" selected="@(item.UserId == Model.DeptManagerId)">@item.FullName</option>
+                                            }
+                                        }
+                                    </select>
+                                </div> *@
 
                             </div>
+                            
+
+                            @* <div class="d-flex mb-4">
+                                <div class="form-group me-2" style="width: 48%;">
+                                    <label>Department Manager</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
+                                    <select class="form-select" asp-for="Report.DeptManagerId"    id="DeptManagerId" name="DeptManagerId" >
+                                       
+                                        <option value="">Select Technical Member</option>
+                                        @if (Model.DeptManagerList != null)
+                                        {
+                                            foreach (var item in Model.DeptManagerList)
+                                            {
+                                                    <option value="@item.UserId" data-UserName="@item.FullName" selected="@(item.UserId == Model.DeptManagerId)">@item.FullName</option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+
+                                <div class="form-group ms-2" style="width: 48%;">
+                                    <label>Supervisor</label>
+                                    <select asp-for="Report.SupervisorId"  class="form-select" id="SupervisorId" name="SupervisorId" >
+                                        <option value="">Select General Supervisor</option>
+                                        @if (Model.SupervisorList != null)
+                                        {
+                                            foreach (var item in Model.SupervisorList)
+                                            {
+                                                    <option value="@item.UserId" data-UserName="@item.FullName" selected="@(item.UserId == Model.SupervisorId)">@item.FullName</option>
+                                            }
+                                        }
+
+
+                                    </select>
+                                    
+                                </div>
+
+                            </div> *@
                         <div class="col-lg-12 col-sm-12">
+                            
                             <div id="returnEntriesWrapper">
                                
                                 <div class="return-entry border p-3 mb-3 rounded position-relative">
                                     <div class="d-flex my-4">
                                         <div class=" me-2" style="width: 49%;">
-                                            <label for="RequestingPlace">@Model.lblItemGroups</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
+                                            <label for="itemGroup">@Model.lblItemGroups</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
                                             <select class="form-select" id="itemGroup" name="ItemsForReport[0].ItemGroup" onchange="filterItemsByGroup()">
                                                 @if (Model.ItemGroups != null)
                                                 {
