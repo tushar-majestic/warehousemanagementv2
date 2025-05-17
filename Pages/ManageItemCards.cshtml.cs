@@ -121,7 +121,7 @@ namespace LabMaterials.Pages
         //         {
         //             FillData(ItemName );
         //         }
-            
+
         //         else
         //             RedirectToPage("./Index?lang=" + Lang);
         // }
@@ -251,6 +251,7 @@ namespace LabMaterials.Pages
             this.lblStateofMatter = (Program.Translations["StateofMatter"])[Lang];
         }
     }
+    
 
    
 }
