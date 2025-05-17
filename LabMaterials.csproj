@@ -37,4 +37,8 @@
     <PackageReference Include="ztools.CoreLib" Version="2.0.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Pages\returnrequests\" />
+  </ItemGroup>
+
 </Project>

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace LabMaterials.DB;
 
@@ -83,6 +81,9 @@ public partial class LabDBContext : DbContext
     public virtual DbSet<UserGroupPrivilege> UserGroupPrivileges { get; set; }
 
     public virtual DbSet<VActivityLog> VActivityLogs { get; set; }
+    public DbSet<ReturnRequest> ReturnRequests { get; set; }
+    public DbSet<ReturnRequestItem> ReturnRequestItems { get; set; }
+
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

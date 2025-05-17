@@ -1,0 +1,195 @@
+﻿@page
+@model LabMaterials.Pages.newreturnRequestModel
+
+@{
+    ViewData["Title"] = "Create Return Request";
+}
+
+<div class="container py-4">
+    @if (!ViewData.ModelState.IsValid)
+    {
+        <div class="alert alert-danger">
+            ModelState is invalid. Errors:
+            <ul>
+                @foreach (var modelState in ViewData.ModelState)
+                {
+                    foreach (var error in modelState.Value.Errors)
+                    {
+                        <li>@modelState.Key: @error.ErrorMessage</li>
+                    }
+                }
+            </ul>
+        </div>
+    }
+
+    <h2>Create Return Request</h2>
+    <form method="post">
+        <div id="returnEntriesWrapper">
+            @for (int i = 0; i < Model.ReturnItems.Count; i++)
+            {
+                <div class="return-entry border p-3 mb-3 rounded">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Item Group</label>
+                            <select class="form-select" name="ReturnItems[@i].itemGroup">
+                                <option value="">Select Group</option>
+                                @foreach (var group in Model.ItemGroups)
+                                {
+                                    <option value="@group.GroupCode">@group.GroupDesc</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label>Arabic Item Name</label>
+                            <select class="form-select ArabicItemName" name="ReturnItems[@i].ItemCardId"
+                                    onchange="onItemChange(this, @i)">
+                                <option value="">Select Item</option>
+                                @foreach (var item in Model.ItemCards)
+                                {
+                                    <option value="@item.Id"
+                                            data-code="@item.ItemCode"
+                                            data-description="@item.ItemDescription"
+                                            data-chemical="@item.Chemical"
+                                            data-risk="@item.HazardTypeName"
+                                            data-unit="@item.UnitOfmeasure"
+                                            data-itemnamearabic="@item.ItemName"
+                                            data-itemnameenglish="@item.ItemName">
+                                        @item.ItemName
+                                    </option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label>Item Code</label>
+                            <input type="text" name="ReturnItems[@i].ItemCode" class="form-control ItemCode" readonly />
+                        </div>
+
+
+                        <input hidden type="text" name="ReturnItems[@i].ItemNameArabic" class="form-control ItemNameArabic" readonly />
+
+
+
+                        <input hidden type="text" name="ReturnItems[@i].ItemNameEnglish" class="form-control ItemNameEnglish" readonly />
+                        
+                        <div class="col-md-6">
+                            <label>Item Description</label>
+                            <input type="text" name="ReturnItems[@i].ItemDescription" class="form-control ItemDescription" readonly />
+                        </div>
+                        <div class="col-md-6">
+                            <label>Chemical</label>
+                            <input type="text" name="ReturnItems[@i].Chemical" class="form-control chemical" readonly />
+                        </div>
+                        <div class="col-md-6">
+                            <label>Risk Rating</label>
+                            <input type="text" name="ReturnItems[@i].RiskRating" class="form-control RiskRating" readonly />
+                        </div>
+                        <div class="col-md-6">
+                            <label>State of Matter</label>
+                            <select name="ReturnItems[@i].StateOfMatter" class="form-select">
+                                <option value="">Select State</option>
+                                @foreach (var state in Model.StateOfMatters)
+                                {
+                                    <option value="@state.Value">@state.Text</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label>Expiry Date</label>
+                            <input type="date" name="ReturnItems[@i].ExpiryDate" class="form-control" value="@Model.CurrentDate.ToString("yyyy-MM-dd")" />
+                        </div>
+                        <div class="col-md-6">
+                            <label>Unit of Measure</label>
+                            <input type="text" name="ReturnItems[@i].UnitOfMeasure" class="form-control UnitofMeasure" readonly />
+                        </div>
+                        <div class="col-md-6">
+                            <label>Return Quantity</label>
+                            <input type="number" name="ReturnItems[@i].ReturnQuantity" class="form-control" required />
+                        </div>
+                        <div class="col-12">
+                            <label>Return Notes</label>
+                            <textarea name="ReturnItems[@i].ReturnNotes" class="form-control" rows="2"></textarea>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <button type="button" class="btn btn-secondary mb-3" id="addEntryBtn">Add More Items</button>
+
+        <div class="mb-3">
+            <label>Order Number</label>
+            <input type="text" name="OrderNumber" class="form-control" />
+        </div>
+        <div class="mb-3">
+            <label>Order Date</label>
+            <input type="date" name="OrderDate" class="form-control" value="@Model.CurrentDate.ToString("yyyy-MM-dd")" />
+        </div>
+        <div class="mb-3">
+            <label>Requesting Sector</label>
+            <input type="text" name="RequestingSector" class="form-control" value="General Administration of Educational Services" />
+        </div>
+        <div class="mb-3">
+            <label>Applicant's Sector</label>
+            <select name="ApplicantsSector" class="form-select">
+                @foreach (var ApplicantsSector in Model.requesters)
+                {
+                    <option value="@ApplicantsSector.ReqId">@ApplicantsSector.DestinationName</option>
+                }
+            </select>
+            @* <input type="text" name="ApplicantsSector" class="form-control" /> *@
+        </div>
+        <div class="mb-3">
+            <label>Store</label>
+            <select name="StoreId" class="form-select">
+                @foreach (var store in Model.Stores.Where(s => s.IsActive == 1 && s.Ended == null))
+                {
+                    <option value="@store.StoreId">@store.StoreName</option>
+                }
+            </select>
+        </div>
+        <div class="mb-4">
+            <label>Reason for Return</label><br />
+            <div class="form-check">
+                <input type="radio" class="form-check-input" name="ReasonForReturn" value="SurPlus" />
+                <label class="form-check-label">Surplus</label>
+            </div>
+            <div class="form-check">
+                <input type="radio" class="form-check-input" name="ReasonForReturn" value="Expired" />
+                <label class="form-check-label">Expired</label>
+            </div>
+            <div class="form-check">
+                <input type="radio" class="form-check-input" name="ReasonForReturn" value="Invalid" />
+                <label class="form-check-label">Invalid</label>
+            </div>
+            <div class="form-check">
+                <input type="radio" class="form-check-input" name="ReasonForReturn" value="Damaged" />
+                <label class="form-check-label">Damaged</label>
+            </div>
+        </div>
+        <div class="d-flex gap-3">
+            <a href="/ManageItems" class="btn btn-outline-secondary">Cancel</a>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <script>
+        function onItemChange(select, index) {
+            const selected = select.options[select.selectedIndex];
+            document.querySelectorAll(".ItemCode")[index].value = selected.dataset.code || "";
+            document.querySelectorAll(".ItemDescription")[index].value = selected.dataset.description || "";
+            document.querySelectorAll(".chemical")[index].value = selected.dataset.chemical || "";
+            document.querySelectorAll(".RiskRating")[index].value = selected.dataset.risk || "";
+            document.querySelectorAll(".UnitofMeasure")[index].value = selected.dataset.unit || "";
+            document.querySelectorAll(".ItemNameArabic")[index].value = selected.dataset.itemnamearabic || "";
+            document.querySelectorAll(".ItemNameEnglish")[index].value = selected.dataset.itemnameenglish || "";
+
+        }
+
+        document.getElementById("addEntryBtn").addEventListener("click", function () {
+            alert("Dynamic entry cloning logic should go here.");
+            // Consider cloning last entry and renaming name attributes with incremented index.
+        });
+    </script>
+}

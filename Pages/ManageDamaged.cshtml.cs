@@ -1,6 +1,5 @@
 using LabMaterials.dtos;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace LabMaterials.Pages
 {
@@ -27,7 +26,7 @@ namespace LabMaterials.Pages
             lblUnitCode, lblSearch, lblSubmit, lblDamageReason, lblDamagedQuantity, lblManageItemGroup, lblManageUnit,
             lblAddItem, lblEdit, lblDelete, lblTotalItem, lblExpiryDate, lblBatchNo, lblDamage, lblDamagedItems, lblExportExcel,
             lblPrintTable;
-        public void OnGet(string? ItemName,string? Group, int page = 1)
+        public void OnGet(string? ItemName, string? Group, int page = 1)
         {
             base.ExtractSessionData();
             if (CanManageItems)
@@ -101,7 +100,7 @@ namespace LabMaterials.Pages
             {
                 if (columns != null && columns.Any())
                 {
-                    
+
                     string selectedColumns = string.Join(",", columns);
 
                     int? userId = HttpContext.Session.GetInt32("UserId");
@@ -197,6 +196,7 @@ namespace LabMaterials.Pages
                          join t in dbContext.ItemTypes on i.ItemTypeCode equals t.ItemTypeCode
                          join u in dbContext.Units on i.UnitId equals u.Id
                          join d in dbContext.DamagedItems on i.ItemId equals d.ItemId
+                         //join r in dbContext.ReturnRequestItems on i.ItemCode equals r.ItemCode
                          select new ItemInfo
                          {
                              AvailableQuantity = i.AvailableQuantity,
@@ -317,7 +317,7 @@ namespace LabMaterials.Pages
             this.lblDelete = (Program.Translations["Delete"])[Lang];
             this.lblTotalItem = (Program.Translations["TotalItem"])[Lang];
             this.lblDamagedQuantity = (Program.Translations["DamagedQuantity"])[Lang];
-            this.lblDamageReason = (Program.Translations["DamageReason"])[Lang]; 
+            this.lblDamageReason = (Program.Translations["DamageReason"])[Lang];
             this.lblDamagedItems = (Program.Translations["DamagedItems"])[Lang];
             this.lblExportExcel = (Program.Translations["ExportExcel"])[Lang];
             this.lblPrintTable = (Program.Translations["PrintTable"])[Lang];
