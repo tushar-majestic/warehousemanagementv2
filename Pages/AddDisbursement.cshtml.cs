@@ -168,7 +168,7 @@ namespace LabMaterials.Pages
             return new JsonResult(requesterName);
         }
 
-        public async Task<IActionResult> OnPostAsync([FromForm] DateTime OrderDate, [FromForm] int SerialNumber, [FromForm] string FiscalYear, [FromForm] string RequestDocumentType, [FromForm] int RequestingSector, [FromForm] string Sector)
+        public async Task<IActionResult> OnPostAsync([FromForm] DateTime OrderDate, [FromForm] int SerialNumber, [FromForm] string FiscalYear, [FromForm] string RequestDocumentType, [FromForm] int RequestingSector, [FromForm] string Sector, [FromForm] int DeptManagerId)
         {
             LogableTask task = LogableTask.NewTask("AddDisbursement");
             try
@@ -192,24 +192,24 @@ namespace LabMaterials.Pages
                     .ToList();
 
                 //General Supervisor list
-                var SupId = dbContext.UserGroups
-                    .Where(g => g.UserGroupName == "General Supervisor")
-                    .Select(g => g.UserGroupId)
-                    .FirstOrDefault();
+                // var SupId = dbContext.UserGroups
+                //     .Where(g => g.UserGroupName == "General Supervisor")
+                //     .Select(g => g.UserGroupId)
+                //     .FirstOrDefault();
 
-                SupervisorList = dbContext.Users
-                    .Where(u => u.UserGroupId == SupId)
-                    .ToList();
+                // SupervisorList = dbContext.Users
+                //     .Where(u => u.UserGroupId == SupId)
+                //     .ToList();
 
                 //Keeper  list
-                var KeepId = dbContext.UserGroups
-                    .Where(g => g.UserGroupName == "Warehouse Keeper")
-                    .Select(g => g.UserGroupId)
-                    .FirstOrDefault();
+                // var KeepId = dbContext.UserGroups
+                //     .Where(g => g.UserGroupName == "Warehouse Keeper")
+                //     .Select(g => g.UserGroupId)
+                //     .FirstOrDefault();
 
-                KeeperList = dbContext.Users
-                    .Where(u => u.UserGroupId == KeepId)
-                    .ToList();
+                // KeeperList = dbContext.Users
+                //     .Where(u => u.UserGroupId == KeepId)
+                //     .ToList();
                     
                  if (ItemsForReport == null || !ItemsForReport.Any())
                 {
@@ -237,7 +237,7 @@ namespace LabMaterials.Pages
                     Report.RequestingSector = RequestingSector;
                     Report.Sector = Sector;
                     // Report.KeeperId = KeeperId;
-                    // Report.DeptManagerId = DeptManagerId;
+                    Report.DeptManagerId = DeptManagerId;
                     // Report.SupervisorId = SupervisorId;
                     // Report.DocumentNumber = DocumentNumber;
 
