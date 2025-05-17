@@ -96,25 +96,25 @@ namespace LabMaterials.Pages
 
 
             // new 
-            ItemCardView = await (from item in _context.ItemCards
-                      join store in _context.Stores on item.StoreId equals store.StoreId into storeGroup
-                      from store in storeGroup.DefaultIfEmpty()
-                      select new ItemCardViewModels
-                      {
-                          GroupCode = item.GroupCode,
-                          ItemCardId = item.Id,
-                          ItemCode = item.ItemCode,
-                          ItemName = item.ItemName,
-                          ItemDescription = item.ItemDescription,
-                          UnitOfMeasure = item.UnitOfmeasure,
-                          Chemical = item.Chemical,
-                          HazardTypeName = item.HazardTypeName,
-                          QuantityAvailable = item.QuantityAvailable,
-                          WarehouseName = store.StoreName,
+            // ItemCardView = await (from item in _context.ItemCards
+            //           join store in _context.Stores on item.StoreId equals store.StoreId into storeGroup
+            //           from store in storeGroup.DefaultIfEmpty()
+            //           select new ItemCardViewModels
+            //           {
+            //               GroupCode = item.GroupCode,
+            //               ItemCardId = item.Id,
+            //               ItemCode = item.ItemCode,
+            //               ItemName = item.ItemName,
+            //               ItemDescription = item.ItemDescription,
+            //               UnitOfMeasure = item.UnitOfmeasure,
+            //               Chemical = item.Chemical,
+            //               HazardTypeName = item.HazardTypeName,
+            //               QuantityAvailable = item.QuantityAvailable,
+            //               WarehouseName = store.StoreName,
                           
-                    }).ToListAsync();
+            //         }).ToListAsync();
 
-            TotalItems = ItemCardView.Count();
+            // TotalItems = ItemCardView.Count();
         //     FillLables();
         // }
 
