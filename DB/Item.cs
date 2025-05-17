@@ -24,9 +24,10 @@ public partial class Item
     [StringLength(200)]
     public string ItemName { get; set; } = null!;
     [StringLength(200)]
-    public string StateofMatter { get; set; } 
+    public string? StateofMatter { get; set; } 
+
     [StringLength(200)]
-    public string ItemNameAr { get; set; } 
+    public string? ItemNameAr { get; set; }     
 
     [Column("UnitID")]
     public int UnitId { get; set; }
@@ -35,9 +36,9 @@ public partial class Item
     public bool Chemical { get; set; } 
 
     [StringLength(50)]
-    public string HazardTypeName { get; set; }
+    public string? HazardTypeName { get; set; }
     [StringLength(100)]
-    public string RiskRating { get; set; } = null;
+    public string? RiskRating { get; set; }
 
     public int AvailableQuantity { get; set; }
 

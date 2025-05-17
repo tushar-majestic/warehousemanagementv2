@@ -178,14 +178,19 @@ namespace LabMaterials.Pages
 
         }
 
-        public async Task<IActionResult> OnPostAsync(int? storeId, string lockToggle)
+        public async Task<IActionResult> OnPostAsync(int? StoreId, string lockToggle)
         {
-            if (storeId == null)
+
+            base.ExtractSessionData();
+            FillLables();
+            Console.WriteLine(StoreId);
+            Console.WriteLine(lockToggle);
+            if (StoreId == null)
             {
                 return NotFound();
             }
             var dbContext = new LabDBContext();
-            store = await dbContext.Stores.FindAsync(storeId);
+            store = await dbContext.Stores.FindAsync(StoreId);
 
             if (store == null)
             {
