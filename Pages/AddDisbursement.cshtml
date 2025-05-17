@@ -295,7 +295,7 @@
                                     <label>Department Manager</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
                                     <select class="form-select" asp-for="Report.DeptManagerId"    id="DeptManagerId" name="DeptManagerId" >
                                        
-                                        <option value="">Select Technical Member</option>
+                                        <option value="">Select Department Member</option>
                                         @if (Model.DeptManagerList != null)
                                         {
                                             foreach (var item in Model.DeptManagerList)
