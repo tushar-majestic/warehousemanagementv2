@@ -19,16 +19,34 @@ public partial class MaterialRequest
     public DateTime OrderDate { get; set; }
     public string FiscalYear { get; set; } = null;
 
-    public int RequestingSector { get; set; } 
+    public int RequestingSector { get; set; }
     public int RequestedByUserId { get; set; }
 
+    public int DeptManagerId { get; set; }
+    
+    public int KeeperId { get; set; }
+    public int SupervisorId { get; set; }
+    public int SectorManagerId { get; set; }
 
     public string RequestDocumentType { get; set; } = null;
     public string DocumentNumber { get; set; } = null;
     public string Sector { get; set; } = null!;
     public string WarehouseName { get; set; } = null;
     public bool KeeperApproval { get; set; }
+    public DateTime? KeeperApprovalDate { get; set; }
+
+    public bool SupervisorApproval { get; set; }
+    public DateTime? SupervisorApprovalDate { get; set; }
+
+    public bool SectorManagerApproval { get; set; }
+    public DateTime?  SectorManagerApprovalDate { get; set; }
+
+
+
+
     public bool DepartmentManagerApproval { get; set; }
+    public DateTime? DeptManagerApprovalDate { get; set; }
+
     public int? CurrentApproverUserId { get; set; }
 
     [ForeignKey("CurrentApproverUserId")]
@@ -38,4 +56,7 @@ public partial class MaterialRequest
     [ForeignKey("RequestedByUserId")]
     [InverseProperty("MaterialRequestRequestedByUsers")]
     public virtual User RequestedByUser { get; set; } = null!;
+    
+    [InverseProperty("MaterialRequest")]
+    public virtual ICollection<Message> Messages { get; set; } = new List<Message>();
 }
