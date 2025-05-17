@@ -142,7 +142,8 @@ namespace LabMaterials.Pages
                 ItemCards = dbContext.ItemCards.ToList();
                 Units = dbContext.Units.ToList();
                 ItemGroups = dbContext.ItemGroups.Where(g => g.Units.Count() > 0).ToList();
-                 if (ItemsForReport == null || !ItemsForReport.Any())
+
+                if (ItemsForReport == null || !ItemsForReport.Any())
                 {
                     ItemsForReport = new List<DespensedItem> { new DespensedItem() };
                 }
