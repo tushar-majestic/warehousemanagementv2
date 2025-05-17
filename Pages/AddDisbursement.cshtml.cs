@@ -181,37 +181,10 @@ namespace LabMaterials.Pages
                 ItemCards = dbContext.ItemCards.ToList();
                 Units = dbContext.Units.ToList();
                 ItemGroups = dbContext.ItemGroups.Where(g => g.Units.Count() > 0).ToList();
-                //Department Manager list
-                var DepManagerId = dbContext.UserGroups
-                    .Where(g => g.UserGroupName == "Department Manager")
-                    .Select(g => g.UserGroupId)
-                    .FirstOrDefault();
 
-                DeptManagerList = dbContext.Users
-                    .Where(u => u.UserGroupId == DepManagerId)
-                    .ToList();
 
-                //General Supervisor list
-                // var SupId = dbContext.UserGroups
-                //     .Where(g => g.UserGroupName == "General Supervisor")
-                //     .Select(g => g.UserGroupId)
-                //     .FirstOrDefault();
+                if (ItemsForReport == null || !ItemsForReport.Any())
 
-                // SupervisorList = dbContext.Users
-                //     .Where(u => u.UserGroupId == SupId)
-                //     .ToList();
-
-                //Keeper  list
-                // var KeepId = dbContext.UserGroups
-                //     .Where(g => g.UserGroupName == "Warehouse Keeper")
-                //     .Select(g => g.UserGroupId)
-                //     .FirstOrDefault();
-
-                // KeeperList = dbContext.Users
-                //     .Where(u => u.UserGroupId == KeepId)
-                //     .ToList();
-                    
-                 if (ItemsForReport == null || !ItemsForReport.Any())
                 {
                     ItemsForReport = new List<DespensedItem> { new DespensedItem() };
                 }
