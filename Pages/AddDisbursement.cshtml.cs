@@ -40,8 +40,12 @@ namespace LabMaterials.Pages
         [BindProperty]
         public List<DespensedItem> ItemsForReport { get; set; } = new List<DespensedItem>();
         public List<User> DeptManagerList {  get; set; }
+        public List<User> SupervisorList {  get; set; }
+        public List<User> KeeperList {  get; set; }
 
-        public int?  GeneralSupervisorId, DeptManagerId ;
+
+
+        public int? SupervisorId, DeptManagerId, KeeperId;
 
 
 
@@ -75,6 +79,26 @@ namespace LabMaterials.Pages
 
             DeptManagerList = dbContext.Users
                         .Where(u => u.UserGroupId == DeptManagerId)
+                        .ToList();
+
+            //General Supervisor list
+            var SupervisorId = dbContext.UserGroups
+                    .Where(g => g.UserGroupName == "General Supervisor")
+                    .Select(g => g.UserGroupId)
+                    .FirstOrDefault();
+
+            SupervisorList = dbContext.Users
+                        .Where(u => u.UserGroupId == SupervisorId)
+                        .ToList();
+
+             //Keeper  list
+            var KeeperId = dbContext.UserGroups
+                    .Where(g => g.UserGroupName == "Warehouse Keeper")
+                    .Select(g => g.UserGroupId)
+                    .FirstOrDefault();
+
+            KeeperList = dbContext.Users
+                        .Where(u => u.UserGroupId == KeeperId)
                         .ToList();
 
         }
@@ -144,7 +168,7 @@ namespace LabMaterials.Pages
             return new JsonResult(requesterName);
         }
 
-        public async Task<IActionResult> OnPostAsync([FromForm] DateTime OrderDate, [FromForm] int SerialNumber, [FromForm] string FiscalYear, [FromForm] string RequestDocumentType, [FromForm] int RequestingSector, [FromForm] string Sector)
+        public async Task<IActionResult> OnPostAsync([FromForm] DateTime OrderDate, [FromForm] int SerialNumber, [FromForm] string FiscalYear, [FromForm] string RequestDocumentType, [FromForm] int RequestingSector, [FromForm] string Sector, [FromForm] int KeeperId, [FromForm] int DeptManagerId, [FromForm] int SupervisorId)
         {
             LogableTask task = LogableTask.NewTask("AddDisbursement");
             try
@@ -181,6 +205,9 @@ namespace LabMaterials.Pages
                     Report.RequestDocumentType = RequestDocumentType;
                     Report.RequestingSector = RequestingSector;
                     Report.Sector = Sector;
+                    Report.KeeperId = KeeperId;
+                    Report.DeptManagerId = DeptManagerId;
+                    Report.SupervisorId = SupervisorId;
                     // Report.DocumentNumber = DocumentNumber;
 
                     if (string.IsNullOrEmpty(FiscalYear))
