@@ -22,12 +22,20 @@ public partial class MaterialRequest
     public int RequestingSector { get; set; } 
     public int RequestedByUserId { get; set; }
 
+    public int DeptManagerId { get; set; }
+    public int KeeperId { get; set; }
+    public int SupervisorId { get; set; }
+    public int SectorManagerId { get; set; }
 
     public string RequestDocumentType { get; set; } = null;
     public string DocumentNumber { get; set; } = null;
     public string Sector { get; set; } = null!;
     public string WarehouseName { get; set; } = null;
     public bool KeeperApproval { get; set; }
+    public bool SupervisorApproval { get; set; }
+    public bool SectorManagerApproval { get; set; }
+
+
     public bool DepartmentManagerApproval { get; set; }
     public int? CurrentApproverUserId { get; set; }
 
