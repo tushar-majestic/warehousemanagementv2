@@ -37,7 +37,16 @@ namespace LabMaterials.Pages
         public List<ItemInfoByStoreId> ItemInfoByStore { get; set; }
         [BindProperty]
         public MaterialRequest Report { get; set; }
+        [BindProperty]
         public List<DespensedItem> ItemsForReport { get; set; } = new List<DespensedItem>();
+        public List<User> DeptManagerList {  get; set; }
+        public List<User> SupervisorList {  get; set; }
+        public List<User> KeeperList {  get; set; }
+
+
+
+        public int? SupervisorId, DeptManagerId, KeeperId;
+
 
 
         public string lblAddDisbursement, lblRequesterName, lblRequestReceivedDate, lblQuantity, lblItemCode, lblItemTypeCode, lblItemName, lblStoreName, lblRequestingPlace, lblComments,
@@ -61,6 +70,36 @@ namespace LabMaterials.Pages
             ItemGroups = dbContext.ItemGroups.Where(g => g.Units.Count() > 0).ToList();
             // **Important**: seed one blank DespensedItem so index [0] exists
             ItemsForReport = new List<DespensedItem> { new DespensedItem() };
+
+            //Department Manager list
+            var DeptManagerId = dbContext.UserGroups
+                    .Where(g => g.UserGroupName == "Department Manager")
+                    .Select(g => g.UserGroupId)
+                    .FirstOrDefault();
+
+            DeptManagerList = dbContext.Users
+                        .Where(u => u.UserGroupId == DeptManagerId)
+                        .ToList();
+
+            //General Supervisor list
+            var SupervisorId = dbContext.UserGroups
+                    .Where(g => g.UserGroupName == "General Supervisor")
+                    .Select(g => g.UserGroupId)
+                    .FirstOrDefault();
+
+            SupervisorList = dbContext.Users
+                        .Where(u => u.UserGroupId == SupervisorId)
+                        .ToList();
+
+             //Keeper  list
+            var KeeperId = dbContext.UserGroups
+                    .Where(g => g.UserGroupName == "Warehouse Keeper")
+                    .Select(g => g.UserGroupId)
+                    .FirstOrDefault();
+
+            KeeperList = dbContext.Users
+                        .Where(u => u.UserGroupId == KeeperId)
+                        .ToList();
 
         }
         public void OnGetOld()
@@ -129,7 +168,7 @@ namespace LabMaterials.Pages
             return new JsonResult(requesterName);
         }
 
-        public async Task<IActionResult> OnPostAsync([FromForm] DateTime OrderDate, [FromForm] int SerialNumber, [FromForm] string FiscalYear, [FromForm] string RequestDocumentType, [FromForm] int RequestingSector, [FromForm] string Sector)
+        public async Task<IActionResult> OnPostAsync([FromForm] DateTime OrderDate, [FromForm] int SerialNumber, [FromForm] string FiscalYear, [FromForm] string RequestDocumentType, [FromForm] int RequestingSector, [FromForm] string Sector, [FromForm] int DeptManagerId)
         {
             LogableTask task = LogableTask.NewTask("AddDisbursement");
             try
@@ -143,13 +182,16 @@ namespace LabMaterials.Pages
                 Units = dbContext.Units.ToList();
                 ItemGroups = dbContext.ItemGroups.Where(g => g.Units.Count() > 0).ToList();
 
+
                 if (ItemsForReport == null || !ItemsForReport.Any())
+
                 {
                     ItemsForReport = new List<DespensedItem> { new DespensedItem() };
                 }
 
                 if (CanDisburseItems)
                 {
+         
                     FillLables();
                     Report.OrderDate = OrderDate;
                     int userId = HttpContext.Session.GetInt32("UserId").Value;
@@ -167,6 +209,9 @@ namespace LabMaterials.Pages
                     Report.RequestDocumentType = RequestDocumentType;
                     Report.RequestingSector = RequestingSector;
                     Report.Sector = Sector;
+                    // Report.KeeperId = KeeperId;
+                    Report.DeptManagerId = DeptManagerId;
+                    // Report.SupervisorId = SupervisorId;
                     // Report.DocumentNumber = DocumentNumber;
 
                     if (string.IsNullOrEmpty(FiscalYear))
@@ -202,6 +247,11 @@ namespace LabMaterials.Pages
                         ErrorMsg = (Program.Translations["ReceivingWarehouseMissing"])[Lang];
                         return Page();
                     }
+                    if (Report.DeptManagerId == 0)
+                    {
+                        ErrorMsg = (Program.Translations["DeptManagerMissing"])[Lang];
+                        return Page();
+                    }
 
 
                     if (!ItemsForReport.Any(item => item.ItemCardId != 0 && item.Quantity > 0 && item.UnitPrice > 0))
@@ -213,19 +263,41 @@ namespace LabMaterials.Pages
                     _context.MaterialRequests.Add(Report);
                     await _context.SaveChangesAsync();
 
+ 
                     foreach (var item in ItemsForReport)
                     {
 
-                        item.MaterialRequestId = Report.RequestId; // Ensure the ReceivingReportId is set correctly
+                        item.MaterialRequestId = Report.RequestId;
                         item.ItemCardId = item.ItemCardId;
                         if (item.Comments == null)
                             item.Comments = "";
 
 
                         _context.DespensedItems.Add(item); // Add the item to the context
+                        //reduce quantity when request is approved
+                        // var itemCard = await _context.ItemCards.FindAsync(item.ItemCardId);
+                        // if (itemCard == null)
+                        // {   //ItemCard not found
+                        //     return Page();
+                        // }
+                        // itemCard.QuantityAvailable -= item.Quantity;
                     }
                     await _context.SaveChangesAsync();
                 }
+
+                string Message = string.Format("Sent Material Dispensing Request Approve the request or add comments.");
+                var msg = new  Message
+                {
+                    MaterialRequestId = Report.RequestId,
+                    ReportType = "Dispensing",
+                    SenderId = Report.RequestedByUserId,
+                    RecipientId = Report.DeptManagerId,
+                    Content = Message,
+                    Type = "",
+                    CreatedAt = DateTime.UtcNow
+                };
+                dbContext.Messages.Add(msg);
+                dbContext.SaveChanges();
                 return RedirectToPage("/Disbursements");
 
 

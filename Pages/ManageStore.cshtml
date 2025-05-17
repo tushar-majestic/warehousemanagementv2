@@ -440,7 +440,7 @@
                                         <td>
                                             <form method="post">
                                                 <input type="hidden" value="@item.StoreId" name="StoreId" />
-                                                <button type="submit" class="btn btn-info" name="lockToggle" value="toggle">
+                                                <button type="submit" class="btn btn-info" name="lockToggle" value="toggle" asp-page-handler="Lock">
                                                     @if (item.IsActive == 0)
                                                     {
                                                         <span>@Model.lblUnlock</span>

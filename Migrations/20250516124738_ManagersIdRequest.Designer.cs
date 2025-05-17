@@ -4,6 +4,7 @@ using LabMaterials.DB;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LabMaterials.Migrations
 {
     [DbContext(typeof(LabDBContext))]
-    partial class LabDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250516124738_ManagersIdRequest")]
+    partial class ManagersIdRequest
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -371,6 +374,7 @@ namespace LabMaterials.Migrations
                         .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("ItemNameAr")
+                        .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
@@ -385,6 +389,7 @@ namespace LabMaterials.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("StateofMatter")
+                        .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
@@ -650,9 +655,6 @@ namespace LabMaterials.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("ItemCardId")
-                        .HasColumnType("int");
-
                     b.Property<string>("ItemCode")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -784,9 +786,6 @@ namespace LabMaterials.Migrations
                     b.Property<bool>("DepartmentManagerApproval")
                         .HasColumnType("bit");
 
-                    b.Property<DateTime?>("DeptManagerApprovalDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<int>("DeptManagerId")
                         .HasColumnType("int");
 
@@ -800,9 +799,6 @@ namespace LabMaterials.Migrations
 
                     b.Property<bool>("KeeperApproval")
                         .HasColumnType("bit");
-
-                    b.Property<DateTime?>("KeeperApprovalDate")
-                        .HasColumnType("datetime2");
 
                     b.Property<int>("KeeperId")
                         .HasColumnType("int");
@@ -827,9 +823,6 @@ namespace LabMaterials.Migrations
                     b.Property<bool>("SectorManagerApproval")
                         .HasColumnType("bit");
 
-                    b.Property<DateTime?>("SectorManagerApprovalDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<int>("SectorManagerId")
                         .HasColumnType("int");
 
@@ -838,9 +831,6 @@ namespace LabMaterials.Migrations
 
                     b.Property<bool>("SupervisorApproval")
                         .HasColumnType("bit");
-
-                    b.Property<DateTime?>("SupervisorApprovalDate")
-                        .HasColumnType("datetime2");
 
                     b.Property<int>("SupervisorId")
                         .HasColumnType("int");
@@ -873,9 +863,6 @@ namespace LabMaterials.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("MaterialRequestId")
-                        .HasColumnType("int");
-
                     b.Property<int?>("RecipientId")
                         .HasColumnType("int");
 
@@ -896,8 +883,6 @@ namespace LabMaterials.Migrations
                         .HasDefaultValue("");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("MaterialRequestId");
 
                     b.HasIndex(new[] { "ReportId" }, "IX_Messages_ReportId");
 
@@ -1028,6 +1013,9 @@ namespace LabMaterials.Migrations
                     b.Property<bool>("IsRejectedByTechnicalMember")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsReplied")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("KeeperApproval")
                         .HasColumnType("bit");
 
@@ -1048,6 +1036,9 @@ namespace LabMaterials.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(max)")
                         .HasDefaultValue("");
+
+                    b.Property<int?>("RejectedById")
+                        .HasColumnType("int");
 
                     b.Property<string>("SectorNumber")
                         .IsRequired()
@@ -2130,15 +2121,9 @@ namespace LabMaterials.Migrations
 
             modelBuilder.Entity("LabMaterials.DB.Message", b =>
                 {
-                    b.HasOne("LabMaterials.DB.MaterialRequest", "MaterialRequest")
-                        .WithMany("Messages")
-                        .HasForeignKey("MaterialRequestId");
-
                     b.HasOne("LabMaterials.DB.ReceivingReport", "ReceivingReport")
                         .WithMany("Messages")
                         .HasForeignKey("ReportId");
-
-                    b.Navigation("MaterialRequest");
 
                     b.Navigation("ReceivingReport");
                 });
@@ -2386,11 +2371,6 @@ namespace LabMaterials.Migrations
                     b.Navigation("ItemCards");
 
                     b.Navigation("Items");
-                });
-
-            modelBuilder.Entity("LabMaterials.DB.MaterialRequest", b =>
-                {
-                    b.Navigation("Messages");
                 });
 
             modelBuilder.Entity("LabMaterials.DB.Privilege", b =>

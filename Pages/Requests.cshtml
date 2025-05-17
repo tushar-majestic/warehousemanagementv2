@@ -47,7 +47,7 @@
             
         </a>
         
-        @if (@Model.UserGroupName == "Warehouse Keeper")
+        @if (Model.UserGroupName == "Warehouse Keeper")
         {
             <a class="nav-link @Model.outboxClass border border-bottom-0" href="?type=outbox">Request Sent</a>
         }
@@ -68,113 +68,7 @@
                         {
                             @if (Model.InboxList != null)
                             {
-                                @* @foreach( var inbox in Model.InboxList){
-                                    <tr>
-                                        <td>
-                                               @{
-                                                 var sender = Model.AllUsers.FirstOrDefault(u => u.UserId == inbox.SenderId);                                               
-                                                }
-                                                <div  class="m-2"><b>@sender?.FullName- </b>@inbox.Content</div>
-                                                @{
-                                                    var request = Model.AllRequest.FirstOrDefault(r => r.Id == inbox.ReportId);
-                                                    var technicalMemberApproval = request?.TechnicalMemberApproval;
-                                                    var generalSupApproval = request?.GeneralSupApproval;
-                                                    var rejectedById = request?.RejectedById;
-                                                    var IsReplied = request?.IsReplied;
-                                                    var IsRejectedByTechMem = request?.IsRejectedByTechnicalMember;
-                                                    var IsRejectedByGenSup = request?.IsRejectedByGeneralSupervisor;
-                                                }
-                                               
-                                                @if (@Model.UserGroupName == "Technical Member" || @Model.UserGroupName == "General Supervisor")
-                                                {
-                                                        bool isTechMember = Model.UserGroupName == "Technical Member";
-                                                        bool isGenSup = Model.UserGroupName == "General Supervisor";
-
-                                                        bool techPending = technicalMemberApproval == false && isTechMember;
-                                                        bool genSupPending = generalSupApproval == false && isGenSup;
-
-                                                        bool techAccepted = technicalMemberApproval == true && isTechMember;
-                                                        bool genSupAccepted = generalSupApproval == true && isGenSup;
-                                                        if(isTechMember && IsRejectedByTechMem==true && @inbox.Type != "Reply")
-                                                        {
-                                                            <span class="bg-danger p-2 rounded text-white">Rejected</span>
-                                                        }
-                                                        else if(isGenSup && IsRejectedByGenSup ==  true  && @inbox.Type != "Reply")
-                                                        {
-                                                            <span class="bg-danger p-2 rounded text-white">Rejected</span>
-                                                        }
-                                                        else if (techPending || genSupPending)
-                                                        {
-                                                            <form method="post" class="d-inline">
-                                                                <input type="text" value="@inbox.ReportId" name="ReceivingReportId" hidden />
-                                                                <button class="btn btn-info btn-sm p-1" asp-page-handler="Accept">
-                                                                    Accept
-                                                                </button>
-                                                            </form>
-
-                                                            <button class="btn btn-warning btn-sm p-1" data-toggle="modal" data-target="#commentRejectModal" onclick="setRejectReportId(@inbox.ReportId)">
-                                                                Comment & Reject
-                                                            </button>
-                                                        }
-                                                        else if ((techAccepted || genSupAccepted) && inbox.Type != "Information" && inbox.Type != "Rejected")
-                                                        {
-                                                            <span class="bg-success p-2 rounded text-white">Accepted</span>
-                                                        }
-                                                        else if(inbox.Type == "Rejected")
-                                                        {     
-                                                         
-                                                                <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#ReplyModal" onclick="setReplyReportId(@inbox.ReportId,'@inbox.SenderId')">Reply & Resend</button>
-
-                                                                <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#commentRejectModal" onclick="setRejectReportId(@inbox.ReportId)">Comment & Reject</button>
-                                                           
-                                                           
-
-                                                           
-                                                        }
-                                                    
-                                                
-                                                }
-                                                else if (Model.UserGroupName == "Warehouse Keeper")
-                                                {
-                                                  
-                                                    if(@inbox.Type == "Rejected"){
-                                                        @if (IsReplied==false)
-                                                        {
-                                                            <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#ReplyModal" onclick="setReplyReportId(@inbox.ReportId,'@inbox.SenderId')">Reply & Resend</button>
-
-                                                        }
-                                                        else if (IsReplied == true)
-                                                        {
-                                                                <span class="bg-success p-2 rounded text-white">Replied</span>
-                                                        }
-                                                    }
-                                                    else if(technicalMemberApproval == true && generalSupApproval == true){
-                                                        <form method="post">
-                                                            <input type="hidden" value="@inbox.ReportId" name="ReportId" />
-
-                                                            <button asp-page-handler="AddOrder" class="btn btn-info btn-sm p-1"> Add Order to Item Card</button>
-                                                           
-                                                        </form>
-                                                    }
-
-                                                    
-                                                }
-
-                                        </td>
-                                        @{
-                                            var localTime = inbox.CreatedAt.ToLocalTime();
-                                        }
-                                        <td>@localTime</td>
-
-                                        <td>
-                                            <form method="post">
-                                                <input type="hidden" value="@inbox.ReportId" name="ReportId" />
-                                                <input type="submit" value="@Model.lblView" class="btn btn-secondary" asp-page-handler="View" />
-                                            </form>   
-                                        </td>
-                                    </tr>
-                                } *@
-
+                            
                                 @foreach( var inbox in Model.InboxList){
                                     <tr>
                                         <td>
@@ -186,45 +80,109 @@
                                             }
                                             <div  class="m-2"><b>@sender?.FullName- </b>@inbox.Content</div>
                                             @if(inbox.Type == ""){
-                                                @* case 1 Sender:keeper Receiver: tech mem and case 4 combined *@
-                                                @if((senderGroupName == "Warehouse Keeper" && Model.UserGroupName == "Technical Member") || (senderGroupName == "Technical Member" && Model.UserGroupName == "General Supervisor")){
-                                                    <form method="post" class="d-inline">
+
+                                                @if(inbox.ReportType == "Receiving"){
+                                                    @* case 1 Sender:keeper Receiver: tech mem and case 4 combined *@
+                                                    @if((senderGroupName == "Warehouse Keeper" && Model.UserGroupName == "Technical Member") || (senderGroupName == "Technical Member" && Model.UserGroupName == "General Supervisor")){
+                                                        <form method="post" class="d-inline">
                                                         <input type="text" value="@inbox.ReportId" name="ReceivingReportId" hidden />
                                                         <input type="hidden" value="@inbox.Id" name="MessageId">
                                                         <button class="btn btn-info btn-sm p-1" asp-page-handler="Accept">
                                                             Accept
                                                         </button>
-                                                    </form>
+                                                        </form>
 
-                                                    <button class="btn btn-warning btn-sm p-1" data-toggle="modal" data-target="#commentRejectModal" onclick="setRejectReportId(@inbox.ReportId, @inbox.Id)">
+                                                        <button class="btn btn-warning btn-sm p-1" data-toggle="modal" data-target="#commentRejectModal" onclick="setRejectReportId(@inbox.ReportId, @inbox.Id,'@inbox.ReportType')">
                                                         Comment & Reject
-                                                    </button>
+                                                        </button>
+                                                    }
+                                                    @* case 2 Sender:Tech Mem Receiver: keeper *@
+                                                    else if(senderGroupName == "Technical Member" && Model.UserGroupName == "Warehouse Keeper"){
+                                                        <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#ReplyModal" onclick="setReplyReportId(@inbox.ReportId,'@inbox.SenderId',@inbox.Id,'@inbox.ReportType')">Reply & Resend</button>
+
+                                                    }
+                                                    @* case 5 Sender:General Supervisor Receiver: keeper *@
+                                                    else if(senderGroupName == "General Supervisor" && Model.UserGroupName == "Warehouse Keeper"){
+                                                        <form method="post">
+                                                            <input type="hidden" value="@inbox.ReportId" name="ReportId" />
+                                                            <input type="hidden" value="@inbox.Id" id="InboxId" name="InboxId" />
+
+                                                            <button asp-page-handler="AddOrder" class="btn btn-info btn-sm p-1"> Add Order to Item Card</button>
+                                                            
+                                                        </form>
+                                                    }
+                                                    @* case 6 Sender:General Supervisor Receiver: Tech Mem *@
+                                                    else if(senderGroupName == "General Supervisor" && Model.UserGroupName == "Technical Member"){
+                                                        <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#ReplyModal" onclick="setReplyReportId(@inbox.ReportId,'@inbox.SenderId',@inbox.Id,'@inbox.ReportType')">Reply & Resend</button>
+
+                                                        <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#commentRejectModal" onclick="setRejectReportId(@inbox.ReportId, @inbox.Id,'@inbox.ReportType')">Comment & Reject</button>
+                                                    }
+
+
+
+                                                } 
+                                                // For Material Dispensing Messages
+                                                else if(inbox.ReportType == "Dispensing"){
+                                                    @* case 1 Sender: Warehouse Manager Receiver:Department Manager *@
+                                                    if(senderGroupName == "Warehouse Manager" && Model.UserGroupName == "Department Manager"){
+                                                        @* <input type="text" value="@inbox.ReportId" name="ReceivingReportId" hidden />
+                                                        <input type="hidden" value="@inbox.Id" name="MessageId"> *@
+                                                        <button class="btn btn-info btn-sm p-1" data-toggle="modal" data-target="#specifyRecipient" onclick="setAcceptReportId(@inbox.MaterialRequestId, @inbox.Id)">
+                                                                Accept
+                                                        </button>
+
+                                                        <button class="btn btn-warning btn-sm p-1" data-toggle="modal" data-target="#commentRejectModal" onclick="setRejectReportId(@inbox.MaterialRequestId, @inbox.Id,'@inbox.ReportType')">
+                                                            Comment & Reject
+                                                        </button>
+                                                    }
+                                                    @* case 2 Sender: Department Manager Receiver: Warehouse Keeper *@
+                                                    else if(senderGroupName == "Department Manager" && Model.UserGroupName == "Warehouse Keeper"){
+                                                        
+                                                        <button class="btn btn-info btn-sm p-1" data-toggle="modal" data-target="#specifyRecipient" onclick="setAcceptReportId(@inbox.MaterialRequestId, @inbox.Id)">
+                                                                Deduct Order form Item Card
+                                                        </button>
+
+                                                        <button class="btn btn-warning btn-sm p-1" data-toggle="modal" data-target="#commentRejectModal" onclick="setRejectReportId(@inbox.MaterialRequestId, @inbox.Id,'@inbox.ReportType')">
+                                                            Comment & Reject
+                                                        </button>
+                                                    }
+                                                    @* case 3 Sender: warehouse Keeper Reciver: supervisor *@
+                                                    else if(senderGroupName == "Warehouse Keeper" && Model.UserGroupName == "General Supervisor"){
+
+                                                        <form method="post" class="d-inline">
+                                                            <input type="hidden" id="AcceptReportId" value="@inbox.MaterialRequestId" name="AcceptReportId" />
+                                                            <input type="hidden" id="AcceptMessageId" name="AcceptMessageId" value="@inbox.Id"/>
+                                                            <input type="hidden" name="ReceipientId" />
+                                                            <button asp-page-handler="AcceptAndSpecify" class="btn btn-info btn-sm p-1">Accept</button>
+                                                        </form>
+                                                        
+
+                                                        <button class="btn btn-warning btn-sm p-1" data-toggle="modal" data-target="#commentRejectModal" onclick="setRejectReportId(@inbox.MaterialRequestId, @inbox.Id,'@inbox.ReportType')">
+                                                            Comment & Reject
+                                                        </button>
+                                                    }
+                                                    @* Case 4 Sender: Department Manager Receiver: Warehouse Manager  *@
+                                                    else if (senderGroupName == "Department Manager" && Model.UserGroupName == "Warehouse Manager"){
+                                                        <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#ReplyModal" onclick="setReplyReportId(@inbox.MaterialRequestId,'@inbox.SenderId',@inbox.Id,'@inbox.ReportType')">Reply & Resend</button>
+
+                                                        
+                                                    }
+                                                    @* case 5 Sender: Warehouse Keeper Receiver: Dept Manager  *@
+                                                    else if(senderGroupName == "Warehouse Keeper" && Model.UserGroupName == "Department Manager"){
+                                                        <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#ReplyModal" onclick="setReplyReportId(@inbox.MaterialRequestId,'@inbox.SenderId',@inbox.Id,'@inbox.ReportType')">Reply & Resend</button>
+
+                                                        <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#commentRejectModal" onclick="setRejectReportId(@inbox.ReportId, @inbox.Id,'@inbox.ReportType')">Comment & Reject</button>
+                                                    }
+                                                    @* case 6 Sender: Supervisor  Receiver: keeper  *@
+                                                    else if(senderGroupName == "General Supervisor" && Model.UserGroupName == "Warehouse Keeper"){
+                                                        <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#ReplyModal" onclick="setReplyReportId(@inbox.MaterialRequestId,'@inbox.SenderId',@inbox.Id,'@inbox.ReportType')">Reply & Resend</button>
+
+                                                        <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#commentRejectModal" onclick="setRejectReportId(@inbox.ReportId, @inbox.Id,'@inbox.ReportType')">Comment & Reject</button>
+                                                    }
+                                                    
                                                 }
-                                                @* case 2 Sender:Tech Mem Receiver: keeper *@
-                                                else if(senderGroupName == "Technical Member" && Model.UserGroupName == "Warehouse Keeper"){
-                                                    <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#ReplyModal" onclick="setReplyReportId(@inbox.ReportId,'@inbox.SenderId',@inbox.Id)">Reply & Resend</button>
-
-                                                }
-                                                @* case 5 Sender:General Supervisor Receiver: keeper *@
-                                                else if(senderGroupName == "General Supervisor" && Model.UserGroupName == "Warehouse Keeper"){
-                                                    <form method="post">
-                                                        <input type="hidden" value="@inbox.ReportId" name="ReportId" />
-                                                        <input type="hidden" value="@inbox.Id" id="InboxId" name="InboxId" />
-
-                                                        <button asp-page-handler="AddOrder" class="btn btn-info btn-sm p-1"> Add Order to Item Card</button>
-                                                           
-                                                    </form>
-                                                }
-                                                @* case 6 Sender:General Supervisor Receiver: Tech Mem *@
-                                                else if(senderGroupName == "General Supervisor" && Model.UserGroupName == "Technical Member"){
-                                                    <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#ReplyModal" onclick="setReplyReportId(@inbox.ReportId,'@inbox.SenderId',@inbox.Id)">Reply & Resend</button>
-
-                                                    <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#commentRejectModal" onclick="setRejectReportId(@inbox.ReportId, @inbox.Id)">Comment & Reject</button>
-                                                }
-
-
-
-                                            } 
+                                                
+                                            }
                                             else if(inbox.Type == "Accepted")
                                             {
                                                 <span class="bg-success p-2 rounded text-white">Accepted</span>
@@ -238,16 +196,21 @@
                                             else if(inbox.Type == "Added"){
                                                 <span class="bg-success p-2 rounded text-white">Added Order to Item Card</span>
                                             }
+                                            
                                             @{
-                                            var localTime = inbox.CreatedAt.ToLocalTime();
+                                                var localTime = inbox.CreatedAt.ToLocalTime();
                                             }
                                             <td>@localTime</td>
 
                                             <td>
-                                                <form method="post">
-                                                    <input type="hidden" value="@inbox.ReportId" name="ReportId" />
-                                                    <input type="submit" value="@Model.lblView" class="btn btn-secondary" asp-page-handler="View" />
-                                                </form>   
+                                                @if(inbox.ReportType == "Receiving"){
+
+                                                    <form method="post">
+                                                            <input type="hidden" value="@inbox.ReportId" name="InboxId" />
+                                                        
+                                                        <input type="submit" value="@Model.lblView" class="btn btn-secondary" asp-page-handler="View" />
+                                                    </form>   
+                                                }
                                             </td>
 
                                            
@@ -263,25 +226,49 @@
                           
                         }
                         else{
-                            @foreach (var req in Model.RequestSent){
-                                var ReceivingWarehouse = Model.Warehouses.FirstOrDefault(s => s.StoreId == int.Parse(req.ReceivingWarehouse))?.   StoreName ?? "";
-                                <tr>
-                                    <td>Request for Warehouse <b>@ReceivingWarehouse</b> has been sent successfully.</td>
-                                    @{
-                                        var localTime = req.CreatedAt.ToLocalTime();
-                                    }
-                                    <td>@localTime</td>
-                                    @* <td>@req.CreatedAt</td> *@
-                                    <td>
-                                        @* <input type="submit" value="@Model.lblView" class="btn btn-secondary" asp-page-handler="View" /><a asp-page="/ViewReceivingReport"  class="btn btn-info btn-sm">View</a> *@
-                                        <form method="post">
-                                            <input type="hidden" value="@req.Id" name="ReportId" />
+                            if(Model.UserGroupName == "Warehouse Keeper"){
+                                @foreach (var req in Model.RequestSent){
+                                    var ReceivingWarehouse = Model.Warehouses.FirstOrDefault(s => s.StoreId == int.Parse(req.ReceivingWarehouse))?.   StoreName ?? "";
+                                    <tr>
+                                        <td>Request for Warehouse <b>@ReceivingWarehouse</b> has been sent successfully.</td>
+                                        @{
+                                            var localTime = req.CreatedAt.ToLocalTime();
+                                        }
+                                        <td>@localTime</td>
+                                        @* <td>@req.CreatedAt</td> *@
+                                        <td>
+                                            @* <input type="submit" value="@Model.lblView" class="btn btn-secondary" asp-page-handler="View" /><a asp-page="/ViewReceivingReport"  class="btn btn-info btn-sm">View</a> *@
+                                            <form method="post">
+                                                <input type="hidden" value="@req.Id" name="InboxId" />
 
-                                            <input type="submit" value="@Model.lblView" class="btn btn-secondary" asp-page-handler="View" />
-                                        </form>
+                                                <input type="submit" value="@Model.lblView" class="btn btn-secondary" asp-page-handler="View" />
+                                            </form>
+                                        
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else if (Model.UserGroupName == "Warehouse Manager"){
+                                @foreach (var req in Model.ManagerRequestSent){
                                     
-                                    </td>
-                                </tr>
+                                    <tr>
+                                        <td>Dispensing Request  has been sent successfully.</td>
+                                        @{
+                                            var localTime = req.OrderDate.ToLocalTime();
+                                        }
+                                        <td>@localTime</td>
+                                        @* <td>@req.CreatedAt</td> *@
+                                        <td>
+                                          
+                                            @* <form method="post">
+                                                <input type="hidden" value="@req.RequestId" name="InboxId" />
+
+                                                <input type="submit" value="@Model.lblView" class="btn btn-secondary" asp-page-handler="View" />
+                                            </form> *@
+                                        
+                                        </td>
+                                    </tr>
+                                }
                             }
                         }
 
@@ -301,13 +288,69 @@
                                         <div class="form-group">
                                             <input type="hidden" id="RejectReceivingReportId" name="RejectReceivingReportId" />
                                             <input type="hidden" id="RejectMessageId" name="RejectMessageId" />
+                                            <input type="text" name="ReportType" id="ReportType"/>
                                             <label for="Comment">Your Comment</label>
-                                            <textarea id="Comment" name="Comment" class="form-control" rows="3"></textarea>
+                                            <textarea id="Comment" name="Comment" class="form-control" rows="3" required></textarea>
                                         </div>
                                     </div>
                                     <div class="modal-footer">
                                         <!-- Button to submit the comment and reject -->
                                         <button type="submit" asp-page="/Requests" asp-page-handler="RejectWithComment" class="btn btn-danger" id="rejectBtn"  >Reject</button>
+                                       
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    @* modal for Accept and specify Recipient(sector Manager) *@
+                    <div class="modal fade" id="specifyRecipient" tabindex="-1" role="dialog" aria-labelledby="specifyRecipientLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="specifyRecipientLabel">Accept & specify Recipient</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <form method="post">
+                                    <div class="modal-body">
+                                        <div class="form-group">
+                                            <input type="hidden" id="AcceptReportId" name="AcceptReportId" />
+                                            <input type="hidden" id="AcceptMessageId" name="AcceptMessageId" />
+                                            @if(Model.UserGroupName == "Department Manager"){
+                                                <label for="ReceipientId">Warehouse Keeper</label>
+                                                <select class="form-select"  id="ReceipientId" name="ReceipientId" required>
+                                        
+                                                    <option value="">Select Warehouse Keeper</option>
+                                                    @if (Model.KeeperList != null)
+                                                    {
+                                                        foreach (var item in Model.KeeperList)
+                                                        {
+                                                                <option value="@item.UserId" data-UserName="@item.FullName">@item.FullName</option>
+                                                        }
+                                                    }
+                                                </select>
+                                            }
+                                            else if(Model.UserGroupName == "Warehouse Keeper"){
+                                                <label for="ReceipientId">Supervisor</label>
+                                                <select class="form-select"  id="ReceipientId" name="ReceipientId" required>
+                                        
+                                                    <option value="">Select Supervisor</option>
+                                                    @if (Model.SupervisorList != null)
+                                                    {
+                                                        foreach (var item in Model.SupervisorList)
+                                                        {
+                                                                <option value="@item.UserId" data-UserName="@item.FullName">@item.FullName</option>
+                                                        }
+                                                    }
+                                                </select>
+                                            }
+                                            
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" asp-page="/Requests" asp-page-handler="AcceptAndSpecify" class="btn btn-info" id="acceptbtn"  >Accept</button>
                                        
                                     </div>
                                 </form>
@@ -332,10 +375,11 @@
                                             <input type="hidden" id="ReplyReportId" name="ReplyReportId" />
                                             <input type="hidden" id="ReplySender" name="ReplySender" />
                                             <input type="hidden" id="ReplyMessageId" name="ReplyMessageId" />
+                                            <input type="text" name="ReplyReportType" id="ReplyReportType"/>
 
 
                                             <label for="Reply">Your Reply</label>
-                                            <textarea id="Reply" name="Reply" class="form-control" rows="3"></textarea>
+                                            <textarea id="Reply" name="Reply" class="form-control" rows="3" required></textarea>
                                         </div>
                                     </div>
                                     <div class="modal-footer">
@@ -360,15 +404,22 @@
    
 
       
-        function setRejectReportId(id, messageId) {
+        function setRejectReportId(id, messageId, reportType) {
             document.getElementById("RejectReceivingReportId").value = id;
             document.getElementById("RejectMessageId").value = messageId;
+            document.getElementById("ReportType").value  = reportType;
 
         }
-        function setReplyReportId(id, receiver, messageId) {
+        function setAcceptReportId(id, messageId){
+            document.getElementById("AcceptReportId").value = id;
+            document.getElementById("AcceptMessageId").value = messageId;
+        }
+        function setReplyReportId(id, receiver, messageId,reportType) {
             document.getElementById("ReplyReportId").value = id;
             document.getElementById("ReplySender").value = receiver;
             document.getElementById("ReplyMessageId").value = messageId;
+            document.getElementById("ReplyReportType").value = reportType;
+
 
         }
 

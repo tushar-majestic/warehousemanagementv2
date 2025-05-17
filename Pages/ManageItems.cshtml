@@ -347,36 +347,36 @@ document.addEventListener("DOMContentLoaded", function () {
                                     id="itemName" @(Model.SelectedColumns.Contains("itemName") ? "checked" : "")>
                                 <label class="form-check-label" for="itemName">@Model.lblItemName</label>
                             </div>
-                            <div class="form-check mb-1">
+                            @* <div class="form-check mb-1">
                                 <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="quantity"
                                     id="quantity" @(Model.SelectedColumns.Contains("quantity") ? "checked" : "")>
                                 <label class="form-check-label" for="quantity">@Model.lblQuantity</label>
+                            </div> *@
+                            <div class="form-check mb-1">
+                                <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="riskTating"
+                                    id="riskTating" @(Model.SelectedColumns.Contains("riskTating") ? "checked" : "")>
+                                <label class="form-check-label" for="riskTating">@Model.lblRiskRating</label>
                             </div>
                             <div class="form-check mb-1">
-                                <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="hazardType"
-                                    id="hazardType" @(Model.SelectedColumns.Contains("hazardType") ? "checked" : "")>
-                                <label class="form-check-label" for="hazardType">@Model.lblHazardType</label>
-                            </div>
-                            <div class="form-check mb-1">
-                                <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="typeName"
-                                    id="typeName" @(Model.SelectedColumns.Contains("typeName") ? "checked" : "")>
-                                <label class="form-check-label" for="typeName">@Model.lblTypeName</label>
+                                <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="stateofMatter"
+                                    id="stateofMatter" @(Model.SelectedColumns.Contains("stateofMatter") ? "checked" : "")>
+                                <label class="form-check-label" for="stateofMatter">@Model.lblStateofMatter</label>
                             </div>
                             <div class="form-check mb-1">
                                 <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="unitCode"
                                     id="unitCode" @(Model.SelectedColumns.Contains("unitCode") ? "checked" : "")>
-                                <label class="form-check-label" for="unitCode">@Model.lblUnitCode</label>
+                                <label class="form-check-label" for="unitCode">@Model.lblUnitOfMeasure</label>
                             </div>
                             <div class="form-check mb-1">
                                 <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="groupName"
                                     id="groupName" @(Model.SelectedColumns.Contains("groupName") ? "checked" : "")>
                                 <label class="form-check-label" for="groupName">@Model.lblGroupName</label>
                             </div>
-                            <div class="form-check mb-1">
-                                <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="batchNo"
-                                    id="batchNo" @(Model.SelectedColumns.Contains("batchNo") ? "checked" : "")>
-                                <label class="form-check-label" for="batchNo">@Model.lblBatchNo</label>
-                            </div>
+                            @* <div class="form-check mb-1">
+                                <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="stateofMatter"
+                                    id="stateofMatter" @(Model.SelectedColumns.Contains("stateofMatter") ? "checked" : "")>
+                                <label class="form-check-label" for="stateofMatter">@Model.lblBatchNo</label>
+                            </div> *@
                             <div class="form-check mb-1">
                                 <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="expiry"
                                     id="expiry" @(Model.SelectedColumns.Contains("expiry") ? "checked" : "")>
@@ -404,8 +404,8 @@ document.addEventListener("DOMContentLoaded", function () {
                                 <div class="border-end p-2" style="width: 40%; overflow-y: auto; position: relative;">
                                     <div class="fw-bolder text-center mb-2">Filter By</div>
                                     <div class="filter-option text-primary mb-2" onclick="showFilterValues('typeName')" style="cursor: pointer;">Type Name</div>
-                                    <div class="filter-option text-primary mb-2" onclick="showFilterValues('hazardType')" style="cursor: pointer;">Hazard Type</div>
-                                    <div class="filter-option text-primary mb-2" onclick="showFilterValues('unitCode')" style="cursor: pointer;">Unit Code</div>
+                                    <div class="filter-option text-primary mb-2" onclick="showFilterValues('hazardType')" style="cursor: pointer;">@Model.lblRiskRating</div>
+                                    <div class="filter-option text-primary mb-2" onclick="showFilterValues('unitCode')" style="cursor: pointer;">@Model.lblUnitOfMeasure</div>
 
                                     <!-- Clear Filters Button -->
                                     <button type="button" class="btn btn-primary"
@@ -550,30 +550,30 @@ document.addEventListener("DOMContentLoaded", function () {
                             {
                             <th scope="col" class="border-0">@Model.lblItemName</th>
                             }
-                            @if (Model.SelectedColumns.Contains("quantity"))
+                            @* @if (Model.SelectedColumns.Contains("quantity"))
                             {
                             <th scope="col" class="border-0">@Model.lblQuantity</th>
-                            }
-                            @if (Model.SelectedColumns.Contains("hazardType"))
+                            } *@
+                            @if (Model.SelectedColumns.Contains("riskTating"))
                             {
-                            <th scope="col" class="border-0">@Model.lblHazardType</th>
+                            <th scope="col" class="border-0">@Model.lblRiskRating</th>
                             }
-                            @if (Model.SelectedColumns.Contains("typeName"))
+                            @if (Model.SelectedColumns.Contains("stateofMatter"))
                             {
-                            <th scope="col" class="border-0">@Model.lblTypeName</th>
+                            <th scope="col" class="border-0">@Model.lblStateofMatter</th>
                             }
                             @if (Model.SelectedColumns.Contains("unitCode"))
                             {
-                            <th scope="col" class="border-0">@Model.lblUnitCode</th>
+                            <th scope="col" class="border-0">@Model.lblUnitOfMeasure</th>
                             }
                             @if (Model.SelectedColumns.Contains("groupName"))
                             {
                             <th scope="col" class="border-0">@Model.lblGroupName</th>
                             }
-                            @if (Model.SelectedColumns.Contains("batchNo"))
+                            @* @if (Model.SelectedColumns.Contains("stateofMatter"))
                             {
-                            <th scope="col" class="border-0">@Model.lblBatchNo</th>
-                            }
+                            <th scope="col" class="border-0">@Model.lblStateofMatter</th>
+                            } *@
                             @if (Model.SelectedColumns.Contains("expiry"))
                             {
                             <th scope="col" class="border-0">@Model.lblExpiryDate</th>
@@ -596,17 +596,17 @@ document.addEventListener("DOMContentLoaded", function () {
                                     {
                                     <td>@item.ItemName</td>
                                     }
-                                    @if (Model.SelectedColumns.Contains("quantity"))
+                                    @* @if (Model.SelectedColumns.Contains("quantity"))
                                     {
-                                    <td>@item.AvailableQuantity</td>
+                                    <td>@item.ItemNameAr</td>
+                                    } *@
+                                    @if (Model.SelectedColumns.Contains("riskTating"))
+                                    {
+                                    <td style='color: @(item.IsHazardous?"red":"teal")'>@item.RiskRating</td>
                                     }
-                                    @if (Model.SelectedColumns.Contains("hazardType"))
+                                    @if (Model.SelectedColumns.Contains("stateofMatter"))
                                     {
-                                    <td style='color: @(item.IsHazardous?"red":"teal")'>@item.HazardTypeName</td>
-                                    }
-                                    @if (Model.SelectedColumns.Contains("typeName"))
-                                    {
-                                    <td>@item.TypeName</td>
+                                    <td>@item.StateofMatter</td>
                                     }
                                     @if (Model.SelectedColumns.Contains("unitCode"))
                                     {
@@ -616,10 +616,10 @@ document.addEventListener("DOMContentLoaded", function () {
                                     {
                                     <td>@item.GroupDesc</td>
                                     }
-                                    @if (Model.SelectedColumns.Contains("batchNo"))
+                                    @* @if (Model.SelectedColumns.Contains("stateofMatter"))
                                     {
-                                    <td>@item.BatchNo</td>
-                                    }
+                                    <td>@item.StateofMatter</td>
+                                    } *@
                                     @if (Model.SelectedColumns.Contains("expiry"))
                                     {
                                         <td>@(item.ExpiryDate.HasValue ? item.ExpiryDate.Value.ToString("dd-MM/yyyy") : "")</td>
@@ -745,13 +745,13 @@ document.addEventListener("DOMContentLoaded", function () {
                     {
                     <th scope="col" class="border-0">@Model.lblItemName</th>
                     }
-                    @if (Model.SelectedColumns.Contains("quantity"))
+                    @* @if (Model.SelectedColumns.Contains("quantity"))
                     {
                     <th scope="col" class="border-0">@Model.lblQuantity</th>
-                    }
-                    @if (Model.SelectedColumns.Contains("hazardType"))
+                    } *@
+                    @if (Model.SelectedColumns.Contains("riskTating"))
                     {
-                    <th scope="col" class="border-0">@Model.lblHazardType</th>
+                    <th scope="col" class="border-0">@Model.lblRiskRating</th>
                     }
                     @if (Model.SelectedColumns.Contains("typeName"))
                     {
@@ -759,16 +759,16 @@ document.addEventListener("DOMContentLoaded", function () {
                     }
                     @if (Model.SelectedColumns.Contains("unitCode"))
                     {
-                    <th scope="col" class="border-0">@Model.lblUnitCode</th>
+                    <th scope="col" class="border-0">@Model.lblUnitOfMeasure</th>
                     }
                     @if (Model.SelectedColumns.Contains("groupName"))
                     {
                     <th scope="col" class="border-0">@Model.lblGroupName</th>
                     }
-                    @if (Model.SelectedColumns.Contains("batchNo"))
+                    @* @if (Model.SelectedColumns.Contains("stateofMatter"))
                     {
-                    <th scope="col" class="border-0">@Model.lblBatchNo</th>
-                    }
+                    <th scope="col" class="border-0">@Model.lblStateofMatter</th>
+                    } *@
                     @if (Model.SelectedColumns.Contains("expiry"))
                     {
                     <th scope="col" class="border-0">@Model.lblExpiryDate</th>
@@ -790,13 +790,13 @@ document.addEventListener("DOMContentLoaded", function () {
                             {
                             <td>@item.ItemName</td>
                             }
-                            @if (Model.SelectedColumns.Contains("quantity"))
+                            @* @if (Model.SelectedColumns.Contains("quantity"))
                             {
                             <td>@item.AvailableQuantity</td>
-                            }
-                            @if (Model.SelectedColumns.Contains("hazardType"))
+                            } *@
+                            @if (Model.SelectedColumns.Contains("riskTating"))
                             {
-                            <td style='color: @(item.IsHazardous?"red":"teal")'>@item.HazardTypeName</td>
+                            <td style='color: @(item.IsHazardous?"red":"teal")'>@item.RiskRating</td>
                             }
                             @if (Model.SelectedColumns.Contains("typeName"))
                             {
@@ -810,10 +810,10 @@ document.addEventListener("DOMContentLoaded", function () {
                             {
                             <td>@item.GroupDesc</td>
                             }
-                            @if (Model.SelectedColumns.Contains("batchNo"))
+                            @* @if (Model.SelectedColumns.Contains("stateofMatter"))
                             {
-                            <td>@item.BatchNo</td>
-                            }
+                            <td>@item.StateofMatter</td>
+                            } *@
                             @if (Model.SelectedColumns.Contains("expiry"))
                             {
                                 <td>@(item.ExpiryDate.HasValue ? item.ExpiryDate.Value.ToString("dd-MM/yyyy") : "")</td>

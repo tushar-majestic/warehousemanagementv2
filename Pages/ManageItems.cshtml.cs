@@ -38,7 +38,9 @@ namespace LabMaterials.Pages
         public string lblItems, lblItemName, lblGroupName, lblItemCode, lblQuantity, lblHazardType, lblTypeName,
             lblUnitCode, lblSearch, lblSubmit, lblManageItemGroup, lblManageUnit, lblAddItem, lblEdit,
             lblDelete, lblTotalItem, lblExpiryDate, lblBatchNo, lblDamage, lblDamagedItems,
-            lblImport, lblDonwloadSampleFile, lblFromDate, lblToDate, lblNewReceivingReport, lblExportExcel, lblPrintTable;
+            lblImport, lblDonwloadSampleFile, lblFromDate, lblToDate, lblNewReceivingReport, lblExportExcel, lblPrintTable, lblArabicLanguage, lblEnglishLanguage,
+            lblChemical, lblRiskRating, lblStateofMatter;
+
         public void OnGet(string? ItemName, string? Group, DateTime? FromDate, DateTime? ToDate, int page = 1)
         {
             base.ExtractSessionData();
@@ -225,9 +227,12 @@ namespace LabMaterials.Pages
                 string pagevalue = HttpContext.Request.Query["page"];
                 page = int.Parse(pagevalue);
             }
+
             FillLables();
             var dbContext = new LabDBContext();
+
             var disbursements = dbContext.DisbursementRequests.ToList();
+
             var query = (from i in dbContext.Items
                          join g in dbContext.ItemGroups on i.GroupCode equals g.GroupCode
                          join t in dbContext.ItemTypes on i.ItemTypeCode equals t.ItemTypeCode
@@ -235,44 +240,57 @@ namespace LabMaterials.Pages
                          where i.Ended == null
                          select new ItemInfo
                          {
-                             AvailableQuantity = i.AvailableQuantity,
+                             ItemId = i.ItemId,
+                             ItemCode = i.ItemCode,
+                             ItemName = i.ItemName,
+                             ItemNameAr = i.ItemNameAr ?? "",
+                             IsHazardous = i.IsHazardous,
+                             Chemical = i.Chemical,
+                             HazardTypeName = i.HazardTypeName ?? "",
+                             RiskRating = i.RiskRating ?? "",
                              GroupCode = g.GroupCode,
                              GroupDesc = g.GroupDesc,
-                             HazardTypeName = i.HazardTypeName,
-                             IsHazardous = i.IsHazardous,
-                             ItemCode = i.ItemCode,
-                             ItemId = i.ItemId,
-                             ItemName = i.ItemName,
                              ItemTypeCode = t.ItemTypeCode,
-                             TypeName = t.TypeName,
-                             UnitCode = u.UnitCode,
-                             UnitDesc = u.UnitDesc,
-                             BatchNo = i.BatchNo,
+                             TypeName = t.TypeName ?? "",
+                             StateofMatter = i.StateofMatter ?? "",
+                             UnitId = i.UnitId,
+                             UnitCode = u.UnitCode ?? "",
+                             UnitDesc = u.UnitDesc ?? "",
+                             AvailableQuantity = i.AvailableQuantity,
+                             ItemDescription = i.ItemDescription ?? "",
+                             BatchNo = i.BatchNo ?? "",
                              ExpiryDate = i.ExpiryDate,
                              Ended = Convert.ToString(i.Ended),
                          });
 
-            if (string.IsNullOrEmpty(ItemName) == false)
+            // Apply filters
+            if (!string.IsNullOrEmpty(ItemName))
                 query = query.Where(i => i.ItemName.Contains(ItemName));
 
-            if (string.IsNullOrEmpty(Group) == false)
+            if (!string.IsNullOrEmpty(Group))
                 query = query.Where(i => i.GroupDesc.Contains(Group));
 
-            if (string.IsNullOrEmpty(HazardType) == false)
-                query = query.Where(i => i.HazardTypeName.Contains(HazardType));
+            if (!string.IsNullOrEmpty(HazardType))
+                query = query.Where(i => i.RiskRating != null && i.RiskRating.Contains(HazardType));
 
-            if (string.IsNullOrEmpty(UnitCode) == false)
+            if (!string.IsNullOrEmpty(UnitCode))
                 query = query.Where(i => i.UnitCode.Contains(UnitCode));
 
-            if (string.IsNullOrEmpty(TypeName) == false)
+            if (!string.IsNullOrEmpty(TypeName))
                 query = query.Where(i => i.TypeName.Contains(TypeName));
 
-            if (string.IsNullOrEmpty(ItemName) == false && string.IsNullOrEmpty(Group) == false)
+            if (!string.IsNullOrEmpty(ItemName) && !string.IsNullOrEmpty(Group))
                 query = query.Where(i => i.ItemName.Contains(ItemName) && i.GroupDesc.Contains(Group));
 
-            if (FromDate != null && FromDate >= DateTime.MinValue && ToDate != null && ToDate >= DateTime.MinValue)
-                query = query.Where(e => e.ExpiryDate.Value.Date >= FromDate.Value.Date && e.ExpiryDate.Value.Date <= ToDate.Value.Date);
+            if (FromDate.HasValue && ToDate.HasValue)
+            {
+                query = query.Where(e =>
+                    e.ExpiryDate.HasValue &&
+                    e.ExpiryDate.Value.Date >= FromDate.Value.Date &&
+                    e.ExpiryDate.Value.Date <= ToDate.Value.Date);
+            }
 
+            // Populate unique filters
             var allItemsQuery = (from i in dbContext.Items
                                  join g in dbContext.ItemGroups on i.GroupCode equals g.GroupCode
                                  join t in dbContext.ItemTypes on i.ItemTypeCode equals t.ItemTypeCode
@@ -280,27 +298,29 @@ namespace LabMaterials.Pages
                                  where i.Ended == null
                                  select new ItemInfo
                                  {
-                                     HazardTypeName = i.HazardTypeName,
-                                     TypeName = t.TypeName,
-                                     UnitCode = u.UnitCode,
+                                     RiskRating = i.RiskRating ?? "",
+                                     TypeName = t.TypeName ?? "",
+                                     UnitCode = u.UnitCode ?? "",
                                  });
 
             UniqueTypeNames = allItemsQuery.Select(i => i.TypeName).Where(x => !string.IsNullOrEmpty(x)).Distinct().ToList();
             UniqueUnitCode = allItemsQuery.Select(i => i.UnitCode).Where(x => !string.IsNullOrEmpty(x)).Distinct().ToList();
-            UniqueHazardType = allItemsQuery.Select(i => i.HazardTypeName).Where(x => !string.IsNullOrEmpty(x)).Distinct().ToList();
+            UniqueHazardType = allItemsQuery.Select(i => i.RiskRating).Where(x => !string.IsNullOrEmpty(x)).Distinct().ToList();
 
+            // Pagination
             TotalItems = query.Count();
             TotalPages = (int)Math.Ceiling((double)TotalItems / ItemsPerPage);
             var list = query.ToList();
             Items = list.Skip((page - 1) * ItemsPerPage).Take(ItemsPerPage).ToList();
-            ItemsAll = query.ToList();
+            ItemsAll = list;
             CurrentPage = page;
         }
         public IActionResult OnPostEdit([FromForm] int ItemId, [FromForm] string FromDate, [FromForm] string ToDate, [FromForm] 
-        int page, [FromForm] string ItemName, [FromForm] string Group)
+        int page, [FromForm] string ItemName, [FromForm] string ItemNameAr, [FromForm] string Group)
         {
             HttpContext.Session.SetInt32("ItemId", ItemId);
             HttpContext.Session.SetString("ItemName", string.IsNullOrEmpty(ItemName) ? "" : ItemName);
+            HttpContext.Session.SetString("ItemNameAr", string.IsNullOrEmpty(ItemNameAr) ? "" : ItemNameAr);
             HttpContext.Session.SetString("Group", string.IsNullOrEmpty(Group) ? "" : Group);
             HttpContext.Session.SetString("FromDate", string.IsNullOrEmpty(FromDate) ? "" : FromDate);
             HttpContext.Session.SetString("ToDate", string.IsNullOrEmpty(ToDate) ? "" : ToDate);
@@ -333,6 +353,7 @@ namespace LabMaterials.Pages
                     //dbContext.Items.Remove(Item);
                     dbContext.SaveChanges();
                     FillData(null, null, null, null);
+                    LoadSelectedColumns();
                     Message = string.Format((Program.Translations["ItemDeleted"])[Lang], item.ItemName);
                     Helper.AddActivityLog(HttpContext.Session.GetInt32("UserId").Value, Message, "Delete", Helper.ExtractIP(Request), dbContext, true);
                 }
@@ -340,6 +361,7 @@ namespace LabMaterials.Pages
                 {
                     Message = (Program.Translations["ItemNotDeleted"])[Lang];
                     FillData(null, null, null, null);
+                    LoadSelectedColumns();
                 }
             }
             else
@@ -483,6 +505,11 @@ namespace LabMaterials.Pages
             this.lblNewReceivingReport = (Program.Translations["NewReceivingReport"])[Lang];
             this.lblExportExcel= (Program.Translations["ExportExcel"])[Lang];
             this.lblPrintTable = (Program.Translations["PrintTable"])[Lang];
+            this.lblArabicLanguage = (Program.Translations["ArabicLanguage"])[Lang];
+            this.lblEnglishLanguage = (Program.Translations["EnglishLanguage"])[Lang];
+            this.lblChemical = (Program.Translations["Chemical"])[Lang];
+            this.lblRiskRating = (Program.Translations["RiskRating"])[Lang];
+            this.lblStateofMatter = (Program.Translations["StateofMatter"])[Lang];
         }
 
     }

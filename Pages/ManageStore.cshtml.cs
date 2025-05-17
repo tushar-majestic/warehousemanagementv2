@@ -1,15 +1,6 @@
-using LabMaterials.DB;
-using LabMaterials.dtos;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Http.Extensions;
-using Microsoft.AspNetCore.Http.Features;
-using Microsoft.AspNetCore.Http; 
-using Microsoft.AspNetCore.Session;
-
-using SkiaSharp;
 using System.Data;
 
 
@@ -187,7 +178,39 @@ namespace LabMaterials.Pages
 
         }
 
-        public async Task<IActionResult> OnPostAsync(int? storeId, string lockToggle)
+        public async Task<IActionResult> OnPostAsync(int? StoreId, string lockToggle)
+        {
+
+            base.ExtractSessionData();
+            FillLables();
+            Console.WriteLine(StoreId);
+            Console.WriteLine(lockToggle);
+            if (StoreId == null)
+            {
+                return NotFound();
+            }
+            var dbContext = new LabDBContext();
+            store = await dbContext.Stores.FindAsync(StoreId);
+
+            if (store == null)
+            {
+                return NotFound();
+            }
+
+            if (lockToggle == "toggle")
+            {
+                store.IsActive = store.IsActive == 0 ? 1 : 0;
+                Message = store.IsActive == 1 ? string.Format((Program.Translations["StoreUnlock"])[Lang], store.StoreName) :
+                                string.Format((Program.Translations["StoreLocked"])[Lang], store.StoreName);
+
+            }
+
+            await dbContext.SaveChangesAsync();
+            TempData["Message"] = Message;
+
+            return RedirectToPage();
+        }
+        public async Task<IActionResult> OnPostLock(int? storeId, string lockToggle)
         {
             if (storeId == null)
             {
@@ -209,9 +232,10 @@ namespace LabMaterials.Pages
 
             }
 
+
             await dbContext.SaveChangesAsync();
             TempData["Message"] = Message;
-
+            // return this.OnPostAction(StoreNumber, StoreName, "search", ["storeNumber", "warehouseType", "storeName"]);
             return RedirectToPage();
         }
 
@@ -273,7 +297,7 @@ namespace LabMaterials.Pages
                 RedirectToPage("./Index?lang=" + Lang);
         }*/
 
-        private void FillData(string? StoreNumber, string? StoreName, int page =1)
+        private void FillData(string? StoreNumber, string? StoreName, int page = 1)
         {
             base.ExtractSessionData();
             if (CanManageStore)
@@ -286,7 +310,7 @@ namespace LabMaterials.Pages
                 var msgParam = new SqlParameter("@PMSG", SqlDbType.VarChar, 1000) { Direction = ParameterDirection.Output };
                 var descParam = new SqlParameter("@PDESC", SqlDbType.VarChar, 2) { Direction = ParameterDirection.Output };
 
-                
+
                 var query = dbContext.StoreDataResults
                                 .FromSqlRaw("EXEC PRC_GET_STORE_DATA @PCODE OUTPUT, @PDESC OUTPUT, @PMSG OUTPUT",
                                             codeParam, descParam, msgParam)
@@ -316,9 +340,9 @@ namespace LabMaterials.Pages
                 TotalPages = (int)Math.Ceiling((double)TotalItems / ItemsPerPage);
                 var list = query.ToList();
 
-                Stores = list.Skip((page - 1) * ItemsPerPage).Take(ItemsPerPage).ToList();  
+                Stores = list.Skip((page - 1) * ItemsPerPage).Take(ItemsPerPage).ToList();
                 StoresAll = query.ToList();
- 
+
 
                 CurrentPage = page;
 
@@ -339,7 +363,7 @@ namespace LabMaterials.Pages
                 RedirectToPage("./Index?lang=" + Lang);
         }
 
- 
+
         private void FillLables()
         {
 
@@ -361,10 +385,10 @@ namespace LabMaterials.Pages
             this.lblAddShelf = (Program.Translations["AddShelf"])[Lang];
             this.lblRoomNumber = (Program.Translations["RoomNumber"])[Lang];
             this.lblManageRooms = (Program.Translations["ManageRooms"])[Lang];
-            this.lblManageShelves = (Program.Translations["ManageShelves"])[Lang]; 
-            this.lblLock = (Program.Translations["Lock"])[Lang]; 
-            this.lblRoomName = (Program.Translations["RoomName"])[Lang]; 
-            this.lblUnlock = (Program.Translations["Unlock"])[Lang];    
+            this.lblManageShelves = (Program.Translations["ManageShelves"])[Lang];
+            this.lblLock = (Program.Translations["Lock"])[Lang];
+            this.lblRoomName = (Program.Translations["RoomName"])[Lang];
+            this.lblUnlock = (Program.Translations["Unlock"])[Lang];
             this.lblWarehouseType = (Program.Translations["WarehouseType"])[Lang];
             this.lblManagerName = (Program.Translations["ManagerName"])[Lang];
             this.lblManagerJobNumber = (Program.Translations["ManagerJobNumber"])[Lang];

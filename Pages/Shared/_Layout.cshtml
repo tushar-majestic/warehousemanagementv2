@@ -108,7 +108,7 @@
           var userGroupName = Context.Session.GetString("UserGroup");
       }
 
-      @if (userGroupName == "Warehouse Keeper" || userGroupName == "Warehouse Manager" || userGroupName == "General Supervisor" || userGroupName == "Technical Member" ){
+      @if (userGroupName == "Warehouse Keeper" || userGroupName == "Warehouse Manager" || userGroupName == "General Supervisor" || userGroupName == "Technical Member" || userGroupName == "Department Manager"){
           <li class="nav-item  @(Context.Request.Path == "/Requests" ? "active" : "") ">
                     <a asp-area="" asp-page="/Requests" class="nav-link sidebar-link">
                         <span class="sidebar-icon">
@@ -136,7 +136,7 @@
         
         @if (Model.CanManageStore)
         {
-        <!--
+        @*
           <li class="nav-item @(Context.Request.Path == "/Requests"|| Context.Request.Query["handler"] == "Create") )">
                         <a asp-area="" asp-page="/Requests" class="nav-link sidebar-link">
               <span class="sidebar-icon">
@@ -145,7 +145,7 @@
               <span class="sidebar-text break-word">@Model.lblRequests</span>
             </a>
           </li>
-                      -->
+                *@
         }
 
         @if (Model.CanManageItems)
@@ -364,7 +364,7 @@
   <script src="~/lib/notyf/notyf.min.js"></script>
   <script src="~/js/site.js" asp-append-version="true"></script>
   @await RenderSectionAsync("Scripts", required: false)
-
+  @section Scripts {
   <script>
     document.addEventListener("DOMContentLoaded", function (event) {
       var optionsTrafficVolumesChart = {
@@ -558,6 +558,7 @@
     });
 
   </script>
+  }
 </body>
 
 </html>
