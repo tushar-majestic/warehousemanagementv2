@@ -338,10 +338,10 @@
                 <div class="text-end">
                     <button type="button" class="btn btn-danger btn-sm remove-entry me-3">Remove</button>
                 </div>
-                 @for(int i =0; i < Model.ItemsForReport.Count; i++){
+                
                 <div class="form-group mb-4">
                     <label>Item Group</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
-                    <select class="form-select" name="ItemsForReport[${itemIndex}].ItemGroup" onchange="filterItemByGroup(${itemIndex})" required>
+                    <select class="form-select" id="ItemGroup_${itemIndex}" name="ItemsForReport[${itemIndex}].ItemGroup" onchange="filterItemByGroup(${itemIndex})" required>
                         <option value="">Select Item Group</option>
                         @foreach (var item in Model.ItemGroupList)
                         {
@@ -356,7 +356,7 @@
                     </div>
                     <div class="form-group mb-4 ms-2 flex-fill">
                         <label>Item Name</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
-                        <select class="form-control" name="ItemsForReport[${itemIndex}].ItemId" required>
+                        <select class="form-control" id="ItemName_${itemIndex}" name="ItemsForReport[${itemIndex}].ItemId" required>
                             <option value="">Select Item</option>
                             ${getItemOptions()}
                         </select>
@@ -390,7 +390,6 @@
                     <label>@Model.lblComments</label>
                     <textarea  class="form-control" name="ItemsForReport[${itemIndex}].Comments"></textarea>
                 </div>
-                }
             `;
             container.appendChild(div);
             bindEvents(div, itemIndex);
@@ -539,7 +538,7 @@
 
             allSuppliers
                 .filter(s => s.SupplierType === selectedType)
-                .forEach(s => { 
+                .forEach(s => {
                     const option = document.createElement('option');
                     option.value = s.SupplierId;
                     option.textContent = s.SupplierName;
