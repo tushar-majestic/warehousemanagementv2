@@ -4,6 +4,7 @@ using LabMaterials.DB;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LabMaterials.Migrations
 {
     [DbContext(typeof(LabDBContext))]
-    partial class LabDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250517063211_ChangeMessages")]
+    partial class ChangeMessages
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -786,9 +789,6 @@ namespace LabMaterials.Migrations
                     b.Property<bool>("DepartmentManagerApproval")
                         .HasColumnType("bit");
 
-                    b.Property<DateTime?>("DeptManagerApprovalDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<int>("DeptManagerId")
                         .HasColumnType("int");
 
@@ -802,9 +802,6 @@ namespace LabMaterials.Migrations
 
                     b.Property<bool>("KeeperApproval")
                         .HasColumnType("bit");
-
-                    b.Property<DateTime?>("KeeperApprovalDate")
-                        .HasColumnType("datetime2");
 
                     b.Property<int>("KeeperId")
                         .HasColumnType("int");
@@ -829,9 +826,6 @@ namespace LabMaterials.Migrations
                     b.Property<bool>("SectorManagerApproval")
                         .HasColumnType("bit");
 
-                    b.Property<DateTime?>("SectorManagerApprovalDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<int>("SectorManagerId")
                         .HasColumnType("int");
 
@@ -840,9 +834,6 @@ namespace LabMaterials.Migrations
 
                     b.Property<bool>("SupervisorApproval")
                         .HasColumnType("bit");
-
-                    b.Property<DateTime?>("SupervisorApprovalDate")
-                        .HasColumnType("datetime2");
 
                     b.Property<int>("SupervisorId")
                         .HasColumnType("int");
@@ -1030,6 +1021,9 @@ namespace LabMaterials.Migrations
                     b.Property<bool>("IsRejectedByTechnicalMember")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsReplied")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("KeeperApproval")
                         .HasColumnType("bit");
 
@@ -1050,6 +1044,9 @@ namespace LabMaterials.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(max)")
                         .HasDefaultValue("");
+
+                    b.Property<int?>("RejectedById")
+                        .HasColumnType("int");
 
                     b.Property<string>("SectorNumber")
                         .IsRequired()

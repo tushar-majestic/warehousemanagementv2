@@ -108,7 +108,7 @@
           var userGroupName = Context.Session.GetString("UserGroup");
       }
 
-      @if (userGroupName == "Warehouse Keeper" || userGroupName == "Warehouse Manager" || userGroupName == "General Supervisor" || userGroupName == "Technical Member" ){
+      @if (userGroupName == "Warehouse Keeper" || userGroupName == "Warehouse Manager" || userGroupName == "General Supervisor" || userGroupName == "Technical Member" || userGroupName == "Department Manager"){
           <li class="nav-item  @(Context.Request.Path == "/Requests" ? "active" : "") ">
                     <a asp-area="" asp-page="/Requests" class="nav-link sidebar-link">
                         <span class="sidebar-icon">
