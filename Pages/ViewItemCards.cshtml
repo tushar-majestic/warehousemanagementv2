@@ -54,6 +54,9 @@
    @if (Model.SingleItemCard != null)
     {
         var itemcard = Model.SingleItemCard;
+        var batch = itemcard.ItemCardBatches?.FirstOrDefault();
+         var store = itemcard.Store;
+        <!-- var store = itemcard.ItemCardStore?.FirstOrDefault(); -->
     
    
       <table class="table w-100 mb-4 border">
@@ -62,21 +65,22 @@
             <h4 class=" mb-0" style="text-align: center;">Item Card</h4>
           </td>
         </tr>
+        
         <tr>
           <!-- Left Column -->
           <td class="w-50 align-top border-end">
             <div class="p-2">
-              <div class="mb-1">Ceiling: 200</div>
-              <div class="mb-1">Reorder Limit: 50</div>
-              <div>Minimum: 20</div>
+              <div class="mb-1">Ceiling: -</div>
+              <div class="mb-1">Reorder Limit: @batch.ReorderLimit</div>
+              <div>Minimum: @batch.Minimum</div>
             </div>
           </td>
           <!-- Right Column -->
           <td class="w-50 align-top">
             <div class="p-2">
-              <div class="mb-1" style="text-align: end;">Recipient Sector: Health Dept</div>
-              <div class="mb-1" style="text-align: end;">Room Name & Number: Room A12</div>
-              <div class="mb-1" style="text-align: end;">Receiving Warehouse: Central Store</div>
+              <div class="mb-1" style="text-align: end;">Recipient Sector: -</div>
+              <div class="mb-1" style="text-align: end;">Room Name & Number:</div>
+              <div class="mb-1" style="text-align: end;">Receiving Warehouse: @store.StoreName</div>
             </div>
           </td>
         </tr>
@@ -109,6 +113,7 @@
         <th colspan="2"  style="text-align: center;">Item Name (Arabic) <br> @itemcard.ItemName</th>
         <th colspan="4"  style="text-align: center;">Item No. (Item Code) <br>@itemcard.ItemCode </th>
       </tr>
+      
       <tr>
         <th>Dispensing Document No.</th>
         <th>Remaining Balance</th>
@@ -120,28 +125,28 @@
         <th>Date of Entry into Warehouse</th>
       </tr>
     </thead>
+    @if (Model.BatchDetails != null && Model.BatchDetails.Any())
+    {
     <tbody>
+      @foreach (var batchItem in Model.BatchDetails)
+      {
       <tr>
-        <td>DD-2025-023</td>
-        <td>70</td>
-        <td>Ward 3A</td>
-        <td>30</td>
-        <td>Medical Supply Co.</td>
-        <td>100</td>
-        <td>RR-2025-001</td>
-        <td>2025-05-01</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>@batch.Supplier.SupplierName</td>
+        <td>@batch.QuantityReceived</td>
+        <td>@batch.ReceiptDocumentnumber</td>
+        <td>@batch.DateOfEntry.ToString("dd-MM-yyyy")</td>
       </tr>
-      <tr>
-        <td>DD-2025-024</td>
-        <td>110</td>
-        <td>ER Dept</td>
-        <td>10</td>
-        <td>PharmaTech</td>
-        <td>50</td>
-        <td>RR-2025-002</td>
-        <td>2025-05-03</td>
-      </tr>
+    }
     </tbody>
+    }
+else
+{
+    <p>No batch data available.</p>
+}
   </table>
     }
 

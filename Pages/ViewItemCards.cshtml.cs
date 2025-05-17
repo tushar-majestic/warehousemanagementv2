@@ -15,6 +15,9 @@ namespace LabMaterials.Pages
     {
         private readonly LabDBContext _context;
         public string ItemCardId { get; set; }
+        public Room Room { get; set; }
+        public Supplier Supplier { get; set; }
+        // public Store Store { get; set; }
 
         public string ItemTypeCode;
         public string ItemCode;
@@ -28,6 +31,10 @@ namespace LabMaterials.Pages
         }
         public List<ItemCard> ItemCards { get; set; }
         public ItemCard? SingleItemCard  { get; set; }
+        public List<ItemCardBatch> BatchDetails { get; set; }
+        public ICollection<ItemCardBatch> ItemCardBatches { get; set; }
+        public ICollection<Store> Store { get; set; }
+
         public async Task OnGetAsync(int id)
         {
             base.ExtractSessionData();
@@ -36,12 +43,24 @@ namespace LabMaterials.Pages
             if (ItemCardId == null)
             {
                 SingleItemCard = null;
+                BatchDetails = null;
                 return;
             }
             var dbContext = new LabDBContext();
 
-            SingleItemCard = await _context.ItemCards.FirstOrDefaultAsync(r => r.Id == int.Parse(this.ItemCardId));
+            SingleItemCard = await _context.ItemCards
+                .Include(r => r.ItemCardBatches)
+                .Include(r => r.Store)
+                .FirstOrDefaultAsync(r => r.Id == int.Parse(this.ItemCardId));
             Console.WriteLine(SingleItemCard);
+
+            BatchDetails = await _context.ItemCardBatches
+                .Include(b => b.Room)
+                .Include(b => b.Supplier)
+                .Where(b => b.ItemCardId == int.Parse(this.ItemCardId))
+                .ToListAsync();
+
+
         }
     }
 }
