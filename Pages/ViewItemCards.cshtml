@@ -48,33 +48,40 @@
 
 
 <div id="exportTableContainer" class="mt-4" style="background-color: #ffffff;">
-  <!-- Header Layout Table -->
-  <table class="table w-100 mb-4 border">
-    <tr>
-      <td colspan="2">
-        <h4 class=" mb-0" style="text-align: center;">Item Card</h4>
-      </td>
-    </tr>
-    <tr>
-      <!-- Left Column -->
-      <td class="w-50 align-top border-end">
-        <div class="p-2">
-          <div class="mb-1">Ceiling: 200</div>
-          <div class="mb-1">Reorder Limit: 50</div>
-          <div>Minimum: 20</div>
-        </div>
-      </td>
-      <!-- Right Column -->
-      <td class="w-50 align-top">
-        <div class="p-2">
-          <div class="mb-1" style="text-align: end;">Recipient Sector: Health Dept</div>
-          <div class="mb-1" style="text-align: end;">Room Name & Number: Room A12</div>
-          <div class="mb-1" style="text-align: end;">Receiving Warehouse: Central Store</div>
-        </div>
-      </td>
-    </tr>
-  </table>
 
+  <!-- Header Layout Table -->
+
+   @if (Model.SingleItemCard != null)
+    {
+        var itemcard = Model.SingleItemCard;
+    
+   
+      <table class="table w-100 mb-4 border">
+        <tr>
+          <td colspan="2">
+            <h4 class=" mb-0" style="text-align: center;">Item Card</h4>
+          </td>
+        </tr>
+        <tr>
+          <!-- Left Column -->
+          <td class="w-50 align-top border-end">
+            <div class="p-2">
+              <div class="mb-1">Ceiling: 200</div>
+              <div class="mb-1">Reorder Limit: 50</div>
+              <div>Minimum: 20</div>
+            </div>
+          </td>
+          <!-- Right Column -->
+          <td class="w-50 align-top">
+            <div class="p-2">
+              <div class="mb-1" style="text-align: end;">Recipient Sector: Health Dept</div>
+              <div class="mb-1" style="text-align: end;">Room Name & Number: Room A12</div>
+              <div class="mb-1" style="text-align: end;">Receiving Warehouse: Central Store</div>
+            </div>
+          </td>
+        </tr>
+      </table>
+  
   <!-- Item Information Table -->
   @* <table class="table w-100 mb-4 table-bordered">
     <thead>
@@ -93,13 +100,14 @@
     </tbody>
   </table> *@
 
+    
 
   <table class="table table-bordered w-100">
     <thead class="table-secondary">
       <tr>
-        <th colspan="2"  style="text-align: center;">Unit of Measure <br> Box</th>
-        <th colspan="2"  style="text-align: center;">Item Name (Arabic) <br> جهاز قياس الحرارة</th>
-        <th colspan="4"  style="text-align: center;">Item No. (Item Code) <br> ITM-00123</th>
+       <th colspan="2"  style="text-align: center;">Unit of Measure <br> @itemcard.UnitOfmeasure</th>
+        <th colspan="2"  style="text-align: center;">Item Name (Arabic) <br> @itemcard.ItemName</th>
+        <th colspan="4"  style="text-align: center;">Item No. (Item Code) <br>@itemcard.ItemCode </th>
       </tr>
       <tr>
         <th>Dispensing Document No.</th>
@@ -135,6 +143,8 @@
       </tr>
     </tbody>
   </table>
+    }
+
 </div>
 
 

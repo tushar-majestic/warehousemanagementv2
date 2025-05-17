@@ -10,6 +10,7 @@ public class ItemCardViewModels
 {
     public int Id { get; set; }
     public string GroupCode { get; set; }
+    public int ItemCardId { get; set; }
     public string ItemCode { get; set; }
     public string ItemName { get; set; }
     public string ItemDescription { get; set; }

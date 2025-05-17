@@ -74,6 +74,7 @@ namespace LabMaterials.Pages
                       select new ItemCardViewModels
                       {
                           GroupCode = item.GroupCode,
+                          ItemCardId = item.Id,
                           ItemCode = item.ItemCode,
                           ItemName = item.ItemName,
                           ItemDescription = item.ItemDescription,
@@ -81,22 +82,20 @@ namespace LabMaterials.Pages
                           Chemical = item.Chemical,
                           HazardTypeName = item.HazardTypeName,
                           QuantityAvailable = item.QuantityAvailable,
-                          WarehouseName = store.StoreName
+                          WarehouseName = store.StoreName,
+                          
                     }).ToListAsync();
 
             TotalItems = ItemCardView.Count();
 
             FillLables();
         }
-
-        public IActionResult OnPostView([FromForm] string ReportId)
+      
+        public IActionResult OnPostView([FromForm] string ItemCardId)
         {
             var dbContext = new LabDBContext();
-
-            // HttpContext.Session.SetString("ReportId", ReportId);
-
-
-            return RedirectToPage("/viewItemCards");
+            HttpContext.Session.SetString("ItemCardId", ItemCardId);
+            return RedirectToPage("./viewItemCards");
         }
 
         public void OnPostSearch([FromForm] string itemcard)

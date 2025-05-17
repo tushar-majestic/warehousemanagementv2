@@ -4,6 +4,7 @@ using LabMaterials.DB;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LabMaterials.Migrations
 {
     [DbContext(typeof(LabDBContext))]
-    partial class LabDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250516131459_AddItemCardId")]
+    partial class AddItemCardId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -323,9 +326,6 @@ namespace LabMaterials.Migrations
                         .IsUnicode(false)
                         .HasColumnType("varchar(255)");
 
-                    b.Property<bool>("Chemical")
-                        .HasColumnType("bit");
-
                     b.Property<DateTime?>("Created")
                         .HasColumnType("datetime");
 
@@ -349,7 +349,6 @@ namespace LabMaterials.Migrations
                         .HasColumnType("nvarchar(10)");
 
                     b.Property<string>("HazardTypeName")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
@@ -370,25 +369,10 @@ namespace LabMaterials.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.Property<string>("ItemNameAr")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
                     b.Property<string>("ItemTypeCode")
                         .IsRequired()
                         .HasMaxLength(15)
                         .HasColumnType("nvarchar(15)");
-
-                    b.Property<string>("RiskRating")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("StateofMatter")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
 
                     b.Property<int?>("SupplyId")
                         .HasColumnType("int")
@@ -786,9 +770,6 @@ namespace LabMaterials.Migrations
                     b.Property<bool>("DepartmentManagerApproval")
                         .HasColumnType("bit");
 
-                    b.Property<int>("DeptManagerId")
-                        .HasColumnType("int");
-
                     b.Property<string>("DocumentNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -799,9 +780,6 @@ namespace LabMaterials.Migrations
 
                     b.Property<bool>("KeeperApproval")
                         .HasColumnType("bit");
-
-                    b.Property<int>("KeeperId")
-                        .HasColumnType("int");
 
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("datetime");
@@ -820,19 +798,7 @@ namespace LabMaterials.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("SectorManagerApproval")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("SectorManagerId")
-                        .HasColumnType("int");
-
                     b.Property<int>("SerialNumber")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("SupervisorApproval")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("SupervisorId")
                         .HasColumnType("int");
 
                     b.Property<string>("WarehouseName")
@@ -1994,8 +1960,6 @@ namespace LabMaterials.Migrations
                     b.HasOne("LabMaterials.DB.HazardType", "HazardTypeNameNavigation")
                         .WithMany("Items")
                         .HasForeignKey("HazardTypeName")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
                         .HasConstraintName("FK_Item_ItemHazardType");
 
                     b.HasOne("LabMaterials.DB.ItemType", "ItemTypeCodeNavigation")
