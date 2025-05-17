@@ -173,10 +173,14 @@
                                             <td>@localTime</td>
 
                                             <td>
-                                                <form method="post">
-                                                    <input type="hidden" value="@inbox.Id" name="InboxId" />
-                                                    <input type="submit" value="@Model.lblView" class="btn btn-secondary" asp-page-handler="View" />
-                                                </form>   
+                                                @if(inbox.ReportType == "Receiving"){
+
+                                                    <form method="post">
+                                                            <input type="hidden" value="@inbox.ReportId" name="InboxId" />
+                                                        
+                                                        <input type="submit" value="@Model.lblView" class="btn btn-secondary" asp-page-handler="View" />
+                                                    </form>   
+                                                }
                                             </td>
 
                                            

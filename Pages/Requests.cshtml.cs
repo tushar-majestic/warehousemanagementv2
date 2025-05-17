@@ -107,39 +107,14 @@ namespace LabMaterials.Pages
             this.UserGroupName = HttpContext.Session.GetString("UserGroup");
 
             var dbContext = new LabDBContext();
+            
 
-            if (this.UserGroupName == "Warehouse Keeper")
-            {
+          
                 HttpContext.Session.SetString("ReportId", InboxId.ToString());
                 return RedirectToPage("./ViewReceivingReport");
 
 
-            }
-            // else
-            // {
-            //     var message = dbContext.Messages.FirstOrDefault(m => m.Id == InboxId);
-            //     var messageType = message?.ReportType;
-
-
-            //     if (messageType == "Receiving")
-            //     {
-            //         ReportId = message.ReportId.ToString();
-            //         HttpContext.Session.SetString("ReportId", ReportId);
-            //         AllRequest = dbContext.ReceivingReports.ToList();
-
-            //         RequestSent = dbContext.ReceivingReports.Where(r => r.CreatedBy == this.UserId).ToList();
-            //         return RedirectToPage("./ViewReceivingReport");
-
-
-            //     }
-            //     else if (messageType == "Despensing")
-            //     {
-            //         ReportId = message.MaterialRequestId.ToString();
-            //         return RedirectToPage();
-            //     }
-
-            // }
-                       
+                                   
                 return RedirectToPage(); 
 
         }
