@@ -210,7 +210,10 @@
             </a>
           </li>
         }
-        @if (Model.CanSeeReports)
+        @{
+          var userGroup = Context.Session.GetString("UserGroup");
+        }
+        @if (Model.CanSeeReports && userGroup == "System Admin")
         {
           <li
             class="nav-item @(Context.Request.Path == "/Rep_MaterialsReceived" || Context.Request.Path == "/Rep_Distribution" || Context.Request.Path == "/Rep_Inventory"  || Context.Request.Path == "/Rep_HazardMaterial" || Context.Request.Path == "/Rep_UserActivity" || Context.Request.Path == "/Rep_UserReport" ? "active" : "")">

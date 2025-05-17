@@ -39,7 +39,8 @@ namespace LabMaterials.Pages
         {
             base.ExtractSessionData();
             this.ItemCardId = HttpContext.Session.GetString("ItemCardId");
-         
+            Console.WriteLine(ItemCardId);
+
             if (ItemCardId == null)
             {
                 SingleItemCard = null;
