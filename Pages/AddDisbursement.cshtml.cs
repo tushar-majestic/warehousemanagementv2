@@ -181,6 +181,36 @@ namespace LabMaterials.Pages
                 ItemCards = dbContext.ItemCards.ToList();
                 Units = dbContext.Units.ToList();
                 ItemGroups = dbContext.ItemGroups.Where(g => g.Units.Count() > 0).ToList();
+                //Department Manager list
+                var DepManagerId = dbContext.UserGroups
+                    .Where(g => g.UserGroupName == "Department Manager")
+                    .Select(g => g.UserGroupId)
+                    .FirstOrDefault();
+
+                DeptManagerList = dbContext.Users
+                    .Where(u => u.UserGroupId == DepManagerId)
+                    .ToList();
+
+                //General Supervisor list
+                var SupId = dbContext.UserGroups
+                    .Where(g => g.UserGroupName == "General Supervisor")
+                    .Select(g => g.UserGroupId)
+                    .FirstOrDefault();
+
+                SupervisorList = dbContext.Users
+                    .Where(u => u.UserGroupId == SupId)
+                    .ToList();
+
+                //Keeper  list
+                var KeepId = dbContext.UserGroups
+                    .Where(g => g.UserGroupName == "Warehouse Keeper")
+                    .Select(g => g.UserGroupId)
+                    .FirstOrDefault();
+
+                KeeperList = dbContext.Users
+                    .Where(u => u.UserGroupId == KeepId)
+                    .ToList();
+                    
                  if (ItemsForReport == null || !ItemsForReport.Any())
                 {
                     ItemsForReport = new List<DespensedItem> { new DespensedItem() };
@@ -188,6 +218,7 @@ namespace LabMaterials.Pages
 
                 if (CanDisburseItems)
                 {
+         
                     FillLables();
                     Report.OrderDate = OrderDate;
                     int userId = HttpContext.Session.GetInt32("UserId").Value;
@@ -276,19 +307,19 @@ namespace LabMaterials.Pages
                     await _context.SaveChangesAsync();
                 }
 
-                // string Message = string.Format("Sent Material Dispensing Request Approve the request or add comments.");
-                // var msg = new  Message
-                // {
-                //     ReportId = Report.RequestId,
-                //     ReportType = "Dispensing",
-                //     SenderId = Report.RequestedByUserId,
-                //     RecipientId = Report.TechnicalMemberId,
-                //     Content = Message,
-                //     Type = "",
-                //     CreatedAt = DateTime.UtcNow
-                // };
-                // dbContext.Messages.Add(msg);
-                // dbContext.SaveChanges();
+                string Message = string.Format("Sent Material Dispensing Request Approve the request or add comments.");
+                var msg = new  Message
+                {
+                    MaterialRequestId = Report.RequestId,
+                    ReportType = "Dispensing",
+                    SenderId = Report.RequestedByUserId,
+                    RecipientId = Report.DeptManagerId,
+                    Content = Message,
+                    Type = "",
+                    CreatedAt = DateTime.UtcNow
+                };
+                dbContext.Messages.Add(msg);
+                dbContext.SaveChanges();
                 return RedirectToPage("/Disbursements");
 
 

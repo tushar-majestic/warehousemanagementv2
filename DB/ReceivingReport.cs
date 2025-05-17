@@ -48,7 +48,7 @@ public partial class ReceivingReport
 
     public bool TechnicalMemberApproval { get; set; }
 
-    public int? RejectedById { get; set; }
+    // public int? RejectedById { get; set; }
 
     public DateTime CreatedAt { get; set; } 
 
@@ -56,7 +56,7 @@ public partial class ReceivingReport
 
     public bool IsRejectedByTechnicalMember { get; set; }
 
-    public bool IsReplied { get; set; }
+    // public bool IsReplied { get; set; }
 
     public DateTime? TechnicalMemberApprovalDate { get; set; }
 
