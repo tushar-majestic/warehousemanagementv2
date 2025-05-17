@@ -10,6 +10,8 @@ using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Http; 
 using Microsoft.AspNetCore.Session;
+using Org.BouncyCastle.Cms;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace LabMaterials.Pages
 {
@@ -45,6 +47,10 @@ namespace LabMaterials.Pages
 
         public string ErrorMsg { get; set; }
         public List<User> SectorManagerList {  get; set; }
+        public List<User> KeeperList {  get; set; }
+        public List<User> SupervisorList {  get; set; }
+
+
 
 
         public void OnGet()
@@ -80,6 +86,26 @@ namespace LabMaterials.Pages
                     .Where(u => u.UserGroupId == SecManagerId)
                     .ToList();
 
+            //Keeper List
+            var KeepId = dbContext.UserGroups
+                    .Where(g => g.UserGroupName == "Warehouse Keeper")
+                    .Select(g => g.UserGroupId)
+                    .FirstOrDefault();
+
+            KeeperList = dbContext.Users
+                    .Where(u => u.UserGroupId == KeepId)
+                    .ToList();
+
+            //General Supervisor list
+            var SupervisorId = dbContext.UserGroups
+                    .Where(g => g.UserGroupName == "General Supervisor")
+                    .Select(g => g.UserGroupId)
+                    .FirstOrDefault();
+
+            SupervisorList = dbContext.Users
+                        .Where(u => u.UserGroupId == SupervisorId)
+                        .ToList();
+
             AllRequest = dbContext.ReceivingReports.ToList();
             AllUsers = dbContext.Users.ToList();
             UserGroups = dbContext.UserGroups.ToList();
@@ -108,17 +134,11 @@ namespace LabMaterials.Pages
 
             var dbContext = new LabDBContext();
             
-
-          
                 HttpContext.Session.SetString("ReportId", InboxId.ToString());
-                return RedirectToPage("./ViewReceivingReport");
-
-
-                                   
-                return RedirectToPage(); 
+                return RedirectToPage("./ViewReceivingReport");                         
 
         }
-        public IActionResult OnPostAcceptAndSpecify([FromForm] int AcceptReportId, [FromForm] int AcceptMessageId, [FromForm] int SectorManagerId)
+        public IActionResult OnPostAcceptAndSpecify([FromForm] int AcceptReportId, [FromForm] int AcceptMessageId, [FromForm] int? ReceipientId)
         {   
             //function is used in case when department manager accepts the dispensing request
             base.ExtractSessionData();
@@ -131,37 +151,89 @@ namespace LabMaterials.Pages
             var report = dbContext.MaterialRequests.FirstOrDefault(r => r.RequestId == AcceptReportId);
             if (report != null)
             {
-
-                //If Department Manager is logged in than information message is sent to warehouse keeper 
-                if (this.UserGroupName == "Department Manager")
+                if (ReceipientId.HasValue)
                 {
-                    report.DepartmentManagerApproval = true;
-                    report.SectorManagerId = SectorManagerId;
-                    report.DeptManagerApprovalDate = DateTime.Now;
-
-                    //message to keeper 
-                    string keeperMessage = string.Format("Sent Material Dispensing Request Approve the request or add comments.");
-                    var msgToKeeper = new Message
+                    //If Department Manager is logged in than information message is sent to warehouse keeper 
+                    if (this.UserGroupName == "Department Manager")
                     {
-                        MaterialRequestId = AcceptReportId,
-                        ReportType = "Dispensing",
-                        SenderId = this.UserId,
-                        RecipientId = report.KeeperId,
-                        Content = keeperMessage,
-                        Type = "",
-                        CreatedAt = DateTime.UtcNow
-                    };
-                    dbContext.Messages.Add(msgToKeeper);
+                        report.DepartmentManagerApproval = true;
+                        report.KeeperId = ReceipientId.Value;
 
-                    var message = dbContext.Messages.FirstOrDefault(m => m.Id == AcceptMessageId);
+                        // report.SectorManagerId = SectorManagerId;
+                        report.DeptManagerApprovalDate = DateTime.Now;
 
-                    if (message != null)
-                    {
-                        message.Type = "Accepted";
+                        //message to keeper 
+                        string keeperMessage = string.Format("Sent Material Dispensing Request Approve the request or add comments.");
+                        var msgToKeeper = new Message
+                        {
+                            MaterialRequestId = AcceptReportId,
+                            ReportType = "Dispensing",
+                            SenderId = this.UserId,
+                            RecipientId = report.KeeperId,
+                            Content = keeperMessage,
+                            Type = "",
+                            CreatedAt = DateTime.UtcNow
+                        };
+                        dbContext.Messages.Add(msgToKeeper);
+
+
+
                     }
-                    dbContext.SaveChanges();
+                    else if (this.UserGroupName == "Warehouse Keeper")
+                    {
+                        report.KeeperApproval = true;
+                        report.KeeperApprovalDate = DateTime.UtcNow;
+                        report.SupervisorId = ReceipientId.Value;
 
+                        //message to supervisor
+                        string supervisorMessage = string.Format("Sent Material Dispensing Request Approve the request or add comments.");
+                        var msgToKeeper = new Message
+                        {
+                            MaterialRequestId = AcceptReportId,
+                            ReportType = "Dispensing",
+                            SenderId = this.UserId,
+                            RecipientId = report.SupervisorId,
+                            Content = supervisorMessage,
+                            Type = "",
+                            CreatedAt = DateTime.UtcNow
+                        };
+                        dbContext.Messages.Add(msgToKeeper);
+
+
+                    }
                 }
+                else
+                {
+                    if (this.UserGroupName == "General Supervisor")
+                    {
+                        report.SupervisorApproval = true;
+                        report.SupervisorApprovalDate = DateTime.UtcNow;
+
+                        //message to manager who created the request
+                        string managerMessage = string.Format("Has Approved the dispencing request for delivery");
+                        var msgToKeeper = new Message
+                        {
+                            MaterialRequestId = AcceptReportId,
+                            ReportType = "Dispensing",
+                            SenderId = this.UserId,
+                            RecipientId = report.RequestedByUserId,
+                            Content = managerMessage,
+                            Type = "",
+                            CreatedAt = DateTime.UtcNow
+                        };
+                        dbContext.Messages.Add(msgToKeeper);
+
+                    }
+                }
+                
+                var message = dbContext.Messages.FirstOrDefault(m => m.Id == AcceptMessageId);
+
+                if (message != null)
+                {
+                    message.Type = "Accepted";
+                }
+                dbContext.SaveChanges();
+                
             }
             
             return RedirectToPage();
@@ -383,7 +455,7 @@ namespace LabMaterials.Pages
         }
         
 
-        public async Task<IActionResult> OnPostRejectWithComment([FromForm] int RejectReceivingReportId, [FromForm] string Comment, [FromForm] int RejectMessageId)
+        public async Task<IActionResult> OnPostRejectWithComment([FromForm] int RejectReceivingReportId, [FromForm] string Comment, [FromForm] int RejectMessageId, [FromForm] string ReportType)
         {  
             base.ExtractSessionData();
             FillLables();
@@ -391,84 +463,161 @@ namespace LabMaterials.Pages
             this.UserFullName = HttpContext.Session.GetString("FullName");
             this.UserGroupName = HttpContext.Session.GetString("UserGroup");
             this.UserId = HttpContext.Session.GetInt32("UserId");
-            var report = await _context.ReceivingReports.FindAsync(RejectReceivingReportId);
-            if (report == null)
+
+
+
+            if (ReportType == "Dispensing")
             {
-                // handle error
-                return NotFound();
-            }
-
-            if (string.IsNullOrEmpty(Comment))
-                ErrorMsg = (Program.Translations["CommentMissing"])[Lang];
-
-            var generalSup = dbContext.Users.FirstOrDefault(u => u.UserId == report.ChiefResponsibleId);
-
-            var technicalMember = dbContext.Users.FirstOrDefault(u => u.UserId == report.TechnicalMemberId);
-            var manager = dbContext.Users.FirstOrDefault(u => u.UserId == report.RecipientEmployeeId);
-            if(this.UserGroupName == "Technical Member"){
-                //If Technical Member reject rhe request than send rejeced message to keeper
-                report.IsRejectedByTechnicalMember = true;
-                if(report.TechnicalMemberApproval == true)
-                    report.TechnicalMemberApproval = false;
-                
-                string keeperMessage = string.Format("Your request is rejected with comment: {0}", Comment);
-                var msgToKeeper = new Message
+                var report = await _context.MaterialRequests.FindAsync(RejectReceivingReportId);
+                if (report == null)
                 {
-                    ReportId = RejectReceivingReportId,
-                    ReportType = "Receiving",
-                    SenderId = this.UserId ,
-                    RecipientId = report.CreatedBy, 
-                    Content = keeperMessage,
-                    Type = "",
-                    CreatedAt = DateTime.UtcNow,
+                    // handle error
+                    return NotFound();
+                }
+                if (this.UserGroupName == "Department Manager")
+                {
+                    if (report.DepartmentManagerApproval == true)
+                        report.DepartmentManagerApproval = false;
+
+                    string managerMessage = string.Format("Your request is rejected with comment: {0}", Comment);
+                    var msgToManager = new Message
+                    {
+                        MaterialRequestId = RejectReceivingReportId,
+                        ReportType = "Dispensing",
+                        SenderId = this.UserId,
+                        RecipientId = report.RequestedByUserId,
+                        Content = managerMessage,
+                        Type = "",
+                        CreatedAt = DateTime.UtcNow,
 
 
-                };
-                _context.Messages.Add(msgToKeeper);
+                    };
+                    _context.Messages.Add(msgToManager);
+                }
+                else if (this.UserGroupName == "Warehouse Keeper")
+                {
+                    if (report.KeeperApproval == true)
+                        report.KeeperApproval = false;
+
+                    string deptManagerMessage = string.Format("Your request is rejected with comment: {0}", Comment);
+                    var msgToManager = new Message
+                    {
+                        MaterialRequestId = RejectReceivingReportId,
+                        ReportType = "Dispensing",
+                        SenderId = this.UserId,
+                        RecipientId = report.DeptManagerId,
+                        Content = deptManagerMessage,
+                        Type = "",
+                        CreatedAt = DateTime.UtcNow,
+
+
+                    };
+                    _context.Messages.Add(msgToManager);
+                }
+                else if (this.UserGroupName == "General Supervisor")
+                {
+                    if (report.SupervisorApproval == true)
+                        report.SupervisorApproval = false;
+
+                    string keeperMessage = string.Format("Your request is rejected with comment: {0}", Comment);
+                    var msgToKeeper = new Message
+                    {
+                        MaterialRequestId = RejectReceivingReportId,
+                        ReportType = "Dispensing",
+                        SenderId = this.UserId,
+                        RecipientId = report.KeeperId,
+                        Content = keeperMessage,
+                        Type = "",
+                        CreatedAt = DateTime.UtcNow,
+
+
+                    };
+                    _context.Messages.Add(msgToKeeper);
+                }
 
             }
-            else if(this.UserGroupName == "General Supervisor"){
-                //If general supervisor reject the request 
+            else if (ReportType == "Receiving")
+            {
 
-                //Send Informaiton mesage to Manager
-                report.IsRejectedByGeneralSupervisor = true;
-                if(report.GeneralSupApproval == true)
-                    report.GeneralSupApproval = false;
-
-                var CreatedBy = dbContext.Users.FirstOrDefault(u => u.UserId == report.CreatedBy);
-                string ManagerMessage = string.Format("Rejected the request for items generated by {0}. with comment: {1}", CreatedBy.FullName, Comment);
-                var msgToManager = new Message
+                var report = await _context.ReceivingReports.FindAsync(RejectReceivingReportId);
+                if (report == null)
                 {
-                    ReportId = RejectReceivingReportId,
-                    ReportType = "Receiving",
-                    SenderId = this.UserId ,
-                    RecipientId =  report.RecipientEmployeeId, 
-                    Content = ManagerMessage,
-                    Type = "",
-                    CreatedAt = DateTime.UtcNow
-
-                };
-                _context.Messages.Add(msgToManager);
+                    // handle error
+                    return NotFound();
+                }
 
 
-                //Send message to technical Member
-                string TechMemMessage = string.Format("Rejected the request for items generated by {0}. with comment: {1}", CreatedBy.FullName, Comment);
-                var msgToTechMem = new Message
+
+                var generalSup = dbContext.Users.FirstOrDefault(u => u.UserId == report.ChiefResponsibleId);
+
+                var technicalMember = dbContext.Users.FirstOrDefault(u => u.UserId == report.TechnicalMemberId);
+                var manager = dbContext.Users.FirstOrDefault(u => u.UserId == report.RecipientEmployeeId);
+                if (this.UserGroupName == "Technical Member")
                 {
-                    ReportId = RejectReceivingReportId,
-                    ReportType = "Receiving",
-                    SenderId = this.UserId ,
-                    RecipientId = report.TechnicalMemberId, 
-                    Content = TechMemMessage,
-                    Type = "",
-                    CreatedAt = DateTime.UtcNow
+                    //If Technical Member reject rhe request than send rejeced message to keeper
+                    report.IsRejectedByTechnicalMember = true;
+                    if (report.TechnicalMemberApproval == true)
+                        report.TechnicalMemberApproval = false;
 
-                };
-                _context.Messages.Add(msgToTechMem);
-                
+                    string keeperMessage = string.Format("Your request is rejected with comment: {0}", Comment);
+                    var msgToKeeper = new Message
+                    {
+                        ReportId = RejectReceivingReportId,
+                        ReportType = "Receiving",
+                        SenderId = this.UserId,
+                        RecipientId = report.CreatedBy,
+                        Content = keeperMessage,
+                        Type = "",
+                        CreatedAt = DateTime.UtcNow,
+
+
+                    };
+                    _context.Messages.Add(msgToKeeper);
+
+                }
+                else if (this.UserGroupName == "General Supervisor")
+                {
+                    //If general supervisor reject the request 
+
+                    //Send Informaiton mesage to Manager
+                    report.IsRejectedByGeneralSupervisor = true;
+                    if (report.GeneralSupApproval == true)
+                        report.GeneralSupApproval = false;
+
+                    var CreatedBy = dbContext.Users.FirstOrDefault(u => u.UserId == report.CreatedBy);
+                    string ManagerMessage = string.Format("Rejected the request for items generated by {0}. with comment: {1}", CreatedBy.FullName, Comment);
+                    var msgToManager = new Message
+                    {
+                        ReportId = RejectReceivingReportId,
+                        ReportType = "Receiving",
+                        SenderId = this.UserId,
+                        RecipientId = report.RecipientEmployeeId,
+                        Content = ManagerMessage,
+                        Type = "",
+                        CreatedAt = DateTime.UtcNow
+
+                    };
+                    _context.Messages.Add(msgToManager);
+
+
+                    //Send message to technical Member
+                    string TechMemMessage = string.Format("Rejected the request for items generated by {0}. with comment: {1}", CreatedBy.FullName, Comment);
+                    var msgToTechMem = new Message
+                    {
+                        ReportId = RejectReceivingReportId,
+                        ReportType = "Receiving",
+                        SenderId = this.UserId,
+                        RecipientId = report.TechnicalMemberId,
+                        Content = TechMemMessage,
+                        Type = "",
+                        CreatedAt = DateTime.UtcNow
+
+                    };
+                    _context.Messages.Add(msgToTechMem);
+
+                }
+
             }
-           
-
             this.UserId= HttpContext.Session.GetInt32("UserId");
 
             // if (this.UserId.HasValue)
@@ -490,7 +639,7 @@ namespace LabMaterials.Pages
             return RedirectToPage(); 
         }
 
-        public async Task<IActionResult> OnPostReply([FromForm] int ReplyReportId, [FromForm] string Reply, [FromForm] int? ReplySender, [FromForm] int ReplyMessageId ){
+        public async Task<IActionResult> OnPostReply([FromForm] int ReplyReportId, [FromForm] string Reply, [FromForm] int? ReplySender, [FromForm] int ReplyMessageId, [FromForm] string ReplyReportType ){
             base.ExtractSessionData();
             FillLables();
             Console.WriteLine("reply function");
@@ -498,35 +647,65 @@ namespace LabMaterials.Pages
             this.UserFullName = HttpContext.Session.GetString("FullName");
             this.UserGroupName = HttpContext.Session.GetString("UserGroup");
             this.UserId = HttpContext.Session.GetInt32("UserId");
-            var report = await _context.ReceivingReports.FindAsync(ReplyReportId);
-            if (report == null)
-            {
-                // handle error
-                return NotFound();
-            }
-            if (string.IsNullOrEmpty(Reply))
-                ErrorMsg = (Program.Translations["CommentMissing"])[Lang];
 
-            // report.IsReplied = true;
+            if (ReplyReportType == "Dispensing")
+            {
+                var report = await _context.MaterialRequests.FindAsync(ReplyReportId);
+                if (report == null)
+                {
+                    return NotFound();
+                }
+
+                string ReplyMessage = string.Format("Replied with comment: {0}", Reply);
+                var msgTo = new Message
+                {
+                    MaterialRequestId = ReplyReportId,
+                    ReportType = "Dispensing",
+                    SenderId = this.UserId,
+                    RecipientId = ReplySender,
+                    Content = ReplyMessage,
+                    Type = "",
+                    CreatedAt = DateTime.UtcNow
+
+                };
+                _context.Messages.Add(msgTo);
+
+            }
+            else if (ReplyReportType == "Receiving")
+            {
+
+                var report = await _context.ReceivingReports.FindAsync(ReplyReportId);
+                if (report == null)
+                {
+                    // handle error
+                    return NotFound();
+
+                }
+
+                // report.IsReplied = true;
+
+                string ReplyMessage = string.Format("Replied with comment: {0}", Reply);
+                var msgToTechMem = new Message
+                {
+                    ReportId = ReplyReportId,
+                    ReportType = "Receiving",
+                    SenderId = this.UserId,
+                    RecipientId = ReplySender,
+                    Content = ReplyMessage,
+                    Type = "",
+                    CreatedAt = DateTime.UtcNow
+
+                };
+                _context.Messages.Add(msgToTechMem);
+            }
+
             var message = dbContext.Messages.FirstOrDefault(m => m.Id == ReplyMessageId);
             if (message != null)
             {
                 message.Type = "Replied"; 
             }
             dbContext.SaveChanges();
-            string ReplyMessage = string.Format("Replied with comment: {0}", Reply);
-            var msgToTechMem = new Message
-            {
-                ReportId = ReplyReportId,
-                ReportType = "Receiving",
-                SenderId = this.UserId ,
-                RecipientId = ReplySender, 
-                Content = ReplyMessage,
-                Type = "",
-                CreatedAt = DateTime.UtcNow
 
-            };
-            _context.Messages.Add(msgToTechMem);
             await _context.SaveChangesAsync(); 
             return RedirectToPage(); 
 
