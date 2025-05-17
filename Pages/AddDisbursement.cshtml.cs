@@ -168,7 +168,7 @@ namespace LabMaterials.Pages
             return new JsonResult(requesterName);
         }
 
-        public async Task<IActionResult> OnPostAsync([FromForm] DateTime OrderDate, [FromForm] int SerialNumber, [FromForm] string FiscalYear, [FromForm] string RequestDocumentType, [FromForm] int RequestingSector, [FromForm] string Sector, [FromForm] int KeeperId, [FromForm] int DeptManagerId, [FromForm] int SupervisorId)
+        public async Task<IActionResult> OnPostAsync([FromForm] DateTime OrderDate, [FromForm] int SerialNumber, [FromForm] string FiscalYear, [FromForm] string RequestDocumentType, [FromForm] int RequestingSector, [FromForm] string Sector)
         {
             LogableTask task = LogableTask.NewTask("AddDisbursement");
             try
@@ -236,9 +236,9 @@ namespace LabMaterials.Pages
                     Report.RequestDocumentType = RequestDocumentType;
                     Report.RequestingSector = RequestingSector;
                     Report.Sector = Sector;
-                    Report.KeeperId = KeeperId;
-                    Report.DeptManagerId = DeptManagerId;
-                    Report.SupervisorId = SupervisorId;
+                    // Report.KeeperId = KeeperId;
+                    // Report.DeptManagerId = DeptManagerId;
+                    // Report.SupervisorId = SupervisorId;
                     // Report.DocumentNumber = DocumentNumber;
 
                     if (string.IsNullOrEmpty(FiscalYear))
