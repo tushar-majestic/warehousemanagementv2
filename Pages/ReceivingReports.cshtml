@@ -144,7 +144,7 @@
                         
                                 <div class="form-group mb-4">
                                     <label>@Model.lblItemGroup</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
-                                    <select class="form-select" id="ItemGroup_@i" name="ItemsForReport[@i].ItemGroup" onchange="filterItemByGroup()" >
+                                    <select class="form-select" id="ItemGroup_@i" name="ItemsForReport[@i].ItemGroup" onchange="filterItemByGroup(@i)" >
                                         @* <option value="Chemicals">Chemicals</option>
                                         <option value="Glass">Glass</option> *@
                                         <option value="">Select Item Group</option>
@@ -338,9 +338,10 @@
                 <div class="text-end">
                     <button type="button" class="btn btn-danger btn-sm remove-entry me-3">Remove</button>
                 </div>
+                 @for(int i =0; i < Model.ItemsForReport.Count; i++){
                 <div class="form-group mb-4">
                     <label>Item Group</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
-                    <select class="form-select" name="ItemsForReport[${itemIndex}].ItemGroup" onchange="filterItemByGroup()" required>
+                    <select class="form-select" name="ItemsForReport[${itemIndex}].ItemGroup" onchange="filterItemByGroup(${itemIndex})" required>
                         <option value="">Select Item Group</option>
                         @foreach (var item in Model.ItemGroupList)
                         {
@@ -389,6 +390,7 @@
                     <label>@Model.lblComments</label>
                     <textarea  class="form-control" name="ItemsForReport[${itemIndex}].Comments"></textarea>
                 </div>
+                }
             `;
             container.appendChild(div);
             bindEvents(div, itemIndex);
@@ -479,9 +481,11 @@
         }); */
         //Items filtering based on groupcode
         const allItems = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.Items));
-        function filterItemByGroup() {
-            const selectedGroup = document.getElementById("ItemGroup").value;
-            const itemSelect = document.getElementById("ItemName");
+        function filterItemByGroup(index) {
+            console.log(index, 'index')
+            const selectedGroup = document.getElementById("ItemGroup_" + index).value;
+            const itemSelect = document.getElementById("ItemName_" + index);
+            console.log(selectedGroup, 'selectedGroup')
 
             // Clear current items
             itemSelect.innerHTML = '<option value="">Select Item</option>';
@@ -510,13 +514,20 @@
                 unit.UnitCode
             });
         }
-     
+        
+    
 
         const allUnits = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(unitData));
         function getUnitName(unitId) {
             const unit = allUnits.find(u => u.Id === unitId);
             return unit ? unit.UnitCode : '';
         }
+
+        for (let i = 0; i < itemCount; i++) {
+            const groupSelect = document.getElementById("ItemGroup_" + i);
+            groupSelect.onchange = () => filterItemByGroup(i);
+        }
+     
         // Supplier filtering based on type
         const allSuppliers = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.Suppliers));
 
@@ -528,7 +539,7 @@
 
             allSuppliers
                 .filter(s => s.SupplierType === selectedType)
-                .forEach(s => {
+                .forEach(s => { 
                     const option = document.createElement('option');
                     option.value = s.SupplierId;
                     option.textContent = s.SupplierName;
