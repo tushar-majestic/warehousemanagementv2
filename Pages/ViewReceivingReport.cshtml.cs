@@ -39,6 +39,7 @@ namespace LabMaterials.Pages
         {
             base.ExtractSessionData();
             this.ReportId = HttpContext.Session.GetString("ReportId");
+              Console.WriteLine(ReportId);
             if (ReportId == null)
             {
                 Report = null;
