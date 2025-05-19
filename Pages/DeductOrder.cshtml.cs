@@ -29,6 +29,7 @@ namespace LabMaterials.Pages
         public int? ReportId;
         public int? InboxId;
 
+        [BindProperty]
         public List<DeductionExtended> ItemCardsFromReport { get; set; }
 
 
@@ -127,7 +128,7 @@ namespace LabMaterials.Pages
                 var newdeduction = new PendingDeduction
                 {
                     StoreId = StoreId,
-                    // ItemCardId = item.Id,
+                    ItemCardId = item.ItemId,
                     RoomId = item.RoomId,
                     ShelfId = item.ShelfId,
                     ReduceQty = item.QuantityReceived,

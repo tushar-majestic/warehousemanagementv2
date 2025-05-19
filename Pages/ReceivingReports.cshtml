@@ -167,26 +167,8 @@
                                     <div class="form-group mb-4 ms-2 flex-fill">
                                         <label>@Model.lblItemName</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
                                         <select  class="form-control" id="ItemName_@i" name="ItemsForReport[@i].ItemId" >
+
                                             
-                                            <option value="" selected="@(Model.ItemsForReport[i].ItemId == null || Model.ItemsForReport[i].ItemId == 0 ? "selected" : null)">
-                                                Select Item
-                                            </option>
-                                            @foreach (var item in Model.Items)
-                                            {
-                                                var UnitCode = Model.Units.FirstOrDefault(u => u.Id == item.UnitId)?.UnitCode ?? "";
-                                                var ItemGroup = Model.ItemGroupList.FirstOrDefault(g => g.GroupCode == item.GroupCode)?.GroupCode ?? "";
-                                            
-                                                <option value="@item.ItemId"
-                                                        data-itemno="@item.ItemCode"
-                                                        data-itemname="@item.ItemName"
-                                                        data-itemdesc="@item.ItemDescription"
-                                                        data-unitid="@item.UnitId"
-                                                        data-unitname="@UnitCode"
-                                                        data-groupcode="@ItemGroup"
-                                                        selected="@(item.ItemId == Model.ItemsForReport[i].ItemId ? "selected" : null)">
-                                                    @item.ItemName
-                                                </option>
-                                            }
                                         </select>
                                     </div>
                                 </div>
@@ -356,8 +338,7 @@
                     <div class="form-group mb-4 ms-2 flex-fill">
                         <label>Item Name</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
                         <select class="form-control" id="ItemName_${itemIndex}" name="ItemsForReport[${itemIndex}].ItemId" required>
-                            <option value="">Select Item</option>
-                            ${getItemOptions()}
+                           
                         </select>
                     </div>
                 </div>
