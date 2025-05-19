@@ -4,6 +4,7 @@ using LabMaterials.DB;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LabMaterials.Migrations
 {
     [DbContext(typeof(LabDBContext))]
-    partial class LabDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250519130516_MatReqId")]
+    partial class MatReqId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1319,12 +1322,10 @@ namespace LabMaterials.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<int>("WarehouseId")
+                    b.Property<int>("Warehouse")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("WarehouseId");
 
                     b.ToTable("ReturnRequests");
                 });
@@ -2497,17 +2498,6 @@ namespace LabMaterials.Migrations
                         .HasConstraintName("FK__REQUESTER__DESTI__245D67DE");
 
                     b.Navigation("Destination");
-                });
-
-            modelBuilder.Entity("LabMaterials.DB.ReturnRequest", b =>
-                {
-                    b.HasOne("LabMaterials.DB.Store", "Warehouse")
-                        .WithMany()
-                        .HasForeignKey("WarehouseId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Warehouse");
                 });
 
             modelBuilder.Entity("LabMaterials.DB.ReturnRequestItem", b =>

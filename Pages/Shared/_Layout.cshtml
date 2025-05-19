@@ -3,26 +3,26 @@
 <html lang="en">
 
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>@ViewData["Title"] @Model.lblLabMaterials</title>
-  <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-  <link rel="stylesheet" href="~/lib/sweetalert2/sweetalert2.min.css" />
-  <link rel="stylesheet" href="~/lib/notyf/notyf.min.css" />
-  <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-  <link rel="stylesheet" href="~/LabMaterials.styles.css" asp-append-version="true" />
-  <link rel="icon" type="image/x-icon" href="~/images/favicon.png" />
-  <link rel="shortcut icon" href="~/images/favicon.png" type="image/x-icon" />
-  <link rel="icon" href="~/images/Picture1.png" type="image/x-icon" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] @Model.lblLabMaterials</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/lib/sweetalert2/sweetalert2.min.css" />
+    <link rel="stylesheet" href="~/lib/notyf/notyf.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/LabMaterials.styles.css" asp-append-version="true" />
+    <link rel="icon" type="image/x-icon" href="~/images/favicon.png" />
+    <link rel="shortcut icon" href="~/images/favicon.png" type="image/x-icon" />
+    <link rel="icon" href="~/images/Picture1.png" type="image/x-icon" />
 
 
 
 
-  <!-- jQuery first -->
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- jQuery first -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-  <!-- Then Bootstrap JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Then Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
 
 
     <style>
@@ -42,526 +42,524 @@
 
 <body dir="@Model.dir">
 
-  <nav class="navbar navbar-dark navbar-theme-primary px-4 col-12 d-lg-none">
-    <a class="navbar-brand me-lg-5" asp-area="" asp-page="/Home">
-      <img class="navbar-brand-dark" src="images/Picture1.png" alt="Kau logo" /> <img class="navbar-brand-light"
-        src="../../assets/img/brand/dark.svg" alt=" logo" />
-    </a>
-    <div class="d-flex align-items-center">
-      <button class="navbar-toggler d-lg-none collapsed" type="button" data-bs-toggle="collapse"
-        data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-    </div>
+    <nav class="navbar navbar-dark navbar-theme-primary px-4 col-12 d-lg-none">
+        <a class="navbar-brand me-lg-5" asp-area="" asp-page="/Home">
+            <img class="navbar-brand-dark" src="~/images/Picture1.png" alt="Kau logo" /> <img class="navbar-brand-light"
+                                                                                            src="../../assets/img/brand/dark.svg" alt=" logo" />
+        </a>
+        <div class="d-flex align-items-center">
+            <button class="navbar-toggler d-lg-none collapsed" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
     </nav>
 
     <nav id="sidebarMenu" class="sidebar d-lg-block bg-gray-800 text-white collapse @(Model.dir == "rtl" ? "sidebar-rtl" : "")" data-simplebar>
-    <div class="sidebar-inner px-1 pt-3">
-      <div class="user-card d-flex d-md-none align-items-center justify-content-between justify-content-md-center pb-4">
-        <div class="d-flex align-items-center">
-          <div class="avatar-lg me-4">
-            <img src="images/user.png" class="card-img-top rounded-circle border-white" alt="Bonnie Green">
-          </div>
-          <div class="d-block">
-            <h2 class="h5 mb-3">@Model.FullName</h2>
-            <a href="./Index" class="btn btn-secondary btn-sm d-inline-flex align-items-center">
-              <svg class="icon icon-xxs me-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
-              </svg>
-              @Model.lblLogout
-            </a>
-          </div>
-        </div>
-        <div class="collapse-close d-md-none">
-          <a href="#sidebarMenu" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu"
-            aria-expanded="true" aria-label="Toggle navigation">
-            <svg class="icon icon-xs" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-              <path fill-rule="evenodd"
-                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                clip-rule="evenodd"></path>
-            </svg>
-          </a>
-        </div>
-      </div>
-      <ul class="nav flex-column pt-3 p-0 pt-md-0">
+        <div class="sidebar-inner px-1 pt-3">
+            <div class="user-card d-flex d-md-none align-items-center justify-content-between justify-content-md-center pb-4">
+                <div class="d-flex align-items-center">
+                    <div class="avatar-lg me-4">
+                        <img src="~/images/user.png" class="card-img-top rounded-circle border-white" alt="Bonnie Green">
+                    </div>
+                    <div class="d-block">
+                        <h2 class="h5 mb-3">@Model.FullName</h2>
+                        <a href="./Index" class="btn btn-secondary btn-sm d-inline-flex align-items-center">
+                            <svg class="icon icon-xxs me-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                            </svg>
+                            @Model.lblLogout
+                        </a>
+                    </div>
+                </div>
+                <div class="collapse-close d-md-none">
+                    <a href="#sidebarMenu" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu"
+                       aria-expanded="true" aria-label="Toggle navigation">
+                        <svg class="icon icon-xs" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd"
+                                  d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                  clip-rule="evenodd"></path>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+            <ul class="nav flex-column pt-3 p-0 pt-md-0">
 
-        <li class="nav-item mb-4">
-          <div class=" d-flex align-items-center">
-            <span class="sidebar-icon">
-              <img src="images/logo_kau.png" width="100%" alt="Kau Logo">
-            </span>
-          </div>
-        </li>
-
-     
-        <li class="nav-item  @(Context.Request.Path == "/Home" ? "active" : "") ">
-                    <a asp-area="" asp-page="/Home" class="nav-link sidebar-link">
-            <span class="sidebar-icon">
-              <img class="icon icon-xs mx-1" src="images/home.png" />
-            </span>
-            <span class="sidebar-text">@Model.lblHome</span>
-          </a>
-        </li>
-     @{
-          var userGroupName = Context.Session.GetString("UserGroup");
-      }
-
-      @if (userGroupName == "Warehouse Keeper" || userGroupName == "Warehouse Manager" || userGroupName == "General Supervisor" || userGroupName == "Technical Member" || userGroupName == "Department Manager"){
-          <li class="nav-item  @(Context.Request.Path == "/Requests" ? "active" : "") ">
-                    <a asp-area="" asp-page="/Requests" class="nav-link sidebar-link">
+                <li class="nav-item mb-4">
+                    <div class=" d-flex align-items-center">
                         <span class="sidebar-icon">
-                            <img class="icon icon-xs mx-1" src="images/eye-grey.png" />
+                            <img src="~/images/logo_kau.png" width="100%" alt="Kau Logo">
                         </span>
-                        <span class="sidebar-text">@Model.lblRequests</span>
+                    </div>
+                </li>
+
+
+                <li class="nav-item  @(Context.Request.Path == "/Home" ? "active" : "") ">
+                    <a asp-area="" asp-page="/Home" class="nav-link sidebar-link">
+                        <span class="sidebar-icon">
+                            <img class="icon icon-xs mx-1" src="~/images/home.png" />
+                        </span>
+                        <span class="sidebar-text">@Model.lblHome</span>
                     </a>
                 </li>
-      }
-                
+                @{
+                    var userGroupName = Context.Session.GetString("UserGroup");
+                }
 
-
-        @if (Model.CanManageStore)
-        {
-          <li
-            class="nav-item @(Context.Request.Path == "/ManageStore" || Context.Request.Path == "/AddStore" || Context.Request.Path == "/ManageStorage" || Context.Request.Path == "/AddStorage" || Context.Request.Path == "/EditStorage" || Context.Request.Path == "/EditStore" || Context.Request.Path == "/ManageRooms" || Context.Request.Path == "/AddRooms" || Context.Request.Path == "/ManageDestinations" ? "active" : "")">
-            <a asp-area="" asp-page="/ManageStore" class="nav-link sidebar-link">
-              <span class="sidebar-icon">
-                <img class="icon icon-xs mx-1" src="images/retailer.png" />
-              </span>
-              <span class="sidebar-text break-word">@Model.lblManageStores</span>
-            </a>
-          </li>
-        }     
-        
-        @if (Model.CanManageStore)
-        {
-        @*
-          <li class="nav-item @(Context.Request.Path == "/Requests"|| Context.Request.Query["handler"] == "Create") )">
+                @*  @if (userGroupName == "Warehouse Keeper" || userGroupName == "Warehouse Manager" || userGroupName == "General Supervisor" || userGroupName == "Technical Member" || userGroupName == "Department Manager") *@
+                @if (Model.CanManageRequests)
+                {
+                    <li class="nav-item  @(Context.Request.Path == "/Requests" ? "active" : "") ">
                         <a asp-area="" asp-page="/Requests" class="nav-link sidebar-link">
-              <span class="sidebar-icon">
-                <img class="icon icon-xs mx-3" src="images/retailer.png" />
-              </span>
-              <span class="sidebar-text break-word">@Model.lblRequests</span>
-            </a>
-          </li>
-                *@
-        }
+                            <span class="sidebar-icon">
+                                <img class="icon icon-xs mx-1" src="~/images/eye-grey.png" />
+                            </span>
+                            <span class="sidebar-text">@Model.lblRequests</span>
+                        </a>
+                    </li>
+                }
 
-        @if (Model.CanManageItems)
-        {
-          <li
-            class="nav-item @(Context.Request.Path == "/ManageItems" || Context.Request.Path == "/AddItem" || Context.Request.Path == "/ManageUnits" || Context.Request.Path == "/AddUnit" || Context.Request.Path == "/ManageItemGroups" || Context.Request.Path == "/AddItemGroup"  || Context.Request.Path == "/EditItem" || Context.Request.Path == "/EditUnit" || Context.Request.Path == "/EditItemGroup" ? "active" : "")">
-            <a asp-area="" asp-page="/ManageItems" class="nav-link">
-              <span class="sidebar-icon">
-                <img class="icon icon-xs mx-1" src="images/inventory.png" />
-              </span>
-              <span class="sidebar-text">@Model.lblManageItems</span>
-            </a>
-          </li>
-        }
 
-        
-          <li
-            class="nav-item @(Context.Request.Path == "/ManageItemCards" || Context.Request.Path == "/ItemCards" ? "active" : "")">
-                        <a asp-area="" asp-page="/ManageItemCards" class="nav-link">
-              <span class="sidebar-icon">
-                <img class="icon icon-xs mx-1" src="images/inventory.png" />
-              </span>
-                            <span class="sidebar-text">@Model.lblItemCards</span>
-            </a>
-          </li>
-        
 
-        @if (Model.CanManageItems)
-        {
-          <li
-            class="nav-item @(Context.Request.Path == "/ManageDamaged" || Context.Request.Path == "/DamageItem" ? "active" : "")">
-            <a asp-area="" asp-page="/ManageDamaged" class="nav-link">
-              <span class="sidebar-icon">
-                <img class="icon icon-xs mx-1" src="images/inventory.png" />
-              </span>
-              <span class="sidebar-text">@Model.lblDamagedItems</span>
-            </a>
-          </li>
-        }
+                @if (Model.CanManageStore)
+                {
+                    <li class="nav-item @(Context.Request.Path == "/ManageStore" || Context.Request.Path == "/AddStore" || Context.Request.Path == "/ManageStorage" || Context.Request.Path == "/AddStorage" || Context.Request.Path == "/EditStorage" || Context.Request.Path == "/EditStore" || Context.Request.Path == "/ManageRooms" || Context.Request.Path == "/AddRooms" || Context.Request.Path == "/ManageDestinations" ? "active" : "")">
+                        <a asp-area="" asp-page="/ManageStore" class="nav-link sidebar-link">
+                            <span class="sidebar-icon">
+                                <img class="icon icon-xs mx-1" src="~/images/retailer.png" />
+                            </span>
+                            <span class="sidebar-text break-word">@Model.lblManageStores</span>
+                        </a>
+                    </li>
+                }
 
-        @if (Model.CanManageSupplies)
-        {
-          <li
-            class="nav-item @(Context.Request.Path == "/Supplies" || Context.Request.Path == "/AddSupply"  || Context.Request.Path == "/EditSupply" || Context.Request.Path == "/EditSupplier" || Context.Request.Path == "/ManageSupplier" || Context.Request.Path == "/AddSupplier" ? "active" : "")">
-            <a asp-area="" asp-page="/Supplies" class="nav-link">
-              <span class="sidebar-icon">
-                <img class="icon icon-xs mx-1" src="images/supplies.png" />
-              </span>
-              <span class="sidebar-text">@Model.lblManageSupplies</span>
-            </a>
-          </li>
-        }
-        @if (Model.CanDisburseItems)
-        {
-          <li
-            class="nav-item @(Context.Request.Path == "/Disbursements" || Context.Request.Path == "/AddDisbursement" || Context.Request.Path == "/EditDisbursement" ? "active" : "")">
-            <a asp-area="" asp-page="/Disbursements" class="nav-link">
-              <span class="sidebar-icon">
-                <img class="icon icon-xs mx-1" src="images/expenses.png" />
-              </span>
-              <span class="sidebar-text">@Model.lblDisbursement</span>
-            </a>
-          </li>
-        }
-        @{
-          var userGroup = Context.Session.GetString("UserGroup");
-        }
-        @if (Model.CanSeeReports && userGroup == "System Admin")
-        {
-          <li
-            class="nav-item @(Context.Request.Path == "/Rep_MaterialsReceived" || Context.Request.Path == "/Rep_Distribution" || Context.Request.Path == "/Rep_Inventory"  || Context.Request.Path == "/Rep_HazardMaterial" || Context.Request.Path == "/Rep_UserActivity" || Context.Request.Path == "/Rep_UserReport" ? "active" : "")">
-            <a asp-area="" asp-page="/Rep_UserActivity" class="nav-link">
-              <span class="sidebar-icon">
-                <img class="icon icon-xs mx-1" src="images/pen.png" />
-              </span>
-              <span class="sidebar-text">@Model.lblReports</span>
-            </a>
-          </li>
-        }
-        @if (Model.CanManageUsers)
-        {
-          <li
-            class="nav-item @(Context.Request.Path == "/ManageUsers" || Context.Request.Path == "/AddUser" || Context.Request.Path == "/ManageUserGroups" || Context.Request.Path == "/AddUserGroup" || Context.Request.Path == "/EditUser" || Context.Request.Path == "/EditUserGroup" || Context.Request.Path == "/viewUser" ? "active" : "")">
-                <a asp-area="" asp-page="/ManageUsers" class="nav-link">
-                    <span class="sidebar-icon">
-                        <img class="icon icon-xs mx-1" src="images/management.png" />
-                    </span>
-                    <span class="sidebar-text">@Model.lblManageUsers</span>
+                @if (Model.CanManageStore)
+                {
+                    @*
+                <li class="nav-item @(Context.Request.Path == "/Requests"|| Context.Request.Query["handler"] == "Create") )">
+                <a asp-area="" asp-page="/Requests" class="nav-link sidebar-link">
+                <span class="sidebar-icon">
+                <img class="icon icon-xs mx-3" src="~/images/retailer.png" />
+                </span>
+                <span class="sidebar-text break-word">@Model.lblRequests</span>
                 </a>
-            </li>
-        }
-        @if (!Model.IsLDAP)
-        {
-          <li class="nav-item @(Context.Request.Path == "/ChangePassword" ? "active" : "")">
-            <a asp-area="" asp-page="/ChangePassword" class="nav-link">
-              <span class="sidebar-icon">
-                <img class="icon icon-xs mx-1" src="images/password.png" />
-              </span>
-              <span class="sidebar-text">@Model.lblUserProfile</span>
-            </a>
-          </li>
-        }
-        @if (Model.Lang == "en")
-        {
-          <li class="nav-item @("active")">
-                <a href="./Home?lang=ar" class="nav-link">
-                  <span class="sidebar-icon">
-                      <svg class="icon icon-xxs ms-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                          <rect width="20" height="10" fill="#006341" />
-                          <rect y="10" width="20" height="10" fill="#F0F0F0" />
-                      </svg>
-                      </span> &nbsp;&nbsp;&nbsp;
-                  <span class="sidebar-text">@Model.lblLanguage</span>
-              </a>
-          </li>
-        }
-        else
-        {
-          <li class="nav-item @("active")">
-                <a href="./Home?lang=en" class="nav-link">
-                  <span class="sidebar-icon">
-                      <svg class="icon icon-xxs me-2" viewBox="0 0 32 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <g clip-path="url(#clip0_343_214)">
-                              <path fill-rule="evenodd" clip-rule="evenodd" d="M0 0H32V24H0V0Z" fill="#F7FCFF" />
-                              <path fill-rule="evenodd" clip-rule="evenodd" d="M0 14.667V16.667H32V14.667H0ZM0 18.333V20.333H32V18.333H0ZM0 7.333V9.333H32V7.333H0ZM0 22V24H32V22H0ZM0 11V13H32V11H0ZM0 0V2H32V0H0ZM0 3.667V5.667H32V3.667H0Z" fill="#E31D1C" />
-                              <path d="M0 0H20V13H0V0Z" fill="#2E42A5" />
-                              <path fill-rule="evenodd" clip-rule="evenodd" d="M1.72195 2.93903L0.995947 3.44803L1.24095 2.54203L0.595947 1.96803H1.43895L1.72095 1.22803L2.05195 1.96803H2.76995L2.20595 2.54203L2.42395 3.44803L1.72195 2.93903ZM5.72195 2.93903L4.99595 3.44803L5.24095 2.54203L4.59695 1.96803H5.43895L5.72095 1.22803L6.05195 1.96803H6.76995L6.20595 2.54203L6.42395 3.44803L5.72195 2.93903ZM8.99595 3.44803L9.72195 2.93803L10.4239 3.44803L10.2059 2.54203L10.7699 1.96803H10.0519L9.72095 1.22803L9.43895 1.96803H8.59695L9.24095 2.54203L8.99595 3.44803ZM13.7219 2.93803L12.9959 3.44803L13.2409 2.54203L12.5969 1.96803H13.4389L13.7209 1.22803L14.0519 1.96803H14.7699L14.2059 2.54203L14.4239 3.44803L13.7219 2.93803ZM0.995947 7.44903L1.72195 6.93903L2.42395 7.44903L2.20595 6.54303L2.76995 5.96903H2.05195L1.72095 5.22903L1.43895 5.96903H0.595947L1.24095 6.54303L0.995947 7.44903ZM5.72195 6.93903L4.99595 7.44903L5.24095 6.54303L4.59695 5.96903H5.43895L5.72095 5.22903L6.05195 5.96903H6.76995L6.20595 6.54303L6.42395 7.44903L5.72195 6.93903ZM8.99595 7.44903L9.72195 6.93903L10.4239 7.44903L10.2059 6.54303L10.7699 5.96903H10.0519L9.72095 5.22903L9.43895 5.96903H8.59695L9.24095 6.54303L8.99595 7.44903ZM13.7219 6.93903L12.9959 7.44903L13.2409 6.54303L12.5969 5.96903H13.4389L13.7209 5.22903L14.0519 5.96903H14.7699L14.2059 6.54303L14.4239 7.44903L13.7219 6.93903ZM0.995947 11.449L1.72195 10.939L2.42395 11.449L2.20595 10.543L2.76995 9.96903H2.05195L1.72095 9.22903L1.43895 9.96903H0.595947L1.24095 10.543L0.995947 11.449ZM5.72195 10.939L4.99595 11.449L5.24095 10.543L4.59695 9.96903H5.43895L5.72095 9.22903L6.05195 9.96903H6.76995L6.20595 10.543L6.42395 11.449L5.72195 10.939ZM8.99595 11.449L9.72195 10.939L10.4239 11.449L10.2059 10.543L10.7699 9.96903H10.0519L9.72095 9.22903L9.43895 9.96903H8.59695L9.24095 10.543L8.99595 11.449ZM13.7219 10.939L12.9959 11.449L13.2409 10.543L12.5969 9.96903H13.4389L13.7209 9.22903L14.0519 9.96903H14.7699L14.2059 10.543L14.4239 11.449L13.7219 10.939ZM16.9959 3.44903L17.7219 2.93903L18.4239 3.44903L18.2059 2.54303L18.7699 1.96903H18.0519L17.7209 1.22903L17.4389 1.96903H16.5959L17.2409 2.54303L16.9959 3.44903ZM17.7219 6.93903L16.9959 7.44903L17.2409 6.54303L16.5959 5.96903H17.4389L17.7209 5.22903L18.0519 5.96903H18.7699L18.2059 6.54303L18.4239 7.44903L17.7219 6.93903ZM16.9959 11.449L17.7219 10.939L18.4239 11.449L18.2059 10.543L18.7699 9.96903H18.0519L17.7209 9.22903L17.4389 9.96903H16.5959L17.2409 10.543L16.9959 11.449ZM3.72195 4.93803L2.99595 5.44803L3.24095 4.54203L2.59595 3.96803H3.43895L3.72095 3.22803L4.05195 3.96803H4.76995L4.20595 4.54203L4.42395 5.44803L3.72195 4.93803ZM6.99595 5.44803L7.72195 4.93803L8.42395 5.44803L8.20595 4.54203L8.76995 3.96803H8.05195L7.72095 3.22803L7.43895 3.96803H6.59595L7.24095 4.54203L6.99595 5.44803ZM11.7219 4.93803L10.9959 5.44803L11.2409 4.54203L10.5969 3.96803H11.4389L11.7209 3.22803L12.0519 3.96803H12.7699L12.2059 4.54203L12.4239 5.44803L11.7219 4.93803ZM2.99595 9.44803L3.72195 8.93803L4.42395 9.44803L4.20595 8.54203L4.76995 7.96803H4.05195L3.72095 7.22803L3.43895 7.96803H2.59595L3.24095 8.54203L2.99595 9.44803ZM7.72195 8.93803L6.99595 9.44803L7.24095 8.54203L6.59695 7.96803H7.43895L7.72095 7.22803L8.05195 7.96803H8.76995L8.20595 8.54203L8.42395 9.44803L7.72195 8.93803ZM10.9959 9.44803L11.7219 8.93803L12.4239 9.44803L12.2059 8.54203L12.7699 7.96803H12.0519L11.7209 7.22803L11.4389 7.96803H10.5969L11.2409 8.54203L10.9959 9.44803ZM15.7219 4.93803L14.9959 5.44803L15.2409 4.54203L14.5969 3.96803H15.4389L15.7209 3.22803L16.0519 3.96803H16.7699L16.2059 4.54203L16.4239 5.44803L15.7219 4.93803ZM14.9959 9.44803L15.7219 8.93803L16.4239 9.44803L16.2059 8.54203L16.7699 7.96803H16.0519L15.7209 7.22803L15.4389 7.96803H14.5969L15.2409 8.54203L14.9959 9.44803Z" fill="#F7FCFF" />
-                          </g>
-                          <defs>
-                              <clipPath id="clip0_343_214">
-                                  <rect width="32" height="24" fill="white" />
-                              </clipPath>
-                          </defs>
-                      </svg>
-                  </span>&nbsp;&nbsp;&nbsp;
-                  <span class="sidebar-text">@Model.lblLanguage</span>
-              </a>
-          </li>
-        }
-        <li role="separator" class="dropdown-divider mt-4 mb-3 border-gray-700"></li>
-        <li class="nav-item">
-                    <span class="sidebar-text break-word"><small>
-    @Model.lblLabMaterials <span class="badge badge-sm bg-secondary ms-1 text-gray-600">V1.0.0</span>
-</small></span>
-        </li>
-      </ul>
-    </div>
-  </nav>
+                </li>
+                *@
+                }
+
+                @if (Model.CanManageItems)
+                {
+                    <li class="nav-item @(Context.Request.Path == "/ManageItems" || Context.Request.Path == "/AddItem" || Context.Request.Path == "/ManageUnits" || Context.Request.Path == "/AddUnit" || Context.Request.Path == "/ManageItemGroups" || Context.Request.Path == "/AddItemGroup"  || Context.Request.Path == "/EditItem" || Context.Request.Path == "/EditUnit" || Context.Request.Path == "/EditItemGroup" ? "active" : "")">
+                        <a asp-area="" asp-page="/ManageItems" class="nav-link">
+                            <span class="sidebar-icon">
+                                <img class="icon icon-xs mx-1" src="~/images/inventory.png" />
+                            </span>
+                            <span class="sidebar-text">@Model.lblManageItems</span>
+                        </a>
+                    </li>
+                }
+
+                @if (Model.CanManageItemCard)
+                {
+                    <li class="nav-item @(Context.Request.Path == "/ManageItemCards" || Context.Request.Path == "/ItemCards" ? "active" : "")">
+                        <a asp-area="" asp-page="/ManageItemCards" class="nav-link">
+                            <span class="sidebar-icon">
+                                <img class="icon icon-xs mx-1" src="~/images/inventory.png" />
+                            </span>
+                            <span class="sidebar-text">@Model.lblItemCards</span>
+                        </a>
+                    </li>
+                }
+
+                @if (Model.CanManageItems)
+                {
+                    <li class="nav-item @(Context.Request.Path == "/ViewReturnRequests" || Context.Request.Path == "/DamageItem" ? "active" : "")">
+                        <a asp-area="" asp-page="/ViewReturnRequests" class="nav-link">
+                            <span class="sidebar-icon">
+                                <img class="icon icon-xs mx-1" src="~/images/inventory.png" />
+                            </span>
+                            <span class="sidebar-text">@Model.lblDamagedItems</span>
+                        </a>
+                    </li>
+                }
+
+                @if (Model.CanManageSupplies)
+                {
+                    <li class="nav-item @(Context.Request.Path == "/Supplies" || Context.Request.Path == "/AddSupply"  || Context.Request.Path == "/EditSupply" || Context.Request.Path == "/EditSupplier" || Context.Request.Path == "/ManageSupplier" || Context.Request.Path == "/AddSupplier" ? "active" : "")">
+                        <a asp-area="" asp-page="/Supplies" class="nav-link">
+                            <span class="sidebar-icon">
+                                <img class="icon icon-xs mx-1" src="~/images/supplies.png" />
+                            </span>
+                            <span class="sidebar-text">@Model.lblManageSupplies</span>
+                        </a>
+                    </li>
+                }
+                @if (Model.CanDisburseItems)
+                {
+                    <li class="nav-item @(Context.Request.Path == "/Disbursements" || Context.Request.Path == "/AddDisbursement" || Context.Request.Path == "/EditDisbursement" ? "active" : "")">
+                        <a asp-area="" asp-page="/Disbursements" class="nav-link">
+                            <span class="sidebar-icon">
+                                <img class="icon icon-xs mx-1" src="~/images/expenses.png" />
+                            </span>
+                            <span class="sidebar-text">@Model.lblDisbursement</span>
+                        </a>
+                    </li>
+                }
+                @{
+                    var userGroup = Context.Session.GetString("UserGroup");
+                }
+                @if (Model.CanSeeReports)
+                {
+                    <li class="nav-item @(Context.Request.Path == "/Rep_MaterialsReceived" || Context.Request.Path == "/Rep_Distribution" || Context.Request.Path == "/Rep_Inventory"  || Context.Request.Path == "/Rep_HazardMaterial" || Context.Request.Path == "/Rep_UserActivity" || Context.Request.Path == "/Rep_UserReport" ? "active" : "")">
+                        <a asp-area="" asp-page="/Rep_UserActivity" class="nav-link">
+                            <span class="sidebar-icon">
+                                <img class="icon icon-xs mx-1" src="~/images/pen.png" />
+                            </span>
+                            <span class="sidebar-text">@Model.lblReports</span>
+                        </a>
+                    </li>
+                }
+                @if (Model.CanManageUsers)
+                {
+                    <li class="nav-item @(Context.Request.Path == "/ManageUsers" || Context.Request.Path == "/AddUser" || Context.Request.Path == "/ManageUserGroups" || Context.Request.Path == "/AddUserGroup" || Context.Request.Path == "/EditUser" || Context.Request.Path == "/EditUserGroup" || Context.Request.Path == "/viewUser" ? "active" : "")">
+                        <a asp-area="" asp-page="/ManageUsers" class="nav-link">
+                            <span class="sidebar-icon">
+                                <img class="icon icon-xs mx-1" src="~/images/management.png" />
+                            </span>
+                            <span class="sidebar-text">@Model.lblManageUsers</span>
+                        </a>
+                    </li>
+                }
+                @if (!Model.IsLDAP)
+                {
+                    <li class="nav-item @(Context.Request.Path == "/ChangePassword" ? "active" : "")">
+                        <a asp-area="" asp-page="/ChangePassword" class="nav-link">
+                            <span class="sidebar-icon">
+                                <img class="icon icon-xs mx-1" src="~/images/password.png" />
+                            </span>
+                            <span class="sidebar-text">@Model.lblUserProfile</span>
+                        </a>
+                    </li>
+                }
+                @if (Model.Lang == "en")
+                {
+                    <li class="nav-item @("active")">
+                        <a href="./Home?lang=ar" class="nav-link">
+                            <span class="sidebar-icon">
+                                <svg class="icon icon-xxs ms-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                    <rect width="20" height="10" fill="#006341" />
+                                    <rect y="10" width="20" height="10" fill="#F0F0F0" />
+                                </svg>
+                            </span> &nbsp;&nbsp;&nbsp;
+                            <span class="sidebar-text">@Model.lblLanguage</span>
+                        </a>
+                    </li>
+                }
+                else
+                {
+                    <li class="nav-item @("active")">
+                        <a href="./Home?lang=en" class="nav-link">
+                            <span class="sidebar-icon">
+                                <svg class="icon icon-xxs me-2" viewBox="0 0 32 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <g clip-path="url(#clip0_343_214)">
+                                        <path fill-rule="evenodd" clip-rule="evenodd" d="M0 0H32V24H0V0Z" fill="#F7FCFF" />
+                                        <path fill-rule="evenodd" clip-rule="evenodd" d="M0 14.667V16.667H32V14.667H0ZM0 18.333V20.333H32V18.333H0ZM0 7.333V9.333H32V7.333H0ZM0 22V24H32V22H0ZM0 11V13H32V11H0ZM0 0V2H32V0H0ZM0 3.667V5.667H32V3.667H0Z" fill="#E31D1C" />
+                                        <path d="M0 0H20V13H0V0Z" fill="#2E42A5" />
+                                        <path fill-rule="evenodd" clip-rule="evenodd" d="M1.72195 2.93903L0.995947 3.44803L1.24095 2.54203L0.595947 1.96803H1.43895L1.72095 1.22803L2.05195 1.96803H2.76995L2.20595 2.54203L2.42395 3.44803L1.72195 2.93903ZM5.72195 2.93903L4.99595 3.44803L5.24095 2.54203L4.59695 1.96803H5.43895L5.72095 1.22803L6.05195 1.96803H6.76995L6.20595 2.54203L6.42395 3.44803L5.72195 2.93903ZM8.99595 3.44803L9.72195 2.93803L10.4239 3.44803L10.2059 2.54203L10.7699 1.96803H10.0519L9.72095 1.22803L9.43895 1.96803H8.59695L9.24095 2.54203L8.99595 3.44803ZM13.7219 2.93803L12.9959 3.44803L13.2409 2.54203L12.5969 1.96803H13.4389L13.7209 1.22803L14.0519 1.96803H14.7699L14.2059 2.54203L14.4239 3.44803L13.7219 2.93803ZM0.995947 7.44903L1.72195 6.93903L2.42395 7.44903L2.20595 6.54303L2.76995 5.96903H2.05195L1.72095 5.22903L1.43895 5.96903H0.595947L1.24095 6.54303L0.995947 7.44903ZM5.72195 6.93903L4.99595 7.44903L5.24095 6.54303L4.59695 5.96903H5.43895L5.72095 5.22903L6.05195 5.96903H6.76995L6.20595 6.54303L6.42395 7.44903L5.72195 6.93903ZM8.99595 7.44903L9.72195 6.93903L10.4239 7.44903L10.2059 6.54303L10.7699 5.96903H10.0519L9.72095 5.22903L9.43895 5.96903H8.59695L9.24095 6.54303L8.99595 7.44903ZM13.7219 6.93903L12.9959 7.44903L13.2409 6.54303L12.5969 5.96903H13.4389L13.7209 5.22903L14.0519 5.96903H14.7699L14.2059 6.54303L14.4239 7.44903L13.7219 6.93903ZM0.995947 11.449L1.72195 10.939L2.42395 11.449L2.20595 10.543L2.76995 9.96903H2.05195L1.72095 9.22903L1.43895 9.96903H0.595947L1.24095 10.543L0.995947 11.449ZM5.72195 10.939L4.99595 11.449L5.24095 10.543L4.59695 9.96903H5.43895L5.72095 9.22903L6.05195 9.96903H6.76995L6.20595 10.543L6.42395 11.449L5.72195 10.939ZM8.99595 11.449L9.72195 10.939L10.4239 11.449L10.2059 10.543L10.7699 9.96903H10.0519L9.72095 9.22903L9.43895 9.96903H8.59695L9.24095 10.543L8.99595 11.449ZM13.7219 10.939L12.9959 11.449L13.2409 10.543L12.5969 9.96903H13.4389L13.7209 9.22903L14.0519 9.96903H14.7699L14.2059 10.543L14.4239 11.449L13.7219 10.939ZM16.9959 3.44903L17.7219 2.93903L18.4239 3.44903L18.2059 2.54303L18.7699 1.96903H18.0519L17.7209 1.22903L17.4389 1.96903H16.5959L17.2409 2.54303L16.9959 3.44903ZM17.7219 6.93903L16.9959 7.44903L17.2409 6.54303L16.5959 5.96903H17.4389L17.7209 5.22903L18.0519 5.96903H18.7699L18.2059 6.54303L18.4239 7.44903L17.7219 6.93903ZM16.9959 11.449L17.7219 10.939L18.4239 11.449L18.2059 10.543L18.7699 9.96903H18.0519L17.7209 9.22903L17.4389 9.96903H16.5959L17.2409 10.543L16.9959 11.449ZM3.72195 4.93803L2.99595 5.44803L3.24095 4.54203L2.59595 3.96803H3.43895L3.72095 3.22803L4.05195 3.96803H4.76995L4.20595 4.54203L4.42395 5.44803L3.72195 4.93803ZM6.99595 5.44803L7.72195 4.93803L8.42395 5.44803L8.20595 4.54203L8.76995 3.96803H8.05195L7.72095 3.22803L7.43895 3.96803H6.59595L7.24095 4.54203L6.99595 5.44803ZM11.7219 4.93803L10.9959 5.44803L11.2409 4.54203L10.5969 3.96803H11.4389L11.7209 3.22803L12.0519 3.96803H12.7699L12.2059 4.54203L12.4239 5.44803L11.7219 4.93803ZM2.99595 9.44803L3.72195 8.93803L4.42395 9.44803L4.20595 8.54203L4.76995 7.96803H4.05195L3.72095 7.22803L3.43895 7.96803H2.59595L3.24095 8.54203L2.99595 9.44803ZM7.72195 8.93803L6.99595 9.44803L7.24095 8.54203L6.59695 7.96803H7.43895L7.72095 7.22803L8.05195 7.96803H8.76995L8.20595 8.54203L8.42395 9.44803L7.72195 8.93803ZM10.9959 9.44803L11.7219 8.93803L12.4239 9.44803L12.2059 8.54203L12.7699 7.96803H12.0519L11.7209 7.22803L11.4389 7.96803H10.5969L11.2409 8.54203L10.9959 9.44803ZM15.7219 4.93803L14.9959 5.44803L15.2409 4.54203L14.5969 3.96803H15.4389L15.7209 3.22803L16.0519 3.96803H16.7699L16.2059 4.54203L16.4239 5.44803L15.7219 4.93803ZM14.9959 9.44803L15.7219 8.93803L16.4239 9.44803L16.2059 8.54203L16.7699 7.96803H16.0519L15.7209 7.22803L15.4389 7.96803H14.5969L15.2409 8.54203L14.9959 9.44803Z" fill="#F7FCFF" />
+                                    </g>
+                                    <defs>
+                                        <clipPath id="clip0_343_214">
+                                            <rect width="32" height="24" fill="white" />
+                                        </clipPath>
+                                    </defs>
+                                </svg>
+                            </span>&nbsp;&nbsp;&nbsp;
+                            <span class="sidebar-text">@Model.lblLanguage</span>
+                        </a>
+                    </li>
+                }
+                <li role="separator" class="dropdown-divider mt-4 mb-3 border-gray-700"></li>
+                <li class="nav-item">
+                    <span class="sidebar-text break-word">
+                        <small>
+                            @Model.lblLabMaterials <span class="badge badge-sm bg-secondary ms-1 text-gray-600">V1.0.0</span>
+                        </small>
+                    </span>
+                </li>
+            </ul>
+        </div>
+    </nav>
 
     <main class="content @(Model.dir == "rtl" ? "content-rtl" : "")" style="min-height: 100vh;">
 
-    <nav class="navbar navbar-top navbar-expand navbar-dashboard navbar-dark ps-0 pe-2 pb-0">
-      <div class="container-fluid px-0">
-        <div class="d-flex justify-content-between w-100" id="navbarSupportedContent" >
-<div>
-</div>
-          <!-- Navbar links -->
-          <ul class="navbar-nav  p-0" >
+        <nav class="navbar navbar-top navbar-expand navbar-dashboard navbar-dark ps-0 pe-2 pb-0">
+            <div class="container-fluid px-0">
+                <div class="d-flex justify-content-between w-100" id="navbarSupportedContent">
+                    <div>
+                    </div>
+                    <!-- Navbar links -->
+                    <ul class="navbar-nav  p-0">
 
-            <li class="nav-item dropdown ms-lg-3">
-              <a class="nav-link dropdown-toggle pt-1 px-0" href="#" role="button" data-bs-toggle="dropdown"
-                aria-expanded="false">
-                <div class="media d-flex align-items-center">
-                  <img class="avatar rounded-circle" alt="Image placeholder" src="images/user.png">
-                  <div class="media-body mx-2 text-dark align-items-center d-none d-lg-block">
+                        <li class="nav-item dropdown ms-lg-3">
+                            <a class="nav-link dropdown-toggle pt-1 px-0" href="#" role="button" data-bs-toggle="dropdown"
+                               aria-expanded="false">
+                                <div class="media d-flex align-items-center">
+                                    <img class="avatar rounded-circle" alt="Image placeholder" src="~/images/user.png">
+                                    <div class="media-body mx-2 text-dark align-items-center d-none d-lg-block">
                                         <span class="mb-0 font-small fw-bold text-secondary">@Model.FullName</span>
-                  </div>
-                </div>
-              </a>
+                                    </div>
+                                </div>
+                            </a>
                             <div class="dropdown-menu dashboard-dropdown dropdown-menu-end mt-2 py-1 px-0" style="right: -11px;">
-                @* <a class="dropdown-item d-flex align-items-center" href="#">
-                <svg class="dropdown-icon text-gray-400 mx-3" fill="currentColor" viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg">
-                <path fill-rule="evenodd"
-                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986
-                5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z"
-                clip-rule="evenodd"></path>
-                </svg>
-                My Profile
-                </a> *@
-                @* <div role="separator" class="dropdown-divider my-1"></div> *@
-                <a class="dropdown-item d-flex align-items-center px-1 justify-content-center" asp-area="" asp-page="/Index">
-                  <svg class="dropdown-icon text-danger mx-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1">
-                    </path>
-                  </svg>
-                  @Model.lblLogout
-                </a>
+                                @* <a class="dropdown-item d-flex align-items-center" href="#">
+                                <svg class="dropdown-icon text-gray-400 mx-3" fill="currentColor" viewBox="0 0 20 20"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd"
+                                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986
+                                5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z"
+                                clip-rule="evenodd"></path>
+                                </svg>
+                                My Profile
+                                </a> *@
+                                @* <div role="separator" class="dropdown-divider my-1"></div> *@
+                                <a class="dropdown-item d-flex align-items-center px-1 justify-content-center" asp-area="" asp-page="/Index">
+                                    <svg class="dropdown-icon text-danger mx-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                         xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                              d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1">
+                                        </path>
+                                    </svg>
+                                    @Model.lblLogout
+                                </a>
 
 
-              </div>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
-    @RenderBody()
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        @RenderBody()
 
 
-    <footer class="bg-white rounded shadow p-5 mb-4 mt-4">
-      <div class="row">
-        <div class="col-12 col-md-12 col-xl-12 mb-12 mb-md-0">
-          <p class="mb-0 text-center text-lg-start">© 2020-<span class="current-year">2024</span> <a
-              class="text-primary fw-normal" href="#" target="_blank"> @Model.lblLabMaterials V1.0.0</a></p>
-        </div>
-      </div>
-    </footer>
-  </main>
+        <footer class="bg-white rounded shadow p-5 mb-4 mt-4">
+            <div class="row">
+                <div class="col-12 col-md-12 col-xl-12 mb-12 mb-md-0">
+                    <p class="mb-0 text-center text-lg-start">
+                        © 2020-<span class="current-year">2024</span> <a class="text-primary fw-normal" href="#" target="_blank"> @Model.lblLabMaterials V1.0.0</a>
+                    </p>
+                </div>
+            </div>
+        </footer>
+    </main>
 
-  <script src="~/lib/jquery/dist/jquery.min.js"></script>
-  @* <script src="~/lib/@popperjs/core/dist/umd/popper.min.js"></script> *@
-  <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="~/lib/smooth-scroll/dist/smooth-scroll.polyfills.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    @* <script src="~/lib/@popperjs/core/dist/umd/popper.min.js"></script> *@
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/smooth-scroll/dist/smooth-scroll.polyfills.min.js"></script>
 
-  <script src="~/lib/apexcharts/dist/apexcharts.min.js"></script>
-  <script src="~/lib/sweetalert2/sweetalert2.all.min.js"></script>
-  <script src="~/lib/notyf/notyf.min.js"></script>
-  <script src="~/js/site.js" asp-append-version="true"></script>
-  @await RenderSectionAsync("Scripts", required: false)
-  @section Scripts {
-  <script>
-    document.addEventListener("DOMContentLoaded", function (event) {
-      var optionsTrafficVolumesChart = {
-        series: [
-          {
-            name: "Supplies",
-            data: [7100, 9600, 10000, 8700, 12000, 15400, 19000],
-          },
-          {
-            name: "Disbursement",
-            data: [4100, 6800, 7000, 6700, 7200, 14000, 12000],
-          },
-        ],
-        colors: ["#4D4AE8", "#FD8E7A", "#06A77D", "#51449E"],
-        chart: {
-          height: 420,
-          type: "line",
-          fontFamily: "Inter",
-          foreColor: "#4B5563",
-          toolbar: {
-            show: true,
-            offsetX: 0,
-            offsetY: 0,
-            tools: {
-              download: false,
-              selection: false,
-              zoom: false,
-              zoomin: true,
-              zoomout: true,
-              pan: false,
-              reset: false | '<img src="/static/icons/reset.png" width="20">',
-              customIcons: [],
-            },
-            export: {
-              csv: {
-                filename: undefined,
-                columnDelimiter: ",",
-                headerCategory: "category",
-                headerValue: "value",
-                dateFormatter(timestamp) {
-                  return new Date(timestamp).toDateString();
-                },
-              },
-            },
-            autoSelected: "zoom",
-          },
-        },
-        dataLabels: {
-          enabled: false,
-        },
-        stroke: {
-          curve: "smooth",
-        },
-        grid: {
-          show: true,
-          borderColor: "#f2f2f2",
-          strokeDashArray: 1,
-        },
-        xaxis: {
-          categories: [
-            "01 Feb",
-            "02 Feb",
-            "03 Feb",
-            "04 Feb",
-            "05 Feb",
-            "06 Feb",
-            "07 Feb",
-          ],
-          labels: {
-            style: {
-              fontSize: "12px",
-              fontWeight: 500,
-            },
-          },
-          axisBorder: {
-            color: "#ffffff",
-          },
-          axisTicks: {
-            color: "#ffffff",
-          },
-        },
-        yaxis: {
-          labels: {
-            style: {
-              colors: ["#4B5563"],
-              fontSize: "12px",
-              fontWeight: 500,
-            },
-          },
-        },
-        legend: {
-          show: true,
-          fontSize: "14px",
-          fontFamily: "Inter",
-          fontWeight: 400,
-          height: 60,
-          tooltipHoverFormatter: undefined,
-          offsetY: 20,
-          markers: {
-            width: 14,
-            height: 14,
-            strokeWidth: 1,
-            strokeColor: "#fff",
-            radius: 50,
-          },
-        },
-        responsive: [
-          {
-            breakpoint: 768,
-            options: {
-              yaxis: {
-                show: false,
-              },
-            },
-          },
-        ],
-      };
+    <script src="~/lib/apexcharts/dist/apexcharts.min.js"></script>
+    <script src="~/lib/sweetalert2/sweetalert2.all.min.js"></script>
+    <script src="~/lib/notyf/notyf.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+    @section Scripts {
+        <script>
+            document.addEventListener("DOMContentLoaded", function (event) {
+                var optionsTrafficVolumesChart = {
+                    series: [
+                        {
+                            name: "Supplies",
+                            data: [7100, 9600, 10000, 8700, 12000, 15400, 19000],
+                        },
+                        {
+                            name: "Disbursement",
+                            data: [4100, 6800, 7000, 6700, 7200, 14000, 12000],
+                        },
+                    ],
+                    colors: ["#4D4AE8", "#FD8E7A", "#06A77D", "#51449E"],
+                    chart: {
+                        height: 420,
+                        type: "line",
+                        fontFamily: "Inter",
+                        foreColor: "#4B5563",
+                        toolbar: {
+                            show: true,
+                            offsetX: 0,
+                            offsetY: 0,
+                            tools: {
+                                download: false,
+                                selection: false,
+                                zoom: false,
+                                zoomin: true,
+                                zoomout: true,
+                                pan: false,
+                                reset: false | '<img src="/static/icons/reset.png" width="20">',
+                                customIcons: [],
+                            },
+                            export: {
+                                csv: {
+                                    filename: undefined,
+                                    columnDelimiter: ",",
+                                    headerCategory: "category",
+                                    headerValue: "value",
+                                    dateFormatter(timestamp) {
+                                        return new Date(timestamp).toDateString();
+                                    },
+                                },
+                            },
+                            autoSelected: "zoom",
+                        },
+                    },
+                    dataLabels: {
+                        enabled: false,
+                    },
+                    stroke: {
+                        curve: "smooth",
+                    },
+                    grid: {
+                        show: true,
+                        borderColor: "#f2f2f2",
+                        strokeDashArray: 1,
+                    },
+                    xaxis: {
+                        categories: [
+                            "01 Feb",
+                            "02 Feb",
+                            "03 Feb",
+                            "04 Feb",
+                            "05 Feb",
+                            "06 Feb",
+                            "07 Feb",
+                        ],
+                        labels: {
+                            style: {
+                                fontSize: "12px",
+                                fontWeight: 500,
+                            },
+                        },
+                        axisBorder: {
+                            color: "#ffffff",
+                        },
+                        axisTicks: {
+                            color: "#ffffff",
+                        },
+                    },
+                    yaxis: {
+                        labels: {
+                            style: {
+                                colors: ["#4B5563"],
+                                fontSize: "12px",
+                                fontWeight: 500,
+                            },
+                        },
+                    },
+                    legend: {
+                        show: true,
+                        fontSize: "14px",
+                        fontFamily: "Inter",
+                        fontWeight: 400,
+                        height: 60,
+                        tooltipHoverFormatter: undefined,
+                        offsetY: 20,
+                        markers: {
+                            width: 14,
+                            height: 14,
+                            strokeWidth: 1,
+                            strokeColor: "#fff",
+                            radius: 50,
+                        },
+                    },
+                    responsive: [
+                        {
+                            breakpoint: 768,
+                            options: {
+                                yaxis: {
+                                    show: false,
+                                },
+                            },
+                        },
+                    ],
+                };
 
-      var trafficVolumesChartEl = document.getElementById("traffic-volumes-chart");
-      if (trafficVolumesChartEl) {
-        var trafficVolumesChart = new ApexCharts(
-          trafficVolumesChartEl,
-          optionsTrafficVolumesChart
-        );
-        trafficVolumesChart.render();
-      }
-    });
+                var trafficVolumesChartEl = document.getElementById("traffic-volumes-chart");
+                if (trafficVolumesChartEl) {
+                    var trafficVolumesChart = new ApexCharts(
+                        trafficVolumesChartEl,
+                        optionsTrafficVolumesChart
+                    );
+                    trafficVolumesChart.render();
+                }
+            });
 
-        window.onpageshow = function (event) {
-            if (event.persisted) {
-                window.location.reload();
-            }
-        };
+            window.onpageshow = function (event) {
+                if (event.persisted) {
+                    window.location.reload();
+                }
+            };
 
-  </script>
-  <script>
-    window.onload = function () {
-      document.getElementById('printBtn').addEventListener('click', function () {
-        const tableHTML = document.getElementById('exportTableContainer').innerHTML;
+        </script>
+        <script>
+            window.onload = function () {
+                document.getElementById('printBtn').addEventListener('click', function () {
+                    const tableHTML = document.getElementById('exportTableContainer').innerHTML;
 
-        const printWindow = window.open('', '', 'width=900,height=700');
+                    const printWindow = window.open('', '', 'width=900,height=700');
 
-        printWindow.document.write('<html><head><title>Print Table</title>');
-        printWindow.document.write('<style>');
-        printWindow.document.write('table { width: 100%; border-collapse: collapse; font-family: Arial; font-size: 14px; }');
-        printWindow.document.write('th, td { border: 1px solid #000; padding: 8px; text-align: left; }');
-        printWindow.document.write('</style>');
-        printWindow.document.write('</head><body>');
-        printWindow.document.write(tableHTML);
-        printWindow.document.write('</body></html>');
+                    printWindow.document.write('<html><head><title>Print Table</title>');
+                    printWindow.document.write('<style>');
+                    printWindow.document.write('table { width: 100%; border-collapse: collapse; font-family: Arial; font-size: 14px; }');
+                    printWindow.document.write('th, td { border: 1px solid #000; padding: 8px; text-align: left; }');
+                    printWindow.document.write('</style>');
+                    printWindow.document.write('</head><body>');
+                    printWindow.document.write(tableHTML);
+                    printWindow.document.write('</body></html>');
 
-        printWindow.document.close();
-        printWindow.focus();
+                    printWindow.document.close();
+                    printWindow.focus();
 
-        setTimeout(() => {
-          printWindow.print();
-          printWindow.close();
-        }, 500);
-      }); 
+                    setTimeout(() => {
+                        printWindow.print();
+                        printWindow.close();
+                    }, 500);
+                });
 
-      
-    };
 
-    document.addEventListener('DOMContentLoaded', function () {
-      const printReportBtn = document.getElementById('PrintReport');
-      if (printReportBtn) {
-        printReportBtn.addEventListener('click', function () {
-          console.log("PrintReport button clicked");
+            };
 
-          const printContentElement = document.getElementById('printArea');
-          if (!printContentElement) {
-            console.error("printArea not found");
-            return;
-          }
+            document.addEventListener('DOMContentLoaded', function () {
+                const printReportBtn = document.getElementById('PrintReport');
+                if (printReportBtn) {
+                    printReportBtn.addEventListener('click', function () {
+                        console.log("PrintReport button clicked");
 
-          const printContent = printContentElement.innerHTML;
-          const printWindow = window.open('', '', 'width=800,height=600');
-          printWindow.document.write('<html><head><title>Receiving Report</title>');
-          printWindow.document.write('<style>body{font-family: Arial;} table{width:100%;border-collapse:collapse;} th, td{border:1px solid #ddd;padding:8px;} th{background:#f2f2f2;} .text-center{text-align:center;}</style>');
-          printWindow.document.write('</head><body>');
-          @* printWindow.document.write('<h1>Receiving Report - Serial No: 15</h1>'); *@
-          printWindow.document.write(printContent);
-          printWindow.document.write('</body></html>');
-          printWindow.document.close();
-          printWindow.focus();
-          printWindow.print();
-        });
-      } else {
-        console.warn("PrintReport button not found");
-      }
-    });
+                        const printContentElement = document.getElementById('printArea');
+                        if (!printContentElement) {
+                            console.error("printArea not found");
+                            return;
+                        }
 
-  </script>
-  }
+                        const printContent = printContentElement.innerHTML;
+                        const printWindow = window.open('', '', 'width=800,height=600');
+                        printWindow.document.write('<html><head><title>Receiving Report</title>');
+                        printWindow.document.write('<style>body{font-family: Arial;} table{width:100%;border-collapse:collapse;} th, td{border:1px solid #ddd;padding:8px;} th{background:#f2f2f2;} .text-center{text-align:center;}</style>');
+                        printWindow.document.write('</head><body>');
+            @* printWindow.document.write('<h1>Receiving Report - Serial No: 15</h1>'); *@
+                            printWindow.document.write(printContent);
+                        printWindow.document.write('</body></html>');
+                        printWindow.document.close();
+                        printWindow.focus();
+                        printWindow.print();
+                    });
+                } else {
+                    console.warn("PrintReport button not found");
+                }
+            });
+
+        </script>
+    }
 </body>
 
 </html>

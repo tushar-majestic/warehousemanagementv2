@@ -28,6 +28,8 @@ public partial class PendingDeduction
 
   public int PartyId { get; set; }
 
+  public int MaterialRequestId { get; set; }
+
   public string DocumentNumber { get; set; } = null;
 
   public bool Status { get; set; }
@@ -38,7 +40,7 @@ public partial class PendingDeduction
   [ForeignKey("ShelfId")]
   public virtual Shelf Shelf { get; set; }
 
-
+ 
   [ForeignKey("RoomId")]
   public virtual Room Room { get; set; }
     

@@ -86,7 +86,8 @@ namespace LabMaterials.Pages
         public async Task<IActionResult> OnPostAsync()
         {
             // Parse main form values
-            var orderNumber = Request.Form["OrderNumber"];
+            var orderNumber = "RR-" + DateTime.UtcNow.Ticks.ToString(); // or your format
+
             var orderDateStr = Request.Form["OrderDate"];
             var requestingSector = Request.Form["RequestingSector"];
             var applicantsSector = Request.Form["ApplicantsSector"];
@@ -101,7 +102,7 @@ namespace LabMaterials.Pages
                 OrderDate = orderDate,
                 ToSector = requestingSector,
                 FromSector = applicantsSector,
-                Warehouse = storeId,
+                WarehouseId = storeId,
                 Reason = reason,
                 CreatedAt = DateTime.Now,
                 Items = ReturnItems
@@ -119,7 +120,7 @@ namespace LabMaterials.Pages
             var states = Request.Form["stateofMatter"];
             var expiries = Request.Form["ExpiryDate"];
             var units = Request.Form["UnitofMeasure"];
-            var quantities = Request.Form["ReturnQuantity"];
+            var quantities = Request.Form["ReturnedQuantity"];
             var notes = Request.Form["ReturnNotes"];
 
             for (int i = 0; i < itemCodes.Count; i++)
@@ -149,8 +150,17 @@ namespace LabMaterials.Pages
 
             _context.ReturnRequests.Add(request);
             await _context.SaveChangesAsync();
+            //request.OrderNumber = $"RR-{DateTime.UtcNow:yyyyMMdd}-{ReturnRequest.Id:D4}";
+            //await _context.SaveChangesAsync(); // update with real Id
+            //                                   // Now that we have the ID, generate the OrderNumber
+            request.OrderNumber = $"RR-{DateTime.UtcNow:yyyyMMdd}-{request.Id:D4}";
 
-            return RedirectToPage("ManageDamaged"); // redirect as appropriate
+            // Save again to persist the OrderNumber
+            _context.Attach(request).Property(r => r.OrderNumber).IsModified = true;
+            await _context.SaveChangesAsync();
+
+
+            return RedirectToPage("ViewReturnRequests"); // redirect as appropriate
         }
 
         private void LoadDropdowns()
