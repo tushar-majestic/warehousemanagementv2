@@ -1,4 +1,5 @@
 using DocumentFormat.OpenXml.Office.CustomUI;
+using DocumentFormat.OpenXml.Office2010.Excel;
 using LabMaterials.DB;
 using LabMaterials.dtos;
 using LabMaterials.Migrations;
@@ -296,6 +297,7 @@ namespace LabMaterials.Pages
             var filteredRooms = await _context.Rooms
                 .Where(r => r.StoreId == selectedStoreId)
                 .ToListAsync();
+            Console.WriteLine("rooms for store", filteredRooms, selectedStoreId);
             ViewData["RoomId"] = new SelectList(filteredRooms, "RoomId", "RoomName");
 
             ViewData["ShelfId"] = new SelectList(new List<Shelf>(), "ShelfId", "ShelfNo"); // initially empty

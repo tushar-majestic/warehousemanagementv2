@@ -18,6 +18,8 @@ namespace LabMaterials.Pages
 
         public List<Room> Rooms { get; set; }
         public List<Shelf> Shelves { get; set; }
+        public PendingDeduction Deduction { get; set; } = default!;
+
 
         public DeductOrderModel(LabDBContext context)
         {
@@ -25,7 +27,9 @@ namespace LabMaterials.Pages
         }
 
         public int? ReportId;
-        public List<LabMaterials.DB.ItemCardExtended> ItemCardsFromReport { get; set; }
+        public int? InboxId;
+
+        public List<DeductionExtended> ItemCardsFromReport { get; set; }
 
 
         public async Task<IActionResult> OnGetAsync()
@@ -33,6 +37,8 @@ namespace LabMaterials.Pages
             base.ExtractSessionData();
             await PopulateDropdownsAsync();
             this.ReportId = HttpContext.Session.GetInt32("DisReportId");
+            this.InboxId = HttpContext.Session.GetInt32("MsgId");
+
 
 
             if (ReportId.HasValue)
@@ -60,15 +66,16 @@ namespace LabMaterials.Pages
                 ItemCardsFromReport = (from di in dispensedItems
                                        join ic in _context.ItemCards on di.ItemCardId equals ic.Id
                                        join unit in _context.Units on ic.Item.UnitId equals unit.Id
-                                       
-                                       select new LabMaterials.DB.ItemCardExtended
+
+                                       select new DeductionExtended
                                        {
+
                                            ItemCode = ic.Item.ItemCode,
                                            ItemName = ic.Item.ItemName,
                                            GroupCode = ic.Item.GroupCode,
                                            ItemTypeCode = ic.Item.ItemTypeCode,
                                            ItemDescription = ic.Item.ItemDescription,
-                                           ItemId = ic.ItemId,
+                                           ItemId = ic.Id,
                                            HazardTypeName = ic.Item.HazardTypeName,
                                            ExpiryDate = ic.Item.ExpiryDate,
                                            QuantityReceived = di.Quantity,
@@ -80,21 +87,75 @@ namespace LabMaterials.Pages
                 .Where(di => di.RequestId == ReportId.Value).FirstOrDefault();
 
                 if (DispensingReport != null)
-                { 
-                    MaterialRequest =  new MaterialRequest
+                {
+                    MaterialRequest = new MaterialRequest
                     {
                         DocumentNumber = DispensingReport.DocumentNumber,
                         RequestingSector = DispensingReport.RequestingSector,
                         WarehouseName = DispensingReport.WarehouseName
                     };
                 }
-              
+
             }
 
             return Page();
 
         }
 
+        public async Task<JsonResult> OnGetShelvesByRoom(int roomId)
+        {
+            Console.WriteLine("Getting Shelves");
+            var shelves = await _context.Shelves
+                .Where(s => s.RoomId == roomId)
+                .Select(s => new { value = s.ShelfId, text = s.ShelfNo })
+                .ToListAsync();
+
+            return new JsonResult(shelves);
+        }
+
+        public async Task<IActionResult> OnPostAsync([FromForm] int StoreId, [FromForm] DateTime OutDate, [FromForm] int PartyId, [FromForm] string DocumentNumber)
+        {
+            base.ExtractSessionData();
+            this.ReportId = HttpContext.Session.GetInt32("DisReportId");
+            this.InboxId = HttpContext.Session.GetInt32("MsgId");
+            await PopulateDropdownsAsync();
+
+    
+
+            foreach (var item in ItemCardsFromReport)
+            {
+                var newdeduction = new PendingDeduction
+                {
+                    StoreId = StoreId,
+                    // ItemCardId = item.Id,
+                    RoomId = item.RoomId,
+                    ShelfId = item.ShelfId,
+                    ReduceQty = item.QuantityReceived,
+                    OutDate = OutDate,
+                    PartyId = PartyId,
+                    DocumentNumber = DocumentNumber,
+                    Status = false,
+                    DeductedBy = HttpContext.Session.GetInt32("UserId").Value,
+                    CreatedAt = DateTime.UtcNow
+                };
+
+                _context.PendingDeductions.Add(newdeduction);
+                await _context.SaveChangesAsync();
+            }
+
+            var dbContext = new LabDBContext();
+
+            var message = dbContext.Messages.FirstOrDefault(m => m.Id == this.InboxId);
+
+            if (message != null)
+            {
+                message.Type = "Assign Supervisor";
+            }
+            dbContext.SaveChanges();
+
+            return RedirectToPage("/Requests");
+        }
+       
         private async Task PopulateDropdownsAsync()
         {
             ViewData["WarehouseId"] = new SelectList(await _context.Stores.ToListAsync(), "StoreId", "StoreName");

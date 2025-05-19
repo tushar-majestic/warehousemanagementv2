@@ -102,7 +102,7 @@
 
                             <div class="d-flex justify-content-between">
 
-                                <div class="form-group w-23">
+                                @* <div class="form-group w-23">
                                     <label >TypeOfAsset</label>
                                     <select class="form-control" asp-for="@Model.ItemCardsFromReport[i].TypeOfAsset">
                                         <option value="">Select asset type</option>
@@ -110,14 +110,14 @@
                                         <option value="Consumable">Consumable</option>
 
                                     </select>
-                                </div>
+                                </div> *@
                                 <div class="form-group w-23">
-                                    <label >Room Number</label>
+                                    <label >Room Number</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
                                     @if(Model.Rooms != null){
-                                        <select class="form-control" >
-                                            <option>Select Room by number</option>
+                                        <select class="form-control" asp-for="ItemCardsFromReport[i].RoomId" id="RoomNo" onchange="filterShelfByRoom()" required>
+                                            <option value="">Select Room by number</option>
                                             @foreach(var r in Model.Rooms){
-                                                <option value="r.RoomId">@r.RoomNo</option>
+                                                <option value="@r.RoomId">@r.RoomNo</option>
                                             }
                                         </select>
 
@@ -125,12 +125,12 @@
                                 </div>
 
                                 <div class="form-group w-23">
-                                    <label >Room Name</label>
+                                    <label >Room Name</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
                                     @if(Model.Rooms != null){
-                                        <select class="form-control" >
-                                            <option>Select Room</option>
+                                        <select class="form-control" id="RoomName" onchange="filterShelfByRoom()" required>
+                                            <option value="">Select Room</option>
                                             @foreach(var r in Model.Rooms){
-                                                <option value="r.RoomId">@r.RoomName</option>
+                                                <option value="@r.RoomId">@r.RoomName</option>
                                             }
                                         </select>
 
@@ -139,31 +139,31 @@
                                 </div>
 
                                 <div class="form-group w-23">
-                                    <label>Shelf No.</label>
-                                    <input class="form-control ceiling-output"
-                                        type="number"
-                                        
-                                        />
+                                    <label>Shelf No.</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
+                                    <select class="form-control" id="ShelfId" asp-for="ItemCardsFromReport[i].ShelfId" disabled required>
+                                        <option value="">Select Shelf</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group w-23">
+                                    <label>Quantity </label>
+                                    <input class="form-control "type="number" asp-for="ItemCardsFromReport[i].QuantityReceived" readonly/>
                                 </div>
                             </div>
 
-                            <div class="form-group w-23">
-                                <label>Amount Spent</label>
-                                <input class="form-control ceiling-output"
-                                        type="number"/>
-                            </div>
+                            
                     </div>
                 }
 
                 <div class="d-flex justify-content-between">
                     <div class="form-group " style="width: 48%;">
-                        <label>Out Of Warehouse Date</label>
-                        <input type="date" class="form-control"  />
+                        <label>Out Of Warehouse Date</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
+                        <input type="date" class="form-control" name="OutDate" required />
                     </div>
 
                     <div class="form-group " style="width: 48%;">
                         <label>Party</label>
-                        <select asp-for="MaterialRequest.WarehouseName" name="party" id="party" class="form-control" asp-items="ViewBag.Destinations" readonly>
+                        <select asp-for="MaterialRequest.WarehouseName" name="PartyId" id="party" class="form-control" asp-items="ViewBag.Destinations" readonly>
                         </select>
                     </div>
                 </div>
@@ -171,7 +171,7 @@
                 <div class="d-flex justify-content-between">
                     <div class="form-group " style="width: 48%;">
                         <label>Dispensing DocumentType Number</label>
-                        <input type="text" asp-for="MaterialRequest.DocumentNumber" class="form-control" readonly />
+                        <input type="text" name="DocumentNumber" asp-for="MaterialRequest.DocumentNumber" class="form-control" readonly />
                     </div>
 
                 </div>
@@ -196,6 +196,66 @@
         document.getElementById('party').addEventListener('mousedown', function (e) {
          e.preventDefault();
         });
+
+        
+        document.addEventListener("DOMContentLoaded", function () {
+            const roomNoSelect = document.getElementById("RoomNo");
+            const roomNameSelect = document.getElementById("RoomName");
+            const shelfSelect = document.getElementById("ShelfId");
+
+            function updateShelfAvailability() {
+                const roomNoSelected = roomNoSelect.value !== "";
+                const roomNameSelected = roomNameSelect.value !== "";
+
+                // Enable shelf dropdown if any room is selected
+                if (roomNoSelected || roomNameSelected) {
+                    shelfSelect.disabled = false;
+                    console.log("room  selected", roomNoSelect)
+                } else {
+                    shelfSelect.disabled = true;
+                                        console.log("room not selected")
+
+                    shelfSelect.selectedIndex = 0; // Optional: reset selection
+                }
+            }
+
+            roomNoSelect.addEventListener("change", function () {
+                const selectedValue = this.value;
+                if (selectedValue) {
+                    roomNameSelect.value = selectedValue;
+                    updateShelfAvailability();
+                } else {
+                    roomNameSelect.value = "";
+                }
+            });
+
+            roomNameSelect.addEventListener("change", function () {
+                const selectedValue = this.value;
+                if (selectedValue) {
+                    roomNoSelect.value = selectedValue;
+                    updateShelfAvailability();
+                } else {
+                    roomNoSelect.value = "";
+                }
+            });
+            updateShelfAvailability();
+        });
+
+         function filterShelfByRoom() {
+            var roomId = document.getElementById("RoomNo").value || document.getElementById("RoomName").value ;
+            fetch(`/DeductOrder?handler=ShelvesByRoom&roomId=${roomId}`)
+                .then(response => response.json())
+                .then(data => {
+                    var shelfSelect = document.getElementById("ShelfId");
+                    shelfSelect.innerHTML = '<option value="">Select Shelf</option>';
+                    data.forEach(shelf => {
+                        var option = document.createElement("option");
+                        option.value = shelf.value;
+                        option.text = shelf.text;
+                        shelfSelect.appendChild(option);
+                    });
+                });
+        }
     </script>
         
 }
