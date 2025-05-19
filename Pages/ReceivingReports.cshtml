@@ -232,7 +232,7 @@
 
                             <button type="button" id="addButton" class="btn btn-secondary" onclick="addItem()">Add More</button>
                         </div>
-                        }
+                         }
                        @* Add ItemsForReport ended  *@
 
 
@@ -479,6 +479,10 @@
             checkRequiredFields(); // Initial check
         }); */
         //Items filtering based on groupcode
+        //   for (let i = 0; i < itemCount; i++) {
+        //     const groupSelect = document.getElementById("ItemGroup_" + i);
+        //     groupSelect.onchange = () => filterItemByGroup(i);
+        // }
         const allItems = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.Items));
         function filterItemByGroup(index) {
             console.log(index, 'index')
@@ -522,15 +526,13 @@
             return unit ? unit.UnitCode : '';
         }
 
-        for (let i = 0; i < itemCount; i++) {
-            const groupSelect = document.getElementById("ItemGroup_" + i);
-            groupSelect.onchange = () => filterItemByGroup(i);
-        }
+      
      
         // Supplier filtering based on type
-        const allSuppliers = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.Suppliers));
+       
 
         function filterSuppliersByType() {
+             const allSuppliers = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.Suppliers));
             const selectedType = document.getElementById("SupplierType").value;
             const supplierSelect = document.getElementById("SupplierName");
 
@@ -627,7 +629,7 @@
             const quantityInput = document.getElementById("ItemQty_" + i);
             const unitPriceInput = document.getElementById("UnitPrice_" + i);
             const totalPriceInput = document.getElementById("TotalPrice_" + i);
-        if (itemDropdown) {
+         if (itemDropdown) {
 
             const selectedIndex = itemDropdown.selectedIndex;
             if (selectedIndex > 0) {

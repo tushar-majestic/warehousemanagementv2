@@ -285,7 +285,7 @@ namespace LabMaterials.Pages
                         MaterialRequestId = AcceptReportId,
                         ReportType = "Dispensing",
                         SenderId = this.UserId,
-                        RecipientId = report.SectorManagerId,
+                        RecipientId = report.SupervisorId,
                         Content = sectorManagerMessage,
                         Type = "",
                         CreatedAt = DateTime.UtcNow
@@ -726,6 +726,15 @@ namespace LabMaterials.Pages
 
 
             return RedirectToPage("./ItemCards");
+        }
+
+        public IActionResult OnPostDeductOrder([FromForm] int DisReportId, [FromForm] int MsgId)
+        {
+            HttpContext.Session.SetInt32("DisReportId", DisReportId);
+            HttpContext.Session.SetInt32("MsgId", MsgId);
+
+
+            return RedirectToPage("./DeductOrder");
         }
         private void FillLables()
         {

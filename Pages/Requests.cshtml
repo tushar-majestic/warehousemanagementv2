@@ -138,9 +138,17 @@
                                                     @* case 2 Sender: Department Manager Receiver: Warehouse Keeper *@
                                                     else if(senderGroupName == "Department Manager" && Model.UserGroupName == "Warehouse Keeper"){
                                                         
-                                                        <button class="btn btn-info btn-sm p-1" data-toggle="modal" data-target="#specifyRecipient" onclick="setAcceptReportId(@inbox.MaterialRequestId, @inbox.Id)">
+                                                        @* <button class="btn btn-info btn-sm p-1" data-toggle="modal" data-target="#specifyRecipient" onclick="setAcceptReportId(@inbox.MaterialRequestId, @inbox.Id)">
                                                                 Deduct Order form Item Card
-                                                        </button>
+                                                        </button> *@
+                                                        <form method="post" class="d-inline">
+
+                                                  
+                                                            <input type="hidden" value="@inbox.MaterialRequestId" name="DisReportId" />
+                                                            <input type="hidden" value="@inbox.Id" id="MsgId" name="MsgId" />
+                                                            
+                                                            <button asp-page-handler="DeductOrder" class="btn btn-info btn-sm p-1"> Deduct Order form Item Card</button>
+                                                        </form>
 
                                                         <button class="btn btn-warning btn-sm p-1" data-toggle="modal" data-target="#commentRejectModal" onclick="setRejectReportId(@inbox.MaterialRequestId, @inbox.Id,'@inbox.ReportType')">
                                                             Comment & Reject

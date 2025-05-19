@@ -132,7 +132,7 @@
                     <div class="form-group" style="width: 48%;">
                         <label asp-for="ItemCard.StoreId" class="control-label">Warehouse Name</label>
                         @* <input type="text" asp-for="ItemCard.StoreId" class="form-control"/> *@
-                        <select asp-for="ItemCard.StoreId" name="StoreId" class="form-control" asp-items="ViewBag.WarehouseId" readonly></select>
+                        <select asp-for="ItemCard.StoreId" id="storeSelect" name="StoreId" class="form-control" asp-items="ViewBag.WarehouseId" readonly></select>
                     </div>
 
                     <div class="form-group" style="width: 48%;">
@@ -144,7 +144,7 @@
                 <div class="d-flex justify-content-between">
                     <div class="form-group" style="width:31%;">
                         <label asp-for="ItemCardBatch.RoomId"></label>
-                        <select asp-for="ItemCardBatch.RoomId" class="form-control" asp-items="ViewBag.RoomId" name="RoomId" id="RoomId">
+                        <select asp-for="ItemCardBatch.RoomId" class="form-control" asp-items="ViewBag.RoomId" name="RoomId" id="RoomId" onchange="filterShelfByRoom()">
                             <option value="">Select Room</option>
 
                         </select>
@@ -260,6 +260,10 @@
    @using System.Text.Json
 
     <script>
+
+         document.getElementById('storeSelect').addEventListener('mousedown', function (e) {
+        e.preventDefault();
+    });
         const itemData = @Html.Raw(JsonSerializer.Serialize(Model.AllItemsDto));
         console.log("Loaded item data:", itemData);
 
@@ -320,6 +324,41 @@
             });
         });
     });
+
+    @* @using System.Text.Json
+    @using System.Text.Json.Serialization
+
+    @{
+        var options = new JsonSerializerOptions
+        {
+            ReferenceHandler = ReferenceHandler.IgnoreCycles,
+            PropertyNamingPolicy = null
+        };
+        var json = JsonSerializer.Serialize(Model.Shelves, options);
+    }
+    function filterShelfByRoom() {
+        
+        console.log("filtering")
+        const allShelves = @Html.Raw(json);
+        const selectedType = document.getElementById("RoomId").value;
+        console.log("Selected room", selectedType);
+        const shelfSelect = document.getElementById("ShelfId");
+
+        shelfSelect.innerHTML = '<option value="">Select Shelf </option>';
+
+        allShelves
+            .filter(s => s.RoomId === selectedType)
+            .forEach(s => {
+                const option = document.createElement('option');
+                option.value = s.ShelfId;
+                option.textContent = s.ShelfNo;
+                option.setAttribute("data-room", s.RoomId);
+                shelfSelect.appendChild(option);
+            });
+
+        console.log("allShelves",allShelves )  ;
+
+    } *@
 </script>
 
 
