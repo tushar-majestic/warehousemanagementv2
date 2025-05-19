@@ -291,7 +291,7 @@
     <script>
         function filterShelfByRoom() {
             var roomId = document.getElementById("RoomId").value;
-        fetch(`/ItemCards?handler=ShelvesByRoom&roomId=${roomId}`)
+            fetch(`/ItemCards?handler=ShelvesByRoom&roomId=${roomId}`)
                 .then(response => response.json())
                 .then(data => {
                     var shelfSelect = document.getElementById("ShelfId");

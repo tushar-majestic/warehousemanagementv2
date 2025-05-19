@@ -14,7 +14,7 @@ namespace LabMaterials.Pages
         
         
         public string lblSupplierName, lbSupplierAdded,lblSupplierPhoneNumber, 
-        lblSupplierType, lblAddSupplier, lblAdd, lblCancel, lblSupplies, lblSuppliers, lblCoordinatorName;
+        lblSupplierType, lblAddSupplier, lblAdd, lblCancel, lblSupplies, lblSuppliers, lblCoordinatorName, lblExtensionNumber;
         public void OnGet()
         {
             base.ExtractSessionData();
@@ -23,7 +23,7 @@ namespace LabMaterials.Pages
                 RedirectToPage("./Index?lang=" + Lang);
         }
 
-        public IActionResult OnPost([FromForm] string SupplierName, string CoordinatorName, string SupplierPhoneNumber, string SupplierType)
+        public IActionResult OnPost([FromForm] string SupplierName, string CoordinatorName, string SupplierPhoneNumber, string SupplierType, [FromForm] int ExtensionNumber)
         {
             LogableTask task = LogableTask.NewTask("AddSupplier");
 
@@ -78,6 +78,7 @@ namespace LabMaterials.Pages
                                 CoordinatorName = CoordinatorName,
                                 SupplierType = SupplierType,
                                 SupplierContact = SupplierPhoneNumber,
+                                ExtensionNumber = ExtensionNumber,
                                 SupplierId = PrimaryKeyManager.GetNextId()
                             };
                             dbContext.Suppliers.Add(supplier);
@@ -119,7 +120,7 @@ namespace LabMaterials.Pages
 
         private void FillLables()
         {
-            
+
 
             this.lblSupplierName = (Program.Translations["SupplierName"])[Lang];
             this.lblSupplierPhoneNumber = (Program.Translations["SupplierPhoneNumber"])[Lang];
@@ -132,6 +133,7 @@ namespace LabMaterials.Pages
             this.lblSupplies = (Program.Translations["Supplies"])[Lang];
             this.lblSuppliers = (Program.Translations["Suppliers"])[Lang];
             this.lblCoordinatorName = (Program.Translations["CoordinatorName"])[Lang];
+            this.lblExtensionNumber = (Program.Translations["ExtensionNumber"])[Lang];
         }
     }
 }

@@ -31,6 +31,8 @@ public partial class LabDBContext : DbContext
     public virtual DbSet<ItemCardViewModels> ItemCardViewModels { get; set; }
 
     public DbSet<ItemCardExtended> ItemCardExtended { get; set; }
+    public DbSet<DeductionExtended> DeductionExtended { get; set; }
+
 
     public virtual DbSet<ItemGroup> ItemGroup { get; set; }
 
@@ -50,6 +52,7 @@ public partial class LabDBContext : DbContext
 
     public virtual DbSet<ReceivingItem> ReceivingItems { get; set; }
     public virtual DbSet<ShelveItem> ShelveItems { get; set; }
+    public virtual DbSet<PendingDeduction> PendingDeductions { get; set; }
 
 
     public virtual DbSet<ReceivingReport> ReceivingReports { get; set; }

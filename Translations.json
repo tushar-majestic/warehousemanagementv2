@@ -1585,6 +1585,11 @@
     "DeductItemCard" : {
       "en" : "Deduct Order From Item Card",
       "ar" : "Deduct Order From Item Card"
+    },
+    "ExtensionNumber" :{
+      "en" : "Extension Number",
+      "ar" : "Extension Number"
+
     }
     
 

@@ -12,6 +12,8 @@ public partial class Supplier
     [Key]
     public int SupplierId { get; set; }
 
+    public int? ExtensionNumber { get; set; }
+
     [StringLength(100)]
     public string SupplierName { get; set; } = null!;
 
