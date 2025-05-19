@@ -26,7 +26,7 @@ namespace LabMaterials.Pages
         public List<SelectListItem> ItemList { get; set; }
         public List<Shelf> Shelves { get; set; }
         public int? ReportId;
-         public int? InboxId;
+        public int? InboxId;
         public class ItemDto
         {
             public string ItemCode { get; set; }
@@ -40,7 +40,7 @@ namespace LabMaterials.Pages
             // Add more fields as needed
         }
         public List<ItemDto> AllItemsDto { get; set; }
-       [BindProperty]
+        [BindProperty]
         public List<LabMaterials.DB.ItemCardExtended> ItemCardsFromReport { get; set; }
 
 
@@ -49,7 +49,7 @@ namespace LabMaterials.Pages
         public async Task<IActionResult> OnGetAsync()
         {
             base.ExtractSessionData();
-            await PopulateDropdownsAsync();
+            // await PopulateDropdownsAsync();
             ItemList = _context.Items
             .Select(i => new SelectListItem { Value = i.ItemCode, Text = i.ItemCode })
             .ToList();
@@ -68,42 +68,46 @@ namespace LabMaterials.Pages
                 .ToListAsync();
 
                 ItemCardsFromReport = (from ri in receivingItems
-                       join unit in _context.Units on ri.Item.UnitId equals unit.Id
-                       select new LabMaterials.DB.ItemCardExtended
-                       {
-                           ItemCode = ri.Item.ItemCode,
-                           ItemName = ri.Item.ItemName,
-                           GroupCode = ri.Item.GroupCode,
-                           ItemTypeCode = ri.Item.ItemTypeCode,
-                           ItemDescription = ri.Item.ItemDescription,
-                           ItemId = ri.ItemId,
-                           HazardTypeName = ri.Item.HazardTypeName,
-                           ExpiryDate = ri.Item.ExpiryDate,
-                           QuantityReceived = ri.Quantity,
-                           UnitOfmeasure = unit.UnitCode
-                           //Chemical = ri.Item.Chemical
-                       }).ToList();
+                                       join unit in _context.Units on ri.Item.UnitId equals unit.Id
+                                       select new LabMaterials.DB.ItemCardExtended
+                                       {
+                                           ItemCode = ri.Item.ItemCode,
+                                           ItemName = ri.Item.ItemName,
+                                           GroupCode = ri.Item.GroupCode,
+                                           ItemTypeCode = ri.Item.ItemTypeCode,
+                                           ItemDescription = ri.Item.ItemDescription,
+                                           ItemId = ri.ItemId,
+                                           HazardTypeName = ri.Item.HazardTypeName,
+                                           ExpiryDate = ri.Item.ExpiryDate,
+                                           QuantityReceived = ri.Quantity,
+                                           UnitOfmeasure = unit.UnitCode
+                                           //Chemical = ri.Item.Chemical
+                                       }).ToList();
 
 
                 var ReceivingReport = _context.ReceivingReports
                 .Where(ri => ri.Id == ReportId.Value).FirstOrDefault();
-              
+
                 if (ReceivingReport != null)
                 {
-                    ItemCardBatch =  new ItemCardBatch {
+                    ItemCardBatch = new ItemCardBatch
+                    {
                         DateOfEntry = ReceivingReport.CreatedAt,
                         SupplierId = ReceivingReport.SupplierId,
                         DocumentType = ReceivingReport.BasedOnDocument,
-                        ReceiptDocumentnumber =ReceivingReport.DocumentNumber
+                        ReceiptDocumentnumber = ReceivingReport.DocumentNumber
                     };
 
-                    ItemCard = new ItemCard{
+                    ItemCard = new ItemCard
+                    {
                         StoreId = int.Parse(ReceivingReport.ReceivingWarehouse)
                     };
-                    
+
 
                 }
             }
+
+            await PopulateDropdownsAsync(ItemCard.StoreId);
             ViewData["ItemId"] = ItemList;
             // AllItemsDto = _context.Items.Select(i => new ItemDto
             // {
@@ -124,7 +128,7 @@ namespace LabMaterials.Pages
         }
 
         public async Task<IActionResult> OnPostAsync([FromForm] int StoreId, [FromForm] string DocumentType, [FromForm] string ReceiptDocumentnumber, [FromForm] int RoomId, [FromForm] int ShelfId, [FromForm] int SupplierId, [FromForm] DateTime DateOfEntry)
-        {   
+        {
             var reportId = HttpContext.Session.GetInt32("ReportId");
             this.InboxId = HttpContext.Session.GetInt32("InboxId");
             Shelves = _context.Shelves.ToList();
@@ -267,24 +271,53 @@ namespace LabMaterials.Pages
 
             if (message != null)
             {
-                message.Type = "Added"; 
+                message.Type = "Added";
             }
             dbContext.SaveChanges();
 
             return RedirectToPage("/ManageItemCards");
         }
 
-        private async Task PopulateDropdownsAsync()
+        // private async Task PopulateDropdownsAsync()
+        // {
+        //     ViewData["WarehouseId"] = new SelectList(await _context.Stores.ToListAsync(), "StoreId", "StoreName");
+        //     ViewData["RoomId"] = new SelectList(await _context.Rooms.ToListAsync(), "RoomId", "RoomName");
+        //     ViewData["ShelfId"] = new SelectList(await _context.Shelves.ToListAsync(), "ShelfId", "ShelfNo");
+        //     ViewData["SupplierId"] = new SelectList(await _context.Suppliers.ToListAsync(), "SupplierId", "SupplierName");
+        //     ViewData["HazardId"] = new SelectList(await _context.HazardTypes.ToListAsync(), "HazardTypeName", "HazardTypeName");
+        //     ViewData["ItemGroupId"] = new SelectList(await _context.ItemGroups.ToListAsync(), "GroupCode", "GroupDesc");
+        //     ViewData["ItemIds"] = new SelectList(await _context.Items.ToListAsync(), "ItemId", "ItemName");
+        //     ViewData["Itemtype"] = new SelectList(await _context.ItemTypes.ToListAsync(), "ItemTypeCode", "TypeName");
+        // }
+        private async Task PopulateDropdownsAsync(int selectedStoreId)
         {
-            ViewData["WarehouseId"] = new SelectList(await _context.Stores.ToListAsync(), "StoreId", "StoreName");
-            ViewData["RoomId"] = new SelectList(await _context.Rooms.ToListAsync(), "RoomId", "RoomName");
-            ViewData["ShelfId"] = new SelectList(await _context.Shelves.ToListAsync(), "ShelfId", "ShelfNo");
+            ViewData["WarehouseId"] = new SelectList(await _context.Stores.ToListAsync(), "StoreId", "StoreName", selectedStoreId);
+
+            var filteredRooms = await _context.Rooms
+                .Where(r => r.StoreId == selectedStoreId)
+                .ToListAsync();
+            ViewData["RoomId"] = new SelectList(filteredRooms, "RoomId", "RoomName");
+
+            ViewData["ShelfId"] = new SelectList(new List<Shelf>(), "ShelfId", "ShelfNo"); // initially empty
+
             ViewData["SupplierId"] = new SelectList(await _context.Suppliers.ToListAsync(), "SupplierId", "SupplierName");
             ViewData["HazardId"] = new SelectList(await _context.HazardTypes.ToListAsync(), "HazardTypeName", "HazardTypeName");
             ViewData["ItemGroupId"] = new SelectList(await _context.ItemGroups.ToListAsync(), "GroupCode", "GroupDesc");
             ViewData["ItemIds"] = new SelectList(await _context.Items.ToListAsync(), "ItemId", "ItemName");
             ViewData["Itemtype"] = new SelectList(await _context.ItemTypes.ToListAsync(), "ItemTypeCode", "TypeName");
         }
+
+        public async Task<JsonResult> OnGetShelvesByRoom(int roomId)
+        {
+            var shelves = await _context.Shelves
+                .Where(s => s.RoomId == roomId)
+                .Select(s => new { value = s.ShelfId, text = s.ShelfNo })
+                .ToListAsync();
+
+            return new JsonResult(shelves);
+        }
+
+
     }
 }
 

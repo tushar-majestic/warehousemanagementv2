@@ -14,6 +14,7 @@
                     background: '#e3392c',
                     icon: {
                         className: 'fas fa-times',
+    using Microsoft.CodeAnalysis.Options;
                         tagName: 'span',
                         color: '#000000'
                     },
@@ -133,7 +134,12 @@
                             </div>
                             <div class="mb-4">
                                 <label for="roomNumber">@Model.lblRoomName</label>
-                                <select class="form-select" id="RoomId" name="RoomId"></select>
+                                <select class="form-select" id="RoomId" name="RoomId">
+                                @foreach(var room in Model.Rooms)
+                                {
+                                    <option value="@room.RoomId">@room.RoomName</option>
+                                }
+                                </select>
                             </div>
                             <div class="mb-4">
                             <label for="shelfNumber">@Model.lblShelfNumber</label>

@@ -14,7 +14,7 @@
 obj/
 bin/
 Logs/
-/Properties/launchSettings.json
+Properties/
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
