@@ -84,7 +84,7 @@ namespace LabMaterials.Pages
             return RedirectToPage("./EditRoom");
         }
 
-        public IActionResult OnPostManageShelves([FromForm] int RoomId)
+        public IActionResult OnPostManageShelves([FromForm] int RoomId, [FromForm] int StoreId)
         {
             /*var dbContext = new LabDBContext();
 
@@ -93,6 +93,7 @@ namespace LabMaterials.Pages
                                 select sh).ToList();*/
 
             HttpContext.Session.SetInt32("RoomId", RoomId);
+            HttpContext.Session.SetInt32("StoreId", StoreId);
 
             return RedirectToPage("./ManageShelves");
         }

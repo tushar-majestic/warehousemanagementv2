@@ -59,7 +59,7 @@ namespace LabMaterials.Pages
                 .ToList();
         }
 
-        public IActionResult OnPost([FromForm] int? StoreId, [FromForm] string RoomNumber,  [FromForm] string StoreType, [FromForm] string ManagerName, [FromForm] string BuildingNumber, [FromForm] string RoomDesc, [FromForm] int NoOfShelves, [FromForm] int? KeeperJobNum, [FromForm] int? KeeperId,  [FromForm] string Status, [FromForm] string KeeperName)
+        public IActionResult OnPost([FromForm] int? StoreId, [FromForm] string RoomNumber, [FromForm] string RoomName,  [FromForm] string StoreType, [FromForm] string ManagerName, [FromForm] string BuildingNumber, [FromForm] string RoomDesc, [FromForm] int NoOfShelves, [FromForm] int? KeeperJobNum, [FromForm] int? KeeperId,  [FromForm] string Status, [FromForm] string KeeperName)
         {
             LogableTask task = LogableTask.NewTask("AddRoom");
 
@@ -70,7 +70,7 @@ namespace LabMaterials.Pages
                 if (CanManageStore)
                 {
                     FillLables();
-                     this.RoomName = RoomName;
+                    this.RoomName = RoomName;
                     this.RoomNumber = RoomNumber;
                     this.StoreType = StoreType;
                     this.ManagerName = ManagerName;
