@@ -69,6 +69,9 @@ public partial class ItemCard
     [InverseProperty("ItemCard")]
     public virtual ICollection<ItemCardBatch> ItemCardBatches { get; set; } = new List<ItemCardBatch>();
 
+    [InverseProperty("ItemCard")]
+    public virtual ICollection<ShelveItem> ShelveItems { get; set; } = new List<ShelveItem>();
+
     [ForeignKey("ItemTypeCode")]
     [InverseProperty("ItemCards")]
     public virtual ItemType ItemTypeCodeNavigation { get; set; } = null!;
