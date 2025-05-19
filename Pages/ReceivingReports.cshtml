@@ -145,9 +145,7 @@
                                 <div class="form-group mb-4">
                                     <label>@Model.lblItemGroup</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
                                     <select class="form-select" id="ItemGroup_@i" name="ItemsForReport[@i].ItemGroup" onchange="filterItemByGroup(@i)" >
-                                        @* <option value="Chemicals">Chemicals</option>
-                                        <option value="Glass">Glass</option> *@
-                                        <option value="">Select Item Group</option>
+                                        <option value="" selected>Select Item Group</option>
                                         @if (Model.ItemGroupList != null)
                                         {
                                             foreach (var item in Model.ItemGroupList)
@@ -169,6 +167,7 @@
                                     <div class="form-group mb-4 ms-2 flex-fill">
                                         <label>@Model.lblItemName</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
                                         <select  class="form-control" id="ItemName_@i" name="ItemsForReport[@i].ItemId" >
+
                                             
                                         </select>
                                     </div>
@@ -692,5 +691,14 @@
         });
         //filling related inputs ends
 
+
+        
+        /*
+             window.onload = function () {
+                 
+                          document.getElementById("ItemGroup_0").value = '';
+                  
+                 
+             };*/
     </script>
 }
