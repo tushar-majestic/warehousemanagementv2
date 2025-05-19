@@ -49,6 +49,9 @@ public partial class Shelf
     [InverseProperty("Shelf")]
     public virtual ICollection<Storage> Storages { get; set; } = new List<Storage>();
 
+    [InverseProperty("Shelf")]
+    public virtual ICollection<ShelveItem> ShelveItems { get; set; } = new List<ShelveItem>();
+
     [ForeignKey("StoreId")]
     [InverseProperty("Shelves")]
     public virtual Store? Store { get; set; }
