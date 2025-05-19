@@ -23,7 +23,7 @@
         </div>
 
         
-        @if (@Model.UserGroupName == "Warehouse Keeper")
+        @if (Model.CanManageRequests)
         {
             <div class="btn-toolbar mb-2 mb-md-0">
                 <a href="ReceivingReports" class="btn btn-sm justify-content-center btn-gray-800 mx-2 d-inline-flex align-items-center">

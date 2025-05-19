@@ -1,0 +1,90 @@
+﻿@page "/ReturnRequestsDetails/{id:int}"
+@model LabMaterials.Pages.ReturnRequestsDetailsModel
+@{
+    ViewData["Title"] = "Return Request Details";
+}
+
+<div class="container py-4">
+    <h2>Return Request Details</h2>
+
+    @if (Model.ReturnRequest == null)
+    {
+        <div class="alert alert-danger">Return request not found.</div>
+    }
+    else
+    {
+        <dl class="row">
+            <dt class="col-sm-4">Order Number</dt>
+            <dd class="col-sm-8">@Model.ReturnRequest.OrderNumber</dd>
+
+            <dt class="col-sm-4">Order Date</dt>
+            <dd class="col-sm-8">@Model.ReturnRequest.OrderDate.ToString("yyyy-MM-dd")</dd>
+
+            <dt class="col-sm-4">Created At</dt>
+            <dd class="col-sm-8">@Model.ReturnRequest.CreatedAt.ToString("yyyy-MM-dd HH:mm")</dd>
+
+            <dt class="col-sm-4">From Sector</dt>
+            <dd class="col-sm-8">@Model.ReturnRequest.FromSector</dd>
+
+            <dt class="col-sm-4">To Sector</dt>
+            <dd class="col-sm-8">@Model.ReturnRequest.ToSector</dd>
+
+            <dt class="col-sm-4">Warehouse ID</dt>
+            <dd class="col-sm-8">@Model.ReturnRequest.Warehouse</dd>
+
+            <dt class="col-sm-4">Return Reasons</dt>
+            <dd class="col-sm-8">
+                @if (Model.ReturnRequest.IsSurplus) { <span class="badge bg-info me-1">Surplus</span> }
+                @if (Model.ReturnRequest.IsExpired) { <span class="badge bg-warning text-dark me-1">Expired</span> }
+                @if (Model.ReturnRequest.IsInvalid) { <span class="badge bg-secondary me-1">Invalid</span> }
+                @if (Model.ReturnRequest.IsDamaged) { <span class="badge bg-danger me-1">Damaged</span> }
+                @if (!Model.ReturnRequest.IsSurplus && !Model.ReturnRequest.IsExpired && !Model.ReturnRequest.IsInvalid && !Model.ReturnRequest.IsDamaged)
+                {
+                    <span class="text-muted">None</span>
+                }
+            </dd>
+
+            @if (!string.IsNullOrEmpty(Model.ReturnRequest.Reason))
+            {
+                <dt class="col-sm-4">Additional Notes</dt>
+                <dd class="col-sm-8">@Model.ReturnRequest.Reason</dd>
+            }
+        </dl>
+
+        <h4 class="mt-4">Returned Items</h4>
+
+        @if (Model.ReturnRequestItems.Any())
+        {
+            <table class="table table-bordered">
+                <thead class="table-light">
+                    <tr>
+                        <th>Item Name (EN)</th>
+                        <th>Code</th>
+                        <th>Desc</th>
+                        <th>Qty</th>
+                        <th>Expiry</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.ReturnRequestItems)
+                    {
+                        <tr>
+                            <td>@item.ItemNameEnglish</td>
+                            <td>@item.ItemCode</td>
+                            <td>@item.ItemDescription</td>
+                            <td>@item.ReturnedQuantity</td>
+                            <td>@item.ExpiryDate?.ToString("yyyy-MM-dd")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p>No items in this return request.</p>
+        }
+    }
+
+    <a href="/ViewReturnRequests" class="btn btn-secondary mt-3">Back to List</a>
+</div>
+

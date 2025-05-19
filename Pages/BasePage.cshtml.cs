@@ -15,7 +15,11 @@ namespace LabMaterials.Pages
         public bool CanManageSupplies { get; set; }
         public bool CanDisburseItems { get; set; }
         public bool CanSeeReports { get; set; }
+        public bool CanManageItemCard { get; set; }
+        public bool CanManageRequests { get; set; }
+        public bool CanGenerateReceivingRequest { get; set; }
         public bool CanManageItemGroup { get; set; }
+        public bool CanGenerateDispensingRequest { get; set; }
         public string dir { get; set; } = "rtl";
         public string Lang { get; set; } = "ar";
 
@@ -39,6 +43,10 @@ namespace LabMaterials.Pages
                 CanDisburseItems = HttpContext.Session.GetInt32("CanDisburseItems") == 1;
                 CanSeeReports = HttpContext.Session.GetInt32("CanSeeReports") == 1;
                 CanManageItemGroup = HttpContext.Session.GetInt32("CanManageItemGroup") == 1;
+                CanManageRequests = HttpContext.Session.GetInt32("CanManageRequests") == 1;
+                CanGenerateReceivingRequest = HttpContext.Session.GetInt32("CanGenerateReceivingRequest") == 1;
+                CanManageItemCard = HttpContext.Session.GetInt32("CanManageItemCard") == 1;
+                CanGenerateDispensingRequest = HttpContext.Session.GetInt32("CanGenerateDispensingRequest") == 1;
                 dir = HttpContext.Session.GetString("Lang") == "en" ? "ltr" : "rtl";
                 Lang = HttpContext.Session.GetString("Lang") == "en" ? "en" : "ar";
                 FillLables();
@@ -99,12 +107,12 @@ namespace LabMaterials.Pages
             this.lblSerialNo = (Program.Translations["SerialNo"])[Lang];
             this.lblSupplierName = (Program.Translations["SupplierName"])[Lang];
             this.lblRecipientSector = (Program.Translations["RecipientSector"])[Lang];
-            this.lblPageCount =  (Program.Translations["PageCount"])[Lang];
+            this.lblPageCount = (Program.Translations["PageCount"])[Lang];
             this.lblSectorNo = (Program.Translations["SectorNo"])[Lang];
             this.lblDateOfReceipt = (Program.Translations["DateOfReceipt"])[Lang];
             this.lblRecipientWarehouse = (Program.Translations["RecipientWarehouse"])[Lang];
             this.lblFiscalYear = (Program.Translations["FiscalYear"])[Lang];
-            this.lblDocumentDate =  (Program.Translations["DocumentDate"])[Lang];
+            this.lblDocumentDate = (Program.Translations["DocumentDate"])[Lang];
             this.lblDocumentNo = (Program.Translations["DocumentNo"])[Lang];
             this.lblBasedOnDocument = (Program.Translations["BasedOnDocument"])[Lang];
             this.lblComments = (Program.Translations["Comm"])[Lang];
@@ -115,7 +123,7 @@ namespace LabMaterials.Pages
             this.lblItemNameDescription = (Program.Translations["ItemNameDescription"])[Lang];
             this.lblItemNo = (Program.Translations["ItemNo"])[Lang];
             this.lblCount = (Program.Translations["Count"])[Lang];
-            this.lblSAR =  (Program.Translations["SAR"])[Lang];
+            this.lblSAR = (Program.Translations["SAR"])[Lang];
             this.lblChiefResponsible = (Program.Translations["ChiefRes"])[Lang];
             this.lblTechnicalMember = (Program.Translations["TechnicalMember"])[Lang];
             this.lblRecipient = (Program.Translations["Recipient"])[Lang];

@@ -304,6 +304,12 @@ public partial class LabDBContext : DbContext
             entity.ToView("vActivityLog");
         });
 
+        modelBuilder.Entity<ReturnRequest>()
+        .HasOne(r => r.Warehouse)
+        .WithMany() // If Store does not have a collection of ReturnRequests
+        .HasForeignKey(r => r.WarehouseId)
+        .OnDelete(DeleteBehavior.Restrict); // Prevent deleting a Store if used
+
         OnModelCreatingPartial(modelBuilder);
     }
 

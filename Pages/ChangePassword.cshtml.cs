@@ -1,11 +1,4 @@
-using LabMaterials.DB;
-using LabMaterials.dtos;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
 namespace LabMaterials.Pages
@@ -13,14 +6,14 @@ namespace LabMaterials.Pages
     public class ChangePasswordModel : BasePageModel
     {
         public string ErrorMsg { get; set; }
-        public string Username, Password, NewPassword, NewPasswordConfirm, EmpAffiliation,JobNumber, Transfer,UserFullName,Email;
+        public string Username, Password, NewPassword, NewPasswordConfirm, EmpAffiliation, JobNumber, Transfer, UserFullName, Email;
         public int ToUpdateUserID;
 
-         public int UserGroupID;
+        public int UserGroupID;
         public bool IsADUser;
-        public List<UserGroup> UserGroupsList {  get; set; }
-        
-        public string lblChangePassword, lblCurrentPassword, lblChangePasswords, lblNewPassword, lblConfirmNewPassword, lblUpdate, lblCancel, lblJobNumber, lblEmpAffiliation, lblTransfer, lblFullName,lblEmail,lblUserName, lblUserGroupName;
+        public List<UserGroup> UserGroupsList { get; set; }
+
+        public string lblChangePassword, lblCurrentPassword, lblChangePasswords, lblNewPassword, lblConfirmNewPassword, lblUpdate, lblCancel, lblJobNumber, lblEmpAffiliation, lblTransfer, lblFullName, lblEmail, lblUserName, lblUserGroupName;
 
         public void OnGet()
         {
@@ -32,7 +25,7 @@ namespace LabMaterials.Pages
 
             var user = dbContext.Users.Single(u => u.UserId == HttpContext.Session.GetInt32("UserId"));
             ToUpdateUserID = user.UserId;
-            // Username = user.UserName;
+            Username = user.UserName;
             Password = NewPasswordConfirm = NewPassword = "";
             JobNumber = user.JobNumber.ToString();
             UserFullName = user.FullName;
@@ -72,12 +65,12 @@ namespace LabMaterials.Pages
                     UserGroupsList = dbContext.UserGroups.ToList();
 
 
-                   
-   
+
+
                     // if (string.IsNullOrEmpty(Password))
                     //     ErrorMsg = (Program.Translations["CurrentPasswordMissing"])[Lang];
-                    if(string.IsNullOrEmpty(JobNumber))
-                          ErrorMsg = (Program.Translations["JobNumberMissing"])[Lang];
+                    if (string.IsNullOrEmpty(JobNumber))
+                        ErrorMsg = (Program.Translations["JobNumberMissing"])[Lang];
                     else if (string.IsNullOrEmpty(UserFullName))
                         ErrorMsg = (Program.Translations["UserFullNameMissing"])[Lang];
                     else if (string.IsNullOrEmpty(EmpAffiliation))
@@ -89,18 +82,28 @@ namespace LabMaterials.Pages
 
                     else if (!string.IsNullOrEmpty(Password) && string.IsNullOrEmpty(NewPassword))
                         ErrorMsg = (Program.Translations["NewPasswordMissing"])[Lang];
-                    else if (!string.IsNullOrEmpty(Password) &&  string.IsNullOrEmpty(NewPasswordConfirm))
+                    else if (!string.IsNullOrEmpty(Password) && string.IsNullOrEmpty(NewPasswordConfirm))
                         ErrorMsg = (Program.Translations["NewPasswordConfirmMissing"])[Lang];
                     else if (NewPassword != NewPasswordConfirm)
                         ErrorMsg = (Program.Translations["PasswordNotMatched"])[Lang];
-                    else if(!string.IsNullOrEmpty(Password) && !Lib.Hash.GenerateSHA(UTF8Encoding.UTF8.GetBytes(Password + UserName)).SequenceEqual(dbContext.Users.Single(u => u.UserId == ToUpdateUserID).Password))
+                    else if (!string.IsNullOrEmpty(Password) && !Lib.Hash.GenerateSHA(UTF8Encoding.UTF8.GetBytes(Password + UserName)).SequenceEqual(dbContext.Users.Single(u => u.UserId == ToUpdateUserID).Password))
                     {
                         ErrorMsg = (Program.Translations["InvalidCurrentPassword"])[Lang];
                     }
                     else
                     {
-                        var user = dbContext.Users.Single(u => u.UserId == ToUpdateUserID);
-                        user.Password = Lib.Hash.GenerateSHA(System.Text.UTF8Encoding.UTF8.GetBytes(NewPassword + UserName));
+                        var user = dbContext.Users.SingleOrDefault(u => u.UserId == ToUpdateUserID);
+                        if (user == null)
+                        {
+                            ErrorMsg = "User not found.";
+                            return Page();
+                        }
+
+                        if (!string.IsNullOrEmpty(Password))
+                        {
+                            user.Password = Lib.Hash.GenerateSHA(UTF8Encoding.UTF8.GetBytes(NewPassword + UserName));
+                        }
+
                         user.JobNumber = int.Parse(JobNumber);
                         user.EmpAffiliation = EmpAffiliation;
                         user.Transfer = int.Parse(Transfer);
@@ -135,14 +138,14 @@ namespace LabMaterials.Pages
 
         private void FillLables()
         {
-            
+
 
             this.lblChangePassword = (Program.Translations["ChangePassword"])[Lang];
             this.lblCurrentPassword = (Program.Translations["CurrentPassword"])[Lang];
             this.lblNewPassword = (Program.Translations["NewPassword"])[Lang];
             this.lblConfirmNewPassword = (Program.Translations["ConfirmNewPassword"])[Lang];
             this.lblUpdate = (Program.Translations["Update"])[Lang];
-            this.lblCancel = (Program.Translations["Cancel"])[Lang]; 
+            this.lblCancel = (Program.Translations["Cancel"])[Lang];
             this.lblChangePasswords = (Program.Translations["ChangePasswords"])[Lang];
 
             this.lblJobNumber = (Program.Translations["JobNumber"])[Lang];
