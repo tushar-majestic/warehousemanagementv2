@@ -479,6 +479,10 @@
             checkRequiredFields(); // Initial check
         }); */
         //Items filtering based on groupcode
+        //   for (let i = 0; i < itemCount; i++) {
+        //     const groupSelect = document.getElementById("ItemGroup_" + i);
+        //     groupSelect.onchange = () => filterItemByGroup(i);
+        // }
         const allItems = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.Items));
         function filterItemByGroup(index) {
             console.log(index, 'index')
@@ -522,10 +526,7 @@
             return unit ? unit.UnitCode : '';
         }
 
-        for (let i = 0; i < itemCount; i++) {
-            const groupSelect = document.getElementById("ItemGroup_" + i);
-            groupSelect.onchange = () => filterItemByGroup(i);
-        }
+      
      
         // Supplier filtering based on type
        
