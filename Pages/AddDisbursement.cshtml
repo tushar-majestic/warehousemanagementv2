@@ -109,32 +109,36 @@
     });
 
     // --- Handle Select Change ---
-    function handleChange(e) {
-        const entry = e.target.closest(".return-entry");
-        const sourceSelect = e.target;
-        const selectedOption = sourceSelect.options[sourceSelect.selectedIndex];
-        if (!selectedOption) return;
+   function handleItemChange(e) {
+    const select = e.target;
+    const entry = select.closest(".return-entry");
+    const selectedOption = select.options[select.selectedIndex];
+    if (!selectedOption || !selectedOption.dataset.id) return;
 
-        const selectedId = selectedOption.dataset.id;
-        const targetSelect = entry.querySelector(
-            sourceSelect.classList.contains("ArabicItemName") ? ".EnglishArabicName" : ".ArabicItemName"
-        );
+    const selectedId = selectedOption.dataset.id;
 
-        for (const option of targetSelect.options) {
-            if (option.dataset.id === selectedId) {
-                targetSelect.value = option.value;
-                break;
-            }
+    const isArabic = select.classList.contains("ArabicItemName");
+    const targetSelect = entry.querySelector(isArabic ? ".EnglishArabicName" : ".ArabicItemName");
+
+    if (!targetSelect) return;
+
+    // Set the value in the other select
+    for (const option of targetSelect.options) {
+        if (option.dataset.id === selectedId) {
+            targetSelect.value = option.value;
+            break;
         }
-
-        // Populate fields
-        entry.querySelector(".ItemCode").value = selectedOption.dataset.code || "";
-        entry.querySelector(".ItemDescription").value = selectedOption.dataset.description || "";
-        entry.querySelector(".typeofAsset").value = selectedOption.dataset.asset || "";
-        entry.querySelector(".chemical").value = selectedOption.dataset.chemical || "";
-        entry.querySelector(".RiskRating").value = selectedOption.dataset.risk || "";
-        entry.querySelector(".UnitofMeasure").value = selectedOption.dataset.unit || "";
     }
+
+    // Fill other fields
+    entry.querySelector(".ItemCode").value = selectedOption.dataset.code || "";
+    entry.querySelector(".ItemDescription").value = selectedOption.dataset.description || "";
+    entry.querySelector(".typeofAsset").value = selectedOption.dataset.asset || "";
+    entry.querySelector(".chemical").value = selectedOption.dataset.chemical || "";
+    entry.querySelector(".RiskRating").value = selectedOption.dataset.risk || "";
+    entry.querySelector(".UnitofMeasure").value = selectedOption.dataset.unit || "";
+}
+
 
     // --- Auto Calculate Total ---
     function calculateTotalPrice(entry) {
@@ -147,8 +151,8 @@
     function initializeEntry(entry) {
         // Avoid duplicate listeners by cloning a fresh node (safe for modern browsers)
         entry.querySelectorAll("select").forEach(select => {
-            select.removeEventListener("change", handleChange);
-            select.addEventListener("change", handleChange);
+            select.removeEventListener("change", handleItemChange);
+            select.addEventListener("change", handleItemChange);
         });
 
         entry.querySelector(".Quantity").addEventListener("input", () => calculateTotalPrice(entry));
@@ -158,11 +162,52 @@
     // --- Init All Existing Entries on Load ---
     wrapper.querySelectorAll(".return-entry").forEach(initializeEntry);
 
-    
+ 
+
+        function filterItemsByGroup(index) {
+       const allItems = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.ItemsValue));
+            console.log(index, 'index')
+            const selectedGroup = document.getElementById("itemGroup_" + index)?.value;
+
+            const itemSelect = document.getElementById("ArabicItemName_" + index);
+            const itemSelectEnglish = document.getElementById("EnglishArabicName_" + index);
+            console.log(selectedGroup, 'selectedGroup')
+
+            // Clear current items
+            itemSelect.innerHTML = '<option value="">Select Item</option>';
+             itemSelectEnglish.innerHTML = '<option value="">Select Item</option>';
+            console.log("selectedgroup",selectedGroup )
+            // Filter and repopulate
+             if (!Array.isArray(allItems)) {
+            console.error("allItems is not an array", allItems);
+            return;
+        }
+           allItems.filter(item => item.GroupCode === selectedGroup)
+                .forEach(item => {
+                    const optionArabic = document.createElement("option");
+                    optionArabic.value = item.ItemId;
+                    optionArabic.textContent = item.ItemName;
+                    optionArabic.dataset.id = item.ItemId;
+                    optionArabic.dataset.code = item.ItemCode;
+                    optionArabic.dataset.description = item.ItemDescription;
+                    optionArabic.dataset.chemical = item.Chemical;
+                    optionArabic.dataset.unit = item.UnitOfmeasure;
+                    optionArabic.dataset.risk = item.HazardTypeName || "";
+                    optionArabic.dataset.asset = item.TypeOfAsset || "";
+
+                    const optionEnglish = optionArabic.cloneNode(true);
+
+                    itemSelect.appendChild(optionArabic);
+                    itemSelectEnglish.appendChild(optionEnglish);
+                });
+        }
+
+   
         //filling related inputs
 
   document.addEventListener("DOMContentLoaded", function () {
     const itemCount = @Model.ItemsForReport.Count;
+    console.log(itemCount, 'itemCount')
 
     for (let i = 0; i < itemCount; i++) {
         const itemGroup = document.getElementById("itemGroup_" + i);
@@ -171,7 +216,8 @@
         const unitInput = document.getElementById("typeofAsset_" + i);
         const chemicalInput = document.getElementById("chemical_" + i);
 
-        const itemDropdown = document.getElementById("EnglishArabicName_" + i);
+        const itemDropdown = document.getElementById("ArabicItemName_" + i);
+        console.log(' itemDropdown', itemDropdown)
 
         if (itemDropdown) {
             const selectedOption = itemDropdown.options[itemDropdown.selectedIndex];
@@ -191,9 +237,6 @@
         }
     }
 });
-
-
-
 </script>
 }
 @{
@@ -369,7 +412,7 @@
                                     <div class="d-flex my-4">
                                         <div class=" me-2" style="width: 49%;">
                                             <label for="itemGroup">@Model.lblItemGroups</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
-                                            <select class="form-select" id="itemGroup_@i" name="ItemsForReport[@i].ItemGroup" onchange="filterItemsByGroup()">
+                                            <select class="form-select" id="itemGroup_@i" name="ItemsForReport[@i].ItemGroup" onchange="filterItemsByGroup(@i)">
                                                 @if (Model.ItemGroups != null)
                                                 {
                                                     <option value="">Select Item Group</option>
@@ -392,7 +435,7 @@
                                     <div class="d-flex">
                                         <div class="form-group  me-2 " style="width: 49%;">
                                             <label>@Model.lblItemName (@Model.lblArabicLanguage)</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
-                                            <select class="ArabicItemName form-select" id="ArabicItemName_@i"  asp-for="@Model.ItemsForReport[@i].ItemCardId" name="ItemsForReport[@i].ItemCardId" onchange="onItemChange(this, 'EnglishArabicName')">
+                                            <select class="ArabicItemName form-select" id="ArabicItemName_@i"  asp-for="@Model.ItemsForReport[@i].ItemCardId" name="ItemsForReport[@i].ItemCardId"  onchange="handleItemChange(event)">
                                                 <option value="">Select Item </option>
                                                 @foreach (var item in Model.ItemCards)
                                                 {
@@ -414,7 +457,7 @@
                                        
                                         <div class="form-group mb-4 ms-2" style="width: 49%;">
                                             <label for="EnglishArabicName">@Model.lblItemName (@Model.lblEnglishLanguage)</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
-                                            <select class="EnglishArabicName form-select" id="EnglishArabicName_@i"  onchange="onItemChange(this, 'ArabicItemName')">
+                                            <select class="EnglishArabicName form-select" id="EnglishArabicName_@i"   onchange="handleItemChange(event)">
                                                 <option value="">Select Item </option>
                                                 @foreach (var item in Model.ItemCards)
                                                 {
