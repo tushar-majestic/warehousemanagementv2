@@ -49,6 +49,8 @@ public partial class LabDBContext : DbContext
     public virtual DbSet<Privilege> Privileges { get; set; }
 
     public virtual DbSet<ReceivingItem> ReceivingItems { get; set; }
+    public virtual DbSet<ShelveItem> ShelveItems { get; set; }
+
 
     public virtual DbSet<ReceivingReport> ReceivingReports { get; set; }
 

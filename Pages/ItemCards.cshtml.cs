@@ -19,7 +19,10 @@ namespace LabMaterials.Pages
         }
         [BindProperty]
         public ItemCard ItemCard { get; set; } = default!;
-         public ItemCardBatch ItemCardBatch { get; set; } = new ItemCardBatch();
+        public ItemCardBatch ItemCardBatch { get; set; } = new ItemCardBatch();
+
+        // public ItemCardBatch ItemCardBatch { get; set; } = new ItemCardBatch();
+
         public List<SelectListItem> ItemList { get; set; }
         public int? ReportId;
          public int? InboxId;
@@ -208,7 +211,7 @@ namespace LabMaterials.Pages
                     itemCardId = newItemCard.Id; // Needed for batch
                 }
 
-                // Insert ItemCardBatch regardless
+                // Insert ItemCardBatch 
                 var itemCardBatch = new ItemCardBatch
                 {
                     ItemCardId = itemCardId,
@@ -227,7 +230,32 @@ namespace LabMaterials.Pages
                 };
 
                 _context.ItemCardBatches.Add(itemCardBatch);
-                await _context.SaveChangesAsync();
+
+                var existingItemShelf = await _context.ShelveItems
+                    .FirstOrDefaultAsync(s => s.ItemCardId == itemCardId  && s.ShelfId == ShelfId);
+
+                // If shelf for that item exists
+                if (existingItemShelf != null)
+                {
+                    existingItemShelf.QuantityAvailable += extendedCard.QuantityReceived;
+                    _context.ShelveItems.Update(existingItemShelf);
+                    await _context.SaveChangesAsync();
+                }
+                else
+                {
+                    var shelveItem = new ShelveItem
+                    {
+                        ShelfId = ShelfId,
+                        ItemCardId = itemCardId,
+                        QuantityAvailable = extendedCard.QuantityReceived
+
+                    };
+                    _context.ShelveItems.Add(shelveItem);
+
+                    await _context.SaveChangesAsync();
+                }
+
+               
             }
             var dbContext = new LabDBContext();
 
