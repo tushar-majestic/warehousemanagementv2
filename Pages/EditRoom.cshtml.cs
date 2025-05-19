@@ -220,7 +220,7 @@ namespace LabMaterials.Pages
                                 Helper.ExtractIP(Request), dbContext, true);
 
                             task.LogInfo(MethodBase.GetCurrentMethod(), "store updated");
-                            return RedirectToPage("./ManageStore");
+                            return RedirectToPage("./ManageRooms");
                         }
                     }
                     return Page();
