@@ -727,6 +727,15 @@ namespace LabMaterials.Pages
 
             return RedirectToPage("./ItemCards");
         }
+
+        public IActionResult OnPostDeductOrder([FromForm] int DisReportId, [FromForm] int MsgId)
+        {
+            HttpContext.Session.SetInt32("DisReportId", DisReportId);
+            HttpContext.Session.SetInt32("MsgId", MsgId);
+
+
+            return RedirectToPage("./DeductOrder");
+        }
         private void FillLables()
         {
             this.lblRequests = (Program.Translations["Requests"])[Lang];
