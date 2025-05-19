@@ -137,6 +137,7 @@ namespace LabMaterials.Pages
                     DocumentNumber = DocumentNumber,
                     Status = false,
                     DeductedBy = HttpContext.Session.GetInt32("UserId").Value,
+                    MaterialRequestId = this.ReportId.Value,
                     CreatedAt = DateTime.UtcNow
                 };
 
