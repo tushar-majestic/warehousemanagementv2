@@ -42,6 +42,7 @@ namespace LabMaterials.Pages
         public List<User> DeptManagerList {  get; set; }
         public List<User> SupervisorList {  get; set; }
         public List<User> KeeperList {  get; set; }
+        public List<ItemCard> ItemsValue { get; set; }
 
 
 
@@ -100,6 +101,18 @@ namespace LabMaterials.Pages
             KeeperList = dbContext.Users
                         .Where(u => u.UserGroupId == KeeperId)
                         .ToList();
+            ItemsValue = dbContext.ItemCards
+                            .Select(x => new ItemCard
+                            {
+                                Id = x.Id,
+                                ItemId = x.ItemId,
+                                ItemName = x.ItemName,
+                                GroupCode = x.GroupCode,
+                                ItemCode = x.ItemCode,
+                                ItemDescription = x.ItemDescription,
+                                Chemical = x.Chemical,
+                                UnitOfmeasure = x.UnitOfmeasure
+                            }).ToList();
 
         }
         public void OnGetOld()
