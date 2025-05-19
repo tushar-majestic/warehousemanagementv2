@@ -1577,6 +1577,14 @@
     "DeptManagerMissing":{
       "en" : "Department Manager Missing",
       "ar" : "Department Manager Missing"
+    },
+    "CreateItemCard" : {
+      "en" : "Create Item Card",
+      "ar" : "Create Item Card"
+    },
+    "DeductItemCard" : {
+      "en" : "Deduct Order From Item Card",
+      "ar" : "Deduct Order From Item Card"
     }
     
 
