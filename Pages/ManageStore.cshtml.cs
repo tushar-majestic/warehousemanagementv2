@@ -210,7 +210,7 @@ namespace LabMaterials.Pages
 
             return RedirectToPage();
         }
-        public async Task<IActionResult> OnPostLock(int? storeId, string lockToggle)
+        public async Task<IActionResult> OnPostLock(int? storeId, string lockToggle, int? page)
         {
             if (storeId == null)
             {
@@ -226,17 +226,21 @@ namespace LabMaterials.Pages
 
             if (lockToggle == "toggle")
             {
-                store.IsActive = store.IsActive == 0 ? 1 : 0;
-                Message = store.IsActive == 1 ? string.Format((Program.Translations["StoreUnlock"])[Lang], store.StoreName) :
-                                string.Format((Program.Translations["StoreLocked"])[Lang], store.StoreName);
+                //store.IsActive = store.IsActive == 0 ? 1 : 0;
+                //Message = store.IsActive == 1 ? string.Format((Program.Translations["StoreUnlock"])[Lang], store.StoreName) :
+                //                string.Format((Program.Translations["StoreLocked"])[Lang], store.StoreName);
 
             }
 
 
-            await dbContext.SaveChangesAsync();
-            TempData["Message"] = Message;
-            // return this.OnPostAction(StoreNumber, StoreName, "search", ["storeNumber", "warehouseType", "storeName"]);
-            return RedirectToPage();
+            //await dbContext.SaveChangesAsync();
+            //TempData["Message"] = Message;
+            this.StoreNumber = StoreNumber;
+            this.StoreName = StoreName;
+            //return this.FillData(StoreNumber, StoreName,);
+            return this.OnPostAction(StoreNumber, StoreName, "search", ["storeNumber", "warehouseType", "storeName"]);
+
+            //return RedirectToPage();
         }
 
 

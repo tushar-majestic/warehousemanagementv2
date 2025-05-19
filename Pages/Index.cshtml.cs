@@ -1,11 +1,5 @@
-using LabMaterials.AppCode;
-using LabMaterials.DB;
-using LabMaterials.dtos;
-using Lib;
-using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
 using System.DirectoryServices.AccountManagement;
 using System.Text;
 
@@ -179,14 +173,14 @@ namespace LabMaterials.Pages
         private void SetSessionVars(LabDBContext dbContext, User dbUser, string sourceIp)
         {
             Helper.AddActivityLog(dbUser.UserId, "User Logged in successfully", "Login", sourceIp, dbContext, true);
-            
+
 
             List<string> Privileges = (from p in dbContext.Privileges
                                        join ugp in dbContext.UserGroupPrivileges on p.PrivilegeId equals ugp.PrivilegeId
                                        where ugp.UserGroupId == dbUser.UserGroupId
                                        select p.PrivilegeName).ToList();
-                                       
-                                       
+
+
 
             HttpContext.Session.SetInt32("UserId", dbUser.UserId);
             HttpContext.Session.SetString("UserName", dbUser.UserName);
@@ -200,6 +194,10 @@ namespace LabMaterials.Pages
             HttpContext.Session.SetInt32("CanDisburseItems", Privileges.Contains("CanDisburseItems") ? 1 : 0);
             HttpContext.Session.SetInt32("CanSeeReports", Privileges.Contains("CanSeeReports") ? 1 : 0);
             HttpContext.Session.SetInt32("CanManageItemGroup", Privileges.Contains("CanManageItemGroup") ? 1 : 0);
+            HttpContext.Session.SetInt32("CanManageItemCard", Privileges.Contains("CanManageItemCard") ? 1 : 0);
+            HttpContext.Session.SetInt32("CanManageRequests", Privileges.Contains("CanManageRequests") ? 1 : 0);
+            HttpContext.Session.SetInt32("CanGenerateReceivingRequest", Privileges.Contains("CanGenerateReceivingRequest") ? 1 : 0);
+            HttpContext.Session.SetInt32("CanGenerateDispensingRequest", Privileges.Contains("CanGenerateDispensingRequest") ? 1 : 0);
             HttpContext.Session.SetString("LastLogin", dbUser.LastLoginTime.HasValue ? dbUser.LastLoginTime.Value.ToString() : "");
             if (string.IsNullOrEmpty(dbUser.Lang))
             {

@@ -103,7 +103,7 @@
                         </div>
                         <div class="col-md-6">
                             <label>Return Quantity</label>
-                            <input type="number" name="ReturnItems[@i].ReturnQuantity" class="form-control" required />
+                            <input type="number" name="ReturnItems[@i].ReturnedQuantity" class="form-control" required />
                         </div>
                         <div class="col-12">
                             <label>Return Notes</label>
@@ -116,10 +116,10 @@
 
         <button type="button" class="btn btn-secondary mb-3" id="addEntryBtn">Add More Items</button>
 
-        <div class="mb-3">
+        @* <div class="mb-3">
             <label>Order Number</label>
             <input type="text" name="OrderNumber" class="form-control" />
-        </div>
+        </div> *@
         <div class="mb-3">
             <label>Order Date</label>
             <input type="date" name="OrderDate" class="form-control" value="@Model.CurrentDate.ToString("yyyy-MM-dd")" />
@@ -175,6 +175,8 @@
 
 @section Scripts {
     <script>
+        let entryIndex = @Model.ReturnItems.Count;
+
         function onItemChange(select, index) {
             const selected = select.options[select.selectedIndex];
             document.querySelectorAll(".ItemCode")[index].value = selected.dataset.code || "";
@@ -185,11 +187,60 @@
             document.querySelectorAll(".ItemNameArabic")[index].value = selected.dataset.itemnamearabic || "";
             document.querySelectorAll(".ItemNameEnglish")[index].value = selected.dataset.itemnameenglish || "";
 
+            // Check for duplicates
+            const selectedValue = select.value;
+            let duplicates = 0;
+            document.querySelectorAll(".ArabicItemName").forEach((el) => {
+                if (el.value === selectedValue) {
+                    duplicates++;
+                }
+            });
+            if (duplicates > 1) {
+                alert("This item has already been selected in another entry.");
+                select.value = ""; // Reset
+            }
         }
 
         document.getElementById("addEntryBtn").addEventListener("click", function () {
-            alert("Dynamic entry cloning logic should go here.");
-            // Consider cloning last entry and renaming name attributes with incremented index.
+            const wrapper = document.getElementById("returnEntriesWrapper");
+            const firstEntry = wrapper.querySelector(".return-entry");
+            const newEntry = firstEntry.cloneNode(true);
+
+            newEntry.querySelectorAll("input, select, textarea").forEach((el) => {
+                if (el.name) {
+                    el.name = el.name.replace(/\[\d+\]/, `[${entryIndex}]`);
+                }
+
+                if (el.type !== "hidden") {
+                    el.value = "";
+                }
+
+                if (el.tagName.toLowerCase() === "select") {
+                    el.selectedIndex = 0;
+                }
+            });
+
+            const itemSelect = newEntry.querySelector(".ArabicItemName");
+            itemSelect.setAttribute("onchange", `onItemChange(this, ${entryIndex})`);
+
+            // Ensure remove button works
+            const removeBtn = newEntry.querySelector(".remove-entry");
+            if (removeBtn) {
+                removeBtn.addEventListener("click", function () {
+                    newEntry.remove();
+                });
+            }
+
+            wrapper.appendChild(newEntry);
+            entryIndex++;
+        });
+
+        // Initial remove buttons setup
+        document.querySelectorAll(".remove-entry").forEach(btn => {
+            btn.addEventListener("click", function () {
+                btn.closest(".return-entry").remove();
+            });
         });
     </script>
 }
+

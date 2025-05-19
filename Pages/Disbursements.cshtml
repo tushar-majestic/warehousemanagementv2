@@ -228,7 +228,7 @@ document.addEventListener("DOMContentLoaded", function () {
             var userGroup = HttpContext.Session.GetString("UserGroup");
         }
 
-        @if (userGroup == "Warehouse Manager")
+        @if (Model.CanGenerateDispensingRequest)
         {
             <div class="btn-toolbar mb-2 mb-md-0">
                 <div class="btn-group ms-2 ms-lg-3">
