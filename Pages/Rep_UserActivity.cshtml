@@ -31,6 +31,20 @@
             XLSX.utils.book_append_sheet(wb, ws, "UserActivityReport Data");
             XLSX.writeFile(wb, "UserActivityReport.xlsx");
         });
+        
+        const toggleButton = document.getElementById('toggleDropdown');
+        const dropdownPanel = document.getElementById('dropdownPanel');
+
+        toggleButton.addEventListener('click', function () {
+            dropdownPanel.style.display = (dropdownPanel.style.display === 'none' || dropdownPanel.style.display === '') ? 'block' : 'none';
+        });
+
+        // Optional: hide when click outside
+        document.addEventListener('click', function (e) {
+            if (!toggleButton.contains(e.target) && !dropdownPanel.contains(e.target)) {
+                dropdownPanel.style.display = 'none';
+            }
+        });
     </script>
     
 }
@@ -52,7 +66,7 @@
             </li>
         </ol>
     </nav>
-    <div class="py-4 border-bottom">
+    <div class="py-4 border-bottom mb-2">
         <div class="d-block mb-4 mb-md-0">
 
             <h2 class="h4">@Model.lblReports</h2>
@@ -78,8 +92,14 @@
 
         </div>
     </div>
+    <div class="row align-item-center">
+        <div class="col-3 col-md-3 col-xl-3">
+            <button id="exportExcel" class="btn btn-success">@Model.lblExport</button>
+            <button id="printBtn" class="btn btn-primary">@Model.lblPrint</button>
+        </div>
+    </div>
     <div class="table-settings mt-4 mb-4">
-        <form method="post" asp-page-handler="Search" class="row align-items-center">
+        <form method="post" asp-page-handler="Action" class="row align-items-center">
             <div class="col  col-lg-3 ">
                 <div class="input-group me-2 me-lg-3 fmxw-400">
                     <span class="input-group-text">
@@ -119,11 +139,49 @@
                 </div>
             </div>
             <div class="col-3 col-md-2 col-xl-2 ps-md-2">
-                <button type="submit" class="btn btn-primary">@Model.lblSearch</button>
+                <button type="submit" name="action" value="search" class="btn btn-primary">@Model.lblSearch</button>
             </div>
-            <div class="col-3 col-md-3 col-xl-3 ps-md-3 text-end">
-                <button id="exportExcel" class="btn btn-success">@Model.lblExport</button>
-                <button id="printBtn" class="btn btn-primary">@Model.lblPrint</button>
+            <div class="col text-end position-relative">
+                <button type="button" id="toggleDropdown" class="btn btn-secondary">
+                    @Model.lblShowHideColumn
+                </button>
+
+                <!-- DROPDOWN PANEL GOES HERE -->
+                <div id="dropdownPanel" class="card p-2 shadow-sm position-absolute"
+                    style="right: 0; top: 100%; width: 200px; display: none; z-index: 1000;">
+                    
+                    <!-- Your checkboxes here -->
+                    <div class="form-check mb-1">
+                        <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="userName" id="userName"
+                        @(Model.SelectedColumns.Contains("userName") ? "checked" : "")>
+                        <label class="form-check-label" for="userName">@Model.lblUserName</label>
+                    </div>
+                    <div class="form-check mb-1">
+                        <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="action" id="action"
+                        @(Model.SelectedColumns.Contains("action") ? "checked" : "")>
+                        <label class="form-check-label" for="action">@Model.lblAction</label>
+                    </div>
+                    <div class="form-check mb-1">
+                        <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="actionDetails" id="actionDetails"
+                        @(Model.SelectedColumns.Contains("actionDetails") ? "checked" : "")>
+                        <label class="form-check-label" for="actionDetails">@Model.lblActionDetails</label>
+                    </div>
+                    <div class="form-check mb-1">
+                        <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="requestingIP" id="requestingIP"
+                        @(Model.SelectedColumns.Contains("requestingIP") ? "checked" : "")>
+                        <label class="form-check-label" for="requestingIP">@Model.lblRequestingIp</label>
+                    </div>
+                    <div class="form-check mb-1">
+                        <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="actionTime" id="actionTime"
+                        @(Model.SelectedColumns.Contains("actionTime") ? "checked" : "")>
+                        <label class="form-check-label" for="actionTime">@Model.lblActionTime</label>
+                    </div>
+                    
+                    <div class="form-check mb-1 text-center">
+                        <button type="submit" name="action" value="updateColumns" class="btn btn-success btn-sm">Ok</button>
+                    </div>
+
+                </div>
             </div>
             
         </form>
@@ -227,11 +285,26 @@
                 <table class="table table-centered table-nowrap mb-0 rounded">
                     <thead class="thead-light">
                         <tr>
+                            @if (Model.SelectedColumns.Contains("userName"))
+                            {
                             <th scope="col" class="border-0 rounded-start">@Model.lblUserName</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("action"))
+                            {
                             <th scope="col" class="border-0">@Model.lblAction</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("actionDetails"))
+                            {
                             <th scope="col" class="border-0">@Model.lblActionDetails</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("requestingIP"))
+                            {
                             <th scope="col" class="border-0">@Model.lblRequestingIp</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("actionTime"))
+                            {
                             <th scope="col" class="border-0 rounded-end">@Model.lblActionTime</th>
+                            }
                         </tr>
                     </thead>
                     <tbody>
@@ -240,11 +313,26 @@
                             foreach (var item in Model.UsersActivities)
                             {
                                 <tr>
+                                    @if (Model.SelectedColumns.Contains("userName"))
+                                    {
                                     <th scope="row">@item.UserName</th>
+                                    }
+                                    @if (Model.SelectedColumns.Contains("action"))
+                                    {
                                     <td>@item.Action</td>
+                                    }
+                                    @if (Model.SelectedColumns.Contains("actionDetails"))
+                                    {
                                     <td>@item.Description</td>
+                                    }
+                                    @if (Model.SelectedColumns.Contains("requestingIP"))
+                                    {
                                     <td>@item.SourceIp</td>
+                                    }
+                                    @if (Model.SelectedColumns.Contains("actionTime"))
+                                    {
                                     <td>@item.Time</td>
+                                    }
                                 </tr>
                             }
                         }
@@ -343,24 +431,54 @@
     <table class="table table-centered table-nowrap mb-0 rounded" id="exportTable">
         <thead class="thead-light">
             <tr>
+                @if (Model.SelectedColumns.Contains("userName"))
+                {
                 <th scope="col" class="border-0 rounded-start">@Model.lblUserName</th>
+                }
+                @if (Model.SelectedColumns.Contains("action"))
+                {
                 <th scope="col" class="border-0">@Model.lblAction</th>
+                }
+                @if (Model.SelectedColumns.Contains("actionDetails"))
+                {
                 <th scope="col" class="border-0">@Model.lblActionDetails</th>
+                }
+                @if (Model.SelectedColumns.Contains("requestingIP"))
+                {
                 <th scope="col" class="border-0">@Model.lblRequestingIp</th>
+                }
+                @if (Model.SelectedColumns.Contains("actionTime"))
+                {
                 <th scope="col" class="border-0 rounded-end">@Model.lblActionTime</th>
+                }
             </tr>
         </thead>
         <tbody>
-            @if (Model.UsersActivitiesAll != null)
+            @if (Model.UsersActivities != null)
             {
-                foreach (var item in Model.UsersActivitiesAll)
+                foreach (var item in Model.UsersActivities)
                 {
                     <tr>
+                        @if (Model.SelectedColumns.Contains("userName"))
+                        {
                         <th scope="row">@item.UserName</th>
+                        }
+                        @if (Model.SelectedColumns.Contains("action"))
+                        {
                         <td>@item.Action</td>
+                        }
+                        @if (Model.SelectedColumns.Contains("actionDetails"))
+                        {
                         <td>@item.Description</td>
+                        }
+                        @if (Model.SelectedColumns.Contains("requestingIP"))
+                        {
                         <td>@item.SourceIp</td>
+                        }
+                        @if (Model.SelectedColumns.Contains("actionTime"))
+                        {
                         <td>@item.Time</td>
+                        }
                     </tr>
                 }
             }
