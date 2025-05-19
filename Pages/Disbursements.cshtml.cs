@@ -20,6 +20,7 @@ namespace LabMaterials.Pages
         public int CurrentPage { get; set; }
         public int ItemsPerPage { get; set; } = 10;
         public int TotalPages { get; set; }
+        public int QuantityAvailable { get; set; }
         public List<string> SelectedColumns { get; set; } = new List<string>();
         [BindProperty(SupportsGet = true)]
         public string? Status { get; set; }
@@ -233,23 +234,25 @@ namespace LabMaterials.Pages
             {
                 FillLables();
                 var dbContext = new LabDBContext();
-                var query = from d in dbContext.DisbursementRequests
-                            join s in dbContext.Stores on d.StoreId equals s.StoreId
-                            join i in dbContext.Items on d.Itemcode equals i.ItemCode
+                var query = from d in dbContext.MaterialRequests
+                            join u in dbContext.Users on d.RequestedByUserId equals u.UserId
+                            join s in dbContext.Destinations on d.RequestingSector equals s.DId
+                            join i in dbContext.DespensedItems on d.RequestId equals i.MaterialRequestId
+                            join ic in dbContext.ItemCards on i.ItemCardId equals ic.Id
                             select new DisbursementInfo
                             {
-                                DisbursementRequestId = d.DisbursementRequestId,
-                                RequesterName = d.RequesterName,
-                                RequestingPlace = d.RequestingPlace,
-                                Comments = d.Comments,
-                                ReqReceivedAt = d.ReqReceivedAt,
-                                Status = d.Status,
-                                InventoryBalanced = d.InventoryBalanced ? "Yes" : "No",
-                                ItemCode = d.Itemcode,
-                                ItemTypeCode = d.Itemtypecode,
-                                Quantity = d.ItemQuantity,
-                                StoreName = s.StoreName,
-                                ItemName = i.ItemName
+                                DisbursementRequestId = d.RequestId,
+                                RequesterName = u.FullName,
+                                RequestingPlace = s.DestinationName,
+                                Comments = i.Comments,
+                                ReqReceivedAt = d.OrderDate,
+                                Status = d.SupervisorApproval ? "Approved" : "Pending",
+                                InventoryBalanced = ic.QuantityAvailable.ToString(),
+                                ItemCode = ic.ItemCode,
+                                ItemTypeCode = ic.ItemTypeCode,
+                                Quantity = i.Quantity,
+                                StoreName = d.WarehouseName,
+                                ItemName = ic.ItemName
                             };
 
                 // Apply filtering if needed
@@ -268,18 +271,18 @@ namespace LabMaterials.Pages
                 if (string.IsNullOrEmpty(RequestingPlace) == false)
                     query = query.Where(i => i.RequestingPlace.Contains(RequestingPlace));
 
-                var allItemsQuery = from d in dbContext.DisbursementRequests
-                                    join s in dbContext.Stores on d.StoreId equals s.StoreId
-                                    join i in dbContext.Items on d.Itemcode equals i.ItemCode
+                var allItemsQuery = from d in dbContext.MaterialRequests
+                                    join u in dbContext.Users on d.RequestedByUserId equals u.UserId
+                                    join s in dbContext.Destinations on d.RequestingSector equals s.DId
+                                    join i in dbContext.DespensedItems on d.RequestId equals i.MaterialRequestId
                                     select new DisbursementInfo
                                     {
-                                        RequestingPlace = d.RequestingPlace,
-                                        Status = d.Status,
-                                        StoreName = s.StoreName,
+                                        RequestingPlace = s.DestinationName,
+                                        StoreName = d.WarehouseName
                                     };
 
                 UniqueRequestingPlace = allItemsQuery.Select(i => i.RequestingPlace).Where(x => !string.IsNullOrEmpty(x)).Distinct().ToList();
-                UniqueStatus = allItemsQuery.Select(i => i.Status).Where(x => !string.IsNullOrEmpty(x)).Distinct().ToList();
+                UniqueStatus = ["Approved", "Pending"];
                 UniqueStoreName = allItemsQuery.Select(i => i.StoreName).Where(x => !string.IsNullOrEmpty(x)).Distinct().ToList();
 
                 // Get the total count of items
