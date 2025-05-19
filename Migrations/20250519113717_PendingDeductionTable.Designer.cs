@@ -4,6 +4,7 @@ using LabMaterials.DB;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LabMaterials.Migrations
 {
     [DbContext(typeof(LabDBContext))]
-    partial class LabDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250519113717_PendingDeductionTable")]
+    partial class PendingDeductionTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -153,77 +156,6 @@ namespace LabMaterials.Migrations
                     b.HasIndex("ItemId");
 
                     b.ToTable("DAMAGED_ITEMS");
-                });
-
-            modelBuilder.Entity("LabMaterials.DB.DeductionExtended", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Chemical")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("ExpiryDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("GroupCode")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("HazardTypeName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ItemCardId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ItemCode")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ItemDescription")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ItemId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ItemName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ItemTypeCode")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("QuantityAvailable")
-                        .HasColumnType("int");
-
-                    b.Property<int>("QuantityReceived")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RoomId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ShelfId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("StoreId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("TypeOfAsset")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UnitOfmeasure")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("DeductionExtended");
                 });
 
             modelBuilder.Entity("LabMaterials.DB.DespensedItem", b =>
@@ -975,12 +907,6 @@ namespace LabMaterials.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("DeductedBy")
-                        .HasColumnType("int");
-
                     b.Property<string>("DocumentNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -1006,12 +932,7 @@ namespace LabMaterials.Migrations
                     b.Property<bool>("Status")
                         .HasColumnType("bit");
 
-                    b.Property<int>("StoreId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("DeductedBy");
 
                     b.HasIndex("ItemCardId");
 
@@ -1879,9 +1800,6 @@ namespace LabMaterials.Migrations
                         .HasColumnType("int")
                         .HasColumnName("EndedByID");
 
-                    b.Property<int?>("ExtensionNumber")
-                        .HasColumnType("int");
-
                     b.Property<string>("SupplierContact")
                         .HasMaxLength(100)
                         .IsUnicode(false)
@@ -2421,12 +2339,6 @@ namespace LabMaterials.Migrations
 
             modelBuilder.Entity("LabMaterials.DB.PendingDeduction", b =>
                 {
-                    b.HasOne("LabMaterials.DB.User", "User")
-                        .WithMany()
-                        .HasForeignKey("DeductedBy")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("LabMaterials.DB.ItemCard", "ItemCard")
                         .WithMany()
                         .HasForeignKey("ItemCardId")
@@ -2450,8 +2362,6 @@ namespace LabMaterials.Migrations
                     b.Navigation("Room");
 
                     b.Navigation("Shelf");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("LabMaterials.DB.ReceivingItem", b =>

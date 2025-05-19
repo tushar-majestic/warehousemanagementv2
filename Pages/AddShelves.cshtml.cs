@@ -20,11 +20,13 @@ namespace LabMaterials.Pages
         {
             base.ExtractSessionData();
             FillLables();
+            var RoomId = HttpContext.Session.GetInt32("RoomId");
+            var StoreId = HttpContext.Session.GetInt32("StoreId");
             if (CanManageStore == false)
                 RedirectToPage("./Index?lang=" + Lang);
             var dbContext = new LabDBContext();
-            Stores = dbContext.Stores.ToList();
-            Rooms = dbContext.Rooms.ToList();
+            Stores = dbContext.Stores.Where(s => s.StoreId == StoreId).ToList();
+            Rooms = dbContext.Rooms.Where(r=> r.RoomId == RoomId && r.Ended == null).ToList();
             Shelves = dbContext.Shelves.ToList();
         }
         public IActionResult OnGetRoomsForStore(int storeId)

@@ -5,7 +5,32 @@
     ViewData["Title"] = "Create Item Card";
 }
 
-<h1>Create Item Card</h1>
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4 pb-2">
+        <div class="d-block mb-4 mb-md-0">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb bg-transparent p-2 mb-0">
+                    <li class="breadcrumb-item d-flex align-items-center">
+                        <img src="images/home.png" alt="Home" width="16" height="16" class="me-2" />
+                        <a href="/Home" class="text-decoration-none">@Model.lblHome</a>
+                    </li>
+                    
+                    <li class="breadcrumb-item d-flex align-items-center">
+                        <img src="images/inventory.png" alt="Home" width="16" height="16" class="me-2" />
+                        <a href="/ManageItemCards" class="text-decoration-none"> @Model.lblItemCards</a>
+                       
+                    </li>
+
+                    <li class="breadcrumb-item d-flex align-items-center">
+                        <img src="images/inventory.png" alt="Home" width="16" height="16" class="me-2" />
+                       @Model.lblcreateItemCard
+                    </li>
+                    
+                </ol>
+            </nav>
+            <h2 class="h4"> @Model.lblcreateItemCard</h2>
+        </div>
+        
+    </div>
 <div asp-validation-summary="All" class="text-danger"></div>
 
 
@@ -132,7 +157,11 @@
                     <div class="form-group" style="width: 48%;">
                         <label asp-for="ItemCard.StoreId" class="control-label">Warehouse Name</label>
                         @* <input type="text" asp-for="ItemCard.StoreId" class="form-control"/> *@
-                        <select asp-for="ItemCard.StoreId" id="storeSelect" name="StoreId" class="form-control" asp-items="ViewBag.WarehouseId" readonly></select>
+                        @* <select asp-for="ItemCard.StoreId" id="storeSelect" name="StoreId" class="form-control" asp-items="ViewBag.WarehouseId" readonly></select> *@
+                        <select asp-for="ItemCard.StoreId" id="storeSelect" class="form-control"
+                            asp-items="ViewBag.WarehouseId" readonly></select>
+                        <input type="hidden" name="StoreId" value="@Model.ItemCard.StoreId" style="display: none;" />
+
                     </div>
 
                     <div class="form-group" style="width: 48%;">
@@ -178,7 +207,7 @@
                 </div>
 
                 <button type="submit" class="btn btn-primary">Create</button>
-                <a asp-page="./Index" class="btn btn-secondary">Cancel</a>
+                <a asp-page="./Requests" class="btn btn-secondary">Cancel</a>
             </form>
          
         </div>
@@ -260,8 +289,29 @@
    @using System.Text.Json
 
     <script>
+        function filterShelfByRoom() {
+            var roomId = document.getElementById("RoomId").value;
+            fetch(`/ItemCards?handler=ShelvesByRoom&roomId=${roomId}`)
+                .then(response => response.json())
+                .then(data => {
+                    var shelfSelect = document.getElementById("ShelfId");
+                    shelfSelect.innerHTML = '<option value="">Select Shelf</option>';
+                    data.forEach(shelf => {
+                        var option = document.createElement("option");
+                        option.value = shelf.value;
+                        option.text = shelf.text;
+                        shelfSelect.appendChild(option);
+                    });
+                });
+        }
+    </script>
 
-         document.getElementById('storeSelect').addEventListener('mousedown', function (e) {
+    <script>
+
+        document.getElementById('storeSelect').addEventListener('mousedown', function (e) {
+        e.preventDefault();
+    });
+         document.getElementById('SupplierId').addEventListener('mousedown', function (e) {
         e.preventDefault();
     });
         const itemData = @Html.Raw(JsonSerializer.Serialize(Model.AllItemsDto));

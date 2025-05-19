@@ -13,10 +13,13 @@ namespace LabMaterials.Pages
         public string SelectSupplierType;
         public string SupplierNotUpdated;
         public int SupplierId;
+
+        public int? ExtensionNumber;
+
         public string FromDate, ToDate;
         public int page { get; set; }
         public string lblSupplierName, lblSupplierNotUpdated, lblSupplierPhoneNumber, lblSelectSupplierType, lblSupplierType, SupplierNameSearch, 
-        lblUpdateSupplier, lblEdit, lblCancel, lblSupplies, lblSuppliers, lblCoordinatorName, CoordinatorNameSearch;
+        lblUpdateSupplier, lblEdit, lblCancel, lblSupplies, lblSuppliers, lblCoordinatorName, CoordinatorNameSearch, lblExtensionNumber;
         public void OnGet()
         {
             base.ExtractSessionData();
@@ -35,12 +38,13 @@ namespace LabMaterials.Pages
                 SupplierName = supplier.SupplierName;
                 CoordinatorName = supplier.CoordinatorName;
                 SupplierPhoneNumber = supplier.SupplierContact;
+                ExtensionNumber = supplier.ExtensionNumber;
                 SupplierType = supplier.SupplierType;
                 SupplierId = supplier.SupplierId;
             }
         }
 
-        public IActionResult OnPost([FromForm] int SupplierId, [FromForm] string SupplierName, string CoordinatorName, string SupplierPhoneNumber,string SupplierType)
+        public IActionResult OnPost([FromForm] int SupplierId, [FromForm] string SupplierName, string CoordinatorName, string SupplierPhoneNumber,string SupplierType, [FromForm] int ExtensionNumber)
         {
             LogableTask task = LogableTask.NewTask("EditSupplier");
 
@@ -97,6 +101,7 @@ namespace LabMaterials.Pages
                             existingSupplier.CoordinatorName = CoordinatorName;
                             existingSupplier.SupplierContact = SupplierPhoneNumber;
                             existingSupplier.SupplierType = SupplierType;
+                            existingSupplier.ExtensionNumber = ExtensionNumber;
 
                             dbContext.SaveChanges();
 
@@ -124,7 +129,7 @@ namespace LabMaterials.Pages
 
         private void FillLables()
         {
-            
+
 
             this.lblSupplierName = (Program.Translations["SupplierName"])[Lang];
             this.lblSupplierPhoneNumber = (Program.Translations["SupplierPhoneNumber"])[Lang];
@@ -138,6 +143,8 @@ namespace LabMaterials.Pages
             this.lblSupplies = (Program.Translations["Supplies"])[Lang];
             this.lblSuppliers = (Program.Translations["Suppliers"])[Lang];
             this.lblCoordinatorName = (Program.Translations["CoordinatorName"])[Lang];
+            this.lblExtensionNumber = (Program.Translations["ExtensionNumber"])[Lang];
+
         }
     }
 }
