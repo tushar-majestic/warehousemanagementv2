@@ -26,7 +26,6 @@ public partial class MaterialRequest
     
     public int KeeperId { get; set; }
     public int SupervisorId { get; set; }
-    public int SectorManagerId { get; set; }
 
     public string RequestDocumentType { get; set; } = null;
     public string DocumentNumber { get; set; } = null;
@@ -38,14 +37,11 @@ public partial class MaterialRequest
     public bool SupervisorApproval { get; set; }
     public DateTime? SupervisorApprovalDate { get; set; }
 
-    public bool SectorManagerApproval { get; set; }
-    public DateTime?  SectorManagerApprovalDate { get; set; }
-
-
-
-
     public bool DepartmentManagerApproval { get; set; }
     public DateTime? DeptManagerApprovalDate { get; set; }
+
+    public DateTime? CreatedAt { get; set; }
+
 
     public int? CurrentApproverUserId { get; set; }
 

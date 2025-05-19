@@ -24,6 +24,7 @@ namespace LabMaterials.Pages
         // public ItemCardBatch ItemCardBatch { get; set; } = new ItemCardBatch();
 
         public List<SelectListItem> ItemList { get; set; }
+        public List<Shelf> Shelves { get; set; }
         public int? ReportId;
          public int? InboxId;
         public class ItemDto
@@ -53,6 +54,7 @@ namespace LabMaterials.Pages
             .Select(i => new SelectListItem { Value = i.ItemCode, Text = i.ItemCode })
             .ToList();
 
+            Shelves = _context.Shelves.ToList();
             // AllItems = _context.Items.ToList();
             this.ReportId = HttpContext.Session.GetInt32("ReportId");
             // this.MessageId = HttpContext.Session.GetInt32("MessageId");
@@ -125,6 +127,8 @@ namespace LabMaterials.Pages
         {   
             var reportId = HttpContext.Session.GetInt32("ReportId");
             this.InboxId = HttpContext.Session.GetInt32("InboxId");
+            Shelves = _context.Shelves.ToList();
+
 
             // foreach (var extendedCard  in ItemCardsFromReport)
             // {
@@ -172,7 +176,7 @@ namespace LabMaterials.Pages
             {
                 // Try to find existing ItemCard based on ItemId 
                 var existingItemCard = await _context.ItemCards
-                    .FirstOrDefaultAsync(ic => ic.ItemId == extendedCard.ItemId  && ic.StoreId == StoreId);
+                    .FirstOrDefaultAsync(ic => ic.ItemId == extendedCard.ItemId && ic.StoreId == StoreId);
 
                 int itemCardId;
 
@@ -183,7 +187,7 @@ namespace LabMaterials.Pages
                     existingItemCard.QuantityAvailable += extendedCard.QuantityReceived;
                     _context.ItemCards.Update(existingItemCard);
                     await _context.SaveChangesAsync();
-                    itemCardId = existingItemCard.Id; 
+                    itemCardId = existingItemCard.Id;
                 }
                 else
                 {
@@ -232,7 +236,7 @@ namespace LabMaterials.Pages
                 _context.ItemCardBatches.Add(itemCardBatch);
 
                 var existingItemShelf = await _context.ShelveItems
-                    .FirstOrDefaultAsync(s => s.ItemCardId == itemCardId  && s.ShelfId == ShelfId);
+                    .FirstOrDefaultAsync(s => s.ItemCardId == itemCardId && s.ShelfId == ShelfId);
 
                 // If shelf for that item exists
                 if (existingItemShelf != null)
@@ -255,7 +259,7 @@ namespace LabMaterials.Pages
                     await _context.SaveChangesAsync();
                 }
 
-               
+
             }
             var dbContext = new LabDBContext();
 

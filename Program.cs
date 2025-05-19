@@ -30,10 +30,16 @@ namespace LabMaterials
             builder.Services.AddRazorPages()
                        .AddRazorRuntimeCompilation();
 
+            builder.Services.AddRazorPages()
+            .AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
+                options.JsonSerializerOptions.PropertyNamingPolicy = null;
+            });
+
             
             builder.Services.AddDbContext<LabDBContext>(options =>
                 options.UseSqlServer("Server=localhost;Database=LabMaterials;Trusted_Connection=True;TrustServerCertificate=True;"));
-
 
             var app = builder.Build();
 

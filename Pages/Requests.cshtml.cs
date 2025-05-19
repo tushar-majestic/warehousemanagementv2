@@ -285,7 +285,7 @@ namespace LabMaterials.Pages
                         MaterialRequestId = AcceptReportId,
                         ReportType = "Dispensing",
                         SenderId = this.UserId,
-                        RecipientId = report.SectorManagerId,
+                        RecipientId = report.SupervisorId,
                         Content = sectorManagerMessage,
                         Type = "",
                         CreatedAt = DateTime.UtcNow
