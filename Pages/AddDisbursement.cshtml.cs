@@ -211,6 +211,7 @@ namespace LabMaterials.Pages
                     Report.Sector = Sector;
                     // Report.KeeperId = KeeperId;
                     Report.DeptManagerId = DeptManagerId;
+                    Report.CreatedAt = DateTime.UtcNow;
                     // Report.SupervisorId = SupervisorId;
                     // Report.DocumentNumber = DocumentNumber;
 
