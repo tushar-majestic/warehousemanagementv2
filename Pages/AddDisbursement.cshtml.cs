@@ -280,7 +280,6 @@ namespace LabMaterials.Pages
  
                     foreach (var item in ItemsForReport)
                     {
-
                         item.MaterialRequestId = Report.RequestId;
                         item.ItemCardId = item.ItemCardId;
                         if (item.Comments == null)

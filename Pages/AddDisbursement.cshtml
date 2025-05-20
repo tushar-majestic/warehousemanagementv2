@@ -435,7 +435,7 @@
                                     <div class="d-flex">
                                         <div class="form-group  me-2 " style="width: 49%;">
                                             <label>@Model.lblItemName (@Model.lblArabicLanguage)</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
-                                            <select class="ArabicItemName form-select" id="ArabicItemName_@i"  asp-for="@Model.ItemsForReport[@i].ItemCardId" name="ItemsForReport[@i].ItemCardId"  onchange="handleItemChange(event)">
+                                            <select class="ArabicItemName form-select" id="ArabicItemName_@i"  asp-for="@Model.ItemsForReport[@i].ItemCardId" name="ItemsForReport[@i].ItemCardId"  >
                                                 <option value="">Select Item </option>
                                                 @foreach (var item in Model.ItemCards)
                                                 {
