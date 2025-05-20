@@ -138,18 +138,38 @@ namespace LabMaterials.Pages
         }
 
 
-         public IActionResult OnPostView([FromForm] int InboxId)
+        //  public IActionResult OnPostView([FromForm] int InboxId)
+        // {
+        //     this.UserGroupName = HttpContext.Session.GetString("UserGroup");
+
+        //     var dbContext = new LabDBContext();
+            
+        //         HttpContext.Session.SetString("ReportId", InboxId.ToString());
+        //         return RedirectToPage("./ViewReceivingReport");                         
+
+        // }
+
+        public IActionResult OnPostView([FromForm] string ReportType, [FromForm] int? InboxId, [FromForm] int? MaterialRequestId)
         {
             this.UserGroupName = HttpContext.Session.GetString("UserGroup");
-
             var dbContext = new LabDBContext();
-            
-                HttpContext.Session.SetString("ReportId", InboxId.ToString());
-                return RedirectToPage("./ViewReceivingReport");                         
 
+            if (ReportType == "Receiving" && InboxId.HasValue)
+            {
+                HttpContext.Session.SetString("ReportId", InboxId.Value.ToString());
+                return RedirectToPage("./ViewReceivingReport");
+            }
+            else if (ReportType == "Dispensing" && MaterialRequestId.HasValue)
+            {
+                HttpContext.Session.SetString("MaterialRequestId", MaterialRequestId.Value.ToString());
+                return RedirectToPage("./ViewDispensedReport");
+            }
+
+            return RedirectToPage("./Index", new { lang = Lang });
         }
+
         public IActionResult OnPostAcceptAndSpecify([FromForm] int AcceptReportId, [FromForm] int AcceptMessageId, [FromForm] int? ReceipientId)
-        {   
+        {
             //function is used in case when department manager accepts the dispensing request
             base.ExtractSessionData();
             this.UserFullName = HttpContext.Session.GetString("FullName");
@@ -235,7 +255,7 @@ namespace LabMaterials.Pages
 
                     }
                 }
-                
+
                 var message = dbContext.Messages.FirstOrDefault(m => m.Id == AcceptMessageId);
 
                 if (message != null)
@@ -243,9 +263,9 @@ namespace LabMaterials.Pages
                     message.Type = "Accepted";
                 }
                 dbContext.SaveChanges();
-                
+
             }
-            
+
             return RedirectToPage();
 
 
