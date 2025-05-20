@@ -1,5 +1,52 @@
 ﻿@page
 @model LabMaterials.Pages.Rep_HazardMaterialModel
+@section Scripts
+{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+    <script>
+        document.getElementById('exportExcel').addEventListener('click', function () {
+            let table = document.querySelector('#exportTable'); // use hidden export table directly
+            let wb = XLSX.utils.book_new();
+            let ws_data = [];
+
+            // Get headers
+            const headers = Array.from(table.querySelectorAll('thead th'))
+                .map(th => th.textContent.trim()); // use textContent instead of innerText
+            ws_data.push(headers);
+
+            // Get rows
+            const rows = table.querySelectorAll('tbody tr');
+            rows.forEach(row => {
+                const rowData = [];
+                const cells = row.querySelectorAll('th, td');
+                cells.forEach(cell => {
+                    rowData.push(cell.textContent.trim()); // use textContent
+                });
+                ws_data.push(rowData);
+            });
+
+            // Create worksheet and trigger download
+            let ws = XLSX.utils.aoa_to_sheet(ws_data);
+            XLSX.utils.book_append_sheet(wb, ws, "UserReports Data");
+            XLSX.writeFile(wb, "UserReports.xlsx");
+        });
+        const toggleButton = document.getElementById('toggleDropdown');
+        const dropdownPanel = document.getElementById('dropdownPanel');
+
+        toggleButton.addEventListener('click', function () {
+            dropdownPanel.style.display = (dropdownPanel.style.display === 'none' || dropdownPanel.style.display === '') ? 'block' : 'none';
+        });
+
+        // Optional: hide when click outside
+        document.addEventListener('click', function (e) {
+            if (!toggleButton.contains(e.target) && !dropdownPanel.contains(e.target)) {
+                dropdownPanel.style.display = 'none';
+            }
+        });
+    </script>
+    
+}
 @{
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb bg-transparent p-2 mb-0">
@@ -17,7 +64,7 @@
             </li>
         </ol>
     </nav> 
-    <div class="py-4 border-bottom">
+    <div class="py-4 border-bottom mb-2">
         <div class="d-block mb-4 mb-md-0">
 
             <h2 class="h4">@Model.lblReports</h2>
@@ -37,7 +84,7 @@
             @if (Model.CanManageUsers)
             {
                 <a href="Rep_UserActivity"
-                   class="btn btn-gray-600 d-inline-flex  align-items-center report mx-2">@Model.lblUserActivity</a>
+                   class="btn btn-outline-gray-600 d-inline-flex  align-items-center report mx-2">@Model.lblUserActivity</a>
 
 
 
@@ -47,8 +94,14 @@
 
         </div>
     </div>
+    <div class="row align-item-center">
+        <div class="col-3 col-md-3 col-xl-3">
+            <button id="exportExcel" class="btn btn-success">@Model.lblExport</button>
+            <button id="printBtn" class="btn btn-primary">@Model.lblPrint</button>
+        </div>
+    </div>
     <div class="table-settings mt-4 mb-4">
-        <form method="post" asp-page-handler="Search" class="row align-items-center">
+        <form method="post" asp-page-handler="Action" class="row align-items-center">
             <div class="col col-lg-3">
                 <div class="input-group me-2 me-lg-3 fmxw-400">
                     <span class="input-group-text">
@@ -67,18 +120,75 @@
                     
                     <select class="form-select" name="HazardTypeName" style="width:250px">
                         <option value="">@Model.lblSelectHazardType</option>
-            @if (Model.HazardTypes != null)
-            {
-                foreach (var item in Model.HazardTypes)
-                {
-                    <option value="@item.HazardTypeName" selected="@Model.HazardTypeName">@item.HazardTypeName</option>
-                }
-            }
-        </select>
+                        @if (Model.HazardTypes != null)
+                        {
+                            foreach (var item in Model.HazardTypes)
+                            {
+                                <option value="@item.HazardTypeName" selected="@Model.HazardTypeName">@item.HazardTypeName</option>
+                            }
+                        }
+                    </select>
                 </div>
             </div>
             <div class="col-4 col-md-2 col-xl-1 ps-md-0 text-end">
-                <button type="submit" class="btn btn-primary">@Model.lblSearch</button>
+                <button type="submit" name="action" value="search" class="btn btn-primary">@Model.lblSearch</button>
+            </div>
+            <div class="col text-end position-relative">
+                <button type="button" id="toggleDropdown" class="btn btn-secondary">
+                    @Model.lblShowHideColumn
+                </button>
+
+                <!-- DROPDOWN PANEL GOES HERE -->
+                <div id="dropdownPanel" class="card p-2 shadow-sm position-absolute"
+                    style="right: 0; top: 100%; width: 200px; display: none; z-index: 1000;">
+
+                    <!-- Your checkboxes here -->
+                    <div class="form-check mb-1">
+                        <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="itemCode"
+                            id="itemCode" @(Model.SelectedColumns.Contains("itemCode") ? "checked" : "")>
+                        <label class="form-check-label" for="itemCode">ItemCode</label>
+                    </div>
+                    <div class="form-check mb-1">
+                        <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="action"
+                            id="itemName" @(Model.SelectedColumns.Contains("itemName") ? "checked" : "")>
+                        <label class="form-check-label" for="itemName">ItemName</label>
+                    </div>
+                    <div class="form-check mb-1">
+                        <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="warehouseName"
+                            id="warehouseName" @(Model.SelectedColumns.Contains("warehouseName") ? "checked" : "")>
+                        <label class="form-check-label" for="warehouseName">WarehouseName</label>
+                    </div>
+                    <div class="form-check mb-1">
+                        <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="quantity"
+                            id="quantity" @(Model.SelectedColumns.Contains("quantity") ? "checked" : "")>
+                        <label class="form-check-label" for="quantity">Quantity</label>
+                    </div>
+                    <div class="form-check mb-1">
+                        <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="hazardType"
+                            id="hazardType" @(Model.SelectedColumns.Contains("hazardType") ? "checked" : "")>
+                        <label class="form-check-label" for="hazardType">HazardType</label>
+                    </div>
+                    <div class="form-check mb-1">
+                        <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="TypeName"
+                            id="TypeName" @(Model.SelectedColumns.Contains("TypeName") ? "checked" : "")>
+                        <label class="form-check-label" for="TypeName">TypeName</label>
+                    </div>
+                    <div class="form-check mb-1">
+                        <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="unitCode"
+                            id="unitCode" @(Model.SelectedColumns.Contains("unitCode") ? "checked" : "")>
+                        <label class="form-check-label" for="unitCode">UnitCode</label>
+                    </div>
+                    <div class="form-check mb-1">
+                        <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="GroupName"
+                            id="GroupName" @(Model.SelectedColumns.Contains("GroupName") ? "checked" : "")>
+                        <label class="form-check-label" for="GroupName">GroupName</label>
+                    </div>
+
+                    <div class="form-check mb-1 text-center">
+                        <button type="submit" name="action" value="updateColumns" class="btn btn-success btn-sm">Ok</button>
+                    </div>
+
+                </div>
             </div>
         </form>
     </div>
@@ -92,34 +202,82 @@
                 <table class="table table-centered table-nowrap mb-0 rounded">
                     <thead class="thead-light">
                         <tr>
-                          
-                                <th scope="col" class="border-0 rounded-start">@Model.lblItemCode</th>
-                <th scope="col" class="border-0">@Model.lblItemName</th>
-                <th scope="col" class="border-0">@Model.lblStoreName</th>
-                <th scope="col" class="border-0">@Model.lblAvailableQuantity</th>
-                <th scope="col" class="border-0">@Model.lblHazardType</th>
-                <th scope="col" class="border-0">@Model.lblTypeName</th>
-                <th scope="col" class="border-0">@Model.lblUnitCode</th>
-                <th scope="col" class="border-0 rounded-end">@Model.lblGroupName</th>
+
+                            @if (Model.SelectedColumns.Contains("itemCode"))
+                            {
+                            <th scope="col" class="border-0 rounded-start">@Model.lblItemCode</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("itemName"))
+                            {
+                            <th scope="col" class="border-0">@Model.lblItemName</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("warehouseName"))
+                            {
+                            <th scope="col" class="border-0">@Model.lblStoreName</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("quantity"))
+                            {
+                            <th scope="col" class="border-0">@Model.lblAvailableQuantity</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("hazardType"))
+                            {
+                            <th scope="col" class="border-0">@Model.lblHazardType</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("TypeName"))
+                            {
+                            <th scope="col" class="border-0">@Model.lblTypeName</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("unitCode"))
+                            {
+                            <th scope="col" class="border-0">@Model.lblUnitCode</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("GroupName"))
+                            {
+                            <th scope="col" class="border-0 rounded-end">@Model.lblGroupName</th>
+                            }
                         </tr>
                     </thead>
                     <tbody>
-                         @if (Model.Items != null)
-            {
-                foreach (var item in Model.Items)
-                {
-                    <tr>
-                        <th scope="row">@item.ItemCode</th>
-                        <td>@item.ItemName</td>
-                        <td>@item.StoreName</td>
-                        <td>@item.AvailableQuantity</td>
-                        <td style='color: @(item.IsHazardous?"red":"teal")'>@item.HazardTypeName</td>
-                        <td>@item.TypeName</td>
-                        <td>@item.UnitCode</td>
-                        <td>@item.GroupDesc</td>
-                    </tr>
-                }
-            }
+                    @if (Model.Items != null)
+                    {
+                        foreach (var item in Model.Items)
+                        {
+                                <tr>
+                                    @if (Model.SelectedColumns.Contains("itemCode"))
+                                {
+                                <th scope="row">@item.ItemCode</th>
+                                }
+                                    @if (Model.SelectedColumns.Contains("itemName"))
+                                {
+                                <td>@item.ItemName</td>
+                                }
+                                    @if (Model.SelectedColumns.Contains("warehouseName"))
+                                {
+                                <td>@item.StoreName</td>
+                                }
+                                    @if (Model.SelectedColumns.Contains("quantity"))
+                                {
+                                <td>@item.AvailableQuantity</td>
+                                }
+                                    @if (Model.SelectedColumns.Contains("hazardType"))
+                                {
+                                <td style='color: @(item.IsHazardous?"red":"teal")'>@item.HazardTypeName</td>
+                                }
+                                    @if (Model.SelectedColumns.Contains("TypeName"))
+                                {
+                                <td>@item.TypeName</td>
+                                }
+                                    @if (Model.SelectedColumns.Contains("unitCode"))
+                                {
+                                <td>@item.UnitCode</td>
+                                }
+                                    @if (Model.SelectedColumns.Contains("GroupName"))
+                                {
+                                <td>@item.GroupDesc</td>
+                                }
+                            </tr>
+                        }
+                    }
                     </tbody>
                 </table>
             </div>
@@ -200,4 +358,88 @@
             </ul>
         </nav>
     }
+
+    <div class="table-responsive" id="exportTableContainer" style="display: none;">
+        <table class="table table-centered table-nowrap mb-0 rounded" id="exportTable">
+            <thead class="thead-light">
+                <tr>
+
+                    @if (Model.SelectedColumns.Contains("itemCode"))
+                    {
+                        <th scope="col" class="border-0 rounded-start">@Model.lblItemCode</th>
+                    }
+                    @if (Model.SelectedColumns.Contains("itemName"))
+                    {
+                        <th scope="col" class="border-0">@Model.lblItemName</th>
+                    }
+                    @if (Model.SelectedColumns.Contains("warehouseName"))
+                    {
+                        <th scope="col" class="border-0">@Model.lblStoreName</th>
+                    }
+                    @if (Model.SelectedColumns.Contains("quantity"))
+                    {
+                        <th scope="col" class="border-0">@Model.lblAvailableQuantity</th>
+                    }
+                    @if (Model.SelectedColumns.Contains("hazardType"))
+                    {
+                        <th scope="col" class="border-0">@Model.lblHazardType</th>
+                    }
+                    @if (Model.SelectedColumns.Contains("TypeName"))
+                    {
+                        <th scope="col" class="border-0">@Model.lblTypeName</th>
+                    }
+                    @if (Model.SelectedColumns.Contains("unitCode"))
+                    {
+                        <th scope="col" class="border-0">@Model.lblUnitCode</th>
+                    }
+                    @if (Model.SelectedColumns.Contains("GroupName"))
+                    {
+                        <th scope="col" class="border-0 rounded-end">@Model.lblGroupName</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.ItemsAll != null)
+                {
+                    foreach (var item in Model.ItemsAll)
+                    {
+                        <tr>
+                            @if (Model.SelectedColumns.Contains("itemCode"))
+                            {
+                                <th scope="row">@item.ItemCode</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("itemName"))
+                            {
+                                <td>@item.ItemName</td>
+                            }
+                            @if (Model.SelectedColumns.Contains("warehouseName"))
+                            {
+                                <td>@item.StoreName</td>
+                            }
+                            @if (Model.SelectedColumns.Contains("quantity"))
+                            {
+                                <td>@item.AvailableQuantity</td>
+                            }
+                            @if (Model.SelectedColumns.Contains("hazardType"))
+                            {
+                                <td style='color: @(item.IsHazardous ? "red" : "teal")'>@item.HazardTypeName</td>
+                            }
+                            @if (Model.SelectedColumns.Contains("TypeName"))
+                            {
+                                <td>@item.TypeName</td>
+                            }
+                            @if (Model.SelectedColumns.Contains("unitCode"))
+                            {
+                                <td>@item.UnitCode</td>
+                            }
+                            @if (Model.SelectedColumns.Contains("GroupName"))
+                            {
+                                <td>@item.GroupDesc</td>
+                            }
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
 }

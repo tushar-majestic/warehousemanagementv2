@@ -1,5 +1,52 @@
 ﻿@page
 @model LabMaterials.Pages.Rep_DistributionModel
+@section Scripts
+{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+    <script>
+        document.getElementById('exportExcel').addEventListener('click', function () {
+            let table = document.querySelector('#exportTable'); // use hidden export table directly
+            let wb = XLSX.utils.book_new();
+            let ws_data = [];
+
+            // Get headers
+            const headers = Array.from(table.querySelectorAll('thead th'))
+                .map(th => th.textContent.trim()); // use textContent instead of innerText
+            ws_data.push(headers);
+
+            // Get rows
+            const rows = table.querySelectorAll('tbody tr');
+            rows.forEach(row => {
+                const rowData = [];
+                const cells = row.querySelectorAll('th, td');
+                cells.forEach(cell => {
+                    rowData.push(cell.textContent.trim()); // use textContent
+                });
+                ws_data.push(rowData);
+            });
+
+            // Create worksheet and trigger download
+            let ws = XLSX.utils.aoa_to_sheet(ws_data);
+            XLSX.utils.book_append_sheet(wb, ws, "UserReports Data");
+            XLSX.writeFile(wb, "UserReports.xlsx");
+        });
+        const toggleButton = document.getElementById('toggleDropdown');
+        const dropdownPanel = document.getElementById('dropdownPanel');
+
+        toggleButton.addEventListener('click', function () {
+            dropdownPanel.style.display = (dropdownPanel.style.display === 'none' || dropdownPanel.style.display === '') ? 'block' : 'none';
+        });
+
+        // Optional: hide when click outside
+        document.addEventListener('click', function (e) {
+            if (!toggleButton.contains(e.target) && !dropdownPanel.contains(e.target)) {
+                dropdownPanel.style.display = 'none';
+            }
+        });
+    </script>
+    
+}
 @{
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb bg-transparent p-2 mb-0">
@@ -18,7 +65,7 @@
         </ol>
     </nav> 
 
-    <div class="py-4 border-bottom">
+    <div class="py-4 border-bottom mb-2">
         <div class="d-block mb-4 mb-md-0">
 
             <h2 class="h4">@Model.lblReports</h2>
@@ -40,7 +87,7 @@
             @if (Model.CanManageUsers)
             {
                 <a href="Rep_UserActivity"
-                   class="btn btn-gray-600 d-inline-flex  align-items-center report mx-2">@Model.lblUserActivity</a>
+                   class="btn btn-outline-gray-600 d-inline-flex  align-items-center report mx-2">@Model.lblUserActivity</a>
 
 
 
@@ -50,9 +97,15 @@
 
         </div>
     </div>
+    <div class="row align-item-center">
+        <div class="col-3 col-md-3 col-xl-3">
+            <button id="exportExcel" class="btn btn-success">@Model.lblExport</button>
+            <button id="printBtn" class="btn btn-primary">@Model.lblPrint</button>
+        </div>
+    </div>
 
     <div class="table-settings mt-4 mb-4">
-        <form method="post" asp-page-handler="Search" class="row align-items-center">
+        <form method="post" asp-page-handler="Action" class="row align-items-center">
             <div class="col  col-lg-3 ">
                 <div class="input-group me-2 me-lg-3 fmxw-400">
                     <span class="input-group-text">
@@ -89,7 +142,54 @@
             </div>
 
             <div class="col-4 col-md-2 col-xl-1 ps-md-0 mx-2  text-end">
-                <button type="submit" class="btn btn-primary">@Model.lblSearch</button>
+                <button type="submit" name="action" value="search" class="btn btn-primary">@Model.lblSearch</button>
+            </div>
+            <div class="col text-end position-relative">
+                <button type="button" id="toggleDropdown" class="btn btn-secondary">
+                    @Model.lblShowHideColumn
+                </button>
+
+                <!-- DROPDOWN PANEL GOES HERE -->
+                <div id="dropdownPanel" class="card p-2 shadow-sm position-absolute"
+                    style="right: 0; top: 100%; width: 200px; display: none; z-index: 1000;">
+
+                    <!-- Your checkboxes here -->
+                    <div class="form-check mb-1">
+                        <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="requesterName"
+                            id="requesterName" @(Model.SelectedColumns.Contains("requesterName") ? "checked" : "")>
+                        <label class="form-check-label" for="requesterName">RequestorName</label>
+                    </div>
+                    <div class="form-check mb-1">
+                        <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="date"
+                            id="date" @(Model.SelectedColumns.Contains("date") ? "checked" : "")>
+                        <label class="form-check-label" for="date">Date</label>
+                    </div>
+                    <div class="form-check mb-1">
+                        <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="requestingPlace"
+                            id="requestingPlace" @(Model.SelectedColumns.Contains("requestingPlace") ? "checked" : "")>
+                        <label class="form-check-label" for="requestingPlace">RequestingPlace</label>
+                    </div>
+                    <div class="form-check mb-1">
+                        <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="comments"
+                            id="comments" @(Model.SelectedColumns.Contains("comments") ? "checked" : "")>
+                        <label class="form-check-label" for="comments">Comments</label>
+                    </div>
+                    <div class="form-check mb-1">
+                        <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="materialRequestStatus"
+                            id="materialRequestStatus" @(Model.SelectedColumns.Contains("materialRequestStatus") ? "checked" : "")>
+                        <label class="form-check-label" for="materialRequestStatus">MaterialRequestStatus</label>
+                    </div>
+                    <div class="form-check mb-1">
+                        <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="inventoryBalance"
+                            id="inventoryBalance" @(Model.SelectedColumns.Contains("inventoryBalance") ? "checked" : "")>
+                        <label class="form-check-label" for="inventoryBalance">InventoryBalance</label>
+                    </div>
+
+                    <div class="form-check mb-1 text-center">
+                        <button type="submit" name="action" value="updateColumns" class="btn btn-success btn-sm">Ok</button>
+                    </div>
+
+                </div>
             </div>
         </form>
     </div>
@@ -107,29 +207,65 @@
                     <thead class="thead-light">
                         <tr>
                             
-                                <th scope="col" class="border-0 rounded-start">@Model.lblRequesterName</th>
-                <th scope="col" class="border-0">@Model.lblRequestReceivedDate</th>
-                <th scope="col" class="border-0">@Model.lblRequestingPlace</th>
-                <th scope="col" class="border-0">@Model.lblComments</th>
-                <th scope="col" class="border-0">@Model.lblDisbursementStatus</th>
-                <th scope="col" class="border-0 rounded-end">@Model.lblInventoryBalanced</th>
+                        @if (Model.SelectedColumns.Contains("requesterName"))
+                            {
+                            <th scope="col" class="border-0 rounded-start">@Model.lblRequesterName</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("date"))
+                            {
+                            <th scope="col" class="border-0">@Model.lblRequestReceivedDate</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("requestingPlace"))
+                            {
+                            <th scope="col" class="border-0">@Model.lblRequestingPlace</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("comments"))
+                            {
+                            <th scope="col" class="border-0">@Model.lblComments</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("materialRequestStatus"))
+                            {
+                            <th scope="col" class="border-0">@Model.lblDisbursementStatus</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("inventoryBalance"))
+                            {
+                            <th scope="col" class="border-0 rounded-end">@Model.lblInventoryBalanced</th>
+                            }
                         </tr>
                     </thead>
                     <tbody>
-                                 @if (Model.Disbursement != null)
-            {
-                foreach (var item in Model.Disbursement)
-                {
-                    <tr>
-                        <th scope="row">@item.RequesterName</th>
-                        <td>@item.ReqReceivedAt</td>
-                        <td>@item.RequestingPlace</td>
-                        <td>@item.Comments</td>
-                        <td>@item.Status</td>
-                        <td>@item.InventoryBalanced</td>
-                    </tr>
-                }
-            }
+                    @if (Model.Disbursement != null)
+                    {
+                        foreach (var item in Model.Disbursement)
+                        {
+                            <tr>
+                                    @if (Model.SelectedColumns.Contains("requesterName"))
+                                {
+                                <th scope="row">@item.RequesterName</th>
+                                }
+                                    @if (Model.SelectedColumns.Contains("date"))
+                                {
+                                <td>@item.ReqReceivedAt</td>
+                                }
+                                    @if (Model.SelectedColumns.Contains("requestingPlace"))
+                                {
+                                <td>@item.RequestingPlace</td>
+                                }
+                                    @if (Model.SelectedColumns.Contains("comments"))
+                                {
+                                <td>@item.Comments</td>
+                                }
+                                    @if (Model.SelectedColumns.Contains("materialRequestStatus"))
+                                {
+                                <td>@item.Status</td>
+                                }
+                                @if (Model.SelectedColumns.Contains("inventoryBalance"))
+                                {
+                                <td>@item.InventoryBalanced</td>
+                                }
+                            </tr>
+                        }
+                    }
                     </tbody>
                 </table>
             </div>
@@ -209,4 +345,72 @@
             </ul>
         </nav>
     }
+
+    <div class="table-responsive" id="exportTableContainer" style="display: none;">
+        <table class="table table-centered table-nowrap mb-0 rounded" id="exportTable">
+            <thead class="thead-light">
+                <tr>
+
+                    @if (Model.SelectedColumns.Contains("requesterName"))
+                    {
+                        <th scope="col" class="border-0 rounded-start">@Model.lblRequesterName</th>
+                    }
+                    @if (Model.SelectedColumns.Contains("date"))
+                    {
+                        <th scope="col" class="border-0">@Model.lblRequestReceivedDate</th>
+                    }
+                    @if (Model.SelectedColumns.Contains("requestingPlace"))
+                    {
+                        <th scope="col" class="border-0">@Model.lblRequestingPlace</th>
+                    }
+                    @if (Model.SelectedColumns.Contains("comments"))
+                    {
+                        <th scope="col" class="border-0">@Model.lblComments</th>
+                    }
+                    @if (Model.SelectedColumns.Contains("materialRequestStatus"))
+                    {
+                        <th scope="col" class="border-0">@Model.lblDisbursementStatus</th>
+                    }
+                    @if (Model.SelectedColumns.Contains("inventoryBalance"))
+                    {
+                        <th scope="col" class="border-0 rounded-end">@Model.lblInventoryBalanced</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.DisbursementAll != null)
+                {
+                    foreach (var item in Model.DisbursementAll)
+                    {
+                        <tr>
+                            @if (Model.SelectedColumns.Contains("requesterName"))
+                            {
+                                <th scope="row">@item.RequesterName</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("date"))
+                            {
+                                <td>@item.ReqReceivedAt</td>
+                            }
+                            @if (Model.SelectedColumns.Contains("requestingPlace"))
+                            {
+                                <td>@item.RequestingPlace</td>
+                            }
+                            @if (Model.SelectedColumns.Contains("comments"))
+                            {
+                                <td>@item.Comments</td>
+                            }
+                            @if (Model.SelectedColumns.Contains("materialRequestStatus"))
+                            {
+                                <td>@item.Status</td>
+                            }
+                            @if (Model.SelectedColumns.Contains("inventoryBalance"))
+                            {
+                                <td>@item.InventoryBalanced</td>
+                            }
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
 }
