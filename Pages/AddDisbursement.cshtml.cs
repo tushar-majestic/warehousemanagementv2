@@ -58,7 +58,7 @@ namespace LabMaterials.Pages
         public void OnGet()
         {
             base.ExtractSessionData();
-            if (CanManageStore == false)
+            if (CanGenerateDispensingRequest == false)
                 RedirectToPage("./Index?lang=" + Lang);
             FillLables();
             RequestRecievedAt = DateTime.Now;
@@ -189,6 +189,15 @@ namespace LabMaterials.Pages
                 task.LogInfo(MethodBase.GetCurrentMethod(), "Called");
                 base.ExtractSessionData();
                 var dbContext = new LabDBContext();
+                //Department Manager list
+                var DeptManager = dbContext.UserGroups
+                        .Where(g => g.UserGroupName == "Department Manager")
+                        .Select(g => g.UserGroupId)
+                        .FirstOrDefault();
+
+                DeptManagerList = dbContext.Users
+                            .Where(u => u.UserGroupId == DeptManager)
+                            .ToList();
                 Destinations = dbContext.Destinations.ToList();
                 Stores = dbContext.Stores.ToList();
                 ItemCards = dbContext.ItemCards.ToList();
@@ -227,19 +236,7 @@ namespace LabMaterials.Pages
                         ErrorMsg = "User not found.";
                         return Page();
                     }
-                    Report.SerialNumber = SerialNumber;
-                    Report.OrderDate = OrderDate.Date;
-                    // Report.RequestedByUser = user;
-                     Report.RequestedByUserId = user.UserId;
-                    Report.FiscalYear = FiscalYear;
-                    Report.RequestDocumentType = RequestDocumentType;
-                    Report.RequestingSector = RequestingSector;
-                    Report.Sector = Sector;
-                    // Report.KeeperId = KeeperId;
-                    Report.DeptManagerId = DeptManagerId;
-                    Report.CreatedAt = DateTime.UtcNow;
-                    // Report.SupervisorId = SupervisorId;
-                    // Report.DocumentNumber = DocumentNumber;
+                 
 
                     if (string.IsNullOrEmpty(FiscalYear))
                     {
@@ -286,6 +283,20 @@ namespace LabMaterials.Pages
                         ErrorMsg = "At least one item must have the required fields filled (Item Group, Quantity, Unit Price, Item Name).";
                         return Page();
                     }
+
+                    Report.SerialNumber = SerialNumber;
+                    Report.OrderDate = OrderDate.Date;
+                    // Report.RequestedByUser = user;
+                     Report.RequestedByUserId = user.UserId;
+                    Report.FiscalYear = FiscalYear;
+                    Report.RequestDocumentType = RequestDocumentType;
+                    Report.RequestingSector = RequestingSector;
+                    Report.Sector = Sector;
+                    // Report.KeeperId = KeeperId;
+                    Report.DeptManagerId = DeptManagerId;
+                    Report.CreatedAt = DateTime.UtcNow;
+                    // Report.SupervisorId = SupervisorId;
+                    // Report.DocumentNumber = DocumentNumber;
 
                     _context.MaterialRequests.Add(Report);
                     await _context.SaveChangesAsync();
