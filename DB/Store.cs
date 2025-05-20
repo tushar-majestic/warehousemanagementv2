@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
 
 namespace LabMaterials.DB;
 
@@ -77,4 +74,10 @@ public partial class Store
 
     [InverseProperty("ToStore")]
     public virtual ICollection<StoreMovement> StoreMovementToStores { get; set; } = new List<StoreMovement>();
+
+    public override string ToString()
+    {
+        return StoreName ?? base.ToString();
+    }
+
 }
