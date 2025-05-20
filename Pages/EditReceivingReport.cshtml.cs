@@ -5,6 +5,7 @@ using LabMaterials.DB;
 using System.Linq;
 using LabMaterials.DB;
 using LabMaterials.dtos;
+using Org.BouncyCastle.Cms;
 
 
 namespace LabMaterials.Pages
@@ -40,6 +41,8 @@ namespace LabMaterials.Pages
         public string ErrorMsg { get; set; }
         public string RecipientEmployeeName;
 
+        public int? RecipientJobNumber { get; set; }
+
         public string ItemNo;
         [BindProperty]
         public ReceivingReport Report { get; set; }  // <- change name from NewReport
@@ -67,6 +70,8 @@ namespace LabMaterials.Pages
             // .Include(r => r.Supplier)
             // .FirstOrDefaultAsync(r => r.Id == ReceivingReportId.Value);
 
+
+            
             var dbContext = new LabDBContext();
             Report = dbContext.ReceivingReports
                 .Include(r => r.Supplier) 
@@ -105,6 +110,13 @@ namespace LabMaterials.Pages
                     .Select(g => g.UserGroupId)
                     .FirstOrDefault();
 
+            var Receipient = dbContext.Users.Where(u => u.UserId == Report.RecipientEmployeeId)
+                            .FirstOrDefault();
+
+            this.RecipientEmployeeName = Receipient.FullName;
+            this.RecipientJobNumber = Receipient.JobNumber;
+
+            
             TechnicalMemberList = dbContext.Users
                         .Where(u => u.UserGroupId == TechnicalMemberId)
                         .ToList();
