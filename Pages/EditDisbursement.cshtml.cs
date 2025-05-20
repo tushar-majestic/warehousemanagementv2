@@ -33,7 +33,8 @@ namespace LabMaterials.Pages
         public int? SupervisorId, DeptManagerId, KeeperId;
         public int StoreId, Quantity;
 
-
+        public int MaterialRequestId { get; set; }
+        public int reportId { get; set; }
 
         public string lblUpdateDisbursement, lblRequesterName, lblItemTypeCode, lblItemName, lblStoreName, lblEditDisbursement, lblItemCode, lblRequestReceivedDate, lblRequestingPlace, lblComments, lblQuantity,
             lblDisbursementStatus, lblInventoryBalanced, lblUpdate, lblCancel, lblDisbursements;
@@ -50,7 +51,14 @@ namespace LabMaterials.Pages
                 RedirectToPage("./Index?lang=" + Lang);
 
             FillLables();
+            int? ReceivingReportId = HttpContext.Session.GetInt32("ReceivingReportId");
+            this.MaterialRequestId = ReceivingReportId.Value;
+
+
             var dbContext = new LabDBContext();
+
+
+
             Destinations = dbContext.Destinations.ToList();
             Stores = dbContext.Stores.ToList();
             ItemCards = dbContext.ItemCards.ToList();
@@ -80,7 +88,7 @@ namespace LabMaterials.Pages
                         .Where(u => u.UserGroupId == SupervisorId)
                         .ToList();
 
-             //Keeper  list
+            //Keeper  list
             var KeeperId = dbContext.UserGroups
                     .Where(g => g.UserGroupName == "Warehouse Keeper")
                     .Select(g => g.UserGroupId)
@@ -101,7 +109,25 @@ namespace LabMaterials.Pages
                                 Chemical = x.Chemical,
                                 UnitOfmeasure = x.UnitOfmeasure
                             }).ToList();
+
+
+            Report = dbContext.MaterialRequests
+                .FirstOrDefault(r => r.RequestId == ReceivingReportId.Value);
+
+            if (Report != null)
+            {
+                
+            }
         }
+
+        public async Task<IActionResult> OnPostAsync([FromForm] DateTime OrderDate, [FromForm] int SerialNumber, [FromForm] string FiscalYear, [FromForm] string RequestDocumentType, [FromForm] int RequestingSector, [FromForm] string Sector, [FromForm] int DeptManagerId)
+        {
+            
+            
+            return Page();
+        }
+
+
          private void FillLables()
         {
 
@@ -119,7 +145,7 @@ namespace LabMaterials.Pages
             this.lblStoreName = (Program.Translations["StoreName"])[Lang];
             this.lblItemName = (Program.Translations["ItemName"])[Lang];
             this.lblItemCode = (Program.Translations["ItemCode"])[Lang];
-            this.lblItemTypeCode = (Program.Translations["ItemTypeCode"])[Lang]; 
+            this.lblItemTypeCode = (Program.Translations["ItemTypeCode"])[Lang];
             this.lblQuantity = (Program.Translations["Quantity"])[Lang];
             this.lblDisbursements = (Program.Translations["Disbursements"])[Lang];
             this.lblItemGroups = (Program.Translations["ItemGroups"])[Lang];

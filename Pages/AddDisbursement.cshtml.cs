@@ -118,7 +118,7 @@ namespace LabMaterials.Pages
         public void OnGetOld()
         {
             base.ExtractSessionData();
-            if (CanManageStore == false)
+            if (CanGenerateDispensingRequest == false)
                 RedirectToPage("./Index?lang=" + Lang);
             FillLables();
             StatusList = (new[] { "NewRequest", "InPreparation", "Dispatched", "Delivered" }).ToList().Select(x => new SelectListItem() { Text = x, Value = x }).ToList();
@@ -224,7 +224,7 @@ namespace LabMaterials.Pages
                     ItemsForReport = new List<DespensedItem> { new DespensedItem() };
                 }
 
-                if (CanDisburseItems)
+                if (CanGenerateDispensingRequest)
                 {
          
                     FillLables();
@@ -237,7 +237,19 @@ namespace LabMaterials.Pages
                         return Page();
                     }
                  
-
+                    Report.SerialNumber = SerialNumber;
+                    Report.OrderDate = OrderDate.Date;
+                    // Report.RequestedByUser = user;
+                     Report.RequestedByUserId = user.UserId;
+                    Report.FiscalYear = FiscalYear;
+                    Report.RequestDocumentType = RequestDocumentType;
+                    Report.RequestingSector = RequestingSector;
+                    Report.Sector = Sector;
+                    // Report.KeeperId = KeeperId;
+                    Report.DeptManagerId = DeptManagerId;
+                    Report.CreatedAt = DateTime.UtcNow;
+                    // Report.SupervisorId = SupervisorId;
+                    // Report.DocumentNumber = DocumentNumber;
                     if (string.IsNullOrEmpty(FiscalYear))
                     {
                         ErrorMsg = (Program.Translations["FiscalYearMissing"])[Lang];
@@ -284,19 +296,7 @@ namespace LabMaterials.Pages
                         return Page();
                     }
 
-                    Report.SerialNumber = SerialNumber;
-                    Report.OrderDate = OrderDate.Date;
-                    // Report.RequestedByUser = user;
-                     Report.RequestedByUserId = user.UserId;
-                    Report.FiscalYear = FiscalYear;
-                    Report.RequestDocumentType = RequestDocumentType;
-                    Report.RequestingSector = RequestingSector;
-                    Report.Sector = Sector;
-                    // Report.KeeperId = KeeperId;
-                    Report.DeptManagerId = DeptManagerId;
-                    Report.CreatedAt = DateTime.UtcNow;
-                    // Report.SupervisorId = SupervisorId;
-                    // Report.DocumentNumber = DocumentNumber;
+                    
 
                     _context.MaterialRequests.Add(Report);
                     await _context.SaveChangesAsync();
