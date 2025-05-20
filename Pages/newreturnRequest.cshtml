@@ -4,9 +4,33 @@
 @{
     ViewData["Title"] = "Create Return Request";
 }
+ 
+<div class="py-4">
 
-<div class="container py-4">
-    @if (!ViewData.ModelState.IsValid)
+    <div class="d-flex justify-content-between w-100 flex-wrap">
+        <div class="mb-3 mb-lg-0">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb bg-transparent p-2 mb-0">
+                    <li class="breadcrumb-item d-flex align-items-center">
+                        <img src="images/home.png" alt="Home" width="16" height="16" class="me-2" />
+                        <a href="/Home" class="text-decoration-none">@Model.lblHome</a>
+                    </li>
+                    <li class="breadcrumb-item d-flex align-items-center">
+                        <img src="images/inventory.png" alt="Home" width="16" height="16" class="me-2" />
+                            <a href="/ViewReturnRequests" class="text-decoration-none">@Model.lblDamagedItems</a>
+                    </li>
+                    <li class="breadcrumb-item d-flex align-items-center">
+                        <img src="images/inventory.png" alt="Home" width="16" height="16" class="me-2" />
+                        Create Return Request
+                    </li>
+                </ol>
+            </nav>
+              <h1 class="h4">Create Return Request</h1>
+            
+        </div>
+    </div>
+</div>
+       @if (!ViewData.ModelState.IsValid)
     {
         <div class="alert alert-danger">
             ModelState is invalid. Errors:
@@ -21,157 +45,161 @@
             </ul>
         </div>
     }
-
-    <h2>Create Return Request</h2>
-    <form method="post">
-        <div id="returnEntriesWrapper">
-            @for (int i = 0; i < Model.ReturnItems.Count; i++)
-            {
-                <div class="return-entry border p-3 mb-3 rounded">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <label>Item Group</label>
-                            <select class="form-select" name="ReturnItems[@i].itemGroup">
-                                <option value="">Select Group</option>
-                                @foreach (var group in Model.ItemGroups)
-                                {
-                                    <option value="@group.GroupCode">@group.GroupDesc</option>
-                                }
-                            </select>
-                        </div>
-                        <div class="col-md-6">
-                            <label>Arabic Item Name</label>
-                            <select class="form-select ArabicItemName" name="ReturnItems[@i].ItemCardId"
-                                    onchange="onItemChange(this, @i)">
-                                <option value="">Select Item</option>
-                                @foreach (var item in Model.ItemCards)
-                                {
-                                    <option value="@item.Id"
-                                            data-code="@item.ItemCode"
-                                            data-description="@item.ItemDescription"
-                                            data-chemical="@item.Chemical"
-                                            data-risk="@item.HazardTypeName"
-                                            data-unit="@item.UnitOfmeasure"
-                                            data-itemnamearabic="@item.ItemName"
-                                            data-itemnameenglish="@item.ItemName">
-                                        @item.ItemName
-                                    </option>
-                                }
-                            </select>
-                        </div>
-                        <div class="col-md-6">
-                            <label>Item Code</label>
-                            <input type="text" name="ReturnItems[@i].ItemCode" class="form-control ItemCode" readonly />
-                        </div>
-
-
-                        <input hidden type="text" name="ReturnItems[@i].ItemNameArabic" class="form-control ItemNameArabic" readonly />
+<div class="row">
+        <div class="col-8 mb-4 m-auto">
+            <div class="card border-0 shadow components-section">
+            <form method="post" class="card-body">
+                <div id="returnEntriesWrapper">
+                    @for (int i = 0; i < Model.ReturnItems.Count; i++)
+                    {
+                        <div class="return-entry border p-3 mb-3 rounded">
+                            <div class="row">
+                                <div class="col-md-6 mb-4">
+                                    <label>Item Group</label>
+                                    <select class="form-select" name="ReturnItems[@i].itemGroup">
+                                        <option value="">Select Group</option>
+                                        @foreach (var group in Model.ItemGroups)
+                                        {
+                                            <option value="@group.GroupCode">@group.GroupDesc</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="col-md-6 mb-4">
+                                    <label>Arabic Item Name</label>
+                                    <select class="form-select ArabicItemName" name="ReturnItems[@i].ItemCardId"
+                                            onchange="onItemChange(this, @i)">
+                                        <option value="">Select Item</option>
+                                        @foreach (var item in Model.ItemCards)
+                                        {
+                                            <option value="@item.Id"
+                                                    data-code="@item.ItemCode"
+                                                    data-description="@item.ItemDescription"
+                                                    data-chemical="@item.Chemical"
+                                                    data-risk="@item.HazardTypeName"
+                                                    data-unit="@item.UnitOfmeasure"
+                                                    data-itemnamearabic="@item.ItemName"
+                                                    data-itemnameenglish="@item.ItemName">
+                                                @item.ItemName
+                                            </option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="col-md-6 mb-4">
+                                    <label>Item Code</label>
+                                    <input type="text" name="ReturnItems[@i].ItemCode" class="form-control ItemCode" readonly />
+                                </div>
 
 
+                                <input hidden type="text" name="ReturnItems[@i].ItemNameArabic" class="form-control ItemNameArabic" readonly />
 
-                        <input hidden type="text" name="ReturnItems[@i].ItemNameEnglish" class="form-control ItemNameEnglish" readonly />
-                        
-                        <div class="col-md-6">
-                            <label>Item Description</label>
-                            <input type="text" name="ReturnItems[@i].ItemDescription" class="form-control ItemDescription" readonly />
+
+
+                                <input hidden type="text" name="ReturnItems[@i].ItemNameEnglish" class="form-control ItemNameEnglish" readonly />
+                                
+                                <div class="col-md-6 mb-4">
+                                    <label>Item Description</label>
+                                    <input type="text" name="ReturnItems[@i].ItemDescription" class="form-control ItemDescription" readonly />
+                                </div>
+                                <div class="col-md-6 mb-4">
+                                    <label>Chemical</label>
+                                    <input type="text" name="ReturnItems[@i].Chemical" class="form-control chemical" readonly />
+                                </div>
+                                <div class="col-md-6 mb-4">
+                                    <label>Risk Rating</label>
+                                    <input type="text" name="ReturnItems[@i].RiskRating" class="form-control RiskRating" readonly />
+                                </div>
+                                <div class="col-md-6 mb-4">
+                                    <label>State of Matter</label>
+                                    <select name="ReturnItems[@i].StateOfMatter" class="form-select" required>
+                                        <option value="">Select State</option>
+                                        @foreach (var state in Model.StateOfMatters)
+                                        {
+                                            <option value="@state.Value">@state.Text</option>
+                                        }
+                                    </select>
+                                </div>
+                                <div class="col-md-6 mb-4">
+                                    <label>Expiry Date</label>
+                                    <input type="date" name="ReturnItems[@i].ExpiryDate" class="form-control" value="@Model.CurrentDate.ToString("yyyy-MM-dd")" />
+                                </div>
+                                <div class="col-md-6 mb-4">
+                                    <label>Unit of Measure</label>
+                                    <input type="text" name="ReturnItems[@i].UnitOfMeasure" class="form-control UnitofMeasure" readonly />
+                                </div>
+                                <div class="col-md-6 mb-4">
+                                    <label>Return Quantity</label>
+                                    <input type="number" name="ReturnItems[@i].ReturnedQuantity" class="form-control" required />
+                                </div>
+                                <div class="col-12 mb-4">
+                                    <label>Return Notes</label>
+                                    <textarea name="ReturnItems[@i].ReturnNotes" class="form-control" rows="2"></textarea>
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-md-6">
-                            <label>Chemical</label>
-                            <input type="text" name="ReturnItems[@i].Chemical" class="form-control chemical" readonly />
-                        </div>
-                        <div class="col-md-6">
-                            <label>Risk Rating</label>
-                            <input type="text" name="ReturnItems[@i].RiskRating" class="form-control RiskRating" readonly />
-                        </div>
-                        <div class="col-md-6">
-                            <label>State of Matter</label>
-                            <select name="ReturnItems[@i].StateOfMatter" class="form-select">
-                                <option value="">Select State</option>
-                                @foreach (var state in Model.StateOfMatters)
-                                {
-                                    <option value="@state.Value">@state.Text</option>
-                                }
-                            </select>
-                        </div>
-                        <div class="col-md-6">
-                            <label>Expiry Date</label>
-                            <input type="date" name="ReturnItems[@i].ExpiryDate" class="form-control" value="@Model.CurrentDate.ToString("yyyy-MM-dd")" />
-                        </div>
-                        <div class="col-md-6">
-                            <label>Unit of Measure</label>
-                            <input type="text" name="ReturnItems[@i].UnitOfMeasure" class="form-control UnitofMeasure" readonly />
-                        </div>
-                        <div class="col-md-6">
-                            <label>Return Quantity</label>
-                            <input type="number" name="ReturnItems[@i].ReturnedQuantity" class="form-control" required />
-                        </div>
-                        <div class="col-12">
-                            <label>Return Notes</label>
-                            <textarea name="ReturnItems[@i].ReturnNotes" class="form-control" rows="2"></textarea>
-                        </div>
+                    }
+                </div>
+
+                <button type="button" class="btn btn-secondary mb-3" id="addEntryBtn">Add More Items</button>
+
+                @* <div class="mb-3">
+                    <label>Order Number</label>
+                    <input type="text" name="OrderNumber" class="form-control" />
+                </div> *@
+                <div class="mb-4">
+                    <label>Order Date</label>
+                    <input type="date" name="OrderDate" class="form-control" value="@Model.CurrentDate.ToString("yyyy-MM-dd")" />
+                </div>
+                <div class="mb-4">
+                    <label>Requesting Sector</label>
+                    <input type="text" name="RequestingSector" class="form-control" value="General Administration of Educational Services" />
+                </div>
+                <div class="mb-4">
+                    <label>Applicant's Sector</label>
+                    <select name="ApplicantsSector" class="form-select">
+                        @foreach (var ApplicantsSector in Model.requesters)
+                        {
+                            <option value="@ApplicantsSector.ReqId">@ApplicantsSector.DestinationName</option>
+                        }
+                    </select>
+                    @* <input type="text" name="ApplicantsSector" class="form-control" /> *@
+                </div>
+                <div class="mb-4">
+                    <label>Store</label>
+                    <select name="StoreId" class="form-select">
+                        @foreach (var store in Model.Stores.Where(s => s.IsActive == 1 && s.Ended == null))
+                        {
+                            <option value="@store.StoreId">@store.StoreName</option>
+                        }
+                    </select>
+                </div>
+                <div class="mb-4">
+                    <label>Reason for Return</label><br />
+                    <div class="form-check">
+                        <input type="radio" class="form-check-input" name="ReasonForReturn" value="SurPlus" />
+                        <label class="form-check-label">Surplus</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="radio" class="form-check-input" name="ReasonForReturn" value="Expired" />
+                        <label class="form-check-label">Expired</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="radio" class="form-check-input" name="ReasonForReturn" value="Invalid" />
+                        <label class="form-check-label">Invalid</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="radio" class="form-check-input" name="ReasonForReturn" value="Damaged" />
+                        <label class="form-check-label">Damaged</label>
                     </div>
                 </div>
-            }
+                <div class="d-flex gap-3">
+                    <a href="/ManageItems" class="btn btn-outline-secondary">Cancel</a>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </form>
         </div>
-
-        <button type="button" class="btn btn-secondary mb-3" id="addEntryBtn">Add More Items</button>
-
-        @* <div class="mb-3">
-            <label>Order Number</label>
-            <input type="text" name="OrderNumber" class="form-control" />
-        </div> *@
-        <div class="mb-3">
-            <label>Order Date</label>
-            <input type="date" name="OrderDate" class="form-control" value="@Model.CurrentDate.ToString("yyyy-MM-dd")" />
-        </div>
-        <div class="mb-3">
-            <label>Requesting Sector</label>
-            <input type="text" name="RequestingSector" class="form-control" value="General Administration of Educational Services" />
-        </div>
-        <div class="mb-3">
-            <label>Applicant's Sector</label>
-            <select name="ApplicantsSector" class="form-select">
-                @foreach (var ApplicantsSector in Model.requesters)
-                {
-                    <option value="@ApplicantsSector.ReqId">@ApplicantsSector.DestinationName</option>
-                }
-            </select>
-            @* <input type="text" name="ApplicantsSector" class="form-control" /> *@
-        </div>
-        <div class="mb-3">
-            <label>Store</label>
-            <select name="StoreId" class="form-select">
-                @foreach (var store in Model.Stores.Where(s => s.IsActive == 1 && s.Ended == null))
-                {
-                    <option value="@store.StoreId">@store.StoreName</option>
-                }
-            </select>
-        </div>
-        <div class="mb-4">
-            <label>Reason for Return</label><br />
-            <div class="form-check">
-                <input type="radio" class="form-check-input" name="ReasonForReturn" value="SurPlus" />
-                <label class="form-check-label">Surplus</label>
-            </div>
-            <div class="form-check">
-                <input type="radio" class="form-check-input" name="ReasonForReturn" value="Expired" />
-                <label class="form-check-label">Expired</label>
-            </div>
-            <div class="form-check">
-                <input type="radio" class="form-check-input" name="ReasonForReturn" value="Invalid" />
-                <label class="form-check-label">Invalid</label>
-            </div>
-            <div class="form-check">
-                <input type="radio" class="form-check-input" name="ReasonForReturn" value="Damaged" />
-                <label class="form-check-label">Damaged</label>
-            </div>
-        </div>
-        <div class="d-flex gap-3">
-            <a href="/ManageItems" class="btn btn-outline-secondary">Cancel</a>
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </div>
-    </form>
+    </div>
 </div>
+
 
 @section Scripts {
     <script>
