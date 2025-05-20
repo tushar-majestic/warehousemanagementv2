@@ -89,7 +89,25 @@
             if (input.name) {
                 input.name = input.name.replace(/\[\d+\]/, `[${entryIndex}]`);
             }
+
+             // Update id
+            if (input.id) {
+                const baseId = input.id.replace(/_\d+$/, "");
+                input.id = `${baseId}_${entryIndex}`;
+            }
+
+           
         });
+
+            const currentIndex = entryIndex;
+
+            const itemGroupSelect = newEntry.querySelector(".item-group-select");
+            if (itemGroupSelect) {
+                itemGroupSelect.addEventListener("change", function () {
+                    filterItemsByGroup(currentIndex);
+                });
+
+            }
 
         wrapper.appendChild(newEntry);
         initializeEntry(newEntry);
@@ -165,7 +183,7 @@
  
 
         function filterItemsByGroup(index) {
-       const allItems = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.ItemsValue));
+            const allItems = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.ItemsValue));
             console.log(index, 'index')
             const selectedGroup = document.getElementById("itemGroup_" + index)?.value;
 
@@ -185,7 +203,7 @@
            allItems.filter(item => item.GroupCode === selectedGroup)
                 .forEach(item => {
                     const optionArabic = document.createElement("option");
-                    optionArabic.value = item.ItemId;
+                    optionArabic.value = item.Id;
                     optionArabic.textContent = item.ItemName;
                     optionArabic.dataset.id = item.ItemId;
                     optionArabic.dataset.code = item.ItemCode;
@@ -221,6 +239,7 @@
 
         if (itemDropdown) {
             const selectedOption = itemDropdown.options[itemDropdown.selectedIndex];
+            console.log(selectedOption, 'selectedOption')
             if (selectedOption && selectedOption.value) {
                 const groupCode = selectedOption.getAttribute("data-group");
                 const code = selectedOption.getAttribute("data-code");
@@ -406,141 +425,146 @@
                             </div>
                         <div class="col-lg-12 col-sm-12">
                             @for(int i =0; i < Model.ItemsForReport.Count; i++){
-                            <div id="returnEntriesWrapper">
-                               
-                                <div class="return-entry border p-3 mb-3 rounded position-relative">
-                                    <div class="d-flex my-4">
-                                        <div class=" me-2" style="width: 49%;">
-                                            <label for="itemGroup">@Model.lblItemGroups</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
-                                            <select class="form-select" id="itemGroup_@i" name="ItemsForReport[@i].ItemGroup" onchange="filterItemsByGroup(@i)">
-                                                @if (Model.ItemGroups != null)
-                                                {
-                                                    <option value="">Select Item Group</option>
-                                                    foreach (var item in Model.ItemGroups)
+                                <div id="returnEntriesWrapper">
+                                    <div class="return-entry border p-3 mb-3 rounded position-relative">
+
+                                        <div class="d-flex my-4">
+                                            <div class=" me-2" style="width: 49%;">
+                                                <label for="itemGroup">@Model.lblItemGroups</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
+                                                <select class="form-select item-group-select"  id="itemGroup_@i" name="ItemsForReport[@i].ItemGroup" onchange="filterItemsByGroup(@i)">
+                                                    @if (Model.ItemGroups != null)
                                                     {
-                                                        <option value="@item.GroupCode">@item.GroupDesc</option>
+                                                        <option value="">Select Item Group</option>
+                                                        foreach (var item in Model.ItemGroups)
+                                                        {
+                                                            <option value="@item.GroupCode">@item.GroupDesc</option>
+                                                        }
                                                     }
-                                                }
-                                            </select>
-                                        </div>
-                                        <div class="ms-2" style="width: 49%;">
-                                            <label for="itemCode">@Model.lblItemCode</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
-                                            <input type="text" class="ItemCode form-control" id="ItemCode_@i" readonly >
-                                        </div>
+                                                </select>
+                                            </div>
+                                            <div class="ms-2" style="width: 49%;">
+                                                <label for="itemCode">@Model.lblItemCode</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
+                                                <input type="text" class="ItemCode form-control" id="ItemCode_@i" readonly >
+                                            </div>
 
-                                      
-                                    </div>
-                                   
+                                        
+                                        </div>
+                                    
 
-                                    <div class="d-flex">
-                                        <div class="form-group  me-2 " style="width: 49%;">
-                                            <label>@Model.lblItemName (@Model.lblArabicLanguage)</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
-                                            <select class="ArabicItemName form-select" id="ArabicItemName_@i"  asp-for="@Model.ItemsForReport[@i].ItemCardId" name="ItemsForReport[@i].ItemCardId"  onchange="handleItemChange(event)">
-                                                <option value="">Select Item </option>
-                                                @foreach (var item in Model.ItemCards)
-                                                {
+                                        <div class="d-flex">
+                                            <div class="form-group  me-2 " style="width: 49%;">
+                                                <label>@Model.lblItemName (@Model.lblArabicLanguage)</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
+
+                                                <select class="ArabicItemName form-select" id="ArabicItemName_@i"  asp-for="@Model.ItemsForReport[@i].ItemCardId" name="ItemsForReport[@i].ItemCardId"  onchange="handleItemChange(event)">
+                                                    <option value="">Select Item </option>
                                                     
+                                                        @foreach (var item in Model.ItemCards)
+                                                        {
+
+                                                            <option value="@item.Id"
+                                                                    data-id="@item.ItemId"
+                                                                    data-group="@item.GroupCode"
+                                                                    data-code="@item.ItemCode"
+                                                                    data-description="@item.ItemDescription"
+                                                                    data-chemical="@item.Chemical"
+                                                                    data-risk="@item.HazardTypeName"
+                                                                    data-unit="@item.UnitOfmeasure"
+                                                                    selected="@(Model.ItemsForReport[i].ItemCardId == item.Id ? "selected" : null)">
+                                                                @item.ItemName
+                                                            </option>
+                                                        }
+                                                    
+                                                    
+                                                </select>
+                                                
+                                            </div>
+                                        
+                                            <div class="form-group mb-4 ms-2" style="width: 49%;">
+                                                <label for="EnglishArabicName">@Model.lblItemName (@Model.lblEnglishLanguage)</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
+                                                <select class="EnglishArabicName form-select" id="EnglishArabicName_@i"   onchange="handleItemChange(event)">
+                                                <option value="">Select Item </option>
+                                                    @foreach (var item in Model.ItemCards)
+                                                    {
                                                         <option value="@item.Id"
                                                             data-id="@item.ItemId"
                                                             data-group="@item.GroupCode"
                                                             data-code="@item.ItemCode"
                                                             data-description="@item.ItemDescription"
                                                             data-chemical="@item.Chemical" data-risk="@item.HazardTypeName"
-                                                            data-unit="@item.UnitOfmeasure" 
-                                                             selected="@(Model.ItemsForReport[i].ItemCardId == item.Id)">
+                                                            data-unit="@item.UnitOfmeasure"
+                                                            selected="@(Model.ItemsForReport[i].ItemCardId == item.Id)" 
+                                                            >
                                                             @item.ItemName
                                                         </option>
-                                                    
-                                                }
-                                            </select>
+                                                        
+                                                    }
+                                                </select>
+                                            </div>
+
+                                            
                                         </div>
-                                       
-                                        <div class="form-group mb-4 ms-2" style="width: 49%;">
-                                            <label for="EnglishArabicName">@Model.lblItemName (@Model.lblEnglishLanguage)</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
-                                            <select class="EnglishArabicName form-select" id="EnglishArabicName_@i"   onchange="handleItemChange(event)">
-                                                <option value="">Select Item </option>
-                                                @foreach (var item in Model.ItemCards)
-                                                {
-                                                    <option value="@item.Id"
-                                                        data-id="@item.ItemId"
-                                                        data-group="@item.GroupCode"
-                                                        data-code="@item.ItemCode"
-                                                        data-description="@item.ItemDescription"
-                                                        data-chemical="@item.Chemical" data-risk="@item.HazardTypeName"
-                                                        data-unit="@item.UnitOfmeasure"
-                                                         selected="@(Model.ItemsForReport[i].ItemCardId == item.Id)" 
-                                                        >
-                                                        @item.ItemName
-                                                    </option>
-                                                    
-                                                }
-                                            </select>
+                                    
+                                        <div class="mb-4">
+                                            <label for="itemDescription">@Model.lblItemDescription</label>
+                                            <input type="text" class="ItemDescription form-control" id="ItemDescription_@i" readonly>
                                         </div>
+
+                                        <div class="d-flex">
+                                            <div class="mb-4 me-2" style="width: 49%;">
+                                                <label for="typeofAsset">@Model.lblTypeofAsset</label>
+                                                <input type="text" class="typeofAsset form-control" id="typeofAsset_@i" readonly>
+                                            </div>
+                                            <div class="mb-4 ms-2" style="width: 49%;">
+                                                <label for="chemical">@Model.lblChemical</label>
+                                                <input type="text" class="chemical form-control" id="chemical_@i" readonly>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="d-flex">
+                                            <div class="mb-4 me-2" style="width: 49%;">
+                                                <label for="RiskRating">@Model.lblRiskRating</label>
+                                                <input type="text" class="RiskRating form-control" id="RiskRating_@i" readonly>
+                                            </div>
+                                            <div class="mb-4 ms-2" style="width: 49%;">
+                                                <label for="UnitofMeasure">@Model.lblUnitOfMeasure</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
+                                                <input type="text" class="UnitofMeasure form-control" id="UnitofMeasure_@i" readonly>
+                                            </div>
+
+                                        </div>
+                                        
+                                        <div class="d-flex">
+                                            <div class="mb-4 me-2" style="width: 49%;">
+                                                <label for="Quantity">@Model.lblQuantity</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
+                                                <input type="number" name="ItemsForReport[@i].Quantity" asp-for="ItemsForReport[@i].Quantity"  class="form-control Quantity" id="Quantity_@i">
+                                            </div>
+                                            <div class="mb-4 ms-2" style="width: 49%;">
+                                                <label for="amountSpent">@Model.lblAmountSpent</label>
+                                                <input type="number" asp-for="ItemsForReport[@i].AmountSpent" name="ItemsForReport[@i].AmountSpent" value="" class="form-control" id="AmountSpent_@i">
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="d-flex">
+                                            <div class="mb-4 me-2" style="width: 49%;">
+                                                <label for="UnitPrice">@Model.lblUnitPrice</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
+                                                <input type="number" asp-for="ItemsForReport[@i].UnitPrice" name="ItemsForReport[@i].UnitPrice" class="form-control UnitPrice" id="UnitPrice_@i">
+                                            </div>
+                                            <div class="mb-4 ms-2" style="width: 49%;">
+                                                <label for="TotalPrice">@Model.lblTotalPrice</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
+                                                <input type="number" asp-for="ItemsForReport[@i].TotalPrice" name="ItemsForReport[@i].TotalPrice" class="form-control TotalPrice" id="TotalPrice_@i">
+                                            </div>
+                                        </div>
+                                        <input type="hidden" id="EntryCount" name="EntryCount" value="@Model.ItemsForReport.Count" />
 
                                         
+                                        <div class="mb-4">
+                                            <label for="Comments">@Model.lblComments</label>
+                                            <input type="text" class="form-control" id="Comments_@i" asp-for="ItemsForReport[@i].Comments" name="ItemsForReport[@i].Comments"  />
+                                        </div>
+                                        <button type="button" class="btn btn-danger btn-sm remove-entry me-3" style="position: absolute; top: 0; right: 0;">
+                                            @Model.lblRemove
+                                        </button>
                                     </div>
-                                   
-                                    <div class="mb-4">
-                                        <label for="itemDescription">@Model.lblItemDescription</label>
-                                        <input type="text" class="ItemDescription form-control" id="ItemDescription_@i" readonly>
-                                    </div>
-
-                                    <div class="d-flex">
-                                        <div class="mb-4 me-2" style="width: 49%;">
-                                            <label for="typeofAsset">@Model.lblTypeofAsset</label>
-                                            <input type="text" class="typeofAsset form-control" id="typeofAsset_@i" readonly>
-                                        </div>
-                                        <div class="mb-4 ms-2" style="width: 49%;">
-                                            <label for="chemical">@Model.lblChemical</label>
-                                            <input type="text" class="chemical form-control" id="chemical_@i" readonly>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="d-flex">
-                                        <div class="mb-4 me-2" style="width: 49%;">
-                                            <label for="RiskRating">@Model.lblRiskRating</label>
-                                            <input type="text" class="RiskRating form-control" id="RiskRating_@i" readonly>
-                                        </div>
-                                        <div class="mb-4 ms-2" style="width: 49%;">
-                                            <label for="UnitofMeasure">@Model.lblUnitOfMeasure</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
-                                            <input type="text" class="UnitofMeasure form-control" id="UnitofMeasure_@i" readonly>
-                                        </div>
-
-                                    </div>
-                                    
-                                    <div class="d-flex">
-                                        <div class="mb-4 me-2" style="width: 49%;">
-                                            <label for="Quantity">@Model.lblQuantity</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
-                                            <input type="number" name="ItemsForReport[@i].Quantity" asp-for="ItemsForReport[@i].Quantity"  class="form-control Quantity" id="Quantity_@i">
-                                        </div>
-                                        <div class="mb-4 ms-2" style="width: 49%;">
-                                            <label for="amountSpent">@Model.lblAmountSpent</label>
-                                            <input type="number" asp-for="ItemsForReport[@i].AmountSpent" name="ItemsForReport[@i].AmountSpent" value="" class="form-control" id="AmountSpent_@i">
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="d-flex">
-                                        <div class="mb-4 me-2" style="width: 49%;">
-                                            <label for="UnitPrice">@Model.lblUnitPrice</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
-                                            <input type="number" asp-for="ItemsForReport[@i].UnitPrice" name="ItemsForReport[@i].UnitPrice" class="form-control UnitPrice" id="UnitPrice_@i">
-                                        </div>
-                                        <div class="mb-4 ms-2" style="width: 49%;">
-                                            <label for="TotalPrice">@Model.lblTotalPrice</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
-                                            <input type="number" asp-for="ItemsForReport[@i].TotalPrice" name="ItemsForReport[@i].TotalPrice" class="form-control TotalPrice" id="TotalPrice_@i">
-                                        </div>
-                                    </div>
-                                    <input type="hidden" id="EntryCount" name="EntryCount" value="@Model.ItemsForReport.Count" />
-
-                                    
-                                    <div class="mb-4">
-                                        <label for="Comments">@Model.lblComments</label>
-                                        <input type="text" class="form-control" id="Comments_@i" asp-for="ItemsForReport[@i].Comments" name="ItemsForReport[@i].Comments"  />
-                                    </div>
-                                    <button type="button" class="btn btn-danger btn-sm remove-entry me-3" style="position: absolute; top: 0; right: 0;">
-                                        @Model.lblRemove
-                                    </button>
                                 </div>
-                            </div>
                             }
                             <div class="mb-3">
                                 <button type="button" class="btn btn-primary" id="addEntryBtn">@Model.lblAddMore</button>

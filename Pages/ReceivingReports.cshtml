@@ -166,10 +166,27 @@
                                     </div>
                                     <div class="form-group mb-4 ms-2 flex-fill">
                                         <label>@Model.lblItemName</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
-                                        <select  class="form-control" id="ItemName_@i" name="ItemsForReport[@i].ItemId" >
+                                        <select asp-for="ItemsForReport[@i].ItemId" class="form-control" id="ItemName_@i" name="ItemsForReport[@i].ItemId" >
 
-                                            
+                                            @* <option value="">Select Item</option>
+                                                @foreach (var item in Model.Items)
+                                                {
+                                                    var UnitCode = Model.Units.FirstOrDefault(u => u.Id == item.UnitId)?.UnitCode ?? "";
+                                                    var ItemGroup = Model.ItemGroupList.FirstOrDefault(g => g.GroupCode == item.GroupCode)?.GroupDesc ?? "";
+                                                
+                                                    <option value="@item.ItemId"
+                                                            data-itemno="@item.ItemCode"
+                                                            data-itemname="@item.ItemName"
+                                                            data-itemdesc="@item.ItemDescription"
+                                                            data-unitid="@item.UnitId"
+                                                            data-unitname="@UnitCode"
+                                                            data-groupcode="@item.GroupCode">
+                                                        @item.ItemName
+                                                    </option>
+                                                } *@
                                         </select>
+
+                                       
                                     </div>
                                 </div>
 
@@ -187,19 +204,19 @@
 
                                     <div class="form-group mb-4"  style="width: 48%;">
                                         <label>@Model.lblQuantity</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
-                                        <input asp-for="ItemsForReport[@i].Quantity"  type="number" id="ItemQty_@i" name="ItemsForReport[@i].Quantity" class="form-control"  />
+                                        <input asp-for="ItemsForReport[@i].Quantity" min="0" type="number" id="ItemQty_@i" name="ItemsForReport[@i].Quantity" class="form-control"  />
                                     </div>
                                 </div>
                                 
                                 <div class="d-flex justify-content-between">
                                     <div class="form-group mb-4" style="width: 48%;">
                                         <label>@Model.lblUnitPrice</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
-                                        <input asp-for="ItemsForReport[@i].UnitPrice" type="number"  id="UnitPrice_@i"  name="ItemsForReport[@i].UnitPrice" class="form-control"  />
+                                        <input asp-for="ItemsForReport[@i].UnitPrice" type="number"  id="UnitPrice_@i"  step="0.01" name="ItemsForReport[@i].UnitPrice" class="form-control"  />
                                     </div>
 
                                     <div class="form-group mb-4" style="width: 48%;">
                                         <label>@Model.lblTotalPrice</label>
-                                        <input type="number"  id="TotalPrice_@i"  name="TotalPrice" class="form-control" readonly/>
+                                        <input type="number"  step="0.01"  id="TotalPrice_@i"  name="TotalPrice" class="form-control" readonly/>
                                     </div>
                                 </div>
 
@@ -211,7 +228,7 @@
 
                                 <div id="itemsContainer" class="mt-3"></div>
 
-                            <button type="button" id="addButton" class="btn btn-secondary" onclick="addItem()">Add More</button>
+                            <button type="button" id="addButton" class="btn btn-secondary" onclick="addItem()" disabled>Add More</button>
                         </div>
                          }
                        @* Add ItemsForReport ended  *@
@@ -311,6 +328,8 @@
 
         // Function to add a new item
         function addItem() {
+            const addButton = document.getElementById('addButton');
+            addButton.disabled = true;
             const container = document.getElementById('itemsContainer');
             const div = document.createElement('div');
             div.className = 'item-group border p-3 mb-3';
@@ -333,7 +352,7 @@
                 <div class="d-flex">
                     <div class="form-group mb-4 me-2">
                         <label>Item No</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
-                        <input type="text" name="ItemsForReport[${itemIndex}].ItemNo" class="form-control" required/>
+                        <input type="text" id="ItemNo_${itemIndex}" name="ItemsForReport[${itemIndex}].ItemNo" class="form-control" required/>
                     </div>
                     <div class="form-group mb-4 ms-2 flex-fill">
                         <label>Item Name</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
@@ -353,17 +372,17 @@
                     </div>
                     <div class="form-group mb-4" style="width: 48%;">
                         <label>Quantity</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
-                        <input type="number" name="ItemsForReport[${itemIndex}].Quantity" class="form-control" required/>
+                        <input type="number" id="ItemQty_${itemIndex}" name="ItemsForReport[${itemIndex}].Quantity" class="form-control" required/>
                     </div>
                 </div>
                 <div class="d-flex justify-content-between">
                     <div class="form-group mb-4" style="width: 48%;">
                         <label>Unit Price</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
-                        <input type="number"  name="ItemsForReport[${itemIndex}].UnitPrice" class="form-control" required/>
+                        <input type="number" id="UnitPrice_${itemIndex}" name="ItemsForReport[${itemIndex}].UnitPrice" class="form-control" required/>
                     </div>
                     <div class="form-group mb-4" style="width: 48%;">
                         <label>Total Price</label>
-                        <input type="number"  name="ItemsForReport[${itemIndex}].TotalPrice" class="form-control" readonly />
+                        <input type="number" id="TotalPrice_${itemIndex}"  name="ItemsForReport[${itemIndex}].TotalPrice" class="form-control" readonly />
                     </div>
                 </div>
                 <div class="form-group mb-4">
@@ -391,6 +410,7 @@
                 const quantity = parseFloat(quantityInput.value) || 0;
                 const unitPrice = parseFloat(unitPriceInput.value) || 0;
                 totalPriceInput.value = (quantity * unitPrice).toFixed(2);
+                checkRequiredFields(index)
             }
 
             if (unitPriceInput) unitPriceInput.addEventListener("input", updateTotal);
@@ -424,16 +444,24 @@
         }
 
         // Function to check required fields and enable/disable the add button
-        function checkRequiredFields() {
-            const requiredSelectors = ['#ItemGroup', '#ItemNo', '#ItemName', '#ItemQty', '#UnitPrice'];
+        function checkRequiredFields(index) {
             const addButton = document.getElementById('addButton');
+            console.log("index  checkrequired", index);
+            const itemGroup = document.querySelector('#ItemGroup_'+index);
+            const itemNo = document.querySelector('#ItemNo_'+index);
+            const itemName = document.querySelector('#ItemName_'+index);
+            const itemQty = document.querySelector('#ItemQty_'+index);
+            const unitPrice = document.querySelector('#UnitPrice_'+index);
 
-            const allFilled = requiredSelectors.every(selector => {
-                const el = document.querySelector(selector);
-                return el && el.value.trim() !== '';
-            });
+            const isValid =
+                itemGroup && itemGroup.value.trim() !== '' &&
+                itemNo && itemNo.value.trim() !== '' &&
+                itemName && itemName.value.trim() !== '' &&
+                itemQty && parseFloat(itemQty.value) > 0 &&
+                unitPrice && parseFloat(unitPrice.value) > 0;
 
-            addButton.disabled = !allFilled;
+            addButton.disabled = !isValid;
+
         }
 
 
@@ -444,11 +472,17 @@
                 if (itemGroup) {
                     itemGroup.remove();
                 }
+
+                const addButton = document.getElementById('addButton');
+                addButton.disabled = false;
+
+
             }
         });
         // Event listeners for required fields
-   /*      document.addEventListener('DOMContentLoaded', function () {
-            const requiredSelectors = ['#ItemGroup', '#ItemNo', '#ItemName', '#ItemQty', '#UnitPrice', '#TotalPrice'];
+        @* document.addEventListener('DOMContentLoaded', function () {
+            const requiredSelectors = ['#ItemGroup_'+index, '#ItemNo_'+index, '#ItemName_'+index, '#ItemQty_'+index, '#UnitPrice_'+index, '#TotalPrice_'+index];
+            console.log("input event listner")
             requiredSelectors.forEach(selector => {
                 const element = document.querySelector(selector);
                 if (element) {
@@ -456,8 +490,8 @@
                     element.addEventListener('change', checkRequiredFields);
                 }
             });
-            checkRequiredFields(); // Initial check
-        }); */
+            checkRequiredFields(index); // Initial check
+        });  *@
         //Items filtering based on groupcode
         const allItems = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.Items));
         function filterItemByGroup(index) {
@@ -465,7 +499,9 @@
             const selectedGroup = document.getElementById("ItemGroup_" + index).value;
             const itemSelect = document.getElementById("ItemName_" + index);
             console.log(selectedGroup, 'selectedGroup')
-
+            if(selectedGroup){
+                itemSelect.disabled = false;
+            }
             // Clear current items
             itemSelect.innerHTML = '<option value="">Select Item</option>';
             console.log("selectedgroup",selectedGroup )
@@ -528,11 +564,11 @@
                 });
         }
 
-    // Optional: If you want to re-sync the type when a supplier is manually chosen
-    document.getElementById("SupplierName").addEventListener("change", function () {
-        const selected = this.options[this.selectedIndex];
-        document.getElementById("SupplierType").value = selected.getAttribute("data-type") || "";
-    });
+        // Too re-sync the type when a supplier is manually chosen
+        document.getElementById("SupplierName").addEventListener("change", function () {
+            const selected = this.options[this.selectedIndex];
+            document.getElementById("SupplierType").value = selected.getAttribute("data-type") || "";
+        });
 
         // Fetch serial number based on fiscal year
         async function fetchSerialNumber() {
@@ -622,15 +658,36 @@
                 itemDescription.value = itemdesc || '';
                 unitInput.value = unitname || '';
                 document.getElementById("ItemGroup_" + i).value = groupcode || '';
+                updateTotal();
             }
+            function checkRequiredFields(index) {
+                const addButton = document.getElementById('addButton');
+                console.log("index in checkrequired", index);
+                const itemGroup = document.querySelector(`#ItemGroup_${index}`);
+                const itemNo = document.querySelector(`#ItemNo_${index}`);
+                const itemName = document.querySelector(`#ItemName_${index}`);
+                const itemQty = document.querySelector(`#ItemQty_${index}`);
+                const unitPrice = document.querySelector(`#UnitPrice_${index}`);
 
+                const isValid =
+                    itemGroup && itemGroup.value.trim() !== '' &&
+                    itemNo && itemNo.value.trim() !== '' &&
+                    itemName && itemName.value.trim() !== '' &&
+                    itemQty && parseFloat(itemQty.value) > 0 &&
+                    unitPrice && parseFloat(unitPrice.value) > 0;
+
+                addButton.disabled = !isValid;
+
+            }
             function updateTotal() {
                 const quantity = parseFloat(quantityInput.value) || 0;
                 const unitPrice = parseFloat(unitPriceInput.value) || 0;
                 const total = quantity * unitPrice;
                 console.log( 'updateTotal')
                 totalPriceInput.value = total.toFixed(2);
+                checkRequiredFields(i);
             }
+
 
             unitPriceInput.addEventListener("input", updateTotal);
             quantityInput.addEventListener("input", updateTotal);

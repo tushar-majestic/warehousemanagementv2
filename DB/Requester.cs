@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
 
 namespace LabMaterials.DB;
 
@@ -64,4 +62,9 @@ public partial class Requester
     [ForeignKey("DestinationId")]
     [InverseProperty("Requesters")]
     public virtual Destination? Destination { get; set; }
+    public override string ToString()
+    {
+        return DestinationName ?? base.ToString();
+    }
+
 }

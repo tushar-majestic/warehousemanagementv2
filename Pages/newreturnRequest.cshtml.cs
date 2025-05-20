@@ -90,9 +90,10 @@ namespace LabMaterials.Pages
 
             var orderDateStr = Request.Form["OrderDate"];
             var requestingSector = Request.Form["RequestingSector"];
-            var applicantsSector = Request.Form["ApplicantsSector"];
+            var applicantsSector = Convert.ToInt32(Request.Form["ApplicantsSector"]);
             var storeId = Convert.ToInt32(Request.Form["StoreId"]);
             var reason = Request.Form["ReasonForReturn"];
+
 
             DateTime.TryParse(orderDateStr, out DateTime orderDate);
 
@@ -101,12 +102,32 @@ namespace LabMaterials.Pages
                 OrderNumber = orderNumber,
                 OrderDate = orderDate,
                 ToSector = requestingSector,
-                FromSector = applicantsSector,
+                FromSectorId = applicantsSector,
                 WarehouseId = storeId,
                 Reason = reason,
                 CreatedAt = DateTime.Now,
-                Items = ReturnItems
+                Items = ReturnItems,
             };
+            // Ensure all flags are false first
+            request.IsSurplus = false;
+            request.IsExpired = false;
+            request.IsInvalid = false;
+            request.IsDamaged = false;
+            switch (reason)
+            {
+                case "SurPlus":
+                    request.IsSurplus = true;
+                    break;
+                case "Expired":
+                    request.IsExpired = true;
+                    break;
+                case "Invalid":
+                    request.IsInvalid = true;
+                    break;
+                case "Damaged":
+                    request.IsDamaged = true;
+                    break;
+            }
 
             // Parse multiple return items
             var itemGroups = Request.Form["itemGroup"];
