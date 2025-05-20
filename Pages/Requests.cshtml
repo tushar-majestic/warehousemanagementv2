@@ -258,7 +258,7 @@
                                             @* <input type="submit" value="@Model.lblView" class="btn btn-secondary" asp-page-handler="View" /><a asp-page="/ViewReceivingReport"  class="btn btn-info btn-sm">View</a> *@
                                             <form method="post">
                                                 <input type="hidden" value="@req.Id" name="InboxId" />
-
+                                                 <input type="hidden" value="Receiving" name="ReportType" />
                                                 <input type="submit" value="@Model.lblView" class="btn btn-secondary" asp-page-handler="View" />
                                             </form>
                                         
