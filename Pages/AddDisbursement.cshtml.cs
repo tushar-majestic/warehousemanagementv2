@@ -195,6 +195,19 @@ namespace LabMaterials.Pages
                 Units = dbContext.Units.ToList();
                 ItemGroups = dbContext.ItemGroups.Where(g => g.Units.Count() > 0).ToList();
 
+                ItemsValue = dbContext.ItemCards
+                        .Select(x => new ItemCard
+                        {
+                            Id = x.Id,
+                            ItemId = x.ItemId,
+                            ItemName = x.ItemName,
+                            GroupCode = x.GroupCode,
+                            ItemCode = x.ItemCode,
+                            ItemDescription = x.ItemDescription,
+                            Chemical = x.Chemical,
+                            UnitOfmeasure = x.UnitOfmeasure
+                        }).ToList();
+
 
                 if (ItemsForReport == null || !ItemsForReport.Any())
 

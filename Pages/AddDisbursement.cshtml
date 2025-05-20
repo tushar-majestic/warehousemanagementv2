@@ -185,7 +185,7 @@
            allItems.filter(item => item.GroupCode === selectedGroup)
                 .forEach(item => {
                     const optionArabic = document.createElement("option");
-                    optionArabic.value = item.ItemId;
+                    optionArabic.value = item.Id;
                     optionArabic.textContent = item.ItemName;
                     optionArabic.dataset.id = item.ItemId;
                     optionArabic.dataset.code = item.ItemCode;
@@ -221,6 +221,7 @@
 
         if (itemDropdown) {
             const selectedOption = itemDropdown.options[itemDropdown.selectedIndex];
+            console.log(selectedOption, 'selectedOption')
             if (selectedOption && selectedOption.value) {
                 const groupCode = selectedOption.getAttribute("data-group");
                 const code = selectedOption.getAttribute("data-code");
@@ -436,29 +437,32 @@
                                         <div class="form-group  me-2 " style="width: 49%;">
                                             <label>@Model.lblItemName (@Model.lblArabicLanguage)</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
                                             <select class="ArabicItemName form-select" id="ArabicItemName_@i"  asp-for="@Model.ItemsForReport[@i].ItemCardId" name="ItemsForReport[@i].ItemCardId"  onchange="handleItemChange(event)">
-                                                <option value="">Select Item </option>
-                                                @foreach (var item in Model.ItemCards)
-                                                {
-                                                    
+                                                 <option value="">Select Item </option>
+                                                   
+                                                    @foreach (var item in Model.ItemCards)
+                                                    {
                                                         <option value="@item.Id"
-                                                            data-id="@item.ItemId"
-                                                            data-group="@item.GroupCode"
-                                                            data-code="@item.ItemCode"
-                                                            data-description="@item.ItemDescription"
-                                                            data-chemical="@item.Chemical" data-risk="@item.HazardTypeName"
-                                                            data-unit="@item.UnitOfmeasure" 
-                                                             selected="@(Model.ItemsForReport[i].ItemCardId == item.Id)">
+                                                                data-id="@item.ItemId"
+                                                                data-group="@item.GroupCode"
+                                                                data-code="@item.ItemCode"
+                                                                data-description="@item.ItemDescription"
+                                                                data-chemical="@item.Chemical"
+                                                                data-risk="@item.HazardTypeName"
+                                                                data-unit="@item.UnitOfmeasure"
+                                                                selected="@(Model.ItemsForReport[i].ItemCardId == item.Id ? "selected" : null)">
                                                             @item.ItemName
                                                         </option>
-                                                    
-                                                }
+                                                    }
+                                                
+                                                
                                             </select>
+                                            
                                         </div>
                                        
                                         <div class="form-group mb-4 ms-2" style="width: 49%;">
                                             <label for="EnglishArabicName">@Model.lblItemName (@Model.lblEnglishLanguage)</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
                                             <select class="EnglishArabicName form-select" id="EnglishArabicName_@i"   onchange="handleItemChange(event)">
-                                                <option value="">Select Item </option>
+                                              <option value="">Select Item </option>
                                                 @foreach (var item in Model.ItemCards)
                                                 {
                                                     <option value="@item.Id"
