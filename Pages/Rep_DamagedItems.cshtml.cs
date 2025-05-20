@@ -9,11 +9,12 @@ namespace LabMaterials.Pages
     {
         public DateTime? FromDate, ToDate;
         public List<DamagedItemsInfo> DamagedItems;
+        public List<DamagedItemsInfo> DamagedItemsAll;
         public string lblHazardousMaterials, lblHazardTypeName, lblSearch, lblSubmit, lblItemCode, lblItemName, lblGroupName,
             lblAvailableQuantity, lblHazardType, lblTypeName, lblStoreName, lblUnitCode, lblTotalItem,
             lblMaterialsReceived, lblInventory, lblUserActivity, lblDistributedMaterials, lblDamagedItems, lblUserReport,
             lblFromDate, lblToDate, lblDamageditems, lblTotalDamagedItem,
-            lblDamageDate, lblDamageQuantity, lblDamageReason, lblExport;
+            lblDamageDate, lblDamageQuantity, lblDamageReason, lblExport, lblPrint;
         public int TotalItems { get; set; }
         public int CurrentPage { get; set; }
         public int ItemsPerPage { get; set; } = 10;
@@ -21,6 +22,7 @@ namespace LabMaterials.Pages
 
         [BindProperty]
         public string ItemName { get; set; }
+        public List<string> SelectedColumns { get; set; } = new List<string>();
         public void OnGet(string? ItemName, DateTime? FromDate, DateTime? ToDate, int page = 1)
         {
             base.ExtractSessionData();
@@ -29,6 +31,7 @@ namespace LabMaterials.Pages
                 // this.FromDate = DateTime.Today;
                 // this.ToDate = DateTime.Today;
                 FillLables();
+                LoadSelectedColumns();
                 if (HttpContext.Request.Query.ContainsKey("page")){
                     string pagevalue = HttpContext.Request.Query["page"];
                     page = int.Parse(pagevalue);
@@ -41,8 +44,59 @@ namespace LabMaterials.Pages
             else
                 RedirectToPage("./Index?lang=" + Lang);
         }
+
+        private void LoadSelectedColumns()
+        {
+            int? userId = HttpContext.Session.GetInt32("UserId");
+            if (userId.HasValue)
+            {
+                using (var db = new LabDBContext())
+                {
+                    string pageName = "ReturnItemReport";
+                    var existingRecord = db.Tablecolumns.FirstOrDefault(c => c.UserId == userId.Value && c.Page == pageName);
+                    if (existingRecord != null && !string.IsNullOrEmpty(existingRecord.DisplayColumns))
+                    {
+                        SelectedColumns = existingRecord.DisplayColumns.Split(',').ToList();
+                    }
+                    else
+                    {
+                        // SelectedColumns = new List<string>();
+                        string selectedColumns = "itemName,itemCode";
+                        SaveSelectedColumns(userId.Value, pageName, selectedColumns);
+                    }
+                }
+            }
+        }
+
+        private void SaveSelectedColumns(int userId, string pageName, string selectedColumns)
+        {
+            base.ExtractSessionData();
+            using (var db = new LabDBContext())
+            {
+                var existingRecord = db.Tablecolumns
+                    .FirstOrDefault(c => c.UserId == userId && c.Page == pageName);
+
+                if (existingRecord != null)
+                {
+                    existingRecord.DisplayColumns = selectedColumns;
+                }
+                else
+                {
+                    var newRecord = new Tablecolumn
+                    {
+                        UserId = userId,
+                        Page = pageName,
+                        DisplayColumns = selectedColumns
+                    };
+                    db.Tablecolumns.Add(newRecord);
+                }
+
+                db.SaveChanges();
+            }
+        }
         public void FillData(string ItemNAme, DateTime? StartDate, DateTime? EndDate, int page = 1)
-        {    if (HttpContext.Request.Query.ContainsKey("page"))
+        {
+            if (HttpContext.Request.Query.ContainsKey("page"))
             {
                 string pagevalue = HttpContext.Request.Query["page"];
                 page = int.Parse(pagevalue);
@@ -61,12 +115,12 @@ namespace LabMaterials.Pages
 
                          });
 
-            if(ItemNAme != null)
+            if (ItemNAme != null)
             {
                 query = query.Where(e => e.ItemName.Contains(ItemNAme));
             }
 
-            if(StartDate is not null && EndDate is not null )
+            if (StartDate is not null && EndDate is not null)
             {
                 query = query.Where(e => e.DamageDate.Value.Date >= StartDate && e.DamageDate.Value.Date <= EndDate);
             }
@@ -79,24 +133,72 @@ namespace LabMaterials.Pages
             TotalPages = (int)Math.Ceiling((double)TotalItems / ItemsPerPage);
 
             var list = query.ToList();
-            DamagedItems = list.Skip((page - 1) * ItemsPerPage).Take(ItemsPerPage).ToList();     
+            DamagedItems = list.Skip((page - 1) * ItemsPerPage).Take(ItemsPerPage).ToList();
+            DamagedItemsAll = query.ToList();
             CurrentPage = page;
             base.ExtractSessionData();
             FillLables();
         }
-        public void OnPost([FromForm] string ItemName, [FromForm] DateTime? FromDate, [FromForm] DateTime? ToDate)
+        // public void OnPost([FromForm] string ItemName, [FromForm] DateTime? FromDate, [FromForm] DateTime? ToDate)
+        // {
+        //     base.ExtractSessionData();
+        //     CurrentPage = 1;
+        //     this.FromDate = FromDate;
+        //     this.ToDate = ToDate;
+        //     this.ItemName = ItemName;
+        //     if (CanSeeReports)
+        //     {
+        //         FillData(ItemName, FromDate, ToDate, CurrentPage);
+        //     }
+        //     else
+        //         RedirectToPage("./Index?lang=" + Lang);
+        // }
+        public IActionResult OnPostAction(string ItemName, DateTime? FromDate, DateTime? ToDate, string action, List<string> columns)
         {
             base.ExtractSessionData();
-            CurrentPage = 1;
-            this.FromDate = FromDate;
-            this.ToDate = ToDate;
-            this.ItemName = ItemName;
-            if (CanSeeReports)
+
+            if (action == "search")
             {
-                FillData(ItemName, FromDate, ToDate, CurrentPage);
+                this.ItemName = ItemName;
+                CurrentPage = 1;
+                this.FromDate = FromDate;
+                this.ToDate = ToDate;
+                if (CanSeeReports)
+                {
+
+                    FillData(ItemName, FromDate, ToDate, CurrentPage);
+
+                }
+
+                int? userId = HttpContext.Session.GetInt32("UserId");
+                string pageName = "ReturnItemReport";
+                LoadSelectedColumns();
             }
-            else
-                RedirectToPage("./Index?lang=" + Lang);
+            else if (action == "updateColumns")
+            {
+                if (columns != null && columns.Any())
+                {
+
+                    string selectedColumns = string.Join(",", columns);
+
+                    int? userId = HttpContext.Session.GetInt32("UserId");
+                    string pageName = "ReturnItemReport";
+                    this.ItemName = ItemName;
+                    CurrentPage = 1;
+                    this.FromDate = FromDate;
+                    this.ToDate = ToDate;
+                    {
+
+                        FillData(ItemName, FromDate, ToDate, CurrentPage);
+
+                    }
+                    SaveSelectedColumns(userId.Value, pageName, selectedColumns);
+                    LoadSelectedColumns();
+                }
+
+            }
+
+            return Page();
         }
         private void FillLables()
         {
@@ -128,6 +230,7 @@ namespace LabMaterials.Pages
             this.lblDamageQuantity = (Program.Translations["DamageQuantity"])[Lang];
             this.lblDamageReason = (Program.Translations["DamageReason"])[Lang];
             this.lblExport = (Program.Translations["Export"])[Lang];
+            this.lblPrint = (Program.Translations["Print"])[Lang];
         }
     }
 }
