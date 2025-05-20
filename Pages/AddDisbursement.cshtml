@@ -103,6 +103,7 @@
 
             const itemGroupSelect = newEntry.querySelector(".item-group-select");
             if (itemGroupSelect) {
+                 itemGroupSelect.removeAttribute("onchange");
                 itemGroupSelect.addEventListener("change", function () {
                     filterItemsByGroup(currentIndex);
                 });
@@ -431,7 +432,7 @@
                                         <div class="d-flex my-4">
                                             <div class=" me-2" style="width: 49%;">
                                                 <label for="itemGroup">@Model.lblItemGroups</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
-                                                <select class="form-select item-group-select"  id="itemGroup_@i" name="ItemsForReport[@i].ItemGroup" onchange="filterItemsByGroup(@i)">
+                                                <select class="form-select item-group-select"  id="itemGroup_@i" name="ItemsForReport[@i].ItemGroup" >
                                                     @if (Model.ItemGroups != null)
                                                     {
                                                         <option value="">Select Item Group</option>
