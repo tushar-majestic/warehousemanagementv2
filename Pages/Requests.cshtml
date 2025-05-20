@@ -217,17 +217,21 @@
                                             <td>@localTime</td>
 
                                             <td>
-                                                @if(inbox.ReportType == "Receiving"){
-
-                                                    <form method="post">
-                                                            <input type="hidden" value="@inbox.ReportId" name="InboxId" />
-                                                        
-                                                        <input type="submit" value="@Model.lblView" class="btn btn-secondary" asp-page-handler="View" />
-                                                    </form>   
-                                                }
+                                                <form method="post">
+                                                    @if (inbox.ReportType == "Receiving")
+                                                    {
+                                                        <input type="hidden" value="@inbox.ReportId" name="InboxId" />
+                                                        <input type="hidden" value="Receiving" name="ReportType" />
+                                                    }
+                                                    else if (inbox.ReportType == "Dispensing")
+                                                    {
+                                                        <input type="hidden" value="@inbox.MaterialRequestId" name="MaterialRequestId" />
+                                                        <input type="hidden" value="Dispensing" name="ReportType" />
+                                                    }
+                                                    <input type="submit" value="@Model.lblView" class="btn btn-secondary" asp-page-handler="View" />
+                                                </form>
                                             </td>
 
-                                           
 
                                         </td>                                                
 

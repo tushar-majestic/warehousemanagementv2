@@ -25,7 +25,7 @@
         </ol>
     </nav>
 
-    <h1 class="h4">@Model.lblCreateReport</h1>
+    <h1 class="h4">Edit Receiving Report</h1>
 </div>
 <div asp-validation-summary="All" class="text-danger"></div>
 <div class="row">
@@ -47,7 +47,7 @@
                         <div class="form-group mb-4">
                             <label>@Model.lblFiscalYear</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "")">*</span>
 
-                            <select class="form-select" id="FiscalYear" asp-for="Report.FiscalYear" name="FiscalYear"  onchange="fetchSerialNumber()" >
+                            <select class="form-select" id="FiscalYear" asp-for="Report.FiscalYear" name="FiscalYear"  onchange="fetchSerialNumber()"  >
                                 <option value="">Select Fiscal Year</option>
                                 <option value="@previousYear">@previousYear</option>
                                 <option value="@currentYear">@currentYear</option>
@@ -137,11 +137,11 @@
 
                             <div class="addItems border p-2">
                             
-                                <h3>Items</h3>
+                                <h3>Item @(i +1)</h3>
                             
                                     <div class="form-group mb-4">
                                         <label>@Model.lblItemGroup</label> <span class="majestic">*</span>
-                                        <select class="form-select" id="ItemGroup_@i" name="ItemsForReport[@i].ItemGroup" >
+                                        <select class="form-select" id="ItemGroup_@i" name="ItemsForReport[@i].ItemGroup" onchange="filterItemByGroup(@i)">
                                             @* <option value="Chemicals">Chemicals</option>
                                             <option value="Glass">Glass</option> *@
                                             <option value="">Select Item Group</option>
@@ -199,14 +199,14 @@
 
                                         <div class="form-group mb-4"  style="width: 48%;">
                                             <label>@Model.lblQuantity</label> <span class="majestic">*</span>
-                                            <input asp-for="ItemsForReport[@i].Quantity"  type="number" id="ItemQty_@i" name="ItemsForReport[@i].Quantity" class="form-control" value="@Model.ItemsForReport[@i].Quantity" />
+                                            <input asp-for="ItemsForReport[@i].Quantity" min="0" type="number" id="ItemQty_@i" name="ItemsForReport[@i].Quantity" class="form-control" value="@Model.ItemsForReport[@i].Quantity" />
                                         </div>
                                     </div>
                                     
                                     <div class="d-flex justify-content-between">
                                         <div class="form-group mb-4" style="width: 48%;">
                                             <label>@Model.lblUnitPrice</label> <span class="majestic">*</span>
-                                            <input asp-for="ItemsForReport[@i].UnitPrice" type="number"  iid="UnitPrice_@i" step="0.01" name="ItemsForReport[@i].UnitPrice" class="form-control" value="@Model.ItemsForReport[@i].UnitPrice" />
+                                            <input asp-for="ItemsForReport[@i].UnitPrice" type="number"  id="UnitPrice_@i" step="0.01" name="ItemsForReport[@i].UnitPrice" class="form-control" value="@Model.ItemsForReport[@i].UnitPrice" />
                                         </div>
 
                                         <div class="form-group mb-4" style="width: 48%;">
@@ -221,11 +221,13 @@
                                         <textarea asp-for="ItemsForReport[@i].Comments" class="form-control" name="ItemsForReport[@i].Comments"></textarea>
                                     </div>
 
-                                    <div id="itemsContainer" class="mt-3"></div>
 
-                                <button type="button" id="addButton" class="btn btn-secondary" onclick="addItem()" disabled>Add More</button>
+                                
                             </div>
                         }
+                        <div id="itemsContainer" class="mt-3"></div>
+
+                        <button type="button" id="addButton" class="btn btn-secondary" onclick="addItem()" >Add More</button>
                        @* Add ItemsForReport ended  *@
 
 
@@ -308,7 +310,7 @@
 @section Scripts {
     <script>
         // Initialize item index
-        let itemIndex = 1; // [0] is seeded on GET
+        let itemIndex = @Model.ItemsForReport.Count ; 
 
         // Function to generate item options
         function getItemOptions() {
@@ -324,32 +326,34 @@
         function addItem() {
             const container = document.getElementById('itemsContainer');
             const div = document.createElement('div');
+            const addButton = document.getElementById('addButton');
+            addButton.disabled = true;
             div.className = 'item-group border p-3 mb-3';
             div.innerHTML = `
                 <h3>Add Items</h3>
                 <div class="text-end">
                     <button type="button" class="btn btn-danger btn-sm remove-entry me-3">Remove</button>
                 </div>
+                
                 <div class="form-group mb-4">
-                    <label>Item Group</label> <span class="text-danger">*</span>
-                    <select class="form-select" name="ItemsForReport[${itemIndex}].ItemGroup" required>
+                    <label>Item Group</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
+                    <select class="form-select" id="ItemGroup_${itemIndex}" name="ItemsForReport[${itemIndex}].ItemGroup" onchange="filterItemByGroup(${itemIndex})" required>
                         <option value="">Select Item Group</option>
                         @foreach (var item in Model.ItemGroupList)
                         {
-                            <text><option value="@item.GroupDesc">@item.GroupDesc</option></text>
+                            <text><option value="@item.GroupCode">@item.GroupDesc</option></text>
                         }
                     </select>
                 </div>
                 <div class="d-flex">
                     <div class="form-group mb-4 me-2">
-                        <label>Item No</label> <span class="text-danger">*</span>
-                        <input type="text" name="ItemsForReport[${itemIndex}].ItemNo" class="form-control" required/>
+                        <label>Item No</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
+                        <input type="text" id="ItemNo_${itemIndex}" name="ItemsForReport[${itemIndex}].ItemNo" class="form-control" required/>
                     </div>
                     <div class="form-group mb-4 ms-2 flex-fill">
-                        <label>Item Name</label> <span class="text-danger">*</span>
-                        <select class="form-control" name="ItemsForReport[${itemIndex}].ItemId" required>
-                            <option value="">Select Item</option>
-                            ${getItemOptions()}
+                        <label>Item Name</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
+                        <select class="form-control" id="ItemName_${itemIndex}" name="ItemsForReport[${itemIndex}].ItemId" required>
+                           
                         </select>
                     </div>
                 </div>
@@ -363,18 +367,18 @@
                         <input type="text" name="ItemsForReport[${itemIndex}].UnitofMeasure" class="form-control" readonly />
                     </div>
                     <div class="form-group mb-4" style="width: 48%;">
-                        <label>Quantity</label> <span class="text-danger">*</span>
-                        <input type="number" name="ItemsForReport[${itemIndex}].Quantity" class="form-control" required/>
+                        <label>Quantity</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
+                        <input type="number" id="ItemQty_${itemIndex}" name="ItemsForReport[${itemIndex}].Quantity" class="form-control" required/>
                     </div>
                 </div>
                 <div class="d-flex justify-content-between">
                     <div class="form-group mb-4" style="width: 48%;">
-                        <label>Unit Price</label> <span class="text-danger">*</span>
-                        <input type="number" step="0.01" name="ItemsForReport[${itemIndex}].UnitPrice" class="form-control" required/>
+                        <label>Unit Price</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
+                        <input type="number" id="UnitPrice_${itemIndex}" name="ItemsForReport[${itemIndex}].UnitPrice" class="form-control" required/>
                     </div>
                     <div class="form-group mb-4" style="width: 48%;">
                         <label>Total Price</label>
-                        <input type="number" step="0.01" name="ItemsForReport[${itemIndex}].TotalPrice" class="form-control" readonly />
+                        <input type="number" id="TotalPrice_${itemIndex}"  name="ItemsForReport[${itemIndex}].TotalPrice" class="form-control" readonly />
                     </div>
                 </div>
                 <div class="form-group mb-4">
@@ -402,6 +406,8 @@
                 const quantity = parseFloat(quantityInput.value) || 0;
                 const unitPrice = parseFloat(unitPriceInput.value) || 0;
                 totalPriceInput.value = (quantity * unitPrice).toFixed(2);
+                checkRequiredFields(index)
+
             }
 
             if (unitPriceInput) unitPriceInput.addEventListener("input", updateTotal);
@@ -434,18 +440,27 @@
             }
         }
 
-        // Function to check required fields and enable/disable the add button
-        function checkRequiredFields() {
-            const requiredSelectors = ['#ItemGroup', '#ItemNo', '#ItemName', '#ItemQty', '#UnitPrice'];
+          // Function to check required fields and enable/disable the add button
+        function checkRequiredFields(index) {
             const addButton = document.getElementById('addButton');
+            console.log("index  checkrequired", index);
+            const itemGroup = document.querySelector('#ItemGroup_'+index);
+            const itemNo = document.querySelector('#ItemNo_'+index);
+            const itemName = document.querySelector('#ItemName_'+index);
+            const itemQty = document.querySelector('#ItemQty_'+index);
+            const unitPrice = document.querySelector('#UnitPrice_'+index);
 
-            const allFilled = requiredSelectors.every(selector => {
-                const el = document.querySelector(selector);
-                return el && el.value.trim() !== '';
-            });
+            const isValid =
+                itemGroup && itemGroup.value.trim() !== '' &&
+                itemNo && itemNo.value.trim() !== '' &&
+                itemName && itemName.value.trim() !== '' &&
+                itemQty && parseFloat(itemQty.value) > 0 &&
+                unitPrice && parseFloat(unitPrice.value) > 0;
 
-            addButton.disabled = !allFilled;
+            addButton.disabled = !isValid;
+
         }
+
 
 
         //deletem item group
@@ -455,20 +470,56 @@
                 if (itemGroup) {
                     itemGroup.remove();
                 }
+
+                  const addButton = document.getElementById('addButton');
+                addButton.disabled = false;
             }
         });
-        // Event listeners for required fields
-        document.addEventListener('DOMContentLoaded', function () {
-            const requiredSelectors = ['#ItemGroup', '#ItemNo', '#ItemName', '#ItemQty', '#UnitPrice', '#TotalPrice'];
-            requiredSelectors.forEach(selector => {
-                const element = document.querySelector(selector);
-                if (element) {
-                    element.addEventListener('input', checkRequiredFields);
-                    element.addEventListener('change', checkRequiredFields);
-                }
+        
+
+
+        const allItems = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.Items));
+        function filterItemByGroup(index) {
+            console.log(index, 'index')
+            const selectedGroup = document.getElementById("ItemGroup_" + index).value;
+            const itemSelect = document.getElementById("ItemName_" + index);
+            console.log(selectedGroup, 'selectedGroup')
+            if(selectedGroup){
+                itemSelect.disabled = false;
+            }
+            // Clear current items
+            itemSelect.innerHTML = '<option value="">Select Item</option>';
+            console.log("selectedgroup",selectedGroup )
+            // Filter and repopulate
+            allItems
+                .filter(item => item.GroupCode === selectedGroup)
+                .forEach(item => {
+                    const option = document.createElement("option");
+                    option.value = item.ItemId;
+                    option.textContent = item.ItemName;
+
+                    option.setAttribute("data-itemno", item.ItemCode);
+                    option.setAttribute("data-itemname", item.ItemName);
+                    option.setAttribute("data-itemdesc", item.ItemDescription);
+                    option.setAttribute("data-unitid", item.UnitId);
+                    option.setAttribute("data-unitname", getUnitName(item.UnitId));
+                    option.setAttribute("data-groupcode", item.GroupCode);
+
+                    itemSelect.appendChild(option);
+                });
+        }
+
+        @{
+            var unitData = Model.Units.Select(unit => new {
+                unit.Id,
+                unit.UnitCode
             });
-            checkRequiredFields(); // Initial check
-        });
+        }
+        const allUnits = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(unitData));
+        function getUnitName(unitId) {
+            const unit = allUnits.find(u => u.Id === unitId);
+            return unit ? unit.UnitCode : '';
+        }
 
         // Supplier filtering based on type
         const allSuppliers = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.Suppliers));
@@ -498,7 +549,7 @@
         });
 
         // Fetch serial number based on fiscal year
-        @* async function fetchSerialNumber() {
+        async function fetchSerialNumber() {
             const year = document.getElementById("FiscalYear").value;
             if (!isNaN(year)) {
                 try {
@@ -512,14 +563,14 @@
             } else {
                 document.getElementById("Serial").innerText = "-----";
             }
-        } *@
+        }
 
-        window.addEventListener("DOMContentLoaded", function () {
+        @* window.addEventListener("DOMContentLoaded", function () {
             const yearInput = document.getElementById("FiscalYear");
             if (yearInput && yearInput.value) {
                 fetchSerialNumber();
             }
-        });
+        }); *@
 
         // Notyf notification for errors
         const notyf = new Notyf({
@@ -565,6 +616,7 @@
             const itemCount = @Model.ItemsForReport.Count;
             console.log(itemCount,"itemCont")
         for (let i = 0; i < itemCount; i++) {
+            console.log("in for loop")
             const itemNoInput = document.getElementById("ItemNo_" + i);
             const itemDropdown = document.getElementById("ItemName_" + i);
             const itemDescription = document.getElementById("ItemDescription_" + i);
@@ -572,36 +624,39 @@
             const quantityInput = document.getElementById("ItemQty_" + i);
             const unitPriceInput = document.getElementById("UnitPrice_" + i);
             const totalPriceInput = document.getElementById("TotalPrice_" + i);
-         if (itemDropdown) {
-            const selectedIndex = itemDropdown.selectedIndex;
-            if (selectedIndex > 0) {
-                            consoe.log("itemdropdown is selected")
+            if (itemDropdown) {
 
-                const selectedOption = itemDropdown.options[selectedIndex];
+                const selectedIndex = itemDropdown.selectedIndex;
+                console.log("selectedIndex", selectedIndex)
 
-                const itemno = selectedOption.getAttribute("data-itemno");
-                const itemdesc = selectedOption.getAttribute("data-itemdesc");
-                const unitname = selectedOption.getAttribute("data-unitname");
-                const groupcode = selectedOption.getAttribute("data-groupcode");
-                itemNoInput.value = itemno || '';
-                itemDescription.value = itemdesc || '';
-                unitInput.value = unitname || '';
-                document.getElementById("ItemGroup_" + i).value = groupcode || '';
-                updateTotal();
+                if (selectedIndex > 0) {
+                                console.log("itemdropdown is selected")
+
+                    const selectedOption = itemDropdown.options[selectedIndex];
+
+                    const itemno = selectedOption.getAttribute("data-itemno");
+                    const itemdesc = selectedOption.getAttribute("data-itemdesc");
+                    const unitname = selectedOption.getAttribute("data-unitname");
+                    const groupcode = selectedOption.getAttribute("data-groupcode");
+                    itemNoInput.value = itemno || '';
+                    itemDescription.value = itemdesc || '';
+                    unitInput.value = unitname || '';
+                    document.getElementById("ItemGroup_" + i).value = groupcode || '';
+                    updateTotal();
+                }
+
+                function updateTotal() {
+                    const quantity = parseFloat(quantityInput.value) || 0;
+                    const unitPrice = parseFloat(unitPriceInput.value) || 0;
+                    const total = quantity * unitPrice;
+                    console.log( 'updateTotal')
+                    totalPriceInput.value = total.toFixed(2);
+                }
+
+                unitPriceInput.addEventListener("input", updateTotal);
+                quantityInput.addEventListener("input", updateTotal);
             }
-
-            function updateTotal() {
-                const quantity = parseFloat(quantityInput.value) || 0;
-                const unitPrice = parseFloat(unitPriceInput.value) || 0;
-                const total = quantity * unitPrice;
-                console.log( 'updateTotal')
-                totalPriceInput.value = total.toFixed(2);
-            }
-
-            unitPriceInput.addEventListener("input", updateTotal);
-            quantityInput.addEventListener("input", updateTotal);
-        }
-        
+            
 
 
       

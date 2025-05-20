@@ -345,7 +345,7 @@
                                             {
                                                 if (item.IsActive == 1 && item.Ended == null)
                                                 {
-                                                    <option value="@item.StoreId" selected="@(item.StoreId == Model.StoreId)">@item.StoreName</option>
+                                                    <option value="@item.StoreName" selected="@(item.StoreId == Model.StoreId)">@item.StoreName</option>
                                                 }
                                             }
                                         }
@@ -436,11 +436,13 @@
                                     <div class="d-flex">
                                         <div class="form-group  me-2 " style="width: 49%;">
                                             <label>@Model.lblItemName (@Model.lblArabicLanguage)</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
+
                                             <select class="ArabicItemName form-select" id="ArabicItemName_@i"  asp-for="@Model.ItemsForReport[@i].ItemCardId" name="ItemsForReport[@i].ItemCardId"  onchange="handleItemChange(event)">
                                                  <option value="">Select Item </option>
                                                    
                                                     @foreach (var item in Model.ItemCards)
                                                     {
+
                                                         <option value="@item.Id"
                                                                 data-id="@item.ItemId"
                                                                 data-group="@item.GroupCode"
