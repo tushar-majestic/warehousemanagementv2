@@ -18,8 +18,9 @@ namespace LabMaterials.DB
         public string ToSector { get; set; } = "General Administration of Educational Services";
 
         [Required]
-        [StringLength(100)]
-        public string FromSector { get; set; }
+        public int FromSectorId { get; set; }
+        [ForeignKey("FromSectorId")]
+        public virtual Requester? FromSector { get; set; }
 
         public DateTime CreatedAt { get; set; }
 
