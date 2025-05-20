@@ -11,6 +11,7 @@ namespace LabMaterials.Pages
     {
         public DateTime? FromDate, ToDate;
         public List<SupplyInfo> Supplies { get; set; }
+        public List<SupplyInfo> SuppliesAll { get; set; }
         public int TotalItems { get; set; }
         [BindProperty]
         public string SupplierName { get; set; }
@@ -20,11 +21,12 @@ namespace LabMaterials.Pages
         public int CurrentPage { get; set; }
         public int ItemsPerPage { get; set; } = 10;
         public int TotalPages { get; set; }
+        public List<string> SelectedColumns { get; set; } = new List<string>();
 
         public string lblMaterialsReceived, lblSearch, lblSupplierName, lblItemName, lblSubmit,
             lblQuantityReceived, lblReceivedAt, lblInventoryBalanced, lblTotalItem,
             lblInventory, lblHazardousMaterials, lblUserActivity, lblDistributedMaterials, lblDamagedItems,
-            lblUserReport, lblExport, lblFromDate, lblToDate;
+            lblUserReport, lblExport, lblFromDate, lblToDate, lblPrint;
         public void OnGet(string? SupplierName,string? ItemName, DateTime? FromDate, DateTime? ToDate, int page = 1)
         {
             base.ExtractSessionData();
@@ -33,7 +35,8 @@ namespace LabMaterials.Pages
                 // this.FromDate = DateTime.Today;
                 // this.ToDate = DateTime.Today;
                 FillLables();
-                 if (HttpContext.Request.Query.ContainsKey("page")){
+                LoadSelectedColumns();
+                if (HttpContext.Request.Query.ContainsKey("page")){
                     string pagevalue = HttpContext.Request.Query["page"];
                     page = int.Parse(pagevalue);
                     this.ItemName = ItemName;
@@ -45,6 +48,54 @@ namespace LabMaterials.Pages
             }
             else
                 RedirectToPage("./Index?lang=" + Lang);
+        }
+        private void LoadSelectedColumns()
+        {
+            int? userId = HttpContext.Session.GetInt32("UserId");
+            if (userId.HasValue)
+            {
+                using (var db = new LabDBContext())
+                {
+                    string pageName = "MaterialReceivedReport";
+                    var existingRecord = db.Tablecolumns.FirstOrDefault(c => c.UserId == userId.Value && c.Page == pageName);
+                    if (existingRecord != null && !string.IsNullOrEmpty(existingRecord.DisplayColumns))
+                    {
+                        SelectedColumns = existingRecord.DisplayColumns.Split(',').ToList();
+                    }
+                    else
+                    {
+                        // SelectedColumns = new List<string>();
+                        string selectedColumns = "supplierName,itemName";
+                        SaveSelectedColumns(userId.Value, pageName, selectedColumns);
+                    }
+                }
+            }
+        }
+        private void SaveSelectedColumns(int userId, string pageName, string selectedColumns)
+        {
+            base.ExtractSessionData();
+            using (var db = new LabDBContext())
+            {
+                var existingRecord = db.Tablecolumns
+                    .FirstOrDefault(c => c.UserId == userId && c.Page == pageName);
+
+                if (existingRecord != null)
+                {
+                    existingRecord.DisplayColumns = selectedColumns;
+                }
+                else
+                {
+                    var newRecord = new Tablecolumn
+                    {
+                        UserId = userId,
+                        Page = pageName,
+                        DisplayColumns = selectedColumns
+                    };
+                    db.Tablecolumns.Add(newRecord);
+                }
+
+                db.SaveChanges();
+            }
         }
 
         public void FillData(string SupplierName, string ItemName, DateTime? FromDate, DateTime? ToDate, int page = 1)
@@ -88,6 +139,7 @@ namespace LabMaterials.Pages
 
                 var list = query.ToList();
                 Supplies = list.Skip((page - 1) * ItemsPerPage).Take(ItemsPerPage).ToList();     
+                SuppliesAll = query.ToList();     
                 CurrentPage = page;
 
                 
@@ -111,6 +163,54 @@ namespace LabMaterials.Pages
             }
             else
                 RedirectToPage("./Index?lang=" + Lang);
+        }
+        public IActionResult OnPostAction(string SupplierName, string ItemName, DateTime? FromDate, DateTime? ToDate, string action, List<string> columns)
+        {
+            base.ExtractSessionData();
+
+            if (action == "search")
+            {
+                this.ItemName = ItemName;
+                this.SupplierName = SupplierName;
+                CurrentPage = 1;
+                this.FromDate = FromDate;
+                this.ToDate = ToDate;
+                if (CanSeeReports)
+                {
+
+                    FillData(SupplierName, ItemName, FromDate, ToDate, CurrentPage);
+
+                }
+
+                int? userId = HttpContext.Session.GetInt32("UserId");
+                string pageName = "MaterialReceivedReport";
+                LoadSelectedColumns();
+            }
+            else if (action == "updateColumns")
+            {
+                if (columns != null && columns.Any())
+                {
+
+                    string selectedColumns = string.Join(",", columns);
+
+                    int? userId = HttpContext.Session.GetInt32("UserId");
+                    string pageName = "MaterialReceivedReport";
+                    this.ItemName = ItemName;
+                    this.SupplierName = SupplierName;
+                    CurrentPage = 1;
+                    this.FromDate = FromDate;
+                    this.ToDate = ToDate;
+                    {
+
+                        FillData(SupplierName, ItemName, FromDate, ToDate, CurrentPage);
+                    }
+                    SaveSelectedColumns(userId.Value, pageName, selectedColumns);
+                    LoadSelectedColumns();
+                }
+
+            }
+
+            return Page();
         }
         public IActionResult OnPostExport()
         {
@@ -192,6 +292,7 @@ namespace LabMaterials.Pages
             this.lblExport = (Program.Translations["Export"])[Lang];
             this.lblFromDate = (Program.Translations["FromDate"])[Lang];
             this.lblToDate = (Program.Translations["ToDate"])[Lang];
+            this.lblPrint = (Program.Translations["Print"])[Lang];
         }
     }
 }
