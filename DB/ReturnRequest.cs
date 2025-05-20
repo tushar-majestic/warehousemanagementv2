@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LabMaterials.DB
 {
@@ -9,7 +10,9 @@ namespace LabMaterials.DB
 
         [Required]
         public DateTime OrderDate { get; set; } = DateTime.UtcNow;
+
         public string OrderNumber { get; set; }
+
         [Required]
         [StringLength(100)]
         public string ToSector { get; set; } = "General Administration of Educational Services";
@@ -17,11 +20,15 @@ namespace LabMaterials.DB
         [Required]
         [StringLength(100)]
         public string FromSector { get; set; }
+
         public DateTime CreatedAt { get; set; }
 
+        // Change this:
         [Required]
-        //[StringLength(100)]
-        public int Warehouse { get; set; }
+        public int WarehouseId { get; set; }
+
+        [ForeignKey("WarehouseId")]
+        public virtual Store? Warehouse { get; set; }  // Navigation property
 
         public bool IsSurplus { get; set; }
         public bool IsExpired { get; set; }
@@ -33,5 +40,4 @@ namespace LabMaterials.DB
 
         public virtual ICollection<ReturnRequestItem> Items { get; set; } = new List<ReturnRequestItem>();
     }
-
 }

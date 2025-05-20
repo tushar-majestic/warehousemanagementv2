@@ -15,7 +15,11 @@ namespace LabMaterials.Pages
         public bool CanManageSupplies { get; set; }
         public bool CanDisburseItems { get; set; }
         public bool CanSeeReports { get; set; }
+        public bool CanManageItemCard { get; set; }
+        public bool CanManageRequests { get; set; }
+        public bool CanGenerateReceivingRequest { get; set; }
         public bool CanManageItemGroup { get; set; }
+        public bool CanGenerateDispensingRequest { get; set; }
         public string dir { get; set; } = "rtl";
         public string Lang { get; set; } = "ar";
 
@@ -39,6 +43,10 @@ namespace LabMaterials.Pages
                 CanDisburseItems = HttpContext.Session.GetInt32("CanDisburseItems") == 1;
                 CanSeeReports = HttpContext.Session.GetInt32("CanSeeReports") == 1;
                 CanManageItemGroup = HttpContext.Session.GetInt32("CanManageItemGroup") == 1;
+                CanManageRequests = HttpContext.Session.GetInt32("CanManageRequests") == 1;
+                CanGenerateReceivingRequest = HttpContext.Session.GetInt32("CanGenerateReceivingRequest") == 1;
+                CanManageItemCard = HttpContext.Session.GetInt32("CanManageItemCard") == 1;
+                CanGenerateDispensingRequest = HttpContext.Session.GetInt32("CanGenerateDispensingRequest") == 1;
                 dir = HttpContext.Session.GetString("Lang") == "en" ? "ltr" : "rtl";
                 Lang = HttpContext.Session.GetString("Lang") == "en" ? "en" : "ar";
                 FillLables();

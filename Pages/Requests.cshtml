@@ -23,7 +23,7 @@
         </div>
 
         
-        @if (@Model.UserGroupName == "Warehouse Keeper")
+        @if (Model.CanManageRequests)
         {
             <div class="btn-toolbar mb-2 mb-md-0">
                 <a href="ReceivingReports" class="btn btn-sm justify-content-center btn-gray-800 mx-2 d-inline-flex align-items-center">
@@ -190,6 +190,12 @@
                                                     
                                                 }
                                                 
+                                            }
+                                            else if(inbox.Type == "Assign Supervisor")
+                                            {
+                                                <button class="btn btn-info btn-sm p-1" data-toggle="modal" data-target="#specifyRecipient" onclick="setAcceptReportId(@inbox.MaterialRequestId, @inbox.Id)">
+                                                      Assign Supervisor
+                                                </button>
                                             }
                                             else if(inbox.Type == "Accepted")
                                             {

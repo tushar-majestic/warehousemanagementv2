@@ -253,6 +253,46 @@ namespace LabMaterials.Pages
                         };
                         dbContext.Messages.Add(msgToKeeper);
 
+                        var deductions = dbContext.PendingDeductions
+                        .Where(p => p.MaterialRequestId == AcceptReportId && !p.Status)
+                        .ToList();
+
+                        foreach (var deduction in deductions)
+                        {
+                            // 1. Reduce from ItemCard table
+                            var itemCard = dbContext.ItemCards.FirstOrDefault(i => i.Id == deduction.ItemCardId);
+                            if (itemCard != null)
+                            {
+                                itemCard.QuantityAvailable -= deduction.ReduceQty;
+                            }
+
+                            // 2. Reduce from ItemCardBatches table (adjust logic as needed)
+                            var batch = dbContext.ItemCardBatches
+                                .Where(b => b.ItemCardId == deduction.ItemCardId)
+                                .Where(b => b.RoomId == deduction.RoomId)
+                                .Where(b => b.ShelfId == deduction.ShelfId)
+                                .FirstOrDefault();
+
+                            if (batch != null && batch.QuantityReceived >= deduction.ReduceQty)
+                            {
+                                batch.QuantityReceived -= deduction.ReduceQty;
+                            }
+
+                            // 3. Reduce from ShelveItems table
+                            var shelveItem = dbContext.ShelveItems
+                                .FirstOrDefault(s => s.ItemCardId == deduction.ItemCardId &&
+                                                    s.ShelfId == deduction.ShelfId );
+
+                            if (shelveItem != null)
+                            {
+                                shelveItem.QuantityAvailable -= deduction.ReduceQty;
+                            }
+
+                            // 4. Mark deduction as completed
+                            deduction.Status = true;
+                        }
+
+
                     }
                 }
 
