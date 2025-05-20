@@ -35,6 +35,8 @@ namespace LabMaterials.Pages
 
         public int MaterialRequestId { get; set; }
         public int reportId { get; set; }
+        public int serialNo { get; set; }
+
 
         public string lblUpdateDisbursement, lblRequesterName, lblItemTypeCode, lblItemName, lblStoreName, lblEditDisbursement, lblItemCode, lblRequestReceivedDate, lblRequestingPlace, lblComments, lblQuantity,
             lblDisbursementStatus, lblInventoryBalanced, lblUpdate, lblCancel, lblDisbursements;
@@ -52,6 +54,8 @@ namespace LabMaterials.Pages
 
             FillLables();
             int? ReceivingReportId = HttpContext.Session.GetInt32("ReceivingReportId");
+            int? serialNo = HttpContext.Session.GetInt32("SerialNo");
+            this.serialNo = serialNo.Value;
             this.MaterialRequestId = ReceivingReportId.Value;
 
 
@@ -65,8 +69,10 @@ namespace LabMaterials.Pages
             Units = dbContext.Units.ToList();
             Report ??= new MaterialRequest();
             ItemGroups = dbContext.ItemGroups.Where(g => g.Units.Count() > 0).ToList();
-            // **Important**: seed one blank DespensedItem so index [0] exists
-            ItemsForReport = new List<DespensedItem> { new DespensedItem() };
+
+             ItemsForReport = dbContext.DespensedItems
+                        .Where(r => r.MaterialRequestId == ReceivingReportId.Value)
+                        .ToList();
 
             //Department Manager list
             var DeptManagerId = dbContext.UserGroups
@@ -123,7 +129,7 @@ namespace LabMaterials.Pages
         public async Task<IActionResult> OnPostAsync([FromForm] DateTime OrderDate, [FromForm] int SerialNumber, [FromForm] string FiscalYear, [FromForm] string RequestDocumentType, [FromForm] int RequestingSector, [FromForm] string Sector, [FromForm] int DeptManagerId)
         {
             
-            
+
             return Page();
         }
 

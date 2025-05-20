@@ -46,13 +46,15 @@
                     @* <a asp-page="/EditReceivingReport" asp-route-id="@report.Id" class="btn btn-sm btn-success me-2 text-white">Edit</a> *@
                     @* <a asp-page="/PrintReceivingReport" asp-route-id="@report.Id" class="btn btn-sm btn-secondary">Print</a> *@
                     
-                    
-                    <form method="post">
-                        <input type="hidden" value="@MaterialRequest.SerialNumber" name="serialNumber" />
-                        <input type="hidden" value="@MaterialRequest.RequestId" name="ReceivingReportId" />
-                        @* <input type="submit" value="Edit" class="btn btn-secondary" asp-page-handler="Edit" /> *@
+                    <div class="d-flex">
+                        <form method="post" class="me-2">
+                            <input type="hidden" value="@MaterialRequest.SerialNumber" name="serialNumber" />
+                            <input type="hidden" value="@MaterialRequest.RequestId" name="ReceivingReportId" />
+                            <input type="submit" value="Edit" class="btn btn-secondary" asp-page-handler="Edit" />
+                        </form>
                         <button id="PrintReport" class="btn btn-primary">Print</button>
-                    </form>
+                    </div>
+
 
                 </div>
             </div>

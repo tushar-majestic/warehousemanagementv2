@@ -80,6 +80,14 @@ namespace LabMaterials.Pages
 
         }
 
+        public IActionResult OnPostEdit([FromForm] int serialNumber, [FromForm] int ReceivingReportId)
+        {
+            HttpContext.Session.SetInt32("SerialNo", serialNumber);
+            HttpContext.Session.SetInt32("ReceivingReportId", ReceivingReportId);
+
+            return RedirectToPage("./EditDisbursement");
+        }
+
         private void FillLables()
         {
 
