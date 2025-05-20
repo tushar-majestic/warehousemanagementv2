@@ -47,7 +47,7 @@
             
         </a>
         
-        @if (Model.UserGroupName == "Warehouse Keeper")
+        @if (Model.UserGroupName == "Warehouse Keeper" || Model.UserGroupName == "Warehouse Manager")
         {
             <a class="nav-link @Model.outboxClass border border-bottom-0" href="?type=outbox">Request Sent</a>
         }
@@ -270,7 +270,7 @@
                                 @foreach (var req in Model.ManagerRequestSent){
                                     
                                     <tr>
-                                        <td>Dispensing Request  has been sent successfully.</td>
+                                        <td>Dispensing Request for <b>@req.WarehouseName</b> has been sent successfully.</td>
                                         @{
                                             var localTime = req.OrderDate.ToLocalTime();
                                         }
@@ -278,11 +278,12 @@
                                         @* <td>@req.CreatedAt</td> *@
                                         <td>
                                           
-                                            @* <form method="post">
-                                                <input type="hidden" value="@req.RequestId" name="InboxId" />
+                                            <form method="post">
+                                                <input type="hidden" value="@req.RequestId" name="MaterialRequestId" />
+                                                <input type="hidden" value="Dispensing" name="ReportType" />
 
                                                 <input type="submit" value="@Model.lblView" class="btn btn-secondary" asp-page-handler="View" />
-                                            </form> *@
+                                            </form>
                                         
                                         </td>
                                     </tr>
