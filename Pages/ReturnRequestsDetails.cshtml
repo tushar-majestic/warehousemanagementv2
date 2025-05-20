@@ -3,16 +3,45 @@
 @{
     ViewData["Title"] = "Return Request Details";
 }
+<div class="py-4">
 
-<div class="container py-4">
-    <h2>Return Request Details</h2>
+    <div class="d-flex justify-content-between w-100 flex-wrap">
+        <div class="mb-3 mb-lg-0">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb bg-transparent p-2 mb-0">
+                    <li class="breadcrumb-item d-flex align-items-center">
+                        <img src="images/home.png" alt="Home" width="16" height="16" class="me-2" />
+                        <a href="/Home" class="text-decoration-none">@Model.lblHome</a>
+                    </li>
+                    <li class="breadcrumb-item d-flex align-items-center">
+                        <img src="images/inventory.png" alt="Home" width="16" height="16" class="me-2" />
+                            <a href="/ViewReturnRequests" class="text-decoration-none">@Model.lblDamagedItems</a>
+                    </li>
+                    <li class="breadcrumb-item d-flex align-items-center">
+                        <img src="images/inventory.png" alt="Home" width="16" height="16" class="me-2" />
+                        @ViewData["Title"] 
+                    </li>
+                </ol>
+            </nav>
+              <h1 class="h4">@ViewData["Title"] </h1>
+            
+        </div>
+    </div>
+</div>
 
-    @if (Model.ReturnRequest == null)
+<div>
+
+
+    @if (Model.ReturnRequest != null)
     {
-        <div class="alert alert-danger">Return request not found.</div>
-    }
-    else
-    {
+       
+    <div class="card mb-4 border shadow-sm">
+     <div class="card-header bg-primary text-white d-flex justify-content-end align-items-center">
+                <div class="d-flex gap-4">
+                    <button id="PrintReport" class="btn btn-primary">Print</button>
+                </div>
+            </div>
+    <div class="card-body">
         <dl class="row">
             <dt class="col-sm-4">Order Number</dt>
             <dd class="col-sm-8">@Model.ReturnRequest.OrderNumber</dd>
@@ -50,13 +79,15 @@
                 <dd class="col-sm-8">@Model.ReturnRequest.Reason</dd>
             }
         </dl>
+    
+
 
         <h4 class="mt-4">Returned Items</h4>
 
         @if (Model.ReturnRequestItems.Any())
         {
-            <table class="table table-bordered">
-                <thead class="table-light">
+            <table class="table table-bordered table-striped">
+                <thead>
                     <tr>
                         <th>Item Name (EN)</th>
                         <th>Code</th>
@@ -65,7 +96,7 @@
                         <th>Expiry</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="itemsTableBody">
                     @foreach (var item in Model.ReturnRequestItems)
                     {
                         <tr>
@@ -78,13 +109,109 @@
                     }
                 </tbody>
             </table>
+        
         }
         else
         {
             <p>No items in this return request.</p>
         }
+         </div>
+    </div>
     }
+     
+    else
+    {
+        <div class="alert alert-danger">Return request not found.</div>
+    }
+   
 
     <a href="/ViewReturnRequests" class="btn btn-secondary mt-3">Back to List</a>
 </div>
 
+<div class="table-size"  id="printArea" style="display: none;">
+<div id="printArea" style="width: 826px;"  dir="@Model.dir">
+    <div align="center" class="header-title">
+        @ViewData["Title"]
+    </div>
+    @{
+        var rep = Model.ReturnRequest;
+    }
+    @if(rep != null){
+        <div class="layout-container">
+            <div class="left-section text-size">
+                Order Number  @rep.OrderNumber<br>
+                Order Date @rep.OrderDate.ToString("yyyy-MM-dd")<br>
+                Page Count<br>
+            </div>
+           
+
+
+            <div class="center-section">
+                <div class="table-1">
+                    <table>
+                        <tr>
+                            <td colspan="8" style="font-weight: 20px; font-weight: 600;">Reason For Return</td>
+                        </tr>
+                        <tr>
+                            <th>Particular</th>
+                            <th></th>
+                            <th>Quantity</th>
+                            <th></th>
+                            <th>Price</th>
+                            <th></th>
+                            <th>Total</th>
+                            <th></th>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr> 
+                      
+                    </table>
+                </div>
+            </div>
+        </div>
+    }    
+    </div>
+</div>
+
+
+@section Scripts{
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+                const printReportBtn = document.getElementById('PrintReport');
+                if (printReportBtn) {
+                    printReportBtn.addEventListener('click', function () {
+                        console.log("PrintReport button clicked");
+
+                        const printContentElement = document.getElementById('printArea');
+                        if (!printContentElement) {
+                            console.error("printArea not found");
+                            return;
+                        }
+
+                        const printContent = printContentElement.innerHTML;
+                        const printWindow = window.open('', '', 'width=800,height=600');
+                        printWindow.document.write('<html><head><title>Receiving Report</title>');
+                        printWindow.document.write('<style>body{font-family: Arial;} table{width:100%;border-collapse:collapse;} th, td{border:1px solid #ddd;padding:8px;} th{background:#f2f2f2;} .text-center{text-align:center;}</style>');
+                        printWindow.document.write('</head><body>');
+
+                            printWindow.document.write(printContent);
+                        printWindow.document.write('</body></html>');
+                        printWindow.document.close();
+                        printWindow.focus();
+                        printWindow.print();
+                    });
+                } else {
+                    console.warn("PrintReport button not found");
+                }
+            });
+
+    </script>
+}
