@@ -30,7 +30,7 @@ public partial class MaterialRequest
     public string RequestDocumentType { get; set; } = null;
     public string DocumentNumber { get; set; } = null;
     public string Sector { get; set; } = null!;
-    public string WarehouseName { get; set; } = null;
+    public int? WarehouseId { get; set; } = null;
     public bool KeeperApproval { get; set; }
     public DateTime? KeeperApprovalDate { get; set; }
 

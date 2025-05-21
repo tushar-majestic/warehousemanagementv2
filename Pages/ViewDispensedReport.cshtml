@@ -39,9 +39,10 @@
     @if (Model.MaterialRequest != null)
     {
         var MaterialRequest = Model.MaterialRequest;
+        var StoreName = Model.Stores.FirstOrDefault(i => i.StoreId == MaterialRequest.WarehouseId)?.StoreName ?? "";
         <div class="card mb-4 border shadow-sm">
             <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-                <strong>Receiving Report - Serial No: @MaterialRequest.SerialNumber</strong>
+                <strong>@Model.lblMaterialDispensing - Serial No: @MaterialRequest.SerialNumber</strong>
                 <div>
                     @* <a asp-page="/EditReceivingReport" asp-route-id="@report.Id" class="btn btn-sm btn-success me-2 text-white">Edit</a> *@
                     @* <a asp-page="/PrintReceivingReport" asp-route-id="@report.Id" class="btn btn-sm btn-secondary">Print</a> *@
@@ -56,7 +57,8 @@
                         }
 
                         
-                        <button id="PrintReport" class="btn btn-primary">Print</button>
+                        <button id="PrintReport" class="btn btn-primary">@Model.lblPrint</button>
+
                     </div>
 
 
@@ -74,26 +76,25 @@
                 </div> *@
 
                 <dl class="row">
-                    <dt class="col-sm-3">Fiscal Year</dt>
+                    <dt class="col-sm-3">@Model.lblFiscalYear</dt>
                     <dd class="col-sm-3">@MaterialRequest.FiscalYear</dd>
 
                     <dt class="col-sm-3">Request Date</dt>
                     <dd class="col-sm-3">@MaterialRequest.CreatedAt?.ToString("yyyy-MM-dd")</dd>
 
-                    <dt class="col-sm-3">Requesting Sector</dt>
+                    <dt class="col-sm-3">@Model.lblRequestingSector</dt>
                     <dd class="col-sm-3">@Model.RequestingSector</dd>
 
-                    <dt class="col-sm-3">Sector</dt>
+                    <dt class="col-sm-3">@Model.lblSector</dt>
                     <dd class="col-sm-3">@MaterialRequest.Sector</dd>
                     
-                    
                     <dt class="col-sm-3">Receiving Warehouse</dt>
-                    <dd class="col-sm-3">@MaterialRequest.WarehouseName</dd>
+                    <dd class="col-sm-3">@StoreName</dd>
 
-                    <dt class="col-sm-3">Document Type</dt>
+                    <dt class="col-sm-3">@Model.lblRequestDocumentType</dt>
                     <dd class="col-sm-3">@MaterialRequest.RequestDocumentType</dd>
 
-                    <dt class="col-sm-3">Document No.</dt>
+                    <dt class="col-sm-3">@Model.lblRequestDocumentNumber</dt>
                     <dd class="col-sm-3">@MaterialRequest.DocumentNumber</dd>
 
                     <dt class="col-sm-3">Order Date</dt>
@@ -105,8 +106,8 @@
                     <dt class="col-sm-3">Keeper</dt>
                     <dd class="col-sm-3">@Model.Keeper</dd>
 
-                    <dt class="col-sm-3">Technical Member</dt>
-                    <dd class="col-sm-3">TechnicalMember</dd>
+                    @* <dt class="col-sm-3">Technical Member</dt>
+                    <dd class="col-sm-3">TechnicalMember</dd> *@
 
                     <dt class="col-sm-3">General Supervisor</dt>
                         @if(Model.GeneralSupervisor != null){
@@ -133,7 +134,6 @@
                         @foreach (var item in Model.DispensedItems)
                         {
                             var ItemName = Model.ItemCards.FirstOrDefault(i => i.Id == item.ItemCardId)?.ItemName ?? "";
-
                             <tr>
                                 <td>@item.Comments</td>
                                 <td>@ItemName</td>
@@ -160,25 +160,26 @@
         <tr>
             <td colspan="10">
                 <div align="center" style=" margin-top: 20px; margin-bottom: 40px; font-weight: bold;">
-                  ReceivingItems
+                  Material Dispensing
                 </div>
-                @* @{
+                @{
                     var rep = Model.MaterialRequest;
-                } *@
+                    var WarehouseName = Model.Stores.FirstOrDefault(i => i.StoreId == rep.WarehouseId)?.StoreName ?? "";
+                }
                 <table class="nested-table" border="0" width="100%">
                     <tr >
-                       <td style="width: 15%;border: none; font-size: 14px;white-space: nowrap;" >lblRecipientSector</td>
-                        <td style="width: 15%;border: none; font-size: 14px;">RecipientSector</td>
+                       <td style="width: 15%;border: none; font-size: 14px;white-space: nowrap;" >Name of Requesting Sector</td>
+                        <td style="width: 15%;border: none; font-size: 14px;">@Model.RequestingSector</td>
                         <td style="width: 15%;border: none;font-size: 14px;"></td>
-                        <td style="width: 15%;border: none;font-size: 14px;white-space: nowrap;" align="center">SupplierName</td>
-                        <td style="width: 15%;border: none;font-size: 14px;white-space: nowrap;">SupplierName</td>
-                        <td style="width: 15%;border: none;font-size: 14px;" align="right">lblSerialNo</td>
-                        <td style="width: 15%;border: none;font-size: 14px;">SerialNumber</td>
+                        <td style="width: 15%;border: none;font-size: 14px;white-space: nowrap;" align="center"></td>
+                        <td style="width: 15%;border: none;font-size: 14px;white-space: nowrap;"></td>
+                        <td style="width: 15%;border: none;font-size: 14px;" align="right">@Model.lblSerialNo</td>
+                        <td style="width: 15%;border: none;font-size: 14px;">@rep.SerialNumber</td>
                         
                     </tr>
                     <tr>
-                       <td style="width: 15%;border: none;font-size: 14px;">lblSectorNo</td>
-                        <td style="width: 15%;border: none;font-size: 14px;">Sector</td>
+                       <td style="width: 15%;border: none;font-size: 14px;">@Model.lblSector</td>
+                        <td style="width: 15%;border: none;font-size: 14px;">@rep.Sector</td>
                         <td style="width: 15%;border: none;font-size: 14px;"></td>
                         <td style="width: 15%;border: none;font-size: 14px;"></td>
                         <td style="width: 15%;border: none;font-size: 14px;"></td>
@@ -187,24 +188,24 @@
                         
                     </tr>
                     <tr>
-                        <td style="width: 15%;border: none;font-size: 14px;white-space: nowrap;" >RecipientWarehouse</td>
-                        <td style="width: 15%;border: none;font-size: 14px;">ReceivingWarehouse</td>
+                        <td style="width: 15%;border: none;font-size: 14px;white-space: nowrap;" >Warehouse</td>
+                        <td style="width: 15%;border: none;font-size: 14px;">@WarehouseName</td>
                         <td style="width: 15%;border: none;font-size: 14px;"></td>
                         <td style="width: 15%;border: none;font-size: 14px;"></td>
                         <td style="width: 15%;border: none;font-size: 14px;"></td>
-                        <td style="width: 15%;border: none;font-size: 14px;white-space: nowrap;" align="right">lblDateOfReceipt</td>
-                        <td style="width: 15%;border: none;font-size: 14px;white-space: nowrap;">OrderDate</td>
+                        <td style="width: 15%;border: none;font-size: 14px;white-space: nowrap;" align="right">OrderDate</td>
+                        <td style="width: 15%;border: none;font-size: 14px;white-space: nowrap;"> @rep.CreatedAt?.ToString("yyyy-MM-dd")</td>
                         
                     </tr>
                     <tr>
-                        <td style="width: 15%;border: none;font-size: 14px;white-space: nowrap;">BasedOnDocument</td>
-                        <td style="width: 15%;border: none;font-size: 14px;">DocumentNumber</td>
-                        <td style="width: 15%;border: none;font-size: 14px;white-space: nowrap" align="center">DocumentNo</td>
-                        <td style="width: 15%;border: none;font-size: 14px;;">DocumentNumber</td>
-                        <td style="width: 15%;border: none;font-size: 14px;white-space: nowrap;" align="center">DocumentDate</td>
-                        <td style="width: 15%;border: none;font-size: 14px;">OrderDate</td>
-                        <td style="width: 15%;border: none;font-size: 14px;"  align="right">FiscalYear</td>
-                        <td style="width: 15%;border: none;font-size: 14px;white-space: nowrap;">FiscalYear</td>
+                        <td style="width: 15%;border: none;font-size: 14px;white-space: nowrap;"></td>
+                        <td style="width: 15%;border: none;font-size: 14px;"></td>
+                        <td style="width: 15%;border: none;font-size: 14px;white-space: nowrap" align="center"></td>
+                        <td style="width: 15%;border: none;font-size: 14px;;"></td>
+                        <td style="width: 15%;border: none;font-size: 14px;white-space: nowrap;" align="center"></td>
+                        <td style="width: 15%;border: none;font-size: 14px;"></td>
+                        <td style="width: 15%;border: none;font-size: 14px;white-space: nowrap;">@Model.lblFiscalYear</td>
+                        <td style="width: 15%;border: none;font-size: 14px;white-space: nowrap;">@rep.FiscalYear</td>
                     </tr>
                 </table>
             </td>
@@ -212,7 +213,7 @@
         <tr>
             <th style="width: 5%;font-size: 14px;" rowspan="2">Count</th>
             <th style="width: 5%;font-size: 14px;" rowspan="2">ItemNo</th>
-            <th style="width: 20%;font-size: 14px;" rowspan="2">ItemNameDescription</th>
+            <th style="width: 20%;font-size: 14px;" rowspan="2">ItemName</th>
             <th style="width: 3%;font-size: 14px;" rowspan="2">UnitOfMeasure</th>
             <th style="width: 3%;font-size: 14px;" rowspan="2">Quantity</th>
             <th style="width: 7%;font-size: 14px;" colspan="2">UnitPrice</th>
@@ -225,23 +226,26 @@
             <td style="width: 3.5%;font-size: 14px; text-align: center;"></td>
             <td style="width: 3.5%;font-size: 14px; text-align: center;">SAR</td>
         </tr>
-        @* @foreach (var item in Model.DispensedItems)
-            var Item = Model.Items.FirstOrDefault(i => i.ItemId == item.MaterialRequestId);      
-            var UnitMeasure = Model.Units.FirstOrDefault(u => u.Id == Item.UnitId).UnitCode ?? ""; *@
-            <tr>
-                <td style="font-size: 14px;">&nbsp;</td>
-                <td style="font-size: 14px;">Quantity</td>
-                <td style="font-size: 14px;">ItemDescription</td>
-                <td style="font-size: 14px;">UnitMeasure</td>
-                <td style="font-size: 14px;">Quantity</td>
-                <td style="font-size: 14px;"></td>
-                <td style="font-size: 14px;">UnitPrice</td>
-                <td style="font-size: 14px;">&nbsp;</td>
-                <td style="font-size: 14px;">UnitPrice)</td>
-                <td style="font-size: 14px;">Comments</td>
+        @if (Model.DispensedItems != null){
+            var count = 1;
+            @foreach (var item in Model.DispensedItems) {
+                var ItemCard = Model.ItemCards.FirstOrDefault(i => i.Id == item.ItemCardId);
+                <tr>
+                    <td style="font-size: 14px;">@count.</td>
+                    <td style="font-size: 14px;">@ItemCard.ItemCode</td>
+                    <td style="font-size: 14px;">@ItemCard.ItemName</td>
+                    <td style="font-size: 14px;">@ItemCard.UnitOfmeasure</td>
+                    <td style="font-size: 14px;">@item.Quantity</td>
+                    <td style="font-size: 14px;"></td>
+                    <td style="font-size: 14px;">@item.UnitPrice</td>
+                    <td style="font-size: 14px;">&nbsp;</td>
+                    <td style="font-size: 14px;">@item.TotalPrice</td>
+                    <td style="font-size: 14px;">@item.Comments</td>
 
-            </tr>
-        @* } *@
+                </tr>
+                count++;
+            }
+        }
         <tr>
             <td style="font-size: 14px;">&nbsp;</td>
             <td style="font-size: 14px;">&nbsp;</td>
@@ -249,16 +253,51 @@
             <td colspan="7" >TotalPrice</td>
         </tr>
         <tr>
-            <td colspan="2" style="text-align: center;font-size: 14px;"><b>Recipient</b></td>
-            <td colspan="2.5" style="text-align: center;font-size: 14px;"><b>TechnicalMember</b></td>
-            <td colspan="5" style="text-align: center;font-size: 14px;"><b>ChiefResponsible</b></td>
+            <td colspan="2" style="text-align: center;font-size: 14px;"><b>Warehouse Manager</b></td>
+            <td colspan="1" style="text-align: center;font-size: 14px;"><b>Dept. Manager</b></td>
+            <td colspan="3.5" style="text-align: center;font-size: 14px;"><b>Warehouse Keeper</b></td>
+            <td colspan="3" style="text-align: center;font-size: 14px;"><b>Supervisor</b></td>
             <td>&nbsp;</td>
         </tr>
         <tr>
-            <td rowspan="2" colspan="2" style="text-align: center;font-size: 14px;"></td>
-            <td colspan="2.5"></td>
-            <td colspan="5"></td>
+            <td rowspan="2" colspan="2" style="text-align: center;font-size: 14px;">@rep.CreatedAt</td>
+            <td colspan="1">@rep.DeptManagerApprovalDate</td>
+            <td colspan="3.5">@rep.KeeperApprovalDate</td>
+            <td colspan="3">@rep.SupervisorApprovalDate</td>
             <td style=" text-align: center;font-size: 14px;">Name<br>Signature<br>Date</td>
         </tr>
     </table>
 </div>
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const printReportBtn = document.getElementById('PrintReport');
+            if (printReportBtn) {
+                printReportBtn.addEventListener('click', function () {
+                    console.log("PrintReport button clicked");
+
+                    const printContentElement = document.getElementById('printArea');
+                    if (!printContentElement) {
+                        console.error("printArea not found");
+                        return;
+                    }
+
+                    const printContent = printContentElement.innerHTML;
+                    const printWindow = window.open('', '', 'width=800,height=600');
+                    printWindow.document.write('<html><head><title>Receiving Report</title>');
+                    printWindow.document.write('<style>body{font-family: Arial;} table{width:100%;border-collapse:collapse;} th, td{border:1px solid #ddd;padding:8px;} th{background:#f2f2f2;} .text-center{text-align:center;}</style>');
+                    printWindow.document.write('</head><body>');
+                    @* printWindow.document.write('<h1>Receiving Report - Serial No: 15</h1>'); *@
+                        printWindow.document.write(printContent);
+                    printWindow.document.write('</body></html>');
+                    printWindow.document.close();
+                    printWindow.focus();
+                    printWindow.print();
+                });
+            } else {
+                console.warn("PrintReport button not found");
+            }
+        });
+
+    </script>
+}

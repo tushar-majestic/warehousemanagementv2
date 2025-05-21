@@ -94,7 +94,7 @@ namespace LabMaterials.Pages
                     {
                         DocumentNumber = DispensingReport.DocumentNumber,
                         RequestingSector = DispensingReport.RequestingSector,
-                        WarehouseName = DispensingReport.WarehouseName
+                        WarehouseId = DispensingReport.WarehouseId
                     };
                 }
 
