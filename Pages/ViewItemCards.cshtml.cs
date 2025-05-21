@@ -17,6 +17,7 @@ namespace LabMaterials.Pages
         public string ItemCardId { get; set; }
         public Room Room { get; set; }
         public Supplier Supplier { get; set; }
+        // public DespensedItem DespensedItem { get; set; }
         // public Store Store { get; set; }
 
         public string ItemTypeCode;
@@ -58,6 +59,7 @@ namespace LabMaterials.Pages
             BatchDetails = await _context.ItemCardBatches
                 .Include(b => b.Room)
                 .Include(b => b.Supplier)
+                // .Include(b => b.DespensedItem)
                 .Where(b => b.ItemCardId == int.Parse(this.ItemCardId))
                 .ToListAsync();
 
