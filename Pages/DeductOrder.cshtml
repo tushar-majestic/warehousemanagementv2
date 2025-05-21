@@ -100,7 +100,7 @@
                                 </div>
                             </div>
 
-                            <div class="d-flex justify-content-between">
+                            <div class="d-flex justify-content-between room-row">
 
                                 @* <div class="form-group w-23">
                                     <label >TypeOfAsset</label>
@@ -114,7 +114,7 @@
                                 <div class="form-group w-23">
                                     <label >Room Number</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
                                     @if(Model.Rooms != null){
-                                        <select class="form-control" asp-for="ItemCardsFromReport[i].RoomId" id="RoomNo" onchange="filterShelfByRoom()" required>
+                                        <select class="form-control RoomNo" asp-for="ItemCardsFromReport[i].RoomId" id="RoomNo_@i" onchange="filterShelfByRoom(@i)" required>
                                             <option value="">Select Room by number</option>
                                             @foreach(var r in Model.Rooms){
                                                 <option value="@r.RoomId">@r.RoomNo</option>
@@ -127,7 +127,7 @@
                                 <div class="form-group w-23">
                                     <label >Room Name</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
                                     @if(Model.Rooms != null){
-                                        <select class="form-control" id="RoomName" onchange="filterShelfByRoom()" required>
+                                        <select class="form-control RoomName" id="RoomName_@i" onchange="filterShelfByRoom(@i)" required>
                                             <option value="">Select Room</option>
                                             @foreach(var r in Model.Rooms){
                                                 <option value="@r.RoomId">@r.RoomName</option>
@@ -140,7 +140,7 @@
 
                                 <div class="form-group w-23">
                                     <label>Shelf No.</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
-                                    <select class="form-control" id="ShelfId" asp-for="ItemCardsFromReport[i].ShelfId" disabled required>
+                                    <select class="form-control ShelfId" id="ShelfId_@i" asp-for="ItemCardsFromReport[i].ShelfId" disabled required>
                                         <option value="">Select Shelf</option>
                                     </select>
                                 </div>
@@ -199,54 +199,56 @@
 
         
         document.addEventListener("DOMContentLoaded", function () {
-            const roomNoSelect = document.getElementById("RoomNo");
-            const roomNameSelect = document.getElementById("RoomName");
-            const shelfSelect = document.getElementById("ShelfId");
+            const rows = document.querySelectorAll(".room-row");
 
-            function updateShelfAvailability() {
-                const roomNoSelected = roomNoSelect.value !== "";
-                const roomNameSelected = roomNameSelect.value !== "";
+            rows.forEach(row => {
+                const roomNoSelect = row.querySelector(".RoomNo");
+                const roomNameSelect = row.querySelector(".RoomName");
+                const shelfSelect = row.querySelector(".ShelfId");
 
-                // Enable shelf dropdown if any room is selected
-                if (roomNoSelected || roomNameSelected) {
-                    shelfSelect.disabled = false;
-                    console.log("room  selected", roomNoSelect)
-                } else {
-                    shelfSelect.disabled = true;
-                                        console.log("room not selected")
+                function updateShelfAvailability() {
+                    const roomNoSelected = roomNoSelect.value !== "";
+                    const roomNameSelected = roomNameSelect.value !== "";
 
-                    shelfSelect.selectedIndex = 0; // Optional: reset selection
+                    if (roomNoSelected || roomNameSelected) {
+                        shelfSelect.disabled = false;
+                        console.log("Room selected in row", row);
+                    } else {
+                        shelfSelect.disabled = true;
+                        shelfSelect.selectedIndex = 0;
+                        console.log("Room not selected in row", row);
+                    }
                 }
-            }
 
-            roomNoSelect.addEventListener("change", function () {
-                const selectedValue = this.value;
-                if (selectedValue) {
-                    roomNameSelect.value = selectedValue;
+                roomNoSelect.addEventListener("change", function () {
+                    const selectedValue = this.value;
+                    roomNameSelect.value = selectedValue || "";
                     updateShelfAvailability();
-                } else {
-                    roomNameSelect.value = "";
-                }
-            });
+                });
 
-            roomNameSelect.addEventListener("change", function () {
-                const selectedValue = this.value;
-                if (selectedValue) {
-                    roomNoSelect.value = selectedValue;
+                roomNameSelect.addEventListener("change", function () {
+                    const selectedValue = this.value;
+                    roomNoSelect.value = selectedValue || "";
                     updateShelfAvailability();
-                } else {
-                    roomNoSelect.value = "";
-                }
+                });
+
+                // Initialize the state
+                updateShelfAvailability();
             });
-            updateShelfAvailability();
         });
 
-         function filterShelfByRoom() {
-            var roomId = document.getElementById("RoomNo").value || document.getElementById("RoomName").value ;
+
+         function filterShelfByRoom(i) {
+             const roomNoSelect = document.getElementById(`RoomNo_${i}`);
+            const roomNameSelect = document.getElementById(`RoomName_${i}`);
+            const roomId = roomNoSelect.value || roomNameSelect.value;
+
+           
+
             fetch(`/DeductOrder?handler=ShelvesByRoom&roomId=${roomId}`)
                 .then(response => response.json())
                 .then(data => {
-                    var shelfSelect = document.getElementById("ShelfId");
+                    var shelfSelect = document.getElementById("ShelfId_"+i);
                     shelfSelect.innerHTML = '<option value="">Select Shelf</option>';
                     data.forEach(shelf => {
                         var option = document.createElement("option");
