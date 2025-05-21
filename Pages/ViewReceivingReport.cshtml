@@ -43,17 +43,20 @@
         <div class="card mb-4 border shadow-sm">
             <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
                 <strong>Receiving Report - Serial No: @report.SerialNumber</strong>
-                <div>
+                <div class="d-flex gap-4">
                     @* <a asp-page="/EditReceivingReport" asp-route-id="@report.Id" class="btn btn-sm btn-success me-2 text-white">Edit</a> *@
                     @* <a asp-page="/PrintReceivingReport" asp-route-id="@report.Id" class="btn btn-sm btn-secondary">Print</a> *@
                     
+                    @if(!report.GeneralSupApproval){
+                        <form method="post">
+                            <input type="hidden" value="@report.SerialNumber" name="serialNumber" />
+                            <input type="hidden" value="@report.Id" name="ReceivingReportId" />
+                            <input type="submit" value="Edit" class="btn btn-secondary" asp-page-handler="Edit" />
+                        </form>
+                    }
                     
-                    <form method="post">
-                        <input type="hidden" value="@report.SerialNumber" name="serialNumber" />
-                        <input type="hidden" value="@report.Id" name="ReceivingReportId" />
-                        @* <input type="submit" value="Edit" class="btn btn-secondary" asp-page-handler="Edit" /> *@
-                        <button id="PrintReport" class="btn btn-primary">Print</button>
-                    </form>
+                    <button id="PrintReport" class="btn btn-primary">Print</button>
+
 
                 </div>
             </div>
@@ -163,49 +166,54 @@
                 </div>
                 @{
                     var rep = Model.Report;
+                    
                 }
-                <table class="nested-table" border="0" width="100%">
-                    <tr >
-                       <td style="width: 15%;border: none; font-size: 14px;white-space: nowrap;" >@Model.lblRecipientSector</td>
-                        <td style="width: 15%;border: none; font-size: 14px;">@rep.RecipientSector</td>
-                        <td style="width: 15%;border: none;font-size: 14px;"></td>
-                        <td style="width: 15%;border: none;font-size: 14px;white-space: nowrap;" align="center">@Model.lblSupplierName</td>
-                        <td style="width: 15%;border: none;font-size: 14px;white-space: nowrap;">@rep.Supplier?.SupplierName</td>
-                        <td style="width: 15%;border: none;font-size: 14px;" align="right">@Model.lblSerialNo</td>
-                        <td style="width: 15%;border: none;font-size: 14px;">@rep.SerialNumber</td>
-                        
-                    </tr>
-                    <tr>
-                       <td style="width: 15%;border: none;font-size: 14px;">@Model.lblSectorNo</td>
-                        <td style="width: 15%;border: none;font-size: 14px;">@rep.SectorNumber</td>
-                        <td style="width: 15%;border: none;font-size: 14px;"></td>
-                        <td style="width: 15%;border: none;font-size: 14px;"></td>
-                        <td style="width: 15%;border: none;font-size: 14px;"></td>
-                        <td style="width: 15%;border: none;font-size: 14px;"  align="right">@Model.lblPageCount</td>
-                        <td style="width: 15%;border: none;font-size: 14px;"></td>
-                        
-                    </tr>
-                    <tr>
-                        <td style="width: 15%;border: none;font-size: 14px;white-space: nowrap;" >@Model.lblRecipientWarehouse</td>
-                        <td style="width: 15%;border: none;font-size: 14px;">@Model.ReceivingWarehouse</td>
-                        <td style="width: 15%;border: none;font-size: 14px;"></td>
-                        <td style="width: 15%;border: none;font-size: 14px;"></td>
-                        <td style="width: 15%;border: none;font-size: 14px;"></td>
-                        <td style="width: 15%;border: none;font-size: 14px;white-space: nowrap;" align="right">@Model.lblDateOfReceipt</td>
-                        <td style="width: 15%;border: none;font-size: 14px;white-space: nowrap;">@rep.ReceivingDate.ToString("yyyy-MM-dd")</td>
-                        
-                    </tr>
-                    <tr>
-                        <td style="width: 15%;border: none;font-size: 14px;white-space: nowrap;">@Model.lblBasedOnDocument</td>
-                        <td style="width: 15%;border: none;font-size: 14px;">@rep.BasedOnDocument</td>
-                        <td style="width: 15%;border: none;font-size: 14px;white-space: nowrap" align="center">@Model.lblDocumentNo</td>
-                        <td style="width: 15%;border: none;font-size: 14px;;">@rep.DocumentNumber</td>
-                        <td style="width: 15%;border: none;font-size: 14px;white-space: nowrap;" align="center">@Model.lblDocumentDate</td>
-                        <td style="width: 15%;border: none;font-size: 14px;">@rep.DocumentDate.ToString("yyyy-MM-dd")</td>
-                        <td style="width: 15%;border: none;font-size: 14px;"  align="right">@Model.lblFiscalYear</td>
-                        <td style="width: 15%;border: none;font-size: 14px;white-space: nowrap;">@rep.FiscalYear</td>
-                    </tr>
-                </table>
+                @if(rep != null){
+
+                
+                    <table class="nested-table" border="0" width="100%">
+                        <tr >
+                        <td style="width: 15%;border: none; font-size: 14px;white-space: nowrap;" >@Model.lblRecipientSector</td>
+                            <td style="width: 15%;border: none; font-size: 14px;">@rep.RecipientSector</td>
+                            <td style="width: 15%;border: none;font-size: 14px;"></td>
+                            <td style="width: 15%;border: none;font-size: 14px;white-space: nowrap;" align="center">@Model.lblSupplierName</td>
+                            <td style="width: 15%;border: none;font-size: 14px;white-space: nowrap;">@rep.Supplier?.SupplierName</td>
+                            <td style="width: 15%;border: none;font-size: 14px;" align="right">@Model.lblSerialNo</td>
+                            <td style="width: 15%;border: none;font-size: 14px;">@rep.SerialNumber</td>
+                            
+                        </tr>
+                        <tr>
+                        <td style="width: 15%;border: none;font-size: 14px;">@Model.lblSectorNo</td>
+                            <td style="width: 15%;border: none;font-size: 14px;">@rep.SectorNumber</td>
+                            <td style="width: 15%;border: none;font-size: 14px;"></td>
+                            <td style="width: 15%;border: none;font-size: 14px;"></td>
+                            <td style="width: 15%;border: none;font-size: 14px;"></td>
+                            <td style="width: 15%;border: none;font-size: 14px;"  align="right">@Model.lblPageCount</td>
+                            <td style="width: 15%;border: none;font-size: 14px;"></td>
+                            
+                        </tr>
+                        <tr>
+                            <td style="width: 15%;border: none;font-size: 14px;white-space: nowrap;" >@Model.lblRecipientWarehouse</td>
+                            <td style="width: 15%;border: none;font-size: 14px;">@Model.ReceivingWarehouse</td>
+                            <td style="width: 15%;border: none;font-size: 14px;"></td>
+                            <td style="width: 15%;border: none;font-size: 14px;"></td>
+                            <td style="width: 15%;border: none;font-size: 14px;"></td>
+                            <td style="width: 15%;border: none;font-size: 14px;white-space: nowrap;" align="right">@Model.lblDateOfReceipt</td>
+                            <td style="width: 15%;border: none;font-size: 14px;white-space: nowrap;">@rep.ReceivingDate.ToString("yyyy-MM-dd")</td>
+                            
+                        </tr>
+                        <tr>
+                            <td style="width: 15%;border: none;font-size: 14px;white-space: nowrap;">@Model.lblBasedOnDocument</td>
+                            <td style="width: 15%;border: none;font-size: 14px;">@rep.BasedOnDocument</td>
+                            <td style="width: 15%;border: none;font-size: 14px;white-space: nowrap" align="center">@Model.lblDocumentNo</td>
+                            <td style="width: 15%;border: none;font-size: 14px;;">@rep.DocumentNumber</td>
+                            <td style="width: 15%;border: none;font-size: 14px;white-space: nowrap;" align="center">@Model.lblDocumentDate</td>
+                            <td style="width: 15%;border: none;font-size: 14px;">@rep.DocumentDate.ToString("yyyy-MM-dd")</td>
+                            <td style="width: 15%;border: none;font-size: 14px;"  align="right">@Model.lblFiscalYear</td>
+                            <td style="width: 15%;border: none;font-size: 14px;white-space: nowrap;">@rep.FiscalYear</td>
+                        </tr>
+                    </table>
+                }
             </td>
         </tr>
         <tr>
@@ -224,22 +232,26 @@
             <td style="width: 3.5%;font-size: 14px; text-align: center;"></td>
             <td style="width: 3.5%;font-size: 14px; text-align: center;">@Model.lblSAR</td>
         </tr>
-        @foreach(var item in Model.ReceivingItems){
-            var Item = Model.Items.FirstOrDefault(i => i.ItemId == item.ItemId);      
-            var UnitMeasure = Model.Units.FirstOrDefault(u => u.Id == Item.UnitId).UnitCode ?? "";;
-            <tr>
-                <td style="font-size: 14px;">&nbsp;</td>
-                <td style="font-size: 14px;">@Item.ItemCode</td>
-                <td style="font-size: 14px;">@Item.ItemName- @Item.ItemDescription</td>
-                <td style="font-size: 14px;">@UnitMeasure</td>
-                <td style="font-size: 14px;">@item.Quantity</td>
-                <td style="font-size: 14px;"></td>
-                <td style="font-size: 14px;">@item.UnitPrice</td>
-                <td style="font-size: 14px;">&nbsp;</td>
-                <td style="font-size: 14px;">@(item.Quantity * item.UnitPrice)</td>
-                <td style="font-size: 14px;">@item.Comments</td>
+        @if(Model.ReceivingItems != null){
 
-            </tr>
+    
+            @foreach(var item in Model.ReceivingItems){
+                var Item = Model.Items.FirstOrDefault(i => i.ItemId == item.ItemId);      
+                var UnitMeasure = Model.Units.FirstOrDefault(u => u.Id == Item.UnitId).UnitCode ?? "";;
+                <tr>
+                    <td style="font-size: 14px;">&nbsp;</td>
+                    <td style="font-size: 14px;">@Item.ItemCode</td>
+                    <td style="font-size: 14px;">@Item.ItemName- @Item.ItemDescription</td>
+                    <td style="font-size: 14px;">@UnitMeasure</td>
+                    <td style="font-size: 14px;">@item.Quantity</td>
+                    <td style="font-size: 14px;"></td>
+                    <td style="font-size: 14px;">@item.UnitPrice</td>
+                    <td style="font-size: 14px;">&nbsp;</td>
+                    <td style="font-size: 14px;">@(item.Quantity * item.UnitPrice)</td>
+                    <td style="font-size: 14px;">@item.Comments</td>
+
+                </tr>
+            }
         }
         <tr>
             <td style="font-size: 14px;">&nbsp;</td>
@@ -261,3 +273,37 @@
         </tr>
     </table>
 </div>
+
+@section Scripts{
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+                const printReportBtn = document.getElementById('PrintReport');
+                if (printReportBtn) {
+                    printReportBtn.addEventListener('click', function () {
+                        console.log("PrintReport button clicked");
+
+                        const printContentElement = document.getElementById('printArea');
+                        if (!printContentElement) {
+                            console.error("printArea not found");
+                            return;
+                        }
+
+                        const printContent = printContentElement.innerHTML;
+                        const printWindow = window.open('', '', 'width=800,height=600');
+                        printWindow.document.write('<html><head><title>Receiving Report</title>');
+                        printWindow.document.write('<style>body{font-family: Arial;} table{width:100%;border-collapse:collapse;} th, td{border:1px solid #ddd;padding:8px;} th{background:#f2f2f2;} .text-center{text-align:center;}</style>');
+                        printWindow.document.write('</head><body>');
+            @* printWindow.document.write('<h1>Receiving Report - Serial No: 15</h1>'); *@
+                            printWindow.document.write(printContent);
+                        printWindow.document.write('</body></html>');
+                        printWindow.document.close();
+                        printWindow.focus();
+                        printWindow.print();
+                    });
+                } else {
+                    console.warn("PrintReport button not found");
+                }
+            });
+
+    </script>
+}

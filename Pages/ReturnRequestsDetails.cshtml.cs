@@ -20,7 +20,9 @@ namespace LabMaterials.Pages
         {
             base.ExtractSessionData();
             ReturnRequest = await _context.ReturnRequests
+                .Include(r => r.Warehouse)
                 .Include(r => r.Items)
+                .Include(r => r.FromSector)
                 .FirstOrDefaultAsync(r => r.Id == id);
 
             if (ReturnRequest == null)

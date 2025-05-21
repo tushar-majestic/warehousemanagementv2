@@ -213,7 +213,7 @@
                 @if (Model.CanSeeReports)
                 {
                     <li class="nav-item @(Context.Request.Path == "/Rep_MaterialsReceived" || Context.Request.Path == "/Rep_Distribution" || Context.Request.Path == "/Rep_Inventory"  || Context.Request.Path == "/Rep_HazardMaterial" || Context.Request.Path == "/Rep_UserActivity" || Context.Request.Path == "/Rep_UserReport" ? "active" : "")">
-                        <a asp-area="" asp-page="/Rep_UserActivity" class="nav-link">
+                        <a asp-area="" asp-page="/Rep_MaterialsReceived" class="nav-link">
                             <span class="sidebar-icon">
                                 <img class="icon icon-xs mx-1" src="~/images/pen.png" />
                             </span>
@@ -368,6 +368,7 @@
     <script src="~/js/layout.js"></script>
     
     @await RenderSectionAsync("Scripts", required: false)
+
 </body>
 
 </html>

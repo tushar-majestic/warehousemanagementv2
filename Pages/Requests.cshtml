@@ -19,6 +19,7 @@
             </nav>
 
             <h2 class="h4">@Model.lblRequests</h2>
+    using Microsoft.EntityFrameworkCore;
             <!-- <p class="mb-0">Your web analytics dashboard template.</p>-->
         </div>
 
@@ -47,7 +48,7 @@
             
         </a>
         
-        @if (Model.UserGroupName == "Warehouse Keeper")
+        @if (Model.UserGroupName == "Warehouse Keeper" || Model.UserGroupName == "Warehouse Manager")
         {
             <a class="nav-link @Model.outboxClass border border-bottom-0" href="?type=outbox">Request Sent</a>
         }
@@ -76,6 +77,10 @@
                                                 var sender = Model.AllUsers.FirstOrDefault(u => u.UserId == inbox.SenderId);  
                                                 var senderGroupName = sender != null 
                                                 ? Model.UserGroups.FirstOrDefault(g => g.UserGroupId == sender.UserGroupId)?.UserGroupName:"";  
+                                                
+                                                var report = Model.AllDispenseRequest.FirstOrDefault(r => r.RequestId == inbox.MaterialRequestId);
+                                                bool supervisorApproval = report != null? report.SupervisorApproval:false; 
+                                                        
                                                                                         
                                             }
                                             <div  class="m-2"><b>@sender?.FullName- </b>@inbox.Content</div>
@@ -138,17 +143,19 @@
                                                     @* case 2 Sender: Department Manager Receiver: Warehouse Keeper *@
                                                     else if(senderGroupName == "Department Manager" && Model.UserGroupName == "Warehouse Keeper"){
                                                         
-                                                        @* <button class="btn btn-info btn-sm p-1" data-toggle="modal" data-target="#specifyRecipient" onclick="setAcceptReportId(@inbox.MaterialRequestId, @inbox.Id)">
-                                                                Deduct Order form Item Card
-                                                        </button> *@
-                                                        <form method="post" class="d-inline">
+                                                     
+                                                        @* <form method="post" class="d-inline">
 
                                                   
                                                             <input type="hidden" value="@inbox.MaterialRequestId" name="DisReportId" />
                                                             <input type="hidden" value="@inbox.Id" id="MsgId" name="MsgId" />
                                                             
                                                             <button asp-page-handler="DeductOrder" class="btn btn-info btn-sm p-1"> Deduct Order form Item Card</button>
-                                                        </form>
+                                                        </form> *@
+
+                                                        <button class="btn btn-info btn-sm p-1" data-toggle="modal" data-target="#specifyRecipient" onclick="setAcceptReportId(@inbox.MaterialRequestId, @inbox.Id)">
+                                                                Accept
+                                                        </button>
 
                                                         <button class="btn btn-warning btn-sm p-1" data-toggle="modal" data-target="#commentRejectModal" onclick="setRejectReportId(@inbox.MaterialRequestId, @inbox.Id,'@inbox.ReportType')">
                                                             Comment & Reject
@@ -182,8 +189,25 @@
                                                         <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#commentRejectModal" onclick="setRejectReportId(@inbox.ReportId, @inbox.Id,'@inbox.ReportType')">Comment & Reject</button>
                                                     }
                                                     @* case 6 Sender: Supervisor  Receiver: keeper  *@
-                                                    else if(senderGroupName == "General Supervisor" && Model.UserGroupName == "Warehouse Keeper"){
+                                                
+                                                   
+                                                       
+                                                    
+
+                                                    else if(senderGroupName == "General Supervisor" && Model.UserGroupName == "Warehouse Keeper" && !supervisorApproval){
                                                         <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#ReplyModal" onclick="setReplyReportId(@inbox.MaterialRequestId,'@inbox.SenderId',@inbox.Id,'@inbox.ReportType')">Reply & Resend</button>
+
+                                                        <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#commentRejectModal" onclick="setRejectReportId(@inbox.ReportId, @inbox.Id,'@inbox.ReportType')">Comment & Reject</button>
+                                                    }
+                                                    else if(senderGroupName == "General Supervisor" && Model.UserGroupName == "Warehouse Keeper" && supervisorApproval){
+                                                        <form method="post" class="d-inline">
+
+                                                  
+                                                            <input type="hidden" value="@inbox.MaterialRequestId" name="DisReportId" />
+                                                            <input type="hidden" value="@inbox.Id" id="MsgId" name="MsgId" />
+                                                            
+                                                            <button asp-page-handler="DeductOrder" class="btn btn-info btn-sm p-1"> Deduct Order form Item Card</button>
+                                                        </form>
 
                                                         <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#commentRejectModal" onclick="setRejectReportId(@inbox.ReportId, @inbox.Id,'@inbox.ReportType')">Comment & Reject</button>
                                                     }
@@ -217,17 +241,21 @@
                                             <td>@localTime</td>
 
                                             <td>
-                                                @if(inbox.ReportType == "Receiving"){
-
-                                                    <form method="post">
-                                                            <input type="hidden" value="@inbox.ReportId" name="InboxId" />
-                                                        
-                                                        <input type="submit" value="@Model.lblView" class="btn btn-secondary" asp-page-handler="View" />
-                                                    </form>   
-                                                }
+                                                <form method="post">
+                                                    @if (inbox.ReportType == "Receiving")
+                                                    {
+                                                        <input type="hidden" value="@inbox.ReportId" name="InboxId" />
+                                                        <input type="hidden" value="Receiving" name="ReportType" />
+                                                    }
+                                                    else if (inbox.ReportType == "Dispensing")
+                                                    {
+                                                        <input type="hidden" value="@inbox.MaterialRequestId" name="MaterialRequestId" />
+                                                        <input type="hidden" value="Dispensing" name="ReportType" />
+                                                    }
+                                                    <input type="submit" value="@Model.lblView" class="btn btn-secondary" asp-page-handler="View" />
+                                                </form>
                                             </td>
 
-                                           
 
                                         </td>                                                
 
@@ -254,7 +282,7 @@
                                             @* <input type="submit" value="@Model.lblView" class="btn btn-secondary" asp-page-handler="View" /><a asp-page="/ViewReceivingReport"  class="btn btn-info btn-sm">View</a> *@
                                             <form method="post">
                                                 <input type="hidden" value="@req.Id" name="InboxId" />
-
+                                                 <input type="hidden" value="Receiving" name="ReportType" />
                                                 <input type="submit" value="@Model.lblView" class="btn btn-secondary" asp-page-handler="View" />
                                             </form>
                                         
@@ -266,7 +294,7 @@
                                 @foreach (var req in Model.ManagerRequestSent){
                                     
                                     <tr>
-                                        <td>Dispensing Request  has been sent successfully.</td>
+                                        <td>Dispensing Request for <b>@req.WarehouseName</b> has been sent successfully.</td>
                                         @{
                                             var localTime = req.OrderDate.ToLocalTime();
                                         }
@@ -274,11 +302,12 @@
                                         @* <td>@req.CreatedAt</td> *@
                                         <td>
                                           
-                                            @* <form method="post">
-                                                <input type="hidden" value="@req.RequestId" name="InboxId" />
+                                            <form method="post">
+                                                <input type="hidden" value="@req.RequestId" name="MaterialRequestId" />
+                                                <input type="hidden" value="Dispensing" name="ReportType" />
 
                                                 <input type="submit" value="@Model.lblView" class="btn btn-secondary" asp-page-handler="View" />
-                                            </form> *@
+                                            </form>
                                         
                                         </td>
                                     </tr>

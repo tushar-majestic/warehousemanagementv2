@@ -58,7 +58,7 @@ namespace LabMaterials.Pages
         public void OnGet()
         {
             base.ExtractSessionData();
-            if (CanManageStore == false)
+            if (CanGenerateDispensingRequest == false)
                 RedirectToPage("./Index?lang=" + Lang);
             FillLables();
             RequestRecievedAt = DateTime.Now;
@@ -118,7 +118,7 @@ namespace LabMaterials.Pages
         public void OnGetOld()
         {
             base.ExtractSessionData();
-            if (CanManageStore == false)
+            if (CanGenerateDispensingRequest == false)
                 RedirectToPage("./Index?lang=" + Lang);
             FillLables();
             StatusList = (new[] { "NewRequest", "InPreparation", "Dispatched", "Delivered" }).ToList().Select(x => new SelectListItem() { Text = x, Value = x }).ToList();
@@ -189,11 +189,33 @@ namespace LabMaterials.Pages
                 task.LogInfo(MethodBase.GetCurrentMethod(), "Called");
                 base.ExtractSessionData();
                 var dbContext = new LabDBContext();
+                //Department Manager list
+                var DeptManager = dbContext.UserGroups
+                        .Where(g => g.UserGroupName == "Department Manager")
+                        .Select(g => g.UserGroupId)
+                        .FirstOrDefault();
+
+                DeptManagerList = dbContext.Users
+                            .Where(u => u.UserGroupId == DeptManager)
+                            .ToList();
                 Destinations = dbContext.Destinations.ToList();
                 Stores = dbContext.Stores.ToList();
                 ItemCards = dbContext.ItemCards.ToList();
                 Units = dbContext.Units.ToList();
                 ItemGroups = dbContext.ItemGroups.Where(g => g.Units.Count() > 0).ToList();
+
+                ItemsValue = dbContext.ItemCards
+                        .Select(x => new ItemCard
+                        {
+                            Id = x.Id,
+                            ItemId = x.ItemId,
+                            ItemName = x.ItemName,
+                            GroupCode = x.GroupCode,
+                            ItemCode = x.ItemCode,
+                            ItemDescription = x.ItemDescription,
+                            Chemical = x.Chemical,
+                            UnitOfmeasure = x.UnitOfmeasure
+                        }).ToList();
 
 
                 if (ItemsForReport == null || !ItemsForReport.Any())
@@ -202,7 +224,7 @@ namespace LabMaterials.Pages
                     ItemsForReport = new List<DespensedItem> { new DespensedItem() };
                 }
 
-                if (CanDisburseItems)
+                if (CanGenerateDispensingRequest)
                 {
          
                     FillLables();
@@ -214,6 +236,7 @@ namespace LabMaterials.Pages
                         ErrorMsg = "User not found.";
                         return Page();
                     }
+                 
                     Report.SerialNumber = SerialNumber;
                     Report.OrderDate = OrderDate.Date;
                     // Report.RequestedByUser = user;
@@ -227,7 +250,6 @@ namespace LabMaterials.Pages
                     Report.CreatedAt = DateTime.UtcNow;
                     // Report.SupervisorId = SupervisorId;
                     // Report.DocumentNumber = DocumentNumber;
-
                     if (string.IsNullOrEmpty(FiscalYear))
                     {
                         ErrorMsg = (Program.Translations["FiscalYearMissing"])[Lang];
@@ -274,13 +296,14 @@ namespace LabMaterials.Pages
                         return Page();
                     }
 
+                    
+
                     _context.MaterialRequests.Add(Report);
                     await _context.SaveChangesAsync();
 
  
                     foreach (var item in ItemsForReport)
                     {
-
                         item.MaterialRequestId = Report.RequestId;
                         item.ItemCardId = item.ItemCardId;
                         if (item.Comments == null)
