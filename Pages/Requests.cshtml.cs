@@ -52,9 +52,12 @@ namespace LabMaterials.Pages
         public string ErrorMsg { get; set; }
         public List<User> SectorManagerList {  get; set; }
         public List<User> KeeperList {  get; set; }
+
         public List<User> InspectionOfficerList {  get; set; }
 
         public List<User> SupervisorList { get; set; }
+
+        public List<Store> Stores { get; set; }
 
 
 
@@ -91,6 +94,7 @@ namespace LabMaterials.Pages
             SectorManagerList = dbContext.Users
                     .Where(u => u.UserGroupId == SecManagerId)
                     .ToList();
+            Stores = dbContext.Stores.ToList();
 
             //Keeper List
             var KeepId = dbContext.UserGroups

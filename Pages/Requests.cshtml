@@ -328,9 +328,10 @@
                             }
                             else if (Model.UserGroupName == "Warehouse Manager"){
                                 @foreach (var req in Model.ManagerRequestSent){
+                                    var StoreName = Model.Stores.FirstOrDefault(i => i.StoreId == req.WarehouseId)?.StoreName ?? "";
                                     
                                     <tr>
-                                        <td>Dispensing Request for <b>@req.WarehouseId</b> has been sent successfully.</td>
+                                        <td>Dispensing Request for <b>@StoreName</b> has been sent successfully.</td>
                                         @{
                                             var localTime = req.OrderDate.ToLocalTime();
                                         }
