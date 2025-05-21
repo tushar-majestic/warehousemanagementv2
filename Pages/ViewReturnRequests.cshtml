@@ -100,6 +100,7 @@
         <div class="col-4 col-md-2 col-xl-1 ps-md-0 ">
             <button type="submit" name="action" value="search" class="btn btn-primary">@Model.lblSearch</button>
         </div>
+
         <div class="col text-end position-relative">
             <button type="button" id="toggleDropdown" class="btn btn-secondary">
                 @Model.lblShowHideColumn
@@ -140,8 +141,10 @@
                     <button type="submit" name="action" value="updateColumns" class="btn btn-success btn-sm">Ok</button>
                 </div>
 
+
             </div>
         </div>
+
     </form>
 </div>
 @if (Model.TotalPages > 1)
@@ -196,6 +199,7 @@
                         <span class="page-link">...</span>
                     </li>
                 }
+
 
                 @* Show the last page, if it's not already visible *@
                 @if (Model.CurrentPage < Model.TotalPages - 2)

@@ -1,0 +1,48 @@
+﻿@page
+@model LabMaterials.Pages.AddDocumentTypeModel
+@{
+    ViewData["Title"] = "Create Document Type";
+}
+
+@if (!Model.DocumentTypeList.Any())
+{
+    <div class="alert alert-info">No Document types found.</div>
+}
+else
+{
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Document Type</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.DocumentTypeList)
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@item.DocType</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
+<h1>Create Document Type</h1>
+
+<form method="post">
+    <div class="mb-3">
+        <label asp-for="DocumentType.DocType" class="form-label"></label>
+        <input asp-for="DocumentType.DocType" class="form-control" />
+        <span asp-validation-for="DocumentType.DocType" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Create</button>
+    <a asp-page="ManageUsers" class="btn btn-secondary">Cancel</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
