@@ -224,12 +224,91 @@
 
 
     <h5>@Model.lblInventory</h5>
-    <div class="d-flex justify-content-between mb-3 align-items-center">
+    @* <div class="d-flex justify-content-between mb-3 align-items-center">
         <div>@Model.lblTotalItem : @Model.TotalItems</div>
 
             <form method="post">
                 <button type="submit" asp-page-handler="Export" class="btn btn-primary d-flex top-sm-btn justify-content-center"><img b-ie9pk9zf1q="" class="icon text-white icon-xs me-2" src="images/export.png">@Model.lblExport</button>
             </form>
+    </div> *@
+    <div class="d-flex justify-content-between align-items-center">
+        <div>@Model.lblTotalItem : @Model.TotalItems</div>
+        <div>
+            @if (Model.TotalPages > 1)
+            {
+                <nav aria-label="Page navigation">
+                    <ul class="pagination">
+
+                        @* Previous button *@
+                        @if (Model.CurrentPage > 1)
+                        {
+                        
+                            <li class="page-item">
+                                <a class="page-link" href="?page=@(Model.CurrentPage - 1)&Item=@Model.Item&StoreNumber=@Model.StoreNumber&StoreName=@Model.StoreName&FromDate=@Model.FromDate&ToDate=@Model.ToDate">&laquo;</a>
+                            </li>
+                        }
+
+                        @* Show pages normally if the total pages are less than or equal to 10 *@
+                        @if (Model.TotalPages <= 10)
+                        {
+                            @for (int i = 1; i <= Model.TotalPages; i++)
+                            {
+                                <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                                    <a class="page-link" href="?page=@i&Item=@Model.Item&StoreNumber=@Model.StoreNumber&StoreName=@Model.StoreName&FromDate=@Model.FromDate&ToDate=@Model.ToDate">@i</a>
+                                </li>
+                            }
+                        }
+                        else
+                        {
+                            @* Show the first page, then ellipsis if there are skipped pages *@
+                            @if (Model.CurrentPage > 3)
+                            {
+                                <li class="page-item">
+                                    <a class="page-link" href="?page=1&Item=@Model.Item&StoreNumber=@Model.StoreNumber&StoreName=@Model.StoreName&FromDate=@Model.FromDate&ToDate=@Model.ToDate">1</a>
+                                </li>
+                                <li class="page-item disabled">
+                                    <span class="page-link">...</span>
+                                </li>
+                            }
+
+                            @* Show pages from (current-1) to (current+1) *@
+                            @for (int i = Math.Max(1, Model.CurrentPage - 1); i <= Math.Min(Model.TotalPages, Model.CurrentPage + 1); i++)
+                            {
+                                <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                                    <a class="page-link" href="?page=@i&Item=@Model.Item&StoreNumber=@Model.StoreNumber&StoreName=@Model.StoreName&FromDate=@Model.FromDate&ToDate=@Model.ToDate">@i</a>
+                                </li>
+                            }
+
+                            @* Add "..." if there are skipped pages after the current page *@
+                            @if (Model.CurrentPage < Model.TotalPages - 1)
+                            {
+                                <li class="page-item disabled">
+                                    <span class="page-link">...</span>
+                                </li>
+                            }
+
+                            @* Show the last page, if it's not already visible *@
+                            @if (Model.CurrentPage < Model.TotalPages - 2)
+                            {   
+                                <li class="page-item">
+                                    <a class="page-link" href="?page=@Model.TotalPages&Item=@Model.Item&StoreNumber=@Model.StoreNumber&StoreName=@Model.StoreName&FromDate=@Model.FromDate&ToDate=@Model.ToDate">@Model.TotalPages</a>
+                                </li>
+                            }
+                        }
+
+                        @* Last buttons *@
+                        @if (Model.CurrentPage < Model.TotalPages)
+                        {
+                            <li class="page-item">
+                                <a class="page-link" href="?page=@(Model.CurrentPage + 1)&Item=@Model.Item&StoreNumber=@Model.StoreNumber&StoreName=@Model.StoreName&FromDate=@Model.FromDate&ToDate=@Model.ToDate">&raquo;</a>
+                            </li>
+                        
+                        }
+
+                    </ul>
+                </nav>
+            }
+        </div>
     </div>
     <div class="card border-0 shadow mb-4">
         <div class="card-body">
