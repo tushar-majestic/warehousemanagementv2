@@ -432,7 +432,7 @@
                                         <div class="d-flex my-4">
                                             <div class=" me-2" style="width: 49%;">
                                                 <label for="itemGroup">@Model.lblItemGroups</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
-                                                <select class="form-select item-group-select"  id="itemGroup_@i" name="ItemsForReport[@i].ItemGroup" >
+                                                <select class="form-select item-group-select"  id="itemGroup_@i" name="ItemsForReport[@i].ItemGroup" onchange="filterItemsByGroup(@i)" >
                                                     @if (Model.ItemGroups != null)
                                                     {
                                                         <option value="">Select Item Group</option>
