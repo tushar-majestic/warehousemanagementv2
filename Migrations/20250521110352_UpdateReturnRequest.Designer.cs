@@ -4,6 +4,7 @@ using LabMaterials.DB;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LabMaterials.Migrations
 {
     [DbContext(typeof(LabDBContext))]
-    partial class LabDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250521110352_UpdateReturnRequest")]
+    partial class UpdateReturnRequest
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -948,9 +951,6 @@ namespace LabMaterials.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ReturnRequestId")
-                        .HasColumnType("int");
-
                     b.Property<int?>("SenderId")
                         .HasColumnType("int");
 
@@ -963,8 +963,6 @@ namespace LabMaterials.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("MaterialRequestId");
-
-                    b.HasIndex("ReturnRequestId");
 
                     b.HasIndex(new[] { "ReportId" }, "IX_Messages_ReportId");
 
@@ -1290,9 +1288,6 @@ namespace LabMaterials.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("CreatedBy")
-                        .HasColumnType("int");
-
                     b.Property<DateTime?>("DestOffApprovalDate")
                         .HasColumnType("datetime2");
 
@@ -1396,10 +1391,6 @@ namespace LabMaterials.Migrations
                     b.Property<DateTime?>("ExpiryDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("InspectionNotes")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
                     b.Property<int>("ItemCardId")
                         .HasColumnType("int");
 
@@ -1426,9 +1417,6 @@ namespace LabMaterials.Migrations
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
-
-                    b.Property<string>("RecommendedAction")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ReturnNotes")
                         .HasMaxLength(500)
@@ -2478,15 +2466,9 @@ namespace LabMaterials.Migrations
                         .WithMany("Messages")
                         .HasForeignKey("ReportId");
 
-                    b.HasOne("LabMaterials.DB.ReturnRequest", "ReturnRequest")
-                        .WithMany("Messages")
-                        .HasForeignKey("ReturnRequestId");
-
                     b.Navigation("MaterialRequest");
 
                     b.Navigation("ReceivingReport");
-
-                    b.Navigation("ReturnRequest");
                 });
 
             modelBuilder.Entity("LabMaterials.DB.PendingDeduction", b =>
@@ -2884,8 +2866,6 @@ namespace LabMaterials.Migrations
             modelBuilder.Entity("LabMaterials.DB.ReturnRequest", b =>
                 {
                     b.Navigation("Items");
-
-                    b.Navigation("Messages");
                 });
 
             modelBuilder.Entity("LabMaterials.DB.Room", b =>
