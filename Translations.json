@@ -1590,6 +1590,11 @@
       "en" : "Extension Number",
       "ar" : "Extension Number"
 
+    },
+    "ChiefResponsibleMissing" : {
+      "en" : "ChiefResponsible is Missing",
+      "ar" : "ChiefResponsible is Missing"
+
     }
     
 

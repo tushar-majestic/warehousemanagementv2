@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Session;
 using Org.BouncyCastle.Cms;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using LabMaterials.Migrations;
 
 namespace LabMaterials.Pages
 {
@@ -33,6 +34,7 @@ namespace LabMaterials.Pages
         public List<ReceivingReport> RequestSent { get; set; }
         public List<MaterialRequest> ManagerRequestSent { get; set; }
 
+        public List<MaterialRequest> AllDispenseRequest { get; set; }
 
         public List<Message> InboxList { get; set; }
 
@@ -50,12 +52,17 @@ namespace LabMaterials.Pages
         public string ErrorMsg { get; set; }
         public List<User> SectorManagerList {  get; set; }
         public List<User> KeeperList {  get; set; }
-        public List<User> SupervisorList {  get; set; }
+
+        public List<User> InspectionOfficerList {  get; set; }
+
+        public List<User> SupervisorList { get; set; }
+
+        public List<Store> Stores { get; set; }
 
 
 
 
-        public void OnGet()
+        public void OnGet(string? searchTerm = null)
         {
             if (HttpContext.Request.Query.ContainsKey("type"))
             {
@@ -87,6 +94,7 @@ namespace LabMaterials.Pages
             SectorManagerList = dbContext.Users
                     .Where(u => u.UserGroupId == SecManagerId)
                     .ToList();
+            Stores = dbContext.Stores.ToList();
 
             //Keeper List
             var KeepId = dbContext.UserGroups
@@ -96,6 +104,16 @@ namespace LabMaterials.Pages
 
             KeeperList = dbContext.Users
                     .Where(u => u.UserGroupId == KeepId)
+                    .ToList();
+
+            //Inspection Committee Officer List
+            var InspId = dbContext.UserGroups
+                    .Where(g => g.UserGroupName == "Return Inspection Committee Officer")
+                    .Select(g => g.UserGroupId)
+                    .FirstOrDefault();
+
+            InspectionOfficerList = dbContext.Users
+                    .Where(u => u.UserGroupId == InspId)
                     .ToList();
 
             //General Supervisor list
@@ -109,26 +127,89 @@ namespace LabMaterials.Pages
                         .ToList();
 
             AllRequest = dbContext.ReceivingReports.ToList();
+            AllDispenseRequest = dbContext.MaterialRequests.ToList();
             AllUsers = dbContext.Users.ToList();
             UserGroups = dbContext.UserGroups.ToList();
+            Warehouses = dbContext.Stores.ToList();
 
-            if (this.UserGroupName == "Warehouse Keeper")
+
+           if (this.UserGroupName == "Warehouse Keeper")
             {
-                RequestSent = dbContext.ReceivingReports.Where(r => r.CreatedBy == UserId)
-                .OrderByDescending(r => r.CreatedAt).ToList();
+                RequestSent = dbContext.ReceivingReports
+                    .Where(r => r.CreatedBy == UserId)
+                    .OrderByDescending(r => r.CreatedAt)
+                    .ToList();
+
+                if (!string.IsNullOrEmpty(searchTerm) && pagetype == "outbox")
+                {
+                    var lowerSearch = searchTerm.ToLower();
+
+                    RequestSent = RequestSent
+                        .Where(r =>
+                        {
+                            var store = Warehouses.FirstOrDefault(u => u.StoreId == int.Parse(r.ReceivingWarehouse));
+                            var storename = store?.StoreName?.ToLower() ?? "";
+
+                            return storename.Contains(lowerSearch) ;
+
+                        }).ToList();
+
+
+                }
             }
-            else if (this.UserGroupName == "Warehouse Manager") {
-                ManagerRequestSent = dbContext.MaterialRequests.Where(r => r.RequestedByUserId == UserId)
-                .OrderByDescending(r => r.OrderDate).ToList();
+            else if (this.UserGroupName == "Warehouse Manager")
+            {
+                ManagerRequestSent = dbContext.MaterialRequests
+                    .Where(r => r.RequestedByUserId == UserId)
+                    .OrderByDescending(r => r.OrderDate)
+                    .ToList();
+
+                if (!string.IsNullOrEmpty(searchTerm) && pagetype == "outbox")
+                {
+                    var lowerSearch = searchTerm.ToLower();
+                    ManagerRequestSent = ManagerRequestSent
+                        .Where(r =>
+                        {
+                            var store = Warehouses.FirstOrDefault(u => u.StoreId == r.WarehouseId);
+                            var storename = store?.StoreName?.ToLower() ?? "";
+                            var DocumentNumber = r.DocumentNumber?.ToLower() ?? "";
+
+                            return storename.Contains(lowerSearch) || DocumentNumber.Contains(lowerSearch);
+
+                        }).ToList();
+                }
             }
             
             // ManagerInboxList = dbContext.ReceivingReports
             //     .Where(r => r.KeeperApproval == true)
             //     .ToList();
-            Warehouses = dbContext.Stores.ToList();
 
+            // InboxList = dbContext.Messages
+            //     .Where(s => s.RecipientId == UserId).OrderByDescending(s => s.CreatedAt).ToList();
             InboxList = dbContext.Messages
-                .Where(s => s.RecipientId == UserId).OrderByDescending(s => s.CreatedAt).ToList();
+            .Where(s => s.RecipientId == UserId)
+            .OrderByDescending(s => s.CreatedAt)
+            .ToList();
+
+            if (!string.IsNullOrEmpty(searchTerm) && pagetype == "inbox")
+            {
+                var lowerSearch = searchTerm.ToLower();
+
+                InboxList = InboxList
+                    .Where(m =>
+                    {
+                        var sender = AllUsers.FirstOrDefault(u => u.UserId == m.SenderId);
+                        var senderName = sender?.FullName?.ToLower() ?? "";
+                        var messageText = m.Content?.ToLower() ?? "";
+                        var ReportType = m.ReportType?.ToLower() ?? "";
+
+                        return senderName.Contains(lowerSearch) || messageText.Contains(lowerSearch) || ReportType.Contains(lowerSearch);
+                    })
+                    .ToList();
+                        
+               
+            }
+
 
             InboxCount = InboxList.Count();
 
@@ -168,6 +249,7 @@ namespace LabMaterials.Pages
             return RedirectToPage("./Index", new { lang = Lang });
         }
 
+        //Accept and specify recipent in case of dispencing request
         public IActionResult OnPostAcceptAndSpecify([FromForm] int AcceptReportId, [FromForm] int AcceptMessageId, [FromForm] int? ReceipientId)
         {
             //function is used in case when department manager accepts the dispensing request
@@ -241,7 +323,7 @@ namespace LabMaterials.Pages
 
                         //message to manager who created the request
                         string managerMessage = string.Format("Has Approved the dispencing request for delivery");
-                        var msgToKeeper = new Message
+                        var msgToManager = new Message
                         {
                             MaterialRequestId = AcceptReportId,
                             ReportType = "Dispensing",
@@ -251,46 +333,62 @@ namespace LabMaterials.Pages
                             Type = "",
                             CreatedAt = DateTime.UtcNow
                         };
+                        dbContext.Messages.Add(msgToManager);
+
+                        //message to keeper to deduct order from itemcard
+                        string keeperMessage = string.Format("Has Approved the dispencing request for delivery");
+                        var msgToKeeper = new Message
+                        {
+                            MaterialRequestId = AcceptReportId,
+                            ReportType = "Dispensing",
+                            SenderId = this.UserId,
+                            RecipientId = report.KeeperId,
+                            Content = keeperMessage,
+                            Type = "",
+                            CreatedAt = DateTime.UtcNow
+                        };
                         dbContext.Messages.Add(msgToKeeper);
 
-                        var deductions = dbContext.PendingDeductions
-                        .Where(p => p.MaterialRequestId == AcceptReportId && !p.Status)
-                        .ToList();
+                        // Below code can be used here in future if deduction is done before
 
-                        foreach (var deduction in deductions)
-                        {
-                            // 1. Reduce from ItemCard table
-                            var itemCard = dbContext.ItemCards.FirstOrDefault(i => i.Id == deduction.ItemCardId);
-                            if (itemCard != null)
-                            {
-                                itemCard.QuantityAvailable -= deduction.ReduceQty;
-                            }
+                        // var deductions = dbContext.PendingDeductions
+                        // .Where(p => p.MaterialRequestId == AcceptReportId && !p.Status)
+                        // .ToList();
 
-                            // 2. Reduce from ItemCardBatches table (adjust logic as needed)
-                            var batch = dbContext.ItemCardBatches
-                                .Where(b => b.ItemCardId == deduction.ItemCardId)
-                                .Where(b => b.RoomId == deduction.RoomId)
-                                .Where(b => b.ShelfId == deduction.ShelfId)
-                                .FirstOrDefault();
+                        // foreach (var deduction in deductions)
+                        // {
+                        //     // 1. Reduce from ItemCard table
+                        //     var itemCard = dbContext.ItemCards.FirstOrDefault(i => i.Id == deduction.ItemCardId);
+                        //     if (itemCard != null)
+                        //     {
+                        //         itemCard.QuantityAvailable -= deduction.ReduceQty;
+                        //     }
 
-                            if (batch != null && batch.QuantityReceived >= deduction.ReduceQty)
-                            {
-                                batch.QuantityReceived -= deduction.ReduceQty;
-                            }
+                        //     // 2. Reduce from ItemCardBatches table (adjust logic as needed)
+                        //     var batch = dbContext.ItemCardBatches
+                        //         .Where(b => b.ItemCardId == deduction.ItemCardId)
+                        //         .Where(b => b.RoomId == deduction.RoomId)
+                        //         .Where(b => b.ShelfId == deduction.ShelfId)
+                        //         .FirstOrDefault();
 
-                            // 3. Reduce from ShelveItems table
-                            var shelveItem = dbContext.ShelveItems
-                                .FirstOrDefault(s => s.ItemCardId == deduction.ItemCardId &&
-                                                    s.ShelfId == deduction.ShelfId );
+                        //     if (batch != null && batch.QuantityReceived >= deduction.ReduceQty)
+                        //     {
+                        //         batch.QuantityReceived -= deduction.ReduceQty;
+                        //     }
 
-                            if (shelveItem != null)
-                            {
-                                shelveItem.QuantityAvailable -= deduction.ReduceQty;
-                            }
+                        //     // 3. Reduce from ShelveItems table
+                        //     var shelveItem = dbContext.ShelveItems
+                        //         .FirstOrDefault(s => s.ItemCardId == deduction.ItemCardId &&
+                        //                             s.ShelfId == deduction.ShelfId );
 
-                            // 4. Mark deduction as completed
-                            deduction.Status = true;
-                        }
+                        //     if (shelveItem != null)
+                        //     {
+                        //         shelveItem.QuantityAvailable -= deduction.ReduceQty;
+                        //     }
+
+                        //     // 4. Mark deduction as completed
+                        //     deduction.Status = true;
+                        // }
 
 
                     }
@@ -310,6 +408,71 @@ namespace LabMaterials.Pages
 
 
         }
+        
+
+        //Accept and specify recipent in case of Return request
+        public IActionResult OnPostAcceptAndSpecifyReturn([FromForm] int AcceptReturnReportId, [FromForm] int AcceptReturnMessageId, [FromForm] int? Receipient)
+        {
+            base.ExtractSessionData();
+            this.UserFullName = HttpContext.Session.GetString("FullName");
+            this.UserGroupName = HttpContext.Session.GetString("UserGroup");
+            this.UserId = HttpContext.Session.GetInt32("UserId");
+
+            FillLables();
+            var dbContext = new LabDBContext();
+            var report = dbContext.ReturnRequests.FirstOrDefault(r => r.Id == AcceptReturnReportId);
+            if (report != null)
+            {
+                if (Receipient.HasValue)
+                {
+                    //If Warehouse Manager is logged in than send message to Return Inspection Comittee Officer
+                    if (this.UserGroupName == "Warehouse Manager")
+                    {
+                        report.InspOffId = Receipient.Value;
+
+                        report.ManagerApprovalDate = DateTime.Now;
+
+                        //message to Inspection Officer
+                        string InspOffMessage = string.Format("Sent Return Items Request Approve the request or add comments.");
+                        var msgToInspOfficer = new Message
+                        {
+                            ReturnRequestId = AcceptReturnReportId,
+                            ReportType = "ReturnItems",
+                            SenderId = this.UserId,
+                            RecipientId = report.InspOffId,
+                            Content = InspOffMessage,
+                            Type = "",
+                            CreatedAt = DateTime.UtcNow
+                        };
+                        dbContext.Messages.Add(msgToInspOfficer);
+
+
+
+                    }
+                    
+                }
+                
+                var message = dbContext.Messages.FirstOrDefault(m => m.Id == AcceptReturnMessageId);
+
+                if (message != null)
+                {
+                    message.Type = "Accepted";
+                }
+                dbContext.SaveChanges();
+
+            }
+            // if (!ModelState.IsValid)
+            // {
+            //     return Page();
+            // }
+            return RedirectToPage();
+
+
+        }
+        public IActionResult OnPostTest()
+        {
+            return RedirectToPage("/Supplies");
+        }
 
 
         public IActionResult OnPostAcceptDispencing([FromForm] int AcceptReportId, [FromForm] int AcceptMessageId)
@@ -320,9 +483,11 @@ namespace LabMaterials.Pages
             FillLables();
             var dbContext = new LabDBContext();
             AllRequest = dbContext.ReceivingReports.ToList();
+            AllDispenseRequest = dbContext.MaterialRequests.ToList();
+
             this.UserId = HttpContext.Session.GetInt32("UserId");
 
-            if(this.UserGroupName == "Warehouse Keeper")
+            if (this.UserGroupName == "Warehouse Keeper")
                 RequestSent = dbContext.ReceivingReports.Where(r => r.CreatedBy == this.UserId).ToList();
 
             InboxList = dbContext.Messages
@@ -331,7 +496,7 @@ namespace LabMaterials.Pages
 
             if (report != null)
             {
-              
+
                 //if Warehouuse Keeper accepts the request message is sent to sector manager
                 if (this.UserGroupName == "Warehouse Keeper")
                 {
@@ -352,10 +517,10 @@ namespace LabMaterials.Pages
                     };
                     dbContext.Messages.Add(msgToSectorManager);
 
-                    
+
                 }
-                
-                
+
+
                 var message = dbContext.Messages.FirstOrDefault(m => m.Id == AcceptMessageId);
 
                 if (message != null)
@@ -380,6 +545,8 @@ namespace LabMaterials.Pages
             FillLables();
             var dbContext = new LabDBContext();
             AllRequest = dbContext.ReceivingReports.ToList();
+            AllDispenseRequest = dbContext.MaterialRequests.ToList();
+
             this.UserId = HttpContext.Session.GetInt32("UserId");
 
             RequestSent = dbContext.ReceivingReports.Where(r => r.CreatedBy == this.UserId).ToList();

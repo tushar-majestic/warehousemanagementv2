@@ -38,7 +38,7 @@
             showErrorNotification(errorMessageFromServer);
             </text>
         }
-            $(document).ready(function () {
+            @* $(document).ready(function () {
                 var initialStoreId = $('#StoreId').val();
                 var initialSelectedItemId = @ViewData["ItemId"]?.ToString();
                 var initialDId = @ViewData["DId"];
@@ -138,12 +138,258 @@
                         $('#ItemTypeCode').val(selectedItem.itemTypeCode);
                     }
                 });
+            }); *@
+
+
+        //filling related inputs
+
+        document.addEventListener("DOMContentLoaded", function () {
+            console.log("script called");
+            const itemCount = @Model.ItemsForReport.Count;
+            console.log(itemCount,"itemCont")
+            for (let i = 0; i < itemCount; i++) {
+                console.log("in for loop")
+                const itemNoInput = document.getElementById("ItemCode_" + i);
+                const itemDropdown = document.getElementById("ArabicItemName_" + i);
+                const itemDescription = document.getElementById("ItemDescription_" + i);
+                const unitInput = document.getElementById("UnitofMeasure_" + i);
+                const quantityInput = document.getElementById("Quantity_" + i);
+                const unitPriceInput = document.getElementById("UnitPrice_" + i);
+                const totalPriceInput = document.getElementById("TotalPrice_" + i);
+                if (itemDropdown) {
+
+                    const selectedIndex = itemDropdown.selectedIndex;
+                    console.log("selectedIndex", selectedIndex)
+
+                    if (selectedIndex > 0) {
+
+                        const selectedOption = itemDropdown.options[selectedIndex];
+                        console.log("itemdropdown is selected",selectedOption)
+
+                        const itemno = selectedOption.getAttribute("data-code");
+                        const itemdesc = selectedOption.getAttribute("data-description");
+                        const unitname = selectedOption.getAttribute("data-unit");
+                        const groupcode = selectedOption.getAttribute("data-group");
+                        const risk = selectedOption.getAttribute("data-risk");
+                        const chemical = selectedOption.getAttribute("data-chemical");
+
+
+                        itemNoInput.value = itemno || '';
+                        itemDescription.value = itemdesc || '';
+                        unitInput.value = unitname || '';
+                        document.getElementById("itemGroup_" + i).value = groupcode || '';
+                        document.getElementById("RiskRating_" + i).value = risk || "";
+                        document.getElementById("Chemical_" + i).value = chemical || "";
+
+
+                        updateTotal();
+
+                    }
+
+                    function updateTotal() {
+                        const quantity = parseFloat(quantityInput.value) || 0;
+                        const unitPrice = parseFloat(unitPriceInput.value) || 0;
+                        const total = quantity * unitPrice;
+                        console.log( 'updateTotal')
+                        totalPriceInput.value = total.toFixed(2);
+                    }
+
+                    unitPriceInput.addEventListener("input", updateTotal);
+                    quantityInput.addEventListener("input", updateTotal);
+                }
+
+                itemNoInput.addEventListener("input", function () {
+                    const enteredItemNo = itemNoInput.value;
+                    const options = itemDropdown.options;
+
+                    for (let i = 0; i < options.length; i++) {
+                        if (options[i].getAttribute("data-itemno") === enteredItemNo) {
+                            itemDropdown.value = options[i].value;
+                            itemDescription.value = options[i].getAttribute("data-itemdesc") || '';
+                            unitInput.value = options[i].getAttribute("data-unitname") || '';
+                            break;
+                        }
+                    }
+                });
+
+      
+
+                document.getElementById("ArabicItemName_" + i).addEventListener("change", function () {
+                    console.log("ArabicItemName_")
+                    const selectedOption = this.options[this.selectedIndex];
+                    const itemno = selectedOption.getAttribute("data-code");
+                    const itemdesc = selectedOption.getAttribute("data-description");
+                    const unitname = selectedOption.getAttribute("data-unit");
+                    const groupcode = selectedOption.getAttribute("data-group")
+                    const risk = selectedOption.getAttribute("data-risk");
+                    const chemical = selectedOption.getAttribute("data-chemical");
+
+
+                    document.getElementById("ItemCode_" + i).value = itemno || '';
+                    document.getElementById("ItemDescription_" + i).value = itemdesc || '';
+                    document.getElementById("UnitofMeasure_" + i).value = unitname || '';
+                    document.getElementById("ItemGroup_" + i).value = groupcode || "";
+                    document.getElementById("RiskRating_" + i).value = risk || "";
+                    document.getElementById("Chemical_" + i).value = chemical || "";
+                });
+            }
+        });
+
+        let entryIndex = @Model.ItemsForReport.Count ;
+
+        const wrapper = document.getElementById("returnEntriesWrapper");
+        const addEntryBtn = document.getElementById("addEntryBtn");
+        // --- Add Entry ---
+        addEntryBtn.addEventListener("click", function () {
+            const firstEntry = wrapper.querySelector(".return-entry");
+            const newEntry = firstEntry.cloneNode(true);
+
+            // Clear all values
+            newEntry.querySelectorAll("input, select").forEach(input => {
+                if (input.tagName === "SELECT") {
+                    input.selectedIndex = 0;
+                } else if (input.type !== "radio" && input.type !== "checkbox") {
+                    input.value = "";
+                }
+
+                // Update name attributes with the new index
+                if (input.name) {
+                    input.name = input.name.replace(/\[\d+\]/, `[${entryIndex}]`);
+                }
+
+                // Update id
+                if (input.id) {
+                    const baseId = input.id.replace(/_\d+$/, "");
+                    input.id = `${baseId}_${entryIndex}`;
+                }
+
+            
             });
+
+                const currentIndex = entryIndex;
+
+                const itemGroupSelect = newEntry.querySelector(".item-group-select");
+                if (itemGroupSelect) {
+                    itemGroupSelect.removeAttribute("onchange");
+                    itemGroupSelect.addEventListener("change", function () {
+                        filterItemsByGroup(currentIndex);
+                    });
+
+                }
+
+            wrapper.appendChild(newEntry);
+            initializeEntry(newEntry);
+            entryIndex++;
+        });
+
+        // --- Remove Entry ---
+        wrapper.addEventListener("click", function (e) {
+            if (e.target.classList.contains("remove-entry")) {
+                const entries = wrapper.querySelectorAll(".return-entry");
+                if (entries.length > 1) {
+                    e.target.closest(".return-entry").remove();
+                } else {
+                    alert("At least one Item is required.");
+                }
+            }
+        });
+         // --- Handle Select Change ---
+        function handleItemChange(e) {
+            const select = e.target;
+            const entry = select.closest(".return-entry");
+            const selectedOption = select.options[select.selectedIndex];
+            if (!selectedOption || !selectedOption.dataset.id) return;
+
+            const selectedId = selectedOption.dataset.id;
+
+            const isArabic = select.classList.contains("ArabicItemName");
+            const targetSelect = entry.querySelector(isArabic ? ".EnglishArabicName" : ".ArabicItemName");
+
+            if (!targetSelect) return;
+
+            // Set the value in the other select
+            for (const option of targetSelect.options) {
+                if (option.dataset.id === selectedId) {
+                    targetSelect.value = option.value;
+                    break;
+                }
+            }
+
+            // Fill other fields
+            entry.querySelector(".ItemCode").value = selectedOption.dataset.code || "";
+            entry.querySelector(".ItemDescription").value = selectedOption.dataset.description || "";
+            entry.querySelector(".typeofAsset").value = selectedOption.dataset.asset || "";
+            entry.querySelector(".chemical").value = selectedOption.dataset.chemical || "";
+            entry.querySelector(".RiskRating").value = selectedOption.dataset.risk || "";
+            entry.querySelector(".UnitofMeasure").value = selectedOption.dataset.unit || "";
+        }
+
+        // --- Auto Calculate Total ---
+        function calculateTotalPrice(entry) {
+            const qty = parseFloat(entry.querySelector(".Quantity")?.value) || 0;
+            const unit = parseFloat(entry.querySelector(".UnitPrice")?.value) || 0;
+            entry.querySelector(".TotalPrice").value = (qty * unit).toFixed(2);
+        }
+
+        // --- Setup for New Entry ---
+        function initializeEntry(entry) {
+            // Avoid duplicate listeners by cloning a fresh node (safe for modern browsers)
+            entry.querySelectorAll("select").forEach(select => {
+                select.removeEventListener("change", handleItemChange);
+                select.addEventListener("change", handleItemChange);
+            });
+
+            entry.querySelector(".Quantity").addEventListener("input", () => calculateTotalPrice(entry));
+            entry.querySelector(".UnitPrice").addEventListener("input", () => calculateTotalPrice(entry));
+        }
+
+        // --- Init All Existing Entries on Load ---
+        wrapper.querySelectorAll(".return-entry").forEach(initializeEntry);
+
+        function filterItemsByGroup(index) {
+            const allItems = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.ItemsValue));
+            console.log(index, 'index')
+            const selectedGroup = document.getElementById("itemGroup_" + index)?.value;
+
+            const itemSelect = document.getElementById("ArabicItemName_" + index);
+            const itemSelectEnglish = document.getElementById("EnglishArabicName_" + index);
+            console.log(selectedGroup, 'selectedGroup')
+
+            // Clear current items
+            itemSelect.innerHTML = '<option value="">Select Item</option>';
+             itemSelectEnglish.innerHTML = '<option value="">Select Item</option>';
+            console.log("selectedgroup",selectedGroup )
+            // Filter and repopulate
+            if (!Array.isArray(allItems)) {
+                console.error("allItems is not an array", allItems);
+                return;
+            }
+
+            allItems.filter(item => item.GroupCode === selectedGroup)
+                .forEach(item => {
+                    const optionArabic = document.createElement("option");
+                    optionArabic.value = item.Id;
+                    optionArabic.textContent = item.ItemName;
+                    optionArabic.dataset.id = item.ItemId;
+                    optionArabic.dataset.code = item.ItemCode;
+                    optionArabic.dataset.description = item.ItemDescription;
+                    optionArabic.dataset.chemical = item.Chemical;
+                    optionArabic.dataset.unit = item.UnitOfmeasure;
+                    optionArabic.dataset.risk = item.HazardTypeName || "";
+                    optionArabic.dataset.asset = item.TypeOfAsset || "";
+
+                    const optionEnglish = optionArabic.cloneNode(true);
+
+                    itemSelect.appendChild(optionArabic);
+                    itemSelectEnglish.appendChild(optionEnglish);
+            });
+        }
+
 
     </script>
 }
 @{
-    <div class="py-4">
+     <div class="py-4">
 
         <div class="d-flex justify-content-between w-100 flex-wrap">
             <div class="mb-3 mb-lg-0">
@@ -155,16 +401,16 @@
                         </li>
                         <li class="breadcrumb-item d-flex align-items-center active" aria-current="page">
                             <img src="images/expenses.png" alt="Home" width="16" height="16" class="me-2" />
-                             <a href="/Disbursements?page=@Model.page&RequesterName=@Model.Requester&FromDate=@Model.FromDate&ToDate=@Model.ToDate" class="text-decoration-none">@Model.lblDisbursements</a>
+                             <a href="/Disbursements" class="text-decoration-none">@Model.lblDisbursements</a>
                         </li>
                           <li class="breadcrumb-item d-flex align-items-center active" aria-current="page">
                             <img src="images/expenses.png" alt="Home" width="16" height="16" class="me-2" />
-                             @Model.lblEditDisbursement
+                            Edit @Model.lblAddDisbursement
                         </li>
                     </ol>
                 </nav>
-                <h1 class="h4">@Model.lblEditDisbursement</h1>
-                <!-- <p class="mb-0">Dozens of reusable components built to provide buttons, alerts, popovers, and more.</p> -->
+                <h1 class="h4">Edit @Model.lblAddDisbursement</h1>
+               <!-- <p class="mb-0">Dozens of reusable components built to provide buttons, alerts, popovers, and more.</p> -->
             </div>
         </div>
     </div>
@@ -173,121 +419,282 @@
             <div class="card border-0 shadow components-section">
                 <form method="post" class="card-body">
                     <div class="row mb-4">
-
-                        <input type="hidden" name="DisbursementID" value="@Model.DisbursementID" />
-
-                        <div class="col-lg-12 col-sm-12">
-                            <div class="mb-4">
-                                <label for="RequestingPlace">@Model.lblRequestingPlace</label>
-                                <select class="form-select" id="DId" name="DId">
-                                    @if (Model.Destinations != null)
-                                    {
-                                        foreach (var item in Model.Destinations)
-                                        {
-
-                                            <option value="@item.DId" selected="@(item.DId == Model.DId)">@item.DestinationName</option>
-
-                                        }
-                                    }
-                                </select>
+                            @* <div class="mb-4">
+                                <label for="SerialNumber">@Model.lblSerialNumber</label>
+                                <input type="text" name="SerialNumber" value="" class="form-control" id="SerialNumber">
+                            </div> *@
+                            <div class="form-group mb-4">
+                                <label>@Model.lblSerialNumber <b id="Serial"> @Model.serialNo</b></label>
+                                <input type="number"  asp-for="Report.SerialNumber"  id="SerialNumber" name="SerialNumber" hidden>
                             </div>
-                            <div class="mb-4">
-                                <label for="RequesterName">@Model.lblRequesterName</label>
-
-                                <select class="form-select" id="RequesterName" name="RequesterName" value="@ViewData[" RequesterName"]"></select>
-
+                            @{
+                                var currentYear = DateTime.Now.Year;
+                                var previousYear = currentYear - 1;
+                            }
+                            <div class="d-flex">
+                                <div class="mb-4 me-2" style="width: 48%;">
+                                    <label for="FiscalYear">@Model.lblFiscalYear</label>
+                                    <select class="form-select" asp-for="Report.FiscalYear" name="FiscalYear" id="FiscalYear" onchange="fetchSerialNumber()">
+                                        <option value="">Select Fiscal Year</option>
+                                        <option value="@previousYear">@previousYear</option>
+                                        <option value="@currentYear">@currentYear</option>
+                                    </select>
+                                </div>
+                                <div class="mb-4 ms-2" style="width: 48%;">
+                                    <label for="OrderDate">@Model.lblOrderDate</label>
+                                    <input  name="OrderDate" value="@(Model.Report.OrderDate != DateTime.MinValue ? Model.Report.OrderDate.ToString("yyyy-MM-dd") : "")" type="date" class="form-control" 
+                                        />
+                                </div>
                             </div>
-
-
-
-                            <div class="mb-4">
-                                <label for="RequestRecievedAt">@Model.lblRequestReceivedDate</label>
-                                <input asp-for="RequestRecievedAt" type="date" class="form-control" name="RequestRecievedAt"
-                                       value="@Model.RequestRecievedAt.ToString("yyyy-MM-dd")" />
-
-                            </div>
-
-
-                            <div class="mb-4">
-                                <label class="my-1 me-2" for="Status">@Model.lblDisbursementStatus</label>
-
-                                <select class="form-select" id="Status" name="Status">
-                                    @if (Model.StatusList != null)
-                                    {
-                                        foreach (var item in Model.StatusList)
-                                        {
-                                            <option value="@item.Value">@item.Text</option>
-                                        }
-                                    }
-                                </select>
-                            </div>
-                            <div class="mb-4">
-                                <label for="storeNumber">@Model.lblStoreName</label>
-                                <select class="form-select" id="StoreId" name="StoreId">
-                                    @if (Model.Stores != null)
-                                    {
-                                        foreach (var item in Model.Stores)
-                                        {
-                                            if (item.IsActive == 1 && item.Ended == null)
+                            
+                            <div class="d-flex">
+                                <div class="mb-4 me-2" style="width: 48%;">
+                                    <label for="RequestingSector">@Model.lblRequestingSector</label>
+                                    <select class="form-select" name="RequestingSector" asp-for="Report.RequestingSector">
+                                        @* <select class="form-select" id="DId" name="DId"> *@
+                                        @if (Model.Destinations != null)
+                                        {   <option>Select Requesting Sector</option>
+                                            foreach (var item in Model.Destinations)
                                             {
-                                                <option value="@item.StoreId" selected="@(item.StoreId == Model.StoreId)">@item.StoreName</option>
+                                                <option value="@item.DId" >@item.DestinationName</option>
                                             }
-
                                         }
-                                    }
-                                </select>
-
-                            </div>
-                            <div class="mb-4">
-                                <label for="ItemId">@Model.lblItemName</label>
-                                <select class="form-select" id="ItemId" name="ItemId" value="@Model.ItemName"></select>
-                            </div>
-                            <div class="mb-4">
-                                <label for="itemCode">@Model.lblItemCode</label>
-                                <input type="text" class="form-control" id="ItemCode" value="@Model.ItemCode" readonly>
-                            </div>
-                            <div class="mb-4">
-                                <label for="itemTypeCode">@Model.lblItemTypeCode</label>
-                                <input type="text" class="form-control" id="ItemTypeCode" value="@Model.ItemTypeCode" readonly>
-                            </div>
-                            <div class="mb-4">
-                                <label for="Quantity">@Model.lblQuantity</label>
-                                <input type="text" name="Quantity" value="@Model.Quantity" class="form-control"
-                                       id="Quantity">
-                            </div>
-                            <div class="mb-4">
-                                <label for="Comments">@Model.lblComments</label>
-
-                                <input type="text" class="form-control" id="Comments" name="Comments"
-                                       value="@Model.Comments" />
-
-                            </div>
-                            <div class="mb-4">
-                                <div class="form-check">
-                                    <label class="form-check-label" for="InventoryBalanced">
-                                        @Model.lblInventoryBalanced
-                                    </label>
-                                    <input id="InventoryBalanced" class="form-check-input" type="checkbox"
-                                           name="InventoryBalanced" asp-for="InventoryBalanced">
-
+                                
+                                    </select>
+                                </div>
+                                <div class="mb-4 ms-2" style="width: 48%;">
+                                    <label for="RequestDocumentType">@Model.lblRequestDocumentType</label>
+                                    <select class="form-select" name="RequestDocumentType" asp-for="Report.RequestDocumentType">
+                                        <option>Select Request document Type</option>
+                                        <option value="Completion">Completion</option>
+                                        <option value="Speech">Speech</option>
+                                    </select>
                                 </div>
                             </div>
 
+                            <div class="d-flex">
+                                <div class="mb-4 me-2" style="width: 48%;">
+                                    <label for="DocumentNumber">@Model.lblRequestDocumentNumber</label>
+                                    <input type="text"   class="form-control" asp-for="Report.DocumentNumber">
+                                </div>
+                                <div class="mb-4 ms-2" style="width: 48%;">
+                                    <label for="Sector">@Model.lblSector</label>
+                                    <input type="text" class="form-control" id="Sector" name="Sector" asp-for="Report.Sector" >
+                                </div>
+                            </div>
+                            
+                            <div class=" mb-4">
+                                <div class="me-2" >
+                                    <label for="WarehouseName">@Model.lblStoreName</label>
+                                    <select class="form-select" id="WarehouseName" asp-for="Report.WarehouseId">
+                                        @if (Model.Stores != null)
+                                        {
+                                            foreach (var item in Model.Stores)
+                                            {
+                                                if (item.IsActive == 1 && item.Ended == null)
+                                                {
+                                                    <option value="@item.StoreId" selected="@(item.StoreId == Model.StoreId)">@item.StoreName</option>
+                                                }
+                                            }
+                                        }
+                                    </select>
+
+                                </div>
+                                
+                                @* <div class="form-group ms-2" style="width: 48%;">
+                                    <label>Warehouse Keeper</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
+                                    <select class="form-select" asp-for="Report.KeeperId"    id="KeeperId" name="KeeperId" >
+                                       
+                                        <option value="">Select Warehouse Keeper</option>
+                                        @if (Model.KeeperList != null)
+                                        {
+                                            foreach (var item in Model.KeeperList)
+                                            {
+                                                    <option value="@item.UserId" data-UserName="@item.FullName" selected="@(item.UserId == Model.DeptManagerId)">@item.FullName</option>
+                                            }
+                                        }
+                                    </select>
+                                </div> *@
+
+                            </div>
+                            
+
+                            <div class=" mb-4">
+                                <div class="form-group me-2" >
+                                    <label>Department Manager</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
+                                    <select class="form-select" asp-for="Report.DeptManagerId"    id="DeptManagerId" name="DeptManagerId" >
+                                       
+                                        <option value="">Select Department Member</option>
+                                        @if (Model.DeptManagerList != null)
+                                        {
+                                            foreach (var item in Model.DeptManagerList)
+                                            {
+                                                    <option value="@item.UserId" data-UserName="@item.FullName" selected="@(item.UserId == Model.DeptManagerId)">@item.FullName</option>
+                                            }
+                                        }
+                                    </select>
+                                </div>
+
+                         
+
+                            </div>
+                        <div class="col-lg-12 col-sm-12">
+                            @for(int i =0; i < Model.ItemsForReport.Count; i++){
+                                <div id="returnEntriesWrapper">
+                                    <div class="return-entry border p-3 mb-3 rounded position-relative">
+
+                                        <div class="d-flex my-4">
+                                            <div class=" me-2" style="width: 49%;">
+                                                <label for="itemGroup">@Model.lblItemGroups</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
+                                                <select class="form-select item-group-select"  id="itemGroup_@i" name="ItemsForReport[@i].ItemGroup" onchange="filterItemsByGroup(@i)">
+                                                    @if (Model.ItemGroups != null)
+                                                    {
+                                                        <option value="">Select Item Group</option>
+                                                        foreach (var item in Model.ItemGroups)
+                                                        {
+                                                            <option value="@item.GroupCode">@item.GroupDesc</option>
+                                                        }
+                                                    }
+                                                </select>
+                                            </div>
+                                            <div class="ms-2" style="width: 49%;">
+                                                <label for="itemCode">@Model.lblItemCode</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
+                                                <input type="text" class="ItemCode form-control" id="ItemCode_@i" readonly >
+                                            </div>
+
+                                        
+                                        </div>
+                                    
+
+                                        <div class="d-flex">
+                                            <div class="form-group  me-2 " style="width: 49%;">
+                                                <label>@Model.lblItemName (@Model.lblArabicLanguage)</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
+
+                                                <select class="ArabicItemName form-select" id="ArabicItemName_@i"  asp-for="@Model.ItemsForReport[@i].ItemCardId" name="ItemsForReport[@i].ItemCardId"  onchange="handleItemChange(event)">
+                                                    <option value="">Select Item </option>
+                                                    
+                                                        @foreach (var item in Model.ItemCards)
+                                                        {
+
+                                                            <option value="@item.Id"
+                                                                    data-id="@item.ItemId"
+                                                                    data-group="@item.GroupCode"
+                                                                    data-code="@item.ItemCode"
+                                                                    data-description="@item.ItemDescription"
+                                                                    data-chemical="@item.Chemical"
+                                                                    data-risk="@item.HazardTypeName"
+                                                                    data-unit="@item.UnitOfmeasure"
+                                                                    selected="@(Model.ItemsForReport[i].ItemCardId == item.Id ? "selected" : null)">
+                                                                @item.ItemName
+                                                            </option>
+                                                        }
+                                                    
+                                                    
+                                                </select>
+                                                
+                                            </div>
+                                        
+                                            <div class="form-group mb-4 ms-2" style="width: 49%;">
+                                                <label for="EnglishArabicName">@Model.lblItemName (@Model.lblEnglishLanguage)</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
+                                                <select class="EnglishArabicName form-select" id="EnglishArabicName_@i"   onchange="handleItemChange(event)">
+                                                <option value="">Select Item </option>
+                                                    @foreach (var item in Model.ItemCards)
+                                                    {
+                                                        <option value="@item.Id"
+                                                            data-id="@item.ItemId"
+                                                            data-group="@item.GroupCode"
+                                                            data-code="@item.ItemCode"
+                                                            data-description="@item.ItemDescription"
+                                                            data-chemical="@item.Chemical" data-risk="@item.HazardTypeName"
+                                                            data-unit="@item.UnitOfmeasure"
+                                                            selected="@(Model.ItemsForReport[i].ItemCardId == item.Id)" 
+                                                            >
+                                                            @item.ItemName
+                                                        </option>
+                                                        
+                                                    }
+                                                </select>
+                                            </div>
+
+                                            
+                                        </div>
+                                    
+                                        <div class="mb-4">
+                                            <label for="itemDescription">@Model.lblItemDescription</label>
+                                            <input type="text" class="ItemDescription form-control" id="ItemDescription_@i" readonly>
+                                        </div>
+
+                                        <div class="d-flex">
+                                            <div class="mb-4 me-2" style="width: 49%;">
+                                                <label for="typeofAsset">@Model.lblTypeofAsset</label>
+                                                <input type="text" class="typeofAsset form-control" id="typeofAsset_@i" readonly>
+                                            </div>
+                                            <div class="mb-4 ms-2" style="width: 49%;">
+                                                <label for="chemical">@Model.lblChemical</label>
+                                                <input type="text" class="chemical form-control" id="chemical_@i" readonly>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="d-flex">
+                                            <div class="mb-4 me-2" style="width: 49%;">
+                                                <label for="RiskRating">@Model.lblRiskRating</label>
+                                                <input type="text" class="RiskRating form-control" id="RiskRating_@i" readonly>
+                                            </div>
+                                            <div class="mb-4 ms-2" style="width: 49%;">
+                                                <label for="UnitofMeasure">@Model.lblUnitOfMeasure</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
+                                                <input type="text" class="UnitofMeasure form-control" id="UnitofMeasure_@i" readonly>
+                                            </div>
+
+                                        </div>
+                                        
+                                        <div class="d-flex">
+                                            <div class="mb-4 me-2" style="width: 49%;">
+                                                <label for="Quantity">@Model.lblQuantity</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
+                                                <input type="number" name="ItemsForReport[@i].Quantity" asp-for="ItemsForReport[@i].Quantity"  class="form-control Quantity" id="Quantity_@i" value="@Model.ItemsForReport[@i].Quantity">
+                                            </div>
+                                            <div class="mb-4 ms-2" style="width: 49%;">
+                                                <label for="amountSpent">@Model.lblAmountSpent</label>
+                                                <input type="number" asp-for="ItemsForReport[@i].AmountSpent" name="ItemsForReport[@i].AmountSpent" class="form-control" id="AmountSpent_@i" value="@Model.ItemsForReport[@i].AmountSpent">
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="d-flex">
+                                            <div class="mb-4 me-2" style="width: 49%;">
+                                                <label for="UnitPrice">@Model.lblUnitPrice</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
+                                                <input type="number" asp-for="ItemsForReport[@i].UnitPrice" name="ItemsForReport[@i].UnitPrice" class="form-control UnitPrice" id="UnitPrice_@i" value="@Model.ItemsForReport[@i].UnitPrice">
+                                            </div>
+                                            <div class="mb-4 ms-2" style="width: 49%;">
+                                                <label for="TotalPrice">@Model.lblTotalPrice</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
+                                                <input type="number" asp-for="ItemsForReport[@i].TotalPrice" name="ItemsForReport[@i].TotalPrice" class="form-control TotalPrice" id="TotalPrice_@i" value="@Model.ItemsForReport[@i].TotalPrice">
+                                            </div>
+                                        </div>
+                                        <input type="hidden" id="EntryCount" name="EntryCount" value="@Model.ItemsForReport.Count" />
+
+                                        
+                                        <div class="mb-4">
+                                            <label for="Comments">@Model.lblComments</label>
+                                            <input type="text" class="form-control" id="Comments_@i" asp-for="ItemsForReport[@i].Comments" name="ItemsForReport[@i].Comments"  />
+                                        </div>
+                                        <button type="button" class="btn btn-danger btn-sm remove-entry me-3" style="position: absolute; top: 0; right: 0;">
+                                            @Model.lblRemove
+                                        </button>
+                                    </div>
+                                </div>
+                            }
+                            <div class="mb-3">
+                                <button type="button" class="btn btn-primary" id="addEntryBtn">@Model.lblAddMore</button>
+                            </div
+                            
                             <div class="mb-4">
-
-
                                 <div class="d-flex mb-2 mb-md-0" style="gap: 10px">
-                                    <a href="Disbursements"
-                                       class="btn btn-outline-gray-600  align-items-center w-100">@Model.lblCancel</a>
-
-                                    <input type="submit" value="@Model.lblUpdate"
-                                           class="btn btn-sm btn-gray-800 align-items-center w-100"
-                                           style="text-align:center;" />
-
+                                    <a href="Disbursements" class="btn btn-outline-gray-600  align-items-center w-100">@Model.lblCancel</a>
+                                    <input type="submit" value="@Model.lblAdd" class="btn btn-sm btn-gray-800 align-items-center w-100" style="text-align:center;" />
                                 </div>
-
                             </div>
                         </div>
+
+
+                        
                     </div>
 
                 </form>
