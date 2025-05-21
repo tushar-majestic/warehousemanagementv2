@@ -270,7 +270,7 @@
                                 @foreach (var req in Model.ManagerRequestSent){
                                     
                                     <tr>
-                                        <td>Dispensing Request for <b>@req.WarehouseName</b> has been sent successfully.</td>
+                                        <td>Dispensing Request for <b>@req.WarehouseId</b> has been sent successfully.</td>
                                         @{
                                             var localTime = req.OrderDate.ToLocalTime();
                                         }

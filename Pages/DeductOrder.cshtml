@@ -37,7 +37,7 @@
                 <div class="form-group mb-4" >
                     <label  class="control-label">Warehouse Name</label>
                     @* <input type="text" asp-for="ItemCard.StoreId" class="form-control"/> *@
-                    <select  asp-for="MaterialRequest.WarehouseName" id="storeSelect" name="StoreId" class="form-control" asp-items="ViewBag.WarehouseId" readonly></select>
+                    <select  asp-for="MaterialRequest.WarehouseId" id="storeSelect" name="StoreId" class="form-control" asp-items="ViewBag.WarehouseId" readonly></select>
                 </div>
 
                 @for (int i = 0; i < Model.ItemCardsFromReport.Count; i++)
@@ -163,7 +163,7 @@
 
                     <div class="form-group " style="width: 48%;">
                         <label>Party</label>
-                        <select asp-for="MaterialRequest.WarehouseName" name="PartyId" id="party" class="form-control" asp-items="ViewBag.Destinations" readonly>
+                        <select asp-for="MaterialRequest.WarehouseId" name="PartyId" id="party" class="form-control" asp-items="ViewBag.Destinations" readonly>
                         </select>
                     </div>
                 </div>

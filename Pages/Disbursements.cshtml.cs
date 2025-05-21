@@ -251,7 +251,7 @@ namespace LabMaterials.Pages
                                 ItemCode = ic.ItemCode,
                                 ItemTypeCode = ic.ItemTypeCode,
                                 Quantity = i.Quantity,
-                                StoreName = d.WarehouseName,
+                                StoreName = d.WarehouseId.ToString(),
                                 ItemName = ic.ItemName
                             };
 
@@ -278,7 +278,7 @@ namespace LabMaterials.Pages
                                     select new DisbursementInfo
                                     {
                                         RequestingPlace = s.DestinationName,
-                                        StoreName = d.WarehouseName
+                                        StoreName = d.WarehouseId.ToString()
                                     };
 
                 UniqueRequestingPlace = allItemsQuery.Select(i => i.RequestingPlace).Where(x => !string.IsNullOrEmpty(x)).Distinct().ToList();
