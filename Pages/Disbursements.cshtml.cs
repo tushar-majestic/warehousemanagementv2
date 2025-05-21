@@ -169,15 +169,15 @@ namespace LabMaterials.Pages
         }
         public IActionResult OnPostView([FromForm] int DisbursementID, [FromForm] string RequesterName, [FromForm] string FromDate, [FromForm] string ToDate, [FromForm] int page)
         {
-            HttpContext.Session.SetInt32("DisbursementID", DisbursementID);
-            HttpContext.Session.SetString("RequesterName", string.IsNullOrEmpty(RequesterName) ? "" : RequesterName);
-            HttpContext.Session.SetString("FromDate", string.IsNullOrEmpty(FromDate) ? "" : FromDate);
-            HttpContext.Session.SetString("ToDate", string.IsNullOrEmpty(ToDate) ? "" : ToDate);
-            HttpContext.Session.SetInt32("page", page);
+            // HttpContext.Session.SetInt32("DisbursementID", DisbursementID);
+            // HttpContext.Session.SetString("RequesterName", string.IsNullOrEmpty(RequesterName) ? "" : RequesterName);
+            // HttpContext.Session.SetString("FromDate", string.IsNullOrEmpty(FromDate) ? "" : FromDate);
+            // HttpContext.Session.SetString("ToDate", string.IsNullOrEmpty(ToDate) ? "" : ToDate);
+            // HttpContext.Session.SetInt32("page", page);
 
             
 
-            return RedirectToPage("./viewMaterialDispensing");
+            return RedirectToPage("./ViewItemCards");
         }
 
         // Function without pagination 

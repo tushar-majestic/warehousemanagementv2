@@ -3,6 +3,45 @@
 @{
     ViewData["Title"] = "Return Request Details";
 }
+<style>
+ .table-format {
+     width: 80%;
+     margin: 0 auto;
+     border-collapse: collapse;
+     font-family: Arial, sans-serif;
+ }
+
+ .table-format th,
+ .table-format td {
+     border: 1px solid #000;
+     padding: 5px;
+     font-size: 22px;
+     vertical-align: top;
+ }
+
+ .nested-table {
+     width: 100%;
+     border-collapse: collapse;
+ }
+
+ .nested-table td {
+     border: none;
+     padding: 5px;
+     font-size: 22px;
+ }
+
+ .text-approve {
+    margin-top: 5px;
+    height: 20%;
+ }
+ .d-flex{
+    display: flex;
+ }
+ .text-size{
+    font-size: 16px
+ }
+</style>
+
 <div class="py-4">
 
     <div class="d-flex justify-content-between w-100 flex-wrap">
@@ -128,8 +167,8 @@
     <a href="/ViewReturnRequests" class="btn btn-secondary mt-3">Back to List</a>
 </div>
 
-<div class="table-size"  id="printArea" style="display: none;">
-<div id="printArea" style="width: 826px;"  dir="@Model.dir">
+<div class="table-size"  id="printArea" style="display: none;" dir="@Model.dir">
+
     <div align="center" class="header-title">
         @ViewData["Title"]
     </div>
@@ -137,48 +176,97 @@
         var rep = Model.ReturnRequest;
     }
     @if(rep != null){
-        <div class="layout-container">
-            <div class="left-section text-size">
-                Order Number  @rep.OrderNumber<br>
-                Order Date @rep.OrderDate.ToString("yyyy-MM-dd")<br>
-                Page Count<br>
-            </div>
-           
-
-
-            <div class="center-section">
-                <div class="table-1">
-                    <table>
-                        <tr>
-                            <td colspan="8" style="font-weight: 20px; font-weight: 600;">Reason For Return</td>
-                        </tr>
-                        <tr>
-                            <th>Particular</th>
-                            <th></th>
-                            <th>Quantity</th>
-                            <th></th>
-                            <th>Price</th>
-                            <th></th>
-                            <th>Total</th>
-                            <th></th>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr> 
-                      
-                    </table>
-                </div>
-            </div>
+    <div class="layout-row d-flex align-items-start text-size" style="display: flex; font-size: 16px; width: 100%; justify-content: space-between;">
+    
+ 
+        <div class="left-column">
+            <div>Order Number: @rep.OrderNumber</div>
+            <div>Order Date: @rep.OrderDate.ToString("yyyy-MM-dd")</div>
+            <div>Page Count</div>
         </div>
-    }    
+
+     
+        <div class="center-column">
+            <table class="table-1 w-100">
+                <tr style="text-align: center;">
+                    <td colspan="2" style="font-weight: 600;">Reason For Return</td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        @if (rep.IsSurplus) { <span class="badge bg-info me-1">Surplus</span> }
+                        @if (rep.IsExpired) { <span class="badge bg-warning text-dark me-1">Expired</span> }
+                        @if (rep.IsInvalid) { <span class="badge bg-secondary me-1">Invalid</span> }
+                        @if (rep.IsDamaged) { <span class="badge bg-danger me-1">Damaged</span> }
+                        @if (!rep.IsSurplus && !rep.IsExpired && !rep.IsInvalid && !rep.IsDamaged)
+                        {
+                            <span class="text-muted">None</span>
+                        }
+                    </td>
+                </tr>
+                @if (!string.IsNullOrEmpty(rep.Reason))
+                {
+                    <tr>
+                        <td style="font-weight: 500;">Additional Notes</td>
+                        <td>@rep.Reason</td>
+                    </tr>
+                }
+            </table>
+        </div>
+
+        <div class="right-column" style="display: flex; flex-direction: column; align-item: end">
+            <div>Name of the applicant's sector : @rep.FromSector</div>
+            <div>Sector to which the request is sent : @rep.ToSector</div>
+            <div>Warehouse: @rep.Warehouse</div>
+        </div>
+
     </div>
+
+        <table class="table-format" border="1" align="center" style="width: 100%; border-collapse: collapse; text-align: center;">
+            <thead>
+                <tr>
+                    <th style="width: 5%;">Count</th>
+                    <th colspan="4" style="width: 25%;">Inspection Committee Recommendations</th>
+                    <th style="width: 5%;">Returned Quantity</th>
+                    <th style="width: 5%;">Unit Of Measure</th>
+                    <th style="width: 15%;">Item Name</th>
+                    <th style="width: 7%;">Item No</th>
+                    <th style="width: 7%;">Item Description</th>
+                   
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model.ReturnRequestItems != null && Model.ReturnRequestItems.Any())
+                {
+                    foreach (var item in Model.ReturnRequestItems)
+                    {
+                        <tr>
+                            <td style="font-size: 14px;" colspan="4"></td>
+                            <td style="font-size: 14px;">@item.ItemCode</td>
+                            <td style="font-size: 14px;">@item.ItemNameEnglish</td>
+                            <td style="font-size: 14px;">@item.ReturnedQuantity</td>
+                            <td style="font-size: 14px;">@item.UnitOfMeasure</td>
+                            <td style="font-size: 14px;">@item.ItemDescription</td>
+                            <td style="font-size: 14px;"></td>
+                        </tr>
+                        <tr>
+                            <td rowspan="2" colspan="2" style="text-align: center;font-size: 14px;"></td>
+                            <td colspan="2.5"></td>
+                            <td colspan="5"></td>
+                            <td style=" text-align: center;font-size: 14px;">@Model.lblName<br>@Model.lblSignature<br>@Model.lblDate</td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="10">No items to display.</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    }    
+
 </div>
 
 
