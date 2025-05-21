@@ -148,19 +148,20 @@ namespace LabMaterials.Pages
                     .OrderByDescending(r => r.OrderDate)
                     .ToList();
 
-                // if (!string.IsNullOrEmpty(searchTerm) && pagetype == "outbox")
-                // {
-                //     var lowerSearch = searchTerm.ToLower();
-                //     ManagerRequestSent = ManagerRequestSent
-                //         .Where(r =>
-                //         {
-                //             var store = Warehouses.FirstOrDefault(u => u.StoreId == int.Parse(r.WarehouseName));
-                //             var storename = store?.StoreName?.ToLower() ?? "";
+                if (!string.IsNullOrEmpty(searchTerm) && pagetype == "outbox")
+                {
+                    var lowerSearch = searchTerm.ToLower();
+                    ManagerRequestSent = ManagerRequestSent
+                        .Where(r =>
+                        {
+                            var store = Warehouses.FirstOrDefault(u => u.StoreId == r.WarehouseId);
+                            var storename = store?.StoreName?.ToLower() ?? "";
+                            var DocumentNumber = r.DocumentNumber?.ToLower() ?? "";
 
-                //             return storename.Contains(lowerSearch) ;
+                            return storename.Contains(lowerSearch) || DocumentNumber.Contains(lowerSearch);
 
-                //         }).ToList();
-                // }
+                        }).ToList();
+                }
             }
             
             // ManagerInboxList = dbContext.ReceivingReports
