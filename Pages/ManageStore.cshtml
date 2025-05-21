@@ -130,7 +130,7 @@
        @{
             var userGroupName = HttpContext.Session.GetString("UserGroup");
         }
-        @if (userGroupName == "System Admin")
+        @if (Model.CanManageUsers && Model.CanManageStore)
         {
             <div class="btn-group ms-2 ms-lg-3">
                 <a href="AddStore" class="btn top-sm-btn btn-sm btn-gray-800 d-flex justify-content-center d-inline-flex align-items-center">

@@ -25,7 +25,9 @@
             <h2 class="h4">@Model.lblDamagedItems</h2>
             <!-- <p class="mb-0">Your web analytics dashboard template.</p>-->
         </div>
-        <div class="btn-toolbar mb-2 mb-md-0">
+        @if (Model.CanReturnItems)
+        {
+            <div class="btn-toolbar mb-2 mb-md-0">
 
             <div class="btn-group ms-2 ms-lg-3">
                 <a href="newreturnRequest" class="btn btn-sm d-flex btn-gray-800 justify-content-center top-big-btn d-inline-flex align-items-center">
@@ -33,6 +35,7 @@
                 </a>
             </div>
         </div>
+        }
 
     </div>
 

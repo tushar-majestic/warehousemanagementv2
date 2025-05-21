@@ -88,6 +88,8 @@ public partial class LabDBContext : DbContext
     public virtual DbSet<VActivityLog> VActivityLogs { get; set; }
     public DbSet<ReturnRequest> ReturnRequests { get; set; }
     public DbSet<ReturnRequestItem> ReturnRequestItems { get; set; }
+    public DbSet<StoreTypes> StoreTypes { get; set; }
+    public DbSet<DocumentType> DocumentTypes { get; set; }
 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
