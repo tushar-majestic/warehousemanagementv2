@@ -128,35 +128,35 @@
     });
 
     // --- Handle Select Change ---
-   function handleItemChange(e) {
-    const select = e.target;
-    const entry = select.closest(".return-entry");
-    const selectedOption = select.options[select.selectedIndex];
-    if (!selectedOption || !selectedOption.dataset.id) return;
+    function handleItemChange(e) {
+        const select = e.target;
+        const entry = select.closest(".return-entry");
+        const selectedOption = select.options[select.selectedIndex];
+        if (!selectedOption || !selectedOption.dataset.id) return;
 
-    const selectedId = selectedOption.dataset.id;
+        const selectedId = selectedOption.dataset.id;
 
-    const isArabic = select.classList.contains("ArabicItemName");
-    const targetSelect = entry.querySelector(isArabic ? ".EnglishArabicName" : ".ArabicItemName");
+        const isArabic = select.classList.contains("ArabicItemName");
+        const targetSelect = entry.querySelector(isArabic ? ".EnglishArabicName" : ".ArabicItemName");
 
-    if (!targetSelect) return;
+        if (!targetSelect) return;
 
-    // Set the value in the other select
-    for (const option of targetSelect.options) {
-        if (option.dataset.id === selectedId) {
-            targetSelect.value = option.value;
-            break;
+        // Set the value in the other select
+        for (const option of targetSelect.options) {
+            if (option.dataset.id === selectedId) {
+                targetSelect.value = option.value;
+                break;
+            }
         }
-    }
 
-    // Fill other fields
-    entry.querySelector(".ItemCode").value = selectedOption.dataset.code || "";
-    entry.querySelector(".ItemDescription").value = selectedOption.dataset.description || "";
-    entry.querySelector(".typeofAsset").value = selectedOption.dataset.asset || "";
-    entry.querySelector(".chemical").value = selectedOption.dataset.chemical || "";
-    entry.querySelector(".RiskRating").value = selectedOption.dataset.risk || "";
-    entry.querySelector(".UnitofMeasure").value = selectedOption.dataset.unit || "";
-}
+        // Fill other fields
+        entry.querySelector(".ItemCode").value = selectedOption.dataset.code || "";
+        entry.querySelector(".ItemDescription").value = selectedOption.dataset.description || "";
+        entry.querySelector(".typeofAsset").value = selectedOption.dataset.asset || "";
+        entry.querySelector(".chemical").value = selectedOption.dataset.chemical || "";
+        entry.querySelector(".RiskRating").value = selectedOption.dataset.risk || "";
+        entry.querySelector(".UnitofMeasure").value = selectedOption.dataset.unit || "";
+    }
 
 
     // --- Auto Calculate Total ---
@@ -432,7 +432,7 @@
                                         <div class="d-flex my-4">
                                             <div class=" me-2" style="width: 49%;">
                                                 <label for="itemGroup">@Model.lblItemGroups</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
-                                                <select class="form-select item-group-select"  id="itemGroup_@i" name="ItemsForReport[@i].ItemGroup" >
+                                                <select class="form-select item-group-select"  id="itemGroup_@i" name="ItemsForReport[@i].ItemGroup" onchange="filterItemsByGroup(@i)" >
                                                     @if (Model.ItemGroups != null)
                                                     {
                                                         <option value="">Select Item Group</option>

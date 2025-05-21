@@ -5,6 +5,7 @@ using LabMaterials.Migrations;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
@@ -70,7 +71,7 @@ namespace LabMaterials.Pages
 
                                        select new DeductionExtended
                                        {
-
+                                            
                                            ItemCode = ic.Item.ItemCode,
                                            ItemName = ic.Item.ItemName,
                                            GroupCode = ic.Item.GroupCode,
@@ -120,38 +121,74 @@ namespace LabMaterials.Pages
             this.ReportId = HttpContext.Session.GetInt32("DisReportId");
             this.InboxId = HttpContext.Session.GetInt32("MsgId");
             await PopulateDropdownsAsync();
+            var dbContext = new LabDBContext();
 
     
 
             foreach (var item in ItemCardsFromReport)
-            {
-                var newdeduction = new PendingDeduction
+            {   
+                // 1. Reduce from ItemCard table
+                var itemCard = dbContext.ItemCards.FirstOrDefault(i => i.Id == item.ItemId);
+                if (itemCard != null)
                 {
-                    StoreId = StoreId,
-                    ItemCardId = item.ItemId,
-                    RoomId = item.RoomId,
-                    ShelfId = item.ShelfId,
-                    ReduceQty = item.QuantityReceived,
-                    OutDate = OutDate,
-                    PartyId = PartyId,
-                    DocumentNumber = DocumentNumber,
-                    Status = false,
-                    DeductedBy = HttpContext.Session.GetInt32("UserId").Value,
-                    MaterialRequestId = this.ReportId.Value,
-                    CreatedAt = DateTime.UtcNow
-                };
+                    itemCard.QuantityAvailable -= item.QuantityReceived;
+                }
 
-                _context.PendingDeductions.Add(newdeduction);
-                await _context.SaveChangesAsync();
+                // 2. Reduce from ItemCardBatches table (adjust logic as needed)
+                var batch = dbContext.ItemCardBatches
+                        .Where(b => b.ItemCardId == item.ItemId)
+                        .Where(b => b.RoomId == item.RoomId)
+                        .Where(b => b.ShelfId == item.ShelfId)
+                        .FirstOrDefault();
+
+                // if (batch != null && batch.QuantityReceived >= item.QuantityReceived)
+                if (batch != null)
+                {
+                    batch.QuantityReceived -= item.QuantityReceived;
+                }
+
+                // 3. Reduce from ShelveItems table
+                var shelveItem = dbContext.ShelveItems
+                                .FirstOrDefault(s => s.ItemCardId == item.ItemId &&
+                                                    s.ShelfId == item.ShelfId );
+
+                if (shelveItem != null)
+                {
+                    shelveItem.QuantityAvailable -= item.QuantityReceived;
+                }
+
+                // can be used in future if deduction order is GeneratedCodeAnalysisFlags before
+                // var newdeduction = new PendingDeduction
+                // {
+                //     StoreId = StoreId,
+                //     ItemCardId = item.ItemId,
+                //     RoomId = item.RoomId,
+                //     ShelfId = item.ShelfId,
+                //     ReduceQty = item.QuantityReceived,
+                //     OutDate = OutDate,
+                //     PartyId = PartyId,
+                //     DocumentNumber = DocumentNumber,
+                //     Status = false,
+                //     DeductedBy = HttpContext.Session.GetInt32("UserId").Value,
+                //     MaterialRequestId = this.ReportId.Value,
+                //     CreatedAt = DateTime.UtcNow
+                // };
+
+                // _context.PendingDeductions.Add(newdeduction);
+                 dbContext.SaveChanges();
+                // await _context.SaveChangesAsync();
             }
 
-            var dbContext = new LabDBContext();
 
             var message = dbContext.Messages.FirstOrDefault(m => m.Id == this.InboxId);
 
+            // if (message != null)
+            // {
+            //     message.Type = "Assign Supervisor";
+            // }
             if (message != null)
             {
-                message.Type = "Assign Supervisor";
+                message.Type = "Deduction Done";
             }
             dbContext.SaveChanges();
 

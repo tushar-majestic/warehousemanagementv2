@@ -227,13 +227,17 @@ namespace LabMaterials.Pages
                 ErrorMsg = (Program.Translations["TechnicalMemberMissing"])[Lang];
                 return Page();
             }
+            else if(Report.ChiefResponsibleId==0){
+                ErrorMsg = (Program.Translations["ChiefResponsibleMissing"])[Lang];
+                return Page();
+            }
           
            
            
             if (AttachmentFile != null)
             {
                 var uploadsFolder = Path.Combine(_environment.WebRootPath, "uploads");
-                    Directory.CreateDirectory(uploadsFolder); // ensure it exists
+                Directory.CreateDirectory(uploadsFolder); // ensure it exists
                 var uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(AttachmentFile.FileName);
                 var filePath = Path.Combine(uploadsFolder, uniqueFileName);
 
@@ -253,10 +257,10 @@ namespace LabMaterials.Pages
             //    return Page();
             //}
 
-            if (Report.ChiefResponsibleId == 0)
-            {
-                Report.ChiefResponsibleId = null;
-            }
+                // if (Report.ChiefResponsibleId == 0)
+                // {
+                //     Report.ChiefResponsibleId = null;
+                // }
 
             _context.ReceivingReports.Add(Report);
             await _context.SaveChangesAsync();
