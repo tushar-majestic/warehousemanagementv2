@@ -55,6 +55,8 @@ namespace LabMaterials.Pages
         public string lblAdd => "Submit";
         public string lblRemove => "Remove";
         public string lblAddMore => "Add More";
+
+        public List<Item> AllItems { get; set; }
         [BindProperty]
         public List<ReturnRequestItem> ReturnItems { get; set; } = new();
         public List<SelectListItem> StateOfMatters { get; set; }
@@ -190,6 +192,7 @@ namespace LabMaterials.Pages
             ItemCards = _context.ItemCards.ToList();
             Stores = _context.Stores.ToList();
             requesters = _context.Requesters.ToList();
+            AllItems = _context.Items.ToList();
         }
 
         // Optional: for role-based display
