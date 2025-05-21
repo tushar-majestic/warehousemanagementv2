@@ -47,11 +47,15 @@
                     @* <a asp-page="/PrintReceivingReport" asp-route-id="@report.Id" class="btn btn-sm btn-secondary">Print</a> *@
                     
                     <div class="d-flex">
-                        <form method="post" class="me-2">
-                            <input type="hidden" value="@MaterialRequest.SerialNumber" name="serialNumber" />
-                            <input type="hidden" value="@MaterialRequest.RequestId" name="ReceivingReportId" />
-                            <input type="submit" value="Edit" class="btn btn-secondary" asp-page-handler="Edit" />
-                        </form>
+                        @if(!MaterialRequest.SupervisorApproval){
+                            <form method="post" class="me-2">
+                                <input type="hidden" value="@MaterialRequest.SerialNumber" name="serialNumber" />
+                                <input type="hidden" value="@MaterialRequest.RequestId" name="ReceivingReportId" />
+                                <input type="submit" value="Edit" class="btn btn-secondary" asp-page-handler="Edit" />
+                            </form>
+                        }
+
+                        
                         <button id="PrintReport" class="btn btn-primary">Print</button>
                     </div>
 

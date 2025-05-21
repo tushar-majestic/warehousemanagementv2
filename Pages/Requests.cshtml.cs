@@ -33,6 +33,7 @@ namespace LabMaterials.Pages
         public List<ReceivingReport> RequestSent { get; set; }
         public List<MaterialRequest> ManagerRequestSent { get; set; }
 
+        public List<MaterialRequest> AllDispenseRequest { get; set; }
 
         public List<Message> InboxList { get; set; }
 
@@ -109,6 +110,7 @@ namespace LabMaterials.Pages
                         .ToList();
 
             AllRequest = dbContext.ReceivingReports.ToList();
+            AllDispenseRequest = dbContext.MaterialRequests.ToList();
             AllUsers = dbContext.Users.ToList();
             UserGroups = dbContext.UserGroups.ToList();
 
@@ -241,7 +243,7 @@ namespace LabMaterials.Pages
 
                         //message to manager who created the request
                         string managerMessage = string.Format("Has Approved the dispencing request for delivery");
-                        var msgToKeeper = new Message
+                        var msgToManager = new Message
                         {
                             MaterialRequestId = AcceptReportId,
                             ReportType = "Dispensing",
@@ -251,46 +253,62 @@ namespace LabMaterials.Pages
                             Type = "",
                             CreatedAt = DateTime.UtcNow
                         };
+                        dbContext.Messages.Add(msgToManager);
+
+                        //message to keeper to deduct order from itemcard
+                        string keeperMessage = string.Format("Has Approved the dispencing request for delivery");
+                        var msgToKeeper = new Message
+                        {
+                            MaterialRequestId = AcceptReportId,
+                            ReportType = "Dispensing",
+                            SenderId = this.UserId,
+                            RecipientId = report.KeeperId,
+                            Content = keeperMessage,
+                            Type = "",
+                            CreatedAt = DateTime.UtcNow
+                        };
                         dbContext.Messages.Add(msgToKeeper);
 
-                        var deductions = dbContext.PendingDeductions
-                        .Where(p => p.MaterialRequestId == AcceptReportId && !p.Status)
-                        .ToList();
+                        // Below code can be used here in future if deduction is done before
 
-                        foreach (var deduction in deductions)
-                        {
-                            // 1. Reduce from ItemCard table
-                            var itemCard = dbContext.ItemCards.FirstOrDefault(i => i.Id == deduction.ItemCardId);
-                            if (itemCard != null)
-                            {
-                                itemCard.QuantityAvailable -= deduction.ReduceQty;
-                            }
+                        // var deductions = dbContext.PendingDeductions
+                        // .Where(p => p.MaterialRequestId == AcceptReportId && !p.Status)
+                        // .ToList();
 
-                            // 2. Reduce from ItemCardBatches table (adjust logic as needed)
-                            var batch = dbContext.ItemCardBatches
-                                .Where(b => b.ItemCardId == deduction.ItemCardId)
-                                .Where(b => b.RoomId == deduction.RoomId)
-                                .Where(b => b.ShelfId == deduction.ShelfId)
-                                .FirstOrDefault();
+                        // foreach (var deduction in deductions)
+                        // {
+                        //     // 1. Reduce from ItemCard table
+                        //     var itemCard = dbContext.ItemCards.FirstOrDefault(i => i.Id == deduction.ItemCardId);
+                        //     if (itemCard != null)
+                        //     {
+                        //         itemCard.QuantityAvailable -= deduction.ReduceQty;
+                        //     }
 
-                            if (batch != null && batch.QuantityReceived >= deduction.ReduceQty)
-                            {
-                                batch.QuantityReceived -= deduction.ReduceQty;
-                            }
+                        //     // 2. Reduce from ItemCardBatches table (adjust logic as needed)
+                        //     var batch = dbContext.ItemCardBatches
+                        //         .Where(b => b.ItemCardId == deduction.ItemCardId)
+                        //         .Where(b => b.RoomId == deduction.RoomId)
+                        //         .Where(b => b.ShelfId == deduction.ShelfId)
+                        //         .FirstOrDefault();
 
-                            // 3. Reduce from ShelveItems table
-                            var shelveItem = dbContext.ShelveItems
-                                .FirstOrDefault(s => s.ItemCardId == deduction.ItemCardId &&
-                                                    s.ShelfId == deduction.ShelfId );
+                        //     if (batch != null && batch.QuantityReceived >= deduction.ReduceQty)
+                        //     {
+                        //         batch.QuantityReceived -= deduction.ReduceQty;
+                        //     }
 
-                            if (shelveItem != null)
-                            {
-                                shelveItem.QuantityAvailable -= deduction.ReduceQty;
-                            }
+                        //     // 3. Reduce from ShelveItems table
+                        //     var shelveItem = dbContext.ShelveItems
+                        //         .FirstOrDefault(s => s.ItemCardId == deduction.ItemCardId &&
+                        //                             s.ShelfId == deduction.ShelfId );
 
-                            // 4. Mark deduction as completed
-                            deduction.Status = true;
-                        }
+                        //     if (shelveItem != null)
+                        //     {
+                        //         shelveItem.QuantityAvailable -= deduction.ReduceQty;
+                        //     }
+
+                        //     // 4. Mark deduction as completed
+                        //     deduction.Status = true;
+                        // }
 
 
                     }
@@ -320,6 +338,8 @@ namespace LabMaterials.Pages
             FillLables();
             var dbContext = new LabDBContext();
             AllRequest = dbContext.ReceivingReports.ToList();
+            AllDispenseRequest = dbContext.MaterialRequests.ToList();
+
             this.UserId = HttpContext.Session.GetInt32("UserId");
 
             if(this.UserGroupName == "Warehouse Keeper")
@@ -380,6 +400,8 @@ namespace LabMaterials.Pages
             FillLables();
             var dbContext = new LabDBContext();
             AllRequest = dbContext.ReceivingReports.ToList();
+            AllDispenseRequest = dbContext.MaterialRequests.ToList();
+
             this.UserId = HttpContext.Session.GetInt32("UserId");
 
             RequestSent = dbContext.ReceivingReports.Where(r => r.CreatedBy == this.UserId).ToList();
