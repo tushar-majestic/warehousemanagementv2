@@ -19,8 +19,6 @@
             </nav>
 
             <h2 class="h4">@Model.lblRequests</h2>
-    using Microsoft.EntityFrameworkCore;
-            <!-- <p class="mb-0">Your web analytics dashboard template.</p>-->
         </div>
 
         
@@ -36,7 +34,17 @@
         }
     </div>
 
+    @* Search Bar *@
+    <div class="mb-2">
+       
+        <form method="get" class="d-flex align-items-center">
+            <input type="hidden" name="type" value="@Model.pagetype" />
+            <input type="text" name="searchTerm" class="form-control " style="width: 30%;" placeholder="Search inbox..." value="@Request.Query["searchTerm"]" />
+            <button type="submit" class="btn btn-primary ms-2">Search</button>
+        </form>
 
+    </div>
+    
 
     <nav class="nav">
         <a class="nav-link @Model.inboxClass border border-bottom-0" href="?type=inbox">Inbox 
@@ -220,6 +228,10 @@
                                                 <button class="btn btn-info btn-sm p-1" data-toggle="modal" data-target="#specifyRecipient" onclick="setAcceptReportId(@inbox.MaterialRequestId, @inbox.Id)">
                                                       Assign Supervisor
                                                 </button>
+                                            }
+                                            else if(inbox.Type == "Deduction Done")
+                                            {
+                                              <span class="bg-success p-2 rounded text-white">Deduction Done</span>
                                             }
                                             else if(inbox.Type == "Accepted")
                                             {

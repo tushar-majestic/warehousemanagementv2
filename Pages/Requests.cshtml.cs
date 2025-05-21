@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Session;
 using Org.BouncyCastle.Cms;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using LabMaterials.Migrations;
 
 namespace LabMaterials.Pages
 {
@@ -56,7 +57,7 @@ namespace LabMaterials.Pages
 
 
 
-        public void OnGet()
+        public void OnGet(string? searchTerm = null)
         {
             if (HttpContext.Request.Query.ContainsKey("type"))
             {
@@ -113,24 +114,85 @@ namespace LabMaterials.Pages
             AllDispenseRequest = dbContext.MaterialRequests.ToList();
             AllUsers = dbContext.Users.ToList();
             UserGroups = dbContext.UserGroups.ToList();
+            Warehouses = dbContext.Stores.ToList();
 
-            if (this.UserGroupName == "Warehouse Keeper")
+
+           if (this.UserGroupName == "Warehouse Keeper")
             {
-                RequestSent = dbContext.ReceivingReports.Where(r => r.CreatedBy == UserId)
-                .OrderByDescending(r => r.CreatedAt).ToList();
+                RequestSent = dbContext.ReceivingReports
+                    .Where(r => r.CreatedBy == UserId)
+                    .OrderByDescending(r => r.CreatedAt)
+                    .ToList();
+
+                if (!string.IsNullOrEmpty(searchTerm) && pagetype == "outbox")
+                {
+                    var lowerSearch = searchTerm.ToLower();
+
+                    RequestSent = RequestSent
+                        .Where(r =>
+                        {
+                            var store = Warehouses.FirstOrDefault(u => u.StoreId == int.Parse(r.ReceivingWarehouse));
+                            var storename = store?.StoreName?.ToLower() ?? "";
+
+                            return storename.Contains(lowerSearch) ;
+
+                        }).ToList();
+
+
+                }
             }
-            else if (this.UserGroupName == "Warehouse Manager") {
-                ManagerRequestSent = dbContext.MaterialRequests.Where(r => r.RequestedByUserId == UserId)
-                .OrderByDescending(r => r.OrderDate).ToList();
+            else if (this.UserGroupName == "Warehouse Manager")
+            {
+                ManagerRequestSent = dbContext.MaterialRequests
+                    .Where(r => r.RequestedByUserId == UserId)
+                    .OrderByDescending(r => r.OrderDate)
+                    .ToList();
+
+                // if (!string.IsNullOrEmpty(searchTerm) && pagetype == "outbox")
+                // {
+                //     var lowerSearch = searchTerm.ToLower();
+                //     ManagerRequestSent = ManagerRequestSent
+                //         .Where(r =>
+                //         {
+                //             var store = Warehouses.FirstOrDefault(u => u.StoreId == int.Parse(r.WarehouseName));
+                //             var storename = store?.StoreName?.ToLower() ?? "";
+
+                //             return storename.Contains(lowerSearch) ;
+
+                //         }).ToList();
+                // }
             }
             
             // ManagerInboxList = dbContext.ReceivingReports
             //     .Where(r => r.KeeperApproval == true)
             //     .ToList();
-            Warehouses = dbContext.Stores.ToList();
 
+            // InboxList = dbContext.Messages
+            //     .Where(s => s.RecipientId == UserId).OrderByDescending(s => s.CreatedAt).ToList();
             InboxList = dbContext.Messages
-                .Where(s => s.RecipientId == UserId).OrderByDescending(s => s.CreatedAt).ToList();
+            .Where(s => s.RecipientId == UserId)
+            .OrderByDescending(s => s.CreatedAt)
+            .ToList();
+
+            if (!string.IsNullOrEmpty(searchTerm) && pagetype == "inbox")
+            {
+                var lowerSearch = searchTerm.ToLower();
+
+                InboxList = InboxList
+                    .Where(m =>
+                    {
+                        var sender = AllUsers.FirstOrDefault(u => u.UserId == m.SenderId);
+                        var senderName = sender?.FullName?.ToLower() ?? "";
+                        var messageText = m.Content?.ToLower() ?? "";
+                        var ReportType = m.ReportType?.ToLower() ?? "";
+
+                        return senderName.Contains(lowerSearch) || messageText.Contains(lowerSearch) || ReportType.Contains(lowerSearch);
+                    })
+                    .ToList();
+                        
+               
+            }
+
 
             InboxCount = InboxList.Count();
 
