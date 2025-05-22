@@ -273,7 +273,7 @@ namespace LabMaterials.Pages
                         ErrorMsg = (Program.Translations["SectorNumberMissing"])[Lang];
                         return Page();
                     }
-                    if (string.IsNullOrEmpty(Report.WarehouseName)){
+                    if (string.IsNullOrEmpty(Report.WarehouseId.ToString())){
                         ErrorMsg = (Program.Translations["WarehouseNameMissing"])[Lang];
                         return Page();
                     }

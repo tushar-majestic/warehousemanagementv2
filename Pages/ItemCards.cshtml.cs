@@ -81,8 +81,8 @@ namespace LabMaterials.Pages
                                            HazardTypeName = ri.Item.HazardTypeName,
                                            ExpiryDate = ri.Item.ExpiryDate,
                                            QuantityReceived = ri.Quantity,
-                                           UnitOfmeasure = unit.UnitCode
-                                           //Chemical = ri.Item.Chemical
+                                           UnitOfmeasure = unit.UnitCode,
+                                           Chemical = ri.Item.Chemical?"Yes":"No"
                                        }).ToList();
 
 

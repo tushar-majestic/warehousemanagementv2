@@ -1,0 +1,51 @@
+﻿@page
+@model LabMaterials.Pages.AddStoreTypesModel
+@{
+    ViewData["Title"] = "Create Store Type";
+}
+
+<h1>Store Types</h1>
+
+@* <a asp-page="./AddStoreTypes" class="btn btn-primary mb-3">Add New Store Type</a> *@
+
+@if (!Model.StoreTypeList.Any())
+{
+    <div class="alert alert-info">No store types found.</div>
+}
+else
+{
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Store Type</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.StoreTypeList)
+            {
+                <tr>
+                    <td>@item.StoreTypeId</td>
+                    <td>@item.StoreType</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<h1>Add Store Type</h1>
+
+<form method="post">
+    <div class="mb-3">
+        <label asp-for="StoreTypeModel.StoreType" class="form-label"></label>
+        <input asp-for="StoreTypeModel.StoreType" class="form-control" placeholder="Enter store type (e.g., Central)" />
+        <span asp-validation-for="StoreTypeModel.StoreType" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a asp-page="ManageUsers" class="btn btn-secondary">Cancel</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

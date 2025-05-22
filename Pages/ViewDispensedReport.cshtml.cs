@@ -31,15 +31,15 @@ namespace LabMaterials.Pages
         public List<ReceivingItem> ReceivingItems { get; set; }
         public List<DespensedItem> DispensedItems { get; set; }
         public List<ItemCard> ItemCards { get; set; }
+        public List<ItemCard> ItemCardsNew { get; set; }
         public List<Item> Item { get; set; }
         public List<Unit> Units { get; set; }
 
         public List<Store> Stores { get; set; }
         public MaterialRequest? MaterialRequest { get; set; }
 
-        public string lblView, lblUsers, lblSearch, lblAddUser, lblManageUserGroups, lblUserName, lblFullName, lblEmail,
-        lblUserEnabled, lblIsLocked, lblUserType, lblUserGroupName, lblEdit, lblUnlock, lblTotalItem, lblJobNumber,
-        lblEmpAffiliation, lblTransfer;
+        public string lblView, lblEdit, lblTotalItem, lblJobNumber, lblEmpAffiliation, lblTransfer, lblMaterialDispensing, lblPrint,
+        lblSerialNumber, lblOrderDate, lblRequestingSector, lblRequestDocumentType, lblRequestDocumentNumber, lblSector;
         // public void OnGet()
         // {
 
@@ -91,26 +91,21 @@ namespace LabMaterials.Pages
         private void FillLables()
         {
 
-            this.lblUsers = (Program.Translations["Users"])[Lang];
-            this.lblSearch = (Program.Translations["Search"])[Lang];
-            this.lblAddUser = (Program.Translations["AddUser"])[Lang];
-            this.lblManageUserGroups = (Program.Translations["ManageUserGroups"])[Lang];
-            this.lblUserName = (Program.Translations["UserName"])[Lang];
-            this.lblFullName = (Program.Translations["FullName"])[Lang];
-            this.lblEmail = (Program.Translations["Email"])[Lang];
-            this.lblUserEnabled = (Program.Translations["UserEnabled"])[Lang];
-            this.lblIsLocked = (Program.Translations["IsLocked"])[Lang];
-            this.lblUserType = (Program.Translations["UserType"])[Lang];
-            this.lblUserGroupName = (Program.Translations["UserGroupName"])[Lang];
-
             this.lblEdit = (Program.Translations["Edit"])[Lang];
             this.lblView = (Program.Translations["View"])[Lang];
-            this.lblUnlock = (Program.Translations["Unlock"])[Lang];
             this.lblTotalItem = (Program.Translations["TotalItem"])[Lang];
-            this.lblView = (Program.Translations["View"])[Lang];
             this.lblJobNumber = (Program.Translations["JobNumber"])[Lang];
             this.lblEmpAffiliation = (Program.Translations["EmpAffiliation"])[Lang];
             this.lblTransfer = (Program.Translations["Transfer"])[Lang];
+            this.lblMaterialDispensing = (Program.Translations["Disbursements"])[Lang];
+            this.lblPrint = (Program.Translations["Print"])[Lang];
+            this.lblSerialNumber = (Program.Translations["SerialNumber"])[Lang];
+            this.lblFiscalYear = (Program.Translations["FiscalYear"])[Lang];
+            this.lblOrderDate = (Program.Translations["OrderDate"])[Lang];
+            this.lblRequestingSector = (Program.Translations["RequestingSector"])[Lang];
+            this.lblRequestDocumentType = (Program.Translations["RequestDocumentType"])[Lang];
+            this.lblRequestDocumentNumber = (Program.Translations["RequestDocumentNumber"])[Lang];
+            this.lblSector = (Program.Translations["Sector"])[Lang];
 
         }
     }

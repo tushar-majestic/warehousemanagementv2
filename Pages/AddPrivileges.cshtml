@@ -1,0 +1,47 @@
+﻿@page
+@model LabMaterials.Pages.AddPrivilegesModel
+@{
+    ViewData["Title"] = "Create Privilege";
+}
+
+@if (!Model.PrivilegeList.Any())
+{
+    <div class="alert alert-info">No Privileges found.</div>
+}
+else
+{
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Privilege Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.PrivilegeList)
+            {
+                <tr>
+                    <td>@item.PrivilegeId</td>
+                    <td>@item.PrivilegeName</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<h1>Create Privilege</h1>
+
+<form method="post">
+    <div class="mb-3">
+        <label asp-for="Privilege.PrivilegeName" class="form-label"></label>
+        <input asp-for="Privilege.PrivilegeName" class="form-control" />
+        <span asp-validation-for="Privilege.PrivilegeName" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Create</button>
+    <a asp-page="ManageUsers" class="btn btn-secondary">Cancel</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

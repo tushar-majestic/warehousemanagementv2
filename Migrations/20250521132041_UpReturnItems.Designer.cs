@@ -4,6 +4,7 @@ using LabMaterials.DB;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LabMaterials.Migrations
 {
     [DbContext(typeof(LabDBContext))]
-    partial class LabDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250521132041_UpReturnItems")]
+    partial class UpReturnItems
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -368,24 +371,6 @@ namespace LabMaterials.Migrations
                     b.HasIndex("StoreId");
 
                     b.ToTable("DisbursementRequest");
-                });
-
-            modelBuilder.Entity("LabMaterials.DB.DocumentType", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("DocType")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("DocumentTypes");
                 });
 
             modelBuilder.Entity("LabMaterials.DB.HazardType", b =>
@@ -1445,14 +1430,8 @@ namespace LabMaterials.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-
-                    b.Property<string>("Notes")
-                        .HasColumnType("text");
-
-
                     b.Property<string>("RecommendedAction")
                         .HasColumnType("nvarchar(max)");
-
 
                     b.Property<string>("ReturnNotes")
                         .HasMaxLength(500)
@@ -1940,23 +1919,6 @@ namespace LabMaterials.Migrations
                     b.HasIndex("ToStoreId");
 
                     b.ToTable("STORE_MOVEMENT");
-                });
-
-            modelBuilder.Entity("LabMaterials.DB.StoreTypes", b =>
-                {
-                    b.Property<int>("StoreTypeId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StoreTypeId"));
-
-                    b.Property<string>("StoreType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("StoreTypeId");
-
-                    b.ToTable("StoreTypes");
                 });
 
             modelBuilder.Entity("LabMaterials.DB.Supplier", b =>

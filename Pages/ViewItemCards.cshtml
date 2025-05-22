@@ -67,7 +67,7 @@
         </tr>
         
         <tr>
-          <!-- Left Column -->
+        
           <td class="w-50 align-top border-end">
             <div class="p-2">
               <div class="mb-1">Ceiling: -</div>
@@ -75,7 +75,7 @@
               <div>Minimum: @batch.Minimum</div>
             </div>
           </td>
-          <!-- Right Column -->
+         
           <td class="w-50 align-top">
             <div class="p-2">
               <div class="mb-1" style="text-align: end;">Recipient Sector: -</div>
@@ -86,7 +86,7 @@
         </tr>
       </table>
   
-  <!-- Item Information Table -->
+ 
   @* <table class="table w-100 mb-4 table-bordered">
     <thead>
       <tr>
@@ -134,7 +134,8 @@
         <td>-</td>
         <td>-</td>
         <td>-</td>
-        <td>-</td>
+        <td></td>
+    @*    <td>@batch.DespensedItem.AmountSpent</td> *@
         <td>@batch.Supplier.SupplierName</td>
         <td>@batch.QuantityReceived</td>
         <td>@batch.ReceiptDocumentnumber</td>

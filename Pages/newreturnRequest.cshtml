@@ -70,7 +70,8 @@
                                             onchange="onItemChange(this, @i)">
                                         <option value="">Select Item</option>
                                         @foreach (var item in Model.ItemCards)
-                                        {
+                                        {   
+                                            var Item = Model.AllItems.FirstOrDefault(i => i.ItemId == item.ItemId);
                                             <option value="@item.Id"
                                                     data-code="@item.ItemCode"
                                                     data-description="@item.ItemDescription"
@@ -78,7 +79,8 @@
                                                     data-risk="@item.HazardTypeName"
                                                     data-unit="@item.UnitOfmeasure"
                                                     data-itemnamearabic="@item.ItemName"
-                                                    data-itemnameenglish="@item.ItemName">
+                                                    data-itemnameenglish="@item.ItemName"
+                                                    data-expdate = "@Item.ExpiryDate?.ToString("yyyy-MM-dd")">
                                                 @item.ItemName
                                             </option>
                                         }
@@ -120,7 +122,7 @@
                                 </div>
                                 <div class="col-md-6 mb-4">
                                     <label>Expiry Date</label>
-                                    <input type="date" name="ReturnItems[@i].ExpiryDate" class="form-control" value="@Model.CurrentDate.ToString("yyyy-MM-dd")" />
+                                    <input type="date" name="ReturnItems[@i].ExpiryDate" class="form-control ExpDate"   />
                                 </div>
                                 <div class="col-md-6 mb-4">
                                     <label>Unit of Measure</label>
@@ -214,6 +216,7 @@
             document.querySelectorAll(".UnitofMeasure")[index].value = selected.dataset.unit || "";
             document.querySelectorAll(".ItemNameArabic")[index].value = selected.dataset.itemnamearabic || "";
             document.querySelectorAll(".ItemNameEnglish")[index].value = selected.dataset.itemnameenglish || "";
+            document.querySelectorAll(".ExpDate")[index].value = selected.dataset.expdate || "";
 
             // Check for duplicates
             const selectedValue = select.value;

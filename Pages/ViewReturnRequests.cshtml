@@ -1,6 +1,52 @@
 ﻿@page
 @model LabMaterials.Pages.ViewReturnRequestsModel
+@section Scripts
+{
+    <script type="text/javascript" language="javascript">
+        const toggleButton = document.getElementById('toggleDropdown');
+        const dropdownPanel = document.getElementById('dropdownPanel');
 
+        toggleButton.addEventListener('click', function () {
+            dropdownPanel.style.display = (dropdownPanel.style.display === 'none' || dropdownPanel.style.display === '') ? 'block' : 'none';
+        });
+
+        // Optional: hide when click outside
+        document.addEventListener('click', function (e) {
+            if (!toggleButton.contains(e.target) && !dropdownPanel.contains(e.target)) {
+                dropdownPanel.style.display = 'none';
+            }
+        });
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script>
+        document.getElementById('exportExcel').addEventListener('click', function () {
+            let table = document.querySelector('#exportTable'); // use hidden export table directly
+            let wb = XLSX.utils.book_new();
+            let ws_data = [];
+
+            // Get headers
+            const headers = Array.from(table.querySelectorAll('thead th'))
+                .map(th => th.textContent.trim()); // use textContent instead of innerText
+            ws_data.push(headers);
+
+            // Get rows
+            const rows = table.querySelectorAll('tbody tr');
+            rows.forEach(row => {
+                const rowData = [];
+                const cells = row.querySelectorAll('th, td');
+                cells.forEach(cell => {
+                    rowData.push(cell.textContent.trim()); // use textContent
+                });
+                ws_data.push(rowData);
+            });
+
+            // Create worksheet and trigger download
+            let ws = XLSX.utils.aoa_to_sheet(ws_data);
+            XLSX.utils.book_append_sheet(wb, ws, "Manage Users Data");
+            XLSX.writeFile(wb, "ReturnItem.xlsx");
+        });
+    </script>
+}
 @{
     ViewData["Title"] = "Return Requests";
 }
@@ -20,55 +66,365 @@
         </nav>
         <h2 class="h4">@Model.lblDamagedItems</h2>
     </div>
-    <div class="btn-group ms-2 ms-lg-3">
-        <a href="newreturnRequest" class="btn btn-sm d-flex btn-gray-800 justify-content-center top-big-btn d-inline-flex align-items-center">
-            <img b-ie9pk9zf1q="" class="icon text-white icon-xs mx-2" src="images/plus.png">    Return Item Request
-        </a>
-    </div>
+    @if(Model.CanReturnItems){
+        <div class="btn-group ms-2 ms-lg-3">
+            <a href="newreturnRequest" class="btn btn-sm d-flex btn-gray-800 justify-content-center top-big-btn d-inline-flex align-items-center">
+                <img b-ie9pk9zf1q="" class="icon text-white icon-xs mx-2" src="images/plus.png">    Return Item Request
+            </a>
+        </div>
+    }
+    
 </div>
+<div class="mb-4">
+    <button id="exportExcel" class="btn btn-success">@Model.lblExportExcel</button>
+    <button id="printBtn" class="btn btn-primary">@Model.lblPrintTable</button>
+</div>
+<div class="table-settings mb-4">
+    <form method="post" asp-page-handler="Action" class="row align-items-center">
+
+        <div class="col col-md-3 col-lg-3 col-xl-3">
+            <div class="input-group me-2 me-lg-3 fmxw-400">
+                <span class="input-group-text">
+                    <svg class="icon icon-xs" x-description="Heroicon name: solid/search"
+                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                        <path fill-rule="evenodd"
+                            d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                            clip-rule="evenodd"></path>
+                    </svg>
+                </span>
+                <input type="text" name="OrderNumber" class="form-control" placeholder="OrderNumber"
+                    value="@Model.OrderNumber">
+
+            </div>
+        </div>
+        <div class="col-4 col-md-2 col-xl-1 ps-md-0 ">
+            <button type="submit" name="action" value="search" class="btn btn-primary">@Model.lblSearch</button>
+        </div>
+
+        <div class="col text-end position-relative">
+            <button type="button" id="toggleDropdown" class="btn btn-secondary">
+                @Model.lblShowHideColumn
+            </button>
+
+            <!-- DROPDOWN PANEL GOES HERE -->
+            <div id="dropdownPanel" class="card p-2 shadow-sm position-absolute"
+                style="right: 0; top: 100%; width: 200px; display: none; z-index: 1000;">
+
+                <!-- Your checkboxes here -->
+                <div class="form-check mb-1">
+                    <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="orderNumber"
+                        id="orderNumber" @(Model.SelectedColumns.Contains("orderNumber") ? "checked" : "")>
+                    <label class="form-check-label" for="orderNumber">OrderNumber</label>
+                </div>
+                <div class="form-check mb-1">
+                    <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="orderDate"
+                        id="orderDate" @(Model.SelectedColumns.Contains("orderDate") ? "checked" : "")>
+                    <label class="form-check-label" for="orderDate">OrderDate</label>
+                </div>
+                <div class="form-check mb-1">
+                    <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="sector"
+                        id="sector" @(Model.SelectedColumns.Contains("sector") ? "checked" : "")>
+                    <label class="form-check-label" for="sector">Sector</label>
+                </div>
+                <div class="form-check mb-1">
+                    <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="store"
+                        id="store" @(Model.SelectedColumns.Contains("store") ? "checked" : "")>
+                    <label class="form-check-label" for="store">Store</label>
+                </div>
+                <div class="form-check mb-1">
+                    <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="reason"
+                        id="reason" @(Model.SelectedColumns.Contains("reason") ? "checked" : "")>
+                    <label class="form-check-label" for="reason">Reason</label>
+                </div>
+
+                <div class="form-check mb-1 text-center">
+                    <button type="submit" name="action" value="updateColumns" class="btn btn-success btn-sm">Ok</button>
+                </div>
+
+
+            </div>
+        </div>
+
+    </form>
+</div>
+@if (Model.TotalPages > 1)
+{
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+
+            @* Previous button *@
+            @if (Model.CurrentPage > 1)
+            {
+
+                <li class="page-item">
+                    <a class="page-link" href="?page=@(Model.CurrentPage - 1)&OrderNumber=@Model.OrderNumber">&laquo;</a>
+                </li>
+            }
+
+            @* Show pages normally if the total pages are less than or equal to 10 *@
+            @if (Model.TotalPages <= 10)
+            {
+                @for (int i = 1; i <= Model.TotalPages; i++)
+                {
+                    <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                        <a class="page-link" href="?page=@i&OrderNumber=@Model.OrderNumber">@i</a>
+                    </li>
+                }
+            }
+            else
+            {
+                @* Show the first page, then ellipsis if there are skipped pages *@
+                @if (Model.CurrentPage > 3)
+                {
+                    <li class="page-item">
+                        <a class="page-link" href="?page=1&OrderNumber=@Model.OrderNumber">1</a>
+                    </li>
+                    <li class="page-item disabled">
+                        <span class="page-link">...</span>
+                    </li>
+                }
+
+                @* Show pages from (current-1) to (current+1) *@
+                @for (int i = Math.Max(1, Model.CurrentPage - 1); i <= Math.Min(Model.TotalPages, Model.CurrentPage + 1); i++)
+                {
+                    <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                        <a class="page-link" href="?page=@i&OrderNumber=@Model.OrderNumber">@i</a>
+                    </li>
+                }
+
+                @* Add "..." if there are skipped pages after the current page *@
+                @if (Model.CurrentPage < Model.TotalPages - 1)
+                {
+                    <li class="page-item disabled">
+                        <span class="page-link">...</span>
+                    </li>
+                }
+
+
+                @* Show the last page, if it's not already visible *@
+                @if (Model.CurrentPage < Model.TotalPages - 2)
+                {
+                    <li class="page-item">
+                        <a class="page-link" href="?page=@Model.TotalPages&OrderNumber=@Model.OrderNumber">@Model.TotalPages</a>
+                    </li>
+                }
+            }
+
+            @* Last buttons *@
+            @if (Model.CurrentPage < Model.TotalPages)
+            {
+                <li class="page-item">
+                    <a class="page-link" href="?page=@(Model.CurrentPage + 1)&OrderNumber=@Model.OrderNumber">&raquo;</a>
+                </li>
+
+            }
+
+        </ul>
+    </nav>
+}
  <div class="card border-0 shadow mb-4">
         <div class="card-body">
-         @if (Model.ReturnRequests.Any())
-                {
             <div class="table-responsive">
               
-                    <table class="table table-centered table-nowrap mb-0 rounded" >
-                        <thead class="thead-light">
-                            <tr>
-                                <th scope="col" class="border-0 rounded-start">#</th>
-                                <th scope="col" class="border-0">Order Number</th>
-                                <th scope="col" class="border-0">Order Date</th>
-                                <th scope="col" class="border-0">Sector</th>
-                                <th scope="col" class="border-0">Store</th>
-                                <th scope="col" class="border-0">Reason</th>
-                                <th scope="col" class="border-0 rounded-end">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @for (int i = 0; i < Model.ReturnRequests.Count; i++)
+                <table class="table table-centered table-nowrap mb-0 rounded" >
+                    <thead class="thead-light">
+                        <tr>
+                            
+                            <th scope="col" class="border-0 rounded-start">#</th>
+                            @if (Model.SelectedColumns.Contains("orderNumber"))
                             {
-                                var req = Model.ReturnRequests[i];
-                                <tr>
-                                    <td>@(i + 1)</td>
-                                    <td>@req.OrderNumber</td>
-                                    <td>@req.OrderDate.ToString("yyyy-MM-dd")</td>
-                                    <td>@req.FromSector</td>
-                                    <td>@req.Warehouse?.StoreName</td>
-                                    <td>@req.Reason</td>
-                                    <td>
-                                        <a href="/ReturnRequestsDetails/@req.Id" class="btn btn-sm btn-primary">View</a>
-                                    </td>
-                                </tr>
+                                <th scope="col" class="border-0">Order Number</th>
                             }
-                        </tbody>
-                    </table>
-              
+                            @if (Model.SelectedColumns.Contains("orderDate"))
+                            {
+                                <th scope="col" class="border-0">Order Date</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("sector"))
+                            {
+                                <th scope="col" class="border-0">Sector</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("store"))
+                            {
+                                <th scope="col" class="border-0">Store</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("reason"))
+                            {
+                                <th scope="col" class="border-0">Reason</th>
+                            }
+                            <th scope="col" class="border-0 rounded-end">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (int i = 0; i < Model.ReturnRequests.Count; i++)
+                        {
+                            var req = Model.ReturnRequests[i];
+                            <tr>
+                                <td>@(i + 1)</td>
+                                @if (Model.SelectedColumns.Contains("orderNumber"))
+                                {
+                                <td>@req.OrderNumber</td>
+                                }
+                                @if (Model.SelectedColumns.Contains("orderDate"))
+                                {
+                                <td>@req.OrderDate.ToString("yyyy-MM-dd")</td>
+                                }
+                                @if (Model.SelectedColumns.Contains("sector"))
+                                {
+                                <td>@req.FromSector</td>
+                                }
+                                @if (Model.SelectedColumns.Contains("store"))
+                                {
+                                <td>@req.Warehouse?.StoreName</td>
+                                }
+                                @if (Model.SelectedColumns.Contains("reason"))
+                                {
+                                <td>@req.Reason</td>
+                                }
+                                <td>
+                                    <a href="/ReturnRequestsDetails/@req.Id" class="btn btn-sm btn-primary">View</a>
+                                </td>
+                            </tr>
+                        }
+                        <tr>
+                            <td class="border-0" colspan="8">
+                                <div>@Model.lblTotalItem : @Model.TotalItems</div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-              }
-                else
-                {
-                    <p>No return requests found.</p>
-                }
         </div>  
     </div>
+@if (Model.TotalPages > 1)
+{
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
 
+            @* Previous button *@
+            @if (Model.CurrentPage > 1)
+            {
+
+                <li class="page-item">
+                    <a class="page-link" href="?page=@(Model.CurrentPage - 1)&OrderNumber=@Model.OrderNumber">&laquo;</a>
+                </li>
+            }
+
+            @* Show pages normally if the total pages are less than or equal to 10 *@
+            @if (Model.TotalPages <= 10)
+            {
+                @for (int i = 1; i <= Model.TotalPages; i++)
+                {
+                    <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                        <a class="page-link" href="?page=@i&OrderNumber=@Model.OrderNumber">@i</a>
+                    </li>
+                }
+            }
+            else
+            {
+                @* Show the first page, then ellipsis if there are skipped pages *@
+                @if (Model.CurrentPage > 3)
+                {
+                    <li class="page-item">
+                        <a class="page-link" href="?page=1&OrderNumber=@Model.OrderNumber">1</a>
+                    </li>
+                    <li class="page-item disabled">
+                        <span class="page-link">...</span>
+                    </li>
+                }
+
+                @* Show pages from (current-1) to (current+1) *@
+                @for (int i = Math.Max(1, Model.CurrentPage - 1); i <= Math.Min(Model.TotalPages, Model.CurrentPage + 1); i++)
+                {
+                    <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                        <a class="page-link" href="?page=@i&OrderNumber=@Model.OrderNumber">@i</a>
+                    </li>
+                }
+
+                @* Add "..." if there are skipped pages after the current page *@
+                @if (Model.CurrentPage < Model.TotalPages - 1)
+                {
+                    <li class="page-item disabled">
+                        <span class="page-link">...</span>
+                    </li>
+                }
+
+                @* Show the last page, if it's not already visible *@
+                @if (Model.CurrentPage < Model.TotalPages - 2)
+                {
+                    <li class="page-item">
+                        <a class="page-link" href="?page=@Model.TotalPages&OrderNumber=@Model.OrderNumber">@Model.TotalPages</a>
+                    </li>
+                }
+            }
+
+            @* Last buttons *@
+            @if (Model.CurrentPage < Model.TotalPages)
+            {
+                <li class="page-item">
+                    <a class="page-link" href="?page=@(Model.CurrentPage + 1)&OrderNumber=@Model.OrderNumber">&raquo;</a>
+                </li>
+
+            }
+
+        </ul>
+    </nav>
+}
+
+<div class="table-responsive" id="exportTableContainer" style="display: none;">
+    <table class="table table-centered table-nowrap mb-0 rounded" id="exportTable">
+        <thead class="thead-light">
+            <tr>
+                <th scope="col" class="border-0 rounded-start">#</th>
+                @if (Model.SelectedColumns.Contains("orderNumber"))
+                {
+                    <th scope="col" class="border-0">Order Number</th>
+                }
+                @if (Model.SelectedColumns.Contains("orderDate"))
+                {
+                    <th scope="col" class="border-0">Order Date</th>
+                }
+                @if (Model.SelectedColumns.Contains("sector"))
+                {
+                    <th scope="col" class="border-0">Sector</th>
+                }
+                @if (Model.SelectedColumns.Contains("store"))
+                {
+                    <th scope="col" class="border-0">Store</th>
+                }
+                @if (Model.SelectedColumns.Contains("reason"))
+                {
+                    <th scope="col" class="border-0">Reason</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.ReturnRequestsAll.Count; i++)
+            {
+                var req = Model.ReturnRequestsAll[i];
+                <tr>
+                    <td>@(i + 1)</td>
+                    @if (Model.SelectedColumns.Contains("orderNumber"))
+                    {
+                        <td>@req.OrderNumber</td>
+                    }
+                    @if (Model.SelectedColumns.Contains("orderDate"))
+                    {
+                        <td>@req.OrderDate.ToString("yyyy-MM-dd")</td>
+                    }
+                    @if (Model.SelectedColumns.Contains("sector"))
+                    {
+                        <td>@req.FromSector</td>
+                    }
+                    @if (Model.SelectedColumns.Contains("store"))
+                    {
+                        <td>@req.Warehouse?.StoreName</td>
+                    }
+                    @if (Model.SelectedColumns.Contains("reason"))
+                    {
+                        <td>@req.Reason</td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

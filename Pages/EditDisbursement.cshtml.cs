@@ -11,7 +11,14 @@ using System.Data;
 namespace LabMaterials.Pages
 {
     public class EditDisbursementModel : BasePageModel
-    {
+    {   
+        private readonly LabDBContext _context;
+        private readonly IWebHostEnvironment _environment;
+        public EditDisbursementModel(LabDBContext context, IWebHostEnvironment environment)
+        {
+            _context = context;
+            _environment = environment;
+        }
         public string ErrorMsg { get; set; }
  
         public List<User> DeptManagerList {  get; set; }
@@ -70,7 +77,7 @@ namespace LabMaterials.Pages
             Report ??= new MaterialRequest();
             ItemGroups = dbContext.ItemGroups.Where(g => g.Units.Count() > 0).ToList();
 
-             ItemsForReport = dbContext.DespensedItems
+            ItemsForReport = dbContext.DespensedItems
                         .Where(r => r.MaterialRequestId == ReceivingReportId.Value)
                         .ToList();
 
@@ -116,21 +123,173 @@ namespace LabMaterials.Pages
                                 UnitOfmeasure = x.UnitOfmeasure
                             }).ToList();
 
-
             Report = dbContext.MaterialRequests
                 .FirstOrDefault(r => r.RequestId == ReceivingReportId.Value);
-
-            if (Report != null)
-            {
-                
-            }
+           
         }
 
         public async Task<IActionResult> OnPostAsync([FromForm] DateTime OrderDate, [FromForm] int SerialNumber, [FromForm] string FiscalYear, [FromForm] string RequestDocumentType, [FromForm] int RequestingSector, [FromForm] string Sector, [FromForm] int DeptManagerId)
         {
-            
+            LogableTask task = LogableTask.NewTask("EditDisbursement");
+            try
+            { 
+                task.LogInfo(MethodBase.GetCurrentMethod(), "Called");
+                base.ExtractSessionData();
+                var dbContext = new LabDBContext();
+                //Department Manager list
+                var DeptManager = dbContext.UserGroups
+                        .Where(g => g.UserGroupName == "Department Manager")
+                        .Select(g => g.UserGroupId)
+                        .FirstOrDefault();
 
-            return Page();
+                DeptManagerList = dbContext.Users
+                            .Where(u => u.UserGroupId == DeptManager)
+                            .ToList();
+                Destinations = dbContext.Destinations.ToList();
+                Stores = dbContext.Stores.ToList();
+                ItemCards = dbContext.ItemCards.ToList();
+                Units = dbContext.Units.ToList();
+                ItemGroups = dbContext.ItemGroups.Where(g => g.Units.Count() > 0).ToList();
+
+                ItemsValue = dbContext.ItemCards
+                    .Select(x => new ItemCard
+                    {
+                        Id = x.Id,
+                        ItemId = x.ItemId,
+                        ItemName = x.ItemName,
+                        GroupCode = x.GroupCode,
+                        ItemCode = x.ItemCode,
+                        ItemDescription = x.ItemDescription,
+                        Chemical = x.Chemical,
+                        UnitOfmeasure = x.UnitOfmeasure
+                    }).ToList();
+
+                if (ItemsForReport == null || !ItemsForReport.Any())
+                {
+                    ItemsForReport = new List<DespensedItem> { new DespensedItem() };
+                }
+
+                if (CanGenerateDispensingRequest)
+                {
+                    FillLables();
+                    int userId = HttpContext.Session.GetInt32("UserId").Value;
+                    var user = dbContext.Users.FirstOrDefault(u => u.UserId == userId);
+                    if (user == null)
+                    {
+                        ErrorMsg = "User not found.";
+                        return Page();
+                    }
+                    int? ReceivingReportId = HttpContext.Session.GetInt32("ReceivingReportId");
+                    this.MaterialRequestId = ReceivingReportId.Value;
+                    var report = await _context.MaterialRequests.FindAsync(this.MaterialRequestId);
+                    if (report == null)
+                    {
+                        return NotFound("Receiving report not found.");
+                    }
+                    report.SerialNumber = SerialNumber;
+                    report.OrderDate = OrderDate.Date;
+                    // report.RequestedByUser = user;
+                    report.RequestedByUserId = user.UserId;
+                    report.FiscalYear = FiscalYear;
+                    report.RequestDocumentType = RequestDocumentType;
+                    report.RequestingSector = RequestingSector;
+                    report.Sector = Sector;
+                    // report.KeeperId = KeeperId;
+                    report.DeptManagerId = DeptManagerId;
+                    report.CreatedAt = DateTime.UtcNow;
+                    // report.SupervisorId = SupervisorId;
+                    // report.DocumentNumber = DocumentNumber;
+
+                    if (string.IsNullOrEmpty(FiscalYear))
+                    {
+                        ErrorMsg = (Program.Translations["FiscalYearMissing"])[Lang];
+                        return Page();
+                    }
+                    else if (OrderDate == default(DateTime))
+                    {
+                        ErrorMsg = (Program.Translations["ReceivingDateMissing"])[Lang];
+                        return Page();
+                    }
+                    else if (report.RequestingSector == 0)
+                    {
+                        ErrorMsg = (Program.Translations["RecipientSectorMissing"])[Lang];
+                        return Page();
+                    }
+                    if (string.IsNullOrEmpty(report.DocumentNumber))
+                    {
+                        ErrorMsg = (Program.Translations["DocumentNumberMissing"])[Lang];
+                        return Page();
+                    }
+                    if (string.IsNullOrEmpty(report.Sector))
+                    {
+                        ErrorMsg = (Program.Translations["SectorNumberMissing"])[Lang];
+                        return Page();
+                    }
+                    if (string.IsNullOrEmpty(report.WarehouseId.ToString()))
+                    {
+                        ErrorMsg = (Program.Translations["WarehouseNameMissing"])[Lang];
+                        return Page();
+                    }
+
+                    if (report.RequestingSector == 0)
+                    {
+                        ErrorMsg = (Program.Translations["ReceivingWarehouseMissing"])[Lang];
+                        return Page();
+                    }
+                    if (report.DeptManagerId == 0)
+                    {
+                        ErrorMsg = (Program.Translations["DeptManagerMissing"])[Lang];
+                        return Page();
+                    }
+
+
+                    if (!ItemsForReport.Any(item => item.ItemCardId != 0 && item.Quantity > 0 && item.UnitPrice > 0))
+                    {
+                        ErrorMsg = "At least one item must have the required fields filled (Item Group, Quantity, Unit Price, Item Name).";
+                        return Page();
+                    }
+
+                    await _context.SaveChangesAsync();
+                    
+                    // Delete old items
+                    var existingItems = _context.DespensedItems.Where(ri => ri.MaterialRequestId == report.RequestId).ToList();
+                    _context.DespensedItems.RemoveRange(existingItems);
+                    await _context.SaveChangesAsync();
+
+                    // Add updated items
+                    foreach (var item in ItemsForReport)
+                    {
+                        // if (item.ItemId != 0 && item.Quantity > 0 && item.UnitPrice > 0)
+                        // {
+                            item.MaterialRequestId = report.RequestId;
+                            item.ItemCardId = item.ItemCardId; // Ensure the ItemId is set correctly
+
+                            if (item.Comments == null)
+                            item.Comments = "";
+
+                            _context.DespensedItems.Add(item);
+                        // }
+                    }
+
+                }
+                await _context.SaveChangesAsync();
+                return RedirectToPage("/Requests");
+            }
+            catch (Exception ex)
+            {
+                task.LogError(MethodBase.GetCurrentMethod(), ex);
+                ErrorMsg = ex.Message;
+                //for seeing inner exception errors
+                if (ex.InnerException != null)
+                {
+                    ErrorMsg += " Inner Exception: " + ex.InnerException.Message;
+                }
+
+
+                return Page();
+            }
+            finally { task.EndTask(); }
+
         }
 
 

@@ -196,8 +196,10 @@ namespace LabMaterials.Pages
             HttpContext.Session.SetInt32("CanManageItemGroup", Privileges.Contains("CanManageItemGroup") ? 1 : 0);
             HttpContext.Session.SetInt32("CanManageItemCard", Privileges.Contains("CanManageItemCard") ? 1 : 0);
             HttpContext.Session.SetInt32("CanManageRequests", Privileges.Contains("CanManageRequests") ? 1 : 0);
-            HttpContext.Session.SetInt32("CanGenerateReceivingRequest", Privileges.Contains("CanGenerateReceivingRequest") ? 1 : 0);
+            HttpContext.Session.SetInt32("CanReturnItems", Privileges.Contains("CanReturnItems") ? 1 : 0);
+              HttpContext.Session.SetInt32("CanGenerateReceivingRequest", Privileges.Contains("CanGenerateReceivingRequest") ? 1 : 0);
             HttpContext.Session.SetInt32("CanGenerateDispensingRequest", Privileges.Contains("CanGenerateDispensingRequest") ? 1 : 0);
+            HttpContext.Session.SetInt32("CanReturnItems", Privileges.Contains("CanReturnItems") ? 1 : 0);
             HttpContext.Session.SetString("LastLogin", dbUser.LastLoginTime.HasValue ? dbUser.LastLoginTime.Value.ToString() : "");
             if (string.IsNullOrEmpty(dbUser.Lang))
             {
