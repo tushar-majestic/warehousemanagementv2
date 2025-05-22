@@ -10,7 +10,7 @@ namespace LabMaterials.Pages
         public int? UserId { get; set; }
         public bool IsLDAP { get; set; }
         public bool CanManageStore { get; set; }
-        
+
         public bool CanReturnItems { get; set; }
 
         public bool CanManageUsers { get; set; }
@@ -39,8 +39,8 @@ namespace LabMaterials.Pages
                 UserGroupName = HttpContext.Session.GetString("UserGroup");
                 Usergroup = HttpContext.Session.GetString("UserGroup");
                 IsLDAP = HttpContext.Session.GetInt32("IsLDAP") == 1;
-                CanGenerateDispensingRequest = HttpContext.Session.GetInt32("CanGenerateDispensingRequest") == 1; 
-                CanReturnItems = HttpContext.Session.GetInt32("CanReturnItems") == 1; 
+                CanGenerateDispensingRequest = HttpContext.Session.GetInt32("CanGenerateDispensingRequest") == 1;
+                CanReturnItems = HttpContext.Session.GetInt32("CanReturnItems") == 1;
                 CanManageStore = HttpContext.Session.GetInt32("CanManageStore") == 1;
                 CanManageUsers = HttpContext.Session.GetInt32("CanManageUsers") == 1;
                 CanManageItems = HttpContext.Session.GetInt32("CanManageItems") == 1;

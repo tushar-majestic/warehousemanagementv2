@@ -52,7 +52,12 @@ namespace LabMaterials.Pages
         public string ErrorMsg { get; set; }
         public List<User> SectorManagerList {  get; set; }
         public List<User> KeeperList {  get; set; }
-        public List<User> SupervisorList {  get; set; }
+
+        public List<User> InspectionOfficerList {  get; set; }
+
+        public List<User> SupervisorList { get; set; }
+
+        public List<Store> Stores { get; set; }
 
 
 
@@ -89,6 +94,7 @@ namespace LabMaterials.Pages
             SectorManagerList = dbContext.Users
                     .Where(u => u.UserGroupId == SecManagerId)
                     .ToList();
+            Stores = dbContext.Stores.ToList();
 
             //Keeper List
             var KeepId = dbContext.UserGroups
@@ -98,6 +104,16 @@ namespace LabMaterials.Pages
 
             KeeperList = dbContext.Users
                     .Where(u => u.UserGroupId == KeepId)
+                    .ToList();
+
+            //Inspection Committee Officer List
+            var InspId = dbContext.UserGroups
+                    .Where(g => g.UserGroupName == "Return Inspection Committee Officer")
+                    .Select(g => g.UserGroupId)
+                    .FirstOrDefault();
+
+            InspectionOfficerList = dbContext.Users
+                    .Where(u => u.UserGroupId == InspId)
                     .ToList();
 
             //General Supervisor list
@@ -233,6 +249,7 @@ namespace LabMaterials.Pages
             return RedirectToPage("./Index", new { lang = Lang });
         }
 
+        //Accept and specify recipent in case of dispencing request
         public IActionResult OnPostAcceptAndSpecify([FromForm] int AcceptReportId, [FromForm] int AcceptMessageId, [FromForm] int? ReceipientId)
         {
             //function is used in case when department manager accepts the dispensing request
@@ -391,6 +408,71 @@ namespace LabMaterials.Pages
 
 
         }
+        
+
+        //Accept and specify recipent in case of Return request
+        public IActionResult OnPostAcceptAndSpecifyReturn([FromForm] int AcceptReturnReportId, [FromForm] int AcceptReturnMessageId, [FromForm] int? Receipient)
+        {
+            base.ExtractSessionData();
+            this.UserFullName = HttpContext.Session.GetString("FullName");
+            this.UserGroupName = HttpContext.Session.GetString("UserGroup");
+            this.UserId = HttpContext.Session.GetInt32("UserId");
+
+            FillLables();
+            var dbContext = new LabDBContext();
+            var report = dbContext.ReturnRequests.FirstOrDefault(r => r.Id == AcceptReturnReportId);
+            if (report != null)
+            {
+                if (Receipient.HasValue)
+                {
+                    //If Warehouse Manager is logged in than send message to Return Inspection Comittee Officer
+                    if (this.UserGroupName == "Warehouse Manager")
+                    {
+                        report.InspOffId = Receipient.Value;
+
+                        report.ManagerApprovalDate = DateTime.Now;
+
+                        //message to Inspection Officer
+                        string InspOffMessage = string.Format("Sent Return Items Request Approve the request or add comments.");
+                        var msgToInspOfficer = new Message
+                        {
+                            ReturnRequestId = AcceptReturnReportId,
+                            ReportType = "ReturnItems",
+                            SenderId = this.UserId,
+                            RecipientId = report.InspOffId,
+                            Content = InspOffMessage,
+                            Type = "",
+                            CreatedAt = DateTime.UtcNow
+                        };
+                        dbContext.Messages.Add(msgToInspOfficer);
+
+
+
+                    }
+                    
+                }
+                
+                var message = dbContext.Messages.FirstOrDefault(m => m.Id == AcceptReturnMessageId);
+
+                if (message != null)
+                {
+                    message.Type = "Accepted";
+                }
+                dbContext.SaveChanges();
+
+            }
+            // if (!ModelState.IsValid)
+            // {
+            //     return Page();
+            // }
+            return RedirectToPage();
+
+
+        }
+        public IActionResult OnPostTest()
+        {
+            return RedirectToPage("/Supplies");
+        }
 
 
         public IActionResult OnPostAcceptDispencing([FromForm] int AcceptReportId, [FromForm] int AcceptMessageId)
@@ -405,7 +487,7 @@ namespace LabMaterials.Pages
 
             this.UserId = HttpContext.Session.GetInt32("UserId");
 
-            if(this.UserGroupName == "Warehouse Keeper")
+            if (this.UserGroupName == "Warehouse Keeper")
                 RequestSent = dbContext.ReceivingReports.Where(r => r.CreatedBy == this.UserId).ToList();
 
             InboxList = dbContext.Messages
@@ -414,7 +496,7 @@ namespace LabMaterials.Pages
 
             if (report != null)
             {
-              
+
                 //if Warehouuse Keeper accepts the request message is sent to sector manager
                 if (this.UserGroupName == "Warehouse Keeper")
                 {
@@ -435,10 +517,10 @@ namespace LabMaterials.Pages
                     };
                     dbContext.Messages.Add(msgToSectorManager);
 
-                    
+
                 }
-                
-                
+
+
                 var message = dbContext.Messages.FirstOrDefault(m => m.Id == AcceptMessageId);
 
                 if (message != null)

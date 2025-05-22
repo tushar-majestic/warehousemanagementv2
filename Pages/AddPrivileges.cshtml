@@ -1,0 +1,37 @@
+﻿@page
+@model LabMaterials.Pages.AddPrivilegesModel
+@{
+    ViewData["Title"] = "Create Privilege";
+}
+
+<!-- Breadcrumb -->
+<nav aria-label="breadcrumb" class="mb-3">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a asp-page="/Home">Home</a></li>
+        <li class="breadcrumb-item"><a asp-page="/ManageUsers">Users</a></li>
+        <li class="breadcrumb-item"><a asp-page="/ViewPrivileges">Document Types</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Add Privilege</li>
+    </ol>
+</nav>
+
+<!-- Back Button -->
+<div class="mb-3">
+    <a asp-page="/ViewPrivileges" class="btn btn-outline-secondary">&larr; Back </a>
+</div>
+
+<h2>Create Privilege</h2>
+
+<form method="post">
+    <div class="mb-3">
+        <label asp-for="Privilege.PrivilegeName" class="form-label"></label>
+        <input asp-for="Privilege.PrivilegeName" class="form-control" />
+        <span asp-validation-for="Privilege.PrivilegeName" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Create</button>
+    <a asp-page="ManageUsers" class="btn btn-secondary">Cancel</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

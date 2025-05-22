@@ -52,6 +52,10 @@ namespace LabMaterials.DB
         [StringLength(100)]
         public string StateOfMatter { get; set; } = null!;
 
+
+        [StringLength(500)]
+        public string? InspectionNotes { get; set; }
+
         public DateTime? ExpiryDate { get; set; }
 
         [StringLength(20)]
@@ -62,6 +66,20 @@ namespace LabMaterials.DB
 
         [StringLength(500)]
         public string? ReturnNotes { get; set; }
+
+        public enum ItemCondition
+        {
+            New,
+            Used,
+            Recyclable,
+            Other
+        }
+
+        public ItemCondition RecommendedAction { get; set; } = ItemCondition.Used;
+
+        [Column(TypeName = "text")]
+        public string? Notes { get; set; }
+
     }
 
 }

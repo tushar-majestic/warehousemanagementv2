@@ -1,0 +1,37 @@
+﻿@page
+@model LabMaterials.Pages.AddStoreTypesModel
+@{
+    ViewData["Title"] = "Create Store Type";
+}
+
+<!-- Breadcrumb -->
+<nav aria-label="breadcrumb" class="mb-3">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a asp-page="/Home">Home</a></li>
+        <li class="breadcrumb-item"><a asp-page="/ManageUsers">Users</a></li>
+        <li class="breadcrumb-item"><a asp-page="/ViewStoretypes">Store Types</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Add Store Type</li>
+    </ol>
+</nav>
+
+<!-- Back Button -->
+<div class="mb-3">
+    <a asp-page="/ViewStoretypes" class="btn btn-outline-secondary">&larr; Back </a>
+</div>
+
+<h1>Add Store Type</h1>
+
+<form method="post">
+    <div class="mb-3">
+        <label asp-for="StoreTypeModel.StoreType" class="form-label"></label>
+        <input asp-for="StoreTypeModel.StoreType" class="form-control" placeholder="Enter store type (e.g., Central)" />
+        <span asp-validation-for="StoreTypeModel.StoreType" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a asp-page="ManageUsers" class="btn btn-secondary">Cancel</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

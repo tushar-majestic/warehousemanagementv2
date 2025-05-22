@@ -111,12 +111,15 @@ namespace LabMaterials.Pages
             // Parse main form values
               var dbContext = new LabDBContext();
             var orderNumber = "RR-" + DateTime.UtcNow.Ticks.ToString(); // or your format
-
+            var dbContext = new LabDBContext();
             var orderDateStr = Request.Form["OrderDate"];
             var requestingSector = Request.Form["RequestingSector"];
             var applicantsSector = Convert.ToInt32(Request.Form["ApplicantsSector"]);
             var storeId = Convert.ToInt32(Request.Form["StoreId"]);
             var reason = Request.Form["ReasonForReturn"];
+            var store = dbContext.Stores.FirstOrDefault(s => s.StoreId == storeId);
+
+            int? managerId = store?.WarehouseManagerId;
 
 
             
@@ -145,9 +148,12 @@ namespace LabMaterials.Pages
                 ToSector = requestingSector,
                 FromSectorId = applicantsSector,
                 WarehouseId = storeId,
+                ManagerId = managerId,
                 Reason = reason,
                 CreatedAt = DateTime.Now,
                 Items = ReturnItems,
+                CreatedBy = HttpContext.Session.GetInt32("UserId"),
+
             };
             // Ensure all flags are false first
             request.IsSurplus = false;
@@ -221,7 +227,19 @@ namespace LabMaterials.Pages
             _context.Attach(request).Property(r => r.OrderNumber).IsModified = true;
             await _context.SaveChangesAsync();
 
-
+            string Message = string.Format("Sent Return Item Request Approve the request or add comments.");
+            var msg = new  Message
+            {
+                    ReturnRequestId = request.Id,
+                    ReportType = "ReturnItems",
+                    SenderId = request.CreatedBy,
+                    RecipientId = request.ManagerId,
+                    Content = Message,
+                    Type = "",
+                    CreatedAt = DateTime.UtcNow
+            };
+            dbContext.Messages.Add(msg);
+            dbContext.SaveChanges();
             return RedirectToPage("ViewReturnRequests"); // redirect as appropriate
         }
 

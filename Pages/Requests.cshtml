@@ -19,6 +19,7 @@
             </nav>
 
             <h2 class="h4">@Model.lblRequests</h2>
+    using LabMaterials.Migrations;
         </div>
 
         
@@ -140,7 +141,7 @@
                                                     if(senderGroupName == "Warehouse Manager" && Model.UserGroupName == "Department Manager"){
                                                         @* <input type="text" value="@inbox.ReportId" name="ReceivingReportId" hidden />
                                                         <input type="hidden" value="@inbox.Id" name="MessageId"> *@
-                                                        <button class="btn btn-info btn-sm p-1" data-toggle="modal" data-target="#specifyRecipient" onclick="setAcceptReportId(@inbox.MaterialRequestId, @inbox.Id)">
+                                                        <button class="btn btn-info btn-sm p-1" data-toggle="modal" data-target="#specifyRecipientDispensing" onclick="setAcceptReportId(@inbox.MaterialRequestId, @inbox.Id)">
                                                                 Accept
                                                         </button>
 
@@ -161,7 +162,7 @@
                                                             <button asp-page-handler="DeductOrder" class="btn btn-info btn-sm p-1"> Deduct Order form Item Card</button>
                                                         </form> *@
 
-                                                        <button class="btn btn-info btn-sm p-1" data-toggle="modal" data-target="#specifyRecipient" onclick="setAcceptReportId(@inbox.MaterialRequestId, @inbox.Id)">
+                                                        <button class="btn btn-info btn-sm p-1" data-toggle="modal" data-target="#specifyRecipientDispensing" onclick="setAcceptReportId(@inbox.MaterialRequestId, @inbox.Id)">
                                                                 Accept
                                                         </button>
 
@@ -221,11 +222,34 @@
                                                     }
                                                     
                                                 }
+                                                //For Return Items Request
+                                                else if(inbox.ReportType == "ReturnItems"){
+                                                    @* case1: Sender- SectorManager receiver: warehouse Manager *@
+                                                    if(senderGroupName == "Sector Manager" && Model.UserGroupName == "Warehouse Manager"){
+                                                        <button class="btn btn-info btn-sm p-1" data-toggle="modal" data-target="#specifyRecipientReturn" onclick="setAcceptReturnReportId(@inbox.ReturnRequestId, @inbox.Id)">
+                                                                Accept
+                                                        </button>
+
+                                                        <button class="btn btn-warning btn-sm p-1" data-toggle="modal" data-target="#commentRejectModal" onclick="setRejectReportId(@inbox.ReturnRequestId, @inbox.Id,'@inbox.ReportType')">
+                                                            Comment & Reject
+                                                        </button>
+                                                    }
+                                                    @* case2: Sender- Warehouse Manager receiver:  Inspection Officer *@
+                                                    else if(senderGroupName == "Warehouse Manager" && Model.UserGroupName == "Return Inspection Committee Officer"){
+                                                        <button class="btn btn-info btn-sm p-1" data-toggle="modal"  onclick="setAcceptReturnReportId(@inbox.ReturnRequestId, @inbox.Id)">
+                                                            Add Committee Recommendations
+                                                        </button>
+
+                                                        <button class="btn btn-warning btn-sm p-1" data-toggle="modal" data-target="#commentRejectModal" onclick="setRejectReportId(@inbox.ReturnRequestId, @inbox.Id,'@inbox.ReportType')">
+                                                            Comment & Reject
+                                                        </button>
+                                                    }
+                                                }
                                                 
                                             }
                                             else if(inbox.Type == "Assign Supervisor")
                                             {
-                                                <button class="btn btn-info btn-sm p-1" data-toggle="modal" data-target="#specifyRecipient" onclick="setAcceptReportId(@inbox.MaterialRequestId, @inbox.Id)">
+                                                <button class="btn btn-info btn-sm p-1" data-toggle="modal" data-target="#specifyRecipientDispensing" onclick="setAcceptReportId(@inbox.MaterialRequestId, @inbox.Id)">
                                                       Assign Supervisor
                                                 </button>
                                             }
@@ -304,9 +328,10 @@
                             }
                             else if (Model.UserGroupName == "Warehouse Manager"){
                                 @foreach (var req in Model.ManagerRequestSent){
+                                    var StoreName = Model.Stores.FirstOrDefault(i => i.StoreId == req.WarehouseId)?.StoreName ?? "";
                                     
                                     <tr>
-                                        <td>Dispensing Request for <b>@req.WarehouseId</b> has been sent successfully.</td>
+                                        <td>Dispensing Request for <b>@StoreName</b> has been sent successfully.</td>
                                         @{
                                             var localTime = req.OrderDate.ToLocalTime();
                                         }
@@ -358,12 +383,12 @@
                         </div>
                     </div>
 
-                    @* modal for Accept and specify Recipient(sector Manager) *@
-                    <div class="modal fade" id="specifyRecipient" tabindex="-1" role="dialog" aria-labelledby="specifyRecipientLabel" aria-hidden="true">
+                    @* modal for Accept and specify Recipient for dispensing report*@
+                    <div class="modal fade" id="specifyRecipientDispensing" tabindex="-1" role="dialog" aria-labelledby="specifyRecipientDispensingLabel" aria-hidden="true">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="specifyRecipientLabel">Accept & specify Recipient</h5>
+                                    <h5 class="modal-title" id="specifyRecipientDispensingLabel">Accept & specify Recipient</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
@@ -409,6 +434,52 @@
                                        
                                     </div>
                                 </form>
+                            </div>
+                        </div>
+                    </div>
+
+                     @* modal for Accept and specify Recipient for Return Item report*@
+                    <div class="modal fade" id="specifyRecipientReturn" tabindex="-1" role="dialog" aria-labelledby="specifyRecipientReturnLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="specifyRecipientReturnLabel">Accept & specify Recipient</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <form method="post" asp-page-handler="AcceptAndSpecifyReturn">
+                                    @Html.AntiForgeryToken()
+
+                                    <div class="modal-body">
+                                        <div class="form-group">
+                                            <input type="hidden" id="AcceptReturnReportId" name="AcceptReturnReportId" />
+                                            <input type="hidden" id="AcceptReturnMessageId" name="AcceptReturnMessageId" />
+                                            @if(Model.UserGroupName == "Warehouse Manager"){
+                                                <label for="Receipient">Returns Inspection Committee Officer</label>
+                                                <select class="form-select"  id="Receipient" name="Receipient" required>
+                                        
+                                                    <option value="">Select Inspection Committee Officer</option>
+                                                    @if (Model.InspectionOfficerList != null)
+                                                    {
+                                                        foreach (var item in Model.InspectionOfficerList)
+                                                        {
+                                                                <option value="@item.UserId" data-UserName="@item.FullName">@item.FullName</option>
+                                                        }
+                                                    }
+                                                </select>
+                                            }
+                                            
+                                            
+                                            
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit"  class="btn btn-info"   >Accept</button>
+                                       
+                                    </div>
+                                </form>
+                            
                             </div>
                         </div>
                     </div>
@@ -465,9 +536,15 @@
             document.getElementById("ReportType").value  = reportType;
 
         }
+        // for dipensing request
         function setAcceptReportId(id, messageId){
             document.getElementById("AcceptReportId").value = id;
             document.getElementById("AcceptMessageId").value = messageId;
+        }
+        // for return item request
+        function setAcceptReturnReportId(id, messageId){
+            document.getElementById("AcceptReturnReportId").value = id;
+            document.getElementById("AcceptReturnMessageId").value = messageId;
         }
         function setReplyReportId(id, receiver, messageId,reportType) {
             document.getElementById("ReplyReportId").value = id;
