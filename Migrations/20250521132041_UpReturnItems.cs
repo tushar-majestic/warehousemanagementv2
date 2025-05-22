@@ -17,11 +17,13 @@ namespace LabMaterials.Migrations
                 maxLength: 500,
                 nullable: true);
 
+
             // migrationBuilder.AddColumn<string>(
             //     name: "RecommendedAction",
             //     table: "ReturnRequestItems",
             //     type: "nvarchar(max)",
             //     nullable: true);
+
         }
 
         /// <inheritdoc />
@@ -31,9 +33,11 @@ namespace LabMaterials.Migrations
                 name: "InspectionNotes",
                 table: "ReturnRequestItems");
 
+
             // migrationBuilder.DropColumn(
             //     name: "RecommendedAction",
             //     table: "ReturnRequestItems");
+
         }
     }
 }

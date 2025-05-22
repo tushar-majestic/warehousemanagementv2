@@ -71,7 +71,7 @@
 
     const wrapper = document.getElementById("returnEntriesWrapper");
     const addEntryBtn = document.getElementById("addEntryBtn");
-
+   addEntryBtn.disabled = true;
     // --- Add Entry ---
     addEntryBtn.addEventListener("click", function () {
         const firstEntry = wrapper.querySelector(".return-entry");
@@ -161,9 +161,17 @@
 
     // --- Auto Calculate Total ---
     function calculateTotalPrice(entry) {
+       console.log('calculateTotalPrice', entry)
         const qty = parseFloat(entry.querySelector(".Quantity")?.value) || 0;
         const unit = parseFloat(entry.querySelector(".UnitPrice")?.value) || 0;
         entry.querySelector(".TotalPrice").value = (qty * unit).toFixed(2);
+      
+        const idMatch = unit?.id?.match(/_(\d+)$/);
+        if (idMatch) {
+            const index = parseInt(idMatch[1]);
+            checkRequiredFields(index);
+        }
+        
     }
 
     // --- Setup for New Entry ---
@@ -255,8 +263,27 @@
                 if (itemGroup) itemGroup.value = groupCode || '';
             }
         }
+    checkRequiredFields(i);
+         
     }
 });
+    function checkRequiredFields(index) {
+
+        const addButton = document.getElementById('addEntryBtn');
+        const itemGroup = document.getElementById("itemGroup_" + index);
+        const itemCode = document.getElementById("ItemCode_" + index);
+        const itemDescription = document.getElementById("ItemDescription_" + index);
+        // const unitInput = document.getElementById("typeofAsset_" + index);
+
+            const isValid = itemGroup && itemGroup.value.trim() !== '' &&
+            itemCode && itemCode.value.trim() !== '' &&
+            itemDescription && itemDescription.value.trim() !== '';
+            console.log(isValid, 'isValid')
+
+        addButton.disabled = !isValid;
+
+    }
+
 </script>
 }
 @{
@@ -568,7 +595,7 @@
                                 </div>
                             }
                             <div class="mb-3">
-                                <button type="button" class="btn btn-primary" id="addEntryBtn">@Model.lblAddMore</button>
+                                <button type="button" class="btn btn-primary" id="addEntryBtn" disabled>@Model.lblAddMore</button>
                             </div
                             
                             <div class="mb-4">
