@@ -17,8 +17,12 @@ namespace LabMaterials.Pages
         // --- Dropdown Data ---
         public List<ItemGroup> ItemGroups { get; set; } = new();
         public List<ItemCard> ItemCards { get; set; } = new();
+        public List<Item> Items { get; set; } = new();
         public List<Store> Stores { get; set; } = new();
         public List<Requester> requesters { get; set; } = new();
+        public List<ItemCardExtended> ItemsValue { get; set; } = new();
+
+        
 
         // --- Metadata ---
         public DateTime CurrentDate => DateTime.Now;
@@ -62,11 +66,13 @@ namespace LabMaterials.Pages
         public List<SelectListItem> StateOfMatters { get; set; }
         [BindProperty]
         public ReturnRequest ReturnRequest { get; set; }
+        
 
 
         public void OnGet()
         {
             base.ExtractSessionData();
+             var dbContext = new LabDBContext();
             StateOfMatters = new List<SelectListItem>
             {
                 new SelectListItem { Text = "Solid", Value = "Solid" },
@@ -82,12 +88,28 @@ namespace LabMaterials.Pages
             // Optional: add one blank row so page renders a row
             ReturnItems.Add(new ReturnRequestItem());
 
+            ItemsValue = (from ic in dbContext.ItemCards
+            join i in dbContext.Items on ic.ItemId equals i.ItemId
+            select new ItemCardExtended
+            {
+                Id = ic.Id,
+                ItemCode = ic.ItemCode,
+                ItemName = ic.ItemName,
+                GroupCode = ic.GroupCode,
+                HazardTypeName = ic.HazardTypeName,
+                ItemDescription = ic.ItemDescription,
+                Chemical = ic.Chemical,
+                UnitOfmeasure = ic.UnitOfMeasure,
+                ExpiryDate = i.ExpiryDate.Date
+            }).ToList();
+
             LoadDropdowns();
         }
 
         public async Task<IActionResult> OnPostAsync()
         {
             // Parse main form values
+              var dbContext = new LabDBContext();
             var orderNumber = "RR-" + DateTime.UtcNow.Ticks.ToString(); // or your format
 
             var orderDateStr = Request.Form["OrderDate"];
@@ -95,6 +117,23 @@ namespace LabMaterials.Pages
             var applicantsSector = Convert.ToInt32(Request.Form["ApplicantsSector"]);
             var storeId = Convert.ToInt32(Request.Form["StoreId"]);
             var reason = Request.Form["ReasonForReturn"];
+
+
+            
+             ItemsValue = (from ic in dbContext.ItemCards
+            join i in dbContext.Items on ic.ItemId equals i.ItemId
+            select new ItemCardExtended
+            {
+                Id = ic.Id,
+                ItemCode = ic.ItemCode,
+                ItemName = ic.ItemName,
+                GroupCode = ic.GroupCode,
+                HazardTypeName = ic.HazardTypeName,
+                ItemDescription = ic.ItemDescription,
+                Chemical = ic.Chemical,
+                UnitOfmeasure = ic.UnitOfmeasure,
+                ExpiryDate = i.ExpiryDate.Date
+            }).ToList();
 
 
             DateTime.TryParse(orderDateStr, out DateTime orderDate);
