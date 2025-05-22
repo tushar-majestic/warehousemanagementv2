@@ -1,0 +1,112 @@
+﻿@page
+@model LabMaterials.Pages.ViewDoctypesModel
+
+@{
+    ViewData["Title"] = "View Document Type";
+}
+
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4 pb-2">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb" class="mb-3">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-page="/Home">Home</a></li>
+            <li class="breadcrumb-item"><a asp-page="/ManageUsers">Users</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Document Types</li>
+        </ol>
+    </nav>
+    <h1 class="mb-4">Document Types</h1>
+    <div class="btn-toolbar mb-2 mb-md-0 d-flex flex-wrap">
+        <!-- Back Button -->
+        <div class="btn-group d-flex mx-3 ms-lg-3">
+            <a asp-page="/ManageUsers" class="btn btn-secondary">&larr; Back </a>
+        </div>
+
+        <div class="btn-group d-flex mx-3 ms-lg-3">
+            <a asp-page="AddDocumentType" class="btn btn-primary">+ Add Document Type</a>
+        </div>
+    </div>
+</div>
+
+<div class="card border-0 shadow mb-4">
+    <div class="card-body">
+        <div class="table-responsive">
+
+            @if (!Model.DocumentTypeList.Any())
+            {
+                <div class="alert alert-info">No document types found.</div>
+            }
+            else
+            {
+                <table class="table table-bordered table-striped">
+                    <thead class="table-light">
+                        <tr>
+                            <th>ID</th>
+                            <th>Document Type</th>
+                            <th class="text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.DocumentTypeList)
+                        {
+                            if (Model.EditId == item.Id)
+                            {
+                                <form method="post" asp-page-handler="Edit">
+                                <tr>
+                                    <td>
+                                        <input type="hidden" name="DocumentType.Id" value="@item.Id" />
+                                            @item.Id
+                                    </td>
+                                    <td>
+                                        <input type="text" name="DocumentType.DocType" value="@item.DocType" class="form-control" />
+                                    </td>
+                                    <td class="text-center">
+                                        <button type="submit" class="btn btn-sm btn-success me-1">Save</button>
+                                        <a asp-page="ViewDoctypes" class="btn btn-sm btn-secondary">Cancel</a>
+                                    </td>
+                                </tr>
+                                </form>
+                            }
+                            else
+                            {
+                                <tr>
+                                    <td>@item.Id</td>
+                                    <td>@item.DocType</td>
+                                    <td class="text-center">
+                                        <form method="post" asp-page-handler="EditInit" class="d-inline">
+                                            <input type="hidden" name="EditId" value="@item.Id" />
+                                            <button type="submit" class="btn btn-sm btn-outline-primary me-1">Edit</button>
+                                        </form>
+                                        <form method="post" asp-page-handler="Delete" asp-route-id="@item.Id" class="d-inline">
+                                            <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Are you sure you want to delete this document type?');">Delete</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
+                        }
+
+                    </tbody>
+                </table>
+            }
+        </div>
+    </div>
+</div>
+
+<hr />
+
+@* <h2>Create Document Type</h2>
+
+<form method="post">
+    <div class="mb-3">
+        <label asp-for="DocumentType.DocType" class="form-label"></label>
+        <input asp-for="DocumentType.DocType" class="form-control" />
+        <span asp-validation-for="DocumentType.DocType" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Create</button>
+    <a asp-page="ManageUsers" class="btn btn-secondary">Cancel</a>
+</form> *@
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+

@@ -4,32 +4,22 @@
     ViewData["Title"] = "Create Privilege";
 }
 
-@if (!Model.PrivilegeList.Any())
-{
-    <div class="alert alert-info">No Privileges found.</div>
-}
-else
-{
-    <table class="table table-bordered table-striped">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Privilege Name</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.PrivilegeList)
-            {
-                <tr>
-                    <td>@item.PrivilegeId</td>
-                    <td>@item.PrivilegeName</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
+<!-- Breadcrumb -->
+<nav aria-label="breadcrumb" class="mb-3">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a asp-page="/Home">Home</a></li>
+        <li class="breadcrumb-item"><a asp-page="/ManageUsers">Users</a></li>
+        <li class="breadcrumb-item"><a asp-page="/ViewPrivileges">Document Types</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Add Privilege</li>
+    </ol>
+</nav>
 
-<h1>Create Privilege</h1>
+<!-- Back Button -->
+<div class="mb-3">
+    <a asp-page="/ViewPrivileges" class="btn btn-outline-secondary">&larr; Back </a>
+</div>
+
+<h2>Create Privilege</h2>
 
 <form method="post">
     <div class="mb-3">

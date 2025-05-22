@@ -4,30 +4,20 @@
     ViewData["Title"] = "Create Document Type";
 }
 
-@if (!Model.DocumentTypeList.Any())
-{
-    <div class="alert alert-info">No Document types found.</div>
-}
-else
-{
-    <table class="table table-bordered table-striped">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Document Type</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.DocumentTypeList)
-            {
-                <tr>
-                    <td>@item.Id</td>
-                    <td>@item.DocType</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
+<!-- Breadcrumb -->
+<nav aria-label="breadcrumb" class="mb-3">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a asp-page="/Home">Home</a></li>
+        <li class="breadcrumb-item"><a asp-page="/ManageUsers">Users</a></li>
+        <li class="breadcrumb-item"><a asp-page="/ViewDoctypes">Document Types</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Add Document Types</li>
+    </ol>
+</nav>
+
+<!-- Back Button -->
+<div class="mb-3">
+    <a asp-page="/ViewDoctypes" class="btn btn-outline-secondary">&larr; Back </a>
+</div>
 
 
 <h1>Create Document Type</h1>

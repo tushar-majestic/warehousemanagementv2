@@ -1,0 +1,33 @@
+@page
+@model LabMaterials.Pages_HazardTypes.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<h4>HazardType</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <div class="card border-0 shadow mb-4">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <dl >
+                        <dt >
+                            @Html.DisplayNameFor(model => model.HazardType.HazardTypeName)
+                        </dt>
+                        <dd >
+                            @Html.DisplayFor(model => model.HazardType.HazardTypeName)
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+            <div class="card-footer bg-transparent border-top-0 d-flex gap-2">
+                <a asp-page="./Edit" asp-route-id="@Model.HazardType.HazardTypeName" class="btn btn-primary">Edit</a>
+                <a asp-page="./Index" class="btn btn-secondary">Back to List</a>
+            </div>
+        </div>
+    </div>
+</div>
