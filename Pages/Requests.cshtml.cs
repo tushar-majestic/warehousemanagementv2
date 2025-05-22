@@ -34,6 +34,9 @@ namespace LabMaterials.Pages
         public List<ReceivingReport> RequestSent { get; set; }
         public List<MaterialRequest> ManagerRequestSent { get; set; }
 
+        public List<ReturnRequest> SectorManagerRequestSent { get; set; }
+
+
         public List<MaterialRequest> AllDispenseRequest { get; set; }
 
         public List<Message> InboxList { get; set; }
@@ -133,7 +136,7 @@ namespace LabMaterials.Pages
             Warehouses = dbContext.Stores.ToList();
 
 
-           if (this.UserGroupName == "Warehouse Keeper")
+            if (this.UserGroupName == "Warehouse Keeper")
             {
                 RequestSent = dbContext.ReceivingReports
                     .Where(r => r.CreatedBy == UserId)
@@ -150,7 +153,7 @@ namespace LabMaterials.Pages
                             var store = Warehouses.FirstOrDefault(u => u.StoreId == int.Parse(r.ReceivingWarehouse));
                             var storename = store?.StoreName?.ToLower() ?? "";
 
-                            return storename.Contains(lowerSearch) ;
+                            return storename.Contains(lowerSearch);
 
                         }).ToList();
 
@@ -175,6 +178,28 @@ namespace LabMaterials.Pages
                             var DocumentNumber = r.DocumentNumber?.ToLower() ?? "";
 
                             return storename.Contains(lowerSearch) || DocumentNumber.Contains(lowerSearch);
+
+                        }).ToList();
+                }
+            }
+            else if (this.UserGroupName == "Sector Manager")
+            {
+                SectorManagerRequestSent = dbContext.ReturnRequests
+                    .Where(r => r.CreatedBy == UserId)
+                    .OrderByDescending(r => r.OrderDate)
+                    .ToList();
+                    
+                if (!string.IsNullOrEmpty(searchTerm) && pagetype == "outbox")
+                {
+                    var lowerSearch = searchTerm.ToLower();
+                    SectorManagerRequestSent = SectorManagerRequestSent
+                        .Where(r =>
+                        {
+                            var store = Warehouses.FirstOrDefault(u => u.StoreId == r.WarehouseId);
+                            var storename = store?.StoreName?.ToLower() ?? "";
+                            var OrderNumber = r.OrderNumber?.ToLower() ?? "";
+
+                            return storename.Contains(lowerSearch) || OrderNumber.Contains(lowerSearch);
 
                         }).ToList();
                 }
@@ -230,7 +255,7 @@ namespace LabMaterials.Pages
 
         // }
 
-        public IActionResult OnPostView([FromForm] string ReportType, [FromForm] int? InboxId, [FromForm] int? MaterialRequestId)
+        public IActionResult OnPostView([FromForm] string ReportType, [FromForm] int? InboxId, [FromForm] int? RequestReportId)
         {
             this.UserGroupName = HttpContext.Session.GetString("UserGroup");
             var dbContext = new LabDBContext();
@@ -240,9 +265,9 @@ namespace LabMaterials.Pages
                 HttpContext.Session.SetString("ReportId", InboxId.Value.ToString());
                 return RedirectToPage("./ViewReceivingReport");
             }
-            else if (ReportType == "Dispensing" && MaterialRequestId.HasValue)
+            else if (ReportType == "Dispensing" && RequestReportId.HasValue)
             {
-                HttpContext.Session.SetString("MaterialRequestId", MaterialRequestId.Value.ToString());
+                HttpContext.Session.SetString("MaterialRequestId", RequestReportId.Value.ToString());
                 return RedirectToPage("./ViewDispensedReport");
             }
 
@@ -469,9 +494,17 @@ namespace LabMaterials.Pages
 
 
         }
-        public IActionResult OnPostTest()
+        public IActionResult OnPostRecommendations([FromForm] int ReturnRequestId)
         {
-            return RedirectToPage("/Supplies");
+            
+      
+
+            HttpContext.Session.SetInt32("ReturnRequestId", ReturnRequestId);
+            return RedirectToPage("./EditReturnRequest");
+
+
+           
+          
         }
 
 
