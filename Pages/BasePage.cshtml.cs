@@ -23,7 +23,6 @@ namespace LabMaterials.Pages
         public bool CanGenerateReceivingRequest { get; set; }
         public bool CanManageItemGroup { get; set; }
         public bool CanGenerateDispensingRequest { get; set; }
-        public bool CanReturnItems { get; set; }
         public string dir { get; set; } = "rtl";
         public string Lang { get; set; } = "ar";
 
@@ -41,7 +40,6 @@ namespace LabMaterials.Pages
                 Usergroup = HttpContext.Session.GetString("UserGroup");
                 IsLDAP = HttpContext.Session.GetInt32("IsLDAP") == 1;
                 CanGenerateDispensingRequest = HttpContext.Session.GetInt32("CanGenerateDispensingRequest") == 1; 
-                CanReturnItems = HttpContext.Session.GetInt32("CanReturnItems") == 1; 
                 CanManageStore = HttpContext.Session.GetInt32("CanManageStore") == 1;
                 CanManageUsers = HttpContext.Session.GetInt32("CanManageUsers") == 1;
                 CanManageItems = HttpContext.Session.GetInt32("CanManageItems") == 1;
