@@ -1,9 +1,9 @@
-﻿namespace LabMaterials.dtos
+namespace LabMaterials.dtos
 {
-    public class ItemInfo
+    public class Items
     {
-        public int ItemId {  get; set; }
-        public string GroupCode {  get; set; }
+        public int ItemId { get; set; }
+        public string GroupCode { get; set; }
         public string GroupDesc { get; set; }
         public string ItemTypeCode { get; set; }
         public string TypeName { get; set; }
@@ -22,7 +22,7 @@
         public int Count { get; set; }
         public string? Ended { get; set; }
         public string ItemNameAr { get; internal set; }
-        public bool Chemical { get; internal set; }
+        public string? Chemical { get; internal set; }
         public string RiskRating { get; internal set; }
         public string StateofMatter { get; internal set; }
         public int UnitId { get; internal set; }

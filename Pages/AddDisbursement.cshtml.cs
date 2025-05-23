@@ -43,9 +43,8 @@ namespace LabMaterials.Pages
         public List<User> SupervisorList {  get; set; }
         public List<User> KeeperList {  get; set; }
         public List<ItemCard> ItemsValue { get; set; }
-
-
-
+        
+        
         public int? SupervisorId, DeptManagerId, KeeperId;
 
 
@@ -65,7 +64,23 @@ namespace LabMaterials.Pages
             var dbContext = new LabDBContext();
             Destinations = dbContext.Destinations.ToList();
             Stores = dbContext.Stores.ToList();
-            ItemCards = dbContext.ItemCards.ToList();
+            var query = from ic in dbContext.ItemCards
+                        join i in dbContext.Items on ic.ItemId equals i.ItemId
+                        select new ItemCard
+                        {
+                            ItemCode = ic.ItemCode,
+                            ItemTypeCode = ic.ItemTypeCode,
+                            ItemName = ic.ItemName,
+                            ItemNameAr = i.ItemNameAr,
+                            ItemDescription = ic.ItemDescription,
+                            UnitOfmeasure = ic.UnitOfmeasure,
+                            Id = ic.Id,
+                            ItemId = ic.ItemId,
+                            GroupCode = ic.GroupCode,
+                            Chemical = ic.Chemical,
+                            HazardTypeName = ic.HazardTypeName,
+                        };
+            ItemCards = query.ToList();
             Units = dbContext.Units.ToList();
             Report ??= new MaterialRequest();
             ItemGroups = dbContext.ItemGroups.Where(g => g.Units.Count() > 0).ToList();
@@ -101,18 +116,7 @@ namespace LabMaterials.Pages
             KeeperList = dbContext.Users
                         .Where(u => u.UserGroupId == KeeperId)
                         .ToList();
-            ItemsValue = dbContext.ItemCards
-                            .Select(x => new ItemCard
-                            {
-                                Id = x.Id,
-                                ItemId = x.ItemId,
-                                ItemName = x.ItemName,
-                                GroupCode = x.GroupCode,
-                                ItemCode = x.ItemCode,
-                                ItemDescription = x.ItemDescription,
-                                Chemical = x.Chemical,
-                                UnitOfmeasure = x.UnitOfmeasure
-                            }).ToList();
+            ItemsValue = query.ToList();
 
         }
         public void OnGetOld()
