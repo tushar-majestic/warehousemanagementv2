@@ -60,6 +60,10 @@ namespace LabMaterials.Pages
 
         public List<User> SupervisorList { get; set; }
 
+        public List<User> DestructionOfficerList { get; set; }
+        public List<User> RecyclingOfficerList { get; set; }
+
+
         public List<Store> Stores { get; set; }
 
 
@@ -88,46 +92,7 @@ namespace LabMaterials.Pages
 
             this.UserId = HttpContext.Session.GetInt32("UserId");
 
-            //Sector Manager List
-            var SecManagerId = dbContext.UserGroups
-                    .Where(g => g.UserGroupName == "Sector Manager")
-                    .Select(g => g.UserGroupId)
-                    .FirstOrDefault();
-
-            SectorManagerList = dbContext.Users
-                    .Where(u => u.UserGroupId == SecManagerId)
-                    .ToList();
-            Stores = dbContext.Stores.ToList();
-
-            //Keeper List
-            var KeepId = dbContext.UserGroups
-                    .Where(g => g.UserGroupName == "Warehouse Keeper")
-                    .Select(g => g.UserGroupId)
-                    .FirstOrDefault();
-
-            KeeperList = dbContext.Users
-                    .Where(u => u.UserGroupId == KeepId)
-                    .ToList();
-
-            //Inspection Committee Officer List
-            var InspId = dbContext.UserGroups
-                    .Where(g => g.UserGroupName == "Return Inspection Committee Officer")
-                    .Select(g => g.UserGroupId)
-                    .FirstOrDefault();
-
-            InspectionOfficerList = dbContext.Users
-                    .Where(u => u.UserGroupId == InspId)
-                    .ToList();
-
-            //General Supervisor list
-            var SupervisorId = dbContext.UserGroups
-                    .Where(g => g.UserGroupName == "General Supervisor")
-                    .Select(g => g.UserGroupId)
-                    .FirstOrDefault();
-
-            SupervisorList = dbContext.Users
-                        .Where(u => u.UserGroupId == SupervisorId)
-                        .ToList();
+            LoadDropdowns();
 
             AllRequest = dbContext.ReceivingReports.ToList();
             AllDispenseRequest = dbContext.MaterialRequests.ToList();
@@ -244,12 +209,78 @@ namespace LabMaterials.Pages
         }
 
 
+        private void LoadDropdowns()
+        {
+            var dbContext = new LabDBContext();
+            //Sector Manager List
+            var SecManagerId = dbContext.UserGroups
+                    .Where(g => g.UserGroupName == "Sector Manager")
+                    .Select(g => g.UserGroupId)
+                    .FirstOrDefault();
+
+            SectorManagerList = dbContext.Users
+                    .Where(u => u.UserGroupId == SecManagerId)
+                    .ToList();
+            Stores = dbContext.Stores.ToList();
+
+            //Keeper List
+            var KeepId = dbContext.UserGroups
+                    .Where(g => g.UserGroupName == "Warehouse Keeper")
+                    .Select(g => g.UserGroupId)
+                    .FirstOrDefault();
+
+            KeeperList = dbContext.Users
+                    .Where(u => u.UserGroupId == KeepId)
+                    .ToList();
+
+            //Inspection Committee Officer List
+            var InspId = dbContext.UserGroups
+                    .Where(g => g.UserGroupName == "Return Inspection Committee Officer")
+                    .Select(g => g.UserGroupId)
+                    .FirstOrDefault();
+
+            InspectionOfficerList = dbContext.Users
+                    .Where(u => u.UserGroupId == InspId)
+                    .ToList();
+
+            //General Supervisor list
+            var SupervisorId = dbContext.UserGroups
+                    .Where(g => g.UserGroupName == "General Supervisor")
+                    .Select(g => g.UserGroupId)
+                    .FirstOrDefault();
+
+            SupervisorList = dbContext.Users
+                        .Where(u => u.UserGroupId == SupervisorId)
+                        .ToList();
+
+            //Destruction Officer List
+            var DestOffiId = dbContext.UserGroups
+                    .Where(g => g.UserGroupName == "Destruction Officer")
+                    .Select(g => g.UserGroupId)
+                    .FirstOrDefault();
+
+            DestructionOfficerList = dbContext.Users
+                        .Where(u => u.UserGroupId == DestOffiId)
+                        .ToList();
+
+            //Recycling Officer List
+            var RecylingOffiId = dbContext.UserGroups
+                    .Where(g => g.UserGroupName == "Recycling Officer")
+                    .Select(g => g.UserGroupId)
+                    .FirstOrDefault();
+
+            RecyclingOfficerList = dbContext.Users
+                        .Where(u => u.UserGroupId == RecylingOffiId)
+                        .ToList();
+            
+        }
+
         //  public IActionResult OnPostView([FromForm] int InboxId)
         // {
         //     this.UserGroupName = HttpContext.Session.GetString("UserGroup");
 
         //     var dbContext = new LabDBContext();
-            
+
         //         HttpContext.Session.SetString("ReportId", InboxId.ToString());
         //         return RedirectToPage("./ViewReceivingReport");                         
 
@@ -436,7 +467,7 @@ namespace LabMaterials.Pages
         
 
         //Accept and specify recipent in case of Return request
-        public IActionResult OnPostAcceptAndSpecifyReturn([FromForm] int AcceptReturnReportId, [FromForm] int AcceptReturnMessageId, [FromForm] int? Receipient)
+        public IActionResult OnPostAcceptAndSpecifyReturn([FromForm] int AcceptReturnReportId, [FromForm] int AcceptReturnMessageId, [FromForm] int? Receipient, [FromForm] int? DestOffiId, [FromForm] int? keeperId, [FromForm] int? RecyclingOffiId)
         {
             base.ExtractSessionData();
             this.UserFullName = HttpContext.Session.GetString("FullName");
@@ -455,7 +486,7 @@ namespace LabMaterials.Pages
                     {
                         report.InspOffId = Receipient.Value;
 
-                        report.ManagerApprovalDate = DateTime.Now;
+                        report.ManagerApprovalDate = DateTime.UtcNow;
 
                         //message to Inspection Officer
                         string InspOffMessage = string.Format("Sent Return Items Request Approve the request or add comments.");
@@ -472,6 +503,48 @@ namespace LabMaterials.Pages
                         dbContext.Messages.Add(msgToInspOfficer);
 
 
+
+                    }
+                    //If Return Inspection Committee Officer is logged in than send message to Supervisor
+                    else if (this.UserGroupName == "Return Inspection Committee Officer")
+                    {
+                        report.SupervisorId = Receipient.Value;
+                        report.InspOffApprovalDate = DateTime.UtcNow;
+
+                        //message to Supervisor 
+                        string SupervisorMessage = string.Format("Sent Return Items Request Approve the request or add comments.");
+                        var msgToSupervisor = new Message
+                        {
+                            ReturnRequestId = AcceptReturnReportId,
+                            ReportType = "ReturnItems",
+                            SenderId = this.UserId,
+                            RecipientId = report.SupervisorId,
+                            Content = SupervisorMessage,
+                            Type = "",
+                            CreatedAt = DateTime.UtcNow
+                        };
+                        dbContext.Messages.Add(msgToSupervisor);
+
+                    }
+                    else if (this.UserGroupName == "General Supervisor")
+                    {
+                        report.DestOffId = DestOffiId;
+                        report.KeeperId = keeperId;
+                        report.RecOffId = RecyclingOffiId;
+
+                        //message to Destruction Officer 
+                        string DestOfficerMessage = string.Format("Sent Return Items Request Approve the request or add comments.");
+                        var DestOfficer = new Message
+                        {
+                            ReturnRequestId = AcceptReturnReportId,
+                            ReportType = "ReturnItems",
+                            SenderId = this.UserId,
+                            RecipientId = report.DestOffId,
+                            Content = DestOfficerMessage,
+                            Type = "",
+                            CreatedAt = DateTime.UtcNow
+                        };
+                        dbContext.Messages.Add(DestOfficer);
 
                     }
                     
@@ -494,12 +567,14 @@ namespace LabMaterials.Pages
 
 
         }
-        public IActionResult OnPostRecommendations([FromForm] int ReturnRequestId)
+        public IActionResult OnPostRecommendations([FromForm] int ReturnRequestId, [FromForm] int InboxId)
         {
             
       
 
             HttpContext.Session.SetInt32("ReturnRequestId", ReturnRequestId);
+            HttpContext.Session.SetInt32("InboxId", InboxId);
+
             return RedirectToPage("./EditReturnRequest");
 
 
@@ -815,9 +890,6 @@ namespace LabMaterials.Pages
                     // handle error
                     return NotFound();
                 }
-
-
-
                 var generalSup = dbContext.Users.FirstOrDefault(u => u.UserId == report.ChiefResponsibleId);
 
                 var technicalMember = dbContext.Users.FirstOrDefault(u => u.UserId == report.TechnicalMemberId);
@@ -885,6 +957,35 @@ namespace LabMaterials.Pages
                     };
                     _context.Messages.Add(msgToTechMem);
 
+                }
+
+            }
+            else if (ReportType == "ReturnItems")
+            {
+                var report = await _context.ReturnRequests.FindAsync(RejectReceivingReportId);
+                if (report == null)
+                {
+                    return NotFound();
+                }
+                if (this.UserGroupName == "General Supervisor")
+                {
+                     if (report.SupervisorApprovalDate != null)
+                        report.SupervisorApprovalDate = null;
+
+                    string InspOffiMessage = string.Format("Your return items request is rejected with comment: {0}", Comment);
+                    var msgToInspOffi = new Message
+                    {
+                        ReportId = RejectReceivingReportId,
+                        ReportType = "ReturnItems",
+                        SenderId = this.UserId,
+                        RecipientId = report.InspOffId,
+                        Content = InspOffiMessage,
+                        Type = "",
+                        CreatedAt = DateTime.UtcNow,
+
+
+                    };
+                    _context.Messages.Add(msgToInspOffi);
                 }
 
             }

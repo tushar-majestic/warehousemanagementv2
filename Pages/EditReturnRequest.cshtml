@@ -214,10 +214,10 @@
                                         @{
                                             var itemgroup = Model.ItemGroups.FirstOrDefault(g => g.GroupCode == Model.ReturnItems[@i].ItemGroup);
                                         }
-                                        <input type="text" class="form-control" value="@itemgroup.GroupDesc" disabled/>
+                                        <input type="text" class="form-control" value="@itemgroup.GroupDesc" readonly/>
                                         
                                     </div>
-                                    <input type="hidden" name="ReturnItems[@i].Id" value="@Model.ReturnItems[@i].Id"/>
+                                    <input type="hidden" name="ReturnItems[@i].Id" value="@Model.ReturnItems[@i].Id" asp-for="ReturnItems[@i].Id"/>
                                     <div class="col-md-6 mb-4">
                                         <label>Arabic Item Name</label>
                                         <select class="form-select ArabicItemName" name="ReturnItems[@i].ItemCardId"  asp-for="@Model.ReturnItems[@i].ItemCardId" disabled
@@ -271,7 +271,7 @@
                                     </div>
                                     <div class="col-md-6 mb-4">
                                         <label>Expiry Date</label>
-                                        <input type="date" name="ReturnItems[@i].ExpiryDate"  value="@Model.ReturnItems[@i].ExpiryDate?.ToString("yyyy-MM-dd")" class="form-control ExpDate" disabled  />
+                                        <input type="date" name="ReturnItems[@i].ExpiryDate"  value="@Model.ReturnItems[@i].ExpiryDate?.ToString("yyyy-MM-dd")" class="form-control ExpDate" readonly  />
                                     </div>
                                     <div class="col-md-6 mb-4">
                                         <label>Unit of Measure</label>
@@ -279,16 +279,16 @@
                                     </div>
                                     <div class="col-md-6 mb-4">
                                         <label>Return Quantity</label>
-                                        <input type="number" name="ReturnItems[@i].ReturnedQuantity" value="@Model.ReturnItems[@i].ReturnedQuantity" class="form-control" disabled />
+                                        <input type="number" name="ReturnItems[@i].ReturnedQuantity" value="@Model.ReturnItems[@i].ReturnedQuantity" class="form-control" readonly />
                                     </div>
                                     <div class="col-12 mb-4">
                                         <label>Return Notes</label>
-                                        <textarea name="ReturnItems[@i].ReturnNotes" value="@Model.ReturnItems[@i].ReturnNotes" class="form-control" rows="2" disabled></textarea>
+                                        <textarea name="ReturnItems[@i].ReturnNotes" value="@Model.ReturnItems[@i].ReturnNotes" class="form-control" rows="2" readonly></textarea>
                                     </div>
 
                                     <div class="mb-4">
                                         <label>Recommended Action</label>
-                                        <select name="ReturnItems[@i].RecommendedAction" class="form-control" asp-for="ReturnItems[@i].RecommendedAction">
+                                        <select name="ReturnItems[@i].RecommendedAction" class="form-control" asp-for="ReturnItems[@i].RecommendedAction" required>
                                             <option value="">Select Recommended Action</option>
                                             @foreach (var condition in Enum.GetValues(typeof(LabMaterials.DB.ReturnRequestItem.ItemCondition)))
                                             {
@@ -300,7 +300,7 @@
 
                                     <div class="mb-4">
                                         <label>Additional Notes</label>
-                                        <textarea name="ReturnItems[@i].Notes" asp-for="ReturnItems[@i].Notes"  class="form-control" rows="2" ></textarea>
+                                        <textarea name="ReturnItems[@i].Notes" asp-for="ReturnItems[@i].Notes"  class="form-control" rows="2" required></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -346,6 +346,45 @@
 
 @section Scripts {
     <script>
+
+        // Notyf notification for errors
+        const notyf = new Notyf({
+            position: {
+                x: 'center',
+                y: 'top',
+            },
+            types: [
+                {
+                    type: 'error',
+                    background: '#e3392c',
+                    icon: {
+                        className: 'fas fa-times',
+                        tagName: 'span',
+                        color: '#000000'
+                    },
+                    dismissible: true,
+                    duration: 0,
+                    ripple: true
+                }
+            ]
+        });
+
+        function showErrorNotification(message) {
+            notyf.open({
+                type: 'error',
+                message: message
+            });
+        }
+
+        @if (!string.IsNullOrEmpty(Model.ErrorMsg))
+        {
+            <text>
+                var errorMessageFromServer = @Html.Raw(Json.Serialize(Model.ErrorMsg));
+                showErrorNotification(errorMessageFromServer);
+            </text>
+        }
+
+
         let entryIndex = @Model.ReturnItems.Count;
 
         function onItemChange(select, index) {

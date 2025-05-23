@@ -22,8 +22,6 @@ namespace LabMaterials.Migrations
             migrationBuilder.DropColumn(
                 name: "InspectionNotes",
                 table: "ReturnRequestItems");
-
-
         }
     }
 }

@@ -28,6 +28,21 @@
     <h1 class="h4">@Model.lblCreateReport</h1>
 </div>
 <div asp-validation-summary="All" class="text-danger"></div>
+       @if (!ViewData.ModelState.IsValid)
+    {
+        <div class="alert alert-danger">
+            ModelState is invalid. Errors:
+            <ul>
+                @foreach (var modelState in ViewData.ModelState)
+                {
+                    foreach (var error in modelState.Value.Errors)
+                    {
+                        <li>@modelState.Key: @error.ErrorMessage</li>
+                    }
+                }
+            </ul>
+        </div>
+    }
 <div class="row">
     <div class="col-8 mb-4 m-auto">
         <div class="card border-0 shadow components-section">
@@ -145,7 +160,7 @@
                                 <div class="form-group mb-4">
                                     <label>@Model.lblItemGroup</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
                                     <select class="form-select" id="ItemGroup_@i" name="ItemsForReport[@i].ItemGroup" onchange="filterItemByGroup(@i)" >
-                                        <option value="" selected>Select Item Group</option>
+                                        <option value="">Select Item Group</option>
                                         @if (Model.ItemGroupList != null)
                                         {
                                             foreach (var item in Model.ItemGroupList)
@@ -714,8 +729,26 @@
       
 
             document.getElementById("ItemName_" + i).addEventListener("change", function () {
-                console.log("ItemName")
+                console.log("ItemName_")
                 const selectedOption = this.options[this.selectedIndex];
+                const selectedItemId = this.value;
+                console.log(selectedItemId, 'selectedItemId')
+                const selectedItemText = selectedOption.text;
+                console.log(selectedItemText, 'selectedItemText')
+                  const allDropdowns = document.querySelectorAll("select[id^='ItemName_']");
+                    let duplicateFound = false;
+
+                    allDropdowns.forEach((dropdown, index) => {
+                        if (dropdown !== this && dropdown.value === selectedItemId) {
+                            duplicateFound = true;
+                        }
+                    });
+
+                    if (duplicateFound) {
+                        alert("This item has already been selected in another entry.");
+                        this.value = ""; // Reset selection
+                        return;
+                    }
                 const itemno = selectedOption.getAttribute("data-itemno");
                 const itemdesc = selectedOption.getAttribute("data-itemdesc");
                 const unitname = selectedOption.getAttribute("data-unitname");

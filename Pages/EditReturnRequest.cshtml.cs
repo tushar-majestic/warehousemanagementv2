@@ -7,6 +7,8 @@ namespace LabMaterials.Pages
     public class EditReturnRequestModel : BasePageModel
     {
         private readonly LabDBContext _context;
+        public string ErrorMsg { get; set; }
+
 
         public EditReturnRequestModel(LabDBContext context)
         {
@@ -19,11 +21,12 @@ namespace LabMaterials.Pages
         public List<Requester> requesters { get; set; } = new();
         public List<Item> AllItems { get; set; }
         [BindProperty]
-        public List<ReturnRequestItem> ReturnItems { get; set; } = new();
+        public List<ReturnRequestItem> ReturnItems { get; set; } =  new List<ReturnRequestItem>();
         public List<SelectListItem> StateOfMatters { get; set; }
         [BindProperty]
         public ReturnRequest ReturnRequest { get; set; }
         public int ReturnRequestId { get; set; }
+        public int InboxId { get; set; }
 
         [BindProperty]
         public ReturnRequest Report { get; set; }
@@ -36,7 +39,9 @@ namespace LabMaterials.Pages
             int? ReturnRequestId = HttpContext.Session.GetInt32("ReturnRequestId");
             this.ReturnRequestId = ReturnRequestId.Value;
 
-          
+            int? InboxId =  HttpContext.Session.GetInt32("InboxId");
+            this.InboxId = InboxId.Value;
+
 
 
             StateOfMatters = new List<SelectListItem>
@@ -67,7 +72,10 @@ namespace LabMaterials.Pages
             int? ReturnRequestId = HttpContext.Session.GetInt32("ReturnRequestId");
             this.ReturnRequestId = ReturnRequestId.Value;
 
-             var dbContext = new LabDBContext();
+            int? InboxId =  HttpContext.Session.GetInt32("InboxId");
+            this.InboxId = InboxId.Value;
+
+            var dbContext = new LabDBContext();
             #pragma warning disable CS8601 // Possible null reference assignment.
             Report = dbContext.ReturnRequests
                             .FirstOrDefault(r => r.Id == ReturnRequestId.Value);
@@ -77,17 +85,55 @@ namespace LabMaterials.Pages
                         .Where(r => r.ReturnRequestId == ReturnRequestId.Value)
                         .ToList();
 
-            foreach (var item in ReturnItems)
-            {
+            // foreach (var item in ReturnItems)
+            // {
 
-                var itemToUpdate = ReturnItems.FirstOrDefault(x => x.Id == item.Id);
-                if (itemToUpdate != null)
+            //     var itemToUpdate = ReturnItems.FirstOrDefault(x => x.Id == item.Id);
+            //     if (itemToUpdate != null)
+            //     {
+            //         // itemToUpdate.RecommendedAction = item.RecommendedAction;
+            //         itemToUpdate.Notes = item.Notes;
+            //     }
+            //     else
+            //     {
+            //         ErrorMsg = "Items to update is null";
+            //         return Page();
+            //     }
+            // }
+            for (int i = 0; i < ReturnItems.Count; i++)
+            {
+                var item = ReturnItems[i];
+                var notesKey = $"ReturnItems[{i}].Notes";
+                var actionKey = $"ReturnItems[{i}].RecommendedAction";
+
+                var actionValue = Request.Form[actionKey];
+                var notesValue = Request.Form[notesKey];
+
+                if (!string.IsNullOrEmpty(notesValue))
                 {
-                    itemToUpdate.RecommendedAction = item.RecommendedAction;
-                    itemToUpdate.Notes = item.Notes;
+                    item.Notes = notesValue;
+                }
+
+                if (!string.IsNullOrEmpty(actionValue) &&
+                    Enum.TryParse(typeof(LabMaterials.DB.ReturnRequestItem.ItemCondition), actionValue, out var parsedAction))
+                {
+                    item.RecommendedAction = (LabMaterials.DB.ReturnRequestItem.ItemCondition)parsedAction;
                 }
             }
+
             await dbContext.SaveChangesAsync();
+            Report.InspOffApprovalDate = DateTime.UtcNow;
+
+          
+
+            var message = dbContext.Messages.FirstOrDefault(m => m.Id == this.InboxId);
+
+            if (message != null)
+            {
+                message.Type = "Assign Supervisor";
+            }
+            dbContext.SaveChanges();
+
 
             return RedirectToPage("/Requests");
         }
