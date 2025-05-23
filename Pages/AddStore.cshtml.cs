@@ -1,20 +1,18 @@
-using LabMaterials.DB;
-using LabMaterials.dtos;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace LabMaterials.Pages
 {
     public class AddStoreModel : BasePageModel
     {
         public string ErrorMsg { get; set; }
-        public string StoreNumber, StoreName, Shelves, StoreType,ManagerJobNumber ;
+        public string StoreNumber, StoreName, Shelves, StoreType, ManagerJobNumber;
         public string Status { get; set; }
 
         public int? ManagerId;
-        public List<User> ManagerGroupsList {  get; set; }
+        public List<User> ManagerGroupsList { get; set; }
+        public List<StoreTypes> WarehouseType { get; set; }
 
-        public string lblStores, lblAddStore, lblStoreNumber, lblStoreName, lblShelves, lblAdd, lblCancel,lblWarehouseType, lblManagerName, lblManagerJobNumber,lblStatus, lblOpen, lblClosed ;
+        public string lblStores, lblAddStore, lblStoreNumber, lblStoreName, lblShelves, lblAdd, lblCancel, lblWarehouseType, lblManagerName, lblManagerJobNumber, lblStatus, lblOpen, lblClosed;
         public void OnGet()
         {
             base.ExtractSessionData();
@@ -25,6 +23,8 @@ namespace LabMaterials.Pages
                     .Select(g => g.UserGroupId)
                     .FirstOrDefault();
 
+            WarehouseType = dbContext.StoreTypes.ToList();
+
             ManagerGroupsList = dbContext.Users
                 .Where(u => u.UserGroupId == managerGroupId)
                 .ToList();
@@ -33,7 +33,7 @@ namespace LabMaterials.Pages
                 RedirectToPage("./Index?lang=" + Lang);
         }
 
-     
+
 
         public IActionResult OnPost([FromForm] string StoreNumber, [FromForm] string StoreName, [FromForm] string StoreType, [FromForm] int? ManagerId, [FromForm] string ManagerJobNumber, [FromForm] string Status)
         {
@@ -66,7 +66,7 @@ namespace LabMaterials.Pages
                                     .Where(u => u.UserGroupId == managerGroupId)
                                     .ToList();
 
-                    if(string.IsNullOrEmpty(StoreType))
+                    if (string.IsNullOrEmpty(StoreType))
                         ErrorMsg = (Program.Translations["StoreTypeMissing"])[Lang];
                     else if (string.IsNullOrEmpty(StoreName))
                         ErrorMsg = (Program.Translations["StoreNameMissing"])[Lang];
@@ -74,10 +74,10 @@ namespace LabMaterials.Pages
                         ErrorMsg = (Program.Translations["StoreNumberMissing"])[Lang];
                     else if (!ManagerId.HasValue)
                         ErrorMsg = (Program.Translations["ManagerNameMissing"])[Lang];
-                    
+
                     else if (string.IsNullOrEmpty(Status))
                         ErrorMsg = (Program.Translations["WarehouseStatusMissing"])[Lang];
-                    
+
                     else
                     {
                         // var dbContext = new LabDBContext();
@@ -88,7 +88,7 @@ namespace LabMaterials.Pages
                         else
                         {
                             var store = new Store
-                            {   
+                            {
                                 StoreType = StoreType,
                                 WarehouseManagerId = ManagerId,
                                 WarehouseStatus = Status,
@@ -96,7 +96,7 @@ namespace LabMaterials.Pages
                                 StoreName = StoreName,
                                 StoreNumber = StoreNumber,
                                 StoreId = PrimaryKeyManager.GetNextId(),
-                               
+
 
                             };
                             dbContext.Stores.Add(store);
@@ -126,7 +126,7 @@ namespace LabMaterials.Pages
 
         private void FillLables()
         {
-            
+
             this.lblStores = (Program.Translations["Stores"])[Lang];
             this.lblAddStore = (Program.Translations["AddStore"])[Lang];
             this.lblStoreNumber = (Program.Translations["StoreNumber"])[Lang];
@@ -138,7 +138,7 @@ namespace LabMaterials.Pages
             this.lblManagerName = (Program.Translations["ManagerName"])[Lang];
             this.lblManagerJobNumber = (Program.Translations["ManagerJobNumber"])[Lang];
             this.lblStatus = (Program.Translations["WarehouseStatus"])[Lang];
-            
+
             this.lblOpen = (Program.Translations["Open"])[Lang];
             this.lblClosed = (Program.Translations["Closed"])[Lang];
 
