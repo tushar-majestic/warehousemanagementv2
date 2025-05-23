@@ -109,7 +109,6 @@ namespace LabMaterials.Pages
         public async Task<IActionResult> OnPostAsync()
         {
             // Parse main form values
-              var dbContext = new LabDBContext();
             var orderNumber = "RR-" + DateTime.UtcNow.Ticks.ToString(); // or your format
             var orderDateStr = Request.Form["OrderDate"];
             var requestingSector = Request.Form["RequestingSector"];
