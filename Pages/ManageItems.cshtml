@@ -607,7 +607,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                     } *@
                                     @if (Model.SelectedColumns.Contains("riskTating"))
                                     {
-                                    <td style='color: @(item.IsHazardous?"red":"teal")'>@item.RiskRating</td>
+                                    <td style='color: @(item.IsHazardous == true ? "red":"teal")'>@item.RiskRating</td>
                                     }
                                     @if (Model.SelectedColumns.Contains("stateofMatter"))
                                     {
@@ -801,7 +801,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             } *@
                             @if (Model.SelectedColumns.Contains("riskTating"))
                             {
-                            <td style='color: @(item.IsHazardous?"red":"teal")'>@item.RiskRating</td>
+                            <td style='color: @(item.IsHazardous == true ?"red":"teal")'>@item.RiskRating</td>
                             }
                             @if (Model.SelectedColumns.Contains("typeName"))
                             {

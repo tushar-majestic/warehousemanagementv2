@@ -22,10 +22,13 @@ public partial class MaterialRequest
     public int RequestingSector { get; set; }
     public int RequestedByUserId { get; set; }
 
-    public int DeptManagerId { get; set; }
-    
-    public int KeeperId { get; set; }
-    public int SupervisorId { get; set; }
+    public int? DeptManagerId { get; set; } = null;
+
+
+    public int? KeeperId { get; set; } = null;
+
+    public int? SupervisorId { get; set; } = null;
+
 
     public string RequestDocumentType { get; set; } = null;
     public string DocumentNumber { get; set; } = null;

@@ -12,7 +12,7 @@
         public string StoreName { get; set; }
         public string UnitCode { get; set; }
         public string UnitDesc { get; set; }
-        public bool IsHazardous { get; set; }
+        public bool? IsHazardous { get; set; }
         public string? HazardTypeName { get; set; }
         public int AvailableQuantity { get; set; }
         public string BatchNo { get; set; }
@@ -22,7 +22,7 @@
         public int Count { get; set; }
         public string? Ended { get; set; }
         public string ItemNameAr { get; internal set; }
-        public bool Chemical { get; internal set; }
+        public bool? Chemical { get; internal set; }
         public string RiskRating { get; internal set; }
         public string StateofMatter { get; internal set; }
         public int UnitId { get; internal set; }

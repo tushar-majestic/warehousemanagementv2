@@ -69,8 +69,8 @@ namespace LabMaterials.Pages
                 StateofMatter = item.StateofMatter ?? "";
                 HazardTypeName = item.HazardTypeName ?? "";
                 RiskRating = item.RiskRating ?? "";
-                IsHazardous = item.IsHazardous;
-                Chemical = item.Chemical;
+                IsHazardous = item.IsHazardous ?? false;
+                Chemical = item.Chemical ?? false;
                 AvailableQuantity = item.AvailableQuantity;
                 UnitId = item.UnitId;
                 ItemDescription = item.ItemDescription ?? "";

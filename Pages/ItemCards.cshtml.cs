@@ -82,7 +82,7 @@ namespace LabMaterials.Pages
                                            ExpiryDate = ri.Item.ExpiryDate,
                                            QuantityReceived = ri.Quantity,
                                            UnitOfmeasure = unit.UnitCode,
-                                           Chemical = ri.Item.Chemical?"Yes":"No"
+                                           Chemical = (bool)ri.Item.Chemical ? "Yes" : "No"
                                        }).ToList();
 
 
