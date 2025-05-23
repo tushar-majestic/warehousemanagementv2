@@ -52,7 +52,13 @@ namespace LabMaterials.DB
         [StringLength(100)]
         public string StateOfMatter { get; set; } = null!;
 
+<<<<<<< HEAD
         // public string? RecommendedAction { get; set; } 
+=======
+
+        // public string? RecommendedAction { get; set; } 
+
+>>>>>>> 54fa3a534ef979c31b1e182e1a5589b56b682438
         [StringLength(500)]
         public string? InspectionNotes { get; set; }
 

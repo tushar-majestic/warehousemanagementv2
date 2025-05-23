@@ -1,0 +1,66 @@
+@page
+@model LabMaterials.Pages_HazardTypes.IndexModel
+
+@{
+    ViewData["Title"] = "Hazard Types";
+}
+
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4 pb-2">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb" class="mb-3">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a asp-page="/Home">Home</a></li>
+            <li class="breadcrumb-item"><a asp-page="/ManageUsers">Users</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Hazard Types</li>
+        </ol>
+    </nav>
+    <h1 class="mb-4">Hazard Types</h1>
+    <div class="btn-toolbar mb-2 mb-md-0 d-flex flex-wrap">
+        <!-- Back Button -->
+        <div class="btn-group d-flex mx-3 ms-lg-3">
+            <a asp-page="/ManageUsers" class="btn btn-secondary">&larr; Back </a>
+        </div>
+
+        <div class="btn-group d-flex mx-3 ms-lg-3">
+            <a asp-page="Create" class="btn btn-primary">+ Add Hazard Type</a>
+        </div>
+    </div>
+</div>
+
+
+<div class="card border-0 shadow mb-4">
+    <div class="card-body">
+        <div class="table-responsive">
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Hazard Type Name</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.HazardType)
+                    {
+                        <tr>
+                            <td>@item.HazardTypeName</td>
+                            <td>
+                                <div class="btn-toolbar mb-2 mb-md-0 d-flex flex-wrap">
+                                    <div class="btn-group d-flex mx-3 ms-lg-3">
+                                        <a asp-page="./Edit" asp-route-id="@item.HazardTypeName" class="btn btn-primary">Edit</a>
+                                    </div>
+                                    <div class="btn-group d-flex mx-3 ms-lg-3">
+                                        <a asp-page="./Details" asp-route-id="@item.HazardTypeName" class="btn btn-secondary">Details</a>
+                                    </div>
+                                    <div class="btn-group d-flex mx-3 ms-lg-3">
+                                        <a asp-page="./Delete" asp-route-id="@item.HazardTypeName" class="btn btn-danger">Delete</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -17,11 +17,19 @@ namespace LabMaterials.Migrations
                 maxLength: 500,
                 nullable: true);
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 54fa3a534ef979c31b1e182e1a5589b56b682438
             // migrationBuilder.AddColumn<string>(
             //     name: "RecommendedAction",
             //     table: "ReturnRequestItems",
             //     type: "nvarchar(max)",
             //     nullable: true);
+<<<<<<< HEAD
+=======
+
+>>>>>>> 54fa3a534ef979c31b1e182e1a5589b56b682438
         }
 
         /// <inheritdoc />
@@ -31,9 +39,17 @@ namespace LabMaterials.Migrations
                 name: "InspectionNotes",
                 table: "ReturnRequestItems");
 
+<<<<<<< HEAD
             // migrationBuilder.DropColumn(
             //     name: "RecommendedAction",
             //     table: "ReturnRequestItems");
+=======
+
+            // migrationBuilder.DropColumn(
+            //     name: "RecommendedAction",
+            //     table: "ReturnRequestItems");
+
+>>>>>>> 54fa3a534ef979c31b1e182e1a5589b56b682438
         }
     }
 }
