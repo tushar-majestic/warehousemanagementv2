@@ -19,7 +19,7 @@ namespace LabMaterials.Pages
         public int? EditId { get; set; }
 
         public List<StoreTypes> StoreTypeList { get; set; } = new();
-
+         public string lblUsers;
         public async Task OnGetAsync()
         {
             base.ExtractSessionData();
@@ -68,6 +68,12 @@ namespace LabMaterials.Pages
             }
 
             return RedirectToPage();
+        }
+          private void FillLables()
+        {
+            
+
+            this.lblUsers = (Program.Translations["Users"])[Lang];
         }
     }
 }
