@@ -133,6 +133,12 @@
                         <th>Desc</th>
                         <th>Qty</th>
                         <th>Expiry</th>
+                        @if(Model.ReturnRequest.InspOffApprovalDate != null){
+                            <th >Recommended Action</th>
+                        }
+                        @if(Model.ReturnRequest.InspOffApprovalDate != null){
+                            <th >Committee Notes</th>
+                        }
                     </tr>
                 </thead>
                 <tbody id="itemsTableBody">
@@ -141,9 +147,11 @@
                         <tr>
                             <td>@item.ItemNameEnglish</td>
                             <td>@item.ItemCode</td>
-                            <td>@item.ItemDescription</td>
+                            <td>@(item.ItemDescription ?? "")</td>
                             <td>@item.ReturnedQuantity</td>
                             <td>@item.ExpiryDate?.ToString("yyyy-MM-dd")</td>
+                            <td>@item.RecommendedAction</td>
+                            <td>@item.Notes</td>
                         </tr>
                     }
                 </tbody>

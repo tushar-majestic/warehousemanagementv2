@@ -127,9 +127,7 @@
             <!-- <p class="mb-0">Your web analytics dashboard template.</p>-->
         </div>
         <div class="btn-toolbar mb-2 mb-md-0">
-       @{
-            var userGroupName = HttpContext.Session.GetString("UserGroup");
-        }
+      
         @if (Model.CanManageUsers && Model.CanManageStore)
         {
             <div class="btn-group ms-2 ms-lg-3">
