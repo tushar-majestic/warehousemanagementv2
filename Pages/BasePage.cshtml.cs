@@ -23,10 +23,7 @@ namespace LabMaterials.Pages
         public bool CanGenerateReceivingRequest { get; set; }
         public bool CanManageItemGroup { get; set; }
         public bool CanGenerateDispensingRequest { get; set; }
-<<<<<<< HEAD
-        // public bool CanReturnItems { get; set; }
-=======
->>>>>>> 54fa3a534ef979c31b1e182e1a5589b56b682438
+
         public string dir { get; set; } = "rtl";
         public string Lang { get; set; } = "ar";
 
