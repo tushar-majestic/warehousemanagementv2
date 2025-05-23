@@ -71,7 +71,7 @@
 
     const wrapper = document.getElementById("returnEntriesWrapper");
     const addEntryBtn = document.getElementById("addEntryBtn");
-   addEntryBtn.disabled = true;
+
     // --- Add Entry ---
     addEntryBtn.addEventListener("click", function () {
         const firstEntry = wrapper.querySelector(".return-entry");
@@ -169,7 +169,7 @@
         const idMatch = unit?.id?.match(/_(\d+)$/);
         if (idMatch) {
             const index = parseInt(idMatch[1]);
-            checkRequiredFields(index);
+   
         }
         
     }
@@ -263,26 +263,33 @@
                 if (itemGroup) itemGroup.value = groupCode || '';
             }
         }
-    checkRequiredFields(i);
+
          
     }
 });
-    function checkRequiredFields(index) {
 
-        const addButton = document.getElementById('addEntryBtn');
-        const itemGroup = document.getElementById("itemGroup_" + index);
-        const itemCode = document.getElementById("ItemCode_" + index);
-        const itemDescription = document.getElementById("ItemDescription_" + index);
-        // const unitInput = document.getElementById("typeofAsset_" + index);
 
-            const isValid = itemGroup && itemGroup.value.trim() !== '' &&
-            itemCode && itemCode.value.trim() !== '' &&
-            itemDescription && itemDescription.value.trim() !== '';
-            console.log(isValid, 'isValid')
+ document.addEventListener("DOMContentLoaded", function () {
+            const addBtn = document.getElementById("addEntryBtn");
 
-        addButton.disabled = !isValid;
+            function checkAllRequiredFieldsFilled() {
+                const currentEntry = document.querySelector(".return-entry:last-child"); // check the last entry
+                const requiredFields = currentEntry.querySelectorAll("[required]");
+                let allFilled = true;
 
-    }
+                requiredFields.forEach(field => {
+                    if (!field.value.trim()) {
+                        allFilled = false;
+                    }
+                });
+
+                addBtn.disabled = !allFilled;
+            }
+
+            // Re-check on any input/select change
+            document.getElementById("returnEntriesWrapper").addEventListener("input", checkAllRequiredFieldsFilled);
+            document.getElementById("returnEntriesWrapper").addEventListener("change", checkAllRequiredFieldsFilled);
+        });
 
 </script>
 }
