@@ -43,6 +43,8 @@
         </div>
     }
 </div> *@
+
+<a href="ManageItemCards"><button  class="btn btn-secondary">Back</button></a>
 <button id="printBtn" class="btn btn-primary">Print</button>
 
 
@@ -71,8 +73,8 @@
           <td class="w-50 align-top border-end">
             <div class="p-2">
               <div class="mb-1">Ceiling: -</div>
-              <div class="mb-1">Reorder Limit: @batch.ReorderLimit</div>
-              <div>Minimum: @batch.Minimum</div>
+              <div class="mb-1">Reorder Limit: @batch?.ReorderLimit</div>
+              <div>Minimum: @batch?.Minimum</div>
             </div>
           </td>
          

@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace LabMaterials.Pages
 {
@@ -15,7 +14,7 @@ namespace LabMaterials.Pages
         public string DocumentType;
         public string HazardType;
         public List<ItemGroup> ItemGroups { get; set; }
-        public List<Store> WarehouseTypes { get; set; }
+        public List<StoreTypes> WarehouseTypes { get; set; }
         public List<ItemGroup> UnitsMeasures { get; set; }
         public List<DamagedItem> ChemicalStatuss { get; set; }
         public List<ItemGroup> DocumentTypes { get; set; }
@@ -31,7 +30,7 @@ namespace LabMaterials.Pages
             using (var dbContext = new LabDBContext())
             {
                 ItemGroups = dbContext.ItemGroups.ToList();
-                WarehouseTypes = dbContext.Stores.ToList();
+                WarehouseTypes = dbContext.StoreTypes.ToList();
                 HazardTypes = dbContext.HazardTypes.ToList();
                 ChemicalStatuss = dbContext.DamagedItems.ToList();
             }

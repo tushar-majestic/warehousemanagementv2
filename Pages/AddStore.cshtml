@@ -87,15 +87,17 @@
                                     <label class="my-1 me-2" for="StoreType">@Model.lblWarehouseType</label>
                                     <select class="form-select" id="StoreType" name="StoreType"
                                         aria-label="Default select example" value="@Model.StoreType">
-                                        @{
-                                            var selected = Model.StoreType;
-                                            <option value=""></option>
-                                            @:<option value="Central" @(selected == "Central" ? "selected" : "")>Central</option>
-                                            @:<option value="Branch"  @(selected == "Branch" ? "selected" : "")>Branch</option>
-                                            @:<option value="SupplyRoom"  @(selected == "SupplyRoom" ? "selected" : "")>Supply Room</option>
-                                            @:<option value="EmergencyRoom"  @(selected == "EmergencyRoom" ? "selected" : "")>Emergency Room</option>
 
+                                    @if (Model.WarehouseType != null)
+
+                                    {
+
+                                        foreach (var warehousetype in Model.WarehouseType)
+
+                                        {
+                                            <option value="@warehousetype.StoreType">@warehousetype.StoreType</option>
                                         }
+                                    }
                                     </select>
                             </div>
 
