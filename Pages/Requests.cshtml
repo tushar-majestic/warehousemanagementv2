@@ -56,7 +56,7 @@
             
         </a>
         
-        @if (Model.UserGroupName == "Warehouse Keeper" || Model.UserGroupName == "Warehouse Manager" || Model.UserGroupName == "Sector Manager")
+        @if (Model.CanGenerateDispensingRequest || Model.CanGenerateReceivingRequest || Model.CanReturnItems)
         {
             <a class="nav-link @Model.outboxClass border border-bottom-0" href="?type=outbox">Request Sent</a>
         }
@@ -237,6 +237,7 @@
                                                     else if(senderGroupName == "Warehouse Manager" && Model.UserGroupName == "Return Inspection Committee Officer"){
                                                         <form method="post" class="d-inline">
                                                             <input type="hidden" name="ReturnRequestId" value="@inbox.ReturnRequestId">
+                                                            <input type="hidden" name="InboxId" value="@inbox.Id">
                                                             <button class="btn btn-info btn-sm p-1" asp-page-handler="Recommendations" >
                                                                 Add Committee Recommendations
                                                             </button>
@@ -249,8 +250,8 @@
                                                     }
                                                     @* case3: Sender- Inspection Committee Officer receiver:  Supervisor *@
                                                     else if(senderGroupName == "Return Inspection Committee Officer" && Model.UserGroupName == "General Supervisor"){
-                                                        <button class="btn btn-info btn-sm p-1" data-toggle="modal"  onclick="setAcceptReturnReportId(@inbox.ReturnRequestId, @inbox.Id)">
-                                                            Add Committee Recommendations
+                                                        <button class="btn btn-info btn-sm p-1" data-toggle="modal" data-target="#specifyRecipientReturn" onclick="setAcceptReturnReportId(@inbox.ReturnRequestId, @inbox.Id)">
+                                                                Accept
                                                         </button>
 
                                                         <button class="btn btn-warning btn-sm p-1" data-toggle="modal" data-target="#commentRejectModal" onclick="setRejectReportId(@inbox.ReturnRequestId, @inbox.Id,'@inbox.ReportType')">
@@ -270,6 +271,12 @@
                                             {
                                                 <button class="btn btn-info btn-sm p-1" data-toggle="modal" data-target="#specifyRecipientReturn" onclick="setAcceptReturnReportId(@inbox.ReturnRequestId, @inbox.Id)">
                                                       Assign Supervisor
+                                                </button>
+                                            }
+                                            else if(inbox.Type == "Assign Members" && inbox.ReportType == "ReturnItems")
+                                            {
+                                                <button class="btn btn-info btn-sm p-1" data-toggle="modal" data-target="#specifyRecipientReturn" onclick="setAcceptReturnReportId(@inbox.ReturnRequestId, @inbox.Id)">
+                                                      Assign Members
                                                 </button>
                                             }
                                             else if(inbox.Type == "Deduction Done")
@@ -304,7 +311,7 @@
                                                     }
                                                     else if (inbox.ReportType == "Dispensing")
                                                     {
-                                                        <input type="hidden" value="@inbox.MaterialRequestId" name="MaterialRequestId" />
+                                                        <input type="hidden" value="@inbox.MaterialRequestId" name="RequestReportId" />
                                                         <input type="hidden" value="Dispensing" name="ReportType" />
                                                     }
                                                     <input type="submit" value="@Model.lblView" class="btn btn-secondary" asp-page-handler="View" />
@@ -357,7 +364,7 @@
                                         <tr>
                                             <td>Dispensing Request for <b>@StoreName</b> has been sent successfully.</td>
                                             @{
-                                                var localTime = req.OrderDate.ToLocalTime();
+                                                var localTime = req.CreatedAt.ToString();
                                             }
                                             <td>@localTime</td>
                                             @* <td>@req.CreatedAt</td> *@
@@ -521,7 +528,7 @@
                                                 </select>
                                             }
                                             else if(Model.UserGroupName == "Return Inspection Committee Officer"){
-                                                <label for="Receipient">Returns Inspection Committee Officer</label>
+                                                <label for="Receipient">General Supervisor</label>
                                                 <select class="form-select"  id="Receipient" name="Receipient" required>
                                         
                                                     <option value="">Select Supervisor</option>
@@ -533,6 +540,52 @@
                                                         }
                                                     }
                                                 </select>
+                                            }
+                                            else if (Model.UserGroupName == "General Supervisor"){
+                                                <div class="mb-2">
+                                                    <label for="Receipient">Destruction Officer</label>
+                                                    <select class="form-select"  id="Receipient" name="Receipient" required>
+                                            
+                                                        <option value="">Select Destruction Officer</option>
+                                                        @if (Model.DestructionOfficerList != null)
+                                                        {
+                                                            foreach (var item in Model.DestructionOfficerList)
+                                                            {
+                                                                    <option value="@item.UserId" data-UserName="@item.FullName">@item.FullName</option>
+                                                            }
+                                                        }
+                                                    </select>
+                                                </div>
+                                               
+                                                <div class="mb-2">
+                                                    <label for="Receipient">Warehouse Keeper</label>
+                                                    <select class="form-select"  id="Receipient" name="Receipient" required>
+                                            
+                                                        <option value="">Select Warehouse Keeper</option>
+                                                        @if (Model.KeeperList != null)
+                                                        {
+                                                            foreach (var item in Model.KeeperList)
+                                                            {
+                                                                    <option value="@item.UserId" data-UserName="@item.FullName">@item.FullName</option>
+                                                            }
+                                                        }
+                                                    </select>
+                                                </div>
+
+                                                <div class="mb-2">
+                                                    <label for="Receipient">Recycling Officer</label>
+                                                    <select class="form-select"  id="Receipient" name="Receipient" required>
+                                            
+                                                        <option value="">Select Recycling Officer</option>
+                                                        @if (Model.RecyclingOfficerList != null)
+                                                        {
+                                                            foreach (var item in Model.RecyclingOfficerList)
+                                                            {
+                                                                    <option value="@item.UserId" data-UserName="@item.FullName">@item.FullName</option>
+                                                            }
+                                                        }
+                                                    </select>
+                                                </div>
                                             }
                                             
                                             

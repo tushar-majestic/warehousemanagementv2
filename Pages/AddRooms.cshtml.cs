@@ -25,8 +25,8 @@ namespace LabMaterials.Pages
         public List<User> KeeperGroupsList {  get; set; }
 
 
-        public string lblAddStore, lblRoomNumber, lblStoreName, lblAdd, lblCancel, lblRoomName, lblStoreNumber, 
-        lblAddRoom, lblStores, lblManageRooms,lblNoOfShelves, lblKeeperJobNum, lblKeeperName;
+        public string lblAddStore, lblRoomNumber, lblStoreName, lblAdd, lblCancel, lblRoomName, lblStoreNumber,
+        lblAddRoom, lblStores, lblManageRooms, lblNoOfShelves, lblKeeperJobNum, lblKeeperName;
         public void OnGet()
         {
             base.ExtractSessionData();
@@ -35,16 +35,21 @@ namespace LabMaterials.Pages
                 RedirectToPage("./Index?lang=" + Lang);
             var dbContext = new LabDBContext();
             //   Stores = dbContext.Stores.ToList();
+            int? userId = HttpContext.Session.GetInt32("UserId");
 
-                
             var codeParam = new SqlParameter("@PCODE", SqlDbType.VarChar, 2) { Direction = ParameterDirection.Output };
                 var msgParam = new SqlParameter("@PMSG", SqlDbType.VarChar, 1000) { Direction = ParameterDirection.Output };
                 var descParam = new SqlParameter("@PDESC", SqlDbType.VarChar, 2) { Direction = ParameterDirection.Output };
-          
+            
+
             var query =  dbContext.StoreDataResults
                                 .FromSqlRaw("EXEC PRC_GET_STORE_DATA @PCODE OUTPUT, @PDESC OUTPUT, @PMSG OUTPUT",
                                             codeParam, descParam, msgParam)
                                 .ToList();
+            // Stores = query.Where(s => s.WarehouseManagerID == userId)
+            //                 .GroupBy(s => new { s.StoreId, s.StoreName })
+            //                .Select(g => g.First())
+            //                .ToList();
             Stores = query.GroupBy(s => new { s.StoreId, s.StoreName })
                            .Select(g => g.First())
                            .ToList();

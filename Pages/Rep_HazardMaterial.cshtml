@@ -335,7 +335,7 @@
                                 }
                                     @if (Model.SelectedColumns.Contains("hazardType"))
                                 {
-                                <td style='color: @(item.IsHazardous?"red":"teal")'>@item.HazardTypeName</td>
+                                <td style='color: @(item.IsHazardous == true ?"red":"teal")'>@item.HazardTypeName</td>
                                 }
                                     @if (Model.SelectedColumns.Contains("TypeName"))
                                 {
@@ -496,7 +496,7 @@
                             }
                             @if (Model.SelectedColumns.Contains("hazardType"))
                             {
-                                <td style='color: @(item.IsHazardous ? "red" : "teal")'>@item.HazardTypeName</td>
+                                <td style='color: @(item.IsHazardous == true ? "red" : "teal")'>@item.HazardTypeName</td>
                             }
                             @if (Model.SelectedColumns.Contains("TypeName"))
                             {

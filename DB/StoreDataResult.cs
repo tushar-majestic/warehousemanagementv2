@@ -44,6 +44,8 @@ public partial class StoreDataResult
 
     [StringLength(20)]
     public string? WarehouseManagerName { get; set; }
+    [NotMapped]
+    public int? WarehouseManagerID { get; set; }
 
     [StringLength(10)]
     public string? WarehouseStatus { get; set; }
