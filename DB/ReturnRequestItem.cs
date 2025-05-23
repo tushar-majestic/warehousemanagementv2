@@ -52,9 +52,6 @@ namespace LabMaterials.DB
         [StringLength(100)]
         public string StateOfMatter { get; set; } = null!;
 
-        // public string? RecommendedAction { get; set; } 
-
-
         [StringLength(500)]
         public string? InspectionNotes { get; set; }
 

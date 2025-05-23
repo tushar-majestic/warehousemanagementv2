@@ -148,7 +148,17 @@
                 break;
             }
         }
-
+        const selectedValue = select.value;
+        let duplicates = 0;
+         document.querySelectorAll(".ArabicItemName").forEach((el) => {
+            if (el.value === selectedValue) {
+                duplicates++;
+            }
+        });
+        if (duplicates > 1) {
+            alert("This item has already been selected in another entry.");
+            select.value = ""; // Reset
+        }
         // Fill other fields
         entry.querySelector(".ItemCode").value = selectedOption.dataset.code || "";
         entry.querySelector(".ItemDescription").value = selectedOption.dataset.description || "";
@@ -329,6 +339,21 @@
             </div>
         </div>
     </div>
+           @if (!ViewData.ModelState.IsValid)
+    {
+        <div class="alert alert-danger">
+            ModelState is invalid. Errors:
+            <ul>
+                @foreach (var modelState in ViewData.ModelState)
+                {
+                    foreach (var error in modelState.Value.Errors)
+                    {
+                        <li>@modelState.Key: @error.ErrorMessage</li>
+                    }
+                }
+            </ul>
+        </div>
+    }
     <div class="row">
         <div class="col-8 mb-4 m-auto">
             <div class="card border-0 shadow components-section">
