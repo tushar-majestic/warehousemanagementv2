@@ -19,6 +19,7 @@ namespace LabMaterials.Pages
         public string RequestingSector;
 
         public string DeptManager;
+        public string WarehouseManager;
         public string Keeper;
         public string GeneralSupervisor;
 
@@ -39,7 +40,8 @@ namespace LabMaterials.Pages
         public MaterialRequest? MaterialRequest { get; set; }
 
         public string lblView, lblEdit, lblTotalItem, lblJobNumber, lblEmpAffiliation, lblTransfer, lblMaterialDispensing, lblPrint,
-        lblSerialNumber, lblOrderDate, lblRequestingSector, lblRequestDocumentType, lblRequestDocumentNumber, lblSector;
+        lblSerialNumber, lblOrderDate, lblRequestingSector, lblRequestDocumentType, lblRequestDocumentNumber, lblSector, lblStoreName,
+        lblManagerName, lblItemName, lblItemNo, lblCount, lblSAR, lblPageCount;
         // public void OnGet()
         // {
 
@@ -69,6 +71,7 @@ namespace LabMaterials.Pages
                     .ToListAsync();
                 this.RequestingSector = dbContext.Destinations.Where(d => d.DId == MaterialRequest.RequestingSector).Select(s => s.DestinationName).FirstOrDefault();
                 this.DeptManager = dbContext.Users.Where(u => u.UserId == MaterialRequest.DeptManagerId).Select(s => s.FullName).FirstOrDefault();
+                this.WarehouseManager = dbContext.Users.Where(u => u.UserId == MaterialRequest.RequestedByUserId).Select(s => s.FullName).FirstOrDefault();
                 this.Keeper = dbContext.Users.Where(u => u.UserId == MaterialRequest.KeeperId).Select(s => s.FullName).FirstOrDefault();
                 this.GeneralSupervisor = dbContext.Users.Where(u => u.UserId == MaterialRequest.SupervisorId).Select(s => s.FullName).FirstOrDefault();
             }
@@ -106,6 +109,13 @@ namespace LabMaterials.Pages
             this.lblRequestDocumentType = (Program.Translations["RequestDocumentType"])[Lang];
             this.lblRequestDocumentNumber = (Program.Translations["RequestDocumentNumber"])[Lang];
             this.lblSector = (Program.Translations["Sector"])[Lang];
+            this.lblStoreName = (Program.Translations["StoreName"])[Lang];
+            this.lblManagerName = (Program.Translations["ManagerName"])[Lang];
+            this.lblItemName = (Program.Translations["ItemName"])[Lang];
+            this.lblItemNo = (Program.Translations["ItemNo"])[Lang];
+            this.lblCount = (Program.Translations["Count"])[Lang];
+            this.lblSAR = (Program.Translations["SAR"])[Lang];
+            this.lblPageCount = (Program.Translations["PageCount"])[Lang];
 
         }
     }

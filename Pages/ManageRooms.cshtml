@@ -354,26 +354,40 @@
         <table class="table table-centered table-nowrap mb-0 rounded" id="exportTable">
             <thead class="thead-light">
                 <tr>
-                    <th>@Model.lblStoreName</th>
-                    <th>@Model.lblRoomName</th>
-                    <th>@Model.lblShelves</th>
-                </tr>  
+                    <th scope="col" class="border-0 rounded-start">@Model.lblStoreName</th>
+                    @* <th scope="col" class="border-0">@Model.lblRoomName</th> *@
+                    <th scope="col" class="border-0">@Model.lblBuildingNumber</th>
+                    <th scope="col" class="border-0">@Model.lblRoomNumber</th>
+                    <th scope="col" class="border-0">@Model.lblRoomDesc</th>
+                    <th scope="col" class="border-0">@Model.lblNoOfShelves</th>
+                    <th scope="col" class="border-0">@Model.lblShelves</th>
+                    <th scope="col" class="border-0">@Model.lblKeeperName</th>
+                    <th scope="col" class="border-0">@Model.lblKeeperJobNum</th>
+                    <th scope="col" class="border-0">@Model.lblRoomStatus</th>
+                </tr>
             </thead>
             <tbody>
                 @if (Model.StoresAll != null)
+
+                foreach (var item in Model.StoresAll)
                 {
-                    
-                    foreach (var item in Model.StoresAll)
-                    {
-                        <tr>
-                            <td>@item.StoreName</td>
-                            <td>@item.RoomName</td>
-                            <td>
-                                @(string.IsNullOrWhiteSpace(item.ShelfNumber) ? "" : (item.ShelfNumber.Length > 30 ?
-                                item.ShelfNumber.Substring(0, 30) : item.ShelfNumber))
-                            </td>
-                        </tr>
-                    }
+
+                    <tr>
+                        <td>@item.StoreName</td>
+                        @* <td>@item.RoomName</td> *@
+                        <td>@item.BuildingNumber</td>
+                        <td>@item.RoomNo</td>
+                        <td>@item.RoomDesc</td>
+                        <td>@item.NoOfShelves</td>
+                        <td>
+                            @(string.IsNullOrWhiteSpace(item.ShelfNumber) ? "" : (item.ShelfNumber.Length > 30 ?
+                                                item.ShelfNumber.Substring(0, 30) : item.ShelfNumber))
+                        </td>
+                        <td>@item.KeeperName</td>
+                        <td>@item.KeeperJobNum</td>
+                        <td>@item.RoomStatus</td>
+                    </tr>
+
                 }
             </tbody>
         </table>

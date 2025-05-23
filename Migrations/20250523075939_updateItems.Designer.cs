@@ -4,6 +4,7 @@ using LabMaterials.DB;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LabMaterials.Migrations
 {
     [DbContext(typeof(LabDBContext))]
-    partial class LabDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250523075939_updateItems")]
+    partial class updateItems
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -445,7 +448,6 @@ namespace LabMaterials.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("ItemCode")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
@@ -463,6 +465,7 @@ namespace LabMaterials.Migrations
                         .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("ItemTypeCode")
+                        .IsRequired()
                         .HasMaxLength(15)
                         .HasColumnType("nvarchar(15)");
 
@@ -2387,6 +2390,7 @@ namespace LabMaterials.Migrations
                     b.HasOne("LabMaterials.DB.ItemType", "ItemTypeCodeNavigation")
                         .WithMany("Items")
                         .HasForeignKey("ItemTypeCode")
+                        .IsRequired()
                         .HasConstraintName("FK_Item_ItemType");
 
                     b.HasOne("LabMaterials.DB.Supplier", "Supply")

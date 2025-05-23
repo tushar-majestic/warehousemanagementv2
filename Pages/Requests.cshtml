@@ -304,7 +304,7 @@
                                                     }
                                                     else if (inbox.ReportType == "Dispensing")
                                                     {
-                                                        <input type="hidden" value="@inbox.MaterialRequestId" name="MaterialRequestId" />
+                                                        <input type="hidden" value="@inbox.MaterialRequestId" name="RequestReportId" />
                                                         <input type="hidden" value="Dispensing" name="ReportType" />
                                                     }
                                                     <input type="submit" value="@Model.lblView" class="btn btn-secondary" asp-page-handler="View" />
@@ -357,7 +357,7 @@
                                         <tr>
                                             <td>Dispensing Request for <b>@StoreName</b> has been sent successfully.</td>
                                             @{
-                                                var localTime = req.OrderDate.ToLocalTime();
+                                                var localTime = req.CreatedAt.ToString();
                                             }
                                             <td>@localTime</td>
                                             @* <td>@req.CreatedAt</td> *@
