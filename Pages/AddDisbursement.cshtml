@@ -161,9 +161,17 @@
 
     // --- Auto Calculate Total ---
     function calculateTotalPrice(entry) {
+       console.log('calculateTotalPrice', entry)
         const qty = parseFloat(entry.querySelector(".Quantity")?.value) || 0;
         const unit = parseFloat(entry.querySelector(".UnitPrice")?.value) || 0;
         entry.querySelector(".TotalPrice").value = (qty * unit).toFixed(2);
+      
+        const idMatch = unit?.id?.match(/_(\d+)$/);
+        if (idMatch) {
+            const index = parseInt(idMatch[1]);
+   
+        }
+        
     }
 
     // --- Setup for New Entry ---
@@ -205,7 +213,7 @@
                 .forEach(item => {
                     const optionArabic = document.createElement("option");
                     optionArabic.value = item.Id;
-                    optionArabic.textContent = item.ItemName;
+                    optionArabic.textContent = item.ItemNameAr || item.ItemName; // fallback
                     optionArabic.dataset.id = item.ItemId;
                     optionArabic.dataset.code = item.ItemCode;
                     optionArabic.dataset.description = item.ItemDescription;
@@ -214,7 +222,17 @@
                     optionArabic.dataset.risk = item.HazardTypeName || "";
                     optionArabic.dataset.asset = item.TypeOfAsset || "";
 
-                    const optionEnglish = optionArabic.cloneNode(true);
+                    // English Option
+                    const optionEnglish = document.createElement("option");
+                    optionEnglish.value = item.Id;
+                    optionEnglish.textContent = item.ItemName || '[No English Name]'; // fallback
+                    optionEnglish.dataset.id = item.ItemId;
+                    optionEnglish.dataset.code = item.ItemCode;
+                    optionEnglish.dataset.description = item.ItemDescription;
+                    optionEnglish.dataset.chemical = item.Chemical;
+                    optionEnglish.dataset.unit = item.UnitOfmeasure;
+                    optionEnglish.dataset.risk = item.HazardTypeName || "";
+                    optionEnglish.dataset.asset = item.TypeOfAsset || "";
 
                     itemSelect.appendChild(optionArabic);
                     itemSelectEnglish.appendChild(optionEnglish);
@@ -255,8 +273,34 @@
                 if (itemGroup) itemGroup.value = groupCode || '';
             }
         }
+
+         
     }
 });
+
+
+ document.addEventListener("DOMContentLoaded", function () {
+            const addBtn = document.getElementById("addEntryBtn");
+
+            function checkAllRequiredFieldsFilled() {
+                const currentEntry = document.querySelector(".return-entry:last-child"); // check the last entry
+                const requiredFields = currentEntry.querySelectorAll("[required]");
+                let allFilled = true;
+
+                requiredFields.forEach(field => {
+                    if (!field.value.trim()) {
+                        allFilled = false;
+                    }
+                });
+
+                addBtn.disabled = !allFilled;
+            }
+
+            // Re-check on any input/select change
+            document.getElementById("returnEntriesWrapper").addEventListener("input", checkAllRequiredFieldsFilled);
+            document.getElementById("returnEntriesWrapper").addEventListener("change", checkAllRequiredFieldsFilled);
+        });
+
 </script>
 }
 @{
@@ -460,7 +504,7 @@
                                                     <option value="">Select Item </option>
                                                     
                                                         @foreach (var item in Model.ItemCards)
-                                                        {
+                                                        {           
 
                                                             <option value="@item.Id"
                                                                     data-id="@item.ItemId"
@@ -471,7 +515,7 @@
                                                                     data-risk="@item.HazardTypeName"
                                                                     data-unit="@item.UnitOfmeasure"
                                                                     selected="@(Model.ItemsForReport[i].ItemCardId == item.Id ? "selected" : null)">
-                                                                @item.ItemName
+                                                                @item.ItemNameAr
                                                             </option>
                                                         }
                                                     
@@ -568,7 +612,7 @@
                                 </div>
                             }
                             <div class="mb-3">
-                                <button type="button" class="btn btn-primary" id="addEntryBtn">@Model.lblAddMore</button>
+                                <button type="button" class="btn btn-primary" id="addEntryBtn" disabled>@Model.lblAddMore</button>
                             </div
                             
                             <div class="mb-4">

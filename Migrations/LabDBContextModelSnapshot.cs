@@ -61,7 +61,7 @@ namespace LabMaterials.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("ActivityLog");
+                    b.ToTable("ActivityLog", (string)null);
                 });
 
             modelBuilder.Entity("LabMaterials.DB.ColorCode", b =>
@@ -100,7 +100,7 @@ namespace LabMaterials.Migrations
 
                     b.HasIndex("ItemId");
 
-                    b.ToTable("ColorCodes");
+                    b.ToTable("ColorCodes", (string)null);
                 });
 
             modelBuilder.Entity("LabMaterials.DB.DamagedItem", b =>
@@ -152,7 +152,7 @@ namespace LabMaterials.Migrations
 
                     b.HasIndex("ItemId");
 
-                    b.ToTable("DAMAGED_ITEMS");
+                    b.ToTable("DAMAGED_ITEMS", (string)null);
                 });
 
             modelBuilder.Entity("LabMaterials.DB.DeductionExtended", b =>
@@ -223,7 +223,7 @@ namespace LabMaterials.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("DeductionExtended");
+                    b.ToTable("DeductionExtended", (string)null);
                 });
 
             modelBuilder.Entity("LabMaterials.DB.DespensedItem", b =>
@@ -262,7 +262,7 @@ namespace LabMaterials.Migrations
 
                     b.HasIndex(new[] { "MaterialRequestId" }, "IX_MaterialRequests_MaterialRequestId");
 
-                    b.ToTable("DespensedItems");
+                    b.ToTable("DespensedItems", (string)null);
                 });
 
             modelBuilder.Entity("LabMaterials.DB.Destination", b =>
@@ -311,7 +311,7 @@ namespace LabMaterials.Migrations
                     b.HasKey("DId")
                         .HasName("PK__Destinat__76B8FF7D9D658B66");
 
-                    b.ToTable("Destinations");
+                    b.ToTable("Destinations", (string)null);
                 });
 
             modelBuilder.Entity("LabMaterials.DB.DisbursementRequest", b =>
@@ -367,25 +367,7 @@ namespace LabMaterials.Migrations
 
                     b.HasIndex("StoreId");
 
-                    b.ToTable("DisbursementRequest");
-                });
-
-            modelBuilder.Entity("LabMaterials.DB.DocumentType", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("DocType")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("DocumentTypes");
+                    b.ToTable("DisbursementRequest", (string)null);
                 });
 
             modelBuilder.Entity("LabMaterials.DB.HazardType", b =>
@@ -396,7 +378,7 @@ namespace LabMaterials.Migrations
 
                     b.HasKey("HazardTypeName");
 
-                    b.ToTable("HazardType");
+                    b.ToTable("HazardType", (string)null);
                 });
 
             modelBuilder.Entity("LabMaterials.DB.Item", b =>
@@ -502,7 +484,7 @@ namespace LabMaterials.Migrations
 
                     b.HasIndex("UnitId");
 
-                    b.ToTable("Item");
+                    b.ToTable("Item", (string)null);
                 });
 
             modelBuilder.Entity("LabMaterials.DB.ItemCard", b =>
@@ -573,7 +555,7 @@ namespace LabMaterials.Migrations
 
                     b.HasIndex(new[] { "StoreId" }, "IX_ItemCards_StoreId");
 
-                    b.ToTable("ItemCards");
+                    b.ToTable("ItemCards", (string)null);
                 });
 
             modelBuilder.Entity("LabMaterials.DB.ItemCardBatch", b =>
@@ -636,7 +618,7 @@ namespace LabMaterials.Migrations
 
                     b.HasIndex(new[] { "SupplierId" }, "IX_ItemCardBatches_SupplierId");
 
-                    b.ToTable("ItemCardBatches");
+                    b.ToTable("ItemCardBatches", (string)null);
                 });
 
             modelBuilder.Entity("LabMaterials.DB.ItemCardExtended", b =>
@@ -704,7 +686,7 @@ namespace LabMaterials.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ItemCardExtended");
+                    b.ToTable("ItemCardExtended", (string)null);
                 });
 
             modelBuilder.Entity("LabMaterials.DB.ItemCardViewModels", b =>
@@ -794,7 +776,7 @@ namespace LabMaterials.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ItemCardViewModels");
+                    b.ToTable("ItemCardViewModels", (string)null);
                 });
 
             modelBuilder.Entity("LabMaterials.DB.ItemGroup", b =>
@@ -811,7 +793,7 @@ namespace LabMaterials.Migrations
                     b.HasKey("GroupCode")
                         .HasName("PK_ItemGroup_1");
 
-                    b.ToTable("ItemGroup");
+                    b.ToTable("ItemGroup", (string)null);
                 });
 
             modelBuilder.Entity("LabMaterials.DB.ItemInfoByStoreId", b =>
@@ -837,7 +819,7 @@ namespace LabMaterials.Migrations
                         .IsUnicode(false)
                         .HasColumnType("varchar(250)");
 
-                    b.ToTable("ItemInfoByStoreID");
+                    b.ToTable("ItemInfoByStoreID", (string)null);
                 });
 
             modelBuilder.Entity("LabMaterials.DB.ItemType", b =>
@@ -854,7 +836,7 @@ namespace LabMaterials.Migrations
                     b.HasKey("ItemTypeCode")
                         .HasName("PK_ItemType_1");
 
-                    b.ToTable("ItemType");
+                    b.ToTable("ItemType", (string)null);
                 });
 
             modelBuilder.Entity("LabMaterials.DB.MaterialRequest", b =>
@@ -935,7 +917,7 @@ namespace LabMaterials.Migrations
 
                     b.HasIndex(new[] { "RequestedByUserId" }, "IX_MaterialRequests_RequestedByUserId");
 
-                    b.ToTable("MaterialRequests");
+                    b.ToTable("MaterialRequests", (string)null);
                 });
 
             modelBuilder.Entity("LabMaterials.DB.Message", b =>
@@ -986,7 +968,7 @@ namespace LabMaterials.Migrations
 
                     b.HasIndex(new[] { "ReportId" }, "IX_Messages_ReportId");
 
-                    b.ToTable("Messages");
+                    b.ToTable("Messages", (string)null);
                 });
 
             modelBuilder.Entity("LabMaterials.DB.PendingDeduction", b =>
@@ -1044,7 +1026,7 @@ namespace LabMaterials.Migrations
 
                     b.HasIndex("ShelfId");
 
-                    b.ToTable("PendingDeductions");
+                    b.ToTable("PendingDeductions", (string)null);
                 });
 
             modelBuilder.Entity("LabMaterials.DB.PrimaryKey", b =>
@@ -1060,7 +1042,7 @@ namespace LabMaterials.Migrations
                     b.HasKey("TableName")
                         .HasName("PK__PrimaryK__733652EFA4AA236C");
 
-                    b.ToTable("PrimaryKeys");
+                    b.ToTable("PrimaryKeys", (string)null);
                 });
 
             modelBuilder.Entity("LabMaterials.DB.Privilege", b =>
@@ -1077,7 +1059,7 @@ namespace LabMaterials.Migrations
 
                     b.HasKey("PrivilegeId");
 
-                    b.ToTable("Privileges");
+                    b.ToTable("Privileges", (string)null);
                 });
 
             modelBuilder.Entity("LabMaterials.DB.ReceivingItem", b =>
@@ -1112,7 +1094,7 @@ namespace LabMaterials.Migrations
 
                     b.HasIndex(new[] { "ReceivingReportId" }, "IX_ReceivingItems_ReceivingReportId");
 
-                    b.ToTable("ReceivingItems");
+                    b.ToTable("ReceivingItems", (string)null);
                 });
 
             modelBuilder.Entity("LabMaterials.DB.ReceivingReport", b =>
@@ -1217,7 +1199,7 @@ namespace LabMaterials.Migrations
 
                     b.HasIndex(new[] { "SupplierId" }, "IX_ReceivingReports_SupplierId");
 
-                    b.ToTable("ReceivingReports");
+                    b.ToTable("ReceivingReports", (string)null);
                 });
 
             modelBuilder.Entity("LabMaterials.DB.Requester", b =>
@@ -1294,7 +1276,7 @@ namespace LabMaterials.Migrations
 
                     b.HasIndex("DestinationId");
 
-                    b.ToTable("REQUESTER");
+                    b.ToTable("REQUESTER", (string)null);
                 });
 
             modelBuilder.Entity("LabMaterials.DB.ReturnRequest", b =>
@@ -1396,7 +1378,7 @@ namespace LabMaterials.Migrations
 
                     b.HasIndex("WarehouseId");
 
-                    b.ToTable("ReturnRequests");
+                    b.ToTable("ReturnRequests", (string)null);
                 });
 
             modelBuilder.Entity("LabMaterials.DB.ReturnRequestItem", b =>
@@ -1445,14 +1427,8 @@ namespace LabMaterials.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-
-                    b.Property<string>("Notes")
-                        .HasColumnType("text");
-
-
                     b.Property<string>("RecommendedAction")
                         .HasColumnType("nvarchar(max)");
-
 
                     b.Property<string>("ReturnNotes")
                         .HasMaxLength(500)
@@ -1488,7 +1464,7 @@ namespace LabMaterials.Migrations
 
                     b.HasIndex("ReturnRequestId");
 
-                    b.ToTable("ReturnRequestItems");
+                    b.ToTable("ReturnRequestItems", (string)null);
                 });
 
             modelBuilder.Entity("LabMaterials.DB.Room", b =>
@@ -1558,7 +1534,7 @@ namespace LabMaterials.Migrations
 
                     b.HasIndex("StoreId");
 
-                    b.ToTable("ROOMS");
+                    b.ToTable("ROOMS", (string)null);
                 });
 
             modelBuilder.Entity("LabMaterials.DB.Shelf", b =>
@@ -1609,7 +1585,7 @@ namespace LabMaterials.Migrations
 
                     b.HasIndex("StoreId");
 
-                    b.ToTable("SHELVES");
+                    b.ToTable("SHELVES", (string)null);
                 });
 
             modelBuilder.Entity("LabMaterials.DB.ShelveItem", b =>
@@ -1635,7 +1611,7 @@ namespace LabMaterials.Migrations
 
                     b.HasIndex("ShelfId");
 
-                    b.ToTable("ShelveItems");
+                    b.ToTable("ShelveItems", (string)null);
                 });
 
             modelBuilder.Entity("LabMaterials.DB.Storage", b =>
@@ -1707,7 +1683,7 @@ namespace LabMaterials.Migrations
 
                     b.HasIndex("SupplyId");
 
-                    b.ToTable("Storage");
+                    b.ToTable("Storage", (string)null);
                 });
 
             modelBuilder.Entity("LabMaterials.DB.Store", b =>
@@ -1780,7 +1756,7 @@ namespace LabMaterials.Migrations
 
                     b.HasKey("StoreId");
 
-                    b.ToTable("Store");
+                    b.ToTable("Store", (string)null);
                 });
 
             modelBuilder.Entity("LabMaterials.DB.StoreDataResult", b =>
@@ -1859,7 +1835,7 @@ namespace LabMaterials.Migrations
                         .HasMaxLength(10)
                         .HasColumnType("nvarchar(10)");
 
-                    b.ToTable("StoreDataResult");
+                    b.ToTable("StoreDataResult", (string)null);
                 });
 
             modelBuilder.Entity("LabMaterials.DB.StoreMovement", b =>
@@ -1939,24 +1915,7 @@ namespace LabMaterials.Migrations
 
                     b.HasIndex("ToStoreId");
 
-                    b.ToTable("STORE_MOVEMENT");
-                });
-
-            modelBuilder.Entity("LabMaterials.DB.StoreTypes", b =>
-                {
-                    b.Property<int>("StoreTypeId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StoreTypeId"));
-
-                    b.Property<string>("StoreType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("StoreTypeId");
-
-                    b.ToTable("StoreTypes");
+                    b.ToTable("STORE_MOVEMENT", (string)null);
                 });
 
             modelBuilder.Entity("LabMaterials.DB.Supplier", b =>
@@ -2011,7 +1970,7 @@ namespace LabMaterials.Migrations
 
                     b.HasKey("SupplierId");
 
-                    b.ToTable("Supplier");
+                    b.ToTable("Supplier", (string)null);
                 });
 
             modelBuilder.Entity("LabMaterials.DB.Supply", b =>
@@ -2062,7 +2021,7 @@ namespace LabMaterials.Migrations
 
                     b.HasIndex("SupplierId");
 
-                    b.ToTable("Supply");
+                    b.ToTable("Supply", (string)null);
                 });
 
             modelBuilder.Entity("LabMaterials.DB.Tablecolumn", b =>
@@ -2086,7 +2045,7 @@ namespace LabMaterials.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("tablecolumn");
+                    b.ToTable("tablecolumn", (string)null);
                 });
 
             modelBuilder.Entity("LabMaterials.DB.Unit", b =>
@@ -2142,7 +2101,7 @@ namespace LabMaterials.Migrations
 
                     b.HasIndex("GroupCode");
 
-                    b.ToTable("Units");
+                    b.ToTable("Units", (string)null);
                 });
 
             modelBuilder.Entity("LabMaterials.DB.User", b =>
@@ -2239,7 +2198,7 @@ namespace LabMaterials.Migrations
 
                     b.HasIndex("UserGroupId");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("LabMaterials.DB.UserGroup", b =>
@@ -2254,7 +2213,7 @@ namespace LabMaterials.Migrations
 
                     b.HasKey("UserGroupId");
 
-                    b.ToTable("UserGroups");
+                    b.ToTable("UserGroups", (string)null);
                 });
 
             modelBuilder.Entity("LabMaterials.DB.UserGroupPrivilege", b =>
@@ -2280,7 +2239,7 @@ namespace LabMaterials.Migrations
 
                     b.HasIndex("UserGroupId");
 
-                    b.ToTable("UserGroup_Privileges");
+                    b.ToTable("UserGroup_Privileges", (string)null);
                 });
 
             modelBuilder.Entity("LabMaterials.DB.VActivityLog", b =>

@@ -1430,8 +1430,8 @@ namespace LabMaterials.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.Property<string>("RecommendedAction")
-                        .HasColumnType("nvarchar(max)");
+                    // b.Property<string>("RecommendedAction")
+                    //     .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ReturnNotes")
                         .HasMaxLength(500)

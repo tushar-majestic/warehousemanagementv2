@@ -33,5 +33,17 @@ namespace LabMaterials.Pages
 
             return RedirectToPage("ManageUsers"); // Or your preferred redirect
         }
+
+        public async Task<IActionResult> OnPostDeleteAsync(int id)
+        {
+            var privilege = await _context.Privileges.FindAsync(id);
+            if (privilege != null)
+            {
+                _context.Privileges.Remove(privilege);
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToPage(); // Refresh the list
+        }
+
     }
 }

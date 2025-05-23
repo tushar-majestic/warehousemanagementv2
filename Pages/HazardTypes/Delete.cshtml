@@ -1,0 +1,30 @@
+@page
+@model LabMaterials.Pages_HazardTypes.DeleteModel
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Delete</h1>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card border-0 shadow mb-4">
+                <div class="card-body">
+                    <h4>HazardType</h4>
+                    <hr />
+                    <dl class="row">
+                    </dl>
+
+                    <form method="post">
+                        <input readonly asp-for="HazardType.HazardTypeName" />
+                        <input type="submit" value="Delete" class="btn btn-danger" /> |
+                        <a asp-page="./Index" class="btn btn-secondary">Back to List</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

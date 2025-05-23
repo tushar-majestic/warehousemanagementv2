@@ -51,7 +51,7 @@ namespace LabMaterials.DB
         [Required]
         [StringLength(100)]
         public string StateOfMatter { get; set; } = null!;
-               
+
         [StringLength(500)]
         public string? InspectionNotes { get; set; }
 

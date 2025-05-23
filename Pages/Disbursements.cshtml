@@ -521,7 +521,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             }
                             @if (Model.SelectedColumns.Contains("inventoryBalance"))
                             {
-                            <th scope="col" class="border-0">@Model.lblInventoryBalanced</th>
+                            <th scope="col" class="border-0">@Model.lblAvailableQuantity</th>
                             }
                             @if (Model.SelectedColumns.Contains("itemName"))
                             {
@@ -539,7 +539,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             {
                             <th scope="col" class="border-0">@Model.lblQuantity</th>
                             }
-                            <th scope="col" class="border-0 rounded-end">Action</th>
+                            @* <th scope="col" class="border-0 rounded-end">Action</th> *@
                             
                         </tr>
                     </thead>
@@ -731,7 +731,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     }
                     @if (Model.SelectedColumns.Contains("inventoryBalance"))
                     {
-                    <th scope="col" class="border-0">@Model.lblInventoryBalanced</th>
+                    <th scope="col" class="border-0">@Model.lblAvailableQuantity</th>
                     }
                     @if (Model.SelectedColumns.Contains("itemName"))
                     {

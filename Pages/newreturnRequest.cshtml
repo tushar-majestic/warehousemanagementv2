@@ -52,11 +52,11 @@
                 <div id="returnEntriesWrapper">
                     @for (int i = 0; i < Model.ReturnItems.Count; i++)
                     {
-                        <div class="return-entry border p-3 mb-3 rounded">
+                        <div class="return-entry border p-3 mb-3 rounded d-flex" style="flex-direction: column;  align-items: end;">
                             <div class="row">
                                 <div class="col-md-6 mb-4">
                                     <label>Item Group</label>
-                                    <select class="form-select" name="ReturnItems[@i].itemGroup">
+                                    <select class="form-select item-group-select" name="ReturnItems[@i].itemGroup"  id="itemGroup_@i" onchange="filterItemsByGroup(@i)">
                                         <option value="">Select Group</option>
                                         @foreach (var group in Model.ItemGroups)
                                         {
@@ -66,7 +66,7 @@
                                 </div>
                                 <div class="col-md-6 mb-4">
                                     <label>Arabic Item Name</label>
-                                    <select class="form-select ArabicItemName" name="ReturnItems[@i].ItemCardId"
+                                    <select class="form-select ArabicItemName" name="ReturnItems[@i].ItemCardId"  id="ArabicItemName_@i"
                                             onchange="onItemChange(this, @i)">
                                         <option value="">Select Item</option>
                                         @foreach (var item in Model.ItemCards)
@@ -92,7 +92,7 @@
                                 </div>
 
 
-                                <input hidden type="text" name="ReturnItems[@i].ItemNameArabic" class="form-control ItemNameArabic" readonly />
+                                <input hidden type="text" name="ReturnItems[@i].ItemNameArabic" class="form-control ItemNameArabic" id="" readonly />
 
 
 
@@ -141,7 +141,7 @@
                     }
                 </div>
 
-                <button type="button" class="btn btn-secondary mb-3" id="addEntryBtn">Add More Items</button>
+                <button type="button" class="btn btn-secondary mb-3" id="addEntryBtn" disabled>Add More Items</button>
                 @* <div class="mb-3">
                     <label>Order Number</label>
                     <input type="text" name="OrderNumber" class="form-control" />
@@ -157,9 +157,10 @@
                 <div class="mb-4">
                     <label>Applicant's Sector</label>
                     <select name="ApplicantsSector" class="form-select">
-                        @foreach (var ApplicantsSector in Model.requesters)
+                    <option value="">Select Applicant's Sector</option>
+                        @foreach (var ApplicantsSector in Model.requesters.Where(r => r.Ended == null))
                         {
-                            <option value="@ApplicantsSector.ReqId">@ApplicantsSector.DestinationName</option>
+                            <option value="@ApplicantsSector.ReqId">@ApplicantsSector.ReqName, @ApplicantsSector.DestinationName</option>
                         }
                     </select>
                     @* <input type="text" name="ApplicantsSector" class="form-control" /> *@
@@ -167,6 +168,7 @@
                 <div class="mb-4">
                     <label>Store</label>
                     <select name="StoreId" class="form-select">
+                    <option value="">Select Store</option>
                         @foreach (var store in Model.Stores.Where(s => s.IsActive == 1 && s.Ended == null))
                         {
                             <option value="@store.StoreId">@store.StoreName</option>
@@ -209,6 +211,7 @@
 
         function onItemChange(select, index) {
             const selected = select.options[select.selectedIndex];
+            console.log(selected, 'selected')
             document.querySelectorAll(".ItemCode")[index].value = selected.dataset.code || "";
             document.querySelectorAll(".ItemDescription")[index].value = selected.dataset.description || "";
             document.querySelectorAll(".chemical")[index].value = selected.dataset.chemical || "";
@@ -216,7 +219,10 @@
             document.querySelectorAll(".UnitofMeasure")[index].value = selected.dataset.unit || "";
             document.querySelectorAll(".ItemNameArabic")[index].value = selected.dataset.itemnamearabic || "";
             document.querySelectorAll(".ItemNameEnglish")[index].value = selected.dataset.itemnameenglish || "";
-            document.querySelectorAll(".ExpDate")[index].value = selected.dataset.expdate || "";
+            // document.querySelectorAll(".ExpDate")[index].value = selected.dataset.expdate || "";
+            const rawExpDate = selected.dataset.expdate || "";
+            const formattedExpDate = rawExpDate.split("T")[0]; // in case it ever comes with time
+            document.querySelectorAll(".ExpDate")[index].value = formattedExpDate;
 
             // Check for duplicates
             const selectedValue = select.value;
@@ -231,6 +237,27 @@
                 select.value = ""; // Reset
             }
         }
+       document.addEventListener("DOMContentLoaded", function () {
+            const addBtn = document.getElementById("addEntryBtn");
+
+            function checkAllRequiredFieldsFilled() {
+                const currentEntry = document.querySelector(".return-entry:last-child"); // check the last entry
+                const requiredFields = currentEntry.querySelectorAll("[required]");
+                let allFilled = true;
+
+                requiredFields.forEach(field => {
+                    if (!field.value.trim()) {
+                        allFilled = false;
+                    }
+                });
+
+                addBtn.disabled = !allFilled;
+            }
+
+            // Re-check on any input/select change
+            document.getElementById("returnEntriesWrapper").addEventListener("input", checkAllRequiredFieldsFilled);
+            document.getElementById("returnEntriesWrapper").addEventListener("change", checkAllRequiredFieldsFilled);
+        });
 
         document.getElementById("addEntryBtn").addEventListener("click", function () {
             const wrapper = document.getElementById("returnEntriesWrapper");
@@ -241,6 +268,9 @@
                 if (el.name) {
                     el.name = el.name.replace(/\[\d+\]/, `[${entryIndex}]`);
                 }
+                if (el.id) {
+                    el.id = el.id.replace(/_\d+/, `_${entryIndex}`);
+                }
 
                 if (el.type !== "hidden") {
                     el.value = "";
@@ -250,19 +280,38 @@
                     el.selectedIndex = 0;
                 }
             });
-
+            const currentIndex = entryIndex;
             const itemSelect = newEntry.querySelector(".ArabicItemName");
+
+            const itemSelectGroup = newEntry.querySelector(".item-group-select");
+             if (itemSelectGroup) {
+                 itemSelectGroup.removeAttribute("onchange");
+                itemSelectGroup.addEventListener("change", function () {
+                    filterItemsByGroup(currentIndex);
+                });
+
+            }
             itemSelect.setAttribute("onchange", `onItemChange(this, ${entryIndex})`);
 
             // Ensure remove button works
-            const removeBtn = newEntry.querySelector(".remove-entry");
-            if (removeBtn) {
+            // const removeBtn = newEntry.querySelector(".remove-entry");
+            // if (removeBtn) {
+            //     removeBtn.addEventListener("click", function () {
+            //         newEntry.remove();
+            //     });
+            // }
+             const removeBtn = document.createElement("button");
+                removeBtn.type = "button";
+                removeBtn.className = "btn btn-danger remove-entry mt-2";
+                removeBtn.innerText = "Remove";
                 removeBtn.addEventListener("click", function () {
                     newEntry.remove();
                 });
-            }
+
+              newEntry.insertBefore(removeBtn, newEntry.firstChild);
 
             wrapper.appendChild(newEntry);
+            
             entryIndex++;
         });
 
@@ -272,6 +321,45 @@
                 btn.closest(".return-entry").remove();
             });
         });
+
+
+        function filterItemsByGroup(index) {
+            const allItems = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.ItemsValue));
+            console.log(allItems, 'allItems')
+            const selectedGroup = document.getElementById("itemGroup_" + index)?.value;
+
+            const itemSelect = document.getElementById("ArabicItemName_" + index);
+             console.log("itemSelect",itemSelect )
+
+            // Clear current items
+             itemSelect.innerHTML = '<option value="">Select Item</option>';
+            console.log("selectedgroup",selectedGroup )
+            // Filter and repopulate
+            if (!Array.isArray(allItems)) {
+                console.error("allItems is not an array", allItems);
+                return;
+            }
+            allItems.filter(item => item.GroupCode === selectedGroup)
+            .forEach(item => {
+                const option = document.createElement("option");
+                option.value = item.Id;
+                option.code = item.ItemCode;
+                option.textContent = item.ItemName;
+                option.dataset.itemnamearabic = item.ItemName;
+                option.dataset.itemnameenglish = item.ItemName;
+                option.dataset.code = item.ItemCode;
+                option.dataset.description = item.ItemDescription;
+                option.dataset.chemical = item.Chemical;
+                option.dataset.unit = item.UnitOfmeasure;
+                option.dataset.risk = item.HazardTypeName || "";
+                option.dataset.expdate = item.ExpiryDate || "";
+
+
+
+                itemSelect.appendChild(option);
+
+            });
+        }
     </script>
 }
 

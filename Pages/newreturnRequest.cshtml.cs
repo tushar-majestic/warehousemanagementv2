@@ -17,8 +17,12 @@ namespace LabMaterials.Pages
         // --- Dropdown Data ---
         public List<ItemGroup> ItemGroups { get; set; } = new();
         public List<ItemCard> ItemCards { get; set; } = new();
+        public List<Item> Items { get; set; } = new();
         public List<Store> Stores { get; set; } = new();
         public List<Requester> requesters { get; set; } = new();
+        public List<ItemCardExtended> ItemsValue { get; set; } = new();
+
+        
 
         // --- Metadata ---
         public DateTime CurrentDate => DateTime.Now;
@@ -62,11 +66,13 @@ namespace LabMaterials.Pages
         public List<SelectListItem> StateOfMatters { get; set; }
         [BindProperty]
         public ReturnRequest ReturnRequest { get; set; }
+        
 
 
         public void OnGet()
         {
             base.ExtractSessionData();
+             var dbContext = new LabDBContext();
             StateOfMatters = new List<SelectListItem>
             {
                 new SelectListItem { Text = "Solid", Value = "Solid" },
@@ -82,6 +88,21 @@ namespace LabMaterials.Pages
             // Optional: add one blank row so page renders a row
             ReturnItems.Add(new ReturnRequestItem());
 
+            ItemsValue = (from ic in dbContext.ItemCards
+            join i in dbContext.Items on ic.ItemId equals i.ItemId
+            select new ItemCardExtended
+            {
+                Id = ic.Id,
+                ItemCode = ic.ItemCode,
+                ItemName = ic.ItemName,
+                GroupCode = ic.GroupCode,
+                HazardTypeName = ic.HazardTypeName,
+                ItemDescription = ic.ItemDescription,
+                Chemical = ic.Chemical,
+                UnitOfmeasure = ic.UnitOfmeasure,
+                ExpiryDate = i.ExpiryDate
+            }).ToList();
+
             LoadDropdowns();
         }
 
@@ -89,7 +110,6 @@ namespace LabMaterials.Pages
         {
             // Parse main form values
             var orderNumber = "RR-" + DateTime.UtcNow.Ticks.ToString(); // or your format
-            var dbContext = new LabDBContext();
             var orderDateStr = Request.Form["OrderDate"];
             var requestingSector = Request.Form["RequestingSector"];
             var applicantsSector = Convert.ToInt32(Request.Form["ApplicantsSector"]);
@@ -98,6 +118,23 @@ namespace LabMaterials.Pages
             var store = dbContext.Stores.FirstOrDefault(s => s.StoreId == storeId);
 
             int? managerId = store?.WarehouseManagerId;
+
+
+            
+             ItemsValue = (from ic in dbContext.ItemCards
+            join i in dbContext.Items on ic.ItemId equals i.ItemId
+            select new ItemCardExtended
+            {
+                Id = ic.Id,
+                ItemCode = ic.ItemCode,
+                ItemName = ic.ItemName,
+                GroupCode = ic.GroupCode,
+                HazardTypeName = ic.HazardTypeName,
+                ItemDescription = ic.ItemDescription,
+                Chemical = ic.Chemical,
+                UnitOfmeasure = ic.UnitOfmeasure,
+                ExpiryDate = i.ExpiryDate
+            }).ToList();
 
 
             DateTime.TryParse(orderDateStr, out DateTime orderDate);

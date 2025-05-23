@@ -79,4 +79,7 @@ public partial class ItemCard
     [ForeignKey("StoreId")]
     [InverseProperty("ItemCards")]
     public virtual Store Store { get; set; } = null!;
+    // public string? ItemNameAr { get; internal set; }
+    [NotMapped]
+    public string? ItemNameAr { get; set; }
 }
