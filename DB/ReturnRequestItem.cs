@@ -54,6 +54,7 @@ namespace LabMaterials.DB
 
         // public string? RecommendedAction { get; set; } 
 
+
         [StringLength(500)]
         public string? InspectionNotes { get; set; }
 
