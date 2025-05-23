@@ -7,6 +7,8 @@ namespace LabMaterials.Pages
     public class EditReturnRequestModel : BasePageModel
     {
         private readonly LabDBContext _context;
+        public string ErrorMsg { get; set; }
+
 
         public EditReturnRequestModel(LabDBContext context)
         {
@@ -77,6 +79,7 @@ namespace LabMaterials.Pages
                         .Where(r => r.ReturnRequestId == ReturnRequestId.Value)
                         .ToList();
 
+            var notes = Request.Form["Notes"];
             foreach (var item in ReturnItems)
             {
 
@@ -86,8 +89,16 @@ namespace LabMaterials.Pages
                     itemToUpdate.RecommendedAction = item.RecommendedAction;
                     itemToUpdate.Notes = item.Notes;
                 }
+                else
+                {
+                    ErrorMsg = ("Items to update is null");
+                    return Page();
+                }
             }
-            await dbContext.SaveChangesAsync();
+                        await dbContext.SaveChangesAsync();
+
+            await _context.SaveChangesAsync();
+
 
             return RedirectToPage("/Requests");
         }

@@ -217,7 +217,7 @@
                                         <input type="text" class="form-control" value="@itemgroup.GroupDesc" disabled/>
                                         
                                     </div>
-                                    <input type="hidden" name="ReturnItems[@i].Id" value="@Model.ReturnItems[@i].Id"/>
+                                    <input type="text" name="ReturnItems[@i].Id" value="@Model.ReturnItems[@i].Id"/>
                                     <div class="col-md-6 mb-4">
                                         <label>Arabic Item Name</label>
                                         <select class="form-select ArabicItemName" name="ReturnItems[@i].ItemCardId"  asp-for="@Model.ReturnItems[@i].ItemCardId" disabled
@@ -346,6 +346,45 @@
 
 @section Scripts {
     <script>
+
+        // Notyf notification for errors
+        const notyf = new Notyf({
+            position: {
+                x: 'center',
+                y: 'top',
+            },
+            types: [
+                {
+                    type: 'error',
+                    background: '#e3392c',
+                    icon: {
+                        className: 'fas fa-times',
+                        tagName: 'span',
+                        color: '#000000'
+                    },
+                    dismissible: true,
+                    duration: 0,
+                    ripple: true
+                }
+            ]
+        });
+
+        function showErrorNotification(message) {
+            notyf.open({
+                type: 'error',
+                message: message
+            });
+        }
+
+        @if (!string.IsNullOrEmpty(Model.ErrorMsg))
+        {
+            <text>
+                var errorMessageFromServer = @Html.Raw(Json.Serialize(Model.ErrorMsg));
+                showErrorNotification(errorMessageFromServer);
+            </text>
+        }
+
+
         let entryIndex = @Model.ReturnItems.Count;
 
         function onItemChange(select, index) {

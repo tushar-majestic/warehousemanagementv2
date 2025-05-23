@@ -99,8 +99,8 @@ namespace LabMaterials.Pages
                 HazardTypeName = ic.HazardTypeName,
                 ItemDescription = ic.ItemDescription,
                 Chemical = ic.Chemical,
-                UnitOfmeasure = ic.UnitOfMeasure,
-                ExpiryDate = i.ExpiryDate.Date
+                UnitOfmeasure = ic.UnitOfmeasure,
+                ExpiryDate = i.ExpiryDate
             }).ToList();
 
             LoadDropdowns();
@@ -111,7 +111,6 @@ namespace LabMaterials.Pages
             // Parse main form values
               var dbContext = new LabDBContext();
             var orderNumber = "RR-" + DateTime.UtcNow.Ticks.ToString(); // or your format
-            var dbContext = new LabDBContext();
             var orderDateStr = Request.Form["OrderDate"];
             var requestingSector = Request.Form["RequestingSector"];
             var applicantsSector = Convert.ToInt32(Request.Form["ApplicantsSector"]);
@@ -135,7 +134,7 @@ namespace LabMaterials.Pages
                 ItemDescription = ic.ItemDescription,
                 Chemical = ic.Chemical,
                 UnitOfmeasure = ic.UnitOfmeasure,
-                ExpiryDate = i.ExpiryDate.Date
+                ExpiryDate = i.ExpiryDate
             }).ToList();
 
 
