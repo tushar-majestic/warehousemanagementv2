@@ -167,7 +167,7 @@
                     var WarehouseName = Model.Stores.FirstOrDefault(i => i.StoreId == rep.WarehouseId)?.StoreName ?? "";
                 }
                 <table class="nested-table" border="0" width="100%">
-                    <tr >
+                    <tr>
                        <td style="width: 15%;border: none; font-size: 14px;white-space: nowrap;" >Name of Requesting Sector</td>
                         <td style="width: 15%;border: none; font-size: 14px;">@Model.RequestingSector</td>
                         <td style="width: 15%;border: none;font-size: 14px;"></td>
@@ -183,9 +183,9 @@
                         <td style="width: 15%;border: none;font-size: 14px;"></td>
                         <td style="width: 15%;border: none;font-size: 14px;"></td>
                         <td style="width: 15%;border: none;font-size: 14px;"></td>
-                        <td style="width: 15%;border: none;font-size: 14px;"  align="right">PageCount</td>
-                        <td style="width: 15%;border: none;font-size: 14px;"></td>
-                        
+                        <td style="width: 15%;border: none;font-size: 14px;"  align="right">@Model.lblPageCount</td>
+                        <td style="width: 15%;border: none;font-size: 14px;"><span id="pageCountSpan">Calculating...</span></td>
+
                     </tr>
                     <tr>
                         <td style="width: 15%;border: none;font-size: 14px;white-space: nowrap;" >Warehouse</td>
@@ -291,8 +291,33 @@
                         printWindow.document.write(printContent);
                     printWindow.document.write('</body></html>');
                     printWindow.document.close();
-                    printWindow.focus();
-                    printWindow.print();
+                    printWindow.onload = function () {
+                        const pageHeight = 1122; // Height in px for A4 at 96dpi approx
+                            console.log('Page Height:', pageHeight);
+                        const body = printWindow.document.body;
+                        const totalHeight = body.scrollHeight;
+
+                        const pageCount = Math.ceil(totalHeight / pageHeight);
+
+                        console.log('Page Height:', pageHeight);
+                        console.log('Total Height:', totalHeight);
+                        console.log('Page Count:', pageCount);
+
+                            const pageCountSpan = printWindow.document.getElementById("pageCountSpan");
+                            if (pageCountSpan) {
+                                pageCountSpan.innerText = pageCount;
+                            }
+
+                            // Optional: show page count in original document too
+                            const originalPageCountLabel = document.getElementById('lblPageCount');
+                            if (originalPageCountLabel) {
+                                originalPageCountLabel.innerText = `Page Count: ${pageCount}`;
+                            }
+
+                        // Then print
+                        printWindow.focus();
+                        printWindow.print();
+                    };
                 });
             } else {
                 console.warn("PrintReport button not found");

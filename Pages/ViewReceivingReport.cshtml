@@ -189,7 +189,7 @@
                             <td style="width: 15%;border: none;font-size: 14px;"></td>
                             <td style="width: 15%;border: none;font-size: 14px;"></td>
                             <td style="width: 15%;border: none;font-size: 14px;"  align="right">@Model.lblPageCount</td>
-                            <td style="width: 15%;border: none;font-size: 14px;"></td>
+                            <td style="width: 15%;border: none;font-size: 14px;"><span id="pageCountSpan">Calculating...</span></td>
                             
                         </tr>
                         <tr>
@@ -293,12 +293,39 @@
                         printWindow.document.write('<html><head><title>Receiving Report</title>');
                         printWindow.document.write('<style>body{font-family: Arial;} table{width:100%;border-collapse:collapse;} th, td{border:1px solid #ddd;padding:8px;} th{background:#f2f2f2;} .text-center{text-align:center;}</style>');
                         printWindow.document.write('</head><body>');
-            @* printWindow.document.write('<h1>Receiving Report - Serial No: 15</h1>'); *@
-                            printWindow.document.write(printContent);
+                        // printWindow.document.write('<h1>Receiving Report - Serial No: 15</h1>');
+                        printWindow.document.write(printContent);
                         printWindow.document.write('</body></html>');
                         printWindow.document.close();
-                        printWindow.focus();
-                        printWindow.print();
+                         
+
+                        printWindow.onload = function () {
+                            const pageHeight = 1122; // Height in px for A4 at 96dpi approx
+                             console.log('Page Height:', pageHeight);
+                            const body = printWindow.document.body;
+                            const totalHeight = body.scrollHeight;
+
+                            const pageCount = Math.ceil(totalHeight / pageHeight);
+
+                            console.log('Page Height:', pageHeight);
+                            console.log('Total Height:', totalHeight);
+                            console.log('Page Count:', pageCount);
+
+                              const pageCountSpan = printWindow.document.getElementById("pageCountSpan");
+                                if (pageCountSpan) {
+                                    pageCountSpan.innerText = pageCount;
+                                }
+
+                                // Optional: show page count in original document too
+                                const originalPageCountLabel = document.getElementById('lblPageCount');
+                                if (originalPageCountLabel) {
+                                    originalPageCountLabel.innerText = `Page Count: ${pageCount}`;
+                                }
+
+                            // Then print
+                            printWindow.focus();
+                            printWindow.print();
+                        };
                     });
                 } else {
                     console.warn("PrintReport button not found");
