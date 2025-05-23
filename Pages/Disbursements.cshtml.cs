@@ -78,7 +78,7 @@ namespace LabMaterials.Pages
         }
 
         public string lblDisbursements, lblSearch, lblRequesterName, lblFromStore, lblSubmit, lblItemName, lblStoreName, lblDestination, lblItemType, lblQuantity, lblItemCode, lblAddDisbursement, lblRequestReceivedDate, lblRequestingPlace, lblComments,
-            lblDisbursementStatus, lblInventoryBalanced, lblEdit, lblTotalItem, lblFromDate, lblToDate, lblExportExcel, lblPrintTable;
+            lblDisbursementStatus, lblInventoryBalanced, lblEdit, lblTotalItem, lblFromDate, lblToDate, lblExportExcel, lblPrintTable, lblAvailableQuantity;
 
         // public void OnPostSearch([FromForm] string RequesterName, [FromForm] DateTime? FromDate, [FromForm] DateTime? ToDate)
         // {   CurrentPage = 1; 
@@ -239,6 +239,7 @@ namespace LabMaterials.Pages
                             join s in dbContext.Destinations on d.RequestingSector equals s.DId
                             join i in dbContext.DespensedItems on d.RequestId equals i.MaterialRequestId
                             join ic in dbContext.ItemCards on i.ItemCardId equals ic.Id
+                            join wh in dbContext.Stores on d.WarehouseId equals wh.StoreId
                             select new DisbursementInfo
                             {
                                 DisbursementRequestId = d.RequestId,
@@ -251,7 +252,7 @@ namespace LabMaterials.Pages
                                 ItemCode = ic.ItemCode,
                                 ItemTypeCode = ic.ItemTypeCode,
                                 Quantity = i.Quantity,
-                                StoreName = d.WarehouseId.ToString(),
+                                StoreName = wh.StoreName,
                                 ItemName = ic.ItemName
                             };
 
@@ -275,10 +276,11 @@ namespace LabMaterials.Pages
                                     join u in dbContext.Users on d.RequestedByUserId equals u.UserId
                                     join s in dbContext.Destinations on d.RequestingSector equals s.DId
                                     join i in dbContext.DespensedItems on d.RequestId equals i.MaterialRequestId
+                                    join wh in dbContext.Stores on d.WarehouseId equals wh.StoreId
                                     select new DisbursementInfo
                                     {
                                         RequestingPlace = s.DestinationName,
-                                        StoreName = d.WarehouseId.ToString()
+                                        StoreName = wh.StoreName
                                     };
 
                 UniqueRequestingPlace = allItemsQuery.Select(i => i.RequestingPlace).Where(x => !string.IsNullOrEmpty(x)).Distinct().ToList();
@@ -323,6 +325,7 @@ namespace LabMaterials.Pages
             this.lblFromStore = (Program.Translations["FromStore"])[Lang];
             this.lblItemType = (Program.Translations["ItemType"])[Lang];
             this.lblQuantity = (Program.Translations["Quantity"])[Lang];
+            this.lblAvailableQuantity = (Program.Translations["AvailableQuantity"])[Lang];
             this.lblItemCode = (Program.Translations["ItemCode"])[Lang]; 
             this.lblDestination = (Program.Translations["Destinations"])[Lang]; 
             this.lblStoreName = (Program.Translations["StoreName"])[Lang]; 
