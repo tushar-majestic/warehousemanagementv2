@@ -4,34 +4,20 @@
     ViewData["Title"] = "Create Store Type";
 }
 
-<h1>Store Types</h1>
+<!-- Breadcrumb -->
+<nav aria-label="breadcrumb" class="mb-3">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a asp-page="/Home">Home</a></li>
+        <li class="breadcrumb-item"><a asp-page="/ManageUsers">Users</a></li>
+        <li class="breadcrumb-item"><a asp-page="/ViewStoretypes">Store Types</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Add Store Type</li>
+    </ol>
+</nav>
 
-@* <a asp-page="./AddStoreTypes" class="btn btn-primary mb-3">Add New Store Type</a> *@
-
-@if (!Model.StoreTypeList.Any())
-{
-    <div class="alert alert-info">No store types found.</div>
-}
-else
-{
-    <table class="table table-bordered table-striped">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Store Type</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.StoreTypeList)
-            {
-                <tr>
-                    <td>@item.StoreTypeId</td>
-                    <td>@item.StoreType</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
+<!-- Back Button -->
+<div class="mb-3">
+    <a asp-page="/ViewStoretypes" class="btn btn-outline-secondary">&larr; Back </a>
+</div>
 
 <h1>Add Store Type</h1>
 

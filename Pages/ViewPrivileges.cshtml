@@ -1,0 +1,100 @@
+﻿@page
+@model LabMaterials.Pages.ViewPrivilegesModel
+@{
+    ViewData["Title"] = "View Privilege";
+}
+
+<!-- Breadcrumb -->
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4 pb-2">
+<nav aria-label="breadcrumb" class="mb-3">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a asp-page="/Home">Home</a></li>
+        <li class="breadcrumb-item"><a asp-page="/ManageUsers">Users</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Privileges</li>
+    </ol>
+</nav>
+
+
+
+<h1 class="mb-4">Privileges</h1>
+
+<div class="btn-toolbar mb-2 mb-md-0 d-flex flex-wrap">
+    <!-- Back Button -->
+    <div class="btn-group d-flex mx-3 ms-lg-3">
+        <a asp-page="/ManageUsers" class="btn btn-secondary">&larr; Back </a>
+    </div>
+    <div class="btn-group d-flex mx-3 ms-lg-3">
+        <a asp-page="AddPrivileges" class="btn btn-primary">+ Add Privilege</a>
+    </div>
+</div>
+</div>
+
+
+
+<div class="card border-0 shadow mb-4">
+    <div class="card-body">
+        <div class="table-responsive">
+@if (!Model.PrivilegeList.Any())
+{
+    <div class="alert alert-info">No Privileges found.</div>
+}
+else
+{
+    <table class="table table-bordered table-striped">
+        <thead class="table-light">
+            <tr>
+                <th>ID</th>
+                <th>Privilege Name</th>
+                <th class="text-center">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.PrivilegeList)
+            {
+                if (Model.EditId == item.PrivilegeId)
+                {
+                    <form method="post" asp-page-handler="Edit">
+                    <tr>
+                        <td>
+                                @item.PrivilegeId
+                            <input type="hidden" name="Privilege.PrivilegeId" value="@item.PrivilegeId" />
+                        </td>
+                        <td>
+                            <input type="text" name="Privilege.PrivilegeName" value="@item.PrivilegeName" class="form-control" />
+                            <span asp-validation-for="Privilege.PrivilegeName" class="text-danger"></span>
+                        </td>
+                        <td class="text-center">
+                            <button type="submit" class="btn btn-sm btn-success me-1">Save</button>
+                            <a asp-page="ViewPrivileges" class="btn btn-sm btn-secondary">Cancel</a>
+                        </td>
+                    </tr>
+                    </form>
+                }
+                else
+                {
+                    <tr>
+                        <td>@item.PrivilegeId</td>
+                        <td>@item.PrivilegeName</td>
+                        <td class="text-center">
+                            <form method="post" asp-page-handler="EditInit" class="d-inline">
+                                <input type="hidden" name="EditId" value="@item.PrivilegeId" />
+                                <button type="submit" class="btn btn-sm btn-outline-primary me-1">Edit</button>
+                            </form>
+                            <form method="post" asp-page-handler="Delete" asp-route-id="@item.PrivilegeId" class="d-inline">
+                                <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Are you sure you want to delete this privilege?');">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+    
+}
+        </div>
+        </div>
+        </div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
