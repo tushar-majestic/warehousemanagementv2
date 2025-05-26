@@ -141,7 +141,7 @@
                     }
                 </div>
 
-                <button type="button" class="btn btn-secondary mb-3" id="addEntryBtn">Add More Items</button>
+                <button type="button" class="btn btn-secondary mb-3" id="addEntryBtn" disabled>Add More Items</button>
                 @* <div class="mb-3">
                     <label>Order Number</label>
                     <input type="text" name="OrderNumber" class="form-control" />
@@ -237,7 +237,27 @@
                 select.value = ""; // Reset
             }
         }
-       
+       document.addEventListener("DOMContentLoaded", function () {
+            const addBtn = document.getElementById("addEntryBtn");
+
+            function checkAllRequiredFieldsFilled() {
+                const currentEntry = document.querySelector(".return-entry:last-child"); // check the last entry
+                const requiredFields = currentEntry.querySelectorAll("[required]");
+                let allFilled = true;
+
+                requiredFields.forEach(field => {
+                    if (!field.value.trim()) {
+                        allFilled = false;
+                    }
+                });
+
+                addBtn.disabled = !allFilled;
+            }
+
+            // Re-check on any input/select change
+            document.getElementById("returnEntriesWrapper").addEventListener("input", checkAllRequiredFieldsFilled);
+            document.getElementById("returnEntriesWrapper").addEventListener("change", checkAllRequiredFieldsFilled);
+        });
 
         document.getElementById("addEntryBtn").addEventListener("click", function () {
             const wrapper = document.getElementById("returnEntriesWrapper");

@@ -133,6 +133,12 @@
                         <th>Desc</th>
                         <th>Qty</th>
                         <th>Expiry</th>
+                        @if(Model.ReturnRequest.InspOffApprovalDate != null){
+                            <th >Recommended Action</th>
+                        }
+                        @if(Model.ReturnRequest.InspOffApprovalDate != null){
+                            <th >Committee Notes</th>
+                        }
                     </tr>
                 </thead>
                 <tbody id="itemsTableBody">
@@ -141,9 +147,11 @@
                         <tr>
                             <td>@item.ItemNameEnglish</td>
                             <td>@item.ItemCode</td>
-                            <td>@item.ItemDescription</td>
+                            <td>@(item.ItemDescription ?? "")</td>
                             <td>@item.ReturnedQuantity</td>
                             <td>@item.ExpiryDate?.ToString("yyyy-MM-dd")</td>
+                            <td>@item.RecommendedAction</td>
+                            <td>@item.Notes</td>
                         </tr>
                     }
                 </tbody>
@@ -182,7 +190,7 @@
         <div class="left-column">
             <div>Order Number: @rep.OrderNumber</div>
             <div>Order Date: @rep.OrderDate.ToString("yyyy-MM-dd")</div>
-            <div>Page Count</div>
+            <div>@Model.lblPageCount: <span id="pageCountSpan">Calculating...</span></div>
         </div>
 
      
@@ -240,7 +248,7 @@
                     foreach (var item in Model.ReturnRequestItems)
                     {
                         <tr>
-                            <td style="font-size: 14px;" colspan="4"></td>
+                            <td style="font-size: 14px;" colspan="4">@item.index</td>
                             <td style="font-size: 14px;">@item.ItemCode</td>
                             <td style="font-size: 14px;">@item.ItemNameEnglish</td>
                             <td style="font-size: 14px;">@item.ReturnedQuantity</td>
@@ -273,7 +281,9 @@
 @section Scripts{
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+              
                 const printReportBtn = document.getElementById('PrintReport');
+             
                 if (printReportBtn) {
                     printReportBtn.addEventListener('click', function () {
                         console.log("PrintReport button clicked");
@@ -290,11 +300,37 @@
                         printWindow.document.write('<style>body{font-family: Arial;} table{width:100%;border-collapse:collapse;} th, td{border:1px solid #ddd;padding:8px;} th{background:#f2f2f2;} .text-center{text-align:center;}</style>');
                         printWindow.document.write('</head><body>');
 
-                            printWindow.document.write(printContent);
+                        printWindow.document.write(printContent);
                         printWindow.document.write('</body></html>');
-                        printWindow.document.close();
-                        printWindow.focus();
-                        printWindow.print();
+                         printWindow.document.close();
+
+                        printWindow.onload = function () {
+                            const pageHeight = 1122; // Height in px for A4 at 96dpi approx
+                             console.log('Page Height:', pageHeight);
+                            const body = printWindow.document.body;
+                            const totalHeight = body.scrollHeight;
+
+                            const pageCount = Math.ceil(totalHeight / pageHeight);
+
+                            console.log('Page Height:', pageHeight);
+                            console.log('Total Height:', totalHeight);
+                            console.log('Page Count:', pageCount);
+
+                              const pageCountSpan = printWindow.document.getElementById("pageCountSpan");
+                                if (pageCountSpan) {
+                                    pageCountSpan.innerText = pageCount;
+                                }
+
+                                // Optional: show page count in original document too
+                                const originalPageCountLabel = document.getElementById('lblPageCount');
+                                if (originalPageCountLabel) {
+                                    originalPageCountLabel.innerText = `Page Count: ${pageCount}`;
+                                }
+
+                            // Then print
+                            printWindow.focus();
+                            printWindow.print();
+                        };
                     });
                 } else {
                     console.warn("PrintReport button not found");
