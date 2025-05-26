@@ -13,7 +13,7 @@ namespace LabMaterials.Pages
         public string lblHazardousMaterials, lblHazardTypeName, lblSearch, lblSubmit, lblItemCode, lblItemName, lblGroupName,
             lblAvailableQuantity, lblHazardType, lblTypeName, lblStoreName, lblUnitCode, lblTotalItem,
             lblMaterialsReceived, lblInventory, lblUserActivity, lblDistributedMaterials, lblDamagedItems, lblUserReport,
-            lblFromDate, lblToDate, lblDamageditems, lblTotalDamagedItem,
+            lblFromDate, lblToDate, lblDamageditems, lblTotalDamagedItem, lblItems,
             lblDamageDate, lblDamageQuantity, lblDamageReason, lblExport, lblPrint;
         public int TotalItems { get; set; }
         public int CurrentPage { get; set; }
@@ -231,6 +231,7 @@ namespace LabMaterials.Pages
             this.lblDamageReason = (Program.Translations["DamageReason"])[Lang];
             this.lblExport = (Program.Translations["Export"])[Lang];
             this.lblPrint = (Program.Translations["Print"])[Lang];
+            this.lblItems = (Program.Translations["Items"])[Lang];
         }
     }
 }
