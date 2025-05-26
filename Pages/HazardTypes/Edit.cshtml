@@ -5,10 +5,31 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
-
-<h4>HazardType</h4>
-<hr />
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4 pb-2">
+    <div class="d-block mb-4 mb-md-0">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb bg-transparent p-2 mb-0">
+                <li class="breadcrumb-item d-flex align-items-center">
+                    <img src="images/home.png" alt="Home" width="16" height="16" class="me-2" />
+                    <a href="/Home" class="text-decoration-none">@Model.lblHome</a>
+                </li>
+                <li class="breadcrumb-item d-flex align-items-center">
+                    <img src="images/management.png" alt="Home" width="16" height="16" class="me-2" />
+                    <a href="/ManageUsers" class="text-decoration-none">@Model.lblUsers</a>
+                </li>
+                <li class="breadcrumb-item d-flex align-items-center">
+                    <img src="images/management.png" alt="Home" width="16" height="16" class="me-2" />
+                     <a asp-page="./Index" class="text-decoration-none">@Model.lblHazardType</a>
+                </li>
+                <li class="breadcrumb-item d-flex align-items-center">
+                    <img src="images/management.png" alt="Home" width="16" height="16" class="me-2" />
+                     Edit Hazard Type
+                </li>
+            </ol>
+        </nav>
+        <h2 class="h4">Edit Hazard Type</h2>
+    </div>
+</div>
 <div class="row">
     <div class="col-md-4">
         <div class="card border-0 shadow mb-4">
@@ -18,7 +39,7 @@
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
                         <div class="form-group mb-3">
-                            <label asp-for="HazardType.HazardTypeName" class="form-label"></label>
+                            <label asp-for="HazardType.HazardTypeName" class="form-label">@Model.lblHazardTypeName</label>
                             <input asp-for="HazardType.HazardTypeName" class="form-control" />
                             <span asp-validation-for="HazardType.HazardTypeName" class="text-danger"></span>
                         </div>

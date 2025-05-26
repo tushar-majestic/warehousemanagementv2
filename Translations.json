@@ -1595,8 +1595,32 @@
       "en" : "ChiefResponsible is Missing",
       "ar" : "ChiefResponsible is Missing"
 
+    },
+    "Privileges" : {
+      "en": "Privileges",
+      "ar": "Privileges"
+    },
+    "AddPrivilege" : {
+      "en": "Add Privilege",
+      "ar": "Add Privilege"
+    },
+    "Back" : {
+      "en": "Back",
+      "ar": "Back"
+    },
+     "NoPrivilegesfound" : {
+      "en": "No Privileges found.",
+      "ar": "No Privileges found."
+    },
+     "PrivilegeName" : {
+      "en": "Privilege Name",
+      "ar": "Privilege Name"
+    },
+     "ID" : {
+      "en": "ID",
+      "ar": "ID"
     }
-    
+
 
 
     
