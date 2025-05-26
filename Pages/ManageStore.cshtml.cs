@@ -27,7 +27,7 @@ namespace LabMaterials.Pages
 
         public string lblStores, lblManageStorage, lblSearch, lblRoomName, lblManageShelves, lblUnlock, lblLock, lblRoomNumber,
         lblManageRooms, lblStoreNumber, lblAddRoom, lblAddShelf, lblStoreName, lblSubmit, lblAddStore, lblShelves, lblEdit,
-        lblDelete, lblTotalItem, lblAddDestination, lblManageDestination, lblWarehouseType, lblManagerName, lblManagerJobNumber,
+        lblDelete, lblTotalItem, lblAddDestination, lblManageDestination, lblWarehouseType, lblManagerName, lblManagerJobNumber,lblManageSuppliers,
         lblStatus, lblExportExcel, lblPrintTable;
 
         private void LoadSelectedColumns()
@@ -399,6 +399,7 @@ namespace LabMaterials.Pages
             this.lblStatus = (Program.Translations["WarehouseStatus"])[Lang];
             this.lblExportExcel = (Program.Translations["ExportExcel"])[Lang];
             this.lblPrintTable = (Program.Translations["PrintTable"])[Lang];
+            this.lblManageSuppliers = (Program.Translations["ManageSuppliers"])[Lang];
 
 
 

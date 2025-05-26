@@ -14,7 +14,7 @@ namespace LabMaterials.Pages
         
         
         public string lblSupplierName, lbSupplierAdded,lblSupplierPhoneNumber, 
-        lblSupplierType, lblAddSupplier, lblAdd, lblCancel, lblSupplies, lblSuppliers, lblCoordinatorName, lblExtensionNumber;
+        lblSupplierType, lblAddSupplier, lblAdd, lblCancel, lblSupplies, lblSuppliers, lblCoordinatorName, lblExtensionNumber, lblCompanyName, lblStores;
         public void OnGet()
         {
             base.ExtractSessionData();
@@ -127,6 +127,7 @@ namespace LabMaterials.Pages
             this.lblSupplierType = (Program.Translations["SupplierType"])[Lang];
             this.lblAddSupplier = (Program.Translations["AddSupplier"])[Lang];
             this.lbSupplierAdded = (Program.Translations["SupplierAdded"])[Lang];
+            this.lblCompanyName = (Program.Translations["CompanyName"])[Lang];
 
             this.lblAdd = (Program.Translations["Add"])[Lang];
             this.lblCancel = (Program.Translations["Cancel"])[Lang];
@@ -134,6 +135,8 @@ namespace LabMaterials.Pages
             this.lblSuppliers = (Program.Translations["Suppliers"])[Lang];
             this.lblCoordinatorName = (Program.Translations["CoordinatorName"])[Lang];
             this.lblExtensionNumber = (Program.Translations["ExtensionNumber"])[Lang];
+            this.lblStores = (Program.Translations["Stores"])[Lang];
+
         }
     }
 }

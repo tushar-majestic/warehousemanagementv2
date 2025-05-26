@@ -21,7 +21,7 @@ namespace LabMaterials.Pages
         public int TotalPages { get; set; }
         
         public string lblSuppliers, lblSearch, lblSuplierName, lblSubmit, lblSupplierName, lblConatctNumber, lblSupplierType, 
-        lblAddSupplier, lblEdit, lblDelete, lblTotalItem, lblSupplies, lblCoordinatorName, lblExportExcel, lblPrintTable;
+        lblAddSupplier, lblEdit, lblDelete, lblTotalItem, lblSupplies, lblCoordinatorName, lblExportExcel, lblPrintTable, lblStores;
         public void OnGet(string? SupplierName, string? CoordinatorName, string? SupplierType, int page = 1)
         {
             base.ExtractSessionData();
@@ -131,7 +131,7 @@ namespace LabMaterials.Pages
 
         private void FillLables()
         {
-            
+
 
             this.lblSuppliers = (Program.Translations["Suppliers"])[Lang];
             this.lblSearch = (Program.Translations["Search"])[Lang];
@@ -149,6 +149,8 @@ namespace LabMaterials.Pages
             this.lblSupplies = (Program.Translations["Supplies"])[Lang];
             this.lblExportExcel = (Program.Translations["ExportExcel"])[Lang];
             this.lblPrintTable = (Program.Translations["PrintTable"])[Lang];
+            this.lblStores = (Program.Translations["Stores"])[Lang];
+
         }
     }
 }
