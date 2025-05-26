@@ -55,6 +55,16 @@ namespace LabMaterials.Pages
 
         public void OnGet(string? StoreNumber, string? StoreName, int page = 1)
         {
+              int? userId = HttpContext.Session.GetInt32("UserId");
+
+            if(userId.HasValue){
+                Console.WriteLine($"userId: {userId}");
+               
+            }
+            else{
+                Console.WriteLine("userId not available");
+            }
+
             base.ExtractSessionData();
             if (CanManageStore)
             {
@@ -303,6 +313,15 @@ namespace LabMaterials.Pages
 
         private void FillData(string? StoreNumber, string? StoreName, int page = 1)
         {
+            int? userId = HttpContext.Session.GetInt32("UserId");
+
+            if(userId.HasValue){
+                Console.WriteLine($"userId: {userId}");
+            }
+            else{
+                Console.WriteLine("userId not available");
+            }
+
             base.ExtractSessionData();
             if (CanManageStore)
             {
@@ -319,6 +338,13 @@ namespace LabMaterials.Pages
                                 .FromSqlRaw("EXEC PRC_GET_STORE_DATA @PCODE OUTPUT, @PDESC OUTPUT, @PMSG OUTPUT",
                                             codeParam, descParam, msgParam)
                                 .ToList();
+                                
+                if(UserGroupName == "Warehouse Manager"){
+                    query = query.Where(s => s.WarehouseManagerID == userId.Value).ToList();
+                }
+               
+               
+               
                 Rooms = dbContext.Rooms.ToList();
 
 
@@ -331,6 +357,10 @@ namespace LabMaterials.Pages
                            .Select(g => g.First())
                            .ToList();
 
+                //  query = userId.HasValue ? query.Where(s => s.WarehouseManagerID == userId.Value).ToList() : query.ToList();
+              
+                                    
+
                 if (string.IsNullOrEmpty(StoreNumber) == false)
                     query = query.Where(s => s.StoreNumber.Contains(StoreNumber)).ToList();
 
@@ -339,7 +369,7 @@ namespace LabMaterials.Pages
 
                 if (string.IsNullOrEmpty(StoreNumber) == false && string.IsNullOrEmpty(StoreName) == false)
                     query = query.Where(s => s.StoreNumber.Contains(StoreNumber) && s.StoreName.ToLower().Contains(StoreName.ToLower())).ToList();
-
+                
                 TotalItems = query.Count();
                 TotalPages = (int)Math.Ceiling((double)TotalItems / ItemsPerPage);
                 var list = query.ToList();

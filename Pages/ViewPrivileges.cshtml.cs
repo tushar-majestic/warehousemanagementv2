@@ -89,7 +89,7 @@ namespace LabMaterials.Pages
             this.lblNoPrivilegesfound = (Program.Translations["NoPrivilegesfound"])[Lang];
             this.lblPrivilegeName = (Program.Translations["PrivilegeName"])[Lang];
             this.lblID= (Program.Translations["ID"])[Lang];
-            this.lblActions= (Program.Translations["Actions"])[Lang];
+            this.lblActions= (Program.Translations["Action"])[Lang];
         }
     }
 }
