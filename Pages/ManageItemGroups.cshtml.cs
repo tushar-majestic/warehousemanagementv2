@@ -20,10 +20,11 @@ namespace LabMaterials.Pages
         public int TotalPages { get; set; }
         public void OnGet(string? GroupName, int page = 1) 
         {
+             FillLables();
             base.ExtractSessionData();
             if (CanManageItemGroup)
             {
-                FillLables();
+               
                 if (HttpContext.Request.Query.ContainsKey("page")){
                     string pagevalue = HttpContext.Request.Query["page"];
                     page = int.Parse(pagevalue);
