@@ -28,8 +28,11 @@
             @if(Model.UserGroupName == "Return Inspection Committee Officer"){
                 <h1 class="h4">Add Committee Recommendations</h1>
             }
+            else if(Model.UserGroupName == "Recycling Officer"){
+              <h1 class="h4">Add Recycling Notes to Recycling Items</h1>
+            }
             else{
-              <h1 class="h4">Edit Return Request</h1>
+                <h1 class="h4">Edit Return Request</h1>
             }
             
         </div>
@@ -52,297 +55,290 @@
     }
 <div class="row">
         <div class="col-8 mb-4 m-auto">
-            
-            @* <div class="card border-0 shadow components-section">
-                <form method="post" class="card-body">
-                    <div id="returnEntriesWrapper">
-                        @for (int i = 0; i < Model.ReturnItems.Count; i++)
-                        {
-                            <div class="return-entry border p-3 mb-3 rounded">
-                                <div class="row">
-                                    <div class="col-md-6 mb-4">
-                                        <label>Item Group</label>
-                                        <select class="form-select" name="ReturnItems[@i].itemGroup">
-                                            <option value="">Select Group</option>
-                                            @foreach (var group in Model.ItemGroups)
-                                            {
-                                                <option value="@group.GroupCode">@group.GroupDesc</option>
+            @if(Model.UserGroupName == "Return Inspection Committee Officer")                       {
+                <div class="card border-0 shadow components-section">
+                    <form method="post" class="card-body">
+                        
+                            @for (int i = 0; i < Model.ReturnItems.Count; i++)
+                            {
+                                <div class="border p-3 mb-3 rounded">
+                                    <div class="row">
+                                        <div class="col-md-6 mb-4">
+                                            <label>Item Group</label>
+                                            @{
+                                                var itemgroup = Model.ItemGroups.FirstOrDefault(g => g.GroupCode == Model.ReturnItems[@i].ItemGroup);
                                             }
-                                        </select>
-                                    </div>
-                                    <div class="col-md-6 mb-4">
-                                        <label>Arabic Item Name</label>
-                                        <select class="form-select ArabicItemName" name="ReturnItems[@i].ItemCardId"
-                                                onchange="onItemChange(this, @i)">
-                                            <option value="">Select Item</option>
-                                            @foreach (var item in Model.ItemCards)
-                                            {   
-                                                var Item = Model.AllItems.FirstOrDefault(i => i.ItemId == item.ItemId);
-                                                <option value="@item.Id"
-                                                        data-code="@item.ItemCode"
-                                                        data-description="@item.ItemDescription"
-                                                        data-chemical="@item.Chemical"
-                                                        data-risk="@item.HazardTypeName"
-                                                        data-unit="@item.UnitOfmeasure"
-                                                        data-itemnamearabic="@item.ItemName"
-                                                        data-itemnameenglish="@item.ItemName"
-                                                        data-expdate = "@Item.ExpiryDate?.ToString("yyyy-MM-dd")">
-                                                    @item.ItemName
-                                                </option>
-                                            }
-                                        </select>
-                                    </div>
-                                    <div class="col-md-6 mb-4">
-                                        <label>Item Code</label>
-                                        <input type="text" name="ReturnItems[@i].ItemCode" class="form-control ItemCode" readonly />
-                                    </div>
+                                            <input type="text" class="form-control" value="@itemgroup.GroupDesc" readonly/>
+                                            
+                                        </div>
+                                        <input type="hidden" name="ReturnItems[@i].Id" value="@Model.ReturnItems[@i].Id" asp-for="ReturnItems[@i].Id"/>
+                                        <div class="col-md-6 mb-4">
+                                            <label>Arabic Item Name</label>
+                                            <select class="form-select ArabicItemName" name="ReturnItems[@i].ItemCardId"  asp-for="@Model.ReturnItems[@i].ItemCardId" disabled
+                                                    onchange="onItemChange(this, @i)">
+                                                <option value="">Select Item</option>
+                                                @foreach (var item in Model.ItemCards)
+                                                {   
+                                                    var Item = Model.AllItems.FirstOrDefault(i => i.ItemId == item.ItemId);
+                                                    <option value="@item.Id"
+                                                            data-code="@item.ItemCode"
+                                                            data-description="@item.ItemDescription"
+                                                            data-chemical="@item.Chemical"
+                                                            data-risk="@item.HazardTypeName"
+                                                            data-unit="@item.UnitOfmeasure"
+                                                            data-itemnamearabic="@item.ItemName"
+                                                            data-itemnameenglish="@item.ItemName"
+                                                            data-expdate = "@Item.ExpiryDate?.ToString("yyyy-MM-dd")">
+                                                        @item.ItemName
+                                                    </option>
+                                                }
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6 mb-4">
+                                            <label>Item Code</label>
+                                            <input type="text" name="ReturnItems[@i].ItemCode" class="form-control ItemCode" value="@Model.ReturnItems[@i].ItemCode" readonly />
+                                        </div>
 
 
-                                    <input hidden type="text" name="ReturnItems[@i].ItemNameArabic" class="form-control ItemNameArabic" readonly />
+                                        <input hidden type="text" name="ReturnItems[@i].ItemNameArabic" class="form-control ItemNameArabic" readonly />
 
 
 
-                                    <input hidden type="text" name="ReturnItems[@i].ItemNameEnglish" class="form-control ItemNameEnglish" readonly />
+                                        <input hidden type="text" name="ReturnItems[@i].ItemNameEnglish" class="form-control ItemNameEnglish" readonly />
+                                        
+                                        <div class="col-md-6 mb-4">
+                                            <label>Item Description</label>
+                                            <input type="text" name="ReturnItems[@i].ItemDescription" class="form-control ItemDescription"  value="@Model.ReturnItems[@i].ItemDescription" readonly />
+                                        </div>
+                                        <div class="col-md-6 mb-4">
+                                            <label>Chemical</label>
+                                            <input type="text" name="ReturnItems[@i].Chemical" class="form-control chemical" value="@Model.ReturnItems[@i].Chemical" readonly />
+                                        </div>
+                                        <div class="col-md-6 mb-4">
+                                            <label>Risk Rating</label>
+                                            <input type="text" name="ReturnItems[@i].RiskRating" value="@Model.ReturnItems[@i].RiskRating" class="form-control RiskRating" readonly />
+                                        </div>
+                                        <div class="col-md-6 mb-4">
+                                            <label>State of Matter</label>
+                                            <input type="text"  name="ReturnItems[@i].StateOfMatter" class="form-select" value="@Model.ReturnItems[@i].StateOfMatter" disabled/>
+                                            
+                                        </div>
+                                        <div class="col-md-6 mb-4">
+                                            <label>Expiry Date</label>
+                                            <input type="date" name="ReturnItems[@i].ExpiryDate"  value="@Model.ReturnItems[@i].ExpiryDate?.ToString("yyyy-MM-dd")" class="form-control ExpDate" readonly  />
+                                        </div>
+                                        <div class="col-md-6 mb-4">
+                                            <label>Unit of Measure</label>
+                                            <input type="text" name="ReturnItems[@i].UnitOfMeasure" value="@Model.ReturnItems[@i].UnitOfMeasure" class="form-control UnitofMeasure" readonly />
+                                        </div>
+                                        <div class="col-md-6 mb-4">
+                                            <label>Return Quantity</label>
+                                            <input type="number" name="ReturnItems[@i].ReturnedQuantity" value="@Model.ReturnItems[@i].ReturnedQuantity" class="form-control" readonly />
+                                        </div>
+                                        <div class="col-12 mb-4">
+                                            <label>Return Notes</label>
+                                            <textarea name="ReturnItems[@i].ReturnNotes" value="@Model.ReturnItems[@i].ReturnNotes" class="form-control" rows="2" readonly> @Model.ReturnItems[@i].ReturnNotes</textarea>
+                                        </div>
+
                                     
-                                    <div class="col-md-6 mb-4">
-                                        <label>Item Description</label>
-                                        <input type="text" name="ReturnItems[@i].ItemDescription" class="form-control ItemDescription" readonly />
-                                    </div>
-                                    <div class="col-md-6 mb-4">
-                                        <label>Chemical</label>
-                                        <input type="text" name="ReturnItems[@i].Chemical" class="form-control chemical" readonly />
-                                    </div>
-                                    <div class="col-md-6 mb-4">
-                                        <label>Risk Rating</label>
-                                        <input type="text" name="ReturnItems[@i].RiskRating" class="form-control RiskRating" readonly />
-                                    </div>
-                                    <div class="col-md-6 mb-4">
-                                        <label>State of Matter</label>
-                                        <select name="ReturnItems[@i].StateOfMatter" class="form-select" required>
-                                            <option value="">Select State</option>
-                                            @foreach (var state in Model.StateOfMatters)
-                                            {
-                                                <option value="@state.Value">@state.Text</option>
-                                            }
-                                        </select>
-                                    </div>
-                                    <div class="col-md-6 mb-4">
-                                        <label>Expiry Date</label>
-                                        <input type="date" name="ReturnItems[@i].ExpiryDate" class="form-control ExpDate"   />
-                                    </div>
-                                    <div class="col-md-6 mb-4">
-                                        <label>Unit of Measure</label>
-                                        <input type="text" name="ReturnItems[@i].UnitOfMeasure" class="form-control UnitofMeasure" readonly />
-                                    </div>
-                                    <div class="col-md-6 mb-4">
-                                        <label>Return Quantity</label>
-                                        <input type="number" name="ReturnItems[@i].ReturnedQuantity" class="form-control" required />
-                                    </div>
-                                    <div class="col-12 mb-4">
-                                        <label>Return Notes</label>
-                                        <textarea name="ReturnItems[@i].ReturnNotes" class="form-control" rows="2"></textarea>
+                                        <div class="mb-4">
+                                            <label>Recommended Action</label>
+                                            <select name="ReturnItems[@i].RecommendedAction" class="form-control" asp-for="ReturnItems[@i].RecommendedAction"  required>
+                                                <option value="">Select Recommended Action</option>
+                                                @foreach (var condition in Enum.GetValues(typeof(LabMaterials.DB.ReturnRequestItem.ItemCondition)))
+                                                {
+                                                    var selected = Model.ReturnItems[@i].RecommendedAction == (LabMaterials.DB.ReturnRequestItem.ItemCondition)condition ? "selected" : "";
+                                                    <option value="@condition" >@condition</option>
+                                                }
+                                            </select>
+                                        </div>
+
+                                        <div class="mb-4">
+                                            <label>Additional Notes</label>
+                                            <textarea name="ReturnItems[@i].Notes" asp-for="ReturnItems[@i].Notes"  class="form-control" rows="2" required></textarea>
+                                        </div>
+                                        
                                     </div>
                                 </div>
-                            </div>
-                        }
-                    </div>
-
-                    <button type="button" class="btn btn-secondary mb-3" id="addEntryBtn">Add More Items</button>
-                    
-                    <div class="mb-4">
-                        <label>Order Date</label>
-                        <input type="date" name="OrderDate" class="form-control" asp-for="Report.OrderDate"/>
-                    </div>
-                    <div class="mb-4">
-                        <label>Requesting Sector</label>
-                        <input type="text" name="RequestingSector" class="form-control" value="General Administration of Educational Services" asp-for="Report.ToSector"/>
-                    </div>
-                    <div class="mb-4">
-                        <label>Applicant's Sector</label>
-                        <select name="ApplicantsSector" class="form-select" asp-for="Report.FromSectorId">
-                            @foreach (var ApplicantsSector in Model.requesters)
-                            {
-                                <option value="@ApplicantsSector.ReqId">@ApplicantsSector.DestinationName</option>
                             }
-                        </select>
-                    </div>
-                    <div class="mb-4">
-                        <label>Store</label>
-                        <select name="StoreId" class="form-select"  asp-for="Report.WarehouseId">
-                            @foreach (var store in Model.Stores.Where(s => s.IsActive == 1 && s.Ended == null))
-                            {
-                                <option value="@store.StoreId">@store.StoreName</option>
-                            }
-                        </select>
-                    </div>
-                    <div class="mb-4">
-                        <label>Reason for Return</label><br />
-                        <div class="form-check">
-                            <input type="radio" class="form-check-input" name="ReasonForReturn" value="SurPlus" asp-for="Report.IsSurplus"/>
-                            <label class="form-check-label">Surplus</label>
-                        </div>
-                        <div class="form-check">
-                            <input type="radio" class="form-check-input" name="ReasonForReturn" value="Expired" />
-                            <label class="form-check-label"asp-for="Report.IsExpired">Expired</label>
-                        </div>
-                        <div class="form-check">
-                            <input type="radio" class="form-check-input" name="ReasonForReturn" value="Invalid" asp-for="Report.IsInvalid" />
-                            <label class="form-check-label">Invalid</label>
-                        </div>
-                        <div class="form-check">
-                            <input type="radio" class="form-check-input" name="ReasonForReturn" value="Damaged" />
-                            <label class="form-check-label" asp-for="Report.IsDamaged">Damaged</label>
-                        </div>
-                    </div>
-                    <div class="d-flex gap-3">
-                        <a href="/ManageItems" class="btn btn-outline-secondary">Cancel</a>
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                    </div>
-                </form>
+                        
 
-            </div> *@
-
-            <div class="card border-0 shadow components-section">
-                <form method="post" class="card-body">
+                        
                     
-                        @for (int i = 0; i < Model.ReturnItems.Count; i++)
-                        {
-                            <div class="border p-3 mb-3 rounded">
-                                <div class="row">
-                                    <div class="col-md-6 mb-4">
-                                        <label>Item Group</label>
-                                        @{
-                                            var itemgroup = Model.ItemGroups.FirstOrDefault(g => g.GroupCode == Model.ReturnItems[@i].ItemGroup);
+                        <div class="mb-4">
+                            <p><b>Order Date</b>: @Model.Report.OrderDate</p>
+                        </div>
+                        <div class="mb-4">
+                            <p><b>Requesting Sector</b>: @Model.Report.ToSector</p>                        
+                        </div>
+
+                        <div class="mb-4">
+                            @{
+                                var applicantSector = Model.requesters.FirstOrDefault(r=> r.ReqId == Model.Report.FromSectorId);
+                            }
+                            <p><b>Applicant's Sector</b>: @applicantSector.DestinationName</p>                        
+
+                        </div>
+                        <div class="mb-4">
+                            @{
+                                var store = Model.Stores.FirstOrDefault(s=> s.StoreId == Model.Report.WarehouseId);
+                            }
+                            <p><b>Store</b>: @store.StoreName</p>                        
+                        
+                        </div>
+                        <div class="mb-4">
+                            <p><b>Reason for Return</b>: @Model.Report.Reason</p>
+                        </div>
+                        <div class="d-flex gap-3">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </form>
+
+                </div>
+            }
+            else if(Model.UserGroupName == "Recycling Officer"){
+                <div class="card border-0 shadow components-section">
+                    <form method="post" class="card-body">
+                        
+                            @for (int i = 0; i < Model.ReturnItems.Count; i++)
+                            {
+                                <div class="border p-3 mb-3 rounded">
+                                    <div class="row">
+                                        <div class="col-md-6 mb-4">
+                                            <label>Item Group</label>
+                                            @{
+                                                var itemgroup = Model.ItemGroups.FirstOrDefault(g => g.GroupCode == Model.ReturnItems[@i].ItemGroup);
+                                            }
+                                            <input type="text" class="form-control" value="@itemgroup.GroupDesc" readonly/>
+                                            
+                                        </div>
+                                        <input type="hidden" name="ReturnItems[@i].Id" value="@Model.ReturnItems[@i].Id" asp-for="ReturnItems[@i].Id"/>
+                                        <div class="col-md-6 mb-4">
+                                            <label>Arabic Item Name</label>
+                                            <select class="form-select ArabicItemName" name="ReturnItems[@i].ItemCardId"  asp-for="@Model.ReturnItems[@i].ItemCardId" disabled
+                                                    onchange="onItemChange(this, @i)">
+                                                <option value="">Select Item</option>
+                                                @foreach (var item in Model.ItemCards)
+                                                {   
+                                                    var Item = Model.AllItems.FirstOrDefault(i => i.ItemId == item.ItemId);
+                                                    <option value="@item.Id"
+                                                            data-code="@item.ItemCode"
+                                                            data-description="@item.ItemDescription"
+                                                            data-chemical="@item.Chemical"
+                                                            data-risk="@item.HazardTypeName"
+                                                            data-unit="@item.UnitOfmeasure"
+                                                            data-itemnamearabic="@item.ItemName"
+                                                            data-itemnameenglish="@item.ItemName"
+                                                            data-expdate = "@Item.ExpiryDate?.ToString("yyyy-MM-dd")">
+                                                        @item.ItemName
+                                                    </option>
+                                                }
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6 mb-4">
+                                            <label>Item Code</label>
+                                            <input type="text" name="ReturnItems[@i].ItemCode" class="form-control ItemCode" value="@Model.ReturnItems[@i].ItemCode" readonly />
+                                        </div>
+
+
+                                        <input hidden type="text" name="ReturnItems[@i].ItemNameArabic" class="form-control ItemNameArabic" readonly />
+
+
+
+                                        <input hidden type="text" name="ReturnItems[@i].ItemNameEnglish" class="form-control ItemNameEnglish" readonly />
+                                        
+                                        <div class="col-md-6 mb-4">
+                                            <label>Item Description</label>
+                                            <input type="text" name="ReturnItems[@i].ItemDescription" class="form-control ItemDescription"  value="@Model.ReturnItems[@i].ItemDescription" readonly />
+                                        </div>
+                                        <div class="col-md-6 mb-4">
+                                            <label>Chemical</label>
+                                            <input type="text" name="ReturnItems[@i].Chemical" class="form-control chemical" value="@Model.ReturnItems[@i].Chemical" readonly />
+                                        </div>
+                                        <div class="col-md-6 mb-4">
+                                            <label>Risk Rating</label>
+                                            <input type="text" name="ReturnItems[@i].RiskRating" value="@Model.ReturnItems[@i].RiskRating" class="form-control RiskRating" readonly />
+                                        </div>
+                                        <div class="col-md-6 mb-4">
+                                            <label>State of Matter</label>
+                                            <input type="text"  name="ReturnItems[@i].StateOfMatter" class="form-select" value="@Model.ReturnItems[@i].StateOfMatter" disabled/>
+                                            
+                                        </div>
+                                        <div class="col-md-6 mb-4">
+                                            <label>Expiry Date</label>
+                                            <input type="date" name="ReturnItems[@i].ExpiryDate"  value="@Model.ReturnItems[@i].ExpiryDate?.ToString("yyyy-MM-dd")" class="form-control ExpDate" readonly  />
+                                        </div>
+                                        <div class="col-md-6 mb-4">
+                                            <label>Unit of Measure</label>
+                                            <input type="text" name="ReturnItems[@i].UnitOfMeasure" value="@Model.ReturnItems[@i].UnitOfMeasure" class="form-control UnitofMeasure" readonly />
+                                        </div>
+                                        <div class="col-md-6 mb-4">
+                                            <label>Return Quantity</label>
+                                            <input type="number" name="ReturnItems[@i].ReturnedQuantity" value="@Model.ReturnItems[@i].ReturnedQuantity" class="form-control" readonly />
+                                        </div>
+                                        <div class="col-12 mb-4">
+                                            <label>Return Notes</label>
+                                            <textarea name="ReturnItems[@i].ReturnNotes" value="@Model.ReturnItems[@i].ReturnNotes" class="form-control" rows="2" readonly> @Model.ReturnItems[@i].ReturnNotes</textarea>
+                                        </div>
+
+                                    
+                                        <div class="mb-4">
+                                            <label>Recommended Action</label>
+                                            <input class="form-control" name="ReturnItems[@i].RecommendedAction" value="@Model.ReturnItems[@i].RecommendedAction" type="text" readonly/>
+                                        </div>
+                                        <div class="mb-4">
+                                            <label>Additional Notes</label>
+                                            <textarea name="ReturnItems[@i].Notes"    class="form-control" rows="2" readonly> @Model.ReturnItems[@i].Notes</textarea>
+                                        </div> 
+
+                                        @if(Model.ReturnItems[@i].RecommendedAction == LabMaterials.DB.ReturnRequestItem.ItemCondition.Recyclable){
+                                            <div class="mb-4">
+                                                <label>Recycling Notes</label>
+                                                <textarea name="ReturnItems[@i].RecyclingNotes" asp-for="ReturnItems[@i].RecyclingNotes"  class="form-control" rows="2" required></textarea>
+                                            </div>
                                         }
-                                        <input type="text" class="form-control" value="@itemgroup.GroupDesc" readonly/>
                                         
-                                    </div>
-                                    <input type="hidden" name="ReturnItems[@i].Id" value="@Model.ReturnItems[@i].Id" asp-for="ReturnItems[@i].Id"/>
-                                    <div class="col-md-6 mb-4">
-                                        <label>Arabic Item Name</label>
-                                        <select class="form-select ArabicItemName" name="ReturnItems[@i].ItemCardId"  asp-for="@Model.ReturnItems[@i].ItemCardId" disabled
-                                                onchange="onItemChange(this, @i)">
-                                            <option value="">Select Item</option>
-                                            @foreach (var item in Model.ItemCards)
-                                            {   
-                                                var Item = Model.AllItems.FirstOrDefault(i => i.ItemId == item.ItemId);
-                                                <option value="@item.Id"
-                                                        data-code="@item.ItemCode"
-                                                        data-description="@item.ItemDescription"
-                                                        data-chemical="@item.Chemical"
-                                                        data-risk="@item.HazardTypeName"
-                                                        data-unit="@item.UnitOfmeasure"
-                                                        data-itemnamearabic="@item.ItemName"
-                                                        data-itemnameenglish="@item.ItemName"
-                                                        data-expdate = "@Item.ExpiryDate?.ToString("yyyy-MM-dd")">
-                                                    @item.ItemName
-                                                </option>
-                                            }
-                                        </select>
-                                    </div>
-                                    <div class="col-md-6 mb-4">
-                                        <label>Item Code</label>
-                                        <input type="text" name="ReturnItems[@i].ItemCode" class="form-control ItemCode" value="@Model.ReturnItems[@i].ItemCode" readonly />
-                                    </div>
-
-
-                                    <input hidden type="text" name="ReturnItems[@i].ItemNameArabic" class="form-control ItemNameArabic" readonly />
-
-
-
-                                    <input hidden type="text" name="ReturnItems[@i].ItemNameEnglish" class="form-control ItemNameEnglish" readonly />
-                                    
-                                    <div class="col-md-6 mb-4">
-                                        <label>Item Description</label>
-                                        <input type="text" name="ReturnItems[@i].ItemDescription" class="form-control ItemDescription"  value="@Model.ReturnItems[@i].ItemDescription" readonly />
-                                    </div>
-                                    <div class="col-md-6 mb-4">
-                                        <label>Chemical</label>
-                                        <input type="text" name="ReturnItems[@i].Chemical" class="form-control chemical" value="@Model.ReturnItems[@i].Chemical" readonly />
-                                    </div>
-                                    <div class="col-md-6 mb-4">
-                                        <label>Risk Rating</label>
-                                        <input type="text" name="ReturnItems[@i].RiskRating" value="@Model.ReturnItems[@i].RiskRating" class="form-control RiskRating" readonly />
-                                    </div>
-                                    <div class="col-md-6 mb-4">
-                                        <label>State of Matter</label>
-                                        <input type="text"  name="ReturnItems[@i].StateOfMatter" class="form-select" value="@Model.ReturnItems[@i].StateOfMatter" disabled/>
                                         
-                                    </div>
-                                    <div class="col-md-6 mb-4">
-                                        <label>Expiry Date</label>
-                                        <input type="date" name="ReturnItems[@i].ExpiryDate"  value="@Model.ReturnItems[@i].ExpiryDate?.ToString("yyyy-MM-dd")" class="form-control ExpDate" readonly  />
-                                    </div>
-                                    <div class="col-md-6 mb-4">
-                                        <label>Unit of Measure</label>
-                                        <input type="text" name="ReturnItems[@i].UnitOfMeasure" value="@Model.ReturnItems[@i].UnitOfMeasure" class="form-control UnitofMeasure" readonly />
-                                    </div>
-                                    <div class="col-md-6 mb-4">
-                                        <label>Return Quantity</label>
-                                        <input type="number" name="ReturnItems[@i].ReturnedQuantity" value="@Model.ReturnItems[@i].ReturnedQuantity" class="form-control" readonly />
-                                    </div>
-                                    <div class="col-12 mb-4">
-                                        <label>Return Notes</label>
-                                        <textarea name="ReturnItems[@i].ReturnNotes" value="@Model.ReturnItems[@i].ReturnNotes" class="form-control" rows="2" readonly></textarea>
-                                    </div>
-
-                                    <div class="mb-4">
-                                        <label>Recommended Action</label>
-                                        <select name="ReturnItems[@i].RecommendedAction" class="form-control" asp-for="ReturnItems[@i].RecommendedAction" required>
-                                            <option value="">Select Recommended Action</option>
-                                            @foreach (var condition in Enum.GetValues(typeof(LabMaterials.DB.ReturnRequestItem.ItemCondition)))
-                                            {
-                                                var selected = Model.ReturnItems[@i].RecommendedAction == (LabMaterials.DB.ReturnRequestItem.ItemCondition)condition ? "selected" : "";
-                                                <option value="@condition" >@condition</option>
-                                            }
-                                        </select>
-                                    </div>
-
-                                    <div class="mb-4">
-                                        <label>Additional Notes</label>
-                                        <textarea name="ReturnItems[@i].Notes" asp-for="ReturnItems[@i].Notes"  class="form-control" rows="2" required></textarea>
                                     </div>
                                 </div>
-                            </div>
-                        }
+                            }
+                        
+
+                        
                     
+                        <div class="mb-4">
+                            <p><b>Order Date</b>: @Model.Report.OrderDate</p>
+                        </div>
+                        <div class="mb-4">
+                            <p><b>Requesting Sector</b>: @Model.Report.ToSector</p>                        
+                        </div>
 
-                    @* <button type="button" class="btn btn-secondary mb-3" id="addEntryBtn">Add More Items</button> *@
-                   
-                    <div class="mb-4">
-                        <p><b>Order Date</b>: @Model.Report.OrderDate</p>
-                    </div>
-                    <div class="mb-4">
-                        <p><b>Requesting Sector</b>: @Model.Report.ToSector</p>                        
-                    </div>
+                        <div class="mb-4">
+                            @{
+                                var applicantSector = Model.requesters.FirstOrDefault(r=> r.ReqId == Model.Report.FromSectorId);
+                            }
+                            <p><b>Applicant's Sector</b>: @applicantSector.DestinationName</p>                        
 
-                    <div class="mb-4">
-                        @{
-                            var applicantSector = Model.requesters.FirstOrDefault(r=> r.ReqId == Model.Report.FromSectorId);
-                        }
-                        <p><b>Applicant's Sector</b>: @applicantSector.DestinationName</p>                        
+                        </div>
+                        <div class="mb-4">
+                            @{
+                                var store = Model.Stores.FirstOrDefault(s=> s.StoreId == Model.Report.WarehouseId);
+                            }
+                            <p><b>Store</b>: @store.StoreName</p>                        
+                        
+                        </div>
+                        <div class="mb-4">
+                            <p><b>Reason for Return</b>: @Model.Report.Reason</p>
+                        </div>
+                        <div class="d-flex gap-3">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </form>
 
-                    </div>
-                    <div class="mb-4">
-                        @{
-                            var store = Model.Stores.FirstOrDefault(s=> s.StoreId == Model.Report.WarehouseId);
-                        }
-                        <p><b>Store</b>: @store.StoreName</p>                        
-                       
-                    </div>
-                    <div class="mb-4">
-                        <p><b>Reason for Return</b>: @Model.Report.Reason</p>
-                    </div>
-                    <div class="d-flex gap-3">
-                        <a href="/ManageItems" class="btn btn-outline-secondary">Cancel</a>
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                    </div>
-                </form>
-
-            </div>
+                </div>
+            }
         </div>
 </div>
-
 
 @section Scripts {
     <script>
