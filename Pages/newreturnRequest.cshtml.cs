@@ -88,20 +88,36 @@ namespace LabMaterials.Pages
             // Optional: add one blank row so page renders a row
             ReturnItems.Add(new ReturnRequestItem());
 
-            ItemsValue = (from ic in dbContext.ItemCards
-                          join i in dbContext.Items on ic.ItemId equals i.ItemId
-                          select new ItemCardExtended
-                          {
-                              Id = ic.Id,
-                              ItemCode = ic.ItemCode,
-                              ItemName = ic.ItemName,
-                              GroupCode = ic.GroupCode,
-                              HazardTypeName = ic.HazardTypeName,
-                              ItemDescription = ic.ItemDescription,
-                              Chemical = ic.Chemical,
-                              UnitOfmeasure = ic.UnitOfmeasure,
-                              ExpiryDate = i.ExpiryDate
-                          }).ToList();
+            // ItemsValue = (from ic in dbContext.ItemCards
+            //               join i in dbContext.Items on ic.ItemId equals i.ItemId
+            //               select new ItemCardExtended
+            //               {
+            //                   Id = ic.Id,
+            //                   ItemCode = ic.ItemCode,
+            //                   ItemName = ic.ItemName,
+            //                   GroupCode = ic.GroupCode,
+            //                   HazardTypeName = ic.HazardTypeName,
+            //                   ItemDescription = ic.ItemDescription,
+            //                   Chemical = ic.Chemical,
+            //                   UnitOfmeasure = ic.UnitOfmeasure,
+            //                   ExpiryDate = i.ExpiryDate
+            //               }).ToList();
+            ItemsValue = (from d in _context.DespensedItems
+              join ic in _context.ItemCards on d.ItemCardId equals ic.Id
+              join i in _context.Items on ic.ItemId equals i.ItemId
+              select new ItemCardExtended
+              {
+                  Id = ic.Id,
+                  ItemCode = ic.ItemCode,
+                  ItemName = ic.ItemName,
+                  GroupCode = ic.GroupCode,
+                  HazardTypeName = ic.HazardTypeName,
+                  ItemDescription = ic.ItemDescription,
+                  Chemical = ic.Chemical,
+                  UnitOfmeasure = ic.UnitOfmeasure,
+                  ExpiryDate = i.ExpiryDate
+              }) .Distinct()
+              .ToList();
 
             LoadDropdowns();
         }
@@ -122,20 +138,38 @@ namespace LabMaterials.Pages
 
 
 
-            ItemsValue = (from ic in _context.ItemCards
-                          join i in _context.Items on ic.ItemId equals i.ItemId
-                          select new ItemCardExtended
-                          {
-                              Id = ic.Id,
-                              ItemCode = ic.ItemCode,
-                              ItemName = ic.ItemName,
-                              GroupCode = ic.GroupCode,
-                              HazardTypeName = ic.HazardTypeName,
-                              ItemDescription = ic.ItemDescription,
-                              Chemical = ic.Chemical,
-                              UnitOfmeasure = ic.UnitOfmeasure,
-                              ExpiryDate = i.ExpiryDate
-                          }).ToList();
+            // ItemsValue = (from ic in _context.ItemCards
+            //               join i in _context.Items on ic.ItemId equals i.ItemId
+            //               select new ItemCardExtended
+            //               {
+            //                   Id = ic.Id,
+            //                   ItemCode = ic.ItemCode,
+            //                   ItemName = ic.ItemName,
+            //                   GroupCode = ic.GroupCode,
+            //                   HazardTypeName = ic.HazardTypeName,
+            //                   ItemDescription = ic.ItemDescription,
+            //                   Chemical = ic.Chemical,
+            //                   UnitOfmeasure = ic.UnitOfmeasure,
+            //                   ExpiryDate = i.ExpiryDate
+            //               }).ToList();
+            ItemsValue = (from d in _context.DespensedItems
+              join ic in _context.ItemCards on d.ItemCardId equals ic.Id
+              join i in _context.Items on ic.ItemId equals i.ItemId
+              select new ItemCardExtended
+              {
+                  Id = ic.Id,
+                  ItemCode = ic.ItemCode,
+                  ItemName = ic.ItemName,
+                  GroupCode = ic.GroupCode,
+                  HazardTypeName = ic.HazardTypeName,
+                  ItemDescription = ic.ItemDescription,
+                  Chemical = ic.Chemical,
+                  UnitOfmeasure = ic.UnitOfmeasure,
+                  ExpiryDate = i.ExpiryDate
+              })
+              .Distinct()
+              .ToList();
+
 
 
             DateTime.TryParse(orderDateStr, out DateTime orderDate);
@@ -245,7 +279,14 @@ namespace LabMaterials.Pages
         private void LoadDropdowns()
         {
             ItemGroups = _context.ItemGroups.ToList();
-            ItemCards = _context.ItemCards.ToList();
+            // ItemCards = _context.ItemCards.ToList();
+            ItemCards = (from d in _context.DespensedItems
+                        join i in _context.ItemCards on d.ItemCardId equals i.Id
+                        select i)
+                        .Distinct()
+                        .ToList();
+
+
             Stores = _context.Stores.ToList();
             requesters = _context.Requesters.ToList();
             AllItems = _context.Items.ToList();

@@ -238,15 +238,11 @@
                                                         <form method="post" class="d-inline">
                                                             <input type="hidden" name="ReturnRequestId" value="@inbox.ReturnRequestId">
                                                             <input type="hidden" name="InboxId" value="@inbox.Id">
-                                                            <button class="btn btn-info btn-sm p-1" asp-page-handler="Recommendations" >
+                                                            <button class="btn btn-info btn-sm p-1" asp-page-handler="EditReturnRequest" >
                                                                 Add Committee Recommendations
                                                             </button>
                                                         </form>
-                                                        
-
-                                                        <button class="btn btn-warning btn-sm p-1" data-toggle="modal" data-target="#commentRejectModal" onclick="setRejectReportId(@inbox.ReturnRequestId, @inbox.Id,'@inbox.ReportType')">
-                                                            Comment & Reject
-                                                        </button>
+                                                
                                                     }
                                                     @* case3: Sender- Inspection Committee Officer receiver:  Supervisor *@
                                                     else if(senderGroupName == "Return Inspection Committee Officer" && Model.UserGroupName == "General Supervisor"){
@@ -257,6 +253,30 @@
                                                         <button class="btn btn-warning btn-sm p-1" data-toggle="modal" data-target="#commentRejectModal" onclick="setRejectReportId(@inbox.ReturnRequestId, @inbox.Id,'@inbox.ReportType')">
                                                             Comment & Reject
                                                         </button>
+                                                    }
+                                                    @* case4: Sender- Supervisor receiver:  Destruction Officer *@
+                                                    else if(senderGroupName == "General Supervisor" && Model.UserGroupName == "Destruction Officer"){
+                                                      
+
+                                                        <button class="btn btn-info btn-sm p-1" data-toggle="modal" data-target="#attachDestructionReport" onclick="setAcceptReturnReportIdForDestruction(@inbox.ReturnRequestId, @inbox.Id)">
+                                                                Attach Destruction report
+                                                        </button>
+
+                                                       
+                                                    }
+                                                    @* case5: Sender- Supervisor receiver:  Recycling Officer *@
+                                                    else if(senderGroupName == "General Supervisor" && Model.UserGroupName == "Recycling Officer"){
+                                                        <form method="post" class="d-inline">
+                                                            <input type="hidden" name="ReturnRequestId" value="@inbox.ReturnRequestId">
+                                                            <input type="hidden" name="InboxId" value="@inbox.Id">
+                                                            
+                                                            <button class="btn btn-info btn-sm p-1" asp-page-handler="EditReturnRequest" >
+                                                                Add Recycling Notes
+                                                            </button>
+                                                        </form>
+                                                     
+
+                                                       
                                                     }
                                                 }
                                                 
@@ -293,8 +313,11 @@
                                             else if(inbox.Type == "Replied"){
                                                 <span class="bg-success p-2 rounded text-white">Replied</span>
                                             }
-                                            else if(inbox.Type == "Added"){
+                                            else if(inbox.Type == "Added" && inbox.ReportType == "Receiving"){
                                                 <span class="bg-success p-2 rounded text-white">Added Order to Item Card</span>
+                                            }
+                                            else if(inbox.Type == "Added" && inbox.ReportType == "ReturnItems"){
+                                                <span class="bg-success p-2 rounded text-white">Added</span>
                                             }
                                             
                                             @{
@@ -313,6 +336,11 @@
                                                     {
                                                         <input type="hidden" value="@inbox.MaterialRequestId" name="RequestReportId" />
                                                         <input type="hidden" value="Dispensing" name="ReportType" />
+                                                    }
+                                                    else if(inbox.ReportType == "ReturnItems")
+                                                    {
+                                                        <input type="hidden" value="@inbox.ReturnRequestId" name="RequestReportId" />
+                                                        <input type="hidden" value="ReturnItems" name="ReportType" />
                                                     }
                                                     <input type="submit" value="@Model.lblView" class="btn btn-secondary" asp-page-handler="View" />
                                                 </form>
@@ -496,7 +524,7 @@
                         </div>
                     </div>
 
-                     @* modal for Accept and specify Recipient for Return Item report*@
+                    @* modal for Accept and specify Recipient for Return Item report*@
                     <div class="modal fade" id="specifyRecipientReturn" tabindex="-1" role="dialog" aria-labelledby="specifyRecipientReturnLabel" aria-hidden="true">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
@@ -558,8 +586,8 @@
                                                 </div>
                                                
                                                 <div class="mb-2">
-                                                    <label for="Receipient">Warehouse Keeper</label>
-                                                    <select class="form-select"  id="Receipient" name="Receipient" required>
+                                                    <label for="keeperId">Warehouse Keeper</label>
+                                                    <select class="form-select"  id="keeperId" name="keeperId" required>
                                             
                                                         <option value="">Select Warehouse Keeper</option>
                                                         @if (Model.KeeperList != null)
@@ -573,8 +601,8 @@
                                                 </div>
 
                                                 <div class="mb-2">
-                                                    <label for="Receipient">Recycling Officer</label>
-                                                    <select class="form-select"  id="Receipient" name="Receipient" required>
+                                                    <label for="RecyclingOffiId">Recycling Officer</label>
+                                                    <select class="form-select"  id="RecyclingOffiId" name="RecyclingOffiId" required>
                                             
                                                         <option value="">Select Recycling Officer</option>
                                                         @if (Model.RecyclingOfficerList != null)
@@ -594,6 +622,39 @@
                                     </div>
                                     <div class="modal-footer">
                                         <button type="submit"  class="btn btn-info"   >Accept</button>
+                                       
+                                    </div>
+                                </form>
+                            
+                            </div>
+                        </div>
+                    </div>
+
+                    @* modal for Attaching Destruction report*@
+                    <div class="modal fade" id="attachDestructionReport" tabindex="-1" role="dialog" aria-labelledby="attachDestructionReportLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="attachDestructionReportLabel">Attach Destruction report</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <form method="post" asp-page-handler="AddDestructionReport">
+
+                                    <div class="modal-body">
+                                        <div class="form-group">
+                                            <input type="hidden" id="ReportIdForDestruction" name="AcceptReturnReportId" />
+
+                                            <div class="form-group mb-4">
+                                                <label>Add Attachment</label>
+                                                    <input type="file" name="AttachmentFile" class="form-control"  />
+                                            </div>
+                                            
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit"  class="btn btn-info">Submit</button>
                                        
                                     </div>
                                 </form>
@@ -663,6 +724,11 @@
         function setAcceptReturnReportId(id, messageId){
             document.getElementById("AcceptReturnReportId").value = id;
             document.getElementById("AcceptReturnMessageId").value = messageId;
+        }
+
+        function setAcceptReturnReportIdForDestruction(id, message){
+            document.getElementById("ReportIdForDestruction").value = id;
+            @* document.getElementById("AcceptReturnMessageId").value = messageId; *@
         }
         function setReplyReportId(id, receiver, messageId,reportType) {
             document.getElementById("ReplyReportId").value = id;

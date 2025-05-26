@@ -53,7 +53,7 @@ namespace LabMaterials.DB
         public string StateOfMatter { get; set; } = null!;
 
         [StringLength(500)]
-        public string? InspectionNotes { get; set; }
+        public string? RecyclingNotes { get; set; }
 
         public DateTime? ExpiryDate { get; set; }
 
