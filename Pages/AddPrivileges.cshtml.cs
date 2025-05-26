@@ -15,12 +15,14 @@ namespace LabMaterials.Pages
         [BindProperty]
         public Privilege Privilege { get; set; } = new();
         public List<Privilege> PrivilegeList { get; set; } = new();
-
+        public string lblUsers, lblPrivileges, lblAddPrivileges, lblBack, lblPrivilegeName;
         public async Task<IActionResult> OnGetAsync()
         {
+            FillLables();
             base.ExtractSessionData();
             PrivilegeList = await _context.Privileges.ToListAsync();
             return Page();
+
         }
 
         public async Task<IActionResult> OnPostAsync()
@@ -43,6 +45,16 @@ namespace LabMaterials.Pages
                 await _context.SaveChangesAsync();
             }
             return RedirectToPage(); // Refresh the list
+        }
+        private void FillLables()
+        {
+            
+
+            this.lblUsers = (Program.Translations["Users"])[Lang];
+            this.lblPrivileges = (Program.Translations["Privileges"])[Lang];
+            this.lblAddPrivileges = (Program.Translations["AddPrivilege"])[Lang];
+            this.lblBack = (Program.Translations["Back"])[Lang];
+            this.lblPrivilegeName = (Program.Translations["PrivilegeName"])[Lang];
         }
 
     }

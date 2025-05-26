@@ -262,6 +262,7 @@
         });
 
         document.getElementById("addEntryBtn").addEventListener("click", function () {
+            console.log('addEntryBtn')
             const wrapper = document.getElementById("returnEntriesWrapper");
             const firstEntry = wrapper.querySelector(".return-entry");
             const newEntry = firstEntry.cloneNode(true);
@@ -316,6 +317,7 @@
             wrapper.appendChild(newEntry);
             
             entryIndex++;
+            checkAllRequiredFieldsFilled();
         });
 
         // Initial remove buttons setup

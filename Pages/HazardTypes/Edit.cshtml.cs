@@ -15,9 +15,10 @@ namespace LabMaterials.Pages_HazardTypes
 
         [BindProperty]
         public HazardType HazardType { get; set; } = default!;
-
+        public string lblUsers, lblHazardTypeName, lblAction, lblHazardType;
         public async Task<IActionResult> OnGetAsync(string id)
         {
+            FillLables();
             base.ExtractSessionData();
             if (id == null)
             {
@@ -66,6 +67,12 @@ namespace LabMaterials.Pages_HazardTypes
         private bool HazardTypeExists(string id)
         {
             return _context.HazardTypes.Any(e => e.HazardTypeName == id);
+        }
+         private void FillLables()
+        {
+            this.lblHazardType = (Program.Translations["HazardType"])[Lang];
+            this.lblUsers = (Program.Translations["Users"])[Lang];
+            this.lblHazardTypeName = (Program.Translations["HazardTypeName"])[Lang];
         }
     }
 }
