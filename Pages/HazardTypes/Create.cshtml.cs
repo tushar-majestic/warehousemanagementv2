@@ -11,9 +11,10 @@ namespace LabMaterials.Pages_HazardTypes
         {
             _context = context;
         }
-
+        public string lblUsers, lblHazardTypeName, lblAction, lblHazardType;
         public IActionResult OnGet()
         {
+            FillLables();
             base.ExtractSessionData();
             return Page();
         }
@@ -34,5 +35,12 @@ namespace LabMaterials.Pages_HazardTypes
 
             return RedirectToPage("./Index");
         }
+        private void FillLables()
+        {
+            this.lblHazardType = (Program.Translations["HazardType"])[Lang];
+            this.lblUsers = (Program.Translations["Users"])[Lang];
+            this.lblHazardTypeName = (Program.Translations["HazardTypeName"])[Lang];
+        }
+        
     }
 }

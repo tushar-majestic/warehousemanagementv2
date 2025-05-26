@@ -157,6 +157,10 @@ namespace LabMaterials.Pages
             {
                 task.LogError(MethodBase.GetCurrentMethod(), ex);
                 ErrorMsg = ex.Message;
+                if (ex.InnerException != null)
+                {
+                    ErrorMsg += " Inner Exception: " + ex.InnerException.Message;
+                }
                 return Page();
             }
             finally { task.EndTask(); }

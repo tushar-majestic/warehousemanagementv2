@@ -22,7 +22,7 @@ namespace LabMaterials.Pages
         public List<Requester> requesters { get; set; } = new();
         public List<ItemCardExtended> ItemsValue { get; set; } = new();
 
-        
+
 
         // --- Metadata ---
         public DateTime CurrentDate => DateTime.Now;
@@ -66,13 +66,13 @@ namespace LabMaterials.Pages
         public List<SelectListItem> StateOfMatters { get; set; }
         [BindProperty]
         public ReturnRequest ReturnRequest { get; set; }
-        
+
 
 
         public void OnGet()
         {
             base.ExtractSessionData();
-             var dbContext = new LabDBContext();
+            var dbContext = new LabDBContext();
             StateOfMatters = new List<SelectListItem>
             {
                 new SelectListItem { Text = "Solid", Value = "Solid" },
@@ -88,20 +88,36 @@ namespace LabMaterials.Pages
             // Optional: add one blank row so page renders a row
             ReturnItems.Add(new ReturnRequestItem());
 
-            ItemsValue = (from ic in dbContext.ItemCards
-            join i in dbContext.Items on ic.ItemId equals i.ItemId
-            select new ItemCardExtended
-            {
-                Id = ic.Id,
-                ItemCode = ic.ItemCode,
-                ItemName = ic.ItemName,
-                GroupCode = ic.GroupCode,
-                HazardTypeName = ic.HazardTypeName,
-                ItemDescription = ic.ItemDescription,
-                Chemical = ic.Chemical,
-                UnitOfmeasure = ic.UnitOfmeasure,
-                ExpiryDate = i.ExpiryDate
-            }).ToList();
+            // ItemsValue = (from ic in dbContext.ItemCards
+            //               join i in dbContext.Items on ic.ItemId equals i.ItemId
+            //               select new ItemCardExtended
+            //               {
+            //                   Id = ic.Id,
+            //                   ItemCode = ic.ItemCode,
+            //                   ItemName = ic.ItemName,
+            //                   GroupCode = ic.GroupCode,
+            //                   HazardTypeName = ic.HazardTypeName,
+            //                   ItemDescription = ic.ItemDescription,
+            //                   Chemical = ic.Chemical,
+            //                   UnitOfmeasure = ic.UnitOfmeasure,
+            //                   ExpiryDate = i.ExpiryDate
+            //               }).ToList();
+            ItemsValue = (from d in _context.DespensedItems
+              join ic in _context.ItemCards on d.ItemCardId equals ic.Id
+              join i in _context.Items on ic.ItemId equals i.ItemId
+              select new ItemCardExtended
+              {
+                  Id = ic.Id,
+                  ItemCode = ic.ItemCode,
+                  ItemName = ic.ItemName,
+                  GroupCode = ic.GroupCode,
+                  HazardTypeName = ic.HazardTypeName,
+                  ItemDescription = ic.ItemDescription,
+                  Chemical = ic.Chemical,
+                  UnitOfmeasure = ic.UnitOfmeasure,
+                  ExpiryDate = i.ExpiryDate
+              }) .Distinct()
+              .ToList();
 
             LoadDropdowns();
         }
@@ -116,26 +132,44 @@ namespace LabMaterials.Pages
             var applicantsSector = Convert.ToInt32(Request.Form["ApplicantsSector"]);
             var storeId = Convert.ToInt32(Request.Form["StoreId"]);
             var reason = Request.Form["ReasonForReturn"];
-            var store = dbContext.Stores.FirstOrDefault(s => s.StoreId == storeId);
+            var store = _context.Stores.FirstOrDefault(s => s.StoreId == storeId);
 
             int? managerId = store?.WarehouseManagerId;
 
 
-            
-             ItemsValue = (from ic in dbContext.ItemCards
-            join i in dbContext.Items on ic.ItemId equals i.ItemId
-            select new ItemCardExtended
-            {
-                Id = ic.Id,
-                ItemCode = ic.ItemCode,
-                ItemName = ic.ItemName,
-                GroupCode = ic.GroupCode,
-                HazardTypeName = ic.HazardTypeName,
-                ItemDescription = ic.ItemDescription,
-                Chemical = ic.Chemical,
-                UnitOfmeasure = ic.UnitOfmeasure,
-                ExpiryDate = i.ExpiryDate
-            }).ToList();
+
+            // ItemsValue = (from ic in _context.ItemCards
+            //               join i in _context.Items on ic.ItemId equals i.ItemId
+            //               select new ItemCardExtended
+            //               {
+            //                   Id = ic.Id,
+            //                   ItemCode = ic.ItemCode,
+            //                   ItemName = ic.ItemName,
+            //                   GroupCode = ic.GroupCode,
+            //                   HazardTypeName = ic.HazardTypeName,
+            //                   ItemDescription = ic.ItemDescription,
+            //                   Chemical = ic.Chemical,
+            //                   UnitOfmeasure = ic.UnitOfmeasure,
+            //                   ExpiryDate = i.ExpiryDate
+            //               }).ToList();
+            ItemsValue = (from d in _context.DespensedItems
+              join ic in _context.ItemCards on d.ItemCardId equals ic.Id
+              join i in _context.Items on ic.ItemId equals i.ItemId
+              select new ItemCardExtended
+              {
+                  Id = ic.Id,
+                  ItemCode = ic.ItemCode,
+                  ItemName = ic.ItemName,
+                  GroupCode = ic.GroupCode,
+                  HazardTypeName = ic.HazardTypeName,
+                  ItemDescription = ic.ItemDescription,
+                  Chemical = ic.Chemical,
+                  UnitOfmeasure = ic.UnitOfmeasure,
+                  ExpiryDate = i.ExpiryDate
+              })
+              .Distinct()
+              .ToList();
+
 
 
             DateTime.TryParse(orderDateStr, out DateTime orderDate);
@@ -227,25 +261,32 @@ namespace LabMaterials.Pages
             await _context.SaveChangesAsync();
 
             string Message = string.Format("Sent Return Item Request Approve the request or add comments.");
-            var msg = new  Message
+            var msg = new Message
             {
-                    ReturnRequestId = request.Id,
-                    ReportType = "ReturnItems",
-                    SenderId = request.CreatedBy,
-                    RecipientId = request.ManagerId,
-                    Content = Message,
-                    Type = "",
-                    CreatedAt = DateTime.UtcNow
+                ReturnRequestId = request.Id,
+                ReportType = "ReturnItems",
+                SenderId = request.CreatedBy,
+                RecipientId = request.ManagerId,
+                Content = Message,
+                Type = "",
+                CreatedAt = DateTime.UtcNow
             };
-            dbContext.Messages.Add(msg);
-            dbContext.SaveChanges();
+            _context.Messages.Add(msg);
+            _context.SaveChanges();
             return RedirectToPage("ViewReturnRequests"); // redirect as appropriate
         }
 
         private void LoadDropdowns()
         {
             ItemGroups = _context.ItemGroups.ToList();
-            ItemCards = _context.ItemCards.ToList();
+            // ItemCards = _context.ItemCards.ToList();
+            ItemCards = (from d in _context.DespensedItems
+                        join i in _context.ItemCards on d.ItemCardId equals i.Id
+                        select i)
+                        .Distinct()
+                        .ToList();
+
+
             Stores = _context.Stores.ToList();
             requesters = _context.Requesters.ToList();
             AllItems = _context.Items.ToList();

@@ -85,54 +85,73 @@ namespace LabMaterials.Pages
                         .Where(r => r.ReturnRequestId == ReturnRequestId.Value)
                         .ToList();
 
-            // foreach (var item in ReturnItems)
-            // {
-
-            //     var itemToUpdate = ReturnItems.FirstOrDefault(x => x.Id == item.Id);
-            //     if (itemToUpdate != null)
-            //     {
-            //         // itemToUpdate.RecommendedAction = item.RecommendedAction;
-            //         itemToUpdate.Notes = item.Notes;
-            //     }
-            //     else
-            //     {
-            //         ErrorMsg = "Items to update is null";
-            //         return Page();
-            //     }
-            // }
-            for (int i = 0; i < ReturnItems.Count; i++)
+            //if Inspection Commitee Officer is logged in than he can only add the recommended action and additional notes
+            if (UserGroupName == "Return Inspection Committee Officer")
             {
-                var item = ReturnItems[i];
-                var notesKey = $"ReturnItems[{i}].Notes";
-                var actionKey = $"ReturnItems[{i}].RecommendedAction";
-
-                var actionValue = Request.Form[actionKey];
-                var notesValue = Request.Form[notesKey];
-
-                if (!string.IsNullOrEmpty(notesValue))
+                for (int i = 0; i < ReturnItems.Count; i++)
                 {
-                    item.Notes = notesValue;
+                    var item = ReturnItems[i];
+                    var notesKey = $"ReturnItems[{i}].Notes";
+                    var actionKey = $"ReturnItems[{i}].RecommendedAction";
+
+                    var actionValue = Request.Form[actionKey];
+                    var notesValue = Request.Form[notesKey];
+
+                    if (!string.IsNullOrEmpty(notesValue))
+                    {
+                        item.Notes = notesValue;
+                    }
+
+                    if (!string.IsNullOrEmpty(actionValue) &&
+                        Enum.TryParse(typeof(LabMaterials.DB.ReturnRequestItem.ItemCondition), actionValue, out var parsedAction))
+                    {
+                        item.RecommendedAction = (LabMaterials.DB.ReturnRequestItem.ItemCondition)parsedAction;
+                    }
                 }
 
-                if (!string.IsNullOrEmpty(actionValue) &&
-                    Enum.TryParse(typeof(LabMaterials.DB.ReturnRequestItem.ItemCondition), actionValue, out var parsedAction))
+                await dbContext.SaveChangesAsync();
+                Report.InspOffApprovalDate = DateTime.UtcNow;
+
+
+
+                var message = dbContext.Messages.FirstOrDefault(m => m.Id == this.InboxId);
+
+                if (message != null)
                 {
-                    item.RecommendedAction = (LabMaterials.DB.ReturnRequestItem.ItemCondition)parsedAction;
+                    message.Type = "Assign Supervisor";
                 }
+                dbContext.SaveChanges();
             }
-
-            await dbContext.SaveChangesAsync();
-            Report.InspOffApprovalDate = DateTime.UtcNow;
-
-          
-
-            var message = dbContext.Messages.FirstOrDefault(m => m.Id == this.InboxId);
-
-            if (message != null)
+            //if Recycling Officer is logged in than he can only Recyling Notes for the specific items.
+            else if (UserGroupName == "Recycling Officer")
             {
-                message.Type = "Assign Supervisor";
+                for (int i = 0; i < ReturnItems.Count; i++)
+                {
+                    var item = ReturnItems[i];
+                    var notesKey = $"ReturnItems[{i}].RecyclingNotes";
+
+                    var notesValue = Request.Form[notesKey];
+
+                    if (!string.IsNullOrEmpty(notesValue))
+                    {
+                        item.RecyclingNotes = notesValue;
+                    }
+
+
+                }
+
+                await dbContext.SaveChangesAsync();
+                var message = dbContext.Messages.FirstOrDefault(m => m.Id == this.InboxId);
+
+                if (message != null)
+                {
+                    message.Type = "Added";
+                }
+                dbContext.SaveChanges();
+
             }
-            dbContext.SaveChanges();
+
+           
 
 
             return RedirectToPage("/Requests");
