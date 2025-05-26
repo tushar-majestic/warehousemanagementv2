@@ -52,13 +52,17 @@
                             <img src="images/home.png" alt="Home" width="16" height="16" class="me-2" />
                             <a href="/Home" class="text-decoration-none">@Model.lblHome</a>
                         </li>
-                        <li class="breadcrumb-item d-flex align-items-center">
+                        @* <li class="breadcrumb-item d-flex align-items-center">
                             <img src="images/supplies.png" alt="Home" width="16" height="16" class="me-2" />
                             <a href="/Supplies" class="text-decoration-none">@Model.lblSupplies</a>
                         </li>
                         <li class="breadcrumb-item d-flex align-items-center">
                             <img src="images/supplies.png" alt="Home" width="16" height="16" class="me-2" />
                             <a href="/ManageSupplier" class="text-decoration-none">@Model.lblSuppliers</a>
+                        </li> *@
+                         <li class="breadcrumb-item d-flex align-items-center">
+                            <img src="images/retailer.png" alt="Home" width="16" height="16" class="me-2" />
+                            <a href="/ManageStore" class="text-decoration-none">@Model.lblStores</a>
                         </li>
                         <li class="breadcrumb-item d-flex align-items-center">
                             <img src="images/supplies.png" alt="Home" width="16" height="16" class="me-2" />
@@ -81,7 +85,16 @@
                         <div class="col-lg-12 col-sm-12">
 
                             <div class="mb-4">
-                                <label for="SupplierName">@Model.lblSupplierName</label>
+                                <label>@Model.lblSupplierType</label>
+                                <select class="form-select" aria-label="Supplier Type" id="SupplierType" name="SupplierType">
+                                    <option selected disabled>@Model.lblSupplierType</option>
+                                    <option value="Internal">Internal</option>
+                                    <option value="External">External</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="SupplierName">@Model.lblCompanyName</label>
                                 <input type="text" class="form-control" id="SupplierName" name="SupplierName"
                                      />
 
@@ -101,14 +114,7 @@
                             </div>
                            
 
-                            <div class="mb-4">
-                                <label>@Model.lblSupplierType</label>
-                                <select class="form-select" aria-label="Supplier Type" id="SupplierType" name="SupplierType">
-                                    <option selected disabled>@Model.lblSupplierType</option>
-                                    <option value="Internal">Internal</option>
-                                    <option value="External">External</option>
-                                </select>
-                            </div>
+                           
 
                             <div class="mb-4">
                                 <label for="ExtensionNumber">@Model.lblExtensionNumber</label>

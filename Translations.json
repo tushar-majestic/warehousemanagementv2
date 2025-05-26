@@ -1605,6 +1605,10 @@
      "ID" : {
       "en": "ID",
       "ar": "ID"
+    },
+    "CompanyName" :{
+      "en": "Sector/Company Name",
+      "ar": "Sector/Company Name"
     }
 
 

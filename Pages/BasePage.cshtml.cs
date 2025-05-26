@@ -27,6 +27,7 @@ namespace LabMaterials.Pages
         public string dir { get; set; } = "rtl";
         public string Lang { get; set; } = "ar";
 
+
         public string lblView, lblRequests, lblLabMaterials, lblHome, lblNotifications, lblShowHideColumn, lblDisbursement, lblReports,
         lblManageUsers, lblManageItems, lblManageSupplies, lblManageStores, lblUserProfile, lblLogout, lblDamagedItems, lblLanguage,
         lblWarehouseType, lblManagerName, lblBuildingNumber, lblRoomDesc, lblStatus, lblRoomStatus, lblOpen, lblClosed, lblRoomNumber,
@@ -34,7 +35,8 @@ namespace LabMaterials.Pages
         lblSupplierName, lblRecipientSector, lblPageCount, lblSectorNo, lblDateOfReceipt, lblRecipientWarehouse, lblFiscalYear,
         lblDocumentDate, lblDocumentNo, lblBasedOnDocument, lblComments, lblUnitPrice, lblTotalPrice, lblQuantity, lblUnitOfMeasure,
         lblItemNameDescription, lblItemNo, lblCount, lblSAR, lblChiefResponsible, lblTechnicalMember, lblRecipient, lblSignature, lblName,
-        lblDate, lblcreateItemCard, lbldeductItemCard, lblItemMovement;
+        lblDate, lblcreateItemCard, lbldeductItemCard, lblItemMovement, lblStores;
+
 
 
         public void ExtractSessionData()
@@ -147,7 +149,11 @@ namespace LabMaterials.Pages
             this.lblDate = (Program.Translations["Date"])[Lang];
             this.lblcreateItemCard = (Program.Translations["CreateItemCard"][Lang]);
             this.lbldeductItemCard = (Program.Translations["DeductItemCard"][Lang]);
+
+            this.lblStores = (Program.Translations["Stores"])[Lang];
+
             this.lblItemMovement = (Program.Translations["ItemMovement"][Lang]);
+
 
         }
     }
