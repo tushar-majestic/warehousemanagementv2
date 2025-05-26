@@ -107,8 +107,8 @@ namespace LabMaterials.Pages
                                 ItemNameAr = ItemNameAr,
                                 IsHazardous = IsHazardous,
                                 Chemical = IsHazardous,
-                                HazardTypeName = IsHazardous ? HazardTypeName : "NonHazardous",
-                                RiskRating = IsHazardous ? HazardTypeName : "NonHazardous",
+                                HazardTypeName = IsHazardous ? HazardTypeName : "NonHazarduos",
+                                RiskRating = IsHazardous ? HazardTypeName : "NonHazarduos",
                                 GroupCode = GroupCode,
                                 ItemTypeCode = ItemTypeCode,
                                 StateofMatter = ItemTypeCode,
@@ -157,6 +157,10 @@ namespace LabMaterials.Pages
             {
                 task.LogError(MethodBase.GetCurrentMethod(), ex);
                 ErrorMsg = ex.Message;
+                if (ex.InnerException != null)
+                {
+                    ErrorMsg += " Inner Exception: " + ex.InnerException.Message;
+                }
                 return Page();
             }
             finally { task.EndTask(); }
