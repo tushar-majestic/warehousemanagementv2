@@ -5,26 +5,35 @@
 }
 
 <!-- Breadcrumb -->
-<nav aria-label="breadcrumb" class="mb-3">
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a asp-page="/Home">Home</a></li>
-        <li class="breadcrumb-item"><a asp-page="/ManageUsers">Users</a></li>
-        <li class="breadcrumb-item"><a asp-page="/ViewDoctypes">Document Types</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Add Document Types</li>
-    </ol>
-</nav>
-
-<!-- Back Button -->
-<div class="mb-3">
-    <a asp-page="/ViewDoctypes" class="btn btn-outline-secondary">&larr; Back </a>
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4 pb-2">
+    <div class="d-block mb-4 mb-md-0">
+ <nav aria-label="breadcrumb">
+            <ol class="breadcrumb bg-transparent p-2 mb-0">
+                <li class="breadcrumb-item d-flex align-items-center">
+                    <img src="images/home.png" alt="Home" width="16" height="16" class="me-2" />
+                    <a href="/Home" class="text-decoration-none">@Model.lblHome</a>
+                </li>
+                <li class="breadcrumb-item d-flex align-items-center">
+                    <img src="images/management.png" alt="Home" width="16" height="16" class="me-2" />
+                    <a href="/ManageUsers" class="text-decoration-none">Users</a>
+                </li>
+                 <li class="breadcrumb-item d-flex align-items-center">
+                    <img src="images/management.png" alt="Home" width="16" height="16" class="me-2" />
+                    <a href="/ViewDoctypes" class="text-decoration-none">Document Types</a>
+                </li>
+                <li class="breadcrumb-item d-flex align-items-center">
+                    <img src="images/management.png" alt="Home" width="16" height="16" class="me-2" />
+                    Add Document Types
+                </li>
+            </ol>
+        </nav>
+        <h2 class="h4">Create Document Type</h2>
+    </div>
 </div>
-
-
-<h1>Create Document Type</h1>
 
 <form method="post">
     <div class="mb-3">
-        <label asp-for="DocumentType.DocType" class="form-label"></label>
+        <label asp-for="DocumentType.DocType" class="form-label">Document Type</label>
         <input asp-for="DocumentType.DocType" class="form-control" />
         <span asp-validation-for="DocumentType.DocType" class="text-danger"></span>
     </div>
