@@ -20,6 +20,8 @@ namespace LabMaterials.Pages
     {
         private readonly LabDBContext _context;
         private readonly IWebHostEnvironment _environment;
+        public IFormFile AttachmentFile { get; set; }
+
 
 
         public string lblRequests, lblNewReceivingReport, pagetype = "inbox", inboxClass = "btn-dark text-white", outboxClass = "btn-light";
@@ -301,6 +303,10 @@ namespace LabMaterials.Pages
                 HttpContext.Session.SetString("MaterialRequestId", RequestReportId.Value.ToString());
                 return RedirectToPage("./ViewDispensedReport");
             }
+            else if (ReportType == "ReturnItems" && RequestReportId.HasValue)
+            {
+                return RedirectToPage("./ReturnRequestsDetails/",  new { id = RequestReportId.Value });
+            }
 
             return RedirectToPage("./Index", new { lang = Lang });
         }
@@ -464,10 +470,49 @@ namespace LabMaterials.Pages
 
 
         }
+        //Destruction Officer will add Destruction Report 
+
+        public async Task<IActionResult> OnPostAddDestructionReportAsync([FromForm] int AcceptReturnMessageId, [FromForm] int AcceptReturnReportId)
+        {
+            base.ExtractSessionData();
+            this.UserFullName = HttpContext.Session.GetString("FullName");
+            this.UserGroupName = HttpContext.Session.GetString("UserGroup");
+            this.UserId = HttpContext.Session.GetInt32("UserId");
+
+            FillLables();
+            var dbContext = new LabDBContext();
+            var Report = dbContext.ReturnRequests.FirstOrDefault(r => r.Id == AcceptReturnReportId);
+            if (Report != null)
+            {
+                if (AttachmentFile != null)
+                {
+                    var uploadsFolder = Path.Combine(_environment.WebRootPath, "uploads");
+                    Directory.CreateDirectory(uploadsFolder); // ensure it exists
+                    var uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(AttachmentFile.FileName);
+                    var filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await AttachmentFile.CopyToAsync(stream);
+                    }
+
+                    Report.DestructionReportPath = "/uploads/" + uniqueFileName;
+
+                }
+            }
+            else
+            {
+                Console.WriteLine("report not found");
+            }
+
+
+            return RedirectToPage();
+
+        }
         
 
         //Accept and specify recipent in case of Return request
-        public IActionResult OnPostAcceptAndSpecifyReturn([FromForm] int AcceptReturnReportId, [FromForm] int AcceptReturnMessageId, [FromForm] int? Receipient, [FromForm] int? DestOffiId, [FromForm] int? keeperId, [FromForm] int? RecyclingOffiId)
+        public IActionResult OnPostAcceptAndSpecifyReturn([FromForm] int AcceptReturnReportId, [FromForm] int AcceptReturnMessageId, [FromForm] int? Receipient, [FromForm] int? keeperId, [FromForm] int? RecyclingOffiId)
         {
             base.ExtractSessionData();
             this.UserFullName = HttpContext.Session.GetString("FullName");
@@ -489,7 +534,7 @@ namespace LabMaterials.Pages
                         report.ManagerApprovalDate = DateTime.UtcNow;
 
                         //message to Inspection Officer
-                        string InspOffMessage = string.Format("Sent Return Items Request Approve the request or add comments.");
+                        string InspOffMessage = string.Format("Sent Return Items Request add Committee recommendations.");
                         var msgToInspOfficer = new Message
                         {
                             ReturnRequestId = AcceptReturnReportId,
@@ -528,12 +573,12 @@ namespace LabMaterials.Pages
                     }
                     else if (this.UserGroupName == "General Supervisor")
                     {
-                        report.DestOffId = DestOffiId;
-                        report.KeeperId = keeperId;
-                        report.RecOffId = RecyclingOffiId;
+                        report.DestOffId = Receipient.Value;
+                        report.KeeperId = keeperId.Value;
+                        report.RecOffId = RecyclingOffiId.Value;
 
                         //message to Destruction Officer 
-                        string DestOfficerMessage = string.Format("Sent Return Items Request Approve the request or add comments.");
+                        string DestOfficerMessage = string.Format("Sent Return Items Request Attach Destruction report.");
                         var DestOfficer = new Message
                         {
                             ReturnRequestId = AcceptReturnReportId,
@@ -546,10 +591,40 @@ namespace LabMaterials.Pages
                         };
                         dbContext.Messages.Add(DestOfficer);
 
+                        var CreatedBy = dbContext.Users.FirstOrDefault(u => u.UserId == report.CreatedBy);
+
+                        //message to keeper  
+                        string keeperMessage = string.Format("Committee Recommendations were added on the return Items request generated by {0}", CreatedBy.FullName);
+                        var keeper = new Message
+                        {
+                            ReturnRequestId = AcceptReturnReportId,
+                            ReportType = "ReturnItems",
+                            SenderId = this.UserId,
+                            RecipientId = report.KeeperId,
+                            Content = keeperMessage,
+                            Type = "",
+                            CreatedAt = DateTime.UtcNow
+                        };
+                        dbContext.Messages.Add(keeper);
+
+                        //message to keeper  
+                        string recyclingOfficerMsg = string.Format("Add recycling notes to specific recycling Items in the Return Items Request generated by {0}", CreatedBy.FullName);
+                        var recyclingOfficer = new Message
+                        {
+                            ReturnRequestId = AcceptReturnReportId,
+                            ReportType = "ReturnItems",
+                            SenderId = this.UserId,
+                            RecipientId = report.RecOffId,
+                            Content = recyclingOfficerMsg,
+                            Type = "",
+                            CreatedAt = DateTime.UtcNow
+                        };
+                        dbContext.Messages.Add(recyclingOfficer);
+
                     }
-                    
+
                 }
-                
+
                 var message = dbContext.Messages.FirstOrDefault(m => m.Id == AcceptReturnMessageId);
 
                 if (message != null)
@@ -567,10 +642,12 @@ namespace LabMaterials.Pages
 
 
         }
-        public IActionResult OnPostRecommendations([FromForm] int ReturnRequestId, [FromForm] int InboxId)
+        
+
+        public IActionResult OnPostEditReturnRequest([FromForm] int ReturnRequestId, [FromForm] int InboxId)
         {
-            
-      
+
+
 
             HttpContext.Session.SetInt32("ReturnRequestId", ReturnRequestId);
             HttpContext.Session.SetInt32("InboxId", InboxId);
@@ -578,8 +655,8 @@ namespace LabMaterials.Pages
             return RedirectToPage("./EditReturnRequest");
 
 
-           
-          
+
+
         }
 
 

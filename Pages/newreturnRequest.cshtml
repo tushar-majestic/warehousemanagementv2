@@ -238,11 +238,11 @@
             }
         }
        document.addEventListener("DOMContentLoaded", function () {
-            const addBtn = document.getElementById("addEntryBtn");
-            const wrapper = document.getElementById("returnEntriesWrapper");
-            console.log("check required")
+            console.log("checking add btn")
 
             function checkAllRequiredFieldsFilled() {
+                const addBtn = document.getElementById("addEntryBtn");
+
                 const currentEntry = document.querySelector(".return-entry:last-child"); // check the last entry
                 const requiredFields = currentEntry.querySelectorAll("[required]");
                 let allFilled = true;
@@ -266,6 +266,7 @@
             const wrapper = document.getElementById("returnEntriesWrapper");
             const firstEntry = wrapper.querySelector(".return-entry");
             const newEntry = firstEntry.cloneNode(true);
+            checkAllRequiredFieldsFilled();
 
             newEntry.querySelectorAll("input, select, textarea").forEach((el) => {
                 if (el.name) {
