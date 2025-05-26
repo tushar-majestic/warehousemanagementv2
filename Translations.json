@@ -99,7 +99,6 @@
     "en": "Add Shelves",
     "ar": "أضف الرفوف"
   },
-  //Common
   "Edit": {
     "en": "Edit",
     "ar": "تعديل"
@@ -144,7 +143,6 @@
     "en": "Total Items found",
     "ar": "إجمالي الأصناف التي تم العثور عليها"
   },
-  //HeaderLinks
   "Disbursements": {
     "en": "Material dispensing",
     "ar": "صرف المواد"
@@ -229,7 +227,6 @@
     "en": "Change Password",
     "ar": "تغيير كلمة المرور"
   },
-  //ChangePassword
   "CurrentPassword": {
     "en": "Current Password",
     "ar": "كلمة المرور الحالية"
@@ -242,7 +239,6 @@
     "en": "Confirm New Password",
     "ar": "تأكيد كلمة المرور الجديدة"
   },
-  //Items
   "ItemName": {
     "en": "Item Name",
     "ar": "اسم الصنف"
@@ -307,7 +303,6 @@
     "en": "Return items",
     "ar": "إرجاع الأصناف"
   },
-  //ItemGroup
   "ItemGroups": {
     "en": "Item Groups",
     "ar": "مجموعات الأصناف"
@@ -328,7 +323,6 @@
     "en": "Update Item Group",
     "ar": "تحديث مجموعة الصنف"
   },
-  //Units
   "AddUnit": {
     "en": "Add Unit",
     "ar": "إضافة وحدة"
@@ -401,7 +395,6 @@
     "en": "Please select order received date.",
     "ar": "يرجى تحديد تاريخ استلام الطلب"
   },
-  //Stores
   "Stores": {
     "en": "Warehouses",
     "ar": "المستودعات"
@@ -434,7 +427,6 @@
     "en": "Update Warehouse",
     "ar": "تحديث المستودع"
   },
-  //Destinations
   "Destinations": {
     "en": "Destinations",
     "ar": "الوجهات"
@@ -463,7 +455,6 @@
     "en": "Destination Deleted",
     "ar": "تم حذف الوجهة"
   },
-  // Storage
   "Storages": {
     "en": "Storages",
     "ar": "المخازن"
@@ -480,7 +471,6 @@
     "en": "Shelve Number",
     "ar": "رقم الرف"
   },
-  //Suppliers
   "Suppliers": {
     "en": "Suppliers",
     "ar": "الموردين"
@@ -525,7 +515,6 @@
     "en": "Requests",
     "ar": "اسم"
   },
-  //Supplies
   "QuantityReceived": {
     "en": "Quantity Received",
     "ar": "الكمية المستلمة"
@@ -554,7 +543,6 @@
     "en": "Inventory Balanced",
     "ar": "توازن المخزون"
   },
-  //Disbursements
   "RequesterName": {
     "en": "Requester Name",
     "ar": "اسم مقدم الطلب"
@@ -583,7 +571,6 @@
     "en": "Materials Request Status",
     "ar": "حالة الصرف"
   },
-  //UserGroups
   "UserGroups": {
     "en": "User Groups",
     "ar": "مجموعات المستخدمين"
@@ -604,7 +591,6 @@
     "en": "Privilages",
     "ar": "الأذونات"
   },
-  //Users
   "Users": {
     "en": "Users",
     "ar": "المستخدمين"
@@ -661,7 +647,6 @@
     "en": "Re-type Password",
     "ar": "أعد كتابة كلمة المرور"
   },
-  //Reports
   "HazardousMaterials": {
     "en": "Hazardous Materials",
     "ar": "المواد الخطرة"
@@ -710,7 +695,6 @@
     "en": "Action Time",
     "ar": "وقت التعديل"
   },
-  //Errors
   "InvalidLgoin": {
     "en": "User LoginName or password is not valid.",
     "ar": "اسم المستخدم أو كلمة المرور غير صالحة"
@@ -1589,12 +1573,14 @@
     "ExtensionNumber" :{
       "en" : "Extension Number",
       "ar" : "Extension Number"
-
     },
     "ChiefResponsibleMissing" : {
       "en" : "ChiefResponsible is Missing",
       "ar" : "ChiefResponsible is Missing"
-
+    },
+    "ItemMovement" : {
+      "en" : "Item Movement",
+      "ar" : "Item Movement"
     }
     
 

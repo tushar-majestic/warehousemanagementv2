@@ -235,7 +235,6 @@ namespace LabMaterials.Pages
 
             var query = (from i in dbContext.Items
                          join g in dbContext.ItemGroups on i.GroupCode equals g.GroupCode
-                         join t in dbContext.ItemTypes on i.ItemTypeCode equals t.ItemTypeCode
                          join u in dbContext.Units on i.UnitId equals u.Id
                          where i.Ended == null
                          select new ItemInfo
@@ -250,8 +249,6 @@ namespace LabMaterials.Pages
                              RiskRating = i.RiskRating ?? "",
                              GroupCode = g.GroupCode,
                              GroupDesc = g.GroupDesc,
-                             ItemTypeCode = t.ItemTypeCode,
-                             TypeName = t.TypeName ?? "",
                              StateofMatter = i.StateofMatter ?? "",
                              UnitId = i.UnitId,
                              UnitCode = u.UnitCode ?? "",
@@ -293,13 +290,12 @@ namespace LabMaterials.Pages
             // Populate unique filters
             var allItemsQuery = (from i in dbContext.Items
                                  join g in dbContext.ItemGroups on i.GroupCode equals g.GroupCode
-                                 join t in dbContext.ItemTypes on i.ItemTypeCode equals t.ItemTypeCode
                                  join u in dbContext.Units on i.UnitId equals u.Id
                                  where i.Ended == null
                                  select new ItemInfo
                                  {
                                      RiskRating = i.RiskRating ?? "",
-                                     TypeName = t.TypeName ?? "",
+                                     TypeName = i.StateofMatter ?? "",
                                      UnitCode = u.UnitCode ?? "",
                                  });
 

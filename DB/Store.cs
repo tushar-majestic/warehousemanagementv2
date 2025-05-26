@@ -53,6 +53,8 @@ public partial class Store
 
     [Column("WarehouseManagerID")]
     public int? WarehouseManagerId { get; set; }
+    [NotMapped]
+    public string? WarehouseManagerName { get; set; }
 
     [InverseProperty("Store")]
     public virtual ICollection<DisbursementRequest> DisbursementRequests { get; set; } = new List<DisbursementRequest>();

@@ -22,7 +22,7 @@ namespace LabMaterials.Pages
         public string lblHazardousMaterials, lblHazardTypeName, lblSearch, lblSubmit, lblItemCode, lblItemName, lblGroupName, 
             lblAvailableQuantity, lblHazardType, lblTypeName, lblStoreName, lblUnitCode, lblTotalItem,
             lblMaterialsReceived, lblInventory, lblUserActivity, lblDistributedMaterials, lblDamagedItems,
-            lblUserReport, lblExport, lblSelectHazardType, lblPrint;
+            lblUserReport, lblExport, lblSelectHazardType, lblPrint, lblItems;
         public void OnGet(string? ItemName,string? HazardTypeName, int page = 1)
         {
             base.ExtractSessionData();
@@ -236,6 +236,7 @@ namespace LabMaterials.Pages
             this.lblExport = (Program.Translations["Export"])[Lang];
             this.lblSelectHazardType = (Program.Translations["SelectHazardType"])[Lang];
             this.lblPrint = (Program.Translations["Print"])[Lang];
+            this.lblItems = (Program.Translations["Items"])[Lang];
         }
     }
 }

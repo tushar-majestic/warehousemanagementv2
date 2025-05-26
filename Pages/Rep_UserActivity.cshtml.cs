@@ -23,7 +23,7 @@ namespace LabMaterials.Pages
         public string lblUserActivity, lblSearch, lblUserName, lblFromDate, lblToDate, lblSubmit,
             lblAction, lblActionDetails, lblRequestingIp, lblActionTime, lblTotalItem,
             lblMaterialsReceived, lblInventory, lblHazardousMaterials, lblDistributedMaterials,
-            lblDamagedItems, lblUserReport, lblExport, lblPrint;
+            lblDamagedItems, lblUserReport, lblExport, lblPrint, lblItems;
         public void OnGet(string? UserName, DateTime? FromDate, DateTime? ToDate, int page = 1)
         {
             base.ExtractSessionData();
@@ -246,6 +246,7 @@ namespace LabMaterials.Pages
             this.lblUserReport = (Program.Translations["UserReport"])[Lang];
             this.lblExport = (Program.Translations["Export"])[Lang];
             this.lblPrint = (Program.Translations["Print"])[Lang];
+            this.lblItems = (Program.Translations["Items"])[Lang];
         }
     }
 }
