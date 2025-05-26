@@ -15,7 +15,7 @@ namespace LabMaterials.Pages
             lblItemCode, lblItemName, lblStoreName, lblGroupName, lblAvailableQuantity, lblHazardType,
             lblTypeName, lblUnitCode, lblSearch, lblSubmit, lblTotalItem, lblDamagedItems, lblUserReport,
             lblUserId, lblUserName, lblUserGroup, lblCreatedBy, lblCreationDate, lblExport, lblPrint, lblFullName, lblEmail, lblUserType,
-            lblJobNumber, lblEmpAffiliation, lblTransfer;
+            lblJobNumber, lblEmpAffiliation, lblTransfer, lblItems;
 
         public int TotalUsers { get; set; }
 
@@ -285,6 +285,7 @@ namespace LabMaterials.Pages
             this.lblJobNumber = (Program.Translations["JobNumber"])[Lang];
             this.lblEmpAffiliation = (Program.Translations["EmpAffiliation"])[Lang];
             this.lblTransfer = (Program.Translations["Transfer"])[Lang];
+            this.lblItems = (Program.Translations["Items"])[Lang];
 
         }
     }

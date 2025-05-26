@@ -21,7 +21,7 @@ namespace LabMaterials.Pages
 
 
         public string lblDistributedMaterials, lblSearch, lblRequesterName, lblRequestReceivedDate, lblRequestingPlace, lblComments,
-            lblDisbursementStatus, lblInventoryBalanced, lblTotalItem,
+            lblDisbursementStatus, lblInventoryBalanced, lblTotalItem, lblItems,
             lblMaterialsReceived, lblInventory, lblHazardousMaterials, lblUserActivity, lblDamagedItems,
             lblUserReport, lblExport, lblFromDate, lblToDate, lblPrint;
         public void OnGet(string? RequesterName, DateTime? FromDate, DateTime? ToDate, int page = 1)
@@ -226,6 +226,7 @@ namespace LabMaterials.Pages
             this.lblFromDate = (Program.Translations["FromDate"])[Lang];
             this.lblToDate = (Program.Translations["ToDate"])[Lang];
             this.lblPrint = (Program.Translations["Print"])[Lang];
+            this.lblItems = (Program.Translations["Items"])[Lang];
         }
     }
 }
