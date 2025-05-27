@@ -319,6 +319,10 @@
                                             {
                                                 <span class="bg-success p-2 rounded text-white">Accepted</span>
                                             }
+                                            else if(inbox.Type == "File Attached")
+                                            {
+                                                <span class="bg-success p-2 rounded text-white">File Attached</span>
+                                            }
                                             else if(inbox.Type == "Rejected"){
                                                 <span class="bg-danger p-2 rounded text-white">Rejected</span>
                                             }
@@ -657,6 +661,7 @@
                                     <div class="modal-body">
                                         <div class="form-group">
                                             <input type="hidden" id="ReportIdForDestruction" name="AcceptReturnReportId" />
+                                            <input type="hidden" id="MessageIdForDestruction" name="AcceptReturnMessageId" />
 
                                             <div class="form-group mb-4">
                                                 <label>Add Attachment</label>
@@ -738,9 +743,9 @@
             document.getElementById("AcceptReturnMessageId").value = messageId;
         }
 
-        function setAcceptReturnReportIdForDestruction(id, message){
+        function setAcceptReturnReportIdForDestruction(id, messageId){
             document.getElementById("ReportIdForDestruction").value = id;
-            @* document.getElementById("AcceptReturnMessageId").value = messageId; *@
+            document.getElementById("MessageIdForDestruction").value = messageId;
         }
         function setReplyReportId(id, receiver, messageId,reportType) {
             document.getElementById("ReplyReportId").value = id;
