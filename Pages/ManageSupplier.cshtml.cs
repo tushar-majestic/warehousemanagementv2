@@ -21,7 +21,7 @@ namespace LabMaterials.Pages
         public int TotalPages { get; set; }
         
         public string lblSuppliers, lblSearch, lblSuplierName, lblSubmit, lblSupplierName, lblConatctNumber, lblSupplierType, 
-        lblAddSupplier, lblEdit, lblDelete, lblTotalItem, lblSupplies, lblCoordinatorName, lblExportExcel, lblPrintTable, lblStores;
+        lblAddSupplier, lblEdit, lblDelete, lblTotalItem, lblSupplies, lblCoordinatorName, lblExportExcel, lblPrintTable, lblStores, lblExtensionNumber, lblCompanyName;
         public void OnGet(string? SupplierName, string? CoordinatorName, string? SupplierType, int page = 1)
         {
             base.ExtractSessionData();
@@ -59,8 +59,9 @@ namespace LabMaterials.Pages
                                  SupplierId = i.SupplierId,
                                  SupplierName = i.SupplierName,
                                  CoordinatorName = i.CoordinatorName,
-                                 ConatctNumber=i.SupplierContact,
-                                 SupplierType=i.SupplierType,
+                                 ConatctNumber = i.SupplierContact,
+                                 SupplierType = i.SupplierType,
+                                 ExtensionNumber = i.ExtensionNumber,
                                  
                              });
 
@@ -102,7 +103,7 @@ namespace LabMaterials.Pages
             {
                 var dbContext = new LabDBContext();
 
-                if (dbContext.Supplies.Count(s => s.SupplierId == SupplierId) == 0)
+                if (dbContext.Supplies.Count(s => s.SupplierId == SupplierId) == 0 && dbContext.ReceivingReports.Count(s=> s.SupplierId == SupplierId) == 0)
                 {
                     var supplier = dbContext.Suppliers.Single(s => s.SupplierId == SupplierId);
                     dbContext.Suppliers.Remove(supplier);
@@ -150,6 +151,10 @@ namespace LabMaterials.Pages
             this.lblExportExcel = (Program.Translations["ExportExcel"])[Lang];
             this.lblPrintTable = (Program.Translations["PrintTable"])[Lang];
             this.lblStores = (Program.Translations["Stores"])[Lang];
+            this.lblExtensionNumber = (Program.Translations["ExtensionNumber"])[Lang];
+            this.lblCompanyName = (Program.Translations["CompanyName"])[Lang];
+
+
 
         }
     }
