@@ -123,7 +123,7 @@
 
                 @if (Model.CanManageStore)
                 {
-                    <li class="nav-item @(Context.Request.Path == "/ManageStore" || Context.Request.Path == "/AddStore" || Context.Request.Path == "/ManageStorage" || Context.Request.Path == "/AddStorage" || Context.Request.Path == "/EditStorage" || Context.Request.Path == "/EditStore" || Context.Request.Path == "/ManageRooms" || Context.Request.Path == "/AddRooms" || Context.Request.Path == "/EditSupplier" || Context.Request.Path == "/ManageSupplier" || Context.Request.Path == "/ManageDestinations" ? "active" : "" )">
+                    <li class="nav-item @(Context.Request.Path == "/ManageStore" || Context.Request.Path == "/AddStore" || Context.Request.Path == "/ManageStorage" || Context.Request.Path == "/AddStorage" || Context.Request.Path == "/EditStorage" || Context.Request.Path == "/EditStore" || Context.Request.Path == "/ManageRooms" || Context.Request.Path == "/AddRooms" || Context.Request.Path == "/EditSupplier" ||  Context.Request.Path == "/AddSupplier"||Context.Request.Path == "/AddItem" || Context.Request.Path == "/EditItem" || Context.Request.Path == "/ManageSupplier"|| Context.Request.Path == "/ManageItems" || Context.Request.Path == "/ManageDestinations" ? "active" : "" )">
                         <a asp-area="" asp-page="/ManageStore" class="nav-link sidebar-link">
                             <span class="sidebar-icon">
                                 <img class="icon icon-xs mx-1" src="~/images/retailer.png" />
@@ -135,8 +135,7 @@
 
                 @if (Model.CanManageItems)
                 {
-                    <li class="nav-item @(Context.Request.Path == "/ManageItems" || 
-                    Context.Request.Path == "/AddItem" || 
+                    <li class="nav-item @(
                     Context.Request.Path == "/AddUnit" ? "active" : "")">
                         <a asp-area="" asp-page="/ManageItems" class="nav-link">
                             <span class="sidebar-icon">
@@ -228,7 +227,7 @@
                     <li class="nav-item @(Context.Request.Path == "/ManageUsers"  || 
                     Context.Request.Path == "/ManageUnits" || Context.Request.Path == "/ManageItemGroups" || 
                     Context.Request.Path == "/AddUser" || Context.Request.Path == "/ManageUserGroups" || 
-                    Context.Request.Path == "/AddUserGroup" || Context.Request.Path == "/EditUser" || Context.Request.Path == "/AddItemGroup"  || Context.Request.Path == "/EditItem" || 
+                    Context.Request.Path == "/AddUserGroup" || Context.Request.Path == "/EditUser" || Context.Request.Path == "/AddItemGroup"   || 
                     Context.Request.Path == "/EditUnit" || 
                     Context.Request.Path == "/EditUserGroup" || Context.Request.Path == "/viewUser" || Context.Request.Path == "/EditItemGroup" ? "active" : "")">
                         <a asp-area="" asp-page="/ManageUsers" class="nav-link">
