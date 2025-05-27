@@ -47,7 +47,7 @@
                     @* <a asp-page="/EditReceivingReport" asp-route-id="@report.Id" class="btn btn-sm btn-success me-2 text-white">Edit</a> *@
                     @* <a asp-page="/PrintReceivingReport" asp-route-id="@report.Id" class="btn btn-sm btn-secondary">Print</a> *@
                     
-                    @if(!report.GeneralSupApproval){
+                    @if(!report.GeneralSupApproval && Model.UserGroupName == "Warehouse Keeper"){
                         <form method="post">
                             <input type="hidden" value="@report.SerialNumber" name="serialNumber" />
                             <input type="hidden" value="@report.Id" name="ReceivingReportId" />
