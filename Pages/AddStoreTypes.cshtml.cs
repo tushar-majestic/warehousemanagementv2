@@ -30,7 +30,7 @@ namespace LabMaterials.Pages
             _context.StoreTypes.Add(StoreTypeModel);
             await _context.SaveChangesAsync();
 
-            return RedirectToPage("ManageUsers");
+            return RedirectToPage("ViewStoreTypes");
         }
     }
 }
