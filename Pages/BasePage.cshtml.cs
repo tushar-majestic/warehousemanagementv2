@@ -23,6 +23,8 @@ namespace LabMaterials.Pages
         public bool CanGenerateReceivingRequest { get; set; }
         public bool CanManageItemGroup { get; set; }
         public bool CanGenerateDispensingRequest { get; set; }
+        public bool CanDeleteSupplier { get; set; }
+
 
         public string dir { get; set; } = "rtl";
         public string Lang { get; set; } = "ar";
@@ -62,6 +64,7 @@ namespace LabMaterials.Pages
                 CanManageItemGroup = HttpContext.Session.GetInt32("CanManageItemGroup") == 1;
                 CanManageRequests = HttpContext.Session.GetInt32("CanManageRequests") == 1;
                 CanGenerateReceivingRequest = HttpContext.Session.GetInt32("CanGenerateReceivingRequest") == 1;
+                CanDeleteSupplier = HttpContext.Session.GetInt32("CanDeleteSupplier") == 1;
                 CanManageItemCard = HttpContext.Session.GetInt32("CanManageItemCard") == 1;
                 CanGenerateDispensingRequest = HttpContext.Session.GetInt32("CanGenerateDispensingRequest") == 1;
                 dir = HttpContext.Session.GetString("Lang") == "en" ? "ltr" : "rtl";

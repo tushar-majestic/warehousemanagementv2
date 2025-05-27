@@ -1609,6 +1609,10 @@
     "CompanyName" :{
       "en": "Sector/Company Name",
       "ar": "Sector/Company Name"
+    },
+    "CoordinatorNameMissing" :{
+      "en": "Coordinator Name is Missing",
+      "ar": "Coordinator Name is Missing"
     }
 
 

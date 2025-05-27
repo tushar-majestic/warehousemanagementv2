@@ -125,7 +125,7 @@
 
                 @if (Model.CanManageStore)
                 {
-                    <li class="nav-item @(Context.Request.Path == "/ManageStore" || Context.Request.Path == "/AddStore" || Context.Request.Path == "/ManageStorage" || Context.Request.Path == "/AddStorage" || Context.Request.Path == "/EditStorage" || Context.Request.Path == "/EditStore" || Context.Request.Path == "/ManageRooms" || Context.Request.Path == "/AddRooms" || Context.Request.Path == "/ManageDestinations" ? "active" : "")">
+                    <li class="nav-item @(Context.Request.Path == "/ManageStore" || Context.Request.Path == "/AddStore" || Context.Request.Path == "/ManageStorage" || Context.Request.Path == "/AddStorage" || Context.Request.Path == "/EditStorage" || Context.Request.Path == "/EditStore" || Context.Request.Path == "/ManageRooms" || Context.Request.Path == "/AddRooms" || Context.Request.Path == "/EditSupplier" || Context.Request.Path == "/ManageSupplier" || Context.Request.Path == "/ManageDestinations" ? "active" : "" )">
                         <a asp-area="" asp-page="/ManageStore" class="nav-link sidebar-link">
                             <span class="sidebar-icon">
                                 <img class="icon icon-xs mx-1" src="~/images/retailer.png" />
@@ -187,7 +187,7 @@
 
                 @if (Model.CanManageSupplies)
                 {
-                    <li class="nav-item @(Context.Request.Path == "/Supplies" || Context.Request.Path == "/AddSupply"  || Context.Request.Path == "/EditSupply" || Context.Request.Path == "/EditSupplier" || Context.Request.Path == "/ManageSupplier" || Context.Request.Path == "/AddSupplier" ? "active" : "")">
+                    <li class="nav-item @(Context.Request.Path == "/Supplies" || Context.Request.Path == "/AddSupply"  || Context.Request.Path == "/EditSupply"  )">
                         <a asp-area="" asp-page="/Supplies" class="nav-link">
                             <span class="sidebar-icon">
                                 <img class="icon icon-xs mx-1" src="~/images/supplies.png" />
