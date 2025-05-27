@@ -239,9 +239,10 @@
         }
        document.addEventListener("DOMContentLoaded", function () {
             console.log("checking add btn")
+            const addBtn = document.getElementById("addEntryBtn");
 
             function checkAllRequiredFieldsFilled() {
-                const addBtn = document.getElementById("addEntryBtn");
+                
 
                 const currentEntry = document.querySelector(".return-entry:last-child"); // check the last entry
                 const requiredFields = currentEntry.querySelectorAll("[required]");
@@ -262,11 +263,14 @@
         });
 
         document.getElementById("addEntryBtn").addEventListener("click", function () {
+             const addButton = document.getElementById('addEntryBtn');
+            addButton.disabled = true;
             console.log('addEntryBtn')
             const wrapper = document.getElementById("returnEntriesWrapper");
             const firstEntry = wrapper.querySelector(".return-entry");
             const newEntry = firstEntry.cloneNode(true);
-            checkAllRequiredFieldsFilled();
+            
+         
 
             newEntry.querySelectorAll("input, select, textarea").forEach((el) => {
                 if (el.name) {
@@ -317,7 +321,7 @@
             wrapper.appendChild(newEntry);
             
             entryIndex++;
-            checkAllRequiredFieldsFilled();
+          
         });
 
         // Initial remove buttons setup
