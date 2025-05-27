@@ -70,19 +70,9 @@
         @if(Model.CanReturnItems){
             <div class="btn-group ms-2 ms-lg-3">
                 <a href="newreturnRequest" class="btn btn-sm d-flex btn-gray-800 justify-content-center top-big-btn d-inline-flex align-items-center">
-                    <img b-ie9pk9zf1q="" class="icon text-white icon-xs mx-2" src="images/plus.png">    Return Item Request
+                    <img b-ie9pk9zf1q="" class="icon text-white icon-xs mx-2" src="images/plus.png">Return Item Request
                 </a>
             </div>
-        }
-      @if (Model.CanGenerateReceivingRequest)
-        {
-            <div class="btn-toolbar mb-2 mb-md-0">
-                <a href="ReceivingReports" class="btn btn-sm justify-content-center btn-gray-800 mx-2 d-inline-flex align-items-center">
-                    <img b-ie9pk9zf1q="" class="icon text-white icon-xs mx-2" src="images/plus.png">
-                    @Model.lblNewReceivingReport
-                </a>
-            </div>
-
         }
         </div>
     

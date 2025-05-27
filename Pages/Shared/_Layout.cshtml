@@ -151,7 +151,9 @@
 
                 @if (Model.CanManageItems)
                 {
-                    <li class="nav-item @(Context.Request.Path == "/ManageItems" || Context.Request.Path == "/AddItem" || Context.Request.Path == "/ManageUnits" || Context.Request.Path == "/AddUnit" || Context.Request.Path == "/ManageItemGroups" || Context.Request.Path == "/AddItemGroup"  || Context.Request.Path == "/EditItem" || Context.Request.Path == "/EditUnit" || Context.Request.Path == "/EditItemGroup" ? "active" : "")">
+                    <li class="nav-item @(Context.Request.Path == "/ManageItems" || 
+                    Context.Request.Path == "/AddItem" || 
+                    Context.Request.Path == "/AddUnit" ? "active" : "")">
                         <a asp-area="" asp-page="/ManageItems" class="nav-link">
                             <span class="sidebar-icon">
                                 <img class="icon icon-xs mx-1" src="~/images/inventory.png" />
@@ -223,7 +225,12 @@
                 }
                 @if (Model.CanManageUsers)
                 {
-                    <li class="nav-item @(Context.Request.Path == "/ManageUsers" || Context.Request.Path == "/AddUser" || Context.Request.Path == "/ManageUserGroups" || Context.Request.Path == "/AddUserGroup" || Context.Request.Path == "/EditUser" || Context.Request.Path == "/EditUserGroup" || Context.Request.Path == "/viewUser" ? "active" : "")">
+                    <li class="nav-item @(Context.Request.Path == "/ManageUsers"  || 
+                    Context.Request.Path == "/ManageUnits" || Context.Request.Path == "/ManageItemGroups" || 
+                    Context.Request.Path == "/AddUser" || Context.Request.Path == "/ManageUserGroups" || 
+                    Context.Request.Path == "/AddUserGroup" || Context.Request.Path == "/EditUser" || Context.Request.Path == "/AddItemGroup"  || Context.Request.Path == "/EditItem" || 
+                    Context.Request.Path == "/EditUnit" || 
+                    Context.Request.Path == "/EditUserGroup" || Context.Request.Path == "/viewUser" || Context.Request.Path == "/EditItemGroup" ? "active" : "")">
                         <a asp-area="" asp-page="/ManageUsers" class="nav-link">
                             <span class="sidebar-icon">
                                 <img class="icon icon-xs mx-1" src="~/images/management.png" />
