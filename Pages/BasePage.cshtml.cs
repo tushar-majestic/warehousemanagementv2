@@ -30,7 +30,7 @@ namespace LabMaterials.Pages
         public string Lang { get; set; } = "ar";
 
 
-        public string lblView, lblRequests, lblLabMaterials, lblHome, lblNotifications, lblShowHideColumn, lblDisbursement, lblReports,
+        public string lblView, lblRequests, lblLabMaterials, lblHome, lblNotifications, lblShowHideColumn, lblDisbursement, lblReports, lblReportsInquiries,
         lblManageUsers, lblManageItems, lblManageSupplies, lblManageStores, lblUserProfile, lblLogout, lblDamagedItems, lblLanguage,
         lblWarehouseType, lblManagerName, lblBuildingNumber, lblRoomDesc, lblStatus, lblRoomStatus, lblOpen, lblClosed, lblRoomNumber,
         lblNoOfShelves, lblKeeperName, lblKeeperJobNum, lblWarehouseManagerName, lblItemCards, lblReceivingItems, lblSerialNo,
@@ -90,6 +90,7 @@ namespace LabMaterials.Pages
 
             this.lblDisbursement = (Program.Translations["Disbursements"])[Lang];
             this.lblReports = (Program.Translations["Reports"])[Lang];
+            this.lblReportsInquiries = (Program.Translations["ReportsInquiries"])[Lang];
             this.lblManageItems = (Program.Translations["ManageItems"])[Lang];
             this.lblManageStores = (Program.Translations["ManageStore"])[Lang];
             this.lblManageSupplies = (Program.Translations["Supplies"])[Lang];

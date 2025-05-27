@@ -121,8 +121,6 @@
                     </li>
                 }
 
-
-
                 @if (Model.CanManageStore)
                 {
                     <li class="nav-item @(Context.Request.Path == "/ManageStore" || Context.Request.Path == "/AddStore" || Context.Request.Path == "/ManageStorage" || Context.Request.Path == "/AddStorage" || Context.Request.Path == "/EditStorage" || Context.Request.Path == "/EditStore" || Context.Request.Path == "/ManageRooms" || Context.Request.Path == "/AddRooms" || Context.Request.Path == "/EditSupplier" || Context.Request.Path == "/ManageSupplier" || Context.Request.Path == "/ManageDestinations" ? "active" : "" )">
@@ -133,20 +131,6 @@
                             <span class="sidebar-text break-word">@Model.lblManageStores</span>
                         </a>
                     </li>
-                }
-
-                @if (Model.CanManageStore)
-                {
-                    @*
-                <li class="nav-item @(Context.Request.Path == "/Requests"|| Context.Request.Query["handler"] == "Create") )">
-                <a asp-area="" asp-page="/Requests" class="nav-link sidebar-link">
-                <span class="sidebar-icon">
-                <img class="icon icon-xs mx-3" src="~/images/retailer.png" />
-                </span>
-                <span class="sidebar-text break-word">@Model.lblRequests</span>
-                </a>
-                </li>
-                *@
                 }
 
                 @if (Model.CanManageItems)
@@ -175,6 +159,18 @@
                     </li>
                 }
 
+                @if (Model.CanDisburseItems)
+                {
+                    <li class="nav-item @(Context.Request.Path == "/Disbursements" || Context.Request.Path == "/AddDisbursement" || Context.Request.Path == "/EditDisbursement" ? "active" : "")">
+                        <a asp-area="" asp-page="/Disbursements" class="nav-link">
+                            <span class="sidebar-icon">
+                                <img class="icon icon-xs mx-1" src="~/images/expenses.png" />
+                            </span>
+                            <span class="sidebar-text">@Model.lblDisbursement</span>
+                        </a>
+                    </li>
+                }
+
                 @if (Model.CanManageItems)
                 {
                     <li class="nav-item @(Context.Request.Path == "/ViewReturnRequests" || Context.Request.Path == "/DamageItem" ? "active" : "")">
@@ -198,20 +194,7 @@
                         </a>
                     </li>
                 }
-                @if (Model.CanDisburseItems)
-                {
-                    <li class="nav-item @(Context.Request.Path == "/Disbursements" || Context.Request.Path == "/AddDisbursement" || Context.Request.Path == "/EditDisbursement" ? "active" : "")">
-                        <a asp-area="" asp-page="/Disbursements" class="nav-link">
-                            <span class="sidebar-icon">
-                                <img class="icon icon-xs mx-1" src="~/images/expenses.png" />
-                            </span>
-                            <span class="sidebar-text">@Model.lblDisbursement</span>
-                        </a>
-                    </li>
-                }
-                @{
-                    var userGroup = Context.Session.GetString("UserGroup");
-                }
+
                 @if (Model.CanSeeReports)
                 {
                     <li class="nav-item @(Context.Request.Path == "/Rep_MaterialsReceived" || Context.Request.Path == "/Rep_Distribution" || Context.Request.Path == "/Rep_Inventory"  || Context.Request.Path == "/Rep_HazardMaterial" || Context.Request.Path == "/Rep_UserActivity" || Context.Request.Path == "/Rep_UserReport" ? "active" : "")">
@@ -219,10 +202,27 @@
                             <span class="sidebar-icon">
                                 <img class="icon icon-xs mx-1" src="~/images/pen.png" />
                             </span>
-                            <span class="sidebar-text">@Model.lblReports</span>
+                            <span class="sidebar-text">@Model.lblReportsInquiries</span>
                         </a>
                     </li>
                 }
+
+                @if (!Model.IsLDAP)
+                {
+                    <li class="nav-item @(Context.Request.Path == "/ChangePassword" ? "active" : "")">
+                        <a asp-area="" asp-page="/ChangePassword" class="nav-link">
+                            <span class="sidebar-icon">
+                                <img class="icon icon-xs mx-1" src="~/images/password.png" />
+                            </span>
+                            <span class="sidebar-text">@Model.lblUserProfile</span>
+                        </a>
+                    </li>
+                }             
+                                
+                @{
+                    var userGroup = Context.Session.GetString("UserGroup");
+                }
+               
                 @if (Model.CanManageUsers)
                 {
                     <li class="nav-item @(Context.Request.Path == "/ManageUsers"  || 
@@ -239,17 +239,7 @@
                         </a>
                     </li>
                 }
-                @if (!Model.IsLDAP)
-                {
-                    <li class="nav-item @(Context.Request.Path == "/ChangePassword" ? "active" : "")">
-                        <a asp-area="" asp-page="/ChangePassword" class="nav-link">
-                            <span class="sidebar-icon">
-                                <img class="icon icon-xs mx-1" src="~/images/password.png" />
-                            </span>
-                            <span class="sidebar-text">@Model.lblUserProfile</span>
-                        </a>
-                    </li>
-                }
+                
                 @if (Model.Lang == "en")
                 {
                     <li class="nav-item @("active")">
