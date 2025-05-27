@@ -24,7 +24,7 @@ namespace LabMaterials.DB
 
         public DateTime CreatedAt { get; set; }
 
-        public string DestructionReportPath { get; set; } = null!;
+        public string? DestructionReportPath { get; set; } = null!;
 
 
         // Change this:
