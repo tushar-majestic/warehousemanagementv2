@@ -499,6 +499,11 @@ namespace LabMaterials.Pages
                     Report.DestructionReportPath = "/uploads/" + uniqueFileName;
 
                 }
+                else
+                {
+                    Console.WriteLine("Attachement file is none");
+
+                }
             }
             else
             {
@@ -1044,15 +1049,35 @@ namespace LabMaterials.Pages
                 {
                     return NotFound();
                 }
-                if (this.UserGroupName == "General Supervisor")
+                if (this.UserGroupName == "Warehouse Manager")
                 {
-                     if (report.SupervisorApprovalDate != null)
+                    if (report.ManagerApprovalDate != null)
+                        report.ManagerApprovalDate = null;
+                    
+                    string SectorManagerMessage = string.Format("Your return items request is rejected with comment: {0}", Comment);
+                    var msgToSectorManager= new Message
+                    {
+                        ReturnRequestId = RejectReceivingReportId,
+                        ReportType = "ReturnItems",
+                        SenderId = this.UserId,
+                        RecipientId = report.CreatedBy,
+                        Content = SectorManagerMessage,
+                        Type = "",
+                        CreatedAt = DateTime.UtcNow,
+
+
+                    };
+                    _context.Messages.Add(msgToSectorManager);
+                }
+                else if (this.UserGroupName == "General Supervisor")
+                {
+                    if (report.SupervisorApprovalDate != null)
                         report.SupervisorApprovalDate = null;
 
                     string InspOffiMessage = string.Format("Your return items request is rejected with comment: {0}", Comment);
                     var msgToInspOffi = new Message
                     {
-                        ReportId = RejectReceivingReportId,
+                        ReturnRequestId = RejectReceivingReportId,
                         ReportType = "ReturnItems",
                         SenderId = this.UserId,
                         RecipientId = report.InspOffId,
@@ -1125,7 +1150,6 @@ namespace LabMaterials.Pages
                 var report = await _context.ReceivingReports.FindAsync(ReplyReportId);
                 if (report == null)
                 {
-                    // handle error
                     return NotFound();
 
                 }
@@ -1145,6 +1169,31 @@ namespace LabMaterials.Pages
 
                 };
                 _context.Messages.Add(msgToTechMem);
+            }
+            else if (ReplyReportType == "ReturnItems")
+            {
+                var report = await _context.ReturnRequests.FindAsync(ReplyReportId);
+                if (report == null)
+                {
+                    return NotFound();
+
+                }
+
+                // report.IsReplied = true;
+
+                string ReplyMessage = string.Format("Replied with comment: {0}", Reply);
+                var msgToSender = new Message
+                {
+                    ReturnRequestId = ReplyReportId,
+                    ReportType = "ReturnItems",
+                    SenderId = this.UserId,
+                    RecipientId = ReplySender,
+                    Content = ReplyMessage,
+                    Type = "",
+                    CreatedAt = DateTime.UtcNow
+
+                };
+                _context.Messages.Add(msgToSender);
             }
 
             var message = dbContext.Messages.FirstOrDefault(m => m.Id == ReplyMessageId);

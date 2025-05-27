@@ -233,7 +233,13 @@
                                                             Comment & Reject
                                                         </button>
                                                     }
-                                                    @* case2: Sender- Warehouse Manager receiver:  Inspection Officer *@
+                                                    @* case2: Sender- Warehouse Manager receiver:  Sector Manager  when warehouse manager rejects the request*@ 
+                                                    else if(senderGroupName == "Warehouse Manager" && Model.UserGroupName == "Sector Manager"){
+                                                        <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#ReplyModal" onclick="setReplyReportId(@inbox.ReturnRequestId,'@inbox.SenderId',@inbox.Id,'@inbox.ReportType')">Reply & Resend</button>
+
+                                                        <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#commentRejectModal" onclick="setRejectReportId(@inbox.ReturnRequestId, @inbox.Id,'@inbox.ReportType')">Comment & Reject</button>
+                                                    }
+                                                    @* case3: Sender- Warehouse Manager receiver:  Inspection Officer *@
                                                     else if(senderGroupName == "Warehouse Manager" && Model.UserGroupName == "Return Inspection Committee Officer"){
                                                         <form method="post" class="d-inline">
                                                             <input type="hidden" name="ReturnRequestId" value="@inbox.ReturnRequestId">
@@ -244,7 +250,7 @@
                                                         </form>
                                                 
                                                     }
-                                                    @* case3: Sender- Inspection Committee Officer receiver:  Supervisor *@
+                                                    @* case4: Sender- Inspection Committee Officer receiver:  Supervisor *@
                                                     else if(senderGroupName == "Return Inspection Committee Officer" && Model.UserGroupName == "General Supervisor"){
                                                         <button class="btn btn-info btn-sm p-1" data-toggle="modal" data-target="#specifyRecipientReturn" onclick="setAcceptReturnReportId(@inbox.ReturnRequestId, @inbox.Id)">
                                                                 Accept
@@ -254,6 +260,15 @@
                                                             Comment & Reject
                                                         </button>
                                                     }
+                                                    @* case5: Sender- Supervisor  receiver:  Inspection Committee Officer *@
+                                                    else if(senderGroupName == "General Supervisor" && Model.UserGroupName == "Return Inspection Committee Officer"){
+                                                        <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#ReplyModal" onclick="setReplyReportId(@inbox.ReturnRequestId,'@inbox.SenderId',@inbox.Id,'@inbox.ReportType')">Reply & Resend</button>
+
+                                                        <button class="btn btn-warning btn-sm p-1" data-toggle="modal" data-target="#commentRejectModal" onclick="setRejectReportId(@inbox.ReturnRequestId, @inbox.Id,'@inbox.ReportType')">
+                                                            Comment & Reject
+                                                        </button>
+                                                    }
+
                                                     @* case4: Sender- Supervisor receiver:  Destruction Officer *@
                                                     else if(senderGroupName == "General Supervisor" && Model.UserGroupName == "Destruction Officer"){
                                                       
@@ -274,9 +289,6 @@
                                                                 Add Recycling Notes
                                                             </button>
                                                         </form>
-                                                     
-
-                                                       
                                                     }
                                                 }
                                                 
@@ -454,7 +466,7 @@
                                         <div class="form-group">
                                             <input type="hidden" id="RejectReceivingReportId" name="RejectReceivingReportId" />
                                             <input type="hidden" id="RejectMessageId" name="RejectMessageId" />
-                                            <input type="text" name="ReportType" id="ReportType"/>
+                                            <input type="hidden" name="ReportType" id="ReportType"/>
                                             <label for="Comment">Your Comment</label>
                                             <textarea id="Comment" name="Comment" class="form-control" rows="3" required></textarea>
                                         </div>
@@ -640,7 +652,7 @@
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
-                                <form method="post" asp-page-handler="AddDestructionReport">
+                                <form method="post" enctype="multipart/form-data" asp-page-handler="AddDestructionReport">
 
                                     <div class="modal-body">
                                         <div class="form-group">
@@ -680,7 +692,7 @@
                                             <input type="hidden" id="ReplyReportId" name="ReplyReportId" />
                                             <input type="hidden" id="ReplySender" name="ReplySender" />
                                             <input type="hidden" id="ReplyMessageId" name="ReplyMessageId" />
-                                            <input type="text" name="ReplyReportType" id="ReplyReportType"/>
+                                            <input type="hidden" name="ReplyReportType" id="ReplyReportType"/>
 
 
                                             <label for="Reply">Your Reply</label>
