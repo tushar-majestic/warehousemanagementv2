@@ -71,11 +71,16 @@
 
     const wrapper = document.getElementById("returnEntriesWrapper");
     const addEntryBtn = document.getElementById("addEntryBtn");
+   
 
     // --- Add Entry ---
     addEntryBtn.addEventListener("click", function () {
         const firstEntry = wrapper.querySelector(".return-entry");
+        
         const newEntry = firstEntry.cloneNode(true);
+          const addButton = document.getElementById('addEntryBtn');
+           addButton.disabled = true;
+    
 
         // Clear all values
         newEntry.querySelectorAll("input, select").forEach(input => {
@@ -109,23 +114,30 @@
                 });
 
             }
-
+            const removeBtn = document.createElement("button");
+            removeBtn.type = "button";
+            removeBtn.className = "btn btn-danger remove-entry mt-2";
+            removeBtn.innerText = "Remove";
+            removeBtn.addEventListener("click", function () {
+                newEntry.remove();
+            });
+        newEntry.insertBefore(removeBtn, newEntry.firstChild);
         wrapper.appendChild(newEntry);
         initializeEntry(newEntry);
         entryIndex++;
     });
 
     // --- Remove Entry ---
-    wrapper.addEventListener("click", function (e) {
-        if (e.target.classList.contains("remove-entry")) {
-            const entries = wrapper.querySelectorAll(".return-entry");
-            if (entries.length > 1) {
-                e.target.closest(".return-entry").remove();
-            } else {
-                alert("At least one Item is required.");
-            }
-        }
-    });
+    // wrapper.addEventListener("click", function (e) {
+    //     if (e.target.classList.contains("remove-entry")) {
+    //         const entries = wrapper.querySelectorAll(".return-entry");
+    //         if (entries.length > 1) {
+    //             e.target.closest(".return-entry").remove();
+    //         } else {
+    //             alert("At least one Item is required.");
+    //         }
+    //     }
+    // });
 
     // --- Handle Select Change ---
     function handleItemChange(e) {
@@ -494,10 +506,11 @@
 
                             </div>
                         <div class="col-lg-12 col-sm-12">
+                        <div id="returnEntriesWrapper">
                             @for(int i =0; i < Model.ItemsForReport.Count; i++){
-                                <div id="returnEntriesWrapper">
-                                    <div class="return-entry border p-3 mb-3 rounded position-relative">
-
+                                
+                                <div class="return-entry border p-3 mb-3 rounded position-relative d-flex" style="flex-direction: column;  align-items: end;">
+                                    <div class= "row">
                                         <div class="d-flex my-4">
                                             <div class=" me-2" style="width: 49%;">
                                                 <label for="itemGroup">@Model.lblItemGroups</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
@@ -630,12 +643,14 @@
                                             <label for="Comments">@Model.lblComments</label>
                                             <input type="text" class="form-control" id="Comments_@i" asp-for="ItemsForReport[@i].Comments" name="ItemsForReport[@i].Comments"  />
                                         </div>
-                                        <button type="button" class="btn btn-danger btn-sm remove-entry me-3" style="position: absolute; top: 0; right: 0;">
+                                      @*<button type="button" class="btn btn-danger btn-sm remove-entry me-3" style="position: absolute; top: 0; right: 0;">
                                             @Model.lblRemove
-                                        </button>
+                                        </button>*@
                                     </div>
                                 </div>
+                                
                             }
+                            </div>
                             <div class="mb-3">
                                 <button type="button" class="btn btn-primary" id="addEntryBtn" disabled>@Model.lblAddMore</button>
                             </div

@@ -104,52 +104,66 @@
             <h2 class="h4">@Model.lblUsers</h2>
             <!-- <p class="mb-0">Your web analytics dashboard template.</p> -->
         </div>
-        <div class="btn-toolbar mb-2 mb-md-0 d-flex flex-wrap">
-            <div class="btn-group d-flex mx-3 ms-lg-3">
-                <a href="AddUser" class="btn btn-sm btn-primary d-inline-flex align-items-center justify-content-center">
-                    <img class="icon icon-xs me-2" src="images/plus.png" alt="Add User">
-                    @Model.lblAddUser
-                </a>
-            </div>
-
-            <div class="btn-group d-flex mx-3 ms-lg-3">
-                <a href="ManageUserGroups" class="btn btn-primary d-inline-flex align-items-center justify-content-center">
-                    <img class="icon icon-xs me-2" src="images/plus.png" alt="Manage Groups">
-                    @Model.lblManageUserGroups
-                </a>
-            </div>
-
-            <div class="btn-group d-flex mx-3 ms-lg-3">
-                <a href="ViewStoreTypes" class="btn btn-primary d-inline-flex align-items-center justify-content-center">
-                    <img class="icon icon-xs me-2" src="images/plus.png" alt="Warehouse Type">
-                    Warehouse type
-                </a>
-            </div>
-
-            <div class="btn-group d-flex mx-3 ms-lg-3">
-                <a href="ViewDoctypes" class="btn btn-primary d-inline-flex align-items-center justify-content-center">
-                    <img class="icon icon-xs me-2" src="images/plus.png" alt="Document Type">
-                    Document type
-                </a>
-            </div>
-
-            <div class="btn-group d-flex mx-3 ms-lg-3">
-                <a href="ViewPrivileges" class="btn btn-primary d-inline-flex align-items-center justify-content-center">
-                    <img class="icon icon-xs me-2" src="images/plus.png" alt="Add Privilege">
-                    Add Privilege
-                </a>
-            </div>
-
-            <div class="btn-group d-flex mx-3 ms-lg-3">
-                <a href="HazardTypes/Index" class="btn btn-primary d-inline-flex align-items-center justify-content-center">
-                    <img class="icon icon-xs me-2" src="images/plus.png" alt="Add Privilege">
-                    Add HazardTypes
-                </a>
-            </div>
+    </div>
+    <div class="btn-toolbar mb-2 mb-md-0 d-flex flex-wrap">
+        <div class="btn-group d-flex">
+            <a href="AddUser" class="btn btn-sm btn-primary d-inline-flex align-items-center justify-content-center">
+                <img class="icon icon-xs me-2" src="images/plus.png" alt="Add User">
+                @Model.lblAddUser
+            </a>
         </div>
 
+        <div class="btn-group d-flex mx-3 ms-lg-3">
+            <a href="ManageUserGroups" class="btn btn-primary d-inline-flex align-items-center justify-content-center">
+                <img class="icon icon-xs me-2" src="images/plus.png" alt="Manage Groups">
+                @Model.lblManageUserGroups
+            </a>
+        </div>
+
+        <div class="btn-group d-flex mx-3 ms-lg-3">
+            <a href="ViewStoreTypes" class="btn btn-primary d-inline-flex align-items-center justify-content-center">
+                <img class="icon icon-xs me-2" src="images/plus.png" alt="Warehouse Type">
+                Warehouse type
+            </a>
+        </div>
+
+        <div class="btn-group d-flex mx-3 ms-lg-3">
+            <a href="ViewDoctypes" class="btn btn-primary d-inline-flex align-items-center justify-content-center">
+                <img class="icon icon-xs me-2" src="images/plus.png" alt="Document Type">
+                Document type
+            </a>
+        </div>
+
+        <div class="btn-group d-flex mx-3 ms-lg-3">
+            <a href="ViewPrivileges" class="btn btn-primary d-inline-flex align-items-center justify-content-center">
+                <img class="icon icon-xs me-2" src="images/plus.png" alt="Add Privilege">
+                Add Privilege
+            </a>
+        </div>
+
+        <div class="btn-group d-flex mx-3 ms-lg-3">
+            <a href="HazardTypes/Index" class="btn btn-primary d-inline-flex align-items-center justify-content-center">
+                <img class="icon icon-xs me-2" src="images/plus.png" alt="Add Privilege">
+                Add HazardTypes
+            </a>
+        </div>
+        <div class="btn-group d-flex mx-3 ms-lg-3">
+        <a href="ManageItemGroups" class="btn btn-primary d-inline-flex align-items-center justify-content-center">
+            <img b-ie9pk9zf1q="" class="icon icon-xs me-2  text-white"  src="images/manage-b.png">
+            @Model.lblManageItemGroup
+        </a>
+         </div>
+         <div class="btn-group d-flex mx-3 ms-lg-3">
+        <a href="ManageUnits" class="btn btn-primary d-inline-flex align-items-center justify-content-center">
+
+            <img b-ie9pk9zf1q="" class="icon icon-xs me-2 text-white"src="images/manage-b.png">
+            @Model.lblManageUnit
+        </a>
+        </div>
     </div>
-    <div class="mb-4">
+
+  
+    <div class="mb-4 mt-2">
         <button id="exportExcel" class="btn btn-success">@Model.lblExportExcel</button>
         <button id="printBtn" class="btn btn-primary">@Model.lblPrintTable</button>
     </div>
