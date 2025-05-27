@@ -486,6 +486,7 @@ namespace LabMaterials.Pages
             {
                 if (AttachmentFile != null)
                 {
+                    Console.WriteLine("Attachment file is done");
                     var uploadsFolder = Path.Combine(_environment.WebRootPath, "uploads");
                     Directory.CreateDirectory(uploadsFolder); // ensure it exists
                     var uniqueFileName = Guid.NewGuid().ToString() + Path.GetExtension(AttachmentFile.FileName);
@@ -498,12 +499,16 @@ namespace LabMaterials.Pages
 
                     Report.DestructionReportPath = "/uploads/" + uniqueFileName;
 
-                }
-                else
-                {
-                    Console.WriteLine("Attachement file is none");
+                    var message = dbContext.Messages.FirstOrDefault(m => m.Id == AcceptReturnMessageId);
+
+                    if (message != null)
+                    {
+                        message.Type = "File Attached";
+                    }
+                    dbContext.SaveChanges();
 
                 }
+                
             }
             else
             {
