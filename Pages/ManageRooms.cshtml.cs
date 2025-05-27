@@ -159,6 +159,7 @@ namespace LabMaterials.Pages
             }
 
             FillLables();
+            int? userId = HttpContext.Session.GetInt32("UserId");
             var dbContext = new LabDBContext();
 
             var codeParam = new SqlParameter("@PCODE", SqlDbType.VarChar, 2) { Direction = ParameterDirection.Output };
@@ -176,41 +177,60 @@ namespace LabMaterials.Pages
                                 .Where(r => r.Ended == null)
                                 .ToList();
 
-            // Join stores with active rooms
-            var joinedData = from store in allStores
-                            join room in activeRooms on store.RoomId equals room.RoomId
-                            join user in dbContext.Users on room.KeeperId equals user.UserId
-                            select new StoreDataResult
-                            {
-                                StoreId = store.StoreId,
-                                StoreName = store.StoreName,
-                                ShelfNumber = store.ShelfNumber,
-                                RoomId = room.RoomId,
-                                KeeperName = user.FullName,
-                                KeeperJobNum = user.JobNumber,
-                                BuildingNumber = room.BuildingNumber,
-                                RoomNo = room.RoomNo,
-                                RoomDesc = room.RoomDesc,
-                                NoOfShelves = room.NoOfShelves,
-                                RoomStatus = room.RoomStatus
-                            
-                            };
+            IQueryable<StoreDataResult> joinedDataQuery;
 
-            // Optional: filter by room name
+            if (HttpContext.Session.GetString("UserGroup") == "Warehouse Manager")
+            {
+                joinedDataQuery = (from store in allStores
+                                   join room in activeRooms on store.RoomId equals room.RoomId
+                                   join user in dbContext.Users on room.KeeperId equals user.UserId
+                                   where store.WarehouseManagerID == userId
+                                   select new StoreDataResult
+                                   {
+                                       StoreId = store.StoreId,
+                                       StoreName = store.StoreName,
+                                       ShelfNumber = store.ShelfNumber,
+                                       RoomId = room.RoomId,
+                                       KeeperName = user.FullName,
+                                       KeeperJobNum = user.JobNumber,
+                                       BuildingNumber = room.BuildingNumber,
+                                       RoomNo = room.RoomNo,
+                                       RoomDesc = room.RoomDesc,
+                                       NoOfShelves = room.NoOfShelves,
+                                       RoomStatus = room.RoomStatus
+                                   }).AsQueryable();
+            }
+            else
+            {
+                joinedDataQuery = (from store in allStores
+                                   join room in activeRooms on store.RoomId equals room.RoomId
+                                   join user in dbContext.Users on room.KeeperId equals user.UserId
+                                   select new StoreDataResult
+                                   {
+                                       StoreId = store.StoreId,
+                                       StoreName = store.StoreName,
+                                       ShelfNumber = store.ShelfNumber,
+                                       RoomId = room.RoomId,
+                                       KeeperName = user.FullName,
+                                       KeeperJobNum = user.JobNumber,
+                                       BuildingNumber = room.BuildingNumber,
+                                       RoomNo = room.RoomNo,
+                                       RoomDesc = room.RoomDesc,
+                                       NoOfShelves = room.NoOfShelves,
+                                       RoomStatus = room.RoomStatus
+                                   }).AsQueryable();
+            }
+
             if (!string.IsNullOrEmpty(RoomName))
             {
-                joinedData = joinedData.Where(s => s.RoomName != null && s.RoomName.Contains(RoomName));
+                joinedDataQuery = joinedDataQuery
+                                  .Where(s => s.RoomDesc != null && s.RoomDesc.Contains(RoomName));
             }
-            
 
-            TotalItems = joinedData.Count();
+            TotalItems = joinedDataQuery.Count();
             TotalPages = (int)Math.Ceiling((double)TotalItems / ItemsPerPage);
-            Stores = joinedData.Skip((page - 1) * ItemsPerPage).Take(ItemsPerPage).ToList();
-            StoresAll = joinedData.ToList();
-            //   foreach (var store in StoresAll)
-            //                     {
-            //                         Console.WriteLine($"ID: {store.StoreId}, Name: {store.StoreName}, KeeperName: {store.KeeperName}");
-            //                     }
+            Stores = joinedDataQuery.Skip((page - 1) * ItemsPerPage).Take(ItemsPerPage).ToList();
+            StoresAll = joinedDataQuery.ToList();
             CurrentPage = page;
         }
 

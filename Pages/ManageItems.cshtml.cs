@@ -274,7 +274,7 @@ namespace LabMaterials.Pages
                 query = query.Where(i => i.UnitCode.Contains(UnitCode));
 
             if (!string.IsNullOrEmpty(TypeName))
-                query = query.Where(i => i.TypeName.Contains(TypeName));
+                query = query.Where(i => i.StateofMatter.Contains(TypeName));
 
             if (!string.IsNullOrEmpty(ItemName) && !string.IsNullOrEmpty(Group))
                 query = query.Where(i => i.ItemName.Contains(ItemName) && i.GroupDesc.Contains(Group));
@@ -299,9 +299,9 @@ namespace LabMaterials.Pages
                                      UnitCode = u.UnitCode ?? "",
                                  });
 
-            UniqueTypeNames = allItemsQuery.Select(i => i.TypeName).Where(x => !string.IsNullOrEmpty(x)).Distinct().ToList();
-            UniqueUnitCode = allItemsQuery.Select(i => i.UnitCode).Where(x => !string.IsNullOrEmpty(x)).Distinct().ToList();
-            UniqueHazardType = allItemsQuery.Select(i => i.RiskRating).Where(x => !string.IsNullOrEmpty(x)).Distinct().ToList();
+            UniqueTypeNames = dbContext.ItemTypes.Select(i => i.ItemTypeCode).ToList();
+            UniqueUnitCode = dbContext.Units.Select(u=> u.UnitCode).ToList();
+            UniqueHazardType = dbContext.HazardTypes.Select(h=> h.HazardTypeName).ToList();
 
             // Pagination
             TotalItems = query.Count();
