@@ -20,7 +20,7 @@ namespace LabMaterials.Pages
         public int TotalPages { get; set; }
         public bool HasSearched { get; set; } = false;
 
-        public string lblSearch, lblPrintTable, lblExportExcel, lblTotalItem;
+        public string lblSearch, lblPrintTable, lblExportExcel, lblTotalItem, lblNewReceivingReport;
 
         public ViewReturnRequestsModel(LabDBContext context)
         {
@@ -240,6 +240,7 @@ namespace LabMaterials.Pages
             this.lblPrintTable = (Program.Translations["PrintTable"])[Lang];
             this.lblExportExcel = (Program.Translations["ExportExcel"])[Lang];
             this.lblTotalItem = (Program.Translations["TotalItem"])[Lang];
+            this.lblNewReceivingReport = (Program.Translations["NewReceivingReport"])[Lang];
         }
     }
 }

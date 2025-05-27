@@ -184,17 +184,18 @@
         var rep = Model.ReturnRequest;
     }
     @if(rep != null){
-    <div class="layout-row d-flex align-items-start text-size" style="display: flex; font-size: 16px; width: 100%; justify-content: space-between;">
+    <div class="layout-row d-flex align-items-start text-size"
+     style="display: flex; font-size: 16px; width: 100%; justify-content: space-between; font-size: 13px;">
     
  
-        <div class="left-column">
+        <div class="left-column" style="width: 57%">
             <div>Order Number: @rep.OrderNumber</div>
             <div>Order Date: @rep.OrderDate.ToString("yyyy-MM-dd")</div>
             <div>@Model.lblPageCount: <span id="pageCountSpan">Calculating...</span></div>
         </div>
 
      
-        <div class="center-column">
+        <div class="center-column" style="width: 57%">
             <table class="table-1 w-100">
                 <tr style="text-align: center;">
                     <td colspan="2" style="font-weight: 600;">Reason For Return</td>
@@ -221,7 +222,7 @@
             </table>
         </div>
 
-        <div class="right-column" style="display: flex; flex-direction: column; align-item: end">
+        <div class="right-column" style="display: flex; flex-direction: column; align-item: end; text-align: end">
             <div>Name of the applicant's sector : @rep.FromSector</div>
             <div>Sector to which the request is sent : @rep.ToSector</div>
             <div>Warehouse: @rep.Warehouse</div>
