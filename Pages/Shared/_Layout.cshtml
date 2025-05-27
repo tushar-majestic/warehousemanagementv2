@@ -11,7 +11,6 @@
     <link rel="stylesheet" href="~/lib/notyf/notyf.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/LabMaterials.styles.css" asp-append-version="true" />
-    <link rel="icon" type="image/x-icon" href="~/images/favicon.png" />
     <link rel="shortcut icon" href="~/images/favicon.png" type="image/x-icon" />
     <link rel="icon" href="~/images/Picture1.png" type="image/x-icon" />
 
@@ -137,11 +136,11 @@
                 {
                     <li class="nav-item @(
                     Context.Request.Path == "/AddUnit" ? "active" : "")">
-                        <a asp-area="" asp-page="/ManageItems" class="nav-link">
+                        <a asp-area="" asp-page="/ReceivingItems" class="nav-link">
                             <span class="sidebar-icon">
                                 <img class="icon icon-xs mx-1" src="~/images/inventory.png" />
                             </span>
-                            <span class="sidebar-text">@Model.lblManageItems</span>
+                            <span class="sidebar-text">@Model.lblReceivingItems</span>
                         </a>
                     </li>
                 }

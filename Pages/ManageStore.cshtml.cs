@@ -26,7 +26,7 @@ namespace LabMaterials.Pages
         public List<Room> Rooms { get; set; }
 
         public string lblStores, lblManageStorage, lblSearch, lblRoomName, lblManageShelves, lblUnlock, lblLock, lblRoomNumber,
-        lblManageRooms, lblStoreNumber, lblAddRoom, lblAddShelf, lblStoreName, lblSubmit, lblAddStore, lblShelves, lblEdit,
+        lblManageRooms, lblManageItems, lblStoreNumber, lblAddRoom, lblAddShelf, lblStoreName, lblSubmit, lblAddStore, lblShelves, lblEdit,
         lblDelete, lblTotalItem, lblAddDestination, lblManageDestination, lblWarehouseType, lblManagerName, lblManagerJobNumber,lblManageSuppliers,
         lblStatus, lblExportExcel, lblPrintTable;
 
@@ -419,6 +419,7 @@ namespace LabMaterials.Pages
             this.lblAddShelf = (Program.Translations["AddShelf"])[Lang];
             this.lblRoomNumber = (Program.Translations["RoomNumber"])[Lang];
             this.lblManageRooms = (Program.Translations["ManageRooms"])[Lang];
+            this.lblManageItems = (Program.Translations["ManageItems"])[Lang];
             this.lblManageShelves = (Program.Translations["ManageShelves"])[Lang];
             this.lblLock = (Program.Translations["Lock"])[Lang];
             this.lblRoomName = (Program.Translations["RoomName"])[Lang];

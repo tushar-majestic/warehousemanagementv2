@@ -17,7 +17,7 @@ namespace LabMaterials.Pages
         //public string lblHome, lblDisbursement, lblReports, lblManageUsers, lblManageItems, lblManageSupplies, lblManageStores;
         //public void OnGet(DateTime? startDate, DateTime? endDate)
 
-        public string lblHome, lblDisbursement, lblReports, lblManageUsers, lblManageItems,
+        public string lblHome, lblDisbursement, lblReports, lblManageUsers, lblReceivingItems,
             lblManageSupplies, lblManageStores, lblDamagedItems, Data1Values,
             Data1Colors, Data2Values, Data2Colors, LabelValues, LabelValues1,
             itemName, itemPercentage, lblLowInventoryItem, lblFastMovingItem,
@@ -218,7 +218,7 @@ namespace LabMaterials.Pages
 
             this.lblDisbursement = (Program.Translations["Disbursements"])[Lang];
             this.lblReports = (Program.Translations["Reports"])[Lang];
-            this.lblManageItems = (Program.Translations["ManageItems"])[Lang];
+            this.lblReceivingItems = (Program.Translations["ReceivingItems"])[Lang];
             this.lblManageStores = (Program.Translations["ManageStore"])[Lang];
             this.lblManageSupplies = (Program.Translations["Supplies"])[Lang];
             this.lblManageUsers = (Program.Translations["ManageUsers"])[Lang];
