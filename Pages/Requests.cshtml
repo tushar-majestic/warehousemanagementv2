@@ -260,7 +260,7 @@
                                                             Comment & Reject
                                                         </button>
                                                     }
-                                                    @* case5: Sender- Supervisor  receiver:  Inspection Committee Officer *@
+                                                    @* case5: Sender- General Supervisor  receiver:  Inspection Committee Officer *@
                                                     else if(senderGroupName == "General Supervisor" && Model.UserGroupName == "Return Inspection Committee Officer"){
                                                         <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#ReplyModal" onclick="setReplyReportId(@inbox.ReturnRequestId,'@inbox.SenderId',@inbox.Id,'@inbox.ReportType')">Reply & Resend</button>
 
@@ -268,8 +268,12 @@
                                                             Comment & Reject
                                                         </button>
                                                     }
+                                                    @* case5: Sender- General Supervisor  receiver:  Inspection Committee Officer *@
+                                                    else if(senderGroupName == "General Supervisor" && Model.UserGroupName == "Warehouse Keeper"){
+                                                        
+                                                    }
 
-                                                    @* case4: Sender- Supervisor receiver:  Destruction Officer *@
+                                                    @* case 6: Sender- Supervisor receiver:  Destruction Officer *@
                                                     else if(senderGroupName == "General Supervisor" && Model.UserGroupName == "Destruction Officer"){
                                                       
 
@@ -279,7 +283,7 @@
 
                                                        
                                                     }
-                                                    @* case5: Sender- Supervisor receiver:  Recycling Officer *@
+                                                    @* case 7: Sender- Supervisor receiver:  Recycling Officer *@
                                                     else if(senderGroupName == "General Supervisor" && Model.UserGroupName == "Recycling Officer"){
                                                         <form method="post" class="d-inline">
                                                             <input type="hidden" name="ReturnRequestId" value="@inbox.ReturnRequestId">
