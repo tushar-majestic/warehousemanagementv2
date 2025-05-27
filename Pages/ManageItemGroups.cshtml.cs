@@ -37,7 +37,7 @@ namespace LabMaterials.Pages
         }
         
         public string lblGroupCode, lblGroupName, lblEdit, lblDelete, lblTotalItem, lblAddItemGroup, lblItemGroups, lblSearch,
-        lblItems, lblExportExcel, lblPrintTable;
+        lblItems, lblExportExcel, lblPrintTable, lblUsers;
 
         public void OnPostSearch([FromForm] string GroupName)
         {   CurrentPage = 1;
@@ -139,6 +139,7 @@ namespace LabMaterials.Pages
             this.lblItems = (Program.Translations["Items"])[Lang];
             this.lblExportExcel = (Program.Translations["ExportExcel"])[Lang];
             this.lblPrintTable = (Program.Translations["PrintTable"])[Lang];
+            this.lblUsers = (Program.Translations["Users"])[Lang];
         }
     }
 }

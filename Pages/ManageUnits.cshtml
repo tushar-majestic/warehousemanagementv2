@@ -79,9 +79,15 @@
                         <img src="images/home.png" alt="Home" width="16" height="16" class="me-2" />
                         <a href="/Home" class="text-decoration-none">@Model.lblHome</a>
                     </li>
-                    <li class="breadcrumb-item d-flex align-items-center">
+                    @*<li class="breadcrumb-item d-flex align-items-center">
                         <img src="images/inventory.png" alt="Home" width="16" height="16" class="me-2" />
                         <a href="/ManageItems" class="text-decoration-none">@Model.lblItems</a>
+                    </li>*@
+                    <li class="breadcrumb-item d-flex align-items-center">
+                        <a href="/ManageUsers" class="text-decoration-none">
+                            <img src="images/management.png" alt="Home" width="16" height="16" class="me-2" />
+                            @Model.lblUsers
+                        </a>
                     </li>
                     <li class="breadcrumb-item d-flex align-items-center">
                         <img src="images/inventory.png" alt="Home" width="16" height="16" class="me-2" />
