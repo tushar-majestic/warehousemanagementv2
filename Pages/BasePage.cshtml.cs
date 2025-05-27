@@ -91,7 +91,7 @@ namespace LabMaterials.Pages
             this.lblDisbursement = (Program.Translations["Disbursements"])[Lang];
             this.lblReports = (Program.Translations["Reports"])[Lang];
             this.lblReportsInquiries = (Program.Translations["ReportsInquiries"])[Lang];
-            this.lblManageItems = (Program.Translations["ManageItems"])[Lang];
+            this.lblManageItems = (Program.Translations["ReceivingItems"])[Lang];
             this.lblManageStores = (Program.Translations["ManageStore"])[Lang];
             this.lblManageSupplies = (Program.Translations["Supplies"])[Lang];
             this.lblManageUsers = (Program.Translations["ManageUsers"])[Lang];

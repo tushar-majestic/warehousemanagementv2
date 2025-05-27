@@ -299,7 +299,7 @@ namespace LabMaterials.Pages
             dbContext.SaveChanges();
 
 
-            return RedirectToPage("/Requests");
+            return RedirectToPage("/ReceivingItems");
         }
 
         private void FillLables()
