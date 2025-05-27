@@ -21,7 +21,6 @@ namespace LabMaterials.Pages
         // public List<Store> Stores { get; set; }
 
         public List<StoreDataResult> Stores { get; set; }
-        public List<Store> StoresAll { get; set; }
 
         public List<User> KeeperGroupsList {  get; set; }
 
@@ -50,22 +49,20 @@ namespace LabMaterials.Pages
             // Stores = query.GroupBy(s => new { s.StoreId, s.StoreName })
             //                .Select(g => g.First()).Where(s => s.WarehouseManagerID == 8)
             //                .ToList();
-            Stores = query.GroupBy(s => new { s.StoreId, s.StoreName })
+
+            if (HttpContext.Session.GetString("UserGroup") == "Warehouse Manager")
+            {
+                Stores = query.GroupBy(s => new { s.StoreId, s.StoreName })
+                           .Select(g => g.First())
+                           .Where(s => s.WarehouseManagerID == userId)
+                           .ToList();
+            }
+            else
+            {
+                Stores = query.GroupBy(s => new { s.StoreId, s.StoreName })
                            .Select(g => g.First())
                            .ToList();
-
-            var Storess = from s in dbContext.Stores
-                          join u in dbContext.Users on s.WarehouseManagerId equals u.UserId
-                          select new Store
-                          {
-                              StoreId = s.StoreId,
-                              StoreName = s.StoreName,
-                              StoreType = s.StoreType,
-                              WarehouseManagerName = u.FullName,
-                              WarehouseManagerId = s.WarehouseManagerId
-                                    
-                                };
-            StoresAll = Storess.Where(s=> s.WarehouseManagerId == userId).ToList();
+            }
 
             var KeeperGroupId = dbContext.UserGroups
                     .Where(g => g.UserGroupName == "Warehouse Keeper")
