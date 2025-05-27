@@ -498,6 +498,7 @@ namespace LabMaterials.Pages
                     }
 
                     Report.DestructionReportPath = "/uploads/" + uniqueFileName;
+                    Report.DestOffApprovalDate = DateTime.UtcNow;
 
                     var message = dbContext.Messages.FirstOrDefault(m => m.Id == AcceptReturnMessageId);
 
@@ -586,6 +587,7 @@ namespace LabMaterials.Pages
                         report.DestOffId = Receipient.Value;
                         report.KeeperId = keeperId.Value;
                         report.RecOffId = RecyclingOffiId.Value;
+                        report.SupervisorApprovalDate = DateTime.UtcNow;
 
                         //message to Destruction Officer 
                         string DestOfficerMessage = string.Format("Sent Return Items Request Attach Destruction report.");
