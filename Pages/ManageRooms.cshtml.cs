@@ -54,8 +54,15 @@ namespace LabMaterials.Pages
         {
             var dbContext = new LabDBContext();
 
-            var itemsInstore = dbContext.Storages.Where(e => e.Ended == null).Count(s => s.RoomId == RoomId && s.AvailableQuantity > 0);
-            if (itemsInstore == 0)
+            // var itemsInstore = dbContext.Storages.Where(e => e.Ended == null).Count(s => s.RoomId == RoomId && s.AvailableQuantity > 0);
+
+            var shelvesInRoom = dbContext.Shelves.Where(e => e.Ended == null).Count(s => s.RoomId == RoomId);
+
+            bool hasItemsInRoom = dbContext.Shelves
+            .Where(s => s.RoomId == RoomId && s.Ended == null)
+            .Any(s => dbContext.ShelveItems.Any(si => si.ShelfId == s.ShelfId && si.QuantityAvailable > 0));
+
+            if (hasItemsInRoom)
             {
                 var room = dbContext.Rooms.Single(s => s.RoomId == RoomId);
                 room.Ended = DateTime.Now;
@@ -68,7 +75,7 @@ namespace LabMaterials.Pages
             else
             {
                 var itemId = dbContext.Storages.First(s => s.RoomId == RoomId && s.AvailableQuantity > 0).ItemId;
-                Message = string.Format((Program.Translations["RoomNotDeleted"])[Lang], itemsInstore,
+                Message = string.Format((Program.Translations["RoomNotDeleted"])[Lang], hasItemsInRoom,
                     dbContext.Items.Single(i => i.ItemId == itemId).ItemName);
                 FillData(null);
             }
