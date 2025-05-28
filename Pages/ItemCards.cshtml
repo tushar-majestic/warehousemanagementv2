@@ -187,17 +187,44 @@
                         </select>
                     </div>
 
-                    <div class="form-group" style="width:31%;">
-                        <label asp-for="ItemCardBatch.SupplierId"></label>
-                        <select asp-for="ItemCardBatch.SupplierId" name="SupplierId" id="SupplierId" class="form-control" asp-items="ViewBag.SupplierId" readonly></select>
-                    </div>
+                    @if(Model.ReportType == "Receiving"){
+                        <div class="form-group" style="width:31%;">
+                            <label asp-for="ItemCardBatch.SupplierId"></label>
+                            <select asp-for="ItemCardBatch.SupplierId" name="SupplierId" id="SupplierId" class="form-control" asp-items="ViewBag.SupplierId" readonly></select>
+                        </div>
+                    }
+                    else if(Model.ReportType == "ReturnItems"){
+                        <div class="form-group" style="width:31%;">
+                            <label asp-for="ItemCardBatch.SupplierId"></label>
+                            <select asp-for="ItemCardBatch.SupplierId" name="SupplierId" id="Supplier" class="form-control" asp-items="ViewBag.SupplierId"></select>
+                        </div>
+                    }
+                   
                 </div>
                 <div class="d-flex justify-content-between">
-                    <div class="form-group" style="width:48%;">
-                        <label asp-for="ItemCardBatch.DocumentType"></label>
-                        <input asp-for="ItemCardBatch.DocumentType" name="DocumentType" id="DocumentType" class="form-control" readonly/>
-                        
-                    </div>  
+                    @if(Model.ReportType == "Receiving"){
+                        <div class="form-group" style="width:48%;">
+                            <label asp-for="ItemCardBatch.DocumentType"></label>
+                            <input asp-for="ItemCardBatch.DocumentType" name="DocumentType" id="DocumentType" class="form-control" readonly/>
+                            
+                        </div> 
+                    }
+                    else if(Model.ReportType == "ReturnItems"){
+                        <div class="form-group" style="width:48%;">
+                            <label asp-for="ItemCardBatch.DocumentType"></label>
+                            @* <select asp-for="ItemCardBatch.DocumentType" name="DocumentType" id="DocumentType" class="form-control"  asp-items="ViewBag.D" /> *@
+                            <select asp-for="ItemCardBatch.DocumentType" class="form-select" id="DocumentType" name="DocumentType" >
+                                <option value="">Select Based On document</option>
+                                <option value="Certification">Certification</option>
+                                <option value="Purchase order">Purchase order</option>
+                                <option value="Return order">Return order</option>
+                                <option value="Transfer from another warehouse">Transfer from another warehouse</option>
+
+                            </select>
+                        </div> 
+
+                    }
+                     
 
                     <div class="form-group" style="width:48%;">
                         <label asp-for="ItemCardBatch.ReceiptDocumentnumber"></label>

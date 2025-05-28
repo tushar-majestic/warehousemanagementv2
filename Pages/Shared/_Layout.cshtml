@@ -134,8 +134,8 @@
 
                 @if (Model.CanManageItems)
                 {
-                    <li class="nav-item @(
-                    Context.Request.Path == "/AddUnit" ? "active" : "")">
+                    <li class="nav-item @(Context.Request.Path == "/ReceivingItems" ||
+                    Context.Request.Path == "/AddUnit" ? "active" : "" )">
                         <a asp-area="" asp-page="/ReceivingItems" class="nav-link">
                             <span class="sidebar-icon">
                                 <img class="icon icon-xs mx-1" src="~/images/inventory.png" />

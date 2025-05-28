@@ -121,19 +121,21 @@ namespace LabMaterials.Pages
 
                 ItemCardsFromReport = (from ri in receivingItems
                                         join ic in _context.ItemCards on ri.ItemCardId equals ic.Id
+                                         join i in _context.Items on ic.ItemId equals i.ItemId
+                                         join unit in _context.Units on i.UnitId equals unit.Id
                                        select new LabMaterials.DB.ItemCardExtended
                                        {
                                            ItemCode = ri.ItemCode,
                                            ItemName = ri.ItemNameArabic,
                                            GroupCode = ri.ItemGroup,
-                                            // itemTypeCode = ri.Item.ItemTypeCode,
+                                           // itemTypeCode = ri.Item.ItemTypeCode,
                                            ItemDescription = ri.ItemDescription,
                                            ItemId = ri.ItemCardId,
                                            HazardTypeName = ri.RiskRating,
-                                           //    ExpiryDate = ri.Item.ExpiryDate,
+                                           ExpiryDate = i.ExpiryDate,
                                            QuantityReceived = ri.ReturnedQuantity,
-                                           //    UnitOfmeasure = unit.UnitCode,
-                                           //    Chemical = (bool)ri.Item.Chemical ? "Yes" : "No"
+                                           UnitOfmeasure = unit.UnitCode,
+                                            Chemical = (bool)i.Chemical ? "Yes" : "No"
                                        }).ToList();
                                            
                     var ReceivingReport = _context.ReturnRequests
@@ -144,7 +146,7 @@ namespace LabMaterials.Pages
                         ItemCardBatch = new ItemCardBatch
                         {
                             DateOfEntry = ReceivingReport.CreatedAt,
-                            // SupplierId = ReceivingReport.SupplierId,
+                             SupplierId = -1,
                             // DocumentType = ReceivingReport.BasedOnDocument,
                             ReceiptDocumentnumber = ReceivingReport.OrderNumber
                         };
@@ -359,6 +361,7 @@ namespace LabMaterials.Pages
             ViewData["ItemGroupId"] = new SelectList(await _context.ItemGroups.ToListAsync(), "GroupCode", "GroupDesc");
             ViewData["ItemIds"] = new SelectList(await _context.Items.ToListAsync(), "ItemId", "ItemName");
             ViewData["Itemtype"] = new SelectList(await _context.ItemTypes.ToListAsync(), "ItemTypeCode", "TypeName");
+            
         }
 
         public async Task<JsonResult> OnGetShelvesByRoom(int roomId)
