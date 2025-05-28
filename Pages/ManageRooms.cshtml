@@ -38,6 +38,19 @@
             showErrorNotification(errorMessageFromServer);
             </text>
         }
+            const toggleButton = document.getElementById('toggleDropdown');
+        const dropdownPanel = document.getElementById('dropdownPanel');
+
+        toggleButton.addEventListener('click', function () {
+            dropdownPanel.style.display = (dropdownPanel.style.display === 'none' || dropdownPanel.style.display === '') ? 'block' : 'none';
+        });
+
+        // Optional: hide when click outside
+        document.addEventListener('click', function (e) {
+            if (!toggleButton.contains(e.target) && !dropdownPanel.contains(e.target)) {
+                dropdownPanel.style.display = 'none';
+            }
+        });
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <script>
@@ -109,7 +122,7 @@
         <button id="printBtn" class="btn btn-primary">@Model.lblPrintTable</button>
     </div>
     <div class="table-settings mb-4">
-        <form method="post" asp-page-handler="Search" class="row align-items-center">
+        <form method="post" asp-page-handler="Action" class="row align-items-center">
             <div class="col col-md-6 col-lg-3 col-xl-4">
                 <div class="input-group me-2 me-lg-3 fmxw-400">
                     <span class="input-group-text">
@@ -124,7 +137,74 @@
                 </div>
             </div>
             <div class="col-4 col-md-2 col-xl-1 ps-md-0 text-end">
-                <button type="submit" class="btn btn-primary">@Model.lblSubmit</button>
+                <button type="submit" name="action" value="search" class="btn btn-primary">@Model.lblSubmit</button>
+            </div>
+            <div class="col-0 col-md-0 col-lg-3 col-xl-5"></div>
+            <div class="col-6 col-md-6 col-lg-4 col-xl-2 d-grid text-end">
+                <div class="position-relative">
+                    <button class="btn btn-secondary btn-sm" id="toggleDropdown" type="button">
+                        @Model.lblShowHideColumn
+                    </button>
+                    <input type="hidden" value="@Model.CurrentPage" name="page" />
+
+                    <div id="dropdownPanel" class="card p-2 shadow-sm position-absolute"
+                        style="right: 0; top: 100%; width: 250px; display: none; z-index: 1000;">
+                        <div class="form-check mb-1">
+                            <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="storeName"
+                                id="storeName"  @(Model.SelectedColumns.Contains("storeName") ? "checked" : "")>
+                            <label class="form-check-label" for="storeName">@Model.lblStoreName</label>
+                        </div>
+                        <div class="form-check mb-1">
+                            <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="roomName"
+                                id="roomName"  @(Model.SelectedColumns.Contains("roomName") ? "checked" : "")>
+                            <label class="form-check-label" for="roomName">@Model.lblRoomName</label>
+                        </div>
+                        <div class="form-check mb-1">
+                            <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="buildingNumber"
+                                id="buildingNumber"  @(Model.SelectedColumns.Contains("buildingNumber") ? "checked" : "")>
+                            <label class="form-check-label" for="buildingNumber">@Model.lblBuildingNumber</label>
+                        </div>
+                        <div class="form-check mb-1">
+                            <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="roomNumber"
+                                 @(Model.SelectedColumns.Contains("roomNumber") ? "checked" : "")>
+                            <label class="form-check-label" for="roomNumber">@Model.lblRoomNumber</label>
+                        </div>
+                        <div class="form-check mb-1">
+                            <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="roomDesc"
+                                 @(Model.SelectedColumns.Contains("roomDesc") ? "checked" : "")>
+                            <label class="form-check-label" for="roomDesc">@Model.lblRoomDesc</label>
+                        </div>
+                        <div class="form-check mb-1">
+                            <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="NoOfShelves"
+                                 @(Model.SelectedColumns.Contains("NoOfShelves") ? "checked" : "")>
+                        <label class="form-check-label" for="NoOfShelves">@Model.lblNoOfShelves</label>
+                        </div>
+                        <div class="form-check mb-1">
+                            <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="shelves"
+                                 @(Model.SelectedColumns.Contains("shelves") ? "checked" : "")>
+                        <label class="form-check-label" for="shelves">@Model.lblShelves</label>
+                        </div>
+                        <div class="form-check mb-1">
+                            <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="keeperName"
+                                 @(Model.SelectedColumns.Contains("keeperName") ? "checked" : "")>
+                        <label class="form-check-label" for="keeperName">@Model.lblKeeperName</label>
+                        </div>
+                        <div class="form-check mb-1">
+                            <input class="form-check-input column-checkbox" name="columns" type="checkbox" 
+                                value="KeeperJobNum" @(Model.SelectedColumns.Contains("KeeperJobNum") ? "checked" : "")>
+                        <label class="form-check-label" for="KeeperJobNum">@Model.lblKeeperJobNum</label>
+                        </div>
+                        <div class="form-check mb-1">
+                            <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="roomStatus"
+                                @(Model.SelectedColumns.Contains("roomStatus") ? "checked" : "")>
+                        <label class="form-check-label" for="roomStatus">@Model.lblRoomStatus</label>
+                        </div>
+                        <div class="form-check mb-1 text-center">
+                            <button type="submit" name="action" value="updateColumns"
+                                class="btn btn-success btn-sm">Ok</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </form>
     </div>
@@ -208,16 +288,48 @@
                 <table class="table table-centered table-nowrap mb-0 rounded">
                     <thead class="thead-light">
                         <tr>
-                            <th scope="col" class="border-0 rounded-start">@Model.lblStoreName</th>
-                            <th scope="col" class="border-0">@Model.lblRoomName</th>
-                            <th scope="col" class="border-0">@Model.lblBuildingNumber</th>
-                            <th scope="col" class="border-0">@Model.lblRoomNumber</th>
-                            <th scope="col" class="border-0">@Model.lblRoomDesc</th>
+
+                            @if (Model.SelectedColumns.Contains("storeName"))
+                            {
+                                <th scope="col" class="border-0 rounded-start">@Model.lblStoreName</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("roomName"))
+                            {
+                                <th scope="col" class="border-0">@Model.lblRoomName</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("buildingNumber"))
+                            {
+                                <th scope="col" class="border-0">@Model.lblBuildingNumber</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("roomNumber"))
+                            {
+                                <th scope="col" class="border-0">@Model.lblRoomNumber</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("roomDesc"))
+                            {
+                                <th scope="col" class="border-0">@Model.lblRoomDesc</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("NoOfShelves"))
+                            {
+
                             <th scope="col" class="border-0">@Model.lblNoOfShelves</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("shelves"))
+                            {
                             <th scope="col" class="border-0">@Model.lblShelves</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("keeperName"))
+                            {
                             <th scope="col" class="border-0">@Model.lblKeeperName</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("KeeperJobNum"))
+                            {
                             <th scope="col" class="border-0">@Model.lblKeeperJobNum</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("roomStatus"))
+                            {
                             <th scope="col" class="border-0">@Model.lblRoomStatus</th>
+                            }
                             <th class="border-0 rounded-end"></th>
                         </tr>
                     </thead>
@@ -231,19 +343,51 @@
                             {
                                 
                                 <tr>
+                                    @if (Model.SelectedColumns.Contains("storeName"))
+                                    {
                                     <td>@item.StoreName</td>
-                                    <td>@item.RoomName</td>
-                                    <td>@item.BuildingNumber</td>
-                                    <td>@item.RoomNo</td>
-                                    <td>@item.RoomDesc</td>
-                                    <td>@item.NoOfShelves</td>
+
+                                    }
+                                    @if (Model.SelectedColumns.Contains("roomName"))
+                                    {
+                                        <td>@item.RoomName</td>
+                                    }
+                                    @if (Model.SelectedColumns.Contains("buildingNumber"))
+                                    {
+                                        <td>@item.BuildingNumber</td>
+                                    }
+                                    @if (Model.SelectedColumns.Contains("roomNumber"))
+                                    {
+                                        <td>@item.RoomNo</td>
+                                    }
+                                    @if (Model.SelectedColumns.Contains("roomDesc"))
+                                    {
+                                        <td>@item.RoomDesc</td>
+                                    }
+                                    @if (Model.SelectedColumns.Contains("NoOfShelves"))
+                                    {
+                                        <td>@item.NoOfShelves</td>
+                                    }
+                                    @if (Model.SelectedColumns.Contains("shelves"))
+                                    {
+
                                     <td>
                                         @(string.IsNullOrWhiteSpace(item.ShelfNumber) ? "" : (item.ShelfNumber.Length > 30 ?
                                         item.ShelfNumber.Substring(0, 30) : item.ShelfNumber))
                                     </td>
-                                    <td>@item.KeeperName</td>
-                                    <td>@item.KeeperJobNum</td>
+                                    }
+                                    @if (Model.SelectedColumns.Contains("keeperName"))
+                                    {
+                                        <td>@item.KeeperName</td>
+                                    }
+                                    @if (Model.SelectedColumns.Contains("KeeperJobNum"))
+                                    {
+                                        <td>@item.KeeperJobNum</td>
+                                    }
+                                    @if (Model.SelectedColumns.Contains("roomStatus"))
+                                    {
                                     <td>@item.RoomStatus</td>
+                                    }
 
 
                                     <td>
@@ -350,20 +494,40 @@
             </ul>
         </nav>
     }
-     <div class="table-responsive" id="exportTableContainer" style="display: none;">
+    <div class="table-responsive" id="exportTableContainer" style="display: none;">
         <table class="table table-centered table-nowrap mb-0 rounded" id="exportTable">
             <thead class="thead-light">
                 <tr>
+                    @if(Model.SelectedColumns.Contains("storeName")){
                     <th scope="col" class="border-0 rounded-start">@Model.lblStoreName</th>
-                    @* <th scope="col" class="border-0">@Model.lblRoomName</th> *@
+                    }
+                    @if(Model.SelectedColumns.Contains("roomName")){
+                    <th scope="col" class="border-0">@Model.lblRoomName</th>
+                    }
+                    @if(Model.SelectedColumns.Contains("buildingNumber")){
                     <th scope="col" class="border-0">@Model.lblBuildingNumber</th>
+                    }
+                    @if(Model.SelectedColumns.Contains("roomNumber")){
                     <th scope="col" class="border-0">@Model.lblRoomNumber</th>
+                    }
+                    @if(Model.SelectedColumns.Contains("roomDesc")){
                     <th scope="col" class="border-0">@Model.lblRoomDesc</th>
+                    }
+                    @if(Model.SelectedColumns.Contains("NoOfShelves")){
                     <th scope="col" class="border-0">@Model.lblNoOfShelves</th>
+                    }
+                    @if(Model.SelectedColumns.Contains("shelves")){
                     <th scope="col" class="border-0">@Model.lblShelves</th>
+                    }
+                    @if(Model.SelectedColumns.Contains("keeperName")){
                     <th scope="col" class="border-0">@Model.lblKeeperName</th>
+                    }
+                    @if (Model.SelectedColumns.Contains("KeeperJobNum")){
                     <th scope="col" class="border-0">@Model.lblKeeperJobNum</th>
+                    }
+                    @if(Model.SelectedColumns.Contains("roomStatus")){
                     <th scope="col" class="border-0">@Model.lblRoomStatus</th>
+                    }
                 </tr>
             </thead>
             <tbody>
@@ -373,19 +537,42 @@
                 {
 
                     <tr>
+                        @if(Model.SelectedColumns.Contains("storeName")){
                         <td>@item.StoreName</td>
-                        @* <td>@item.RoomName</td> *@
+                        }
+                        @if(Model.SelectedColumns.Contains("roomName")){
+                        <td>@item.RoomName</td>
+                        }
+                        @if(Model.SelectedColumns.Contains("buildingNumber")){
                         <td>@item.BuildingNumber</td>
+                        }
+                        @if(Model.SelectedColumns.Contains("roomNumber")){
                         <td>@item.RoomNo</td>
+                        }
+                        @if(Model.SelectedColumns.Contains("roomDesc")){
                         <td>@item.RoomDesc</td>
+                        }
+                        @if(Model.SelectedColumns.Contains("NoOfShelves")){
                         <td>@item.NoOfShelves</td>
-                        <td>
-                            @(string.IsNullOrWhiteSpace(item.ShelfNumber) ? "" : (item.ShelfNumber.Length > 30 ?
-                                                item.ShelfNumber.Substring(0, 30) : item.ShelfNumber))
-                        </td>
+                        }
+                        @if (Model.SelectedColumns.Contains("shelves"))
+                        {
+                            <td>
+                                @(
+                                string.IsNullOrWhiteSpace(item.ShelfNumber) ? "" : (item.ShelfNumber.Length > 30 ?
+                                                        item.ShelfNumber.Substring(0, 30) : item.ShelfNumber)
+                                )
+                            </td>
+                        }
+                        @if(Model.SelectedColumns.Contains("keeperName")){
                         <td>@item.KeeperName</td>
+                        }
+                            @if (Model.SelectedColumns.Contains("KeeperJobNum")){
                         <td>@item.KeeperJobNum</td>
+                        }
+                        @if(Model.SelectedColumns.Contains("roomStatus")){
                         <td>@item.RoomStatus</td>
+                        }
                     </tr>
 
                 }

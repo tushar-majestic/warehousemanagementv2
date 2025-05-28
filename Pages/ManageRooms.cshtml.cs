@@ -21,6 +21,7 @@ namespace LabMaterials.Pages
         public int TotalPages { get; set; }
         public string RoomName { get; set; }
         public string BuildingNnumber;
+        public List<string> SelectedColumns { get; set; } = new List<string>();
 
         public void OnGet(string? RoomName, int page = 1) 
         {
@@ -28,7 +29,9 @@ namespace LabMaterials.Pages
             if (CanManageStore)
             {
                 FillLables();
-                if (HttpContext.Request.Query.ContainsKey("page")){
+                LoadSelectedColumns();
+                if (HttpContext.Request.Query.ContainsKey("page"))
+                {
                     string pagevalue = HttpContext.Request.Query["page"];
                     page = int.Parse(pagevalue);
                     this.RoomName = RoomName;
@@ -44,10 +47,97 @@ namespace LabMaterials.Pages
         lblAddRoom, lblAddShelf, lblStoreName, lblSubmit, lblAddStore, lblShelves, lblEdit, lblDelete, lblTotalItem, lblAddDestination,
         lblManageDestination, lblExportExcel, lblPrintTable;
 
-        public void OnPostSearch([FromForm] string RoomName)
-        {   CurrentPage = 1;
-            this.RoomName = RoomName;
-            FillData(RoomName, CurrentPage);
+        // public void OnPostSearch([FromForm] string RoomName)
+        // {   CurrentPage = 1;
+        //     this.RoomName = RoomName;
+        //     FillData(RoomName, CurrentPage);
+        // }
+        private void LoadSelectedColumns()
+        {
+            int? userId = HttpContext.Session.GetInt32("UserId");
+            if (userId.HasValue)
+            {
+                using (var db = new LabDBContext())
+                {
+                    string pageName = "manageRooms";
+                    var existingRecord = db.Tablecolumns.FirstOrDefault(c => c.UserId == userId.Value && c.Page == pageName);
+                    if (existingRecord != null && !string.IsNullOrEmpty(existingRecord.DisplayColumns))
+                    {
+                        SelectedColumns = existingRecord.DisplayColumns.Split(',').ToList();
+                    }
+                    else
+                    {
+                        // SelectedColumns = new List<string>();
+                        string selectedColumns = "storeName,buildingNumber,roomNumber";
+                        SaveSelectedColumns(userId.Value, pageName, selectedColumns);
+                    }
+                }
+            }
+        }
+        public IActionResult OnPostAction(string RoomName, string action, List<string> columns)
+        {
+            base.ExtractSessionData();
+
+            if (action == "search")
+            {
+                CurrentPage = 1;
+                this.RoomName = RoomName;
+
+                FillData(RoomName, CurrentPage);
+
+                int? userId = HttpContext.Session.GetInt32("UserId");
+                string pageName = "manageRooms";
+                LoadSelectedColumns();
+            }
+            else if (action == "updateColumns")
+            {
+                if (columns != null && columns.Any())
+                {
+                    CurrentPage = 1;
+                    string selectedColumns = string.Join(",", columns);
+                    this.RoomName = RoomName;
+                    FillData(RoomName, CurrentPage);
+                    int? userId = HttpContext.Session.GetInt32("UserId");
+                    string pageName = "manageRooms";
+
+                    SaveSelectedColumns(userId.Value, pageName, selectedColumns);
+                    LoadSelectedColumns();
+                }
+
+                // After updating, redirect back to ManageStore with the StoreNumber and StoreName
+                // return RedirectToPage("/ManageStore", new { StoreNumber = StoreNumber, StoreName = StoreName });
+            }
+
+            return Page();
+        }
+
+        private void SaveSelectedColumns(int userId, string pageName, string selectedColumns)
+        {
+            base.ExtractSessionData();
+            using (var db = new LabDBContext())
+            {
+                var existingRecord = db.Tablecolumns
+                    .FirstOrDefault(c => c.UserId == userId && c.Page == pageName);
+
+                if (existingRecord != null)
+                {
+                    // Update existing
+                    existingRecord.DisplayColumns = selectedColumns;
+                }
+                else
+                {
+                    // Create new
+                    var newRecord = new Tablecolumn()
+                    {
+                        UserId = userId,
+                        Page = pageName,
+                        DisplayColumns = selectedColumns
+                    };
+                    db.Tablecolumns.Add(newRecord);
+                }
+
+                db.SaveChanges();
+            }
         }
 
         public void OnPostDelete([FromForm] int RoomId)
@@ -198,6 +288,7 @@ namespace LabMaterials.Pages
                                        StoreName = store.StoreName,
                                        ShelfNumber = store.ShelfNumber,
                                        RoomId = room.RoomId,
+                                       RoomName = room.RoomName,
                                        KeeperName = user.FullName,
                                        KeeperJobNum = user.JobNumber,
                                        BuildingNumber = room.BuildingNumber,
@@ -218,6 +309,7 @@ namespace LabMaterials.Pages
                                        StoreName = store.StoreName,
                                        ShelfNumber = store.ShelfNumber,
                                        RoomId = room.RoomId,
+                                       RoomName = room.RoomName,
                                        KeeperName = user.FullName,
                                        KeeperJobNum = user.JobNumber,
                                        BuildingNumber = room.BuildingNumber,
