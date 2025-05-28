@@ -1214,9 +1214,11 @@ namespace LabMaterials.Pages
             return RedirectToPage(); 
 
         }
-        public IActionResult OnPostAddOrder([FromForm] int ReportId, [FromForm] int InboxId){
+        public IActionResult OnPostAddOrder([FromForm] int ReportId, [FromForm] int InboxId, [FromForm] string ReportType){
             HttpContext.Session.SetInt32("ReportId", ReportId);
               HttpContext.Session.SetInt32("InboxId", InboxId);
+            HttpContext.Session.SetString("ReportType", ReportType);
+
 
 
             return RedirectToPage("./ItemCards");
