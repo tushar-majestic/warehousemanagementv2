@@ -149,6 +149,16 @@ namespace LabMaterials.Pages
                 }
                 dbContext.SaveChanges();
 
+                //find the keeper message to update it to show the add order to item card button
+                var keeperMessage = dbContext.Messages
+                    .FirstOrDefault(m => m.RecipientId == Report.KeeperId && m.ReturnRequestId == Report.Id);
+
+                if (keeperMessage != null)
+                {
+                    keeperMessage.Type = "Add Order";
+                }
+                dbContext.SaveChanges();
+
             }
 
            
