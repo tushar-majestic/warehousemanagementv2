@@ -82,6 +82,8 @@ namespace LabMaterials.Pages
         }
            private void FillLables()
         {
+
+            this.Lang = HttpContext.Session.GetString("Lang");
             this.lblUsers = (Program.Translations["Users"])[Lang];
             this.lblPrivileges = (Program.Translations["Privileges"])[Lang];
             this.lblAddPrivileges = (Program.Translations["AddPrivilege"])[Lang];

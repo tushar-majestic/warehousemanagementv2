@@ -198,7 +198,7 @@ namespace LabMaterials.Pages
                 }
 
                 int? userId = HttpContext.Session.GetInt32("UserId");
-                string pageName = "ManageItemCards";
+                string pageName = "ManageItemsCards";
             }
             else if (action == "updateColumns")
             {
