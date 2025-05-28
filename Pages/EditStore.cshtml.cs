@@ -16,9 +16,9 @@ namespace LabMaterials.Pages
         public string Status { get; set; }
         public string StoreType ;
         public List<User> ManagerGroupsList {  get; set; }
-        public List<SelectListItem> StoreTypeList { get; set; }
+        public List<StoreTypes> StoreTypeList { get; set; }
 
-        public string lblUpdateStore, lblStoreNumber, lblStoreName, lblShelves, lblUpdate, lblCancel, lblStores, lblWarehouseType, lblManagerName, lblManagerJobNumber,lblStatus, lblOpen, lblClosed ;
+        public string lblUpdateStore, lblStoreNumber, lblStoreName, lblShelves, lblUpdate, lblCancel, lblStores, lblWarehouseType, lblManagerName, lblManagerJobNumber, lblStatus, lblOpen, lblClosed;
 
         public int page { get; set; }
         
@@ -34,16 +34,17 @@ namespace LabMaterials.Pages
                 RedirectToPage("./Index?lang=" + Lang);
             else
             {
-                StoreTypeList = new List<SelectListItem>
-                {
-                    new SelectListItem { Value = "Central", Text = "Central" },
-                    new SelectListItem { Value = "Branch", Text = "Branch" },
-                    new SelectListItem { Value = "SupplyRoom", Text = "Supply Room" },
-                    new SelectListItem { Value = "EmergencyRoom", Text = "Emergency Room" },
-                };
+                // StoreTypeList = new List<SelectListItem>
+                // {
+                //     new SelectListItem { Value = "Central", Text = "Central" },
+                //     new SelectListItem { Value = "Branch", Text = "Branch" },
+                //     new SelectListItem { Value = "SupplyRoom", Text = "Supply Room" },
+                //     new SelectListItem { Value = "EmergencyRoom", Text = "Emergency Room" },
+                // };
 
 
                 var dbContext = new LabDBContext();
+                StoreTypeList = dbContext.StoreTypes.ToList();
                 var store = dbContext.Stores.Single(s => s.StoreId == HttpContext.Session.GetInt32("StoreId"));
                 var managerGroupId = dbContext.UserGroups
                     .Where(g => g.UserGroupName == "Warehouse Manager")

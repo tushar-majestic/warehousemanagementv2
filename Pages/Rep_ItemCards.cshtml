@@ -1,5 +1,49 @@
 ﻿@page
 @model LabMaterials.Pages.Rep_ItemCardsModel
+@section Scripts {
+    <script>
+        const toggleButton = document.getElementById('toggleDropdown');
+        const dropdownPanel = document.getElementById('dropdownPanel');
+
+        toggleButton.addEventListener('click', function () {
+            dropdownPanel.style.display = (dropdownPanel.style.display === 'none' || dropdownPanel.style.display === '') ? 'block' : 'none';
+        });
+
+        // Optional: hide when click outside
+        document.addEventListener('click', function (e) {
+            if (!toggleButton.contains(e.target) && !dropdownPanel.contains(e.target)) {
+                dropdownPanel.style.display = 'none';
+            }
+        });
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script>
+        document.getElementById('exportExcel').addEventListener('click', function () {
+            let table = document.querySelector('#exportTable'); // use hidden export table directly
+            let wb = XLSX.utils.book_new();
+            let ws_data = [];
+
+            const headers = Array.from(table.querySelectorAll('thead th'))
+                .map(th => th.textContent.trim()); // use textContent instead of innerText
+            ws_data.push(headers);
+
+            const rows = table.querySelectorAll('tbody tr');
+            rows.forEach(row => {
+                const rowData = [];
+                const cells = row.querySelectorAll('th, td');
+                cells.forEach(cell => {
+                    rowData.push(cell.textContent.trim()); // use textContent
+                });
+                ws_data.push(rowData);
+            });
+
+            let ws = XLSX.utils.aoa_to_sheet(ws_data);
+            XLSX.utils.book_append_sheet(wb, ws, "Manage Items Data");
+            XLSX.writeFile(wb, "ItemsCardsReport.xlsx");
+        });
+    </script>
+
+}
 @{
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb bg-transparent p-2 mb-0">
@@ -40,8 +84,8 @@
                 class="btn btn-outline-gray-600 d-inline-flex  align-items-center report mx-2">@Model.lblItems</a>
             <a href="Rep_ItemCards"
                 class="btn btn-gray-600 d-inline-flex  align-items-center report mx-2">@Model.lblItemCards</a>
-            <a href="Rep_ItemMovement"
-                class="btn btn-outline-gray-600 d-inline-flex  align-items-center report mx-2">@Model.lblItemMovement</a>
+            @* <a href="Rep_ItemMovement"
+                class="btn btn-outline-gray-600 d-inline-flex  align-items-center report mx-2">@Model.lblItemMovement</a> *@
             @if (Model.CanManageUsers)
             {
                 <a href="Rep_UserActivity"
@@ -55,5 +99,498 @@
 
         </div>
     </div>
+
+    <div class="mb-4">
+        <button id="exportExcel" class="btn btn-success">@Model.lblExport</button>
+        <button id="printBtn" class="btn btn-primary">@Model.lblPrint</button>
+    </div>
+
+    <div class="table-settings mb-4">
+        <form method="post" asp-page-handler="Action" class="row align-items-center">
+            
+            <div class="col col-md-6 col-lg-3 col-xl-4">
+                <div class="input-group me-2 me-lg-3 fmxw-400">
+                    <span class="input-group-text">
+                        <svg class="icon icon-xs" x-description="Heroicon name: solid/search"
+                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                            <path fill-rule="evenodd"
+                                d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                                clip-rule="evenodd"></path>
+                        </svg>
+                    </span>
+                    <input type="text" name="ItemName" class="form-control" placeholder="@Model.lblItemName" value="@Model.ItemName">
+                </div>
+            </div>
+            <div class="col-4 col-md-2 col-xl-1 ps-md-0 text-end">
+                <button type="submit" name="action" value="search" class="btn btn-primary">@Model.lblSubmit</button>
+            </div>
+
+             <div class="col-0 col-md-0 col-lg-2 col-xl-3"></div>
+
+            <div class="col-6 col-md-3 col-lg-2 col-xl-4 d-grid text-end">
+                <div class="position-relative">
+                    <button class="btn btn-secondary btn-sm" id="toggleDropdown" type="button">
+                        @Model.lblShowHideColumn
+                    </button>
+
+                    <div id="dropdownPanel" class="card p-2 shadow-sm position-absolute"
+                        style="right: 0; top: 100%; width: 200px; display: none; z-index: 1000;">
+                        <div class="form-check mb-1">
+                            <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="itemGroup"
+                            id="itemGroup"  @(Model.SelectedColumns.Contains("itemGroup") ? "checked" : "")>
+                            <label class="form-check-label" for="itemGroup">@Model.lblItemGroups</label>
+                        </div>
+                        <div class="form-check mb-1">
+                            <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="itemName"
+                                @(Model.SelectedColumns.Contains("itemName") ? "checked" : "")>
+                            <label class="form-check-label" for="itemName">@Model.lblItemName</label>
+                        </div>
+                        <div class="form-check mb-1">
+                            <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="itemCode"
+                                id="itemCode"  @(Model.SelectedColumns.Contains("itemCode") ? "checked" : "")>
+                            <label class="form-check-label" for="itemCode">@Model.lblItemCode</label>
+                        </div>
+                        <div class="form-check mb-1">
+                            <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="itemDesc"
+                                @(Model.SelectedColumns.Contains("itemDesc") ? "checked" : "")>
+                            <label class="form-check-label" for="itemDesc">@Model.lblItemNameDescription</label>
+                        </div>
+                        <div class="form-check mb-1">
+                            <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="unitOfMeasure"
+                                @(Model.SelectedColumns.Contains("unitOfMeasure") ? "checked" : "")>
+                            <label class="form-check-label" for="unitOfMeasure">@Model.lblUnitOfMeasure</label>
+                        </div>
+                        <div class="form-check mb-1">
+                            <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="chemical"
+                                @(Model.SelectedColumns.Contains("chemical") ? "checked" : "")>
+                            <label class="form-check-label" for="chemical">@Model.lblChemical</label>
+                        </div>
+                        <div class="form-check mb-1">
+                            <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="hazardType"
+                                @(Model.SelectedColumns.Contains("hazardType") ? "checked" : "")>
+                            <label class="form-check-label" for="hazardType">@Model.lblHazardType</label>
+                        </div>
+                        <div class="form-check mb-1">
+                            <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="quantity"
+                                id="quantity"  @(Model.SelectedColumns.Contains("quantity") ? "checked" : "")>
+                            <label class="form-check-label" for="quantity">@Model.lblQuantity</label>
+                        </div>
+                        <div class="form-check mb-1">
+                            <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="warehouse"
+                                id="warehouse"  @(Model.SelectedColumns.Contains("warehouse") ? "checked" : "")>
+                            <label class="form-check-label" for="warehouse">@Model.lblStores</label>
+                        </div>
+                        
+                        <div class="form-check mb-1 text-center">
+                            <button type="submit" name="action" value="updateColumns"
+                                class="btn btn-success btn-sm">Ok</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+ 
+
+    <div class="d-flex align-items-center justify-content-between">
+        <div>@Model.lblTotalItem : @Model.TotalItems</div>
+        <div>
+             @if (Model.TotalPages > 1)
+    {
+        <nav aria-label="Page navigation">
+            <ul class="pagination">
+
+                @* Previous button *@
+                @if (Model.CurrentPage > 1)
+                {
+
+                    <li class="page-item">
+                        <a class="page-link"
+                            href="?page=@(Model.CurrentPage - 1)&ItemName=@Model.ItemName">&laquo;</a>
+                    </li>
+                }
+
+                @* Show pages normally if the total pages are less than or equal to 10 *@
+                @if (Model.TotalPages <= 10)
+                {
+                    @for (int i = 1; i <= Model.TotalPages; i++)
+                    {
+                        <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                            <a class="page-link"
+                                href="?page=@i&ItemName=@Model.ItemName">@i</a>
+                        </li>
+                    }
+                }
+                else
+                {
+                    @* Show the first page, then ellipsis if there are skipped pages *@
+                    @if (Model.CurrentPage > 3)
+                    {
+                        <li class="page-item">
+                            <a class="page-link"
+                                href="?page=1&ItemName=@Model.ItemName">1</a>
+                        </li>
+                        <li class="page-item disabled">
+                            <span class="page-link">...</span>
+                        </li>
+                    }
+
+                    @* Show pages from (current-1) to (current+1) *@
+                    @for (int i = Math.Max(1, Model.CurrentPage - 1); i <= Math.Min(Model.TotalPages, Model.CurrentPage + 1); i++)
+                    {
+                        <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                            <a class="page-link"
+                                href="?page=@i&ItemName=@Model.ItemName">@i</a>
+                        </li>
+                    }
+
+                    @* Add "..." if there are skipped pages after the current page *@
+                    @if (Model.CurrentPage < Model.TotalPages - 1)
+                    {
+                        <li class="page-item disabled">
+                            <span class="page-link">...</span>
+                        </li>
+                    }
+
+                    @* Show the last page, if it's not already visible *@
+                    @if (Model.CurrentPage < Model.TotalPages - 2)
+                    {
+                        <li class="page-item">
+                            <a class="page-link"
+                                href="?page=@Model.TotalPages&ItemName=@Model.ItemName">@Model.TotalPages</a>
+                        </li>
+                    }
+                }
+
+                @* Last buttons *@
+                @if (Model.CurrentPage < Model.TotalPages)
+                {
+                    <li class="page-item">
+                        <a class="page-link"
+                            href="?page=@(Model.CurrentPage + 1)&ItemName=@Model.ItemName">&raquo;</a>
+                    </li>
+
+                }
+
+            </ul>
+        </nav>
+    }
+        </div>
+
+    </div>
+
+    @* Table  *@
+    <div class="card border-0 shadow mb-4">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-centered table-nowrap mb-0 rounded" >
+                    <thead class="thead-light">
+                        <tr>
+                            @if (Model.SelectedColumns.Contains("itemGroup"))
+                            {
+                                <th scope="col" class="border-0 rounded-start">Item Group</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("itemName"))
+                            {
+                                <th scope="col" class="border-0 rounded-start">Item Name</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("itemCode"))
+                            {
+                                <th scope="col" class="border-0 rounded-start">Item Code</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("itemDesc"))
+                            {
+                                <th scope="col" class="border-0 rounded-start">Item Description</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("unitOfMeasure"))
+                            {
+                                <th scope="col" class="border-0 rounded-start">Unit Of Measure</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("chemical"))
+                            {
+                                <th scope="col" class="border-0 rounded-start">Chemical</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("hazardType"))
+                            {
+                                <th scope="col" class="border-0 rounded-start">Hazard Type</th>
+                            }
+                            @* <th scope="col" class="border-0 rounded-start">Expiry Date</th>
+                            <th scope="col" class="border-0 rounded-start">Type Of Asset</th> *@
+                            @* <th scope="col" class="border-0 rounded-start">Minimum</th>
+                            <th scope="col" class="border-0 rounded-start">Reorder Limit</th> *@
+                            @if (Model.SelectedColumns.Contains("quantity"))
+                            {
+                                <th scope="col" class="border-0 rounded-start">Quantity Available</th>
+                            }
+                            @if (Model.SelectedColumns.Contains("warehouse"))
+                            {
+                                <th scope="col" class="border-0 rounded-start">Warehouse Name</th>
+                            }
+                            @* <th scope="col" class="border-0 rounded-start">Date Of Entry</th>
+                            <th scope="col" class="border-0 rounded-start">Room</th>
+                            <th scope="col" class="border-0 rounded-start">Shelf</th>
+                            <th scope="col" class="border-0 rounded-start">Supplier</th>
+                            <th scope="col" class="border-0 rounded-start">Receipt Document Type</th>
+                            <th scope="col" class="border-0 rounded-start">Receipt Document Number</th> *@                       
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach(var item in Model.ItemCardView){
+                            <tr>
+                                @if (Model.SelectedColumns.Contains("itemGroup"))
+                                {
+                                <td scope="row">@item.GroupCode</td>
+                                }
+                                @if (Model.SelectedColumns.Contains("itemName"))
+                                {
+                                <td scope="row">@item.ItemName</td>
+                                }
+                                @if (Model.SelectedColumns.Contains("itemCode"))
+                                {
+                                <td scope="row">@item.ItemCode</td>
+                                }
+                                @if (Model.SelectedColumns.Contains("itemDesc"))
+                                {
+                                <td scope="row">@item.ItemDescription</td>
+                                }
+                                @if (Model.SelectedColumns.Contains("unitOfMeasure"))
+                                {
+                                <td scope="row">@item.UnitOfMeasure</td>
+                                }
+                                @if (Model.SelectedColumns.Contains("chemical"))
+                                {
+                                <td scope="row">@item.Chemical</td>
+                                }
+                                @if (Model.SelectedColumns.Contains("hazardType"))
+                                {
+                                <td scope="row">@item.HazardTypeName</td>
+                                }
+
+                                @* <td scope="row">@item.ExpiryDate?.ToString("yyyy-MM-dd")</td> *@
+                                @* <td scope="row">@item.TypeOfAsset</td>  *@
+                                @* <td scope="row">@item.Minimum</td>
+                                <td scope="row">@item.ReorderLimit</td>  *@
+                                @if (Model.SelectedColumns.Contains("quantity"))
+                                {
+                                <td scope="row">@item.QuantityAvailable</td>
+                                }
+                                @if (Model.SelectedColumns.Contains("warehouse"))
+                                {
+                                <td scope="row">@item.WarehouseName</td>
+                                }
+                                @* <td scope="row">@item.DateOfEntry</td>
+                                <td scope="row">@item.RoomName</td>
+                                <td scope="row">@item.ShelfName</td>
+                                <td scope="row">@item.SupplierName</td>
+                                <td scope="row">@item.DocumentType</td>
+                                <td scope="row">@item.ReceiptDocumentNumber</td> *@
+
+                            </tr>
+                        }
+                       
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="d-flex align-items-center justify-content-between">
+        @* <div>@Model.lblTotalItem : @Model.TotalItems</div> *@
+        <div>
+            @if (Model.TotalPages > 1)
+            {
+            <nav aria-label="Page navigation">
+                <ul class="pagination">
+
+                    @* Previous button *@
+                    @if (Model.CurrentPage > 1)
+                    {
+
+                        <li class="page-item">
+                            <a class="page-link"
+                                href="?page=@(Model.CurrentPage - 1)&ItemName=@Model.ItemName">&laquo;</a>
+                        </li>
+                    }
+
+                    @* Show pages normally if the total pages are less than or equal to 10 *@
+                    @if (Model.TotalPages <= 10)
+                    {
+                        @for (int i = 1; i <= Model.TotalPages; i++)
+                        {
+                            <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                                <a class="page-link"
+                                    href="?page=@i&ItemName=@Model.ItemName">@i</a>
+                            </li>
+                        }
+                    }
+                    else
+                    {
+                        @* Show the first page, then ellipsis if there are skipped pages *@
+                        @if (Model.CurrentPage > 3)
+                        {
+                            <li class="page-item">
+                                <a class="page-link"
+                                    href="?page=1&ItemName=@Model.ItemName">1</a>
+                            </li>
+                            <li class="page-item disabled">
+                                <span class="page-link">...</span>
+                            </li>
+                        }
+
+                        @* Show pages from (current-1) to (current+1) *@
+                        @for (int i = Math.Max(1, Model.CurrentPage - 1); i <= Math.Min(Model.TotalPages, Model.CurrentPage + 1); i++)
+                        {
+                            <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                                <a class="page-link"
+                                    href="?page=@i&ItemName=@Model.ItemName">@i</a>
+                            </li>
+                        }
+
+                        @* Add "..." if there are skipped pages after the current page *@
+                        @if (Model.CurrentPage < Model.TotalPages - 1)
+                        {
+                            <li class="page-item disabled">
+                                <span class="page-link">...</span>
+                            </li>
+                        }
+
+                        @* Show the last page, if it's not already visible *@
+                        @if (Model.CurrentPage < Model.TotalPages - 2)
+                        {
+                            <li class="page-item">
+                                <a class="page-link"
+                                    href="?page=@Model.TotalPages&ItemName=@Model.ItemName">@Model.TotalPages</a>
+                            </li>
+                        }
+                    }
+
+                    @* Last buttons *@
+                    @if (Model.CurrentPage < Model.TotalPages)
+                    {
+                        <li class="page-item">
+                            <a class="page-link"
+                                href="?page=@(Model.CurrentPage + 1)&ItemName=@Model.ItemName">&raquo;</a>
+                        </li>
+                    }
+                </ul>
+            </nav>
+            }
+        </div>
+    </div>
+
+
+
+    <div class="table-responsive" id="exportTableContainer" style="display: none;">
+        <table class="table table-centered table-nowrap mb-0 rounded" id="exportTable">
+            <thead class="thead-light">
+                <tr>
+                    @if (Model.SelectedColumns.Contains("itemGroup"))
+                    {
+                        <th scope="col" class="border-0 rounded-start">Item Group</th>
+                    }
+                    @if (Model.SelectedColumns.Contains("itemName"))
+                    {
+                        <th scope="col" class="border-0 rounded-start">Item Name</th>
+                    }
+                    @if (Model.SelectedColumns.Contains("itemCode"))
+                    {
+                        <th scope="col" class="border-0 rounded-start">Item Code</th>
+                    }
+                    @if (Model.SelectedColumns.Contains("itemDesc"))
+                    {
+                        <th scope="col" class="border-0 rounded-start">Item Description</th>
+                    }
+                    @if (Model.SelectedColumns.Contains("unitOfMeasure"))
+                    {
+                        <th scope="col" class="border-0 rounded-start">Unit Of Measure</th>
+                    }
+                    @if (Model.SelectedColumns.Contains("chemical"))
+                    {
+                        <th scope="col" class="border-0 rounded-start">Chemical</th>
+                    }
+                    @if (Model.SelectedColumns.Contains("hazardType"))
+                    {
+                        <th scope="col" class="border-0 rounded-start">Hazard Type</th>
+                    }
+                    @* <th scope="col" class="border-0 rounded-start">Expiry Date</th>
+                    <th scope="col" class="border-0 rounded-start">Type Of Asset</th> *@
+                    @* <th scope="col" class="border-0 rounded-start">Minimum</th>
+                    <th scope="col" class="border-0 rounded-start">Reorder Limit</th> *@
+                    @if (Model.SelectedColumns.Contains("quantity"))
+                    {
+                        <th scope="col" class="border-0 rounded-start">Quantity Available</th>
+                    }
+                    @if (Model.SelectedColumns.Contains("warehouse"))
+                    {
+                        <th scope="col" class="border-0 rounded-start">Warehouse Name</th>
+                    }
+                    @* <th scope="col" class="border-0 rounded-start">Date Of Entry</th>
+                    <th scope="col" class="border-0 rounded-start">Room</th>
+                    <th scope="col" class="border-0 rounded-start">Shelf</th>
+                    <th scope="col" class="border-0 rounded-start">Supplier</th>
+                    <th scope="col" class="border-0 rounded-start">Receipt Document Type</th>
+                    <th scope="col" class="border-0 rounded-start">Receipt Document Number</th> *@                      
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(var item in Model.ItemCardView){
+                    <tr>
+                        @if (Model.SelectedColumns.Contains("itemGroup"))
+                        {
+                        <td scope="row">@item.GroupCode</td>
+                        }
+                        @if (Model.SelectedColumns.Contains("itemName"))
+                        {
+                        <td scope="row">@item.ItemName</td>
+                        }
+                        @if (Model.SelectedColumns.Contains("itemCode"))
+                        {
+                        <td scope="row">@item.ItemCode</td>
+                        }
+                        @if (Model.SelectedColumns.Contains("itemDesc"))
+                        {
+                        <td scope="row">@item.ItemDescription</td>
+                        }
+                        @if (Model.SelectedColumns.Contains("unitOfMeasure"))
+                        {
+                        <td scope="row">@item.UnitOfMeasure</td>
+                        }
+                        @if (Model.SelectedColumns.Contains("chemical"))
+                        {
+                        <td scope="row">@item.Chemical</td>
+                        }
+                        @if (Model.SelectedColumns.Contains("hazardType"))
+                        {
+                        <td scope="row">@item.HazardTypeName</td>
+                        }
+                        @* <td scope="row">@item.ExpiryDate?.ToString("yyyy-MM-dd")</td> *@
+                        @* <td scope="row">@item.TypeOfAsset</td>  *@
+                        @* <td scope="row">@item.Minimum</td>
+                        <td scope="row">@item.ReorderLimit</td>  *@
+                        @if (Model.SelectedColumns.Contains("quantity"))
+                        {
+                        <td scope="row">@item.QuantityAvailable</td>
+                        }
+                        @if (Model.SelectedColumns.Contains("warehouse"))
+                        {
+                        <td scope="row">@item.WarehouseName</td>
+                        }
+                        @* <td scope="row">@item.DateOfEntry</td>
+                        <td scope="row">@item.RoomName</td>
+                        <td scope="row">@item.ShelfName</td>
+                        <td scope="row">@item.SupplierName</td>
+                        <td scope="row">@item.DocumentType</td>
+                        <td scope="row">@item.ReceiptDocumentNumber</td> *@
+                        @* <td>
+                            <a href="/ViewItemCards">View</a>
+                        </td> *@
+
+                    </tr>
+                }
+                
+            </tbody>
+        </table>
+    </div>
 }
+
 

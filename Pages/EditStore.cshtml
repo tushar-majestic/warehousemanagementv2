@@ -94,9 +94,9 @@
                                     {
                                         foreach (var item in Model.StoreTypeList)
                                         {
-                                            var selectedAttr = item.Value.Trim() == Model.StoreType.Trim() ? "selected=\"selected\"" : "";
+                                            var selectedAttr = item.StoreType.Trim() == Model.StoreType.Trim() ? "selected=\"selected\"" : "";
 
-                                            @:<option value="@item.Value" @Html.Raw(selectedAttr)>@item.Text</option>
+                                            @:<option value="@item.StoreType" @Html.Raw(selectedAttr)>@item.StoreType</option>
                                         }
                                     }
                                 </select>
