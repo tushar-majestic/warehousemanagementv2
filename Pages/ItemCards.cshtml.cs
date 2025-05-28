@@ -27,6 +27,7 @@ namespace LabMaterials.Pages
         public List<SelectListItem> ItemList { get; set; }
         public List<Shelf> Shelves { get; set; }
         public int? ReportId;
+        public string ReportType;
         public int? InboxId;
         public class ItemDto
         {
@@ -58,56 +59,107 @@ namespace LabMaterials.Pages
             Shelves = _context.Shelves.ToList();
             // AllItems = _context.Items.ToList();
             this.ReportId = HttpContext.Session.GetInt32("ReportId");
+            this.ReportType = HttpContext.Session.GetString("ReportType");
+
             // this.MessageId = HttpContext.Session.GetInt32("MessageId");
 
-            if (ReportId.HasValue)
+            if (ReportType == "Receiving")
             {
-                var receivingItems = await _context.ReceivingItems
-                .Include(ri => ri.Item)
-                .Include(ri => ri.ReceivingReport)
-                .Where(ri => ri.ReceivingReportId == ReportId.Value)
-                .ToListAsync();
-
-                ItemCardsFromReport = (from ri in receivingItems
-                                       join unit in _context.Units on ri.Item.UnitId equals unit.Id
-                                       select new LabMaterials.DB.ItemCardExtended
-                                       {
-                                           ItemCode = ri.Item.ItemCode,
-                                           ItemName = ri.Item.ItemName,
-                                           GroupCode = ri.Item.GroupCode,
-                                           ItemTypeCode = ri.Item.ItemTypeCode,
-                                           ItemDescription = ri.Item.ItemDescription,
-                                           ItemId = ri.ItemId,
-                                           HazardTypeName = ri.Item.HazardTypeName,
-                                           ExpiryDate = ri.Item.ExpiryDate,
-                                           QuantityReceived = ri.Quantity,
-                                           UnitOfmeasure = unit.UnitCode,
-                                           Chemical = (bool)ri.Item.Chemical ? "Yes" : "No"
-                                       }).ToList();
-
-
-                var ReceivingReport = _context.ReceivingReports
-                .Where(ri => ri.Id == ReportId.Value).FirstOrDefault();
-
-                if (ReceivingReport != null)
+                if (ReportId.HasValue)
                 {
-                    ItemCardBatch = new ItemCardBatch
+                    var receivingItems = await _context.ReceivingItems
+                    .Include(ri => ri.Item)
+                    .Include(ri => ri.ReceivingReport)
+                    .Where(ri => ri.ReceivingReportId == ReportId.Value)
+                    .ToListAsync();
+
+                    ItemCardsFromReport = (from ri in receivingItems
+                                           join unit in _context.Units on ri.Item.UnitId equals unit.Id
+                                           select new LabMaterials.DB.ItemCardExtended
+                                           {
+                                               ItemCode = ri.Item.ItemCode,
+                                               ItemName = ri.Item.ItemName,
+                                               GroupCode = ri.Item.GroupCode,
+                                               ItemTypeCode = ri.Item.ItemTypeCode,
+                                               ItemDescription = ri.Item.ItemDescription,
+                                               ItemId = ri.ItemId,
+                                               HazardTypeName = ri.Item.HazardTypeName,
+                                               ExpiryDate = ri.Item.ExpiryDate,
+                                               QuantityReceived = ri.Quantity,
+                                               UnitOfmeasure = unit.UnitCode,
+                                               Chemical = (bool)ri.Item.Chemical ? "Yes" : "No"
+                                           }).ToList();
+
+
+                    var ReceivingReport = _context.ReceivingReports
+                    .Where(ri => ri.Id == ReportId.Value).FirstOrDefault();
+
+                    if (ReceivingReport != null)
                     {
-                        DateOfEntry = ReceivingReport.CreatedAt,
-                        SupplierId = ReceivingReport.SupplierId,
-                        DocumentType = ReceivingReport.BasedOnDocument,
-                        ReceiptDocumentnumber = ReceivingReport.DocumentNumber
-                    };
+                        ItemCardBatch = new ItemCardBatch
+                        {
+                            DateOfEntry = ReceivingReport.CreatedAt,
+                            SupplierId = ReceivingReport.SupplierId,
+                            DocumentType = ReceivingReport.BasedOnDocument,
+                            ReceiptDocumentnumber = ReceivingReport.DocumentNumber
+                        };
 
-                    ItemCard = new ItemCard
-                    {
-                        StoreId = int.Parse(ReceivingReport.ReceivingWarehouse)
-                    };
+                        ItemCard = new ItemCard
+                        {
+                            StoreId = int.Parse(ReceivingReport.ReceivingWarehouse)
+                        };
 
 
+                    }
                 }
             }
+            else if (ReportType == "ReturnItems")
+            {
+                var receivingItems = await _context.ReturnRequestItems
+                    .Where(ri => ri.ReturnRequestId == ReportId.Value)
+                    .ToListAsync();
 
+                ItemCardsFromReport = (from ri in receivingItems
+                                        join ic in _context.ItemCards on ri.ItemCardId equals ic.Id
+                                       select new LabMaterials.DB.ItemCardExtended
+                                       {
+                                           ItemCode = ri.ItemCode,
+                                           ItemName = ri.ItemNameArabic,
+                                           GroupCode = ri.ItemGroup,
+                                            // itemTypeCode = ri.Item.ItemTypeCode,
+                                           ItemDescription = ri.ItemDescription,
+                                           ItemId = ri.ItemCardId,
+                                           HazardTypeName = ri.RiskRating,
+                                           //    ExpiryDate = ri.Item.ExpiryDate,
+                                           QuantityReceived = ri.ReturnedQuantity,
+                                           //    UnitOfmeasure = unit.UnitCode,
+                                           //    Chemical = (bool)ri.Item.Chemical ? "Yes" : "No"
+                                       }).ToList();
+                                           
+                    var ReceivingReport = _context.ReturnRequests
+                    .Where(ri => ri.Id == ReportId.Value).FirstOrDefault();
+
+                    if (ReceivingReport != null)
+                    {
+                        ItemCardBatch = new ItemCardBatch
+                        {
+                            DateOfEntry = ReceivingReport.CreatedAt,
+                            // SupplierId = ReceivingReport.SupplierId,
+                            // DocumentType = ReceivingReport.BasedOnDocument,
+                            ReceiptDocumentnumber = ReceivingReport.OrderNumber
+                        };
+
+                        ItemCard = new ItemCard
+                        {
+                            StoreId = ReceivingReport.WarehouseId
+                        };
+
+
+                    }
+
+
+                
+            }
             await PopulateDropdownsAsync(ItemCard.StoreId);
             ViewData["ItemId"] = ItemList;
             // AllItemsDto = _context.Items.Select(i => new ItemDto

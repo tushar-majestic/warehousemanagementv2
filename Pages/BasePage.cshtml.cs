@@ -24,6 +24,8 @@ namespace LabMaterials.Pages
         public bool CanManageItemGroup { get; set; }
         public bool CanGenerateDispensingRequest { get; set; }
         public bool CanDeleteSupplier { get; set; }
+        public bool CanAddStore { get; set; }
+
 
 
         public string dir { get; set; } = "rtl";
@@ -63,6 +65,7 @@ namespace LabMaterials.Pages
                 CanSeeReports = HttpContext.Session.GetInt32("CanSeeReports") == 1;
                 CanManageItemGroup = HttpContext.Session.GetInt32("CanManageItemGroup") == 1;
                 CanManageRequests = HttpContext.Session.GetInt32("CanManageRequests") == 1;
+                CanAddStore = HttpContext.Session.GetInt32("CanAddStore") == 1;
                 CanGenerateReceivingRequest = HttpContext.Session.GetInt32("CanGenerateReceivingRequest") == 1;
                 CanDeleteSupplier = HttpContext.Session.GetInt32("CanDeleteSupplier") == 1;
                 CanManageItemCard = HttpContext.Session.GetInt32("CanManageItemCard") == 1;
