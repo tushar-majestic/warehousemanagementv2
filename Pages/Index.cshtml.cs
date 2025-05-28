@@ -200,6 +200,7 @@ namespace LabMaterials.Pages
               HttpContext.Session.SetInt32("CanGenerateReceivingRequest", Privileges.Contains("CanGenerateReceivingRequest") ? 1 : 0);
             HttpContext.Session.SetInt32("CanGenerateDispensingRequest", Privileges.Contains("CanGenerateDispensingRequest") ? 1 : 0);
             HttpContext.Session.SetInt32("CanReturnItems", Privileges.Contains("CanReturnItems") ? 1 : 0);
+            HttpContext.Session.SetInt32("CanAddStore", Privileges.Contains("CanAddStore") ? 1 : 0);
             HttpContext.Session.SetString("LastLogin", dbUser.LastLoginTime.HasValue ? dbUser.LastLoginTime.Value.ToString() : "");
 
             HttpContext.Session.SetInt32("CanDeleteSupplier", Privileges.Contains("CanDeleteSupplier") ? 1 : 0);

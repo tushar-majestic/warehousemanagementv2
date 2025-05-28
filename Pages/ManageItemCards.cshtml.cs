@@ -123,7 +123,7 @@ namespace LabMaterials.Pages
             base.ExtractSessionData();
             FillLables();
             LoadSelectedColumns();
-            if (this.CanManageItems)
+            if (this.CanManageItemCard)
             {
                 if (HttpContext.Request.Query.ContainsKey("page"))
                 {

@@ -60,7 +60,7 @@ namespace LabMaterials.Pages
             this.ReceivingWarehouse = dbContext.Stores.Where(s => s.StoreId == int.Parse(Report.ReceivingWarehouse)).Select(s => s.StoreName)
                     .FirstOrDefault();
 
-            this.ReceipientManager = dbContext.Users.Where(u => u.JobNumber == Report.RecipientEmployeeId).Select(s => s.FullName).FirstOrDefault();
+            this.ReceipientManager = dbContext.Users.Where(u => u.UserId == Report.RecipientEmployeeId).Select(s => s.FullName).FirstOrDefault();
 
             this.TechnicalMember = dbContext.Users.Where(u => u.UserId == Report.TechnicalMemberId).Select(s => s.FullName).FirstOrDefault();
 

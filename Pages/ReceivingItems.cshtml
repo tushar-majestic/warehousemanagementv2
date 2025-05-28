@@ -1,5 +1,52 @@
 @page
 @model LabMaterials.Pages.ReceivingItemsModel
+@section Scripts
+{
+    <script type="text/javascript" language="javascript">
+        const toggleButton = document.getElementById('toggleDropdown');
+        const dropdownPanel = document.getElementById('dropdownPanel');
+
+        toggleButton.addEventListener('click', function () {
+            dropdownPanel.style.display = (dropdownPanel.style.display === 'none' || dropdownPanel.style.display === '') ? 'block' : 'none';
+        });
+
+        // Optional: hide when click outside
+        document.addEventListener('click', function (e) {
+            if (!toggleButton.contains(e.target) && !dropdownPanel.contains(e.target)) {
+                dropdownPanel.style.display = 'none';
+            }
+        });
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script>
+        document.getElementById('exportExcel').addEventListener('click', function () {
+            let table = document.querySelector('#exportTable'); // use hidden export table directly
+            let wb = XLSX.utils.book_new();
+            let ws_data = [];
+
+            // Get headers
+            const headers = Array.from(table.querySelectorAll('thead th'))
+                .map(th => th.textContent.trim()); // use textContent instead of innerText
+            ws_data.push(headers);
+
+            // Get rows
+            const rows = table.querySelectorAll('tbody tr');
+            rows.forEach(row => {
+                const rowData = [];
+                const cells = row.querySelectorAll('th, td');
+                cells.forEach(cell => {
+                    rowData.push(cell.textContent.trim()); // use textContent
+                });
+                ws_data.push(rowData);
+            });
+
+            // Create worksheet and trigger download
+            let ws = XLSX.utils.aoa_to_sheet(ws_data);
+            XLSX.utils.book_append_sheet(wb, ws, "Manage Users Data");
+            XLSX.writeFile(wb, "ReturnItem.xlsx");
+        });
+    </script>
+}
 @{
 
 	<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center py-4 pb-2">
@@ -32,6 +79,534 @@
 
         }
 
+    </div>
+    <div class="mb-4">
+        <button id="exportExcel" class="btn btn-success">@Model.lblExportExcel</button>
+        <button id="printBtn" class="btn btn-primary">@Model.lblPrintTable</button>
+    </div>
+    @* show hide column  *@
+    <div class="table-settings mb-4">
+        <form method="post" asp-page-handler="Action" class="row align-items-center">
+
+            <div class="col col-md-3 col-lg-3 col-xl-3">
+                <div class="input-group me-2 me-lg-3 fmxw-400">
+                    <span class="input-group-text">
+                        <svg class="icon icon-xs" x-description="Heroicon name: solid/search"
+                            xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                            <path fill-rule="evenodd"
+                                d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                                clip-rule="evenodd"></path>
+                        </svg>
+                    </span>
+                    <input type="text" name="DocumentNumber" class="form-control" placeholder="DocumentNumber"
+                        value="@Model.DocumentNumber">
+
+                </div>
+            </div>
+            <div class="col-4 col-md-2 col-xl-1 ps-md-0 ">
+                <button type="submit" name="action" value="search" class="btn btn-primary">@Model.lblSearch</button>
+            </div>
+
+            <div class="col text-end position-relative">
+                <button type="button" id="toggleDropdown" class="btn btn-secondary">
+                    @Model.lblShowHideColumn
+                </button>
+
+                <!-- DROPDOWN PANEL GOES HERE -->
+                <div id="dropdownPanel" class="card p-2 shadow-sm position-absolute"
+                    style="right: 0; top: 100%; width: 200px; display: none; z-index: 1000;">
+
+                    <!-- Your checkboxes here -->
+                    <div class="form-check mb-1">
+                        <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="serialNumber"
+                            id="serialNumber" @(Model.SelectedColumns.Contains("serialNumber") ? "checked" : "")>
+                        <label class="form-check-label" for="serialNumber">serial Number</label>
+                    </div>
+                    <div class="form-check mb-1">
+                        <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="fiscalYear"
+                            id="fiscalYear" @(Model.SelectedColumns.Contains("fiscalYear") ? "checked" : "")>
+                        <label class="form-check-label" for="fiscalYear">Fiscal Year</label>
+                    </div>
+                    <div class="form-check mb-1">
+                        <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="receivingDate"
+                            id="receivingDate" @(Model.SelectedColumns.Contains("receivingDate") ? "checked" : "")>
+                        <label class="form-check-label" for="receivingDate">Receiving Date</label>
+                    </div>
+                    <div class="form-check mb-1">
+                        <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="receipientSector"
+                            id="receipientSector" @(Model.SelectedColumns.Contains("receipientSector") ? "checked" : "")>
+                        <label class="form-check-label" for="receipientSector">Receipient Sector</label>
+                    </div>
+                    <div class="form-check mb-1">
+                        <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="sectorNumber"
+                            id="sectorNumber" @(Model.SelectedColumns.Contains("sectorNumber") ? "checked" : "")>
+                        <label class="form-check-label" for="sectorNumber">Sector Number</label>
+                    </div>
+                    <div class="form-check mb-1">
+                        <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="receivingWarehouse"
+                            id="receivingWarehouse" @(Model.SelectedColumns.Contains("receivingWarehouse") ? "checked" : "")>
+                        <label class="form-check-label" for="receivingWarehouse">Receiving Warehouse</label>
+                    </div>
+
+                    <div class="form-check mb-1">
+                        <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="basedOnDocument"
+                            id="basedOnDocument" @(Model.SelectedColumns.Contains("basedOnDocument") ? "checked" : "")>
+                        <label class="form-check-label" for="basedOnDocument">Based On Document</label>
+                    </div>
+
+                    <div class="form-check mb-1">
+                        <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="documentNumber"
+                            id="documentNumber" @(Model.SelectedColumns.Contains("documentNumber") ? "checked" : "")>
+                        <label class="form-check-label" for="documentNumber">Document Number</label>
+                    </div>
+
+                    <div class="form-check mb-1">
+                        <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="documentDate"
+                            id="documentDate" @(Model.SelectedColumns.Contains("documentDate") ? "checked" : "")>
+                        <label class="form-check-label" for="documentDate">Document Date</label>
+                    </div>
+
+                    <div class="form-check mb-1">
+                        <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="supplier"
+                            id="supplier" @(Model.SelectedColumns.Contains("supplier") ? "checked" : "")>
+                        <label class="form-check-label" for="supplier">Supplier</label>
+                    </div>
+
+                    <div class="form-check mb-1">
+                        <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="attachment"
+                            id="attachment" @(Model.SelectedColumns.Contains("attachment") ? "checked" : "")>
+                        <label class="form-check-label" for="attachment">Attachment</label>
+                    </div>
+
+                    <div class="form-check mb-1 text-center">
+                        <button type="submit" name="action" value="updateColumns" class="btn btn-success btn-sm">Ok</button>
+                    </div>
+
+
+                </div>
+            </div>
+
+        </form>
+    </div>
+    @if (Model.TotalPages > 1)
+    {
+        <nav aria-label="Page navigation">
+            <ul class="pagination">
+
+                @* Previous button *@
+                @if (Model.CurrentPage > 1)
+                {
+
+                    <li class="page-item">
+                        <a class="page-link" href="?page=@(Model.CurrentPage - 1)&DocumentNumber=@Model.DocumentNumber">&laquo;</a>
+                    </li>
+                }
+
+                @* Show pages normally if the total pages are less than or equal to 10 *@
+                @if (Model.TotalPages <= 10)
+                {
+                    @for (int i = 1; i <= Model.TotalPages; i++)
+                    {
+                        <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                            <a class="page-link" href="?page=@i&DocumentNumber=@Model.DocumentNumber">@i</a>
+                        </li>
+                    }
+                }
+                else
+                {
+                    @* Show the first page, then ellipsis if there are skipped pages *@
+                    @if (Model.CurrentPage > 3)
+                    {
+                        <li class="page-item">
+                            <a class="page-link" href="?page=1&DocumentNumber=@Model.DocumentNumber">1</a>
+                        </li>
+                        <li class="page-item disabled">
+                            <span class="page-link">...</span>
+                        </li>
+                    }
+
+                    @* Show pages from (current-1) to (current+1) *@
+                    @for (int i = Math.Max(1, Model.CurrentPage - 1); i <= Math.Min(Model.TotalPages, Model.CurrentPage + 1); i++)
+                    {
+                        <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                            <a class="page-link" href="?page=@i&DocumentNumber=@Model.DocumentNumber">@i</a>
+                        </li>
+                    }
+
+                    @* Add "..." if there are skipped pages after the current page *@
+                    @if (Model.CurrentPage < Model.TotalPages - 1)
+                    {
+                        <li class="page-item disabled">
+                            <span class="page-link">...</span>
+                        </li>
+                    }
+
+
+                    @* Show the last page, if it's not already visible *@
+                    @if (Model.CurrentPage < Model.TotalPages - 2)
+                    {
+                        <li class="page-item">
+                            <a class="page-link" href="?page=@Model.TotalPages&DocumentNumber=@Model.DocumentNumber">@Model.TotalPages</a>
+                        </li>
+                    }
+                }
+
+                @* Last buttons *@
+                @if (Model.CurrentPage < Model.TotalPages)
+                {
+                    <li class="page-item">
+                        <a class="page-link" href="?page=@(Model.CurrentPage + 1)&DocumentNumber=@Model.DocumentNumber">&raquo;</a>
+                    </li>
+
+                }
+
+            </ul>
+        </nav>
+    }
+     <div class="card border-0 shadow mb-4">
+        <div class="card-body">
+            <div class="table-responsive" >
+              
+                <table class="table table-centered table-nowrap mb-0 rounded" >
+                    <thead class="thead-light">
+                        <tr>
+                            
+                            @* <th scope="col" class="border-0 rounded-start">#</th> *@
+                            @if (Model.SelectedColumns.Contains("serialNumber")){
+                               <th scope="col" class="border-0">Serial Number</th>
+                            }
+                            
+                            @if (Model.SelectedColumns.Contains("fiscalYear")){
+                                <th scope="col" class="border-0">Fiscal Year</th>
+                            }
+
+                            @if (Model.SelectedColumns.Contains("receivingDate")){
+                                <th scope="col" class="border-0">Receiving Date</th>
+                            }
+
+                            @if (Model.SelectedColumns.Contains("recipientSector"))
+                            {
+                                <th scope="col" class="border-0">Receipient Sector</th>
+                            }
+
+                            @if (Model.SelectedColumns.Contains("sectorNumber"))
+                            {
+                                <th scope="col" class="border-0">Sector Number</th>
+                            }
+
+                            @if (Model.SelectedColumns.Contains("receivingWarehouse"))
+                            {    
+                                <th scope="col" class="border-0">Receiving Warehouse</th>
+                            }
+
+                            @if (Model.SelectedColumns.Contains("basedOnDocument"))
+                            {    
+                                <th scope="col" class="border-0">Based On Document</th>
+                            }
+
+                            @if (Model.SelectedColumns.Contains("documentNumber"))
+                            {    
+                                <th scope="col" class="border-0">Document Number</th>
+                            }
+
+                            @if (Model.SelectedColumns.Contains("documentDate"))
+                            {    
+                                <th scope="col" class="border-0">Document Date</th>
+                            }
+
+                            @if (Model.SelectedColumns.Contains("supplier"))
+                            {    
+                                <th scope="col" class="border-0">Supplier</th>
+                            }
+
+                             @if (Model.SelectedColumns.Contains("attachment"))
+                            {    
+                                <th scope="col" class="border-0">Attachment</th>
+                            }
+
+                            <th scope="col" class="border-0 rounded-end">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if(Model.RequestSent !=null){
+                            @for (int i = 0; i < Model.RequestSent.Count; i++)
+                            {    
+                                var req = Model.RequestSent[i];
+                                var ReceivingWarehouse = Model.Warehouses != null
+                                ? Model.Warehouses.FirstOrDefault(i => i.StoreId == int.Parse(req.ReceivingWarehouse))?.StoreName ?? ""
+                                : "";
+
+                                <tr>
+                                    @* <td>@(i + 1)</td> *@
+                                    @if (Model.SelectedColumns.Contains("serialNumber"))
+                                    {
+                                        <td>@req.SerialNumber</td>
+                                    }
+                                    @if (Model.SelectedColumns.Contains("fiscalYear"))
+                                    {
+                                        <td>@req.FiscalYear</td>
+                                    }
+                                    @if (Model.SelectedColumns.Contains("receivingDate"))
+                                    {
+                                        <td>@req.ReceivingDate.ToString("yyyy-MM-dd")</td>
+                                    }
+                                    @if (Model.SelectedColumns.Contains("recipientSector"))
+                                    {
+                                        <td>@req.RecipientSector</td>
+                                    }
+                                    @if (Model.SelectedColumns.Contains("sectorNumber"))
+                                    {
+                                        <td>@req.SectorNumber</td>
+                                    }
+                                    @if (Model.SelectedColumns.Contains("receivingWarehouse"))
+                                    {
+                                        <td>@ReceivingWarehouse</td>
+                                    }
+                                    @if (Model.SelectedColumns.Contains("basedOnDocument"))
+                                    {
+                                        <td>@req.BasedOnDocument</td>
+                                    }
+                                    @if (Model.SelectedColumns.Contains("documentNumber"))
+                                    {
+                                        <td>@req.DocumentNumber</td>
+                                    }
+
+                                    @if (Model.SelectedColumns.Contains("documentDate"))
+                                    {
+                                        <td>@req.DocumentDate.ToString("yyyy-MM-dd")</td>
+                                    }
+                                    @if (Model.SelectedColumns.Contains("supplier"))
+                                    {
+                                        <td>@req.Supplier?.SupplierName</td>
+                                    }
+                                    @if (Model.SelectedColumns.Contains("attachment"))
+                                    {
+                                        @if(req.AttachmentPath != ""){
+                                            <td><a href="@req.AttachmentPath">Download File</a></td>
+                                        }
+                                        else{
+                                            <td>-</td>
+                                        }
+                                    }
+                                    
+                                   
+
+                                    
+                                
+                                    
+                                    <td>
+                                        <form method="post">
+                                            <input type="hidden" value="@req.Id" name="RequestReportId" />
+                                             <input type="submit" value="@Model.lblView" class="btn btn-secondary" asp-page-handler="View" />
+                                        </form>
+                                        
+                                    </td>
+                                </tr>
+                            }
+                        }
+                       
+                        <tr>
+                            <td class="border-0" colspan="8">
+                                <div>@Model.lblTotalItem :@Model.TotalItems</div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>  
+    </div>
+
+    @if (Model.TotalPages > 1)
+    {
+        <nav aria-label="Page navigation">
+            <ul class="pagination">
+
+                @* Previous button *@
+                @if (Model.CurrentPage > 1)
+                {
+
+                    <li class="page-item">
+                        <a class="page-link" href="?page=@(Model.CurrentPage - 1)&DocumentNumber=@Model.DocumentNumber">&laquo;</a>
+                    </li>
+                }
+
+                @* Show pages normally if the total pages are less than or equal to 10 *@
+                @if (Model.TotalPages <= 10)
+                {
+                    @for (int i = 1; i <= Model.TotalPages; i++)
+                    {
+                        <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                            <a class="page-link" href="?page=@i&DocumentNumber=@Model.DocumentNumber">@i</a>
+                        </li>
+                    }
+                }
+                else
+                {
+                    @* Show the first page, then ellipsis if there are skipped pages *@
+                    @if (Model.CurrentPage > 3)
+                    {
+                        <li class="page-item">
+                            <a class="page-link" href="?page=1&DocumentNumber=@Model.DocumentNumber">1</a>
+                        </li>
+                        <li class="page-item disabled">
+                            <span class="page-link">...</span>
+                        </li>
+                    }
+
+                    @* Show pages from (current-1) to (current+1) *@
+                    @for (int i = Math.Max(1, Model.CurrentPage - 1); i <= Math.Min(Model.TotalPages, Model.CurrentPage + 1); i++)
+                    {
+                        <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                            <a class="page-link" href="?page=@i&DocumentNumber=@Model.DocumentNumber">@i</a>
+                        </li>
+                    }
+
+                    @* Add "..." if there are skipped pages after the current page *@
+                    @if (Model.CurrentPage < Model.TotalPages - 1)
+                    {
+                        <li class="page-item disabled">
+                            <span class="page-link">...</span>
+                        </li>
+                    }
+
+
+                    @* Show the last page, if it's not already visible *@
+                    @if (Model.CurrentPage < Model.TotalPages - 2)
+                    {
+                        <li class="page-item">
+                            <a class="page-link" href="?page=@Model.TotalPages&DocumentNumber=@Model.DocumentNumber">@Model.TotalPages</a>
+                        </li>
+                    }
+                }
+
+                @* Last buttons *@
+                @if (Model.CurrentPage < Model.TotalPages)
+                {
+                    <li class="page-item">
+                        <a class="page-link" href="?page=@(Model.CurrentPage + 1)&DocumentNumber=@Model.DocumentNumber">&raquo;</a>
+                    </li>
+
+                }
+
+            </ul>
+        </nav>
+    }
+
+     <div class="table-responsive"  id="exportTableContainer" style="display: none;">
+        <table class="table table-centered table-nowrap mb-0 rounded" id="exportTable">
+            <thead class="thead-light">
+                <tr>
+                    @if (Model.SelectedColumns.Contains("serialNumber")){
+                        <th scope="col" class="border-0">Serial Number</th>
+                    }
+                            
+                    @if (Model.SelectedColumns.Contains("fiscalYear")){
+                        <th scope="col" class="border-0">Fiscal Year</th>
+                    }
+
+                    @if (Model.SelectedColumns.Contains("receivingDate")){
+                        <th scope="col" class="border-0">Receiving Date</th>
+                    }
+
+                    @if (Model.SelectedColumns.Contains("recipientSector"))
+                    {
+                        <th scope="col" class="border-0">Receipient Sector</th>
+                    }
+
+                    @if (Model.SelectedColumns.Contains("sectorNumber"))
+                    {
+                        <th scope="col" class="border-0">Sector Number</th>
+                    }
+
+                    @if (Model.SelectedColumns.Contains("receivingWarehouse"))
+                    {    
+                        <th scope="col" class="border-0">Receiving Warehouse</th>
+                    }
+
+                    @if (Model.SelectedColumns.Contains("basedOnDocument"))
+                    {    
+                        <th scope="col" class="border-0">Based On Document</th>
+                    }
+
+                    @if (Model.SelectedColumns.Contains("documentNumber"))
+                    {    
+                        <th scope="col" class="border-0">Document Number</th>
+                    }
+
+                    @if (Model.SelectedColumns.Contains("documentDate"))
+                    {    
+                        <th scope="col" class="border-0">Document Date</th>
+                    }
+
+                    @if (Model.SelectedColumns.Contains("supplier"))
+                    {    
+                        <th scope="col" class="border-0">Supplier</th>
+                    }
+
+                    
+
+                </tr>
+            </thead>
+            <tbody>
+                @if(Model.RequestSent !=null){
+                    @for (int i = 0; i < Model.RequestSent.Count; i++)
+                    {    
+                        var req = Model.RequestSent[i];
+                         var ReceivingWarehouse = Model.Warehouses != null
+                                ? Model.Warehouses.FirstOrDefault(i => i.StoreId == int.Parse(req.ReceivingWarehouse))?.StoreName ?? ""
+                                : "";
+                        <tr>
+                            @* <td>@(i + 1)</td> *@
+                            @if (Model.SelectedColumns.Contains("serialNumber"))
+                            {
+                                <td>@req.SerialNumber</td>
+                            }
+                            @if (Model.SelectedColumns.Contains("fiscalYear"))
+                            {
+                                <td>@req.FiscalYear</td>
+                            }
+                            @if (Model.SelectedColumns.Contains("receivingDate"))
+                            {
+                                <td>@req.ReceivingDate.ToString("yyyy-MM-dd")</td>
+                            }
+                            @if (Model.SelectedColumns.Contains("recipientSector"))
+                            {
+                                <td>@req.RecipientSector</td>
+                            }
+                            @if (Model.SelectedColumns.Contains("sectorNumber"))
+                            {
+                                <td>@req.SectorNumber</td>
+                            }
+                            @if (Model.SelectedColumns.Contains("receivingWarehouse"))
+                            {
+                                <td>@ReceivingWarehouse</td>
+                            }
+                            @if (Model.SelectedColumns.Contains("basedOnDocument"))
+                            {
+                                <td>@req.BasedOnDocument</td>
+                            }
+                            @if (Model.SelectedColumns.Contains("documentNumber"))
+                            {
+                                <td>@req.DocumentNumber</td>
+                            }
+
+                            @if (Model.SelectedColumns.Contains("documentDate"))
+                            {
+                                <td>@req.DocumentDate.ToString("yyyy-MM-dd")</td>
+                            }
+                            @if (Model.SelectedColumns.Contains("supplier"))
+                            {
+                                <td>@req.Supplier?.SupplierName</td>
+                            }
+                           
+                                           
+                                   
+                        </tr>
+                    }
+                }
+                       
+            </tbody>
+        </table>
     </div>
 
 }
