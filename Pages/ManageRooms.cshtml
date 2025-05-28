@@ -288,6 +288,7 @@
                 <table class="table table-centered table-nowrap mb-0 rounded">
                     <thead class="thead-light">
                         <tr>
+
                             @if (Model.SelectedColumns.Contains("storeName"))
                             {
                                 <th scope="col" class="border-0 rounded-start">@Model.lblStoreName</th>
@@ -310,6 +311,7 @@
                             }
                             @if (Model.SelectedColumns.Contains("NoOfShelves"))
                             {
+
                             <th scope="col" class="border-0">@Model.lblNoOfShelves</th>
                             }
                             @if (Model.SelectedColumns.Contains("shelves"))
@@ -344,6 +346,7 @@
                                     @if (Model.SelectedColumns.Contains("storeName"))
                                     {
                                     <td>@item.StoreName</td>
+
                                     }
                                     @if (Model.SelectedColumns.Contains("roomName"))
                                     {
@@ -367,6 +370,7 @@
                                     }
                                     @if (Model.SelectedColumns.Contains("shelves"))
                                     {
+
                                     <td>
                                         @(string.IsNullOrWhiteSpace(item.ShelfNumber) ? "" : (item.ShelfNumber.Length > 30 ?
                                         item.ShelfNumber.Substring(0, 30) : item.ShelfNumber))
