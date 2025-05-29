@@ -1,3 +1,5 @@
+using DocumentFormat.OpenXml.Drawing.Charts;
+using DocumentFormat.OpenXml.Wordprocessing;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Globalization;
@@ -40,7 +42,10 @@ namespace LabMaterials.Pages
             this.ReturnRequestId = ReturnRequestId.Value;
 
             int? InboxId =  HttpContext.Session.GetInt32("InboxId");
-            this.InboxId = InboxId.Value;
+             if (InboxId.HasValue)
+            {
+                this.InboxId = InboxId.Value;
+            }
 
 
 
@@ -72,8 +77,12 @@ namespace LabMaterials.Pages
             int? ReturnRequestId = HttpContext.Session.GetInt32("ReturnRequestId");
             this.ReturnRequestId = ReturnRequestId.Value;
 
+
             int? InboxId =  HttpContext.Session.GetInt32("InboxId");
-            this.InboxId = InboxId.Value;
+            if (InboxId.HasValue)
+            {
+                this.InboxId = InboxId.Value;
+            }
 
             var dbContext = new LabDBContext();
             #pragma warning disable CS8601 // Possible null reference assignment.
@@ -85,6 +94,43 @@ namespace LabMaterials.Pages
                         .Where(r => r.ReturnRequestId == ReturnRequestId.Value)
                         .ToList();
 
+            if (UserId == Report.CreatedBy)
+            {
+                var orderDateStr = Request.Form["OrderDate"];
+                var reason = Request.Form["ReasonForReturn"];
+
+                DateTime.TryParse(orderDateStr, out DateTime orderDate);
+                Report.OrderDate = orderDate;
+                Report.Reason = reason;
+
+                // Ensure all flags are false first
+                Report.IsSurplus = false;
+                Report.IsExpired = false;
+                Report.IsInvalid = false;
+                Report.IsDamaged = false;
+
+                 switch (reason)
+                {
+                    case "SurPlus":
+                        Report.IsSurplus = true;
+                        break;
+                    case "Expired":
+                        Report.IsExpired = true;
+                        break;
+                    case "Invalid":
+                        Report.IsInvalid = true;
+                        break;
+                    case "Damaged":
+                        Report.IsDamaged = true;
+                        break;
+                }
+                
+                await dbContext.SaveChangesAsync();
+                dbContext.SaveChanges();
+
+
+
+            }
             //if Inspection Commitee Officer is logged in than he can only add the recommended action and additional notes
             if (UserGroupName == "Return Inspection Committee Officer")
             {
@@ -112,15 +158,18 @@ namespace LabMaterials.Pages
                 await dbContext.SaveChangesAsync();
                 Report.InspOffApprovalDate = DateTime.UtcNow;
 
-
-
-                var message = dbContext.Messages.FirstOrDefault(m => m.Id == this.InboxId);
-
-                if (message != null)
+                if (InboxId.HasValue && InboxId.Value != 0)
                 {
-                    message.Type = "Assign Supervisor";
+                    var message = dbContext.Messages.FirstOrDefault(m => m.Id == this.InboxId);
+
+                    if (message != null)
+                    {
+                        message.Type = "Assign Supervisor";
+                    }
+                    dbContext.SaveChanges();
                 }
-                dbContext.SaveChanges();
+
+
             }
             //if Recycling Officer is logged in than he can only Recyling Notes for the specific items.
             else if (UserGroupName == "Recycling Officer")

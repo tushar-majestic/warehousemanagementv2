@@ -257,6 +257,36 @@
             </ol>
         </nav>
 
+        @if (Model.ItemCardminimum?.Count > 0)
+        {
+            <div class="alert alert-info d-flex justify-content-between align-items-center">
+                <span><b>@Model.lblAlert </b> @Model.ItemCardminimum.Count @Model.lblMinimumQuantity</span>
+                <a class="btn btn-primary" href="/Alerts/Index#section-minimum">View</a>
+            </div>
+        }
+
+
+        @if (Model.ItemCardCeiling?.Count > 0)
+        {
+            <div class="alert alert-info d-flex justify-content-between align-items-center">
+                <span>
+                    <b>@Model.lblAlert </b>@Model.ItemCardCeiling.Count @Model.lblMaximumQuantity
+                </span>
+                <a class="btn btn-primary" href="/Alerts/Index#section-maximum">View</a>
+            </div>
+        }
+
+        @if (Model.ItemCardReorder?.Count > 0)
+        {
+            <div class="alert alert-info d-flex justify-content-between align-items-center">
+                <span><b>@Model.lblAlert </b>@Model.ItemCardReorder.Count @Model.lblReorderQuantity</span>
+                <a class="btn btn-primary" href="/Alerts/Index#section-reorder">View</a>
+            </div>
+        }
+
+
+
+
         <div class="col-12 col-sm-6 col-xl-4 mb-4">
             <div class="card border-0 shadow">
                 <div class="card-body">

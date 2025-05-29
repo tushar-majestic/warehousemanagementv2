@@ -56,7 +56,7 @@ namespace LabMaterials.Pages
             Warehouses = dbContext.Stores.ToList();
             base.ExtractSessionData();
 
-            if (this.CanManageItems)
+            if (CanManageItems)
             {
                 FillLables();
                  LoadSelectedColumns();
@@ -98,7 +98,7 @@ namespace LabMaterials.Pages
             this.UserId = HttpContext.Session.GetInt32("UserId");
 
             var query = dbContext.ReceivingReports
-                .Where(r => r.CreatedBy == UserId)
+                // .Where(r => r.CreatedBy == UserId)
                 .OrderByDescending(r => r.CreatedAt)
                 .ToList();
 

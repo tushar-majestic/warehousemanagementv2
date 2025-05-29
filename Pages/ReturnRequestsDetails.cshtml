@@ -77,6 +77,13 @@
     <div class="card mb-4 border shadow-sm">
      <div class="card-header bg-primary text-white d-flex justify-content-end align-items-center">
                 <div class="d-flex gap-4">
+                    @* @if(Model.ReturnRequest.SupervisorApprovalDate == null && Model.UserGroupName == "Sector Manager"){
+                        <form method="post" asp-page-handler="EditReturnRequest">
+                            <input type="hidden" name="ReturnRequestId" value="@Model.ReturnRequest.Id">
+                            <button  class="btn btn-secondary">Edit</button>
+                        </form>
+                    } *@
+
                     <button id="PrintReport" class="btn btn-primary">Print</button>
                 </div>
             </div>
@@ -97,7 +104,7 @@
             <dt class="col-sm-4">To Sector</dt>
             <dd class="col-sm-8">@Model.ReturnRequest.ToSector</dd>
 
-            <dt class="col-sm-4">Warehouse ID</dt>
+            <dt class="col-sm-4">Warehouse </dt>
             <dd class="col-sm-8">@Model.ReturnRequest.Warehouse</dd>
 
             <dt class="col-sm-4">Return Reasons</dt>
@@ -135,8 +142,7 @@
                         <th>Expiry</th>
                         @if(Model.ReturnRequest.InspOffApprovalDate != null){
                             <th >Recommended Action</th>
-                        }
-                        @if(Model.ReturnRequest.InspOffApprovalDate != null){
+                        
                             <th >Committee Notes</th>
                         }
                     </tr>
@@ -150,8 +156,11 @@
                             <td>@(item.ItemDescription ?? "")</td>
                             <td>@item.ReturnedQuantity</td>
                             <td>@item.ExpiryDate?.ToString("yyyy-MM-dd")</td>
-                            <td>@item.RecommendedAction</td>
-                            <td>@item.Notes</td>
+                            @if(Model.ReturnRequest.InspOffApprovalDate != null){
+                                <td>@item.RecommendedAction</td>
+                                <td>@item.Notes</td>
+                            }
+                         
                         </tr>
                     }
                 </tbody>

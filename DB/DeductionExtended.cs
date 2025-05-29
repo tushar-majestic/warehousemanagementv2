@@ -15,13 +15,13 @@ public class DeductionExtended
     public string ItemName { get; set; } = null!;
     public string GroupCode { get; set; } = null!;
     public string ItemTypeCode { get; set; } = null!;
-    public string ItemDescription { get; set; } = null!;
+    public string? ItemDescription { get; set; } 
     public string? UnitOfmeasure { get; set; }
     public int StoreId { get; set; }
 
     public string? Chemical { get; set; }
 
-    public string HazardTypeName { get; set; } = null!;
+    public string? HazardTypeName { get; set; } = null!;
     public DateTime? ExpiryDate { get; set; }
     public int QuantityReceived { get; set; }
     public int QuantityAvailable { get; set; }
