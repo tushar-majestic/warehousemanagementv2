@@ -87,6 +87,15 @@ namespace LabMaterials.Pages
                             ErrorMsg = string.Format((Program.Translations["StoreNameExists"])[Lang], StoreName);
                         else
                         {
+                            int Active;
+                            if (Status == "Closed")
+                            {
+                                Active = 0;
+                            }
+                            else
+                            {
+                                Active = 1;
+                            }
                             var store = new Store
                             {
                                 StoreType = StoreType,
@@ -96,6 +105,7 @@ namespace LabMaterials.Pages
                                 StoreName = StoreName,
                                 StoreNumber = StoreNumber,
                                 StoreId = PrimaryKeyManager.GetNextId(),
+                                IsActive = Active,
 
 
                             };

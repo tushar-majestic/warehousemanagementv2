@@ -23,12 +23,14 @@ namespace LabMaterials.Pages
         public async Task OnGetAsync()
         {
             base.ExtractSessionData();
+            FillLables();
             StoreTypeList = await _context.StoreTypes.ToListAsync();
         }
 
         public async Task<IActionResult> OnPostEditInitAsync()
         {
             base.ExtractSessionData();
+            FillLables();
             StoreTypeList = await _context.StoreTypes.ToListAsync();
             StoreTypeModel = await _context.StoreTypes.FirstOrDefaultAsync(s => s.StoreTypeId == EditId);
             return Page();

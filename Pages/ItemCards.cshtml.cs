@@ -128,9 +128,9 @@ namespace LabMaterials.Pages
                                            ItemCode = ri.ItemCode,
                                            ItemName = ri.ItemNameArabic,
                                            GroupCode = ri.ItemGroup,
-                                           // itemTypeCode = ri.Item.ItemTypeCode,
+                                            ItemTypeCode = i.ItemTypeCode,
                                            ItemDescription = ri.ItemDescription,
-                                           ItemId = ri.ItemCardId,
+                                           ItemId = ic.ItemId,
                                            HazardTypeName = ri.RiskRating,
                                            ExpiryDate = i.ExpiryDate,
                                            QuantityReceived = ri.ReturnedQuantity,
@@ -189,48 +189,7 @@ namespace LabMaterials.Pages
             Shelves = _context.Shelves.ToList();
 
 
-            // foreach (var extendedCard  in ItemCardsFromReport)
-            // {
-            //     var itemCard = new ItemCard
-            //     {
-            //         ItemId = extendedCard.ItemId,
-            //         ItemCode = extendedCard.ItemCode,
-            //         ItemName = extendedCard.ItemName,
-            //         GroupCode = extendedCard.GroupCode,
-            //         ItemTypeCode = extendedCard.ItemTypeCode,
-            //         ItemDescription = extendedCard.ItemDescription,
-            //         StoreId = StoreId,
-            //         HazardTypeName = extendedCard.HazardTypeName,
-            //         QuantityAvailable = extendedCard.QuantityReceived
 
-
-            //     };
-
-            //         _context.ItemCards.Add(itemCard);
-            //         await _context.SaveChangesAsync();
-
-            //     // Now add the corresponding ItemCardBatch
-            //     var itemCardBatch = new ItemCardBatch
-            //     {
-            //         ItemCardId = itemCard.Id,
-            //         DocumentType = DocumentType,
-            //         ReceiptDocumentnumber = ReceiptDocumentnumber,
-            //         RoomId = RoomId,
-            //         ShelfId = ShelfId,
-            //         QuantityReceived = extendedCard.QuantityReceived,
-            //         SupplierId = SupplierId,
-            //         Minimum = extendedCard.Minimum,
-            //         ReorderLimit = extendedCard.ReorderLimit,
-            //         ExpiryDate = extendedCard.ExpiryDate,
-            //         TypeOfAsset = extendedCard.TypeOfAsset,
-            //         Ceiling = extendedCard.Minimum * extendedCard.ReorderLimit,
-            //         DateOfEntry = DateOfEntry   ,
-
-            //     };
-
-            //     _context.ItemCardBatches.Add(itemCardBatch);
-            //     await _context.SaveChangesAsync();
-            // }
             foreach (var extendedCard in ItemCardsFromReport)
             {
                 // Try to find existing ItemCard based on ItemId 

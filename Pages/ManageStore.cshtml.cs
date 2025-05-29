@@ -165,8 +165,17 @@ namespace LabMaterials.Pages
         {
             var dbContext = new LabDBContext();
 
-            var itemsInstore = dbContext.Storages.Count(s => s.StoreId == StoreId && s.AvailableQuantity > 0);
-            if (itemsInstore == 0)
+            // var itemsInstore = dbContext.Storages.Count(s => s.StoreId == StoreId && s.AvailableQuantity >
+            // 0);
+
+            bool hasItemsInStore = dbContext.Rooms
+            .Where(r => r.StoreId == StoreId && r.Ended == null)
+            .SelectMany(r => dbContext.Shelves.Where(s => s.RoomId == r.RoomId && s.Ended == null))
+            .Any(s => dbContext.ShelveItems.Any(si => si.ShelfId == s.ShelfId && si.QuantityAvailable > 0));
+
+
+            // if (itemsInstore == 0)
+            if (!hasItemsInStore)
             {
                 var store = dbContext.Stores.Single(s => s.StoreId == StoreId);
                 store.Ended = DateTime.Now;
@@ -180,8 +189,7 @@ namespace LabMaterials.Pages
             else
             {
                 var itemId = dbContext.Storages.First(s => s.StoreId == StoreId && s.AvailableQuantity > 0).ItemId;
-                Message = string.Format((Program.Translations["StoreNotDeleted"])[Lang], itemsInstore,
-                    dbContext.Items.Single(i => i.ItemId == itemId).ItemName);
+                Message = string.Format((Program.Translations["StoreNotDeleted"])[Lang]);
                 FillData(null, null);
                 LoadSelectedColumns();
             }

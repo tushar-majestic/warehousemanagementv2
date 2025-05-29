@@ -119,7 +119,16 @@ namespace LabMaterials.Pages
                         else if (dbContext.Stores.Count(s => s.StoreName == StoreName && s.StoreId != StoreId) > 0)
                             ErrorMsg = string.Format((Program.Translations["StoreNameExists"])[Lang], StoreName);
                         else
-                        {
+                        {   
+                             int Active;
+                            if (Status == "Closed")
+                            {
+                                Active = 0;
+                            }
+                            else
+                            {
+                                Active = 1;
+                            }
                             var store = dbContext.Stores.Single(s => s.StoreId == StoreId);
 
                             /*var oldShelves = store.ShelfNumbers.Split(',');
@@ -142,7 +151,20 @@ namespace LabMaterials.Pages
                             store.WarehouseStatus = Status;
                             store.StoreName = StoreName;
                             store.StoreNumber = StoreNumber;
+                            store.IsActive = Active;
                             dbContext.SaveChanges();
+
+                            if (Status == "Closed")
+                            {
+                                // Update all rooms associated with this store to "Closed"
+                                var relatedRooms = dbContext.Rooms.Where(r => r.StoreId == store.StoreId).ToList();
+                                foreach (var room in relatedRooms)
+                                {
+                                    room.RoomStatus = "Closed"; 
+                                }
+
+                                dbContext.SaveChanges();
+                            }
 
                             string Message = string.Format("Store {0} updated", store.StoreName);
                             Helper.AddActivityLog(HttpContext.Session.GetInt32("UserId").Value, Message, "Update",

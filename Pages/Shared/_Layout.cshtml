@@ -181,7 +181,8 @@
                     </li>
                 }
 
-                @if (Model.CanManageSupplies)
+                //removed because of client requirement
+                @* @if (Model.CanManageSupplies)
                 {
                     <li class="nav-item @(Context.Request.Path == "/Supplies" || Context.Request.Path == "/AddSupply"  || Context.Request.Path == "/EditSupply"  )">
                         <a asp-area="" asp-page="/Supplies" class="nav-link">
@@ -191,7 +192,7 @@
                             <span class="sidebar-text">@Model.lblManageSupplies</span>
                         </a>
                     </li>
-                }
+                } *@
 
                 @if (Model.CanSeeReports)
                 {
