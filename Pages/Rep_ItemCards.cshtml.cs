@@ -158,6 +158,7 @@ namespace LabMaterials.Pages
                              Chemical = item.Chemical,
                              HazardTypeName = item.HazardTypeName,
                              QuantityAvailable = item.QuantityAvailable,
+                             DateOfEntry = item.CreatedAt ?? DateTime.Now,
                              WarehouseName = store.StoreName
                          });
             if (!string.IsNullOrWhiteSpace(ItemName))
