@@ -342,9 +342,9 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
 
-        function showSection(section) {
-            document.querySelectorAll('.section').forEach(div => div.classList.add('d-none'));
-            const target = document.getElementById('section-' + section);
+        function showsectionn(sectionn) {
+            document.querySelectorAll('.sectionn').forEach(div => div.classList.add('d-none'));
+            const target = document.getElementById('sectionn-' + sectionn);
             if (target) {
                 target.classList.remove('d-none');
                 target.scrollIntoView({ behavior: 'smooth' });
@@ -352,11 +352,11 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            // Detect section from hash in URL
+            // Detect sectionn from hash in URL
             const hash = window.location.hash;
-            if (hash && hash.startsWith('#section-')) {
-                const section = hash.replace('#section-', '');
-                showSection(section);
+            if (hash && hash.startsWith('#sectionn-')) {
+                const sectionn = hash.replace('#sectionn-', '');
+                showSection(sectionn);
             } else {
                 // Default to 'minimum' if no hash
                 showSection('minimum');
