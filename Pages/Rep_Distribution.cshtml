@@ -186,11 +186,11 @@
                             id="materialRequestStatus" @(Model.SelectedColumns.Contains("materialRequestStatus") ? "checked" : "")>
                         <label class="form-check-label" for="materialRequestStatus">MaterialRequestStatus</label>
                     </div>
-                    <div class="form-check mb-1">
+                    @* <div class="form-check mb-1">
                         <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="inventoryBalance"
                             id="inventoryBalance" @(Model.SelectedColumns.Contains("inventoryBalance") ? "checked" : "")>
                         <label class="form-check-label" for="inventoryBalance">InventoryBalance</label>
-                    </div>
+                    </div> *@
 
                     <div class="form-check mb-1 text-center">
                         <button type="submit" name="action" value="updateColumns" class="btn btn-success btn-sm">Ok</button>
@@ -308,10 +308,10 @@
                             {
                             <th scope="col" class="border-0">@Model.lblDisbursementStatus</th>
                             }
-                            @if (Model.SelectedColumns.Contains("inventoryBalance"))
+                            @* @if (Model.SelectedColumns.Contains("inventoryBalance"))
                             {
                             <th scope="col" class="border-0 rounded-end">@Model.lblInventoryBalanced</th>
-                            }
+                            } *@
                         </tr>
                     </thead>
                     <tbody>
@@ -326,7 +326,7 @@
                                 }
                                     @if (Model.SelectedColumns.Contains("date"))
                                 {
-                                <td>@item.ReqReceivedAt</td>
+                                    <td>@item.ReqDate?.ToString("dd-MM-yyyy")</td>
                                 }
                                     @if (Model.SelectedColumns.Contains("requestingPlace"))
                                 {
@@ -340,10 +340,10 @@
                                 {
                                 <td>@item.Status</td>
                                 }
-                                @if (Model.SelectedColumns.Contains("inventoryBalance"))
+                                @* @if (Model.SelectedColumns.Contains("inventoryBalance"))
                                 {
                                 <td>@item.InventoryBalanced</td>
-                                }
+                                } *@
                             </tr>
                         }
                     }
@@ -452,10 +452,10 @@
                     {
                         <th scope="col" class="border-0">@Model.lblDisbursementStatus</th>
                     }
-                    @if (Model.SelectedColumns.Contains("inventoryBalance"))
+                    @* @if (Model.SelectedColumns.Contains("inventoryBalance"))
                     {
                         <th scope="col" class="border-0 rounded-end">@Model.lblInventoryBalanced</th>
-                    }
+                    } *@
                 </tr>
             </thead>
             <tbody>
@@ -470,7 +470,7 @@
                             }
                             @if (Model.SelectedColumns.Contains("date"))
                             {
-                                <td>@item.ReqReceivedAt</td>
+                                <td>@item.ReqDate?.ToString("dd-MM-yyyy")</td>
                             }
                             @if (Model.SelectedColumns.Contains("requestingPlace"))
                             {
@@ -484,10 +484,10 @@
                             {
                                 <td>@item.Status</td>
                             }
-                            @if (Model.SelectedColumns.Contains("inventoryBalance"))
+                            @* @if (Model.SelectedColumns.Contains("inventoryBalance"))
                             {
                                 <td>@item.InventoryBalanced</td>
-                            }
+                            } *@
                         </tr>
                     }
                 }

@@ -37,6 +37,7 @@ namespace LabMaterials.Pages_HazardTypes
         }
         private void FillLables()
         {
+            this.Lang = HttpContext.Session.GetString("Lang");
             this.lblHazardType = (Program.Translations["HazardType"])[Lang];
             this.lblUsers = (Program.Translations["Users"])[Lang];
             this.lblHazardTypeName = (Program.Translations["HazardTypeName"])[Lang];

@@ -14,5 +14,6 @@
         public int? Quantity { get; set; }
         public string? StoreName { get; set; }
         public string? ItemName { get; set; }
+        public DateTime? ReqDate { get; internal set; }
     }
 }

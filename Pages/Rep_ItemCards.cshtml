@@ -108,7 +108,7 @@
     <div class="table-settings mb-4">
         <form method="post" asp-page-handler="Action" class="row align-items-center">
             
-            <div class="col col-md-6 col-lg-3 col-xl-4">
+            <div class="col col-lg-3">
                 <div class="input-group me-2 me-lg-3 fmxw-400">
                     <span class="input-group-text">
                         <svg class="icon icon-xs" x-description="Heroicon name: solid/search"
@@ -121,13 +121,36 @@
                     <input type="text" name="ItemName" class="form-control" placeholder="@Model.lblItemName" value="@Model.ItemName">
                 </div>
             </div>
-            <div class="col-4 col-md-2 col-xl-1 ps-md-0 text-end">
+            <div class="col col-lg-3">
+                <div class="input-group me-2 me-lg-3 fmxw-400">
+                    <span class="input-group-text">
+                        @Model.lblFromDate
+                    </span>
+
+
+                    <input asp-for="FromDate" class="form-control" type="date" name="FromDate"
+                           value="@Model.FromDate?.ToString("yyyy-MM-dd")" />
+
+                </div>
+            </div>
+            <div class="col col-lg-3">
+                <div class="input-group me-2 me-lg-3 fmxw-400">
+                    <span class="input-group-text">
+                        @Model.lblToDate
+                    </span>
+
+
+                    <input asp-for="ToDate" type="date" class="form-control" name="ToDate"
+                           value="@Model.ToDate?.ToString("yyyy-MM-dd")" />
+
+                </div>
+            </div>
+            <div class="col-4 col-md-2  col-xl-1 ps-md-0 text-end">
                 <button type="submit" name="action" value="search" class="btn btn-primary">@Model.lblSubmit</button>
             </div>
 
-             <div class="col-0 col-md-0 col-lg-2 col-xl-3"></div>
 
-            <div class="col-6 col-md-3 col-lg-2 col-xl-4 d-grid text-end">
+            <div class="col text-end position-relative">
                 <div class="position-relative">
                     <button class="btn btn-secondary btn-sm" id="toggleDropdown" type="button">
                         @Model.lblShowHideColumn
@@ -180,6 +203,11 @@
                                 id="warehouse"  @(Model.SelectedColumns.Contains("warehouse") ? "checked" : "")>
                             <label class="form-check-label" for="warehouse">@Model.lblStores</label>
                         </div>
+                        <div class="form-check mb-1">
+                            <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="date"
+                                id="date"  @(Model.SelectedColumns.Contains("date") ? "checked" : "")>
+                            <label class="form-check-label" for="date">@Model.lblDate</label>
+                        </div>
                         
                         <div class="form-check mb-1 text-center">
                             <button type="submit" name="action" value="updateColumns"
@@ -206,7 +234,7 @@
 
                     <li class="page-item">
                         <a class="page-link"
-                            href="?page=@(Model.CurrentPage - 1)&ItemName=@Model.ItemName">&laquo;</a>
+                            href="?page=@(Model.CurrentPage - 1)&ItemName=@Model.ItemName&FromDate=@Model.FromDate&ToDate=@Model.ToDate">&laquo;</a>
                     </li>
                 }
 
@@ -217,7 +245,7 @@
                     {
                         <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
                             <a class="page-link"
-                                href="?page=@i&ItemName=@Model.ItemName">@i</a>
+                                href="?page=@i&ItemName=@Model.ItemName&FromDate=@Model.FromDate&ToDate=@Model.ToDate">@i</a>
                         </li>
                     }
                 }
@@ -228,7 +256,7 @@
                     {
                         <li class="page-item">
                             <a class="page-link"
-                                href="?page=1&ItemName=@Model.ItemName">1</a>
+                                href="?page=1&ItemName=@Model.ItemName&FromDate=@Model.FromDate&ToDate=@Model.ToDate">1</a>
                         </li>
                         <li class="page-item disabled">
                             <span class="page-link">...</span>
@@ -240,7 +268,7 @@
                     {
                         <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
                             <a class="page-link"
-                                href="?page=@i&ItemName=@Model.ItemName">@i</a>
+                                href="?page=@i&ItemName=@Model.ItemName&FromDate=@Model.FromDate&ToDate=@Model.ToDate">@i</a>
                         </li>
                     }
 
@@ -257,7 +285,7 @@
                     {
                         <li class="page-item">
                             <a class="page-link"
-                                href="?page=@Model.TotalPages&ItemName=@Model.ItemName">@Model.TotalPages</a>
+                                href="?page=@Model.TotalPages&ItemName=@Model.ItemName&FromDate=@Model.FromDate&ToDate=@Model.ToDate">@Model.TotalPages</a>
                         </li>
                     }
                 }
@@ -267,7 +295,7 @@
                 {
                     <li class="page-item">
                         <a class="page-link"
-                            href="?page=@(Model.CurrentPage + 1)&ItemName=@Model.ItemName">&raquo;</a>
+                            href="?page=@(Model.CurrentPage + 1)&ItemName=@Model.ItemName&FromDate=@Model.FromDate&ToDate=@Model.ToDate">&raquo;</a>
                     </li>
 
                 }
@@ -326,6 +354,10 @@
                             {
                                 <th scope="col" class="border-0 rounded-start">Warehouse Name</th>
                             }
+                            @if (Model.SelectedColumns.Contains("date"))
+                            {
+                                <th scope="col" class="border-0 rounded-start">Date</th>
+                            }
                             @* <th scope="col" class="border-0 rounded-start">Date Of Entry</th>
                             <th scope="col" class="border-0 rounded-start">Room</th>
                             <th scope="col" class="border-0 rounded-start">Shelf</th>
@@ -378,6 +410,10 @@
                                 {
                                 <td scope="row">@item.WarehouseName</td>
                                 }
+                                @if (Model.SelectedColumns.Contains("date"))
+                                {
+                                <td scope="row">@item.DateOfEntry</td>
+                                }
                                 @* <td scope="row">@item.DateOfEntry</td>
                                 <td scope="row">@item.RoomName</td>
                                 <td scope="row">@item.ShelfName</td>
@@ -408,7 +444,7 @@
 
                         <li class="page-item">
                             <a class="page-link"
-                                href="?page=@(Model.CurrentPage - 1)&ItemName=@Model.ItemName">&laquo;</a>
+                                href="?page=@(Model.CurrentPage - 1)&ItemName=@Model.ItemName&FromDate=@Model.FromDate&ToDate=@Model.ToDate">&laquo;</a>
                         </li>
                     }
 
@@ -419,7 +455,7 @@
                         {
                             <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
                                 <a class="page-link"
-                                    href="?page=@i&ItemName=@Model.ItemName">@i</a>
+                                    href="?page=@i&ItemName=@Model.ItemName&FromDate=@Model.FromDate&ToDate=@Model.ToDate">@i</a>
                             </li>
                         }
                     }
@@ -430,7 +466,7 @@
                         {
                             <li class="page-item">
                                 <a class="page-link"
-                                    href="?page=1&ItemName=@Model.ItemName">1</a>
+                                    href="?page=1&ItemName=@Model.ItemName&FromDate=@Model.FromDate&ToDate=@Model.ToDate">1</a>
                             </li>
                             <li class="page-item disabled">
                                 <span class="page-link">...</span>
@@ -442,7 +478,7 @@
                         {
                             <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
                                 <a class="page-link"
-                                    href="?page=@i&ItemName=@Model.ItemName">@i</a>
+                                    href="?page=@i&ItemName=@Model.ItemName&FromDate=@Model.FromDate&ToDate=@Model.ToDate">@i</a>
                             </li>
                         }
 
@@ -459,7 +495,7 @@
                         {
                             <li class="page-item">
                                 <a class="page-link"
-                                    href="?page=@Model.TotalPages&ItemName=@Model.ItemName">@Model.TotalPages</a>
+                                    href="?page=@Model.TotalPages&ItemName=@Model.ItemName&FromDate=@Model.FromDate&ToDate=@Model.ToDate">@Model.TotalPages</a>
                             </li>
                         }
                     }
@@ -469,7 +505,7 @@
                     {
                         <li class="page-item">
                             <a class="page-link"
-                                href="?page=@(Model.CurrentPage + 1)&ItemName=@Model.ItemName">&raquo;</a>
+                                href="?page=@(Model.CurrentPage + 1)&ItemName=@Model.ItemName&FromDate=@Model.FromDate&ToDate=@Model.ToDate">&raquo;</a>
                         </li>
                     }
                 </ul>
@@ -524,6 +560,10 @@
                     {
                         <th scope="col" class="border-0 rounded-start">Warehouse Name</th>
                     }
+                    @if (Model.SelectedColumns.Contains("date"))
+                    {
+                        <th scope="col" class="border-0 rounded-start">Date</th>
+                    }
                     @* <th scope="col" class="border-0 rounded-start">Date Of Entry</th>
                     <th scope="col" class="border-0 rounded-start">Room</th>
                     <th scope="col" class="border-0 rounded-start">Shelf</th>
@@ -574,6 +614,10 @@
                         @if (Model.SelectedColumns.Contains("warehouse"))
                         {
                         <td scope="row">@item.WarehouseName</td>
+                        }
+                        @if (Model.SelectedColumns.Contains("date"))
+                        {
+                        <td scope="row">@item.DateOfEntry</td>
                         }
                         @* <td scope="row">@item.DateOfEntry</td>
                         <td scope="row">@item.RoomName</td>

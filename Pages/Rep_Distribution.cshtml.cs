@@ -79,35 +79,35 @@ namespace LabMaterials.Pages
             {
                 FillLables();
                 var dbContext = new LabDBContext();
-                var query = from d in dbContext.DisbursementRequests
-                            select new DisbursementInfo
-                            {
-                                DisbursementRequestId = d.DisbursementRequestId,
-                                RequesterName = d.RequesterName,
-                                RequestingPlace = d.RequestingPlace,
-                                Comments = d.Comments,
-                                ReqReceivedAt = d.ReqReceivedAt,
-                                Status = d.Status,
-                                InventoryBalanced = d.InventoryBalanced ? "Yes" : "No"
-                            };
-                // var query = (from mr in dbContext.MaterialRequests
-                //              join u in dbContext.Users on mr.RequestedByUserId equals u.UserId
-                //              join d in dbContext.Destinations on mr.RequestingSector equals d.DId
-                //              select new DisbursementInfo
-                //              {
-                //                  DisbursementRequestId = mr.RequestId,
-                //                  RequesterName = u.FullName,
-                //                  RequestingPlace = d.DestinationName,
-                //                  Comments = mr.Comments,
-                //                  ReqReceivedAt = mr.CreatedAt,
-                //                  Status = mr.SupervisorApproval.ToString(),
-                //                  InventoryBalanced = mr.InventoryBalanced ? "Yes" : "No"
-                //              });
+                // var query = from d in dbContext.DisbursementRequests
+                //             select new DisbursementInfo
+                //             {
+                //                 DisbursementRequestId = d.DisbursementRequestId,
+                //                 RequesterName = d.RequesterName,
+                //                 RequestingPlace = d.RequestingPlace,
+                //                 Comments = d.Comments,
+                //                 ReqReceivedAt = d.ReqReceivedAt,
+                //                 Status = d.Status,
+                //                 InventoryBalanced = d.InventoryBalanced ? "Yes" : "No"
+                //             };
+                var query = (from mr in dbContext.MaterialRequests
+                             join u in dbContext.Users on mr.RequestedByUserId equals u.UserId
+                             join d in dbContext.Destinations on mr.RequestingSector equals d.DId
+                             join di in dbContext.DespensedItems on mr.RequestId equals di.MaterialRequestId
+                             select new DisbursementInfo
+                             {
+                                 DisbursementRequestId = mr.RequestId,
+                                 RequesterName = u.FullName,
+                                 RequestingPlace = d.DestinationName,
+                                 Comments = di.Comments,
+                                 ReqDate = mr.CreatedAt,
+                                 Status = mr.SupervisorApproval.ToString()
+                             });
 
                 if (string.IsNullOrEmpty(RequesterName) == false)
                     query = query.Where(s => s.RequesterName.Contains(RequesterName));
                 if (FromDate is not null && FromDate != DateTime.MinValue && ToDate is not null && ToDate != DateTime.MinValue)
-                    query = query.Where(e => e.ReqReceivedAt >= FromDate && e.ReqReceivedAt <= ToDate);
+                    query = query.Where(e => e.ReqDate >= FromDate && e.ReqDate <= ToDate);
 
                 // Disbursement = query.ToList();
 
