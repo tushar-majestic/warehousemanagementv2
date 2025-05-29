@@ -175,9 +175,10 @@ namespace LabMaterials.Pages
             // HttpContext.Session.SetString("ToDate", string.IsNullOrEmpty(ToDate) ? "" : ToDate);
             // HttpContext.Session.SetInt32("page", page);
 
-            
+            HttpContext.Session.SetString("MaterialRequestId", DisbursementID.ToString());
 
-            return RedirectToPage("./ViewItemCards");
+
+            return RedirectToPage("./ViewDispensedReport");
         }
 
         // Function without pagination 

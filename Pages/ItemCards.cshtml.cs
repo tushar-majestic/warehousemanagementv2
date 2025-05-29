@@ -204,6 +204,7 @@ namespace LabMaterials.Pages
                     // Item already exists : update QuantityAvailable
                     existingItemCard.QuantityAvailable += extendedCard.QuantityReceived;
                     _context.ItemCards.Update(existingItemCard);
+                    existingItemCard.LastActivity = DateTime.UtcNow;
                     await _context.SaveChangesAsync();
                     itemCardId = existingItemCard.Id;
                 }
@@ -225,7 +226,9 @@ namespace LabMaterials.Pages
                         UnitOfmeasure = extendedCard.UnitOfmeasure,
                         // Chemical = extendedCard.Chemical,
                         QuantityAvailable = extendedCard.QuantityReceived,
-                        CreatedBy = HttpContext.Session.GetInt32("UserId").Value
+                        CreatedBy = HttpContext.Session.GetInt32("UserId").Value,
+                        CreatedAt = DateTime.UtcNow,
+                        LastActivity = DateTime.UtcNow
                     };
 
                     _context.ItemCards.Add(newItemCard);

@@ -55,6 +55,168 @@
     }
 <div class="row">
         <div class="col-8 mb-4 m-auto">
+            @if(Model.UserId == Model.Report.CreatedBy){
+               <div class="card border-0 shadow components-section">
+                    <form method="post" class="card-body">
+                        <div id="returnEntriesWrapper">
+                            @for (int i = 0; i < Model.ReturnItems.Count; i++)
+                            {
+                                <div class="return-entry border p-3 mb-3 rounded">
+                                    <div class="row">
+                                        @* <div class="col-md-6 mb-4">
+                                            <label>Item Group</label>
+                                            @{
+                                                var itemgroup = Model.ItemGroups.FirstOrDefault(g => g.GroupCode == Model.ReturnItems[@i].ItemGroup);
+                                            }
+                                            <input type="text" class="form-control" value="@itemgroup.GroupDesc" />
+                                            
+                                        </div> *@
+                                        <div class="col-md-6 mb-4">
+                                            <label>Item Group</label>
+                                            <select class="form-select item-group-select" name="ReturnItems[@i].itemGroup" asp-for="ReturnItems[@i].ItemGroup" id="itemGroup_@i" onchange="filterItemsByGroup(@i)">
+                                                <option value="">Select Group</option>
+                                                @foreach (var group in Model.ItemGroups)
+                                                {
+                                                    <option value="@group.GroupCode">@group.GroupDesc</option>
+                                                }
+                                            </select>
+                                        </div>
+                                        <input type="hidden" name="ReturnItems[@i].Id" value="@Model.ReturnItems[@i].Id" asp-for="ReturnItems[@i].Id"/>
+                                        <div class="col-md-6 mb-4">
+                                            <label>Arabic Item Name</label>
+                                            <select class="form-select ArabicItemName" name="ReturnItems[@i].ItemCardId"  asp-for="@Model.ReturnItems[@i].ItemCardId" 
+                                                    onchange="onItemChange(this, @i)">
+                                                <option value="">Select Item</option>
+                                                @foreach (var item in Model.ItemCards)
+                                                {   
+                                                    var Item = Model.AllItems.FirstOrDefault(i => i.ItemId == item.ItemId);
+                                                    <option value="@item.Id"
+                                                            data-code="@item.ItemCode"
+                                                            data-description="@item.ItemDescription"
+                                                            data-chemical="@item.Chemical"
+                                                            data-risk="@item.HazardTypeName"
+                                                            data-unit="@item.UnitOfmeasure"
+                                                            data-itemnamearabic="@item.ItemName"
+                                                            data-itemnameenglish="@item.ItemName"
+                                                            data-expdate = "@Item.ExpiryDate?.ToString("yyyy-MM-dd")">
+                                                        @item.ItemName
+                                                    </option>
+                                                }
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6 mb-4">
+                                            <label>Item Code</label>
+                                            <input type="text" name="ReturnItems[@i].ItemCode" class="form-control ItemCode" value="@Model.ReturnItems[@i].ItemCode"  />
+                                        </div>
+
+
+                                        <input hidden type="text" name="ReturnItems[@i].ItemNameArabic" class="form-control ItemNameArabic"  />
+
+
+
+                                        <input hidden type="text" name="ReturnItems[@i].ItemNameEnglish" class="form-control ItemNameEnglish"  />
+                                        
+                                        <div class="col-md-6 mb-4">
+                                            <label>Item Description</label>
+                                            <input type="text" name="ReturnItems[@i].ItemDescription" class="form-control ItemDescription"  value="@Model.ReturnItems[@i].ItemDescription"  />
+                                        </div>
+                                        <div class="col-md-6 mb-4">
+                                            <label>Chemical</label>
+                                            <input type="text" name="ReturnItems[@i].Chemical" class="form-control chemical" value="@Model.ReturnItems[@i].Chemical"  />
+                                        </div>
+                                        <div class="col-md-6 mb-4">
+                                            <label>Risk Rating</label>
+                                            <input type="text" name="ReturnItems[@i].RiskRating" value="@Model.ReturnItems[@i].RiskRating" class="form-control RiskRating"  />
+                                        </div>
+                                        <div class="col-md-6 mb-4">
+                                            <label>State of Matter</label>
+                                            <input type="text"  name="ReturnItems[@i].StateOfMatter" class="form-select" value="@Model.ReturnItems[@i].StateOfMatter" />
+                                            
+                                        </div>
+                                        <div class="col-md-6 mb-4">
+                                            <label>Expiry Date</label>
+                                            <input type="date" name="ReturnItems[@i].ExpiryDate"  value="@Model.ReturnItems[@i].ExpiryDate?.ToString("yyyy-MM-dd")" class="form-control ExpDate"   />
+                                        </div>
+                                        <div class="col-md-6 mb-4">
+                                            <label>Unit of Measure</label>
+                                            <input type="text" name="ReturnItems[@i].UnitOfMeasure" value="@Model.ReturnItems[@i].UnitOfMeasure" class="form-control UnitofMeasure"  />
+                                        </div>
+                                        <div class="col-md-6 mb-4">
+                                            <label>Return Quantity</label>
+                                            <input type="number" name="ReturnItems[@i].ReturnedQuantity" value="@Model.ReturnItems[@i].ReturnedQuantity" class="form-control"  />
+                                        </div>
+                                        <div class="col-12 mb-4">
+                                            <label>Return Notes</label>
+                                            <textarea name="ReturnItems[@i].ReturnNotes" value="@Model.ReturnItems[@i].ReturnNotes" class="form-control" rows="2" > @Model.ReturnItems[@i].ReturnNotes</textarea>
+                                        </div>
+
+                                        
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                        <button type="button" class="btn btn-secondary mb-3" id="addEntryBtn" >Add More Items</button>
+
+                        
+                        <div class="mb-4">
+                            <label>Order Date</label>
+                            <input type="date" name="OrderDate" class="form-control" value="@Model.Report.OrderDate.ToString("yyyy-MM-dd")" />
+                        </div>
+
+                        @* <div class="mb-4">
+                            <label>Requesting Sector</label>
+                            <input type="text" name="RequestingSector" class="form-control" value="@Model.Report.ToSector" />
+                        </div> *@
+
+                       
+
+                        <div class="mb-4">
+                            <p><b>Requesting Sector</b>: @Model.Report.ToSector</p>                        
+                        </div>
+
+                        <div class="mb-4">
+                            @{
+                                var applicantSector = Model.requesters.FirstOrDefault(r=> r.ReqId == Model.Report.FromSectorId);
+                            }
+                            <p><b>Applicant's Sector</b>: @applicantSector.DestinationName</p>                        
+
+                        </div>
+                        <div class="mb-4">
+                            @{
+                                var store = Model.Stores.FirstOrDefault(s=> s.StoreId == Model.Report.WarehouseId);
+                            }
+                            <p><b>Store</b>: @store.StoreName</p>                        
+                        
+                        </div>
+                        <div class="mb-4">
+                            <label>Reason for Return</label><br />
+                            <div class="form-check">
+                                <input type="radio" class="form-check-input" name="ReasonForReturn" value="SurPlus"   @(Model.Report.IsSurplus ? "checked" : "")/>
+                                <label class="form-check-label">Surplus</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="radio" class="form-check-input" name="ReasonForReturn" value="Expired" @(Model.Report.IsExpired ? "checked" : "")/>
+                                <label class="form-check-label">Expired</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="radio" class="form-check-input" name="ReasonForReturn" value="Invalid" @(Model.Report.IsInvalid ? "checked" : "") />
+                                <label class="form-check-label">Invalid</label>
+                            </div>
+                            <div class="form-check">
+                                <input type="radio" class="form-check-input" name="ReasonForReturn" value="Damaged" @(Model.Report.IsDamaged ? "checked" : "")/>
+                                <label class="form-check-label">Damaged</label>
+                            </div>
+                        </div>
+                        @* <div class="mb-4">
+                            <p><b>Reason for Return</b>: @Model.Report.Reason</p>
+                        </div> *@
+                        <div class="d-flex gap-3">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </form>
+
+                </div>  
+            }
             @if(Model.UserGroupName == "Return Inspection Committee Officer")                       {
                 <div class="card border-0 shadow components-section">
                     <form method="post" class="card-body">
@@ -408,14 +570,22 @@
             }
         }
 
-        document.getElementById("addEntryBtn").addEventListener("click", function () {
+          document.getElementById("addEntryBtn").addEventListener("click", function () {
+             const addButton = document.getElementById('addEntryBtn');
+            addButton.disabled = true;
+            console.log('addEntryBtn')
             const wrapper = document.getElementById("returnEntriesWrapper");
             const firstEntry = wrapper.querySelector(".return-entry");
             const newEntry = firstEntry.cloneNode(true);
+            
+         
 
             newEntry.querySelectorAll("input, select, textarea").forEach((el) => {
                 if (el.name) {
                     el.name = el.name.replace(/\[\d+\]/, `[${entryIndex}]`);
+                }
+                if (el.id) {
+                    el.id = el.id.replace(/_\d+/, `_${entryIndex}`);
                 }
 
                 if (el.type !== "hidden") {
@@ -426,20 +596,36 @@
                     el.selectedIndex = 0;
                 }
             });
-
+            const currentIndex = entryIndex;
             const itemSelect = newEntry.querySelector(".ArabicItemName");
+
+            const itemSelectGroup = newEntry.querySelector(".item-group-select");
+             if (itemSelectGroup) {
+                 itemSelectGroup.removeAttribute("onchange");
+                itemSelectGroup.addEventListener("change", function () {
+                    filterItemsByGroup(currentIndex);
+                });
+
+            }
             itemSelect.setAttribute("onchange", `onItemChange(this, ${entryIndex})`);
 
-            // Ensure remove button works
-            const removeBtn = newEntry.querySelector(".remove-entry");
-            if (removeBtn) {
+       
+             const removeBtn = document.createElement("button");
+                removeBtn.type = "button";
+                removeBtn.className = "btn btn-danger remove-entry mt-2";
+                removeBtn.innerText = "Remove";
                 removeBtn.addEventListener("click", function () {
                     newEntry.remove();
+                       const addButton = document.getElementById('addEntryBtn');
+                        addButton.disabled = false;
                 });
-            }
+
+              newEntry.insertBefore(removeBtn, newEntry.firstChild);
 
             wrapper.appendChild(newEntry);
+            
             entryIndex++;
+          
         });
 
         // Initial remove buttons setup
