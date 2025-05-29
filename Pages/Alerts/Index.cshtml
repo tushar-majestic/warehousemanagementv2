@@ -297,19 +297,36 @@
     <script>
         function showSection(section) {
             document.querySelectorAll('.section').forEach(div => div.classList.add('d-none'));
-            document.getElementById('section-' + section).classList.remove('d-none');
+            const target = document.getElementById('section-' + section);
+            if (target) {
+                target.classList.remove('d-none');
+                target.scrollIntoView({ behavior: 'smooth' });
+            }
         }
 
-        // Row selection for each table
-        document.querySelectorAll('.selectable-table').forEach(table => {
-            table.querySelectorAll('tbody tr').forEach(row => {
-                row.addEventListener('click', () => {
-                    table.querySelectorAll('tr').forEach(r => r.classList.remove('selected'));
-                    row.classList.add('selected');
+        document.addEventListener('DOMContentLoaded', () => {
+            // Detect section from hash in URL
+            const hash = window.location.hash;
+            if (hash && hash.startsWith('#section-')) {
+                const section = hash.replace('#section-', '');
+                showSection(section);
+            } else {
+                // Default to 'minimum' if no hash
+                showSection('minimum');
+            }
+
+            // Row selection
+            document.querySelectorAll('.selectable-table').forEach(table => {
+                table.querySelectorAll('tbody tr').forEach(row => {
+                    row.addEventListener('click', () => {
+                        table.querySelectorAll('tr').forEach(r => r.classList.remove('selected'));
+                        row.classList.add('selected');
+                    });
                 });
             });
         });
     </script>
+
 </body>
 
 

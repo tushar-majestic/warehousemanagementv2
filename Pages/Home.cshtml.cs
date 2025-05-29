@@ -28,7 +28,11 @@ namespace LabMaterials.Pages
 
         public DateTime? FromDate = DateTime.Now;
         public DateTime? ToDate = DateTime.Now;
-        public void OnGet(DateTime? startDate, DateTime? endDate)
+        public IList<ItemCard> ItemCardminimum { get; set; } = default!;
+        public IList<ItemCard> ItemCardCeiling { get; set; } = default!;
+        public IList<ItemCard> ItemCardReorder { get; set; } = default!;
+
+        public async Task OnGetAsync(DateTime? startDate, DateTime? endDate)
         {
             LoadPage();
             if (!HttpContext.Session.Keys.Contains("UserId"))
@@ -39,6 +43,27 @@ namespace LabMaterials.Pages
             else
             {
                 var dbContext = new LabDBContext();
+                ItemCardminimum = await dbContext.ItemCards.Where(i => i.QuantityAvailable < i.Minimum)
+               .Include(i => i.GroupCodeNavigation)
+               .Include(i => i.HazardTypeNameNavigation)
+               .Include(i => i.Item)
+               .Include(i => i.ItemTypeCodeNavigation)
+               .Include(i => i.Store).ToListAsync();
+
+                ItemCardCeiling = await dbContext.ItemCards.Where(i => i.QuantityAvailable >= i.Ceiling)
+                    .Include(i => i.GroupCodeNavigation)
+                    .Include(i => i.HazardTypeNameNavigation)
+                    .Include(i => i.Item)
+                    .Include(i => i.ItemTypeCodeNavigation)
+                    .Include(i => i.Store).ToListAsync();
+
+                ItemCardReorder = await dbContext.ItemCards.Where(i => i.QuantityAvailable <= i.ReorderLimit)
+                    .Include(i => i.GroupCodeNavigation)
+                    .Include(i => i.HazardTypeNameNavigation)
+                    .Include(i => i.Item)
+                    .Include(i => i.ItemTypeCodeNavigation)
+                    .Include(i => i.Store).ToListAsync();
+
                 totalQuantity = dbContext.Items.Sum(e => e.AvailableQuantity);
                 totalDisburse = dbContext.DisbursementRequests.Sum(e => e.ItemQuantity);
 

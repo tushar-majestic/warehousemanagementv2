@@ -257,6 +257,35 @@
             </ol>
         </nav>
 
+        @if (Model.ItemCardminimum?.Count > 0)
+        {
+            <div class="alert alert-warning d-flex justify-content-between align-items-center">
+                <span>You have @Model.ItemCardminimum.Count items that have reached minimum limit.</span>
+                <a class="btn btn-primary" href="/Alerts/Index#section-minimum">View</a>
+            </div>
+        }
+
+
+        @if (Model.ItemCardCeiling?.Count > 0)
+        {
+            <div class="alert alert-warning d-flex justify-content-between align-items-center">
+                <span>
+                    You have @Model.ItemCardCeiling.Count items to maximum limit.</span>
+                <a class="btn btn-primary" href="/Alerts/Index#section-maximum">View</a>
+            </div>
+        }
+
+        @if (Model.ItemCardReorder?.Count > 0)
+        {
+            <div class="alert alert-warning d-flex justify-content-between align-items-center">
+                <span> You have @Model.ItemCardReorder.Count items to reorder.</span>
+                <a class="btn btn-primary" href="/Alerts/Index#section-reorder">View</a>
+            </div>
+        }
+
+
+
+
         <div class="col-12 col-sm-6 col-xl-4 mb-4">
             <div class="card border-0 shadow">
                 <div class="card-body">
