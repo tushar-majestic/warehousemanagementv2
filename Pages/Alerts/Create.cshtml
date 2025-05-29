@@ -1,0 +1,115 @@
+﻿@page
+@model LabMaterials.Pages.Alerts.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<h1>Create</h1>
+
+<h4>ItemCard</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="ItemCard.GroupCode" class="control-label"></label>
+                <select asp-for="ItemCard.GroupCode" class ="form-control" asp-items="ViewBag.GroupCode"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="ItemCard.ItemTypeCode" class="control-label"></label>
+                <select asp-for="ItemCard.ItemTypeCode" class ="form-control" asp-items="ViewBag.ItemTypeCode"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="ItemCard.ItemCode" class="control-label"></label>
+                <input asp-for="ItemCard.ItemCode" class="form-control" />
+                <span asp-validation-for="ItemCard.ItemCode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ItemCard.ItemName" class="control-label"></label>
+                <input asp-for="ItemCard.ItemName" class="form-control" />
+                <span asp-validation-for="ItemCard.ItemName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ItemCard.ItemDescription" class="control-label"></label>
+                <input asp-for="ItemCard.ItemDescription" class="form-control" />
+                <span asp-validation-for="ItemCard.ItemDescription" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ItemCard.UnitOfmeasure" class="control-label"></label>
+                <input asp-for="ItemCard.UnitOfmeasure" class="form-control" />
+                <span asp-validation-for="ItemCard.UnitOfmeasure" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ItemCard.Chemical" class="control-label"></label>
+                <input asp-for="ItemCard.Chemical" class="form-control" />
+                <span asp-validation-for="ItemCard.Chemical" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ItemCard.HazardTypeName" class="control-label"></label>
+                <select asp-for="ItemCard.HazardTypeName" class ="form-control" asp-items="ViewBag.HazardTypeName"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="ItemCard.CreatedBy" class="control-label"></label>
+                <input asp-for="ItemCard.CreatedBy" class="form-control" />
+                <span asp-validation-for="ItemCard.CreatedBy" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ItemCard.StoreId" class="control-label"></label>
+                <select asp-for="ItemCard.StoreId" class ="form-control" asp-items="ViewBag.StoreId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="ItemCard.QuantityAvailable" class="control-label"></label>
+                <input asp-for="ItemCard.QuantityAvailable" class="form-control" />
+                <span asp-validation-for="ItemCard.QuantityAvailable" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ItemCard.ItemId" class="control-label"></label>
+                <select asp-for="ItemCard.ItemId" class ="form-control" asp-items="ViewBag.ItemId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="ItemCard.CreatedAt" class="control-label"></label>
+                <input asp-for="ItemCard.CreatedAt" class="form-control" />
+                <span asp-validation-for="ItemCard.CreatedAt" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ItemCard.LastActivity" class="control-label"></label>
+                <input asp-for="ItemCard.LastActivity" class="form-control" />
+                <span asp-validation-for="ItemCard.LastActivity" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ItemCard.TypeOfAsset" class="control-label"></label>
+                <input asp-for="ItemCard.TypeOfAsset" class="form-control" />
+                <span asp-validation-for="ItemCard.TypeOfAsset" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ItemCard.Minimum" class="control-label"></label>
+                <input asp-for="ItemCard.Minimum" class="form-control" />
+                <span asp-validation-for="ItemCard.Minimum" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ItemCard.ReorderLimit" class="control-label"></label>
+                <input asp-for="ItemCard.ReorderLimit" class="form-control" />
+                <span asp-validation-for="ItemCard.ReorderLimit" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ItemCard.Ceiling" class="control-label"></label>
+                <input asp-for="ItemCard.Ceiling" class="form-control" />
+                <span asp-validation-for="ItemCard.Ceiling" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
