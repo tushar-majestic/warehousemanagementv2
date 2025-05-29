@@ -51,6 +51,7 @@ public partial class ItemCard
     // public int ReceiptDocumentnumber { get; set; }
 
     public int ItemId { get; set; }
+    public DateTime? CreatedAt { get; set; }
 
     // public DateOnly? DateOfEntry { get; set; }
 
