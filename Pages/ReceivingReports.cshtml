@@ -106,10 +106,13 @@
                             @* <input asp-for="Report.BasedOnDocument" class="form-control" required /> *@
                             <select asp-for="Report.BasedOnDocument" class="form-select" id="BasedOnDocument" name="BasedOnDocument" >
                                 <option value="">Select Based On document</option>
-                                <option value="Certification">Certification</option>
-                                <option value="Purchase order">Purchase order</option>
+                                @foreach (var document in Model.DocumentList)
+                                {
+                                    <option value="@document.DocType">@document.DocType</option>
+                                }
+                                @* <option value="Purchase order">Purchase order</option>
                                 <option value="Return order">Return order</option>
-                                <option value="Transfer from another warehouse">Transfer from another warehouse</option>
+                                <option value="Transfer from another warehouse">Transfer from another warehouse</option> *@
 
                             </select>
                         </div>
