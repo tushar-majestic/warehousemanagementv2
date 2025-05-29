@@ -15,7 +15,11 @@
                 </li>
                 <li class="breadcrumb-item d-flex align-items-center">
                     <img src="images/management.png" alt="Home" width="16" height="16" class="me-2" />
-                    @Model.lblUsers
+                    <a href="/ManageUsers" class="text-decoration-none">@Model.lblUsers</a>
+                </li>
+                <li class="breadcrumb-item d-flex align-items-center">
+                    <img src="images/management.png" alt="Home" width="16" height="16" class="me-2" />
+                    @Model.lblWarehouseType
                 </li>
             </ol>
         </nav>
