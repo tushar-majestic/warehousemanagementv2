@@ -28,7 +28,7 @@ public class ItemCardViewModels
 
     public int QuantityAvailable { get; set; }
 
-    public DateTime DateOfEntry { get; set; }
+    public DateTime? DateOfEntry { get; set; }
 
     public string RoomName { get; set; }
     public string ShelfName { get; set; }

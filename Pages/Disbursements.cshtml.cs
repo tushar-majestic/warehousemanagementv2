@@ -247,6 +247,7 @@ namespace LabMaterials.Pages
                                 RequestingPlace = s.DestinationName,
                                 Comments = i.Comments,
                                 ReqReceivedAt = d.OrderDate,
+                                ReqDate = d.CreatedAt,
                                 Status = d.SupervisorApproval ? "Approved" : "Pending",
                                 InventoryBalanced = ic.QuantityAvailable.ToString(),
                                 ItemCode = ic.ItemCode,
@@ -260,8 +261,13 @@ namespace LabMaterials.Pages
                 if (!string.IsNullOrEmpty(RequesterName))
                     query = query.Where(s => s.RequesterName.Contains(RequesterName));
 
-                if (FromDate != null && FromDate >= DateTime.MinValue && ToDate != null && ToDate >= DateTime.MinValue)
-                    query = query.Where(e => e.ReqReceivedAt.Date >= FromDate.Value.Date && e.ReqReceivedAt.Date <= ToDate.Value.Date);
+                // if (FromDate != null && FromDate >= DateTime.MinValue && ToDate != null && ToDate >= DateTime.MinValue)
+                //     query = query.Where(e => e.ReqDate.Date >= FromDate.Value.Date && e.ReqDate.Date <= ToDate.Value.Date);
+
+                if (FromDate is not null && ToDate is not null)
+                {
+                    query = query.Where(e => e.ReqDate.Value.Date >= FromDate && e.ReqDate.Value.Date <= ToDate);
+                }
 
                 if (string.IsNullOrEmpty(Status) == false)
                     query = query.Where(i => i.Status.Contains(Status));

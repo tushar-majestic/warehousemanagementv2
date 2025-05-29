@@ -555,7 +555,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         }
                         @if (Model.SelectedColumns.Contains("requestReceivedDate"))
                         {
-                        <td>@item.ReqReceivedAt</td>
+                        <td>@item.ReqDate?.ToString("dd-MM-yyyy")</td>
                         }
                         @if (Model.SelectedColumns.Contains("destination"))
                         {
@@ -763,7 +763,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         }
                         @if (Model.SelectedColumns.Contains("requestReceivedDate"))
                         {
-                        <td>@item.ReqReceivedAt</td>
+                        <td>@item.ReqDate?.ToString("dd-MM-yyyy")</td>
                         }
                         @if (Model.SelectedColumns.Contains("destination"))
                         {

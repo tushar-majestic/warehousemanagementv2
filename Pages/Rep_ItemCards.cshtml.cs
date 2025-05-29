@@ -10,6 +10,7 @@ namespace LabMaterials.Pages
 {
     public class Rep_ItemCardsModel : BasePageModel
     {
+        public DateTime? FromDate, ToDate;
 
         public string lblTotalItem, lblItemGroups, lblSearch, lblItems, lblItemName,
         lblStateofMatter, lblRiskRating, lblChemical, lblSubmit, lblUnitCode, lblHazardType, lblItemCode, lblGroupName, lblStores;
@@ -27,13 +28,13 @@ namespace LabMaterials.Pages
         public int TotalPages { get; set; }
 
         
-        public string lblInventory, lblStoreNumber, lblStoreName, lblShelveNumber, lblAvailableQuantity, lblMaterialsReceived,
+        public string lblInventory, lblStoreNumber, lblStoreName, lblShelveNumber, lblAvailableQuantity, lblMaterialsReceived, lblDate, 
             lblHazardousMaterials, lblUserActivity, lblDistributedMaterials, lblExpiryDate, lblDamagedItems, lblUserReport, lblExport, lblFromDate, lblToDate, lblPrint;
         public Rep_ItemCardsModel(LabDBContext context)
         {
             _context = context;
         }
-        public void OnGet(string? ItemName, int page = 1)
+        public void OnGet(string? ItemName, DateTime? FromDate, DateTime? ToDate, int page = 1)
         {
             base.ExtractSessionData();
             FillLables();
@@ -45,7 +46,9 @@ namespace LabMaterials.Pages
                     string pagevalue = HttpContext.Request.Query["page"];
                     page = int.Parse(pagevalue);
                     this.ItemName = ItemName;
-                    FillData(ItemName, page);
+                    this.FromDate = FromDate;
+                    this.ToDate = ToDate;
+                    FillData(ItemName, FromDate, ToDate, page);
 
                 }
             }
@@ -75,7 +78,7 @@ namespace LabMaterials.Pages
             }
         }
 
-        public IActionResult OnPostAction(string ItemName, string action, List<string> columns)
+        public IActionResult OnPostAction(string ItemName, DateTime? FromDate, DateTime? ToDate, string action, List<string> columns)
         {
             base.ExtractSessionData();
             FillLables();
@@ -84,9 +87,11 @@ namespace LabMaterials.Pages
             {
                 CurrentPage = 1;
                 this.ItemName = ItemName;
+                this.FromDate = FromDate;
+                this.ToDate = ToDate;
                 if (CanManageItems)
                 {
-                    FillData(ItemName);
+                    FillData(ItemName, FromDate, ToDate);
                     LoadSelectedColumns();
                 }
 
@@ -99,7 +104,9 @@ namespace LabMaterials.Pages
                 {
                     string selectedColumns = string.Join(",", columns);
                     this.ItemName = ItemName;
-                    FillData(ItemName);
+                    this.FromDate = FromDate;
+                    this.ToDate = ToDate;
+                    FillData(ItemName, FromDate, ToDate);
 
                     int? userId = HttpContext.Session.GetInt32("UserId");
                     string pageName = "itemsCardsReport";
@@ -138,7 +145,7 @@ namespace LabMaterials.Pages
         }
 
 
-        private void FillData(string ItemName, int page = 1)
+        private void FillData(string ItemName, DateTime? StartDate, DateTime? EndDate, int page = 1)
         {
             FillLables();
 
@@ -158,11 +165,15 @@ namespace LabMaterials.Pages
                              Chemical = item.Chemical,
                              HazardTypeName = item.HazardTypeName,
                              QuantityAvailable = item.QuantityAvailable,
-                             DateOfEntry = item.CreatedAt ?? DateTime.Now,
+                             DateOfEntry = item.CreatedAt,
                              WarehouseName = store.StoreName
                          });
             if (!string.IsNullOrWhiteSpace(ItemName))
                 query = query.Where(i => i.ItemName.Contains(ItemName));
+            if (StartDate is not null && EndDate is not null)
+            {
+                query = query.Where(e => e.DateOfEntry.Value.Date >= StartDate && e.DateOfEntry.Value.Date <= EndDate);
+            }
 
             TotalItems = query.Count();
             TotalPages = (int)Math.Ceiling((double)TotalItems / ItemsPerPage);
@@ -206,6 +217,7 @@ namespace LabMaterials.Pages
             this.lblStores = (Program.Translations["Stores"])[Lang];
             this.lblStateofMatter = (Program.Translations["StateofMatter"])[Lang];
             this.lblDamagedItems = (Program.Translations["DamagedItems"])[Lang];
+            this.lblDate = (Program.Translations["Date"])[Lang];
         }
     }
 }

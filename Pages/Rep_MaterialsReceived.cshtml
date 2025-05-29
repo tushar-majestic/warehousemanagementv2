@@ -362,7 +362,7 @@
                                     }
                                     @if (Model.SelectedColumns.Contains("receivedDate"))
                                     {
-                                    <td>@item.ReceivedAt</td>
+                                    <td>@item.ReceivedAt.ToString("dd-MM-yyyy")</td>
                                     }
                                     @if (Model.SelectedColumns.Contains("inventoryBalance"))
                                     {
