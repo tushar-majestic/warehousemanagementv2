@@ -102,16 +102,16 @@ namespace LabMaterials.Pages
                 page = int.Parse(pagevalue);
             }
             var dbContext = new LabDBContext();
-            var query = (from i in dbContext.Items
-                         join di in dbContext.DamagedItems on i.ItemId equals di.ItemId
+            var query = (from rr in dbContext.ReturnRequests
+                         join di in dbContext.ReturnRequestItems on rr.Id equals di.ReturnRequestId
 
                          select new DamagedItemsInfo
                          {
-                             ItemCode = i.ItemCode,
-                             ItemName = i.ItemName,
-                             DamageQuantity = di.DamagedQuantity,
-                             DamageDate = di.DamagedDate,
-                             DamageReason = di.DamagedReason
+                             ItemCode = di.ItemCode,
+                             ItemName = di.ItemNameEnglish,
+                             DamageQuantity = di.ReturnedQuantity,
+                             DamageDate = rr.CreatedAt,
+                             DamageReason = di.ReturnNotes
 
                          });
 
