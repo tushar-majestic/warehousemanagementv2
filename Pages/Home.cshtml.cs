@@ -24,7 +24,7 @@ namespace LabMaterials.Pages
             lblMostRequestingDestination, LineChartTitle, LineChartLabels, LineChartData,
             lblDestinationName, countDestination, lblCountDestination, lblItemName, lblCount,
             SuppliesData, DisbursementData, lblFromDate, lblToDate, lblTotalItems, lblTotalUsers, lblTotalStores,
-            lblDisbursements, lblSupplies, lblSuppliesAndDisbursements, lblItems, lblItemCards;
+            lblDisbursements, lblSupplies, lblSuppliesAndDisbursements, lblItems, lblItemCards, lblMinimumQuantity, lblMaximumQuantity, lblReorderQuantity, lblAlert;
 
         public DateTime? FromDate = DateTime.Now;
         public DateTime? ToDate = DateTime.Now;
@@ -266,6 +266,10 @@ namespace LabMaterials.Pages
             this.lblSuppliesAndDisbursements = (Program.Translations["SuppliesAndDisbursements"])[Lang];
             this.lblItems = (Program.Translations["Items"])[Lang];
             this.lblItemCards = (Program.Translations["ItemCards"])[Lang];
+            this.lblMinimumQuantity = (Program.Translations["MinimumQuantity"])[Lang];
+            this.lblMaximumQuantity = (Program.Translations["MaximumQuantity"])[Lang];
+            this.lblReorderQuantity = (Program.Translations["ReorderQuantity"])[Lang];
+            this.lblAlert = (Program.Translations["Alert"])[Lang];
 
         }
 

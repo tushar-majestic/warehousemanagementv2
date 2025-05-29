@@ -259,8 +259,8 @@
 
         @if (Model.ItemCardminimum?.Count > 0)
         {
-            <div class="alert alert-warning d-flex justify-content-between align-items-center">
-                <span>You have @Model.ItemCardminimum.Count items that have reached minimum limit.</span>
+            <div class="alert alert-info d-flex justify-content-between align-items-center">
+                <span><b>@Model.lblAlert </b> @Model.ItemCardminimum.Count @Model.lblMinimumQuantity</span>
                 <a class="btn btn-primary" href="/Alerts/Index#section-minimum">View</a>
             </div>
         }
@@ -268,17 +268,18 @@
 
         @if (Model.ItemCardCeiling?.Count > 0)
         {
-            <div class="alert alert-warning d-flex justify-content-between align-items-center">
+            <div class="alert alert-info d-flex justify-content-between align-items-center">
                 <span>
-                    You have @Model.ItemCardCeiling.Count items to maximum limit.</span>
+                    <b>@Model.lblAlert </b>@Model.ItemCardCeiling.Count @Model.lblMaximumQuantity
+                </span>
                 <a class="btn btn-primary" href="/Alerts/Index#section-maximum">View</a>
             </div>
         }
 
         @if (Model.ItemCardReorder?.Count > 0)
         {
-            <div class="alert alert-warning d-flex justify-content-between align-items-center">
-                <span> You have @Model.ItemCardReorder.Count items to reorder.</span>
+            <div class="alert alert-info d-flex justify-content-between align-items-center">
+                <span><b>@Model.lblAlert </b>@Model.ItemCardReorder.Count @Model.lblReorderQuantity</span>
                 <a class="btn btn-primary" href="/Alerts/Index#section-reorder">View</a>
             </div>
         }
