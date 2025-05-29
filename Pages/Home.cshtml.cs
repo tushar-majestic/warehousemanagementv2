@@ -34,12 +34,17 @@ namespace LabMaterials.Pages
 
         public async Task OnGetAsync(DateTime? startDate, DateTime? endDate)
         {
+            if (HttpContext.Session.GetString("UserId") == null)
+            {
+                Redirect("/Index?lang=" + Lang);
+            }
             LoadPage();
             if (!HttpContext.Session.Keys.Contains("UserId"))
             {
 
                 RedirectToPage("./Index?lang=" + Lang);
             }
+
             else
             {
                 var dbContext = new LabDBContext();
@@ -181,7 +186,7 @@ namespace LabMaterials.Pages
                 MostRequestingDestination = destWithCount.ToList();
 
                 var fastMovingItem = (from dr in dbContext.DisbursementRequests
-                                      join i in dbContext.Items on dr.Itemcode equals i.ItemCode
+                                      join i in dbContext.ItemCards on dr.Itemcode equals i.ItemCode
                                       group i by i.ItemName into g
                                       orderby g.Count() descending
                                       select new ItemInfo
@@ -191,12 +196,12 @@ namespace LabMaterials.Pages
                                       }).Take(1);
                 FastMovingItem = fastMovingItem.ToList();
 
-                var lowInventory = (from i in dbContext.Items
+                var lowInventory = (from i in dbContext.ItemCards
                                     group i by i.ItemName into g
                                     select new ItemInfo
                                     {
                                         ItemName = g.Key,
-                                        Count = g.Sum(item => item.AvailableQuantity),
+                                        Count = g.Sum(item => item.QuantityAvailable),
                                     });
                 var res = lowInventory.Where(e => e.Count <= 10);
 

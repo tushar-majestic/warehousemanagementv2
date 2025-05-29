@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace LabMaterials.Pages
@@ -41,11 +43,21 @@ namespace LabMaterials.Pages
         lblItemNameDescription, lblItemNo, lblCount, lblSAR, lblChiefResponsible, lblTechnicalMember, lblRecipient, lblSignature, lblName,
         lblDate, lblcreateItemCard, lbldeductItemCard, lblItemMovement, lblStores;
 
-
+        public override void OnPageHandlerExecuting(PageHandlerExecutingContext context)
+        {
+            if (string.IsNullOrEmpty(context.HttpContext.Session.GetString("UserId")))
+            {
+                context.Result = new RedirectToPageResult("/Index");
+            }
+            base.OnPageHandlerExecuting(context);
+        }
 
         public void ExtractSessionData()
         {
-
+            if (HttpContext.Session.GetString("UserId") == null)
+            {
+                Redirect("/Index?lang=" + Lang);
+            }
             if (HttpContext.Session.Keys.Contains("UserId"))
             {
                 UserId = HttpContext.Session.GetInt32("UserId");
