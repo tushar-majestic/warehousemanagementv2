@@ -1,0 +1,315 @@
+﻿@page
+@model LabMaterials.Pages.Alerts.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<body>
+
+    <!-- Nav Buttons -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Item Quantity</a>
+            <div class="d-flex">
+                <button class="btn btn-outline-light me-2" onclick="showSection('minimum')">Minimum</button>
+                <button class="btn btn-outline-light me-2" onclick="showSection('maximum')">Maximum</button>
+                <button class="btn btn-outline-light" onclick="showSection('reorder')">Re-order</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container py-4">
+
+        <!-- Users Section -->
+        <div id="section-minimum" class="section">
+             <h3>Items less than minimum</h3> 
+            <table class="table table-bordered table-hover selectable-table">
+                <thead class="table-light">
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ItemCardminimum[0].ItemCode)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ItemCardminimum[0].ItemName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ItemCardminimum[0].ItemDescription)
+                        </th>
+                    
+                        <th>
+                            @Html.DisplayNameFor(model => model.ItemCardminimum[0].QuantityAvailable)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ItemCardminimum[0].CreatedAt)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ItemCardminimum[0].LastActivity)
+                        </th>
+                      
+                        <th>
+                            @Html.DisplayNameFor(model => model.ItemCardminimum[0].Minimum)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ItemCardminimum[0].ReorderLimit)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ItemCardminimum[0].Ceiling)
+                        </th>
+                   
+                        <th>
+                            @Html.DisplayNameFor(model => model.ItemCardminimum[0].Store)
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.ItemCardminimum)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ItemCode)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ItemName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ItemDescription)
+                            </td>
+                           
+                            <td>
+                                @Html.DisplayFor(modelItem => item.QuantityAvailable)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CreatedAt)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.LastActivity)
+                           
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Minimum)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ReorderLimit)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Ceiling)
+                            </td>
+                           
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Store.StoreId)
+                            </td>
+                            <td>
+                                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Products Section -->
+        <div id="section-maximum" class="section d-none">
+            <h3>Items with maximum Quantity</h3>
+            <table class="table table-bordered table-hover selectable-table">
+                <thead class="table-light">
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ItemCardCeiling[0].ItemCode)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ItemCardCeiling[0].ItemName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ItemCardCeiling[0].ItemDescription)
+                        </th>
+
+                        <th>
+                            @Html.DisplayNameFor(model => model.ItemCardCeiling[0].QuantityAvailable)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ItemCardCeiling[0].CreatedAt)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ItemCardCeiling[0].LastActivity)
+                        </th>
+
+                        <th>
+                            @Html.DisplayNameFor(model => model.ItemCardCeiling[0].Minimum)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ItemCardCeiling[0].ReorderLimit)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ItemCardCeiling[0].Ceiling)
+                        </th>
+
+                        <th>
+                            @Html.DisplayNameFor(model => model.ItemCardCeiling[0].Store)
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.ItemCardCeiling)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ItemCode)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ItemName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ItemDescription)
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.QuantityAvailable)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CreatedAt)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.LastActivity)
+
+                            <td>
+                                    @Html.DisplayFor(modelItem => item.Minimum)
+                            </td>
+                            <td>
+                                    @Html.DisplayFor(modelItem => item.ReorderLimit)
+                            </td>
+                            <td>
+                                    @Html.DisplayFor(modelItem => item.Ceiling)
+                            </td>
+
+                            <td>
+                                    @Html.DisplayFor(modelItem => item.Store.StoreId)
+                            </td>
+                            <td>
+                                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Orders Section -->
+        <div id="section-reorder" class="section d-none">
+            <h3>Items reaching re-order limit.</h3>
+            <table class="table table-bordered table-hover selectable-table">
+                <thead class="table-light">
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ItemCardReorder[0].ItemCode)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ItemCardReorder[0].ItemName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ItemCardReorder[0].ItemDescription)
+                        </th>
+
+                        <th>
+                            @Html.DisplayNameFor(model => model.ItemCardReorder[0].QuantityAvailable)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ItemCardReorder[0].CreatedAt)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ItemCardReorder[0].LastActivity)
+                        </th>
+
+                        <th>
+                            @Html.DisplayNameFor(model => model.ItemCardReorder[0].Minimum)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ItemCardReorder[0].ReorderLimit)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.ItemCardReorder[0].Ceiling)
+                        </th>
+
+                        <th>
+                            @Html.DisplayNameFor(model => model.ItemCardReorder[0].Store)
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.ItemCardReorder)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ItemCode)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ItemName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ItemDescription)
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.QuantityAvailable)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CreatedAt)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.LastActivity)
+
+                            <td>
+                                    @Html.DisplayFor(modelItem => item.Minimum)
+                            </td>
+                            <td>
+                                    @Html.DisplayFor(modelItem => item.ReorderLimit)
+                            </td>
+                            <td>
+                                    @Html.DisplayFor(modelItem => item.Ceiling)
+                            </td>
+
+                            <td>
+                                    @Html.DisplayFor(modelItem => item.Store.StoreId)
+                            </td>
+                            <td>
+                                <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                                <a asp-page="./Details" asp-route-id="@item.Id">Details</a> |
+                                <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function showSection(section) {
+            document.querySelectorAll('.section').forEach(div => div.classList.add('d-none'));
+            document.getElementById('section-' + section).classList.remove('d-none');
+        }
+
+        // Row selection for each table
+        document.querySelectorAll('.selectable-table').forEach(table => {
+            table.querySelectorAll('tbody tr').forEach(row => {
+                row.addEventListener('click', () => {
+                    table.querySelectorAll('tr').forEach(r => r.classList.remove('selected'));
+                    row.classList.add('selected');
+                });
+            });
+        });
+    </script>
+</body>
+
+
