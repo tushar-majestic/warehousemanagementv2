@@ -30,7 +30,7 @@ namespace LabMaterials.Pages
             _context.DocumentTypes.Add(DocumentType);
             await _context.SaveChangesAsync();
 
-            return RedirectToPage("ManageUsers"); // Assumes you have an Index page
+            return RedirectToPage("ViewDoctypes"); // Assumes you have an Index page
         }
     }
 }

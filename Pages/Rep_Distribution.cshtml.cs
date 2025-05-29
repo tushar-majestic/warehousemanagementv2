@@ -90,6 +90,19 @@ namespace LabMaterials.Pages
                                 Status = d.Status,
                                 InventoryBalanced = d.InventoryBalanced ? "Yes" : "No"
                             };
+                // var query = (from mr in dbContext.MaterialRequests
+                //              join u in dbContext.Users on mr.RequestedByUserId equals u.UserId
+                //              join d in dbContext.Destinations on mr.RequestingSector equals d.DId
+                //              select new DisbursementInfo
+                //              {
+                //                  DisbursementRequestId = mr.RequestId,
+                //                  RequesterName = u.FullName,
+                //                  RequestingPlace = d.DestinationName,
+                //                  Comments = mr.Comments,
+                //                  ReqReceivedAt = mr.CreatedAt,
+                //                  Status = mr.SupervisorApproval.ToString(),
+                //                  InventoryBalanced = mr.InventoryBalanced ? "Yes" : "No"
+                //              });
 
                 if (string.IsNullOrEmpty(RequesterName) == false)
                     query = query.Where(s => s.RequesterName.Contains(RequesterName));
