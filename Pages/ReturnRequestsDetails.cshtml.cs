@@ -29,6 +29,8 @@ namespace LabMaterials.Pages
                 .Include(r => r.FromSector)
                 .FirstOrDefaultAsync(r => r.Id == id);
 
+
+
             ItemConditionList = Enum.GetValues(typeof(ReturnRequestItem.ItemCondition))
             .Cast<ReturnRequestItem.ItemCondition>()
             .Select(e => new SelectListItem
@@ -43,6 +45,21 @@ namespace LabMaterials.Pages
 
             ReturnRequestItems = ReturnRequest.Items.ToList();
             return Page();
+        }
+        
+         public IActionResult OnPostEditReturnRequest([FromForm] int ReturnRequestId)
+        {
+
+
+
+            HttpContext.Session.SetInt32("ReturnRequestId", ReturnRequestId);
+            HttpContext.Session.SetInt32("InboxId", 0);
+
+            return RedirectToPage("./EditReturnRequest");
+
+
+
+
         }
     }
 }

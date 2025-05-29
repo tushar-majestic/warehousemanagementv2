@@ -150,6 +150,7 @@
                     <label>Order Date</label>
                     <input type="date" name="OrderDate" class="form-control" value="@Model.CurrentDate.ToString("yyyy-MM-dd")" />
                 </div>
+
                 <div class="mb-4">
                     <label>Requesting Sector</label>
                     <input type="text" name="RequestingSector" class="form-control" value="General Administration of Educational Services" />
@@ -314,6 +315,8 @@
                 removeBtn.innerText = "Remove";
                 removeBtn.addEventListener("click", function () {
                     newEntry.remove();
+                    const addButton = document.getElementById('addEntryBtn');
+                    addButton.disabled = false;
                 });
 
               newEntry.insertBefore(removeBtn, newEntry.firstChild);
