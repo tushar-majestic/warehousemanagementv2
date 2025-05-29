@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using LabMaterials.DB;
 
 namespace LabMaterials.Pages.Alerts
 {
-    public class CreateModel : PageModel
+    public class CreateModel : BasePageModel
     {
         private readonly LabMaterials.DB.LabDBContext _context;
 
@@ -20,11 +14,12 @@ namespace LabMaterials.Pages.Alerts
 
         public IActionResult OnGet()
         {
-        ViewData["GroupCode"] = new SelectList(_context.ItemGroups, "GroupCode", "GroupCode");
-        ViewData["HazardTypeName"] = new SelectList(_context.HazardTypes, "HazardTypeName", "HazardTypeName");
-        ViewData["ItemId"] = new SelectList(_context.Items, "ItemId", "ItemId");
-        ViewData["ItemTypeCode"] = new SelectList(_context.ItemTypes, "ItemTypeCode", "ItemTypeCode");
-        ViewData["StoreId"] = new SelectList(_context.Stores, "StoreId", "StoreId");
+            base.ExtractSessionData();
+            ViewData["GroupCode"] = new SelectList(_context.ItemGroups, "GroupCode", "GroupCode");
+            ViewData["HazardTypeName"] = new SelectList(_context.HazardTypes, "HazardTypeName", "HazardTypeName");
+            ViewData["ItemId"] = new SelectList(_context.Items, "ItemId", "ItemId");
+            ViewData["ItemTypeCode"] = new SelectList(_context.ItemTypes, "ItemTypeCode", "ItemTypeCode");
+            ViewData["StoreId"] = new SelectList(_context.Stores, "StoreId", "StoreId");
             return Page();
         }
 
