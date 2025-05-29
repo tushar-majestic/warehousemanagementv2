@@ -53,6 +53,11 @@ public partial class ItemCard
     public int ItemId { get; set; }
 
     public DateTime? CreatedAt { get; set; }
+    public DateTime? LastActivity { get; set; }
+    public string? TypeOfAsset { get; set; } 
+    public int? Minimum { get; set; }
+    public int? ReorderLimit { get; set; }
+    public int? Ceiling  { get; set; }
 
     // public DateOnly? DateOfEntry { get; set; }
 
