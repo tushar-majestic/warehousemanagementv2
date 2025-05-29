@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using LabMaterials.DB;
 
 namespace LabMaterials.Pages.Alerts
 {
-    public class EditModel : PageModel
+    public class EditModel : BasePageModel
     {
         private readonly LabMaterials.DB.LabDBContext _context;
 
@@ -24,22 +18,23 @@ namespace LabMaterials.Pages.Alerts
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
+            base.ExtractSessionData();
             if (id == null)
             {
                 return NotFound();
             }
 
-            var itemcard =  await _context.ItemCards.FirstOrDefaultAsync(m => m.Id == id);
+            var itemcard = await _context.ItemCards.FirstOrDefaultAsync(m => m.Id == id);
             if (itemcard == null)
             {
                 return NotFound();
             }
             ItemCard = itemcard;
-           ViewData["GroupCode"] = new SelectList(_context.ItemGroups, "GroupCode", "GroupCode");
-           ViewData["HazardTypeName"] = new SelectList(_context.HazardTypes, "HazardTypeName", "HazardTypeName");
-           ViewData["ItemId"] = new SelectList(_context.Items, "ItemId", "ItemId");
-           ViewData["ItemTypeCode"] = new SelectList(_context.ItemTypes, "ItemTypeCode", "ItemTypeCode");
-           ViewData["StoreId"] = new SelectList(_context.Stores, "StoreId", "StoreId");
+            ViewData["GroupCode"] = new SelectList(_context.ItemGroups, "GroupCode", "GroupCode");
+            ViewData["HazardTypeName"] = new SelectList(_context.HazardTypes, "HazardTypeName", "HazardTypeName");
+            ViewData["ItemId"] = new SelectList(_context.Items, "ItemId", "ItemId");
+            ViewData["ItemTypeCode"] = new SelectList(_context.ItemTypes, "ItemTypeCode", "ItemTypeCode");
+            ViewData["StoreId"] = new SelectList(_context.Stores, "StoreId", "StoreId");
             return Page();
         }
 

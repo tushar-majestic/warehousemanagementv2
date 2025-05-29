@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using LabMaterials.DB;
 
 namespace LabMaterials.Pages.Alerts
 {
-    public class DeleteModel : PageModel
+    public class DeleteModel : BasePageModel
     {
         private readonly LabMaterials.DB.LabDBContext _context;
 
@@ -23,6 +17,7 @@ namespace LabMaterials.Pages.Alerts
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
+            base.ExtractSessionData();
             if (id == null)
             {
                 return NotFound();
