@@ -4,6 +4,7 @@ using LabMaterials.DB;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LabMaterials.Migrations
 {
     [DbContext(typeof(LabDBContext))]
-    partial class LabDBContextModelSnapshot : ModelSnapshot
+    [Migration("20250529070007_AddCreatedAtToItemCards")]
+    partial class AddCreatedAtToItemCards
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -512,9 +515,6 @@ namespace LabMaterials.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("Ceiling")
-                        .HasColumnType("int");
-
                     b.Property<string>("Chemical")
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
@@ -556,23 +556,11 @@ namespace LabMaterials.Migrations
                         .HasMaxLength(15)
                         .HasColumnType("nvarchar(15)");
 
-                    b.Property<DateTime?>("LastActivity")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("Minimum")
-                        .HasColumnType("int");
-
                     b.Property<int>("QuantityAvailable")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("ReorderLimit")
                         .HasColumnType("int");
 
                     b.Property<int>("StoreId")
                         .HasColumnType("int");
-
-                    b.Property<string>("TypeOfAsset")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UnitOfmeasure")
                         .HasMaxLength(20)

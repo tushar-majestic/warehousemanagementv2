@@ -30,6 +30,7 @@ namespace LabMaterials.Pages
         public List<User> Users {  get; set; }
 
         public List<User> TechnicalMemberList {  get; set; }
+        public List<DocumentType> DocumentList {  get; set; }
 
         public List<Unit> Units { get; set; } 
         public List<ItemGroup> ItemGroupList { get; set; } 
@@ -90,6 +91,8 @@ namespace LabMaterials.Pages
 
             TechnicalMemberList = dbContext.Users
                         .Where(u => u.UserGroupId == TechnicalMemberId)
+                        .ToList();
+            DocumentList = dbContext.DocumentTypes
                         .ToList();
 
             // Debugging: log item count and details
