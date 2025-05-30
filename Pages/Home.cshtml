@@ -259,28 +259,34 @@
 
         @if (Model.ItemCardminimum?.Count > 0)
         {
-            <div class="alert alert-info d-flex justify-content-between align-items-center">
-                <span><b>@Model.lblAlert </b> @Model.ItemCardminimum.Count @Model.lblMinimumQuantity</span>
-                <a class="btn btn-primary" href="/Alerts/Index#section-minimum">View</a>
+            <div>
+                <div class="alert alert-info d-flex justify-content-between align-items-center">
+                    <span><b><img src="images/alert.png" alt="alert" /> @Model.lblAlert </b> @Model.ItemCardminimum.Count @Model.lblMinimumQuantity</span>
+                    <a class="btn btn-primary" href="/Alerts/Index#section-minimum">View</a>
+                </div>
             </div>
         }
 
 
         @if (Model.ItemCardCeiling?.Count > 0)
         {
-            <div class="alert alert-info d-flex justify-content-between align-items-center">
-                <span>
-                    <b>@Model.lblAlert </b>@Model.ItemCardCeiling.Count @Model.lblMaximumQuantity
-                </span>
-                <a class="btn btn-primary" href="/Alerts/Index#section-maximum">View</a>
+            <div>
+                <div class="alert alert-info d-flex justify-content-between align-items-center pl-5 pr-5">
+                    <span>
+                    <b><img src="images/alert.png" alt="alert" /> @Model.lblAlert </b>@Model.ItemCardCeiling.Count @Model.lblMaximumQuantity
+                    </span>
+                    <a class="btn btn-primary" href="/Alerts/Index#section-maximum">View</a>
+                </div>
             </div>
         }
 
         @if (Model.ItemCardReorder?.Count > 0)
         {
-            <div class="alert alert-info d-flex justify-content-between align-items-center">
-                <span><b>@Model.lblAlert </b>@Model.ItemCardReorder.Count @Model.lblReorderQuantity</span>
-                <a class="btn btn-primary" href="/Alerts/Index#section-reorder">View</a>
+            <div>
+                <div class="alert alert-info d-flex justify-content-between align-items-center pl-5 pr-5">
+                    <span><b><img src="images/alert.png" alt="alert" />@Model.lblAlert </b>@Model.ItemCardReorder.Count @Model.lblReorderQuantity</span>
+                    <a class="btn btn-primary" href="/Alerts/Index#section-reorder">View</a>
+                </div>
             </div>
         }
 
