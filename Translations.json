@@ -1308,7 +1308,7 @@
   },
   "GeneralSupervisor": {
     "en": "General Supervisor",
-    "ar": "General Supervisor"
+    "ar": "المشرف العام"
   },
   "SubmitReport": {
     "en": "Submit Report",
@@ -1440,7 +1440,7 @@
   },
   "AmountSpent": {
     "en": "Amount Spent",
-    "ar": "Amount Spent"
+    "ar": "المبلغ الذي تم إنفاقه"
   },
   "RequestDocumentType": {
     "en": "Request Document Type",
@@ -1666,7 +1666,65 @@
   "NoObjection": {
     "en": "There is no objection to spending within the limits permitted by the balances",
     "ar": "There is no objection to spending within the limits permitted by the balances"
+  },
+  "Receipient":{
+    "en": "Receipient",
+    "ar" : "المستلم"
+  },
+  "ItemQuantity": {
+    "en" : "Item Quantity",
+    "ar" : "كمية السلعة"
+  },
+  "ItemCard": {
+    "en": "Item Card",
+    "ar": "بطاقة السلعة"
+  },
+  "RoomNameNumber": {
+    "en" : "Room Name & Number",
+    "ar" : "اسم الغرفة ورقمها"
+  },
+  "Ceiling" : {
+    "en" : "Ceiling",
+    "ar" : "سقف"
+  },
+  "ReorderLimit":{
+    "en" : "Reorder Limit",
+    "ar" : "حد إعادة الطلب"
+  },
+  "Minimum" : {
+    "en" : "Minimum",
+    "ar" : "الحد الأدنى"
+  },
+  "ItemNoCode" :{
+    "en" : "Item No. (Item Code)",
+    "ar" : "رقم الصنف (رمز الصنف)"
+  },
+  "ItemNameArabic":{
+    "en" : "Item Name in Arabic",
+    "ar" : "اسم العنصر باللغة العربية"
+  },
+  "DateOfEntry": {
+    "en" : "Date of Entry into Warehouse",
+    "ar" : ""
+  },
+  "SourceSupplier" : {
+    "en" : "Source (Supplier)",
+    "ar" : "المصدر (المورد)"
+  },
+  "PartyDirected" : {
+    "en" : "Party to Whom It Is Directed",
+    "ar" : "الطرف الموجه إليه"
+  },
+  "RemainingBalance" : {
+    "en" : "Remaining Balance",
+    "ar" : "الرصيد المتبقي"
+  },
+  "DispensingDocumentNo" :{
+    "en" : "Dispensing Document No.",
+    "ar" : "رقم مستند الصرف"
   }
+
+
 
 
 

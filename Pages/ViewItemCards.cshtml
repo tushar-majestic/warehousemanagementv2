@@ -5,7 +5,7 @@
     ViewData["Title"] = "Item Cards";
 }
 
-<h1 class="mb-4">Item Cards</h1>
+<h1 class="mb-4">@Model.lblItemCards</h1>
 
 @* <div class="row row-cols-1 row-cols-md-3 g-4">
     @foreach (var card in Model.ItemCards)
@@ -61,28 +61,29 @@
         <!-- var store = itemcard.ItemCardStore?.FirstOrDefault(); -->
     
    
-      <table class="table w-100 mb-4 border">
+      <table class="table w-100 mb-4 border"   dir="@Model.dir">
         <tr>
           <td colspan="2">
-            <h4 class=" mb-0" style="text-align: center;">Item Card</h4>
+            <h4 class=" mb-0" style="text-align: center;">@Model.lblItemCard</h4>
           </td>
         </tr>
         
         <tr>
         
           <td class="w-50 align-top border-end">
-            <div class="p-2">
-              <div class="mb-1">Ceiling: -</div>
-              <div class="mb-1">Reorder Limit: @batch?.ReorderLimit</div>
-              <div>Minimum: @batch?.Minimum</div>
+             <div class="p-2">
+              <div class="mb-1" >@Model.lblRecipientSector: -</div>
+              <div class="mb-1" >@Model.lblRoomNameNumber:</div>
+              <div class="mb-1" >@Model.lblReceivingWarehouse: @store.StoreName</div>
             </div>
+           
           </td>
          
           <td class="w-50 align-top">
             <div class="p-2">
-              <div class="mb-1" style="text-align: end;">Recipient Sector: -</div>
-              <div class="mb-1" style="text-align: end;">Room Name & Number:</div>
-              <div class="mb-1" style="text-align: end;">Receiving Warehouse: @store.StoreName</div>
+              <div class="mb-1" style="text-align: end;">@Model.lblCeiling: -</div>
+              <div class="mb-1" style="text-align: end;">@Model.lblReorderLimit: @batch?.ReorderLimit</div>
+              <div style="text-align: end;">@Model.lblMinimum: @batch?.Minimum</div>
             </div>
           </td>
         </tr>
@@ -108,23 +109,24 @@
 
     
 
-  <table class="table table-bordered w-100">
+  <table class="table table-bordered w-100"  dir="@Model.dir">
     <thead class="table-secondary">
       <tr>
-       <th colspan="2"  style="text-align: center;">Unit of Measure <br> @itemcard.UnitOfmeasure</th>
-        <th colspan="2"  style="text-align: center;">Item Name (Arabic) <br> @itemcard.ItemName</th>
-        <th colspan="4"  style="text-align: center;">Item No. (Item Code) <br>@itemcard.ItemCode </th>
+        <th colspan="4"  style="text-align: center;">@Model.lblItemNoCode <br>@itemcard.ItemCode </th>
+        <th colspan="2"  style="text-align: center;">@Model.lblItemNameArabic <br> @itemcard.ItemName</th>
+        <th colspan="2"  style="text-align: center;">@Model.lblUnitOfMeasure <br> @itemcard.UnitOfmeasure</th>
       </tr>
       
       <tr>
-        <th>Dispensing Document No.</th>
-        <th>Remaining Balance</th>
-        <th>Party to Whom It Is Directed</th>
-        <th>Amount Spent</th>
-        <th>Source (Supplier)</th>
-        <th>Quantity Received</th>
-        <th>Document Number</th>
-        <th>Date of Entry into Warehouse</th>
+        <th>@Model.lblDateOfEntryInWarehouse</th>
+        <th>@Model.lblDocumentNo</th>
+        <th>@Model.lblQuantityReceived</th>
+        <th>@Model.lblSourceSupplier</th>
+        <th>@Model.lblAmountSpent</th>
+        <th>@Model.lblPartyDirected</th>
+        <th>@Model.lblRemainingBalance</th>
+        <th>@Model.lblDispensingDocumentNo</th>
+
       </tr>
     </thead>
     @if (Model.BatchDetails != null && Model.BatchDetails.Any())
@@ -132,17 +134,22 @@
     <tbody>
       @foreach (var batchItem in Model.BatchDetails)
       {
-      <tr>
-        <td>-</td>
-        <td>-</td>
-        <td>-</td>
-        <td></td>
-    @*    <td>@batch.DespensedItem.AmountSpent</td> *@
-        <td>@batch.Supplier.SupplierName</td>
-        <td>@batch.QuantityReceived</td>
-        <td>@batch.ReceiptDocumentnumber</td>
-        <td>@batch.DateOfEntry.ToString("dd-MM-yyyy")</td>
-      </tr>
+        var dispensedItem = Model.dispensed.FirstOrDefault(d => d.ItemCardId == batchItem.ItemCardId);
+        
+        var Party = Model.Party.FirstOrDefault(s => s.DId == dispensedItem?.PartyId)?.DestinationName ?? "-";
+
+        <tr>
+          <td>@batch.DateOfEntry.ToString("dd-MM-yyyy")</td>
+          <td>@batch.ReceiptDocumentnumber</td>
+          <td>@batch.QuantityReceived</td>
+          <td>@batch.Supplier.SupplierName</td>
+          <td>@(dispensedItem != null ? dispensedItem.ReduceQty : "-")</td>
+          <td>@Party</td>
+          <td>@(dispensedItem != null ? batch.QuantityAvailable : "-")</td>
+          <td>@(dispensedItem != null ? dispensedItem.DocumentNumber : "-")</td>
+
+        </tr>
+  
     }
     </tbody>
     }
