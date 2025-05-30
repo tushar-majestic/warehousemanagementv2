@@ -36,12 +36,12 @@ namespace LabMaterials.Pages
 
         public string lblView, lblRequests, lblLabMaterials, lblHome, lblNotifications, lblShowHideColumn, lblDisbursement, lblReports, lblReportsInquiries,
         lblManageUsers, lblManageItems, lblManageSupplies, lblManageStores, lblUserProfile, lblLogout, lblDamagedItems, lblLanguage,
-        lblWarehouseType, lblManagerName, lblBuildingNumber, lblRoomDesc, lblStatus, lblRoomStatus, lblOpen, lblClosed, lblRoomNumber,
+        lblWarehouseType, lblManagerName, lblBuildingNumber, lblRoomDesc, lblStatus, lblRoomStatus, lblOpen, lblClosed, lblRoomNumber,lblRoomNameNumber,
         lblNoOfShelves, lblKeeperName, lblKeeperJobNum, lblWarehouseManagerName, lblItemCards, lblReceivingItems, lblSerialNo,
-        lblSupplierName, lblRecipientSector, lblPageCount, lblSectorNo, lblDateOfReceipt, lblRecipientWarehouse, lblFiscalYear,
+        lblSupplierName, lblRecipientSector, lblPageCount, lblSectorNo, lblDateOfReceipt, lblRecipientWarehouse, lblFiscalYear,lblReceivingDate,lblReceivingWarehouse,lblSupplierType,lblReceipient,lblGeneralSupervisor,lblItemName,lblItemQty,
         lblDocumentDate, lblDocumentNo, lblBasedOnDocument, lblComments, lblUnitPrice, lblTotalPrice, lblQuantity, lblUnitOfMeasure,
         lblItemNameDescription, lblItemNo, lblCount, lblSAR,lblRiyal, lblChiefResponsible, lblTechnicalMember, lblRecipient, lblSignature, lblName,
-        lblDate, lblcreateItemCard, lbldeductItemCard, lblItemMovement, lblStores;
+        lblDate, lblcreateItemCard, lbldeductItemCard, lblItemMovement, lblStores, lblItemCard, lblCeiling, lblReorderLimit, lblMinimum, lblItemNoCode, lblItemNameArabic, lblQuantityReceived, lblDateOfEntryInWarehouse, lblSourceSupplier, lblAmountSpent, lblPartyDirected, lblRemainingBalance, lblDispensingDocumentNo;
 
         public override void OnPageHandlerExecuting(PageHandlerExecutingContext context)
         {
@@ -137,6 +137,7 @@ namespace LabMaterials.Pages
             this.lblKeeperJobNum = (Program.Translations["KeeperJobNum"])[Lang];
             this.lblKeeperName = (Program.Translations["KeeperName"])[Lang];
             this.lblItemCards = (Program.Translations["ItemCards"])[Lang];
+            this.lblItemCard = (Program.Translations["ItemCard"])[Lang];
 
 
             this.lblReceivingItems = (Program.Translations["ReceivingItems"])[Lang];
@@ -170,8 +171,29 @@ namespace LabMaterials.Pages
             this.lbldeductItemCard = (Program.Translations["DeductItemCard"][Lang]);
 
             this.lblStores = (Program.Translations["Stores"])[Lang];
-            this.lblRiyal =  (Program.Translations["Riyal"])[Lang];
+            this.lblRiyal = (Program.Translations["Riyal"])[Lang];
             this.lblItemMovement = (Program.Translations["ItemMovement"][Lang]);
+            this.lblReceivingDate = (Program.Translations["ReceivingDate"][Lang]);
+            this.lblReceivingWarehouse = (Program.Translations["ReceivingWarehouse"][Lang]);
+            this.lblSupplierType = (Program.Translations["SupplierType"][Lang]);
+            this.lblReceipient = (Program.Translations["Receipient"][Lang]);
+            this.lblGeneralSupervisor = (Program.Translations["GeneralSupervisor"][Lang]);
+            this.lblItemName = (Program.Translations["ItemName"][Lang]);
+            this.lblItemQty = (Program.Translations["ItemQuantity"][Lang]);
+            this.lblRoomNameNumber = (Program.Translations["RoomNameNumber"][Lang]);
+            this.lblCeiling = (Program.Translations["Ceiling"][Lang]);
+            this.lblReorderLimit = (Program.Translations["ReorderLimit"][Lang]);
+            this.lblMinimum = (Program.Translations["Minimum"][Lang]);
+            this.lblItemNoCode = (Program.Translations["ItemNoCode"][Lang]);
+            this.lblItemNameArabic = (Program.Translations["ItemNameArabic"][Lang]);
+            this.lblQuantityReceived = (Program.Translations["QuantityReceived"][Lang]);
+            this.lblDateOfEntryInWarehouse = (Program.Translations["DateOfEntry"][Lang]);
+            this.lblSourceSupplier = (Program.Translations["SourceSupplier"][Lang]);
+            this.lblAmountSpent = (Program.Translations["AmountSpent"][Lang]);
+            this.lblPartyDirected = (Program.Translations["PartyDirected"][Lang]);
+            this.lblRemainingBalance = (Program.Translations["RemainingBalance"][Lang]);
+            this.lblDispensingDocumentNo = (Program.Translations["DispensingDocumentNo"][Lang]);
+            
 
 
         }

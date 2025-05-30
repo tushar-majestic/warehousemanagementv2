@@ -157,7 +157,7 @@
                 </div>
                 <div class="mb-4">
                     <label>Applicant's Sector</label>
-                    <select name="ApplicantsSector" class="form-select">
+                    <select name="ApplicantsSector" class="form-select" required>
                     <option value="">Select Applicant's Sector</option>
                         @foreach (var ApplicantsSector in Model.requesters.Where(r => r.Ended == null))
                         {
@@ -168,7 +168,7 @@
                 </div>
                 <div class="mb-4">
                     <label>Store</label>
-                    <select name="StoreId" class="form-select">
+                    <select name="StoreId" class="form-select" required>
                     <option value="">Select Store</option>
                         @foreach (var store in Model.Stores.Where(s => s.IsActive == 1 && s.Ended == null))
                         {

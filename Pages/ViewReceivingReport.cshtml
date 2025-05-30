@@ -72,49 +72,49 @@
                 </div> *@
 
                 <dl class="row">
-                    <dt class="col-sm-3" >Fiscal Year</dt>
+                    <dt class="col-sm-3" >@Model.lblFiscalYear</dt>
                     <dd class="col-sm-3" >@report.FiscalYear</dd>
 
-                    <dt class="col-sm-3">Receiving Date</dt>
-                    <dd class="col-sm-3">@report.ReceivingDate.ToString("yyyy-MM-dd")</dd>
+                    <dt class="col-sm-3">@Model.lblReceivingDate</dt>
+                    <dd class="col-sm-3">@report.ReceivingDate.ToString("dd-MM-yyyy")</dd>
 
-                    <dt class="col-sm-3">Recipient Sector</dt>
+                    <dt class="col-sm-3">@Model.lblRecipientSector</dt>
                     <dd class="col-sm-3">@report.RecipientSector</dd>
 
-                    <dt class="col-sm-3">Sector No.</dt>
+                    <dt class="col-sm-3">@Model.lblSectorNo</dt>
                     <dd class="col-sm-3">@report.SectorNumber</dd>
                     
                     
-                    <dt class="col-sm-3">Receiving Warehouse</dt>
+                    <dt class="col-sm-3">@Model.lblReceivingWarehouse</dt>
                     <dd class="col-sm-3">@Model.ReceivingWarehouse</dd>
 
-                    <dt class="col-sm-3">Based On Document</dt>
+                    <dt class="col-sm-3">@Model.lblBasedOnDocument</dt>
                     <dd class="col-sm-3">@report.BasedOnDocument</dd>
 
-                    <dt class="col-sm-3">Document No.</dt>
+                    <dt class="col-sm-3">@Model.lblDocumentNo</dt>
                     <dd class="col-sm-3">@report.DocumentNumber</dd>
 
-                    <dt class="col-sm-3">Document Date</dt>
-                    <dd class="col-sm-3">@report.DocumentDate.ToString("yyyy-MM-dd")</dd>
+                    <dt class="col-sm-3">@Model.lblDocumentDate</dt>
+                    <dd class="col-sm-3">@report.DocumentDate.ToString("dd-MM-yyyy")</dd>
 
-                    <dt class="col-sm-3">Supplier Type</dt>
+                    <dt class="col-sm-3">@Model.lblSupplierType</dt>
                     <dd class="col-sm-3">@report.Supplier?.SupplierType</dd>
 
-                    <dt class="col-sm-3">Supplier</dt>
+                    <dt class="col-sm-3">@Model.lblSupplierName</dt>
                     <dd class="col-sm-3">@report.Supplier?.SupplierName</dd>
                     
-                    <dt class="col-sm-3">Receipient</dt>
+                    <dt class="col-sm-3">@Model.lblReceipient</dt>
                     <dd class="col-sm-3">@Model.ReceipientManager</dd>
 
-                    <dt class="col-sm-3">Technical Member</dt>
+                    <dt class="col-sm-3">@Model.lblTechnicalMember</dt>
                     <dd class="col-sm-3">@Model.TechnicalMember</dd>
 
-                    <dt class="col-sm-3">General Supervisor</dt>
+                    <dt class="col-sm-3">@Model.lblGeneralSupervisor</dt>
                         @if(Model.GeneralSupervisor != null){
                             <dd class="col-sm-3">@Model.GeneralSupervisor</dd>
                         }
                         else
-                        { <dd class="col-sm-3">  none</dd>
+                        { <dd class="col-sm-3">none</dd>
                         }
 
                 </dl>
@@ -123,11 +123,11 @@
                 <table class="table table-bordered table-striped" >
                     <thead>
                         <tr>
-                            <th>Comments</th>
-                            <th>Item Name</th>
-                            <th>Item Quantity</th>
-                            <th>Unit Price</th>
-                            <th>Total Price</th>
+                            <th>@Model.lblComments</th>
+                            <th>@Model.lblItemName</th>
+                            <th>@Model.lblItemQty</th>
+                            <th>@Model.lblUnitPrice</th>
+                            <th>@Model.lblTotalPrice</th>
                         </tr>
                     </thead>
                     <tbody id="itemsTableBody">
@@ -199,7 +199,7 @@
                             <td style="width: 15%;border: none;font-size: 14px;"></td>
                             <td style="width: 15%;border: none;font-size: 14px;"></td>
                             <td style="width: 15%;border: none;font-size: 14px;white-space: nowrap;" align="right">@Model.lblDateOfReceipt</td>
-                            <td style="width: 15%;border: none;font-size: 14px;white-space: nowrap;">@rep.ReceivingDate.ToString("yyyy-MM-dd")</td>
+                            <td style="width: 15%;border: none;font-size: 14px;white-space: nowrap;">@rep.ReceivingDate.ToString("dd-MM-yyyy")</td>
                             
                         </tr>
                         <tr>
@@ -208,7 +208,7 @@
                             <td style="width: 15%;border: none;font-size: 14px;white-space: nowrap" align="center">@Model.lblDocumentNo</td>
                             <td style="width: 15%;border: none;font-size: 14px;;">@rep.DocumentNumber</td>
                             <td style="width: 15%;border: none;font-size: 14px;white-space: nowrap;" align="center">@Model.lblDocumentDate</td>
-                            <td style="width: 15%;border: none;font-size: 14px;">@rep.DocumentDate.ToString("yyyy-MM-dd")</td>
+                            <td style="width: 15%;border: none;font-size: 14px;">@rep.DocumentDate.ToString("dd-MM-yyyy")</td>
                             <td style="width: 15%;border: none;font-size: 14px;"  align="right">@Model.lblFiscalYear</td>
                             <td style="width: 15%;border: none;font-size: 14px;white-space: nowrap;">@rep.FiscalYear</td>
                         </tr>
@@ -242,11 +242,11 @@
                 var Item = Model.Items.FirstOrDefault(i => i.ItemId == item.ItemId);      
                 var UnitMeasure = Model.Units.FirstOrDefault(u => u.Id == Item.UnitId).UnitCode ?? "";
                 var itemTotal = item.Quantity * item.UnitPrice;
-                var totalWholePart = Math.Truncate(itemTotal);
-                var totalFractionalPart = itemTotal - totalWholePart;
+                var totalSar = Math.Truncate(itemTotal);
+                var totalHalala = (int)Math.Round((itemTotal - totalSar) * 100);
 
-                var unitWholePart = Math.Truncate(item.UnitPrice);
-                var unitFractionalPart = item.UnitPrice - unitWholePart;
+                var unitSar = Math.Truncate(item.UnitPrice);
+                var unitHalala = (int)Math.Round((item.UnitPrice - unitSar) * 100);
                 totalPrice += itemTotal;
                 <tr>
                     <td style="font-size: 14px;">@count</td>
@@ -254,10 +254,10 @@
                     <td style="font-size: 14px;">@Item.ItemName- @Item.ItemDescription</td>
                     <td style="font-size: 14px;">@UnitMeasure</td>
                     <td style="font-size: 14px;">@item.Quantity</td>
-                    <td style="font-size: 14px;">@unitFractionalPart</td>
-                    <td style="font-size: 14px;">@unitWholePart</td>
-                    <td style="font-size: 14px;">@totalFractionalPart</td>
-                    <td style="font-size: 14px;">@totalWholePart</td>
+                    <td style="font-size: 14px;">@unitHalala</td>
+                    <td style="font-size: 14px;">@unitSar</td>
+                    <td style="font-size: 14px;">@totalHalala</td>
+                    <td style="font-size: 14px;">@totalSar</td>
                     <td style="font-size: 14px;">@item.Comments</td>
 
                 </tr>
@@ -292,7 +292,7 @@
                         <br>
                         Approved
                         <br>
-                        @rep.TechnicalMemberApprovalDate
+                        @rep.TechnicalMemberApprovalDate?.ToString("dd-MM-yyyy")
                     </span>
                 }
                 else{
@@ -313,7 +313,7 @@
                         <br>
                         Approved
                         <br>
-                        @rep.GeneralSupervisorApprovalDate
+                        @rep.GeneralSupervisorApprovalDate?.ToString("dd-MM-yyyy")
                     </span>
                 }
                 else{
