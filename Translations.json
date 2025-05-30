@@ -1659,10 +1659,13 @@
     "en": "Authorized Person",
     "ar": "Authorized Person"
   },
+  "RequestDate": {
+    "en": "Request Date",
+    "ar": "Request Date"
+  },
   "NoObjection": {
     "en": "There is no objection to spending within the limits permitted by the balances",
     "ar": "There is no objection to spending within the limits permitted by the balances"
-
   }
 
 

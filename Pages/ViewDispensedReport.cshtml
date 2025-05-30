@@ -42,7 +42,7 @@
         var StoreName = Model.Stores.FirstOrDefault(i => i.StoreId == MaterialRequest.WarehouseId)?.StoreName ?? "";
         <div class="card mb-4 border shadow-sm">
             <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-                <strong>@Model.lblMaterialDispensing - Serial No: @MaterialRequest.SerialNumber</strong>
+                <strong>@Model.lblMaterialDispensing - @Model.lblSerialNumber: @MaterialRequest.SerialNumber</strong>
                 <div>
                     @* <a asp-page="/EditReceivingReport" asp-route-id="@report.Id" class="btn btn-sm btn-success me-2 text-white">Edit</a> *@
                     @* <a asp-page="/PrintReceivingReport" asp-route-id="@report.Id" class="btn btn-sm btn-secondary">Print</a> *@
@@ -79,7 +79,7 @@
                     <dt class="col-sm-3">@Model.lblFiscalYear</dt>
                     <dd class="col-sm-3">@MaterialRequest.FiscalYear</dd>
 
-                    <dt class="col-sm-3">Request Date</dt>
+                    <dt class="col-sm-3">@Model.lblRequestDate</dt>
                     <dd class="col-sm-3">@MaterialRequest.CreatedAt?.ToString("dd-MM-yyyy")</dd>
 
                     <dt class="col-sm-3">@Model.lblRequestingSector</dt>
@@ -88,7 +88,7 @@
                     <dt class="col-sm-3">@Model.lblSector</dt>
                     <dd class="col-sm-3">@MaterialRequest.Sector</dd>
                     
-                    <dt class="col-sm-3">Receiving Warehouse</dt>
+                    <dt class="col-sm-3">@Model.lblReceivingWarehouse</dt>
                     <dd class="col-sm-3">@StoreName</dd>
 
                     <dt class="col-sm-3">@Model.lblRequestDocumentType</dt>
