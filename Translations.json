@@ -1306,6 +1306,10 @@
     "en": "Chief Responsible (General Supervisor)",
     "ar": "Chief Responsible (General Supervisor)"
   },
+  "GeneralSupervisor": {
+    "en": "General Supervisor",
+    "ar": "General Supervisor"
+  },
   "SubmitReport": {
     "en": "Submit Report",
     "ar": "Submit Report"
@@ -1566,6 +1570,10 @@
     "en": "Department Manager Missing",
     "ar": "Department Manager Missing"
   },
+  "DeptManager": {
+    "en": "Department Manager",
+    "ar": "Department Manager"
+  },
   "CreateItemCard": {
     "en": "Create Item Card",
     "ar": "Create Item Card"
@@ -1634,9 +1642,27 @@
     "en": "Alert:: ",
     "ar": " يُحذًِر::"
   },
+
   "Riyal":{
     "en": "H",
     "ar": "ح"
+  }
+  "DestinationNumber": {
+    "en": "Destination Number",
+    "ar": " Destination Number"
+  },
+  "Approved": {
+    "en": "Approved",
+    "ar": "Approved"
+  },
+  "AuthorizedPerson": {
+    "en": "Authorized Person",
+    "ar": "Authorized Person"
+  },
+  "NoObjection": {
+    "en": "There is no objection to spending within the limits permitted by the balances",
+    "ar": "There is no objection to spending within the limits permitted by the balances"
+
   }
 
 

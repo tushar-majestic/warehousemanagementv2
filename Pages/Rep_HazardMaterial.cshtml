@@ -160,16 +160,16 @@
                             id="itemName" @(Model.SelectedColumns.Contains("itemName") ? "checked" : "")>
                         <label class="form-check-label" for="itemName">ItemName</label>
                     </div>
-                    <div class="form-check mb-1">
+                    @* <div class="form-check mb-1">
                         <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="warehouseName"
                             id="warehouseName" @(Model.SelectedColumns.Contains("warehouseName") ? "checked" : "")>
                         <label class="form-check-label" for="warehouseName">WarehouseName</label>
-                    </div>
-                    <div class="form-check mb-1">
+                    </div> *@
+                    @* <div class="form-check mb-1">
                         <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="quantity"
                             id="quantity" @(Model.SelectedColumns.Contains("quantity") ? "checked" : "")>
                         <label class="form-check-label" for="quantity">Quantity</label>
-                    </div>
+                    </div> *@
                     <div class="form-check mb-1">
                         <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="hazardType"
                             id="hazardType" @(Model.SelectedColumns.Contains("hazardType") ? "checked" : "")>
@@ -292,14 +292,14 @@
                             {
                             <th scope="col" class="border-0">@Model.lblItemName</th>
                             }
-                            @if (Model.SelectedColumns.Contains("warehouseName"))
+                            @* @if (Model.SelectedColumns.Contains("warehouseName"))
                             {
                             <th scope="col" class="border-0">@Model.lblStoreName</th>
-                            }
-                            @if (Model.SelectedColumns.Contains("quantity"))
+                            } *@
+                            @* @if (Model.SelectedColumns.Contains("quantity"))
                             {
                             <th scope="col" class="border-0">@Model.lblAvailableQuantity</th>
-                            }
+                            } *@
                             @if (Model.SelectedColumns.Contains("hazardType"))
                             {
                             <th scope="col" class="border-0">@Model.lblHazardType</th>
@@ -332,17 +332,17 @@
                                 {
                                 <td>@item.ItemName</td>
                                 }
-                                    @if (Model.SelectedColumns.Contains("warehouseName"))
+                                    @* @if (Model.SelectedColumns.Contains("warehouseName"))
                                 {
                                 <td>@item.StoreName</td>
-                                }
-                                    @if (Model.SelectedColumns.Contains("quantity"))
+                                } *@
+                                    @* @if (Model.SelectedColumns.Contains("quantity"))
                                 {
                                 <td>@item.AvailableQuantity</td>
-                                }
+                                } *@
                                     @if (Model.SelectedColumns.Contains("hazardType"))
                                 {
-                                <td style='color: @(item.IsHazardous == true ?"red":"teal")'>@item.HazardTypeName</td>
+                                <td>@item.HazardTypeName</td>
                                 }
                                     @if (Model.SelectedColumns.Contains("TypeName"))
                                 {
@@ -453,14 +453,14 @@
                     {
                         <th scope="col" class="border-0">@Model.lblItemName</th>
                     }
-                    @if (Model.SelectedColumns.Contains("warehouseName"))
+                    @* @if (Model.SelectedColumns.Contains("warehouseName"))
                     {
                         <th scope="col" class="border-0">@Model.lblStoreName</th>
-                    }
-                    @if (Model.SelectedColumns.Contains("quantity"))
+                    } *@
+                    @* @if (Model.SelectedColumns.Contains("quantity"))
                     {
                         <th scope="col" class="border-0">@Model.lblAvailableQuantity</th>
-                    }
+                    } *@
                     @if (Model.SelectedColumns.Contains("hazardType"))
                     {
                         <th scope="col" class="border-0">@Model.lblHazardType</th>
@@ -493,14 +493,14 @@
                             {
                                 <td>@item.ItemName</td>
                             }
-                            @if (Model.SelectedColumns.Contains("warehouseName"))
+                            @* @if (Model.SelectedColumns.Contains("warehouseName"))
                             {
                                 <td>@item.StoreName</td>
-                            }
-                            @if (Model.SelectedColumns.Contains("quantity"))
+                            } *@
+                            @* @if (Model.SelectedColumns.Contains("quantity"))
                             {
                                 <td>@item.AvailableQuantity</td>
-                            }
+                            } *@
                             @if (Model.SelectedColumns.Contains("hazardType"))
                             {
                                 <td style='color: @(item.IsHazardous == true ? "red" : "teal")'>@item.HazardTypeName</td>

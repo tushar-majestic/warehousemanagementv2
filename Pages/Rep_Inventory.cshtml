@@ -202,11 +202,11 @@
                                 value="warehouseName" id="warehouseName" @(Model.SelectedColumns.Contains("warehouseName") ? "checked" : "")>
                             <label class="form-check-label" for="warehouseName">WarehouseName</label>
                         </div>
-                        <div class="form-check mb-1">
+                        @* <div class="form-check mb-1">
                             <input class="form-check-input column-checkbox" name="columns" type="checkbox"
                                 value="shalveNumber" id="shalveNumber" @(Model.SelectedColumns.Contains("shalveNumber") ? "checked" : "")>
                             <label class="form-check-label" for="shalveNumber">ShalveNumber</label>
-                        </div>
+                        </div> *@
                         <div class="form-check mb-1">
                             <input class="form-check-input column-checkbox" name="columns" type="checkbox"
                                 value="AvailableQuantity" id="AvailableQuantity" @(Model.SelectedColumns.Contains("AvailableQuantity") ? "checked" : "")>
@@ -334,10 +334,10 @@
                             {
                             <th scope="col" class="border-0">@Model.lblStoreName</th>
                             }
-                            @if (Model.SelectedColumns.Contains("shalveNumber"))
+                            @* @if (Model.SelectedColumns.Contains("shalveNumber"))
                             {
                             <th scope="col" class="border-0">@Model.lblShelveNumber</th>
-                            }
+                            } *@
                             @if (Model.SelectedColumns.Contains("AvailableQuantity"))
                             {
                             <th scope="col" class="border-0 rounded-end">@Model.lblAvailableQuantity</th>
@@ -366,17 +366,17 @@
                                     {
                                     <td>@item.StoreName</td>
                                     }
-                                    @if (Model.SelectedColumns.Contains("shalveNumber"))
+                                    @* @if (Model.SelectedColumns.Contains("shalveNumber"))
                                     {
                                     <td>@item.ShelfNumber</td>
-                                    }
+                                    } *@
                                     @if (Model.SelectedColumns.Contains("AvailableQuantity"))
                                     {
                                     <td>@item.AvailableQuantity</td>
                                     }
                                     @if (Model.SelectedColumns.Contains("expiry"))
                                     {
-                                    <td>@item.ExpiryDate</td>
+                                    <td>@(item.ExpiryDate.HasValue ? item.ExpiryDate.Value.ToString("dd-MM-yyyy") : "")</td>
                                     }
                                 </tr>
                             }
@@ -478,10 +478,10 @@
                     {
                         <th scope="col" class="border-0">@Model.lblStoreName</th>
                     }
-                    @if (Model.SelectedColumns.Contains("shalveNumber"))
+                    @* @if (Model.SelectedColumns.Contains("shalveNumber"))
                     {
                         <th scope="col" class="border-0">@Model.lblShelveNumber</th>
-                    }
+                    } *@
                     @if (Model.SelectedColumns.Contains("AvailableQuantity"))
                     {
                         <th scope="col" class="border-0 rounded-end">@Model.lblAvailableQuantity</th>
@@ -510,17 +510,17 @@
                             {
                                 <td>@item.StoreName</td>
                             }
-                            @if (Model.SelectedColumns.Contains("shalveNumber"))
+                            @* @if (Model.SelectedColumns.Contains("shalveNumber"))
                             {
                                 <td>@item.ShelfNumber</td>
-                            }
+                            } *@
                             @if (Model.SelectedColumns.Contains("AvailableQuantity"))
                             {
                                 <td>@item.AvailableQuantity</td>
                             }
                             @if (Model.SelectedColumns.Contains("expiry"))
                             {
-                                <td>@item.ExpiryDate</td>
+                                <td>@(item.ExpiryDate.HasValue ? item.ExpiryDate.Value.ToString("dd-MM-yyyy") : "")</td>
                             }
                         </tr>
                     }
