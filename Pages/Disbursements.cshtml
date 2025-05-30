@@ -360,17 +360,17 @@ document.addEventListener("DOMContentLoaded", function () {
                         @(Model.SelectedColumns.Contains("storeName") ? "checked" : "")>
                         <label class="form-check-label" for="storeName">@Model.lblStoreName</label>
                     </div>
-                    <div class="form-check mb-1">
+                    @* <div class="form-check mb-1">
                         <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="comments" id="comments"
                         @(Model.SelectedColumns.Contains("comments") ? "checked" : "")>
                         <label class="form-check-label" for="comments">@Model.lblComments</label>
-                    </div>
+                    </div> *@
                     <div class="form-check mb-1">
                         <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="disbursementStatus" id="disbursementStatus"
                         @(Model.SelectedColumns.Contains("disbursementStatus") ? "checked" : "")>
                         <label class="form-check-label" for="disbursementStatus">@Model.lblDisbursementStatus</label>
                     </div>
-                    <div class="form-check mb-1">
+                    @* <div class="form-check mb-1">
                         <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="inventoryBalance" id="inventoryBalance"
                         @(Model.SelectedColumns.Contains("inventoryBalance") ? "checked" : "")>
                         <label class="form-check-label" for="inventoryBalance">@Model.lblInventoryBalanced</label>
@@ -394,7 +394,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="quantity" id="quantity"
                         @(Model.SelectedColumns.Contains("quantity") ? "checked" : "")>
                         <label class="form-check-label" for="quantity">@Model.lblQuantity</label>
-                    </div>
+                    </div> *@
 
                     <div class="form-check mb-1 text-center mt-2">
                         <button type="submit" name="action" value="updateColumns" class="btn btn-success btn-sm">
@@ -511,15 +511,15 @@ document.addEventListener("DOMContentLoaded", function () {
                             {
                             <th scope="col" class="border-0">@Model.lblStoreName</th>
                             }
-                            @if (Model.SelectedColumns.Contains("comments"))
+                            @* @if (Model.SelectedColumns.Contains("comments"))
                             {
                             <th scope="col" class="border-0">@Model.lblComments</th>
-                            }
+                            } *@
                             @if (Model.SelectedColumns.Contains("disbursementStatus"))
                             {
                             <th scope="col" class="border-0">@Model.lblDisbursementStatus</th>
                             }
-                            @if (Model.SelectedColumns.Contains("inventoryBalance"))
+                            @* @if (Model.SelectedColumns.Contains("inventoryBalance"))
                             {
                             <th scope="col" class="border-0">@Model.lblAvailableQuantity</th>
                             }
@@ -538,7 +538,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             @if (Model.SelectedColumns.Contains("quantity"))
                             {
                             <th scope="col" class="border-0">@Model.lblQuantity</th>
-                            }
+                            } *@
                             @* <th scope="col" class="border-0 rounded-end">Action</th> *@
                             
                         </tr>
@@ -565,15 +565,15 @@ document.addEventListener("DOMContentLoaded", function () {
                         {
                         <td>@item.StoreName</td>
                         }
-                        @if (Model.SelectedColumns.Contains("comments"))
+                        @* @if (Model.SelectedColumns.Contains("comments"))
                         {
                         <td>@item.Comments</td>
-                        }
+                        } *@
                         @if (Model.SelectedColumns.Contains("disbursementStatus"))
                         {
                         <td>@item.Status</td>
                         }
-                        @if (Model.SelectedColumns.Contains("inventoryBalance"))
+                        @* @if (Model.SelectedColumns.Contains("inventoryBalance"))
                         {
                         <td>@item.InventoryBalanced</td>
                         }
@@ -592,7 +592,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         @if (Model.SelectedColumns.Contains("quantity"))
                         {
                         <td>@item.Quantity</td>
-                        }
+                        } *@
 
                         <td>
                             <form method="post">
@@ -721,15 +721,15 @@ document.addEventListener("DOMContentLoaded", function () {
                     {
                     <th scope="col" class="border-0">@Model.lblStoreName</th>
                     }
-                    @if (Model.SelectedColumns.Contains("comments"))
+                    @* @if (Model.SelectedColumns.Contains("comments"))
                     {
                     <th scope="col" class="border-0">@Model.lblComments</th>
-                    }
+                    } *@
                     @if (Model.SelectedColumns.Contains("disbursementStatus"))
                     {
                     <th scope="col" class="border-0">@Model.lblDisbursementStatus</th>
                     }
-                    @if (Model.SelectedColumns.Contains("inventoryBalance"))
+                    @* @if (Model.SelectedColumns.Contains("inventoryBalance"))
                     {
                     <th scope="col" class="border-0">@Model.lblAvailableQuantity</th>
                     }
@@ -748,7 +748,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     @if (Model.SelectedColumns.Contains("quantity"))
                     {
                     <th scope="col" class="border-0">@Model.lblQuantity</th>
-                    }
+                    } *@
                 </tr>
             </thead>
             <tbody>
@@ -773,15 +773,15 @@ document.addEventListener("DOMContentLoaded", function () {
                         {
                         <td>@item.StoreName</td>
                         }
-                        @if (Model.SelectedColumns.Contains("comments"))
+                        @* @if (Model.SelectedColumns.Contains("comments"))
                         {
                         <td>@item.Comments</td>
-                        }
+                        } *@
                         @if (Model.SelectedColumns.Contains("disbursementStatus"))
                         {
                         <td>@item.Status</td>
                         }
-                        @if (Model.SelectedColumns.Contains("inventoryBalance"))
+                        @* @if (Model.SelectedColumns.Contains("inventoryBalance"))
                         {
                         <td>@item.InventoryBalanced</td>
                         }
@@ -800,7 +800,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         @if (Model.SelectedColumns.Contains("quantity"))
                         {
                         <td>@item.Quantity</td>
-                        }
+                        } *@
 
                     </tr>
                 }

@@ -238,24 +238,16 @@ namespace LabMaterials.Pages
                 var query = from d in dbContext.MaterialRequests
                             join u in dbContext.Users on d.RequestedByUserId equals u.UserId
                             join s in dbContext.Destinations on d.RequestingSector equals s.DId
-                            join i in dbContext.DespensedItems on d.RequestId equals i.MaterialRequestId
-                            join ic in dbContext.ItemCards on i.ItemCardId equals ic.Id
                             join wh in dbContext.Stores on d.WarehouseId equals wh.StoreId
                             select new DisbursementInfo
                             {
                                 DisbursementRequestId = d.RequestId,
                                 RequesterName = u.FullName,
                                 RequestingPlace = s.DestinationName,
-                                Comments = i.Comments,
                                 ReqReceivedAt = d.OrderDate,
                                 ReqDate = d.CreatedAt,
                                 Status = d.SupervisorApproval ? "Approved" : "Pending",
-                                InventoryBalanced = ic.QuantityAvailable.ToString(),
-                                ItemCode = ic.ItemCode,
-                                ItemTypeCode = ic.ItemTypeCode,
-                                Quantity = i.Quantity,
                                 StoreName = wh.StoreName,
-                                ItemName = ic.ItemName
                             };
 
                 // Apply filtering if needed

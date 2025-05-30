@@ -109,21 +109,34 @@ namespace LabMaterials.Pages
             {
                 FillLables();
                 var dbContext = new LabDBContext();
-                var query = (from S in dbContext.Supplies
-                             join SR in dbContext.Suppliers on S.SupplierId equals SR.SupplierId
-                             join I in dbContext.Items on S.ItemId equals I.ItemId
+                var query = (from rr in dbContext.ReceivingReports
+                            join ri in dbContext.ReceivingItems on rr.Id equals ri.ReceivingReportId
+                            join i in dbContext.Items on ri.ItemId equals i.ItemId
+                            join s in dbContext.Suppliers on rr.SupplierId equals s.SupplierId
 
-                             select new SupplyInfo
-                             {
-                                 SupplyId = S.SupplyId,
-                                 SupplierName = SR.SupplierName,
-                                 ItemName = I.ItemName,
-                                 ReceivedAt = S.ReceivedAt,
-                                 InvoiceNumber = S.InvoiceNumber,
-                                 InventoryBalanced = S.InventoryBalanced,
-                                 PurchaseOrderNo = S.PurchaseOrderNo,
-                                 QuantityReceived = S.QuantityReceived + " " + I.Unit.UnitCode
-                             });
+                            select new SupplyInfo
+                            {
+                                SupplyId = s.SupplierId,
+                                SupplierName = s.SupplierName,
+                                ItemName = i.ItemName,
+                                ReceivedAt = rr.ReceivingDate,
+                                QuantityReceived = ri.Quantity.ToString()
+                            });
+                // var query = (from S in dbContext.Supplies
+                //              join SR in dbContext.Suppliers on S.SupplierId equals SR.SupplierId
+                //              join I in dbContext.Items on S.ItemId equals I.ItemId
+
+                //              select new SupplyInfo
+                //              {
+                //                  SupplyId = S.SupplyId,
+                //                  SupplierName = SR.SupplierName,
+                //                  ItemName = I.ItemName,
+                //                  ReceivedAt = S.ReceivedAt,
+                //                  InvoiceNumber = S.InvoiceNumber,
+                //                  InventoryBalanced = S.InventoryBalanced,
+                //                  PurchaseOrderNo = S.PurchaseOrderNo,
+                //                  QuantityReceived = S.QuantityReceived + " " + I.Unit.UnitCode
+                //              });
                 if (string.IsNullOrEmpty(SupplierName) == false)
                     query = query.Where(i => i.SupplierName.Contains(SupplierName));
                 if (string.IsNullOrEmpty(ItemName) == false)

@@ -157,13 +157,13 @@
                     </div>
                 </div>
                 <div class="col col-md-3">
-                    <div class="input-group me-2 me-lg-3  fmxw-400 ">
+                    <div class="input-group me-2 me-lg-3 fmxw-400">
                         <span class="input-group-text">
                             @Model.lblToDate
                         </span>
 
                         <input asp-for="ToDate" type="date" class="form-control" name="ToDate"
-                               value="@Model.ToDate?.ToString("yyyy-MM-dd")" />
+                            value="@Model.ToDate?.ToString("yyyy-MM-dd")"/>
                     </div>
                 </div>
 
@@ -208,11 +208,11 @@
                             id="receivedDate" @(Model.SelectedColumns.Contains("receivedDate") ? "checked" : "")>
                         <label class="form-check-label" for="receivedDate">ReceivedDate</label>
                     </div>
-                    <div class="form-check mb-1">
+                    @* <div class="form-check mb-1">
                         <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="inventoryBalance"
                             id="inventoryBalance" @(Model.SelectedColumns.Contains("inventoryBalance") ? "checked" : "")>
                         <label class="form-check-label" for="inventoryBalance">InventoryBalance</label>
-                    </div>
+                    </div> *@
 
                     <div class="form-check mb-1 text-center">
                         <button type="submit" name="action" value="updateColumns" class="btn btn-success btn-sm">Ok</button>
@@ -336,10 +336,10 @@
                             {
                             <th scope="col" class="border-0">@Model.lblReceivedAt</th>
                             }
-                            @if (Model.SelectedColumns.Contains("inventoryBalance"))
+                            @* @if (Model.SelectedColumns.Contains("inventoryBalance"))
                             {
                             <th scope="col" class="border-0 rounded-end">@Model.lblInventoryBalanced</th>
-                            }
+                            } *@
                         </tr>
                     </thead>
                     <tbody>
@@ -364,10 +364,10 @@
                                     {
                                     <td>@item.ReceivedAt.ToString("dd-MM-yyyy")</td>
                                     }
-                                    @if (Model.SelectedColumns.Contains("inventoryBalance"))
+                                    @* @if (Model.SelectedColumns.Contains("inventoryBalance"))
                                     {
                                     <td>@item.InventoryBalanced</td>
-                                    }
+                                    } *@
                                 </tr>
                             }
                         }
@@ -471,10 +471,10 @@
                     {
                         <th scope="col" class="border-0">@Model.lblReceivedAt</th>
                     }
-                    @if (Model.SelectedColumns.Contains("inventoryBalance"))
+                    @* @if (Model.SelectedColumns.Contains("inventoryBalance"))
                     {
                         <th scope="col" class="border-0 rounded-end">@Model.lblInventoryBalanced</th>
-                    }
+                    } *@
                 </tr>
             </thead>
             <tbody>
@@ -499,10 +499,10 @@
                             {
                                 <td>@item.ReceivedAt</td>
                             }
-                            @if (Model.SelectedColumns.Contains("inventoryBalance"))
+                            @* @if (Model.SelectedColumns.Contains("inventoryBalance"))
                             {
                                 <td>@item.InventoryBalanced</td>
-                            }
+                            } *@
                         </tr>
                     }
                 }
