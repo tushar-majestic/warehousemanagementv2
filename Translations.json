@@ -1726,6 +1726,10 @@
   "DispensingDocumentNo" :{
     "en" : "Dispensing Document No.",
     "ar" : "رقم مستند الصرف"
+  },
+  "Print" : {
+    "en" : "Print",
+    "ar" : "مطبعة"
   }
 
 
