@@ -10,7 +10,7 @@ namespace LabMaterials.Pages.Alerts
         {
             _context = context;
         }
-
+        public string lblMinimumQuantity, lblMaximumQuantity, lblReorderQuantity, lblNotMoved3;
         public IList<ItemCard> ItemCardminimum { get; set; } = default!;
         public IList<ItemCard> ItemCardCeiling { get; set; } = default!;
         public IList<ItemCard> ItemCardReorder { get; set; } = default!;
@@ -43,6 +43,12 @@ namespace LabMaterials.Pages.Alerts
             ItemCardNotMoved = await _context.ItemCardBatches.Where(i => i.DateOfEntry <= DateTime.Today.AddYears(-3))
                  .Include(i => i.ItemCard)
                    .ToListAsync();
+
+            this.lblMinimumQuantity = (Program.Translations["MinimumQuantity"])[Lang];
+            this.lblMaximumQuantity = (Program.Translations["MaximumQuantity"])[Lang];
+            this.lblReorderQuantity = (Program.Translations["ReorderQuantity"])[Lang];
+
+            this.lblNotMoved3 = (Program.Translations["NotMoved3"])[Lang];
         }
     }
 }
