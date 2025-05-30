@@ -14,6 +14,7 @@ namespace LabMaterials.Pages.Alerts
         public IList<ItemCard> ItemCardminimum { get; set; } = default!;
         public IList<ItemCard> ItemCardCeiling { get; set; } = default!;
         public IList<ItemCard> ItemCardReorder { get; set; } = default!;
+        public IList<ItemCardBatch> ItemCardNotMoved { get; set; } = default!;
 
         public async Task OnGetAsync()
         {
@@ -38,6 +39,9 @@ namespace LabMaterials.Pages.Alerts
                 .Include(i => i.Item)
                 .Include(i => i.ItemTypeCodeNavigation)
                 .Include(i => i.Store).ToListAsync();
+
+            ItemCardNotMoved = await _context.ItemCardBatches.Where(i => i.DateOfEntry <= DateTime.Today.AddYears(-3))
+                   .ToListAsync();
         }
     }
 }

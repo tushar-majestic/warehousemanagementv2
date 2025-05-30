@@ -311,6 +311,96 @@
                     </tbody>
                 </table>
             </div>
+            
+            @* not moved*@
+            
+            <div id="sectionn-notmoved" class="sectionn d-none table-responsive mb-3">
+                <h3>Items notmoved</h3>
+                <table class="table table-centered table-nowrap mb-0 rounded">
+                    <thead class="thead-light">
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.ItemCardReorder[0].ItemCode)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.ItemCardReorder[0].ItemName)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.ItemCardReorder[0].ItemDescription)
+                            </th>
+
+                            <th>
+                                @Html.DisplayNameFor(model => model.ItemCardReorder[0].QuantityAvailable)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.ItemCardReorder[0].CreatedAt)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.ItemCardReorder[0].LastActivity)
+                            </th>
+
+                            <th>
+                                @Html.DisplayNameFor(model => model.ItemCardReorder[0].Minimum)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.ItemCardReorder[0].ReorderLimit)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.ItemCardReorder[0].Ceiling)
+                            </th>
+
+                            <th>
+                                @Html.DisplayNameFor(model => model.ItemCardReorder[0].Store)
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.ItemCardReorder)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ItemCode)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ItemName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ItemDescription)
+                                </td>
+
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.QuantityAvailable)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.CreatedAt)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.LastActivity)
+
+                                <td>
+                                        @Html.DisplayFor(modelItem => item.Minimum)
+                                </td>
+                                <td>
+                                        @Html.DisplayFor(modelItem => item.ReorderLimit)
+                                </td>
+                                <td>
+                                        @Html.DisplayFor(modelItem => item.Ceiling)
+                                </td>
+
+                                <td>
+                                        @Html.DisplayFor(modelItem => item.Store.StoreId)
+                                </td>
+                                <td>
+                                    @* <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> | *@
+                                    @* <a asp-page="./Details" class="btn btn-primary" asp-route-id="@item.Id">Details</a> | *@
+                                    @* <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a> *@
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
         </div>
 
     </div>
@@ -342,7 +432,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
 
-        function showsectionn(sectionn) {
+        function showSection(sectionn) {
             document.querySelectorAll('.sectionn').forEach(div => div.classList.add('d-none'));
             const target = document.getElementById('sectionn-' + sectionn);
             if (target) {
