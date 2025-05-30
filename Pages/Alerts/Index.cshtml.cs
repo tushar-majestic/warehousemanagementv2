@@ -41,6 +41,7 @@ namespace LabMaterials.Pages.Alerts
                 .Include(i => i.Store).ToListAsync();
 
             ItemCardNotMoved = await _context.ItemCardBatches.Where(i => i.DateOfEntry <= DateTime.Today.AddYears(-3))
+                 .Include(i => i.ItemCard)
                    .ToListAsync();
         }
     }
