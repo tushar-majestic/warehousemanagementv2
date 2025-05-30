@@ -1642,8 +1642,12 @@
     "en": "Alert:: ",
     "ar": " يُحذًِر::"
   },
+  "NotMoved3": {
+    "en": "Items not moved for 3 yrs.",
+    "ar": " العناصر لم يتم نقلها لمدة 3 سنوات."
+  },
 
-  "Riyal":{
+  "Riyal": {
     "en": "H",
     "ar": "ح"
   },
