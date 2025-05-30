@@ -171,10 +171,14 @@ namespace LabMaterials.Pages
                     .Where(u => u.UserId == Report.TechnicalMemberId)
                     .Select(u => u.FullName)
                     .FirstOrDefault();
+                    
+             DocumentList = dbContext.DocumentTypes
+                        .ToList();
 
             
 
-            if (string.IsNullOrEmpty(FiscalYear)){
+            if (string.IsNullOrEmpty(FiscalYear))
+            {
                 ErrorMsg = (Program.Translations["FiscalYearMissing"])[Lang];
                 return Page();
             }
@@ -213,11 +217,13 @@ namespace LabMaterials.Pages
                 ErrorMsg = (Program.Translations["DocumentDateMissing"])[Lang];
                 return Page();
             }
-            else if(Report.SupplierId==0){
+            else if (Report.SupplierId == 0)
+            {
                 ErrorMsg = (Program.Translations["SupplierMissing"])[Lang];
                 return Page();
             }
-            else if(Report.RecipientEmployeeId==0){
+            else if (Report.RecipientEmployeeId == 0)
+            {
                 ErrorMsg = (Program.Translations["ReceipientMissing"])[Lang];
                 return Page();
             }
@@ -278,7 +284,7 @@ namespace LabMaterials.Pages
                 // }
                 item.ReceivingReportId = Report.Id; // Ensure the ReceivingReportId is set correctly
                 item.ItemId = item.ItemId; // Ensure the ItemId is set correctly
-                if(item.Comments == null)
+                if(item.Comments == null || item.Comments == "0")
                     item.Comments = "";
 
                 ModelState.Remove("AttachmentPath"); // Removes the error for AttachmentPath

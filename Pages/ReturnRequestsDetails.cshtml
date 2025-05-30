@@ -77,12 +77,12 @@
     <div class="card mb-4 border shadow-sm">
      <div class="card-header bg-primary text-white d-flex justify-content-end align-items-center">
                 <div class="d-flex gap-4">
-                    @* @if(Model.ReturnRequest.SupervisorApprovalDate == null && Model.UserGroupName == "Sector Manager"){
+                    @if(Model.ReturnRequest.SupervisorApprovalDate == null && Model.UserId == Model.ReturnRequest.CreatedBy){
                         <form method="post" asp-page-handler="EditReturnRequest">
                             <input type="hidden" name="ReturnRequestId" value="@Model.ReturnRequest.Id">
                             <button  class="btn btn-secondary">Edit</button>
                         </form>
-                    } *@
+                    }
 
                     <button id="PrintReport" class="btn btn-primary">Print</button>
                 </div>

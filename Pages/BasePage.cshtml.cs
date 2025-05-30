@@ -38,7 +38,7 @@ namespace LabMaterials.Pages
         lblNoOfShelves, lblKeeperName, lblKeeperJobNum, lblWarehouseManagerName, lblItemCards, lblReceivingItems, lblSerialNo,
         lblSupplierName, lblRecipientSector, lblPageCount, lblSectorNo, lblDateOfReceipt, lblRecipientWarehouse, lblFiscalYear,
         lblDocumentDate, lblDocumentNo, lblBasedOnDocument, lblComments, lblUnitPrice, lblTotalPrice, lblQuantity, lblUnitOfMeasure,
-        lblItemNameDescription, lblItemNo, lblCount, lblSAR, lblChiefResponsible, lblTechnicalMember, lblRecipient, lblSignature, lblName,
+        lblItemNameDescription, lblItemNo, lblCount, lblSAR,lblRiyal, lblChiefResponsible, lblTechnicalMember, lblRecipient, lblSignature, lblName,
         lblDate, lblcreateItemCard, lbldeductItemCard, lblItemMovement, lblStores;
 
 
@@ -158,7 +158,7 @@ namespace LabMaterials.Pages
             this.lbldeductItemCard = (Program.Translations["DeductItemCard"][Lang]);
 
             this.lblStores = (Program.Translations["Stores"])[Lang];
-
+            this.lblRiyal =  (Program.Translations["Riyal"])[Lang];
             this.lblItemMovement = (Program.Translations["ItemMovement"][Lang]);
 
 

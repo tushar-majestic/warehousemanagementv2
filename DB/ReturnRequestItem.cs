@@ -74,7 +74,7 @@ namespace LabMaterials.DB
             Other
         }
 
-        public ItemCondition RecommendedAction { get; set; } = ItemCondition.Used;
+        public ItemCondition? RecommendedAction { get; set; }
 
         [Column(TypeName = "text")]
         public string? Notes { get; set; }
