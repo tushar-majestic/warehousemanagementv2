@@ -24,13 +24,14 @@ namespace LabMaterials.Pages
             lblMostRequestingDestination, LineChartTitle, LineChartLabels, LineChartData,
             lblDestinationName, countDestination, lblCountDestination, lblItemName, lblCount,
             SuppliesData, DisbursementData, lblFromDate, lblToDate, lblTotalItems, lblTotalUsers, lblTotalStores,
-            lblDisbursements, lblSupplies, lblSuppliesAndDisbursements, lblItems, lblItemCards, lblMinimumQuantity, lblMaximumQuantity, lblReorderQuantity, lblAlert;
+            lblDisbursements, lblSupplies, lblSuppliesAndDisbursements, lblItems, lblItemCards, lblMinimumQuantity, lblMaximumQuantity, lblReorderQuantity, lblAlert, lblNotMoved3;
 
         public DateTime? FromDate = DateTime.Now;
         public DateTime? ToDate = DateTime.Now;
         public IList<ItemCard> ItemCardminimum { get; set; } = default!;
         public IList<ItemCard> ItemCardCeiling { get; set; } = default!;
         public IList<ItemCard> ItemCardReorder { get; set; } = default!;
+        public IList<ItemCardBatch> ItemCardNotMoved { get; set; } = default!;
 
         public async Task OnGetAsync(DateTime? startDate, DateTime? endDate)
         {
@@ -68,6 +69,9 @@ namespace LabMaterials.Pages
                     .Include(i => i.Item)
                     .Include(i => i.ItemTypeCodeNavigation)
                     .Include(i => i.Store).ToListAsync();
+
+                ItemCardNotMoved = await dbContext.ItemCardBatches.Where(i => i.DateOfEntry <= DateTime.Today.AddYears(-3))
+                    .ToListAsync();
 
                 totalQuantity = dbContext.Items.Sum(e => e.AvailableQuantity);
                 totalDisburse = dbContext.DisbursementRequests.Sum(e => e.ItemQuantity);
@@ -275,6 +279,7 @@ namespace LabMaterials.Pages
             this.lblMaximumQuantity = (Program.Translations["MaximumQuantity"])[Lang];
             this.lblReorderQuantity = (Program.Translations["ReorderQuantity"])[Lang];
             this.lblAlert = (Program.Translations["Alert"])[Lang];
+            this.lblNotMoved3 = (Program.Translations["NotMoved3"])[Lang];
 
         }
 
