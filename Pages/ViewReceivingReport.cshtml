@@ -72,8 +72,8 @@
                 </div> *@
 
                 <dl class="row">
-                    <dt class="col-sm-3">Fiscal Year</dt>
-                    <dd class="col-sm-3">@report.FiscalYear</dd>
+                    <dt class="col-sm-3" >Fiscal Year</dt>
+                    <dd class="col-sm-3" >@report.FiscalYear</dd>
 
                     <dt class="col-sm-3">Receiving Date</dt>
                     <dd class="col-sm-3">@report.ReceivingDate.ToString("yyyy-MM-dd")</dd>
@@ -227,37 +227,48 @@
             <th style="width: 25%;font-size: 14px;" rowspan="2">@Model.lblComments</th>
         </tr>
         <tr>
-            <td style="width: 3.5%;font-size: 14px; text-align: center;"></td>
+            <td style="width: 3.5%;font-size: 14px; text-align: center;">@Model.lblRiyal</td>
             <td style="width: 3.5%;font-size: 14px; text-align: center;">@Model.lblSAR</td>
-            <td style="width: 3.5%;font-size: 14px; text-align: center;"></td>
+            <td style="width: 3.5%;font-size: 14px; text-align: center;">@Model.lblRiyal</td>
             <td style="width: 3.5%;font-size: 14px; text-align: center;">@Model.lblSAR</td>
         </tr>
-        @if(Model.ReceivingItems != null){
+        @{
+            var totalPrice = 0m;
+        }
 
-    
+        @if(Model.ReceivingItems != null){
+            var count = 1;
             @foreach(var item in Model.ReceivingItems){
                 var Item = Model.Items.FirstOrDefault(i => i.ItemId == item.ItemId);      
-                var UnitMeasure = Model.Units.FirstOrDefault(u => u.Id == Item.UnitId).UnitCode ?? "";;
+                var UnitMeasure = Model.Units.FirstOrDefault(u => u.Id == Item.UnitId).UnitCode ?? "";
+                var itemTotal = item.Quantity * item.UnitPrice;
+                var totalWholePart = Math.Truncate(itemTotal);
+                var totalFractionalPart = itemTotal - totalWholePart;
+
+                var unitWholePart = Math.Truncate(item.UnitPrice);
+                var unitFractionalPart = item.UnitPrice - unitWholePart;
+                totalPrice += itemTotal;
                 <tr>
-                    <td style="font-size: 14px;">&nbsp;</td>
+                    <td style="font-size: 14px;">@count</td>
                     <td style="font-size: 14px;">@Item.ItemCode</td>
                     <td style="font-size: 14px;">@Item.ItemName- @Item.ItemDescription</td>
                     <td style="font-size: 14px;">@UnitMeasure</td>
                     <td style="font-size: 14px;">@item.Quantity</td>
-                    <td style="font-size: 14px;"></td>
-                    <td style="font-size: 14px;">@item.UnitPrice</td>
-                    <td style="font-size: 14px;">&nbsp;</td>
-                    <td style="font-size: 14px;">@(item.Quantity * item.UnitPrice)</td>
+                    <td style="font-size: 14px;">@unitFractionalPart</td>
+                    <td style="font-size: 14px;">@unitWholePart</td>
+                    <td style="font-size: 14px;">@totalFractionalPart</td>
+                    <td style="font-size: 14px;">@totalWholePart</td>
                     <td style="font-size: 14px;">@item.Comments</td>
 
                 </tr>
+                count++;
             }
         }
         <tr>
             <td style="font-size: 14px;">&nbsp;</td>
             <td style="font-size: 14px;">&nbsp;</td>
             <td style="font-size: 14px;">&nbsp;</td>
-            <td colspan="7" >@Model.lblTotalPrice</td>
+            <td colspan="7" >@Model.lblTotalPrice - @totalPrice</td>
         </tr>
         <tr>
             <td colspan="2" style="text-align: center;font-size: 14px;"><b>@Model.lblRecipient</b></td>

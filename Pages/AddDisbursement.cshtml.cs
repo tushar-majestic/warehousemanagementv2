@@ -310,7 +310,7 @@ namespace LabMaterials.Pages
                     {
                         item.MaterialRequestId = Report.RequestId;
                         item.ItemCardId = item.ItemCardId;
-                        if (item.Comments == null)
+                        if (item.Comments == null || item.Comments == "0")
                             item.Comments = "";
 
 

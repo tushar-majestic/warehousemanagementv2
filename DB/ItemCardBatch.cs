@@ -23,6 +23,7 @@ public partial class ItemCardBatch
 
 
     public int QuantityReceived { get; set; }
+    public int QuantityAvailable { get; set; }
     public DateTime? ExpiryDate { get; set; }
 
     // public enum AssetType

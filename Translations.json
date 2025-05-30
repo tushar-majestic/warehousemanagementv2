@@ -1642,6 +1642,11 @@
     "en": "Alert:: ",
     "ar": " يُحذًِر::"
   },
+
+  "Riyal":{
+    "en": "H",
+    "ar": "ح"
+  }
   "DestinationNumber": {
     "en": "Destination Number",
     "ar": " Destination Number"
@@ -1657,6 +1662,7 @@
   "NoObjection": {
     "en": "There is no objection to spending within the limits permitted by the balances",
     "ar": "There is no objection to spending within the limits permitted by the balances"
+
   }
 
 

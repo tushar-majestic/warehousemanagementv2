@@ -57,31 +57,26 @@
         <div class="col-8 mb-4 m-auto">
             @if(Model.UserId == Model.Report.CreatedBy){
                <div class="card border-0 shadow components-section">
-                    <form method="post" class="card-body">
+                    <form method="post" class="card-body" >
                         <div id="returnEntriesWrapper">
                             @for (int i = 0; i < Model.ReturnItems.Count; i++)
                             {
                                 <div class="return-entry border p-3 mb-3 rounded">
                                     <div class="row">
-                                        @* <div class="col-md-6 mb-4">
-                                            <label>Item Group</label>
-                                            @{
-                                                var itemgroup = Model.ItemGroups.FirstOrDefault(g => g.GroupCode == Model.ReturnItems[@i].ItemGroup);
-                                            }
-                                            <input type="text" class="form-control" value="@itemgroup.GroupDesc" />
-                                            
-                                        </div> *@
+                                        
+
                                         <div class="col-md-6 mb-4">
                                             <label>Item Group</label>
-                                            <select class="form-select item-group-select" name="ReturnItems[@i].itemGroup" asp-for="ReturnItems[@i].ItemGroup" id="itemGroup_@i" onchange="filterItemsByGroup(@i)">
+                                            <select class="form-select item-group-select" name="ReturnItems[@i].ItemGroup" asp-for="ReturnItems[@i].ItemGroup"  id="itemGroup_@i" onchange="filterItemsByGroup(@i)">
                                                 <option value="">Select Group</option>
                                                 @foreach (var group in Model.ItemGroups)
                                                 {
                                                     <option value="@group.GroupCode">@group.GroupDesc</option>
+
                                                 }
                                             </select>
                                         </div>
-                                        <input type="hidden" name="ReturnItems[@i].Id" value="@Model.ReturnItems[@i].Id" asp-for="ReturnItems[@i].Id"/>
+                                      
                                         <div class="col-md-6 mb-4">
                                             <label>Arabic Item Name</label>
                                             <select class="form-select ArabicItemName" name="ReturnItems[@i].ItemCardId"  asp-for="@Model.ReturnItems[@i].ItemCardId" 
@@ -98,6 +93,7 @@
                                                             data-unit="@item.UnitOfmeasure"
                                                             data-itemnamearabic="@item.ItemName"
                                                             data-itemnameenglish="@item.ItemName"
+                                                            data-groupcode = "@item.GroupCode"
                                                             data-expdate = "@Item.ExpiryDate?.ToString("yyyy-MM-dd")">
                                                         @item.ItemName
                                                     </option>
@@ -106,7 +102,7 @@
                                         </div>
                                         <div class="col-md-6 mb-4">
                                             <label>Item Code</label>
-                                            <input type="text" name="ReturnItems[@i].ItemCode" class="form-control ItemCode" value="@Model.ReturnItems[@i].ItemCode"  />
+                                            <input type="text" name="ReturnItems[@i].ItemCode" class="form-control ItemCode" value="@Model.ReturnItems[@i].ItemCode"  readonly />
                                         </div>
 
 
@@ -118,20 +114,36 @@
                                         
                                         <div class="col-md-6 mb-4">
                                             <label>Item Description</label>
-                                            <input type="text" name="ReturnItems[@i].ItemDescription" class="form-control ItemDescription"  value="@Model.ReturnItems[@i].ItemDescription"  />
+                                            <input type="text" name="ReturnItems[@i].ItemDescription" class="form-control ItemDescription"  value="@Model.ReturnItems[@i].ItemDescription"  readonly/>
                                         </div>
                                         <div class="col-md-6 mb-4">
                                             <label>Chemical</label>
-                                            <input type="text" name="ReturnItems[@i].Chemical" class="form-control chemical" value="@Model.ReturnItems[@i].Chemical"  />
+                                            <input type="text" name="ReturnItems[@i].Chemical" class="form-control chemical" value="@Model.ReturnItems[@i].Chemical" readonly />
                                         </div>
                                         <div class="col-md-6 mb-4">
                                             <label>Risk Rating</label>
-                                            <input type="text" name="ReturnItems[@i].RiskRating" value="@Model.ReturnItems[@i].RiskRating" class="form-control RiskRating"  />
+                                            <input type="text" name="ReturnItems[@i].RiskRating" value="@Model.ReturnItems[@i].RiskRating" class="form-control RiskRating"  readonly/>
                                         </div>
-                                        <div class="col-md-6 mb-4">
+                                        @* <div class="col-md-6 mb-4">
                                             <label>State of Matter</label>
                                             <input type="text"  name="ReturnItems[@i].StateOfMatter" class="form-select" value="@Model.ReturnItems[@i].StateOfMatter" />
                                             
+                                        </div> *@
+
+                                        <div class="col-md-6 mb-4">
+                                            <label>State of Matter</label>
+                                            <select name="ReturnItems[@i].StateOfMatter" class="form-select" required>
+                                            <option value="">Select State</option>
+                                            @foreach (var state in Model.StateOfMatters)
+                                            {
+                                                var isSelected = state.Value == Model.ReturnItems[i].StateOfMatter;
+                                                <option value="@state.Value" selected="@(isSelected ? "selected" : null)">
+                                                    @state.Text
+                                                </option>
+                                            }
+
+                                        </select>
+
                                         </div>
                                         <div class="col-md-6 mb-4">
                                             <label>Expiry Date</label>
@@ -139,7 +151,7 @@
                                         </div>
                                         <div class="col-md-6 mb-4">
                                             <label>Unit of Measure</label>
-                                            <input type="text" name="ReturnItems[@i].UnitOfMeasure" value="@Model.ReturnItems[@i].UnitOfMeasure" class="form-control UnitofMeasure"  />
+                                            <input type="text" name="ReturnItems[@i].UnitOfMeasure" value="@Model.ReturnItems[@i].UnitOfMeasure" class="form-control UnitofMeasure"  readonly/>
                                         </div>
                                         <div class="col-md-6 mb-4">
                                             <label>Return Quantity</label>
@@ -217,7 +229,7 @@
 
                 </div>  
             }
-            @if(Model.UserGroupName == "Return Inspection Committee Officer")                       {
+            @if(Model.UserGroupName == "Return Inspection Committee Officer"){
                 <div class="card border-0 shadow components-section">
                     <form method="post" class="card-body">
                         
@@ -549,6 +561,7 @@
             const selected = select.options[select.selectedIndex];
             document.querySelectorAll(".ItemCode")[index].value = selected.dataset.code || "";
             document.querySelectorAll(".ItemDescription")[index].value = selected.dataset.description || "";
+            document.querySelectorAll(".item-group-select")[index].value = selected.dataset.groupcode || "";
             document.querySelectorAll(".chemical")[index].value = selected.dataset.chemical || "";
             document.querySelectorAll(".RiskRating")[index].value = selected.dataset.risk || "";
             document.querySelectorAll(".UnitofMeasure")[index].value = selected.dataset.unit || "";
@@ -570,6 +583,43 @@
             }
         }
 
+        document.addEventListener("DOMContentLoaded", function () {
+            console.log("script called");
+            const itemCount = @Model.ReturnItems.Count;
+            for(let i = 0; i < itemCount; i++){
+                const select = document.querySelectorAll(".ArabicItemName")[i];
+                // Only trigger if there's already a selected value
+                if (select && select.value) {
+                    onItemChange(select, i);
+                }
+
+            }
+
+        });
+        document.addEventListener("DOMContentLoaded", function () {
+            console.log("checking add btn")
+            const addBtn = document.getElementById("addEntryBtn");
+
+            function checkAllRequiredFieldsFilled() {
+                
+
+                const currentEntry = document.querySelector(".return-entry:last-child"); // check the last entry
+                const requiredFields = currentEntry.querySelectorAll("[required]");
+                let allFilled = true;
+
+                requiredFields.forEach(field => {
+                    if (!field.value.trim()) {
+                        allFilled = false;
+                    }
+                });
+
+                addBtn.disabled = !allFilled;
+            }
+
+            // Re-check on any input/select change
+            document.getElementById("returnEntriesWrapper").addEventListener("input", checkAllRequiredFieldsFilled);
+            document.getElementById("returnEntriesWrapper").addEventListener("change", checkAllRequiredFieldsFilled);
+        });
           document.getElementById("addEntryBtn").addEventListener("click", function () {
              const addButton = document.getElementById('addEntryBtn');
             addButton.disabled = true;

@@ -264,7 +264,7 @@ namespace LabMaterials.Pages
                             item.MaterialRequestId = report.RequestId;
                             item.ItemCardId = item.ItemCardId; // Ensure the ItemId is set correctly
 
-                            if (item.Comments == null)
+                            if (item.Comments == null || item.Comments == "0")
                             item.Comments = "";
 
                             _context.DespensedItems.Add(item);
