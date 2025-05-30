@@ -41,7 +41,7 @@ namespace LabMaterials.Pages
         lblSupplierName, lblRecipientSector, lblPageCount, lblSectorNo, lblDateOfReceipt, lblRecipientWarehouse, lblFiscalYear,lblReceivingDate,lblReceivingWarehouse,lblSupplierType,lblReceipient,lblGeneralSupervisor,lblItemName,lblItemQty,
         lblDocumentDate, lblDocumentNo, lblBasedOnDocument, lblComments, lblUnitPrice, lblTotalPrice, lblQuantity, lblUnitOfMeasure,
         lblItemNameDescription, lblItemNo, lblCount, lblSAR,lblRiyal, lblChiefResponsible, lblTechnicalMember, lblRecipient, lblSignature, lblName,
-        lblDate, lblcreateItemCard, lbldeductItemCard, lblItemMovement, lblStores, lblItemCard, lblCeiling, lblReorderLimit, lblMinimum, lblItemNoCode, lblItemNameArabic, lblQuantityReceived, lblDateOfEntryInWarehouse, lblSourceSupplier, lblAmountSpent, lblPartyDirected, lblRemainingBalance, lblDispensingDocumentNo;
+        lblDate, lblcreateItemCard, lbldeductItemCard, lblItemMovement, lblStores, lblItemCard, lblCeiling, lblReorderLimit, lblMinimum, lblItemNoCode, lblItemNameArabic, lblQuantityReceived, lblDateOfEntryInWarehouse, lblSourceSupplier, lblAmountSpent, lblPartyDirected, lblRemainingBalance, lblDispensingDocumentNo, lblPrint;
 
         public override void OnPageHandlerExecuting(PageHandlerExecutingContext context)
         {
@@ -193,6 +193,7 @@ namespace LabMaterials.Pages
             this.lblPartyDirected = (Program.Translations["PartyDirected"][Lang]);
             this.lblRemainingBalance = (Program.Translations["RemainingBalance"][Lang]);
             this.lblDispensingDocumentNo = (Program.Translations["DispensingDocumentNo"][Lang]);
+            this.lblPrint = (Program.Translations["Print"][Lang]);
             
 
 
