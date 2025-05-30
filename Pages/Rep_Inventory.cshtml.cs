@@ -113,19 +113,30 @@ namespace LabMaterials.Pages
             {
                 FillLables();
                 var dbContext = new LabDBContext();
-                var query = from st in dbContext.Storages
-                            join i in dbContext.Items on st.ItemId equals i.ItemId
-                            join s in dbContext.Stores on st.StoreId equals s.StoreId
+                var query = from ic in dbContext.ItemCards
+                            join i in dbContext.Items on ic.ItemId equals i.ItemId
+                            join s in dbContext.Stores on ic.StoreId equals s.StoreId
                             select new StorageInfo
                             {
                                 StoreName = s.StoreName,
                                 ItemName = i.ItemName,
-                                ShelfNumber = st.ShelfNumber,
-                                AvailableQuantity = st.AvailableQuantity.ToString() + " " + i.Unit.UnitCode,
+                                AvailableQuantity = ic.QuantityAvailable.ToString(),
                                 StoreNumber = s.StoreNumber,
-                                StorageId = st.StorageId,
                                 ExpiryDate = i.ExpiryDate,
                             };
+                // var query = from st in dbContext.Storages
+                //             join i in dbContext.Items on st.ItemId equals i.ItemId
+                //             join s in dbContext.Stores on st.StoreId equals s.StoreId
+                //             select new StorageInfo
+                //             {
+                //                 StoreName = s.StoreName,
+                //                 ItemName = i.ItemName,
+                //                 ShelfNumber = st.ShelfNumber,
+                //                 AvailableQuantity = st.AvailableQuantity.ToString() + " " + i.Unit.UnitCode,
+                //                 StoreNumber = s.StoreNumber,
+                //                 StorageId = st.StorageId,
+                //                 ExpiryDate = i.ExpiryDate,
+                //             };
 
                 if (string.IsNullOrEmpty(StoreNumber) == false)
                     query = query.Where(s => s.StoreNumber.Contains(StoreNumber));

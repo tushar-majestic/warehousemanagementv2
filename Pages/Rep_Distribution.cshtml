@@ -158,33 +158,33 @@
 
                 <!-- DROPDOWN PANEL GOES HERE -->
                 <div id="dropdownPanel" class="card p-2 shadow-sm position-absolute"
-                    style="right: 0; top: 100%; width: 200px; display: none; z-index: 1000;">
+                    style="right: 0; top: 100%; width: 220px; display: none; z-index: 1000;">
 
                     <!-- Your checkboxes here -->
                     <div class="form-check mb-1">
                         <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="requesterName"
                             id="requesterName" @(Model.SelectedColumns.Contains("requesterName") ? "checked" : "")>
-                        <label class="form-check-label" for="requesterName">RequestorName</label>
+                        <label class="form-check-label" for="requesterName">@Model.lblRequesterName</label>
                     </div>
                     <div class="form-check mb-1">
                         <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="date"
                             id="date" @(Model.SelectedColumns.Contains("date") ? "checked" : "")>
-                        <label class="form-check-label" for="date">Date</label>
+                        <label class="form-check-label" for="date">@Model.lblRequestReceivedDate</label>
                     </div>
                     <div class="form-check mb-1">
                         <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="requestingPlace"
                             id="requestingPlace" @(Model.SelectedColumns.Contains("requestingPlace") ? "checked" : "")>
-                        <label class="form-check-label" for="requestingPlace">RequestingPlace</label>
+                        <label class="form-check-label" for="requestingPlace">@Model.lblRequestingPlace</label>
                     </div>
                     <div class="form-check mb-1">
                         <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="comments"
                             id="comments" @(Model.SelectedColumns.Contains("comments") ? "checked" : "")>
-                        <label class="form-check-label" for="comments">Comments</label>
+                        <label class="form-check-label" for="comments">@Model.lblComments</label>
                     </div>
                     <div class="form-check mb-1">
                         <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="materialRequestStatus"
                             id="materialRequestStatus" @(Model.SelectedColumns.Contains("materialRequestStatus") ? "checked" : "")>
-                        <label class="form-check-label" for="materialRequestStatus">MaterialRequestStatus</label>
+                        <label class="form-check-label" for="materialRequestStatus">@Model.lblDisbursementStatus</label>
                     </div>
                     @* <div class="form-check mb-1">
                         <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="inventoryBalance"

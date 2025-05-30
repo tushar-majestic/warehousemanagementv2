@@ -41,7 +41,8 @@ namespace LabMaterials.Pages
 
         public string lblView, lblEdit, lblTotalItem, lblJobNumber, lblEmpAffiliation, lblTransfer, lblMaterialDispensing, lblPrint,
         lblSerialNumber, lblOrderDate, lblRequestingSector, lblRequestDocumentType, lblRequestDocumentNumber, lblSector, lblStoreName,
-        lblManagerName, lblItemName, lblItemNo, lblCount, lblSAR, lblPageCount;
+        lblManagerName, lblItemName, lblItemNo, lblCount, lblSAR, lblPageCount, lblDestinationNumber, lblApproved, lblSignature, lblDate,
+        lblAuthorizedPerson, lblNoObjection, lblName, lblDeptManager, lblKeeperName, lblGeneralSupervisor;
         // public void OnGet()
         // {
 
@@ -116,6 +117,16 @@ namespace LabMaterials.Pages
             this.lblCount = (Program.Translations["Count"])[Lang];
             this.lblSAR = (Program.Translations["SAR"])[Lang];
             this.lblPageCount = (Program.Translations["PageCount"])[Lang];
+            this.lblDestinationNumber = (Program.Translations["DestinationNumber"])[Lang];
+            this.lblApproved = (Program.Translations["Approved"])[Lang];
+            this.lblSignature = (Program.Translations["Signature"])[Lang];
+            this.lblDate = (Program.Translations["Date"])[Lang];
+            this.lblAuthorizedPerson = (Program.Translations["AuthorizedPerson"])[Lang];
+            this.lblNoObjection = (Program.Translations["NoObjection"])[Lang];
+            this.lblName = (Program.Translations["Name"])[Lang];
+            this.lblDeptManager = (Program.Translations["DeptManager"])[Lang];
+            this.lblKeeperName = (Program.Translations["KeeperName"])[Lang];
+            this.lblGeneralSupervisor = (Program.Translations["GeneralSupervisor"])[Lang];
 
         }
     }

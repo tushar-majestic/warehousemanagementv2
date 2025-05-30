@@ -105,30 +105,24 @@ namespace LabMaterials.Pages
                 FillLables();
                 var dbContext = new LabDBContext();
                 var query = (from i in dbContext.Items
-                             join g in dbContext.ItemGroups on i.GroupCode equals g.GroupCode
-                             join t in dbContext.ItemTypes on i.ItemTypeCode equals t.ItemTypeCode
-                             join u in dbContext.Units on i.UnitId equals u.Id
-                             join st in dbContext.Storages on i.ItemId equals st.ItemId
-                             join s in dbContext.Stores on st.StoreId equals s.StoreId
+                            join g in dbContext.ItemGroups on i.GroupCode equals g.GroupCode
+                            join t in dbContext.ItemTypes on i.StateofMatter equals t.ItemTypeCode
 
-                             select new ItemInfo
-                             {
-                                 AvailableQuantity = i.AvailableQuantity,
-                                 GroupCode = g.GroupCode,
-                                 GroupDesc = g.GroupDesc,
-                                 HazardTypeName = i.HazardTypeName,
-                                 IsHazardous = i.IsHazardous,
-                                 ItemCode = i.ItemCode,
-                                 ItemId = i.ItemId,
-                                 ItemName = i.ItemName,
-                                 StoreName = s.StoreName,
-                                 ItemTypeCode = t.ItemTypeCode,
-                                 TypeName = t.TypeName,
-                                 UnitCode = u.UnitCode,
-                                 UnitDesc = u.UnitDesc,
-                             });
+                            select new ItemInfo
+                            {
+                                AvailableQuantity = i.AvailableQuantity,
+                                GroupCode = g.GroupCode,
+                                GroupDesc = g.GroupDesc,
+                                HazardTypeName = i.RiskRating,
+                                IsHazardous = i.Chemical,
+                                ItemCode = i.ItemCode,
+                                ItemId = i.ItemId,
+                                ItemName = i.ItemName,
+                                ItemTypeCode = t.ItemTypeCode,
+                                TypeName = t.TypeName,
+                            });
 
-                query = query.Where(i => i.HazardTypeName.ToLower() != "NonHazarduos");
+                query = query.Where(i => i.HazardTypeName.ToLower() != "nonhazarduos");
 
                 if (string.IsNullOrEmpty(ItemName) == false)
                     query = query.Where(i => i.ItemName.Contains(ItemName));
