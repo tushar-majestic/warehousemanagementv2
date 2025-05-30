@@ -53,7 +53,7 @@
     <div class="card border-0 shadow mb-4">
         <div class="card-body">
             <div id="sectionn-minimum" class="sectionn table-responsive mb-3">
-                <h3>Items Less Than Minimum</h3> 
+                <h3>@Model.lblMinimumQuantity</h3> 
                 <table class="table table-centered table-nowrap mb-0 rounded">
                     <thead class="thead-light">
                         <tr>
@@ -140,7 +140,7 @@
                 </table>
             </div>
             <div id="sectionn-maximum" class="sectionn d-none table-responsive mb-3">
-                <h3>Items With Maximum Quantity</h3>
+                <h3>@Model.lblMaximumQuantity</h3>
                 <table class="table table-centered table-nowrap mb-0 rounded">
                     <thead class="thead-light">
                         <tr>
@@ -230,7 +230,7 @@
         <!-- Orders sectionn -->
 
             <div id="sectionn-reorder" class="sectionn d-none table-responsive mb-3">
-                <h3>Items Reaching Re-Order Limit</h3>
+                <h3>@Model.lblReorderQuantity</h3>
                 <table class="table table-centered table-nowrap mb-0 rounded">
                     <thead class="thead-light">
                         <tr>
@@ -320,7 +320,7 @@
             @* not moved*@
             
             <div id="sectionn-notmoved" class="sectionn d-none table-responsive mb-3">
-                <h3>Items notmoved</h3>
+                <h3> @Model.lblNotMoved3</h3>
                 <table class="table table-centered table-nowrap mb-0 rounded">
                     <thead class="thead-light">
                         <tr>
