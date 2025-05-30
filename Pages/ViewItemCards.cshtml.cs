@@ -17,6 +17,7 @@ namespace LabMaterials.Pages
         public string ItemCardId { get; set; }
         public Room Room { get; set; }
         public Supplier Supplier { get; set; }
+        public List<Destination> Party { get; set; }
         // public DespensedItem DespensedItem { get; set; }
         // public Store Store { get; set; }
 
@@ -33,6 +34,7 @@ namespace LabMaterials.Pages
         public List<ItemCard> ItemCards { get; set; }
         public ItemCard? SingleItemCard  { get; set; }
         public List<ItemCardBatch> BatchDetails { get; set; }
+        public List<PendingDeduction> dispensed { get; set; }
         public ICollection<ItemCardBatch> ItemCardBatches { get; set; }
         public ICollection<Store> Store { get; set; }
 
@@ -56,6 +58,11 @@ namespace LabMaterials.Pages
                 .FirstOrDefaultAsync(r => r.Id == int.Parse(this.ItemCardId));
             Console.WriteLine(SingleItemCard);
 
+            dispensed = await _context.PendingDeductions.Where(d => d.ItemCardId == int.Parse(this.ItemCardId)).ToListAsync();
+
+            Party = dbContext.Destinations.ToList();
+
+            
             BatchDetails = await _context.ItemCardBatches
                 .Include(b => b.Room)
                 .Include(b => b.Supplier)
