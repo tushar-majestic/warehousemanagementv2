@@ -168,6 +168,9 @@ namespace LabMaterials.Pages
                     .Where(u => u.UserId == Report.TechnicalMemberId)
                     .Select(u => u.FullName)
                     .FirstOrDefault();
+                    
+             DocumentList = dbContext.DocumentTypes
+                        .ToList();
 
 
 
@@ -280,7 +283,9 @@ namespace LabMaterials.Pages
                 // }
                 item.ReceivingReportId = Report.Id; // Ensure the ReceivingReportId is set correctly
                 item.ItemId = item.ItemId; // Ensure the ItemId is set correctly
-                if (item.Comments == null)
+
+                if(item.Comments == null || item.Comments == "0")
+
                     item.Comments = "";
 
                 ModelState.Remove("AttachmentPath"); // Removes the error for AttachmentPath

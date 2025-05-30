@@ -1,8 +1,11 @@
 using DocumentFormat.OpenXml.Drawing.Charts;
 using DocumentFormat.OpenXml.Wordprocessing;
+using LabMaterials.Migrations;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Globalization;
+using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace LabMaterials.Pages
 {
@@ -22,8 +25,9 @@ namespace LabMaterials.Pages
         public List<Store> Stores { get; set; } = new();
         public List<Requester> requesters { get; set; } = new();
         public List<Item> AllItems { get; set; }
+
         [BindProperty]
-        public List<ReturnRequestItem> ReturnItems { get; set; } =  new List<ReturnRequestItem>();
+        public List<ReturnRequestItem> ReturnItems { get; set; } = new List<ReturnRequestItem>();
         public List<SelectListItem> StateOfMatters { get; set; }
         [BindProperty]
         public ReturnRequest ReturnRequest { get; set; }
@@ -35,9 +39,11 @@ namespace LabMaterials.Pages
 
 
 
-        public void OnGet()
+        public async Task OnGetAsync()
         {
             base.ExtractSessionData();
+            LoadDropdowns();
+
             int? ReturnRequestId = HttpContext.Session.GetInt32("ReturnRequestId");
             this.ReturnRequestId = ReturnRequestId.Value;
 
@@ -62,13 +68,12 @@ namespace LabMaterials.Pages
                             .FirstOrDefault(r => r.Id == ReturnRequestId.Value);
             #pragma warning restore CS8601 // Possible null reference assignment.
             
-            ReturnItems = dbContext.ReturnRequestItems
-                        .Where(r => r.ReturnRequestId == ReturnRequestId.Value)
-                        .ToList();
+           ReturnItems = await _context.ReturnRequestItems
+                .Where(r => r.ReturnRequestId == ReturnRequestId)
+                .ToListAsync();
 
            
 
-            LoadDropdowns();
         }
 
         public async Task<IActionResult> OnPostAsync()
@@ -78,22 +83,25 @@ namespace LabMaterials.Pages
             this.ReturnRequestId = ReturnRequestId.Value;
 
 
-            int? InboxId =  HttpContext.Session.GetInt32("InboxId");
+            int? InboxId = HttpContext.Session.GetInt32("InboxId");
             if (InboxId.HasValue)
             {
                 this.InboxId = InboxId.Value;
             }
 
-            var dbContext = new LabDBContext();
             #pragma warning disable CS8601 // Possible null reference assignment.
-            Report = dbContext.ReturnRequests
-                            .FirstOrDefault(r => r.Id == ReturnRequestId.Value);
-            #pragma warning restore CS8601 // Possible null reference assignment.
-           
-            ReturnItems = dbContext.ReturnRequestItems
-                        .Where(r => r.ReturnRequestId == ReturnRequestId.Value)
-                        .ToList();
 
+            Report = await _context.ReturnRequests
+                .Include(r => r.Items) // important to include items if you want to modify them
+                .FirstOrDefaultAsync(r => r.Id == ReturnRequestId.Value);
+            #pragma warning restore CS8601 // Possible null reference assignment.
+
+           
+
+            try
+            {
+
+            
             if (UserId == Report.CreatedBy)
             {
                 var orderDateStr = Request.Form["OrderDate"];
@@ -109,7 +117,7 @@ namespace LabMaterials.Pages
                 Report.IsInvalid = false;
                 Report.IsDamaged = false;
 
-                 switch (reason)
+                switch (reason)
                 {
                     case "SurPlus":
                         Report.IsSurplus = true;
@@ -124,13 +132,48 @@ namespace LabMaterials.Pages
                         Report.IsDamaged = true;
                         break;
                 }
+                // Delete old items
+                var existingItems = _context.ReturnRequestItems.Where(ri => ri.ReturnRequestId == Report.Id).ToList();
+                _context.ReturnRequestItems.RemoveRange(existingItems);
+                await _context.SaveChangesAsync();
+
                 
-                await dbContext.SaveChangesAsync();
-                dbContext.SaveChanges();
+                // Add updated items
+                foreach (var item in ReturnItems)
+                {
+                        // if (item.ItemId != 0 && item.Quantity > 0 && item.UnitPrice > 0)
+                        // {
+                        // item.ReturnRequestId = 15;
+                        // item.ItemCardId = 1111;
+                        // item.ItemCode = "1245";
+                        // item.ItemNameArabic = "Calcium Oxide";
+                        // item.ItemNameEnglish = "Calcium Oxide";
+                        // item.RiskRating = "Explosive";
+                        // item.StateOfMatter = "Solid";
+                        // item.UnitOfMeasure = "Rack";
+                        // item.ReturnedQuantity = 2;
+                        item.ReturnRequestId = Report.Id;
+                        item.ItemCardId = item.ItemCardId;
 
+                       
 
+                        _context.ReturnRequestItems.Add(item);
+                    // }
+                }
+                await _context.SaveChangesAsync();
 
             }
+        }
+        catch (Exception ex)
+        {
+            ErrorMsg = ex.Message;
+            //for seeing inner exception errors
+            if (ex.InnerException != null)
+            {
+                    ErrorMsg += " Inner Exception: " + ex.InnerException.Message;
+            }
+            Console.WriteLine("Error saving: " + ex.Message);
+        }
             //if Inspection Commitee Officer is logged in than he can only add the recommended action and additional notes
             if (UserGroupName == "Return Inspection Committee Officer")
             {
@@ -155,18 +198,16 @@ namespace LabMaterials.Pages
                     }
                 }
 
-                await dbContext.SaveChangesAsync();
                 Report.InspOffApprovalDate = DateTime.UtcNow;
 
                 if (InboxId.HasValue && InboxId.Value != 0)
                 {
-                    var message = dbContext.Messages.FirstOrDefault(m => m.Id == this.InboxId);
+                    var message = _context.Messages.FirstOrDefault(m => m.Id == this.InboxId);
 
                     if (message != null)
                     {
                         message.Type = "Assign Supervisor";
                     }
-                    dbContext.SaveChanges();
                 }
 
 
@@ -189,30 +230,24 @@ namespace LabMaterials.Pages
 
                 }
 
-                await dbContext.SaveChangesAsync();
-                var message = dbContext.Messages.FirstOrDefault(m => m.Id == this.InboxId);
+                var message = _context.Messages.FirstOrDefault(m => m.Id == this.InboxId);
 
                 if (message != null)
                 {
                     message.Type = "Added";
                 }
-                dbContext.SaveChanges();
 
                 //find the keeper message to update it to show the add order to item card button
-                var keeperMessage = dbContext.Messages
+                var keeperMessage = _context.Messages
                     .FirstOrDefault(m => m.RecipientId == Report.KeeperId && m.ReturnRequestId == Report.Id);
 
                 if (keeperMessage != null)
                 {
                     keeperMessage.Type = "Add Order";
                 }
-                dbContext.SaveChanges();
 
             }
-
-           
-
-
+            await _context.SaveChangesAsync();
             return RedirectToPage("/Requests");
         }
 

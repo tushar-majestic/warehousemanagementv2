@@ -144,7 +144,7 @@ namespace LabMaterials.Pages
                 // if (batch != null && batch.QuantityReceived >= item.QuantityReceived)
                 if (batch != null)
                 {
-                    batch.QuantityReceived -= item.QuantityReceived;
+                    batch.QuantityAvailable -= item.QuantityReceived;
                 }
 
                 // 3. Reduce from ShelveItems table
@@ -157,26 +157,26 @@ namespace LabMaterials.Pages
                     shelveItem.QuantityAvailable -= item.QuantityReceived;
                 }
 
-                // can be used in future if deduction order is GeneratedCodeAnalysisFlags before
-                // var newdeduction = new PendingDeduction
-                // {
-                //     StoreId = StoreId,
-                //     ItemCardId = item.ItemId,
-                //     RoomId = item.RoomId,
-                //     ShelfId = item.ShelfId,
-                //     ReduceQty = item.QuantityReceived,
-                //     OutDate = OutDate,
-                //     PartyId = PartyId,
-                //     DocumentNumber = DocumentNumber,
-                //     Status = false,
-                //     DeductedBy = HttpContext.Session.GetInt32("UserId").Value,
-                //     MaterialRequestId = this.ReportId.Value,
-                //     CreatedAt = DateTime.UtcNow
-                // };
+                // can be used in future if deduction order is Generated before
+                var newdeduction = new PendingDeduction
+                {
+                    StoreId = StoreId,
+                    ItemCardId = item.ItemId,
+                    RoomId = item.RoomId,
+                    ShelfId = item.ShelfId,
+                    ReduceQty = item.QuantityReceived,
+                    OutDate = OutDate,
+                    PartyId = PartyId,
+                    DocumentNumber = DocumentNumber,
+                    Status = true,
+                    DeductedBy = HttpContext.Session.GetInt32("UserId").Value,
+                    MaterialRequestId = this.ReportId.Value,
+                    CreatedAt = DateTime.UtcNow
+                };
 
-                // _context.PendingDeductions.Add(newdeduction);
+                _context.PendingDeductions.Add(newdeduction);
                  dbContext.SaveChanges();
-                // await _context.SaveChangesAsync();
+                 await _context.SaveChangesAsync();
             }
 
 

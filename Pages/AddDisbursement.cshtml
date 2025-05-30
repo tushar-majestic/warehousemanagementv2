@@ -629,7 +629,7 @@
                                         <div class="d-flex">
                                             <div class="mb-4 me-2" style="width: 49%;">
                                                 <label for="UnitPrice">@Model.lblUnitPrice</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
-                                                <input type="number" asp-for="ItemsForReport[@i].UnitPrice" name="ItemsForReport[@i].UnitPrice" class="form-control UnitPrice" id="UnitPrice_@i">
+                                                <input type="number" step="any" asp-for="ItemsForReport[@i].UnitPrice" name="ItemsForReport[@i].UnitPrice" class="form-control UnitPrice" id="UnitPrice_@i">
                                             </div>
                                             <div class="mb-4 ms-2" style="width: 49%;">
                                                 <label for="TotalPrice">@Model.lblTotalPrice</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>

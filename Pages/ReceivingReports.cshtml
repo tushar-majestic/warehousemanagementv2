@@ -107,13 +107,15 @@
                             @* <input asp-for="Report.BasedOnDocument" class="form-control" required /> *@
                             <select asp-for="Report.BasedOnDocument" class="form-select" id="BasedOnDocument" name="BasedOnDocument">
                                 <option value="">Select Based On document</option>
-                                @if (Model.DocumentList != null)
-                                {
 
-                                    @foreach (var document in Model.DocumentList)
+                                @if(Model.DocumentList != null){
+                                     @foreach (var document in Model.DocumentList)
                                     {
                                         <option value="@document.DocType">@document.DocType</option>
-                                    }}
+                                    }
+                                }
+                               
+
                                 @* <option value="Purchase order">Purchase order</option>
                                 <option value="Return order">Return order</option>
                                 <option value="Transfer from another warehouse">Transfer from another warehouse</option> *@
@@ -234,7 +236,9 @@
                                 <div class="d-flex justify-content-between">
                                     <div class="form-group mb-4" style="width: 48%;">
                                         <label>@Model.lblUnitPrice</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
-                                        <input asp-for="ItemsForReport[@i].UnitPrice" type="number" id="UnitPrice_@i" step="0.01" name="ItemsForReport[@i].UnitPrice" class="form-control" />
+
+                                        <input asp-for="ItemsForReport[@i].UnitPrice" type="number"  id="UnitPrice_@i"  step="any" name="ItemsForReport[@i].UnitPrice" class="form-control"  />
+
                                     </div>
 
                                     <div class="form-group mb-4" style="width: 48%;">
@@ -358,62 +362,64 @@
             const div = document.createElement('div');
             div.className = 'item-group border p-3 mb-3';
             div.innerHTML = `
-                        <h3>Add Items</h3>
-                        <div class="text-end">
-                            <button type="button" class="btn btn-danger btn-sm remove-entry me-3">Remove</button>
-                        </div>
 
-                        <div class="form-group mb-4">
-                            <label>Item Group</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
-                            <select class="form-select" id="ItemGroup_${itemIndex}" name="ItemsForReport[${itemIndex}].ItemGroup" onchange="filterItemByGroup(${itemIndex})" required>
-                                <option value="">Select Item Group</option>
-        @foreach (var item in Model.ItemGroupList)
-        {
-            <text><option value="@item.GroupCode">@item.GroupDesc</option></text>
-        }
-                            </select>
-                        </div>
-                        <div class="d-flex">
-                            <div class="form-group mb-4 me-2">
-                                <label>Item No</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
-                                <input type="text" id="ItemNo_${itemIndex}" name="ItemsForReport[${itemIndex}].ItemNo" class="form-control" required/>
-                            </div>
-                            <div class="form-group mb-4 ms-2 flex-fill">
-                                <label>Item Name</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
-                                <select class="form-control" id="ItemName_${itemIndex}" name="ItemsForReport[${itemIndex}].ItemId" required>
+                <h3>Add Items</h3>
+                <div class="text-end">
+                    <button type="button" class="btn btn-danger btn-sm remove-entry me-3">Remove</button>
+                </div>
+                
+                <div class="form-group mb-4">
+                    <label>Item Group</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
+                    <select class="form-select" id="ItemGroup_${itemIndex}" name="ItemsForReport[${itemIndex}].ItemGroup" onchange="filterItemByGroup(${itemIndex})" required>
+                        <option value="">Select Item Group</option>
+                        @foreach (var item in Model.ItemGroupList)
+                        {
+                            <text><option value="@item.GroupCode">@item.GroupDesc</option></text>
+                        }
+                    </select>
+                </div>
+                <div class="d-flex">
+                    <div class="form-group mb-4 me-2">
+                        <label>Item No</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
+                        <input type="text" id="ItemNo_${itemIndex}" name="ItemsForReport[${itemIndex}].ItemNo" class="form-control" required/>
+                    </div>
+                    <div class="form-group mb-4 ms-2 flex-fill">
+                        <label>Item Name</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
+                        <select class="form-control" id="ItemName_${itemIndex}" name="ItemsForReport[${itemIndex}].ItemId" required>
+                           
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group mb-4">
+                    <label>Item Description</label>
+                    <textarea name="ItemsForReport[${itemIndex}].ItemDescription" class="form-control" readonly></textarea>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <div class="form-group mb-4" style="width: 48%;">
+                        <label>Unit of Measure</label>
+                        <input type="text" name="ItemsForReport[${itemIndex}].UnitofMeasure" class="form-control" readonly />
+                    </div>
+                    <div class="form-group mb-4" style="width: 48%;">
+                        <label>Quantity</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
+                        <input type="number" id="ItemQty_${itemIndex}" name="ItemsForReport[${itemIndex}].Quantity" class="form-control" required/>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <div class="form-group mb-4" style="width: 48%;">
+                        <label>Unit Price</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
+                        <input type="number" step="any" id="UnitPrice_${itemIndex}" name="ItemsForReport[${itemIndex}].UnitPrice" class="form-control" required/>
+                    </div>
+                    <div class="form-group mb-4" style="width: 48%;">
+                        <label>Total Price</label>
+                        <input type="number" id="TotalPrice_${itemIndex}"  name="ItemsForReport[${itemIndex}].TotalPrice" class="form-control" readonly />
+                    </div>
+                </div>
+                <div class="form-group mb-4">
+                    <label>@Model.lblComments</label>
+                    <textarea  class="form-control" name="ItemsForReport[${itemIndex}].Comments"></textarea>
+                </div>
+            `;
 
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group mb-4">
-                            <label>Item Description</label>
-                            <textarea name="ItemsForReport[${itemIndex}].ItemDescription" class="form-control" readonly></textarea>
-                        </div>
-                        <div class="d-flex justify-content-between">
-                            <div class="form-group mb-4" style="width: 48%;">
-                                <label>Unit of Measure</label>
-                                <input type="text" name="ItemsForReport[${itemIndex}].UnitofMeasure" class="form-control" readonly />
-                            </div>
-                            <div class="form-group mb-4" style="width: 48%;">
-                                <label>Quantity</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
-                                <input type="number" id="ItemQty_${itemIndex}" name="ItemsForReport[${itemIndex}].Quantity" class="form-control" required/>
-                            </div>
-                        </div>
-                        <div class="d-flex justify-content-between">
-                            <div class="form-group mb-4" style="width: 48%;">
-                                <label>Unit Price</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
-                                <input type="number" id="UnitPrice_${itemIndex}" name="ItemsForReport[${itemIndex}].UnitPrice" class="form-control" required/>
-                            </div>
-                            <div class="form-group mb-4" style="width: 48%;">
-                                <label>Total Price</label>
-                                <input type="number" id="TotalPrice_${itemIndex}"  name="ItemsForReport[${itemIndex}].TotalPrice" class="form-control" readonly />
-                            </div>
-                        </div>
-                        <div class="form-group mb-4">
-                            <label>@Model.lblComments</label>
-                            <textarea  class="form-control" name="ItemsForReport[${itemIndex}].Comments"></textarea>
-                        </div>
-                    `;
             container.appendChild(div);
             bindEvents(div, itemIndex);
             itemIndex++;

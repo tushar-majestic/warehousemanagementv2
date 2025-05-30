@@ -80,7 +80,7 @@
                     <dd class="col-sm-3">@MaterialRequest.FiscalYear</dd>
 
                     <dt class="col-sm-3">Request Date</dt>
-                    <dd class="col-sm-3">@MaterialRequest.CreatedAt?.ToString("yyyy-MM-dd")</dd>
+                    <dd class="col-sm-3">@MaterialRequest.CreatedAt?.ToString("dd-MM-yyyy")</dd>
 
                     <dt class="col-sm-3">@Model.lblRequestingSector</dt>
                     <dd class="col-sm-3">@Model.RequestingSector</dd>
@@ -98,18 +98,18 @@
                     <dd class="col-sm-3">@MaterialRequest.DocumentNumber</dd>
 
                     <dt class="col-sm-3">@Model.lblOrderDate</dt>
-                    <dd class="col-sm-3">@MaterialRequest.OrderDate.ToString("yyyy-MM-dd")</dd>
+                    <dd class="col-sm-3">@MaterialRequest.OrderDate.ToString("dd-MM-yyyy")</dd>
 
-                    <dt class="col-sm-3">Dept. Manager</dt>
+                    <dt class="col-sm-3">@Model.lblDeptManager</dt>
                     <dd class="col-sm-3">@Model.DeptManager</dd>
 
-                    <dt class="col-sm-3">Keeper</dt>
+                    <dt class="col-sm-3">@Model.lblKeeperName</dt>
                     <dd class="col-sm-3">@Model.Keeper</dd>
 
                     @* <dt class="col-sm-3">Technical Member</dt>
                     <dd class="col-sm-3">TechnicalMember</dd> *@
 
-                    <dt class="col-sm-3">General Supervisor</dt>
+                    <dt class="col-sm-3">@Model.lblGeneralSupervisor</dt>
                         @if(Model.GeneralSupervisor != null){
                             <dd class="col-sm-3">@Model.GeneralSupervisor</dd>
                         }
@@ -165,9 +165,9 @@
                 }
                 <table class="nested-table" border="0" width="100%">
                     <tr >
-                       <td style="width: 15%;border: none; font-size: 14px;white-space: nowrap;" >@Model.lblRequestingSector</td>
+                       <td style="width: 15%;border: none; font-size: 14px;white-space: nowrap;" >@Model.lblDestinationNumber</td>
 
-                        <td style="width: 15%;border: none; font-size: 14px;">@Model.RequestingSector</td>
+                        <td style="width: 15%;border: none; font-size: 14px;">@rep.RequestingSector</td>
                         <td style="width: 15%;border: none;font-size: 14px;"></td>
                         <td style="width: 15%;border: none;font-size: 14px;white-space: nowrap;" align="center"></td>
                         <td style="width: 15%;border: none;font-size: 14px;white-space: nowrap;"></td>
@@ -176,8 +176,8 @@
                         
                     </tr>
                     <tr>
-                       <td style="width: 15%;border: none;font-size: 14px;">@Model.lblSector</td>
-                        <td style="width: 15%;border: none;font-size: 14px;">@rep.Sector</td>
+                        <td style="width: 15%;border: none;font-size: 14px;">@Model.lblRequestingSector</td>
+                        <td style="width: 15%;border: none;font-size: 14px;">@Model.RequestingSector</td>
                         <td style="width: 15%;border: none;font-size: 14px;"></td>
                         <td style="width: 15%;border: none;font-size: 14px;"></td>
                         <td style="width: 15%;border: none;font-size: 14px;"></td>
@@ -187,8 +187,8 @@
 
                     </tr>
                     <tr>
-                        <td style="width: 15%;border: none;font-size: 14px;white-space: nowrap;" >@Model.lblStoreName</td>
-                        <td style="width: 15%;border: none;font-size: 14px;">@WarehouseName</td>
+                        <td style="width: 15%;border: none;font-size: 14px;white-space: nowrap;">@Model.lblSector</td>
+                        <td style="width: 15%;border: none;font-size: 14px;">@rep.Sector</td>
                         <td style="width: 15%;border: none;font-size: 14px;"></td>
                         <td style="width: 15%;border: none;font-size: 14px;"></td>
                         <td style="width: 15%;border: none;font-size: 14px;"></td>
@@ -197,11 +197,10 @@
                         
                     </tr>
                     <tr>
-                        <td style="width: 15%;border: none;font-size: 14px;white-space: nowrap;"></td>
+                        <td style="width: 15%;border: none;font-size: 14px;white-space: nowrap;">@Model.lblStoreName</td>
+                        <td style="width: 15%;border: none;font-size: 14px;">@WarehouseName</td>
                         <td style="width: 15%;border: none;font-size: 14px;"></td>
-                        <td style="width: 15%;border: none;font-size: 14px;white-space: nowrap" align="center"></td>
-                        <td style="width: 15%;border: none;font-size: 14px;;"></td>
-                        <td style="width: 15%;border: none;font-size: 14px;white-space: nowrap;" align="center"></td>
+                        <td style="width: 15%;border: none;font-size: 14px;"></td>
                         <td style="width: 15%;border: none;font-size: 14px;"></td>
                         <td style="width: 15%;border: none;font-size: 14px;white-space: nowrap;">@Model.lblFiscalYear</td>
                         <td style="width: 15%;border: none;font-size: 14px;white-space: nowrap;">@rep.FiscalYear</td>
@@ -220,25 +219,33 @@
             <th style="width: 25%;font-size: 14px;" rowspan="2">@Model.lblComments</th>
         </tr>
         <tr>
-            <td style="width: 3.5%;font-size: 14px; text-align: center;"></td>
+            <td style="width: 3.5%;font-size: 14px; text-align: center;">H</td>
             <td style="width: 3.5%;font-size: 14px; text-align: center;">@Model.lblSAR</td>
-            <td style="width: 3.5%;font-size: 14px; text-align: center;"></td>
+            <td style="width: 3.5%;font-size: 14px; text-align: center;">H</td>
             <td style="width: 3.5%;font-size: 14px; text-align: center;">@Model.lblSAR</td>
         </tr>
         @if (Model.DispensedItems != null){
             var count = 1;
             @foreach (var item in Model.DispensedItems) {
                 var ItemCard = Model.ItemCards.FirstOrDefault(i => i.Id == item.ItemCardId);
+
+                // Safely get SAR and Halala for UnitPrice
+                var unitPriceSar = Math.Truncate(item.UnitPrice);
+                var unitPriceHalala = (int)((item.UnitPrice - unitPriceSar) * 100);
+
+                // Safely get SAR and Halala for TotalPrice
+                var totalPriceSar = Math.Truncate(item.TotalPrice);
+                var totalPriceHalala = (int)((item.TotalPrice - totalPriceSar) * 100);
                 <tr>
                     <td style="font-size: 14px;">@count.</td>
                     <td style="font-size: 14px;">@ItemCard.ItemCode</td>
                     <td style="font-size: 14px;">@ItemCard.ItemName</td>
                     <td style="font-size: 14px;">@ItemCard.UnitOfmeasure</td>
                     <td style="font-size: 14px;">@item.Quantity</td>
-                    <td style="font-size: 14px;"></td>
-                    <td style="font-size: 14px;">@item.UnitPrice</td>
-                    <td style="font-size: 14px;">&nbsp;</td>
-                    <td style="font-size: 14px;">@item.TotalPrice</td>
+                    <td style="font-size: 14px; text-align: center;">@unitPriceHalala.ToString("D2")</td>
+                    <td style="font-size: 14px; text-align: center;">@unitPriceSar</td>
+                    <td style="font-size: 14px; text-align: center;">@totalPriceHalala.ToString("D2")</td>
+                    <td style="font-size: 14px; text-align: center;">@totalPriceSar</td>
                     <td style="font-size: 14px;">@item.Comments</td>
 
                 </tr>
@@ -253,21 +260,21 @@
         </tr>
         <tr>
             <td colspan="2" style="text-align: center;font-size: 14px;"><b>@Model.lblManagerName</b></td>
-            <td colspan="1" style="text-align: center;font-size: 14px;"><b>Dept. Manager</b></td>
-            <td colspan="3.5" style="text-align: center;font-size: 14px;"><b>Warehouse Keeper</b></td>
-            <td colspan="3" style="text-align: center;font-size: 14px;"><b>Supervisor</b></td>
+            <td colspan="1" style="text-align: center;font-size: 14px;"><b>@Model.lblDeptManager</b></td>
+            <td colspan="3.5" style="text-align: center;font-size: 14px;"><b>@Model.lblKeeperName</b></td>
+            <td colspan="3" style="text-align: center;font-size: 14px;"><b>@Model.lblGeneralSupervisor</b></td>
             <td>&nbsp;</td>
         </tr>
         <tr>
-            <td rowspan="2" colspan="2" style="text-align: center;font-size: 14px;">
-                @Model.WarehouseManager<br/>@rep.CreatedAt</td>
+            <td colspan="2" style="text-align: center;font-size: 14px;">
+                @Model.WarehouseManager<br />@rep.CreatedAt?.ToString("dd-MM-yyyy")</td>
             <td colspan="1">
                 @if (rep.DeptManagerApprovalDate != null)
                 {
                     <span>
                         @Model.DeptManager<br/>
-                        Approved<br/>
-                        @rep.DeptManagerApprovalDate
+                        @Model.lblApproved<br/>
+                        @rep.DeptManagerApprovalDate?.ToString("dd-MM-yyyy")
                     </span>
                 }
             </td>
@@ -276,7 +283,7 @@
                 @if (rep.KeeperApprovalDate != null)
                 {
                     <span>
-                        @Model.Keeper<br/>Approved<br/>@rep.KeeperApprovalDate
+                        @Model.Keeper<br/>@Model.lblApproved<br/>@rep.KeeperApprovalDate?.ToString("dd-MM-yyyy")
                     </span>
                 }
             </td>
@@ -284,11 +291,15 @@
                 @if (rep.SupervisorApprovalDate != null)
                 {
                     <span>
-                        @Model.GeneralSupervisor<br/>Approved<br/>@rep.SupervisorApprovalDate
+                        @Model.GeneralSupervisor<br />@Model.lblApproved<br />@rep.SupervisorApprovalDate?.ToString("dd-MM-yyyy")
                     </span>
                 }
             </td>
-            <td style=" text-align: center;font-size: 14px;">Name<br>Signature<br>Date</td>
+            <td style=" text-align: center;font-size: 14px;">@Model.lblName<br>@Model.lblSignature<br>@Model.lblDate</td>
+        </tr>
+        <tr>
+            <td colspan="3" >@Model.lblAuthorizedPerson<br/> @Model.lblSignature</td>
+            <td colspan="7.5">@Model.lblNoObjection</td>
         </tr>
     </table>
 </div>
