@@ -259,25 +259,30 @@
 
         @if (Model.ItemCardminimum?.Count > 0 || Model.ItemCardCeiling?.Count > 0 || Model.ItemCardReorder?.Count > 0 || (Model.ItemCardNotMoved?.Count > 0))
         {
+
             <div class="alert alert-info d-flex flex-column ">
 
         @if (Model.ItemCardminimum?.Count > 0 )
         {
+               <div>
                     <div class="mb-0">
                         <p class="mb-0">
                 <span><b>@Model.lblAlert </b> @Model.ItemCardminimum.Count @Model.lblMinimumQuantity</span>
                 <a class="btn btn-primary" href="/Alerts/Index#sectionn-minimum">View</a></p>
+
             </div>
         }
 
 
         @if (Model.ItemCardCeiling?.Count > 0)
         {
+
                     <div class="mb-0">
                 <span>
                     <b>@Model.lblAlert </b>@Model.ItemCardCeiling.Count @Model.lblMaximumQuantity
                 </span>
                 <a class="btn btn-primary" href="/Alerts/Index#sectionn-maximum">View</a>
+
             </div>
         }
 
@@ -296,6 +301,7 @@
                         <p class="mb-0">
                 <span><b>@Model.lblAlert </b>@Model.ItemCardNotMoved.Count @Model.lblNotMoved3</span>
                 <a class="btn btn-primary" href="/Alerts/Index#sectionn-notmoved">View</a></p>
+
             </div>
         }
         </div>
