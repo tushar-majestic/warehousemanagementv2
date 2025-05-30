@@ -1,10 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using LabMaterials.DB;
-using System.Linq;
-using LabMaterials.DB;
-using LabMaterials.dtos;
 
 
 namespace LabMaterials.Pages
@@ -25,18 +20,18 @@ namespace LabMaterials.Pages
         public IList<Store> Warehouses { get; set; }
         public List<ReceivingReport> Reports { get; set; }
         public List<Item> Items { get; set; }
-        public List<User> GeneralSupervisorList {  get; set; }
+        public List<User> GeneralSupervisorList { get; set; }
 
-        public List<User> Users {  get; set; }
+        public List<User> Users { get; set; }
 
-        public List<User> TechnicalMemberList {  get; set; }
-        public List<DocumentType> DocumentList {  get; set; }
+        public List<User> TechnicalMemberList { get; set; }
+        public List<DocumentType> DocumentList { get; set; }
 
-        public List<Unit> Units { get; set; } 
-        public List<ItemGroup> ItemGroupList { get; set; } 
+        public List<Unit> Units { get; set; }
+        public List<ItemGroup> ItemGroupList { get; set; }
 
 
-        public int?  GeneralSupervisorId, TechnicalMemberId ;
+        public int? GeneralSupervisorId, TechnicalMemberId;
         public int? ItemId;
         public string ErrorMsg { get; set; }
         public string RecipientEmployeeName;
@@ -68,9 +63,9 @@ namespace LabMaterials.Pages
             // If the session is set, use it; otherwise, fallback to "Unknown"
             Report.CreatedBy = HttpContext.Session.GetInt32("UserId");
 
-            Units = dbContext.Units.ToList(); 
-            ItemGroupList = dbContext.ItemGroup.ToList(); 
-            Users = dbContext.Users.ToList(); 
+            Units = dbContext.Units.ToList();
+            ItemGroupList = dbContext.ItemGroup.ToList();
+            Users = dbContext.Users.ToList();
 
 
             //General Supervisor list
@@ -103,7 +98,7 @@ namespace LabMaterials.Pages
             }
         }
 
-       public async Task<IActionResult> OnGetGetNextSerialNumberAsync(string fiscalYear)
+        public async Task<IActionResult> OnGetGetNextSerialNumberAsync(string fiscalYear)
         {
             int lastSerial = await _context.ReceivingReports
                 .Where(r => r.FiscalYear == fiscalYear)
@@ -113,24 +108,26 @@ namespace LabMaterials.Pages
         }
 
 
-        public async Task<IActionResult> OnPostAsync(DateTime ReceivingDate, DateTime DocumentDate, [FromForm] int TechnicalMember, [FromForm] int ChiefResponsible,  [FromForm] string FiscalYear,  [FromForm] string BasedOnDocument, [FromForm] int SerialNumber, [FromForm] string RecipientEmployeeName, [FromForm] int RecipientJobNumber)
-        {   ModelState.Clear();
+        public async Task<IActionResult> OnPostAsync(DateTime ReceivingDate, DateTime DocumentDate, [FromForm] int TechnicalMember, [FromForm] int ChiefResponsible, [FromForm] string FiscalYear, [FromForm] string BasedOnDocument, [FromForm] int SerialNumber, [FromForm] string RecipientEmployeeName, [FromForm] int RecipientJobNumber)
+        {
+            ModelState.Clear();
 
             base.ExtractSessionData();
             FillLables();
             Report.CreatedBy = HttpContext.Session.GetInt32("UserId");
 
             var dbContext = new LabDBContext();
-
+            DocumentList = dbContext.DocumentTypes
+                       .ToList();
             this.ItemNo = ItemNo;
             this.ItemId = ItemId;
             Report.ReceivingDate = ReceivingDate;
             Warehouses = _context.Stores.ToList();
-            Users = dbContext.Users.ToList(); 
-            Suppliers = _context.Suppliers.ToList();  
+            Users = dbContext.Users.ToList();
+            Suppliers = _context.Suppliers.ToList();
             Items = await _context.Items.ToListAsync();
-            Units = dbContext.Units.ToList(); 
-            ItemGroupList = dbContext.ItemGroup.ToList(); 
+            Units = dbContext.Units.ToList();
+            ItemGroupList = dbContext.ItemGroup.ToList();
             //General Supervisor list
             var GeneralSupervisorId = dbContext.UserGroups
                     .Where(g => g.UserGroupName == "General Supervisor")
@@ -152,7 +149,7 @@ namespace LabMaterials.Pages
                         .ToList();
 
             Report.ReceivingDate = ReceivingDate.Date;
-            Report.DocumentDate  = DocumentDate.Date;
+            Report.DocumentDate = DocumentDate.Date;
             Report.TechnicalMemberId = TechnicalMember;
             Report.ChiefResponsibleId = ChiefResponsible;
             Report.FiscalYear = FiscalYear;
@@ -161,12 +158,12 @@ namespace LabMaterials.Pages
 
             Report.FiscalYear = FiscalYear;
             Report.KeeperApproval = true;
-            Report.CreatedAt =  DateTime.UtcNow;
+            Report.CreatedAt = DateTime.UtcNow;
 
 
             this.RecipientEmployeeName = RecipientEmployeeName;
             this.RecipientJobNumber = RecipientJobNumber;
-           
+
             var TechnicalMemberName = dbContext.Users
                     .Where(u => u.UserId == Report.TechnicalMemberId)
                     .Select(u => u.FullName)
@@ -175,7 +172,7 @@ namespace LabMaterials.Pages
              DocumentList = dbContext.DocumentTypes
                         .ToList();
 
-            
+
 
             if (string.IsNullOrEmpty(FiscalYear))
             {
@@ -232,17 +229,19 @@ namespace LabMaterials.Pages
                 ErrorMsg = "At least one item must have the required fields filled (Item Group, Quantity, Unit Price, Item Name).";
                 return Page();
             }
-            else if(Report.TechnicalMemberId==0){
+            else if (Report.TechnicalMemberId == 0)
+            {
                 ErrorMsg = (Program.Translations["TechnicalMemberMissing"])[Lang];
                 return Page();
             }
-            else if(Report.ChiefResponsibleId==0){
+            else if (Report.ChiefResponsibleId == 0)
+            {
                 ErrorMsg = (Program.Translations["ChiefResponsibleMissing"])[Lang];
                 return Page();
             }
-          
-           
-           
+
+
+
             if (AttachmentFile != null)
             {
                 var uploadsFolder = Path.Combine(_environment.WebRootPath, "uploads");
@@ -266,10 +265,10 @@ namespace LabMaterials.Pages
             //    return Page();
             //}
 
-                // if (Report.ChiefResponsibleId == 0)
-                // {
-                //     Report.ChiefResponsibleId = null;
-                // }
+            // if (Report.ChiefResponsibleId == 0)
+            // {
+            //     Report.ChiefResponsibleId = null;
+            // }
 
             _context.ReceivingReports.Add(Report);
             await _context.SaveChangesAsync();
@@ -284,7 +283,9 @@ namespace LabMaterials.Pages
                 // }
                 item.ReceivingReportId = Report.Id; // Ensure the ReceivingReportId is set correctly
                 item.ItemId = item.ItemId; // Ensure the ItemId is set correctly
+
                 if(item.Comments == null || item.Comments == "0")
+
                     item.Comments = "";
 
                 ModelState.Remove("AttachmentPath"); // Removes the error for AttachmentPath
@@ -294,7 +295,7 @@ namespace LabMaterials.Pages
             await _context.SaveChangesAsync();
 
             string Message = string.Format("Sent Request for Items. Approve the request or add comments.");
-            var msg = new  Message
+            var msg = new Message
             {
                 ReportId = Report.Id,
                 ReportType = "Receiving",
@@ -321,15 +322,15 @@ namespace LabMaterials.Pages
             this.lblSectorNumber = (Program.Translations["SectorNumber"])[Lang];
             this.lblReceivingWarehouse = (Program.Translations["ReceivingWarehouse"])[Lang];
             this.lblBasedOnDocument = (Program.Translations["BasedOnDocument"])[Lang];
-            this.lblDocumentNumber= (Program.Translations["DocumentNumber"])[Lang];
-            this.lblDocumentDate= (Program.Translations["DocumentDate"])[Lang];
+            this.lblDocumentNumber = (Program.Translations["DocumentNumber"])[Lang];
+            this.lblDocumentDate = (Program.Translations["DocumentDate"])[Lang];
             this.lblAddAttachment = (Program.Translations["AddAttachment"])[Lang];
             this.lblSupplierType = (Program.Translations["SupplierType"])[Lang];
             this.lblSupplierName = (Program.Translations["SupplierName"])[Lang];
             this.lblItemGroup = (Program.Translations["ItemGroup"])[Lang];
             this.lblItemNo = (Program.Translations["ItemNo"])[Lang];
             this.lblItemName = (Program.Translations["ItemName"])[Lang];
-            this.lblItemDescription =  (Program.Translations["ItemDescription"])[Lang];
+            this.lblItemDescription = (Program.Translations["ItemDescription"])[Lang];
             this.lblUnitOfMeasure = (Program.Translations["UnitOfMeasure"])[Lang];
             this.lblQuantity = (Program.Translations["Quantity"])[Lang];
             this.lblUnitPrice = (Program.Translations["UnitPrice"])[Lang];
@@ -339,14 +340,14 @@ namespace LabMaterials.Pages
             this.lblRecipientName = (Program.Translations["RecipientName"])[Lang];
             this.lblTechnicalMember = (Program.Translations["TechnicalMember"])[Lang];
             this.lblChiefResponsible = (Program.Translations["ChiefResponsible"])[Lang];
-            this.lblSubmitReport =  (Program.Translations["SubmitReport"])[Lang];
-            this.lblRecipientSector =  (Program.Translations["RecipientSector"])[Lang];
+            this.lblSubmitReport = (Program.Translations["SubmitReport"])[Lang];
+            this.lblRecipientSector = (Program.Translations["RecipientSector"])[Lang];
             this.lblNewReceivingReport = (Program.Translations["NewReceivingReport"])[Lang];
 
 
 
-           
+
         }
-    
+
     }
 }
