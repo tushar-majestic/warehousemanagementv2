@@ -80,7 +80,7 @@
                     <dd class="col-sm-3">@MaterialRequest.FiscalYear</dd>
 
                     <dt class="col-sm-3">Request Date</dt>
-                    <dd class="col-sm-3">@MaterialRequest.CreatedAt?.ToString("yyyy-MM-dd")</dd>
+                    <dd class="col-sm-3">@MaterialRequest.CreatedAt?.ToString("dd-MM-yyyy")</dd>
 
                     <dt class="col-sm-3">@Model.lblRequestingSector</dt>
                     <dd class="col-sm-3">@Model.RequestingSector</dd>
@@ -98,7 +98,7 @@
                     <dd class="col-sm-3">@MaterialRequest.DocumentNumber</dd>
 
                     <dt class="col-sm-3">@Model.lblOrderDate</dt>
-                    <dd class="col-sm-3">@MaterialRequest.OrderDate.ToString("yyyy-MM-dd")</dd>
+                    <dd class="col-sm-3">@MaterialRequest.OrderDate.ToString("dd-MM-yyyy")</dd>
 
                     <dt class="col-sm-3">@Model.lblDeptManager</dt>
                     <dd class="col-sm-3">@Model.DeptManager</dd>
@@ -242,9 +242,9 @@
                     <td style="font-size: 14px;">@ItemCard.ItemName</td>
                     <td style="font-size: 14px;">@ItemCard.UnitOfmeasure</td>
                     <td style="font-size: 14px;">@item.Quantity</td>
-                    <td style="font-size: 14px; text-align: center;">@unitPriceHalala</td>
+                    <td style="font-size: 14px; text-align: center;">@unitPriceHalala.ToString("D2")</td>
                     <td style="font-size: 14px; text-align: center;">@unitPriceSar</td>
-                    <td style="font-size: 14px; text-align: center;">@totalPriceHalala</td>
+                    <td style="font-size: 14px; text-align: center;">@totalPriceHalala.ToString("D2")</td>
                     <td style="font-size: 14px; text-align: center;">@totalPriceSar</td>
                     <td style="font-size: 14px;">@item.Comments</td>
 
@@ -267,14 +267,14 @@
         </tr>
         <tr>
             <td colspan="2" style="text-align: center;font-size: 14px;">
-                @Model.WarehouseManager<br/>@rep.CreatedAt</td>
+                @Model.WarehouseManager<br />@rep.CreatedAt?.ToString("dd-MM-yyyy")</td>
             <td colspan="1">
                 @if (rep.DeptManagerApprovalDate != null)
                 {
                     <span>
                         @Model.DeptManager<br/>
                         @Model.lblApproved<br/>
-                        @rep.DeptManagerApprovalDate
+                        @rep.DeptManagerApprovalDate?.ToString("dd-MM-yyyy")
                     </span>
                 }
             </td>
@@ -283,7 +283,7 @@
                 @if (rep.KeeperApprovalDate != null)
                 {
                     <span>
-                        @Model.Keeper<br/>@Model.lblApproved<br/>@rep.KeeperApprovalDate
+                        @Model.Keeper<br/>@Model.lblApproved<br/>@rep.KeeperApprovalDate?.ToString("dd-MM-yyyy")
                     </span>
                 }
             </td>
@@ -291,7 +291,7 @@
                 @if (rep.SupervisorApprovalDate != null)
                 {
                     <span>
-                        @Model.GeneralSupervisor<br/>@Model.lblApproved<br/>@rep.SupervisorApprovalDate
+                        @Model.GeneralSupervisor<br />@Model.lblApproved<br />@rep.SupervisorApprovalDate?.ToString("dd-MM-yyyy")
                     </span>
                 }
             </td>
