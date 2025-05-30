@@ -271,15 +271,60 @@
             <td colspan="7" >@Model.lblTotalPrice - @totalPrice</td>
         </tr>
         <tr>
-            <td colspan="2" style="text-align: center;font-size: 14px;"><b>@Model.lblRecipient</b></td>
+            <td colspan="2.5" style="text-align: center;font-size: 14px;"><b>@Model.lblRecipient</b></td>
             <td colspan="2.5" style="text-align: center;font-size: 14px;"><b>@Model.lblTechnicalMember</b></td>
             <td colspan="5" style="text-align: center;font-size: 14px;"><b>@Model.lblChiefResponsible</b></td>
             <td>&nbsp;</td>
         </tr>
         <tr>
-            <td rowspan="2" colspan="2" style="text-align: center;font-size: 14px;"></td>
-            <td colspan="2.5"></td>
-            <td colspan="5"></td>
+            <td rowspan="2" colspan="2.5" style="text-align: center;font-size: 14px;">
+                @Model.ReceipientManager
+                <br>
+
+                <br>
+            </td>
+            <td colspan="2.5" style=" text-align: center;font-size: 14px;">
+
+                @if(rep.TechnicalMemberApprovalDate != null){
+                    <span>
+
+                        @Model.TechnicalMember
+                        <br>
+                        Approved
+                        <br>
+                        @rep.TechnicalMemberApprovalDate
+                    </span>
+                }
+                else{
+                    <span>
+                        @Model.TechnicalMember
+                        <br>
+                        
+                        <br>
+                    </span>
+                }
+                
+            </td>
+            <td colspan="5" style=" text-align: center;font-size: 14px;">
+                  @if(rep.GeneralSupervisorApprovalDate != null){
+                    <span>
+
+                        @Model.GeneralSupervisor
+                        <br>
+                        Approved
+                        <br>
+                        @rep.GeneralSupervisorApprovalDate
+                    </span>
+                }
+                else{
+                    <span>
+                        @Model.GeneralSupervisor
+                        <br>
+                        
+                        <br>
+                    </span>
+                }
+            </td>
             <td style=" text-align: center;font-size: 14px;">@Model.lblName<br>@Model.lblSignature<br>@Model.lblDate</td>
         </tr>
     </table>
