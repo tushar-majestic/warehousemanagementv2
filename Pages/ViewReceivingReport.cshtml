@@ -286,62 +286,62 @@
 </div>
 
 @section Scripts{
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-                const printReportBtn = document.getElementById('PrintReport');
-                if (printReportBtn) {
-                    printReportBtn.addEventListener('click', function () {
-                        console.log("PrintReport button clicked");
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const printReportBtn = document.getElementById('PrintReport');
+        if (printReportBtn) {
+            printReportBtn.addEventListener('click', function () {
+                console.log("PrintReport button clicked");
 
-                        const printContentElement = document.getElementById('printArea');
-                        if (!printContentElement) {
-                            console.error("printArea not found");
-                            return;
+                const printContentElement = document.getElementById('printArea');
+                if (!printContentElement) {
+                    console.error("printArea not found");
+                    return;
+                }
+
+                const printContent = printContentElement.innerHTML;
+                const printWindow = window.open('', '', 'width=800,height=600');
+
+                printWindow.document.write('<html><head><title>Receiving Report</title>');
+                printWindow.document.write('<style>body{font-family: Arial;} table{width:100%;border-collapse:collapse;} th, td{border:1px solid #ddd;padding:8px;} th{background:#f2f2f2;} .text-center{text-align:center;}</style>');
+                printWindow.document.write('</head>');
+                printWindow.document.write(printContent);
+
+                // Inject the script to handle onload, calculate page count, and print
+                printWindow.document.write('<script>');
+                printWindow.document.write(`
+                    window.onload = function () {
+                        const pageHeight = 1122; // A4 height in px at 96dpi
+                        const totalHeight = document.body.scrollHeight;
+                        const pageCount = Math.ceil(totalHeight / pageHeight);
+
+                        console.log('Page Height:', pageHeight);
+                        console.log('Total Height:', totalHeight);
+                        console.log('Page Count:', pageCount);
+
+                        const pageCountSpan = document.getElementById("pageCountSpan");
+                        if (pageCountSpan) {
+                            pageCountSpan.innerText = pageCount;
                         }
 
-                        const printContent = printContentElement.innerHTML;
-                        const printWindow = window.open('', '', 'width=800,height=600');
-                        printWindow.document.write('<html><head><title>Receiving Report</title>');
-                        printWindow.document.write('<style>body{font-family: Arial;} table{width:100%;border-collapse:collapse;} th, td{border:1px solid #ddd;padding:8px;} th{background:#f2f2f2;} .text-center{text-align:center;}</style>');
-                        printWindow.document.write('</head><body>');
-                        // printWindow.document.write('<h1>Receiving Report - Serial No: 15</h1>');
-                        printWindow.document.write(printContent);
-                        printWindow.document.write('</body></html>');
-                        printWindow.document.close();
-                         
+                        const openerLabel = window.opener?.document.getElementById('lblPageCount');
+                        if (openerLabel) {
+                            openerLabel.innerText = 'Page Count: ' + pageCount;
+                        }
 
-                        printWindow.onload = function () {
-                            const pageHeight = 1122; // Height in px for A4 at 96dpi approx
-                             console.log('Page Height:', pageHeight);
-                            const body = printWindow.document.body;
-                            const totalHeight = body.scrollHeight;
-
-                            const pageCount = Math.ceil(totalHeight / pageHeight);
-
-                            console.log('Page Height:', pageHeight);
-                            console.log('Total Height:', totalHeight);
-                            console.log('Page Count:', pageCount);
-
-                              const pageCountSpan = printWindow.document.getElementById("pageCountSpan");
-                                if (pageCountSpan) {
-                                    pageCountSpan.innerText = pageCount;
-                                }
-
-                                // Optional: show page count in original document too
-                                const originalPageCountLabel = document.getElementById('lblPageCount');
-                                if (originalPageCountLabel) {
-                                    originalPageCountLabel.innerText = `Page Count: ${pageCount}`;
-                                }
-
-                            // Then print
-                            printWindow.focus();
-                            printWindow.print();
-                        };
-                    });
-                } else {
-                    console.warn("PrintReport button not found");
-                }
+                        window.focus();
+                        window.print();
+                        window.close();
+                    };
+                `);
+                printWindow.document.write('<\/script>');
+                printWindow.document.write('</html>');
+                printWindow.document.close();
             });
-
-    </script>
+        } else {
+            console.warn("PrintReport button not found");
+        }
+    });
+</script>
 }
+
