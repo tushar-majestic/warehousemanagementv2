@@ -1,235 +1,241 @@
 ﻿@page
 @model LabMaterials.Pages.HomeModel
+@{
+    // Prepare all chart data in Razor
+    string[] labelArr = Model.LineChartLabels?.Split(',').Select(s => s.Trim()).ToArray() ?? Array.Empty<string>();
+    int[] suppliesDataArr = Model.SuppliesData?.Split(',').Select(s => int.TryParse(s.Trim(), out var v) ? v : 0).ToArray() ?? Array.Empty<int>();
+    int[] disburseDataArr = Model.DisbursementData?.Split(',').Select(s => int.TryParse(s.Trim(), out var v) ? v : 0).ToArray() ?? Array.Empty<int>();
+    string lblSupplies = Model.lblSupplies ?? "Supplies";
+    string lblDisburse = Model.lblDisbursement ?? "Disbursement";
+}
 @section Scripts
 {
     <script type="text/javascript" language="javascript">
-        const notyf = new Notyf({
-        position: {
-        x: 'center',
-        y: 'top',
-        },
-        types: [
-        {
-        type: 'error',
-        background: '#e3392c',
-        icon: {
-        className: 'fas fa-times',
-        tagName: 'span',
-        color: '#000000'
-                    },
-                    dismissible: true,
-                    duration: 0,
-                    ripple: true
-        }
-        ]
-        });
-        function checkDates() {
+         const notyf = new Notyf({
+         position: {
+         x: 'center',
+         y: 'top',
+         },
+         types: [
+         {
+         type: 'error',
+         background: '#e3392c',
+         icon: {
+         className: 'fas fa-times',
+         tagName: 'span',
+         color: '#000000'
+                     },
+                     dismissible: true,
+                     duration: 0,
+                     ripple: true
+         }
+         ]
+         });
+         function checkDates() {
 
-        var startDate = document.getElementById("startDate").value;
-        var endDate = document.getElementById("endDate").value;
-        if (startDate && endDate) {
-        document.getElementById("dateForm").submit();
-        }
-        }
-        function showErrorNotification(message) {
-        notyf.open({
-        type: 'error',
-        message: message
-        });
-        }
+         var startDate = document.getElementById("startDate").value;
+         var endDate = document.getElementById("endDate").value;
+         if (startDate && endDate) {
+         document.getElementById("dateForm").submit();
+         }
+         }
+         function showErrorNotification(message) {
+         notyf.open({
+         type: 'error',
+         message: message
+         });
+         }
 
         @if (!string.IsNullOrEmpty(Model.ErrorMsg))
         {
             <text>
-                var errorMessageFromServer = @Html.Raw(Json.Serialize(Model.ErrorMsg));
-                showErrorNotification(errorMessageFromServer);
+                     var errorMessageFromServer = @Html.Raw(Json.Serialize(Model.ErrorMsg));
+                     showErrorNotification(errorMessageFromServer);
             </text>
         }
-        // Function to create pie chart
-        // Function to create pie chart
-        // Function to create pie chart
-        function createPieChart(canvasId, data, labels, backgroundColor) {
-        var ctx = document.getElementById(canvasId).getContext('2d');
-        var chart = new Chart(ctx, {
-        type: 'pie',
-        data: {
-        datasets: [{
-        data: data,
-        backgroundColor: backgroundColor,
-        labels: labels
-        }]
-        },
-        options: {
-        plugins: {
-        legend: {
-        display: false
-        },
-        tooltip: {
-        enabled: true,
-        callbacks: {
-        label: function (context) {
-        var label = context.dataset.labels[context.dataIndex] || '';
-        var value = context.formattedValue;
-        return label + ': ' + value;
-        }
-        }
-        }
-        },
-        hover: {
-        mode: 'nearest',
-        intersect: true
-        }
-        }
-        });
-        return chart;
-        }
-        //line chart
-        //line chart
-        //line chart
-        //line chart
-        @{
-            // Assuming you have dynamic data from the model
-            var supplies = Model.SuppliesData.Split(',');
-            var disbursements = Model.DisbursementData.Split(',');
-            var labels = Model.LineChartLabels.Split(',');
+         // Function to create pie chart
+         // Function to create pie chart
+         // Function to create pie chart
+                // Define reusable function to create chart
+         var chartInstances = {};
 
-            var lblsupp = Model.lblSupplies;
-            var lbldisb = Model.lblDisbursement;
+         function createPieChart(canvasId, data, labels, backgroundColor) {
+             const ctx = document.getElementById(canvasId).getContext('2d');
 
-            // Convert string arrays to integer arrays
-            int[] suppliesData = (Model.SuppliesData == "" ? new int[] { } : supplies.Select(int.Parse).ToArray());
-            int[] disbursementData = (Model.DisbursementData == "" ? new int[] { } : disbursements.Select(int.Parse).ToArray());
-        }
+             // Destroy old chart if it exists
+             if (chartInstances[canvasId]) {
+                 chartInstances[canvasId].destroy();
+             }
 
-                        // Get the canvas element
-                        var ctx = document.getElementById('lineChart').getContext('2d');
+             const chart = new Chart(ctx, {
+                 type: 'pie',
+                 data: {
+                     datasets: [{
+                         data: data,
+                         backgroundColor: backgroundColor,
+                         labels: labels
+                     }]
+                 },
+                 options: {
+                     plugins: {
+                         legend: {
+                             display: false
+                         },
+                         tooltip: {
+                             enabled: true,
+                             callbacks: {
+                                 label: function (context) {
+                                     var label = context.dataset.labels[context.dataIndex] || '';
+                                     var value = context.formattedValue;
+                                     return label + ': ' + value;
+                                 }
+                             }
+                         }
+                     },
+                     hover: {
+                         mode: 'nearest',
+                         intersect: true
+                     }
+                 }
+             });
 
-        // Create the line chart data object dynamically
-        var lineChartData = {
-            labels: @Html.Raw(Json.Serialize(labels)),
-            datasets: [
-                {
+             chartInstances[canvasId] = chart; // Save reference
+             return chart;
+         }
 
-                    data: @Html.Raw(Json.Serialize(suppliesData)),
-                    borderColor: 'rgba(75, 192, 192, 1)',
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                    borderWidth: 3,
-                    label: @Html.Raw(Json.Serialize(lblsupp)),
-                    fill: false
-                },
-                {
-
-                    data: @Html.Raw(Json.Serialize(disbursementData)),
-                    borderColor: 'rgba(255, 99, 132, 1)',
-                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                    borderWidth: 3,
-                    label: @Html.Raw(Json.Serialize(lbldisb)),
-                    fill: false
-                }
-            ]
-        };
-
-        // Create the line chart
-        var lineChart = new Chart(ctx, {
-            type: 'line',
-            data: lineChartData,
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    x: {
-                        display: true,
-                        title: {
-                            display: true,
-                            text: ''
-                        }
-                    },
-                    y: {
-                        display: true,
-                        title: {
-                            display: true,
-                            text: ''
-                        },
-                        min: 0 // Set minimum value of y-axis to 0
-                    }
-                }
-            }
-        });
-
-
-
-
-
-        // Data for Chart 1
-        var data1 = [@{
-            var valuesArray = Model.Data1Values.Split(',');
-            foreach (var value in valuesArray)
+         // Setup data arrays (you already generate them with Razor syntax)
+         var data1 = [@{
+            var valuesArray = Model.Data1Values.Split(','); foreach (var value in valuesArray)
             {
-                <text>@value, </text>
+                <text>@value,</text>
             }
         }];
-        var labels1 = [@{
-            var labelArray3 = Model.LabelValues.Split(',');
-            foreach (var label in labelArray3)
+         var labels1 = [@{
+            var labelArray3 = Model.LabelValues.Split(','); foreach (var label in labelArray3)
             {
-                <text>"@label", </text>
+                <text>"@label",</text>
             }
         }];
-        var backgroundColor1 = [@{
-            var colorsArray = Model.Data1Colors.Split(',');
-            foreach (var color in colorsArray)
+         var backgroundColor1 = [@{
+            var colorsArray = Model.Data1Colors.Split(','); foreach (var color in colorsArray)
             {
-                <text>"@color", </text>
+                <text>"@color",</text>
             }
         }];
 
-        var pieChart1 = createPieChart('pieChart1', data1, labels1, backgroundColor1);
-
-        // Data for Chart 2
-        var data2 = [@{
-            var valuesArray1 = Model.Data2Values.Split(',');
-            foreach (var value in valuesArray1)
+         var data2 = [@{
+            var valuesArray1 = Model.Data2Values.Split(','); foreach (var value in valuesArray1)
             {
-                <text>@value, </text>
+                <text>@value,</text>
             }
         }];
-        var labels2 = [@{
-            var labelArray2 = Model.LabelValues1.Split(',');
-            foreach (var label in labelArray2)
+         var labels2 = [@{
+            var labelArray2 = Model.LabelValues1.Split(','); foreach (var label in labelArray2)
             {
-                <text>"@label", </text>
+                <text>"@label",</text>
             }
         }];
-        var backgroundColor2 = [@{
-            var colorsArray1 = Model.Data2Colors.Split(',');
-            foreach (var color in colorsArray1)
+         var backgroundColor2 = [@{
+            var colorsArray1 = Model.Data2Colors.Split(','); foreach (var color in colorsArray1)
             {
-                <text>"@color", </text>
+                <text>"@color",</text>
             }
         }];
 
-        var pieChart2 = createPieChart('pieChart2', data2, labels2, backgroundColor2);
+         // Create the pie charts
+         var pieChart1 = createPieChart('pieChart1', data1, labels1, backgroundColor1);
+         var pieChart2 = createPieChart('pieChart2', data2, labels2, backgroundColor2);
 
-        // Function to toggle label visibility
+         //line chart
+         //line chart
+         //line chart
+         //line chart
+        document.addEventListener('DOMContentLoaded', () => {
+
+
+             // Line chart
+             const canvas = document.getElementById('lineChart');
+             const ctx = canvas?.getContext('2d');
+             if (!ctx) return;
+
+             const gradientSup = ctx.createLinearGradient(0, 0, 0, canvas.height);
+             gradientSup.addColorStop(0, 'rgba(13, 148, 136, 0.35)');
+             gradientSup.addColorStop(0.9, 'rgba(13, 148, 136, 0.05)');
+
+             const gradientDis = ctx.createLinearGradient(0, 0, 0, canvas.height);
+             gradientDis.addColorStop(0, 'rgba(220, 38, 38, 0.35)');
+             gradientDis.addColorStop(0.9, 'rgba(220, 38, 38, 0.05)');
+
+             new Chart(ctx, {
+                 type: 'line',
+                 data: {
+                     labels: @Html.Raw(Json.Serialize(labelArr)),
+                     datasets: [
+                         {
+                             label: @Html.Raw(Json.Serialize(lblSupplies)),
+                             data: @Html.Raw(Json.Serialize(suppliesDataArr)),
+                             borderColor: 'rgb(13, 148, 136)',
+                             backgroundColor: gradientSup,
+                             borderWidth: 2,
+                             tension: 0.3,
+                             pointRadius: 0,
+                             pointHoverRadius: 5,
+                             fill: true
+                         },
+                         {
+                             label: @Html.Raw(Json.Serialize(lblDisburse)),
+                             data: @Html.Raw(Json.Serialize(disburseDataArr)),
+                             borderColor: 'rgb(220, 38, 38)',
+                             backgroundColor: gradientDis,
+                             borderWidth: 2,
+                             tension: 0.3,
+                             pointRadius: 0,
+                             pointHoverRadius: 5,
+                             fill: true
+                         }
+                     ]
+                 },
+                 options: {
+                     responsive: true,
+                     maintainAspectRatio: false,
+                     plugins: {
+                         legend: {
+                             display: true,
+                             position: 'top',
+                             align: 'center',
+                             labels: {
+                                 boxWidth: 12,
+                                 padding: 16,
+                                 font: { weight: 'bold' }
+                             }
+                         },
+                         tooltip: {
+                             callbacks: {
+                                 title: ctx => ctx[0].label
+                             }
+                         }
+                     },
+                     scales: {
+                         x: {
+                             grid: { color: 'rgba(0,0,0,0.05)' },
+                             ticks: { maxRotation: 60, minRotation: 45 }
+                         },
+                         y: {
+                             beginAtZero: true,
+                             grid: { color: 'rgba(0,0,0,0.08)' },
+                             title: {
+                                 display: true,
+                                 text: 'Quantity',
+                                 font: { weight: '600' }
+                             }
+                         }
+                     }
+                 }
+             });
+         });
 
 
 
-
-
-        // Get the context of the canvas elements
-        var ctx1 = document.getElementById('pieChart1').getContext('2d');
-        var ctx2 = document.getElementById('pieChart2').getContext('2d');
-
-        // Create the initial pie charts
-        var pieChart1 = new Chart(ctx1, {
-            type: 'pie',
-            data: data1
-        });
-
-        var pieChart2 = new Chart(ctx2, {
-            type: 'pie',
-            data: data2
-        });
 
 
 
@@ -259,51 +265,51 @@
 
         @if (Model.ItemCardminimum?.Count > 0 || Model.ItemCardCeiling?.Count > 0 || Model.ItemCardReorder?.Count > 0 || Model.ItemCardNotMoved?.Count > 0)
         {
-        <div>
-            <div class="alert alert-info d-flex flex-column">
-                @if (Model.ItemCardminimum?.Count > 0)
-                {
-                    <div>
-                        <div class="mb-2">
-                            <span><img src="images/alert.png" alt="alert" /> <b>@Model.lblAlert</b> @Model.ItemCardminimum.Count @Model.lblMinimumQuantity</span>
-                            <a class="btn btn-sm btn-primary ms-2" href="/Alerts/Index#sectionn-minimum">View</a>
+            <div>
+                <div class="alert alert-info d-flex flex-column">
+                    @if (Model.ItemCardminimum?.Count > 0)
+                    {
+                        <div>
+                            <div class="mb-2">
+                                <span><img src="images/alert.png" alt="alert" /> <b>@Model.lblAlert</b> @Model.ItemCardminimum.Count @Model.lblMinimumQuantity</span>
+                                <a class="btn btn-sm btn-primary ms-2" href="/Alerts/Index#sectionn-minimum">View</a>
+                            </div>
                         </div>
-                    </div>
-                }
+                    }
 
-                @if (Model.ItemCardCeiling?.Count > 0)
-                {
-                    <div>
-                        <div class="mb-2">
-                            <span><img src="images/alert.png" alt="alert" /> <b>@Model.lblAlert</b> @Model.ItemCardCeiling.Count @Model.lblMaximumQuantity</span>
-                            <a class="btn btn-sm btn-primary ms-2" href="/Alerts/Index#sectionn-maximum">View</a>
+                    @if (Model.ItemCardCeiling?.Count > 0)
+                    {
+                        <div>
+                            <div class="mb-2">
+                                <span><img src="images/alert.png" alt="alert" /> <b>@Model.lblAlert</b> @Model.ItemCardCeiling.Count @Model.lblMaximumQuantity</span>
+                                <a class="btn btn-sm btn-primary ms-2" href="/Alerts/Index#sectionn-maximum">View</a>
+                            </div>
                         </div>
-                    </div>
-                }
+                    }
 
 
-                @if (Model.ItemCardReorder?.Count > 0)
-                {
-                    <div>
-                        <div class="mb-2">
-                            <span><img src="images/alert.png" alt="alert" /> <b>@Model.lblAlert</b> @Model.ItemCardReorder.Count @Model.lblReorderQuantity</span>
-                            <a class="btn btn-sm btn-primary ms-2" href="/Alerts/Index#sectionn-reorder">View</a>
+                    @if (Model.ItemCardReorder?.Count > 0)
+                    {
+                        <div>
+                            <div class="mb-2">
+                                <span><img src="images/alert.png" alt="alert" /> <b>@Model.lblAlert</b> @Model.ItemCardReorder.Count @Model.lblReorderQuantity</span>
+                                <a class="btn btn-sm btn-primary ms-2" href="/Alerts/Index#sectionn-reorder">View</a>
+                            </div>
                         </div>
-                    </div>
-                }
+                    }
 
 
-                @if (Model.ItemCardNotMoved?.Count > 0)
-                {
-                    <div>
-                        <div class="mb-0">
-                            <span><img src="images/alert.png" alt="alert" /> <b>@Model.lblAlert</b> @Model.ItemCardNotMoved.Count @Model.lblNotMoved3</span>
-                            <a class="btn btn-sm btn-primary ms-2" href="/Alerts/Index#sectionn-notmoved">View</a>
+                    @if (Model.ItemCardNotMoved?.Count > 0)
+                    {
+                        <div>
+                            <div class="mb-0">
+                                <span><img src="images/alert.png" alt="alert" /> <b>@Model.lblAlert</b> @Model.ItemCardNotMoved.Count @Model.lblNotMoved3</span>
+                                <a class="btn btn-sm btn-primary ms-2" href="/Alerts/Index#sectionn-notmoved">View</a>
+                            </div>
                         </div>
-                    </div>
-                }
+                    }
+                </div>
             </div>
-        </div>
         }
 
 

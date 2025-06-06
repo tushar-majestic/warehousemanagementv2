@@ -240,6 +240,10 @@ namespace LabMaterials.Pages
                 SuppliesData = SuppliesD;
                 DisbursementData = DisbursementD;
 
+                Console.WriteLine("DisburseDates: " + disburseDates);
+                Console.WriteLine("DisburseCount: " + disburseCount);
+
+
                 FromDate = startDate;
                 ToDate = endDate;
                 ExtractSessionData();
