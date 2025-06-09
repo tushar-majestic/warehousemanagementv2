@@ -53,6 +53,7 @@ namespace LabMaterials.Pages_HazardTypes
             {
                 if (!HazardTypeExists(HazardType.HazardTypeName))
                 {
+                    Console.WriteLine("not found");
                     return NotFound();
                 }
                 else

@@ -107,6 +107,7 @@ namespace LabMaterials.Pages
                 var query = (from i in dbContext.Items
                             join g in dbContext.ItemGroups on i.GroupCode equals g.GroupCode
                             join t in dbContext.ItemTypes on i.StateofMatter equals t.ItemTypeCode
+                            join u in dbContext.Units on i.UnitId equals u.Id
 
                             select new ItemInfo
                             {
@@ -120,6 +121,7 @@ namespace LabMaterials.Pages
                                 ItemName = i.ItemName,
                                 ItemTypeCode = t.ItemTypeCode,
                                 TypeName = t.TypeName,
+                                UnitCode = u.UnitCode,
                             });
 
                 query = query.Where(i => i.HazardTypeName.ToLower() != "nonhazarduos");
