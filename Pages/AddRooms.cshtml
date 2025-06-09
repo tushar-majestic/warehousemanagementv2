@@ -39,6 +39,7 @@
             </text>
         }
         document.getElementById("StoreId").addEventListener("change", function () {
+            console.log("onchange");
             const selectedOption = this.options[this.selectedIndex];
             const storetype = selectedOption.getAttribute("data-storetype");
             const manager = selectedOption.getAttribute("data-manager");
@@ -103,12 +104,13 @@
                                 <label for="StoreId">@Model.lblStoreName</label>
                                 <select class="form-select" id="StoreId" name="StoreId">
                                     @if (Model.Stores != null)
-                                    {
+                                    {   <option value=""> Select Store</option>
                                         foreach (var item in Model.Stores)
                                         {
                                             if(item.IsActive == 1 ){
                                             <option value="@item.StoreId" data-storetype="@item.StoreType" data-manager="@item.WarehouseManagerName" selected="@(item.StoreId == Model.StoreId)">@item.StoreName</option>}
                                         }
+                                       
                                     }
                                 </select>
                                 
