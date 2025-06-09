@@ -25,6 +25,8 @@ namespace LabMaterials.Pages
         public bool CanGenerateReceivingRequest { get; set; }
         public bool CanManageItemGroup { get; set; }
         public bool CanGenerateDispensingRequest { get; set; }
+
+        public bool CanDeleteItems { get; set; }
         public bool CanDeleteSupplier { get; set; }
         public bool CanAddStore { get; set; }
 
@@ -82,6 +84,7 @@ namespace LabMaterials.Pages
                 CanDeleteSupplier = HttpContext.Session.GetInt32("CanDeleteSupplier") == 1;
                 CanManageItemCard = HttpContext.Session.GetInt32("CanManageItemCard") == 1;
                 CanGenerateDispensingRequest = HttpContext.Session.GetInt32("CanGenerateDispensingRequest") == 1;
+                CanDeleteItems = HttpContext.Session.GetInt32("CanDeleteItems") == 1;
                 dir = HttpContext.Session.GetString("Lang") == "en" ? "ltr" : "rtl";
                 Lang = HttpContext.Session.GetString("Lang") == "en" ? "en" : "ar";
                 FillLables();

@@ -57,7 +57,15 @@ namespace LabMaterials.Pages
 
                 if (st != null)
                 {
-                     WarehouseManagerID = st.WarehouseManagerId;
+                    WarehouseManagerID = st.WarehouseManagerId;
+                    // int? userId = HttpContext.Session.GetInt32("UserId");
+                    // if (userId.HasValue)
+                    //     Console.WriteLine($"UserIdd: {userId.Value}");
+
+                    // Console.WriteLine($"WarehouseManagerID: {WarehouseManagerID} / From Store: {st.WarehouseManagerId}");
+                    // Console.WriteLine($"Are different? {HttpContext.Session.GetInt32("UserId").Value != WarehouseManagerID}");
+
+
                     StoreType = st.StoreType;
                     var keeper = dbContext.Users
                         .Where(u => u.UserId == KeeperId)
@@ -136,9 +144,12 @@ namespace LabMaterials.Pages
                                         .FromSqlRaw("EXEC PRC_GET_STORE_DATA @PCODE OUTPUT, @PDESC OUTPUT, @PMSG OUTPUT",
                                                     codeParam, descParam, msgParam)
                                         .ToList();
+                                        
                     Stores = query.GroupBy(s => new { s.StoreId, s.StoreName })
                                 .Select(g => g.First())
                                 .ToList();
+
+                
 
                     var KeeperGroupId = dbContext.UserGroups
                             .Where(g => g.UserGroupName == "Warehouse Keeper")
@@ -148,6 +159,20 @@ namespace LabMaterials.Pages
                     KeeperGroupsList = dbContext.Users
                         .Where(u => u.UserGroupId == KeeperGroupId)
                         .ToList();
+
+                    var rooms = dbContext.Rooms.Single(s => s.RoomId == HttpContext.Session.GetInt32("RoomId"));
+                    var st = dbContext.Stores
+                    .Where(s => s.StoreId == rooms.StoreId)
+                    .FirstOrDefault();
+
+                    WarehouseManagerID = st.WarehouseManagerId;
+
+                        int? userId = HttpContext.Session.GetInt32("UserId");
+                    if (userId.HasValue)
+                        Console.WriteLine($"UserIdd: {userId.Value}");
+
+                    // Console.WriteLine($"WarehouseManagerID: {WarehouseManagerID} ");
+                    // Console.WriteLine($"Are different? {HttpContext.Session.GetInt32("UserId").Value != WarehouseManagerID}");
 
                     if (!StoreId.HasValue)
                         ErrorMsg = (Program.Translations["WarehouseMissing"])[Lang];
@@ -159,13 +184,13 @@ namespace LabMaterials.Pages
                         ErrorMsg = (Program.Translations["StoreNumberMissing"])[Lang];
                     else if (!KeeperId.HasValue)
                         ErrorMsg = (Program.Translations["KeeperMissing"])[Lang];
-                    else if( HttpContext.Session.GetString("UserGroup") == "Warehouse Manager")
-                    {
-                        if(HttpContext.Session.GetInt32("UserId").Value != WarehouseManagerID){
-                            ErrorMsg = (Program.Translations["ManagerEditWarehouseOnly"])[Lang];
+                    // else if( HttpContext.Session.GetString("UserGroup") == "Warehouse Manager")
+                    // {
+                    //      if(HttpContext.Session.GetInt32("UserId").Value != WarehouseManagerID){
+                    //         ErrorMsg = (Program.Translations["ManagerEditWarehouseOnly"])[Lang];
 
-                        }
-                    }
+                    //     }
+                    // }
                     else if (string.IsNullOrEmpty(RoomName))
                         ErrorMsg = (Program.Translations["StoreNameMissing"])[Lang];
                     else

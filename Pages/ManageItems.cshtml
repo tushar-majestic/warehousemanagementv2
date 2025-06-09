@@ -648,7 +648,10 @@ document.addEventListener("DOMContentLoaded", function () {
                                             <input type="hidden" value="@Model.ItemName" name="ItemName" />
                                             <input type="hidden" value="@Model.Group" name="Group" />
                                             <input type="submit" value="@Model.lblEdit" class="btn btn-secondary" asp-page-handler="Edit" />
-                                            <input type="submit" value="@Model.lblDelete" class="btn btn-danger" asp-page-handler="Delete" />
+                                            @if (Model.CanDeleteItems)
+                                            {
+                                                <input type="submit" value="@Model.lblDelete" class="btn btn-danger" asp-page-handler="Delete" />
+                                            }
                                             <!--<input type="submit" value="@Model.lblDamage" class="btn btn-danger" asp-page-handler="Damage" formaction="DamageItem?ItemId=@item.ItemId" /> -->
                                             <a class="btn btn-danger" href="DamageItem?id=@item.ItemId">@Model.lblDamage </a>
                                         </form>

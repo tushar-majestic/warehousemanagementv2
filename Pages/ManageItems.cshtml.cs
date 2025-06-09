@@ -340,7 +340,8 @@ namespace LabMaterials.Pages
             {
                 var dbContext = new LabDBContext();
 
-                if (dbContext.Supplies.Count(s => s.ItemId == ItemId) == 0)
+                //if (dbContext.Supplies.Count(s => s.ItemId == ItemId) == 0)
+                if (dbContext.ItemCards.Count(s => s.ItemId == ItemId) == 0)
                 {
                     var item = dbContext.Items.Single(s => s.ItemId == ItemId);
 
