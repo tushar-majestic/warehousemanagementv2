@@ -101,7 +101,7 @@ namespace LabMaterials.Pages
                                  RequestingPlace = d.DestinationName,
                                  Comments = di.Comments,
                                  ReqDate = mr.CreatedAt,
-                                 Status = mr.SupervisorApproval.ToString()
+                                 Status = mr.SupervisorApproval  ? "Approved" : "Pending"
                              });
 
                 if (string.IsNullOrEmpty(RequesterName) == false)
