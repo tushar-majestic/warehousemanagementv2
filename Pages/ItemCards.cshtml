@@ -31,7 +31,7 @@
         </div>
         
     </div>
-<div asp-validation-summary="All" class="text-danger"></div>
+@* <div asp-validation-summary="All" class="text-danger"></div> *@
 
 
 <div class="row">
@@ -55,10 +55,15 @@
                                 <label>Item Code</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
                                 <input asp-for="@Model.ItemCardsFromReport[i].ItemCode" class="form-control" readonly />
                             </div>
-                        
+                            @{
+                                var itemId = Model.ItemCardsFromReport[i].ItemId;
+                                var arabicName = Model.AllItems.FirstOrDefault(x => x.ItemId == itemId)?.ItemNameAr ?? "";
+                            }
+                            
                             <div class="form-group w-23">
                                 <label>Item Name(Arabic)</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
-                                <input asp-for="@Model.ItemCardsFromReport[i].ItemName" class="form-control" readonly />
+                                @* <input asp-for="@Model.ItemCardsFromReport[i].ItemName" class="form-control" readonly /> *@
+                                 <input value="@arabicName" class="form-control" readonly />
                             </div>
                             <div class="form-group w-23">
                                 <label>Item Name(English)</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
@@ -68,7 +73,7 @@
                                 <label>Item Type Code</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>  
                                 <input asp-for="@Model.ItemCardsFromReport[i].ItemTypeCode" class="form-control" readonly />
                             </div> *@
-                             <input asp-for="@Model.ItemCardsFromReport[i].ItemTypeCode" class="form-control" type="hidden" />
+                             <input asp-for="@Model.ItemCardsFromReport[i].ItemTypeCode" class="form-control" type="hidden" value="LIQ"/>
                         </div>
                     
 
@@ -173,7 +178,7 @@
                 <div class="d-flex justify-content-between">
                     <div class="form-group" style="width:31%;">
                         <label asp-for="ItemCardBatch.RoomId"></label>
-                        <select asp-for="ItemCardBatch.RoomId" class="form-control" asp-items="ViewBag.RoomId" name="RoomId" id="RoomId" onchange="filterShelfByRoom()">
+                        <select asp-for="ItemCardBatch.RoomId" class="form-control" asp-items="ViewBag.RoomId" name="RoomId" id="RoomId"  onchange="filterShelfByRoom()">
                             <option value="">Select Room</option>
 
                         </select>
@@ -316,7 +321,44 @@
    @using System.Text.Json
 
     <script>
+        const notyf = new Notyf({
+            position: {
+                x: 'center',
+                y: 'top',
+            },
+            types: [
+                {
+                    type: 'error',
+                    background: '#e3392c',
+                    icon: {
+                        className: 'fas fa-times',
+                        tagName: 'span',
+                        color: '#000000'
+                    },
+                    dismissible: true,
+                    duration: 0,
+                    ripple: true
+                }
+            ]
+        });
+
+        function showErrorNotification(message) {
+            notyf.open({
+                type: 'error',
+                message: message
+            });
+        }
+
+        @if (!string.IsNullOrEmpty(Model.ErrorMsg))
+        {
+            <text>
+                    var errorMessageFromServer = @Html.Raw(Json.Serialize(Model.ErrorMsg));
+                    showErrorNotification(errorMessageFromServer);
+            </text>
+        }
+
         function filterShelfByRoom() {
+            console.log("Filtering self by room")
             var roomId = document.getElementById("RoomId").value;
             fetch(`/ItemCards?handler=ShelvesByRoom&roomId=${roomId}`)
                 .then(response => response.json())

@@ -418,8 +418,15 @@
                                     <label for="RequestDocumentType">@Model.lblRequestDocumentType</label>
                                     <select class="form-select" name="RequestDocumentType" asp-for="Report.RequestDocumentType">
                                         <option>Select Request document Type</option>
-                                        <option value="Completion">Completion</option>
-                                        <option value="Speech">Speech</option>
+                                        @* <option value="Completion">Completion</option>
+                                        <option value="Speech">Speech</option> *@
+                                        @if(Model.DocumentList != null){
+                                            @foreach (var document in Model.DocumentList)
+                                            {
+                                                <option value="@document.DocType">@document.DocType</option>
+                                            }
+                                        }
+                               
                                     </select>
                                 </div>
                             </div>

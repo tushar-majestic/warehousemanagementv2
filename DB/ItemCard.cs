@@ -20,7 +20,7 @@ public partial class ItemCard
     public string GroupCode { get; set; } = null!;
 
     [StringLength(15)]
-    public string ItemTypeCode { get; set; } = null!;
+    public string? ItemTypeCode { get; set; } = null!;
 
     [StringLength(50)]
     public string ItemCode { get; set; } = null!;
@@ -81,7 +81,8 @@ public partial class ItemCard
 
     [ForeignKey("ItemTypeCode")]
     [InverseProperty("ItemCards")]
-    public virtual ItemType ItemTypeCodeNavigation { get; set; } = null!;
+        public virtual ItemType ItemTypeCodeNavigation { get; set; } = null;
+
 
     [ForeignKey("StoreId")]
     [InverseProperty("ItemCards")]

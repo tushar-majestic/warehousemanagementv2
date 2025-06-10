@@ -48,7 +48,7 @@
                     @* <a asp-page="/PrintReceivingReport" asp-route-id="@report.Id" class="btn btn-sm btn-secondary">Print</a> *@
                     
                     <div class="d-flex">
-                        @if(!MaterialRequest.SupervisorApproval){
+                        @if(!MaterialRequest.SupervisorApproval && Model.RequestedById == Model.UserId){
                             <form method="post" class="me-2">
                                 <input type="hidden" value="@MaterialRequest.SerialNumber" name="serialNumber" />
                                 <input type="hidden" value="@MaterialRequest.RequestId" name="ReceivingReportId" />

@@ -38,12 +38,14 @@ namespace LabMaterials.Pages
 
         public string lblView, lblRequests, lblLabMaterials, lblHome, lblNotifications, lblShowHideColumn, lblDisbursement, lblReports, lblReportsInquiries,
         lblManageUsers, lblManageItems, lblManageSupplies, lblManageStores, lblUserProfile, lblLogout, lblDamagedItems, lblLanguage,
-        lblWarehouseType, lblManagerName, lblBuildingNumber, lblRoomDesc, lblStatus, lblRoomStatus, lblOpen, lblClosed, lblRoomNumber,lblRoomNameNumber,
+        lblWarehouseType, lblManagerName, lblBuildingNumber, lblRoomDesc, lblStatus, lblRoomStatus, lblOpen, lblClosed, lblRoomNumber, lblRoomNameNumber,
         lblNoOfShelves, lblKeeperName, lblKeeperJobNum, lblWarehouseManagerName, lblItemCards, lblReceivingItems, lblSerialNo,
-        lblSupplierName, lblRecipientSector, lblPageCount, lblSectorNo, lblDateOfReceipt, lblRecipientWarehouse, lblFiscalYear,lblReceivingDate,lblReceivingWarehouse,lblSupplierType,lblReceipient,lblGeneralSupervisor,lblItemName,lblItemQty,
+        lblSupplierName, lblRecipientSector, lblPageCount, lblSectorNo, lblDateOfReceipt, lblRecipientWarehouse, lblFiscalYear, lblReceivingDate, lblReceivingWarehouse, lblSupplierType, lblReceipient, lblGeneralSupervisor, lblItemName, lblItemQty,
         lblDocumentDate, lblDocumentNo, lblBasedOnDocument, lblComments, lblUnitPrice, lblTotalPrice, lblQuantity, lblUnitOfMeasure,
-        lblItemNameDescription, lblItemNo, lblCount, lblSAR,lblRiyal, lblChiefResponsible, lblTechnicalMember, lblRecipient, lblSignature, lblName,
-        lblDate, lblcreateItemCard, lbldeductItemCard, lblItemMovement, lblStores, lblItemCard, lblCeiling, lblReorderLimit, lblMinimum, lblItemNoCode, lblItemNameArabic, lblQuantityReceived, lblDateOfEntryInWarehouse, lblSourceSupplier, lblAmountSpent, lblPartyDirected, lblRemainingBalance, lblDispensingDocumentNo, lblPrint;
+        lblItemNameDescription, lblItemNo, lblCount, lblSAR, lblRiyal, lblChiefResponsible, lblTechnicalMember, lblRecipient, lblSignature, lblName,
+        lblDate, lblcreateItemCard, lbldeductItemCard, lblItemMovement, lblStores, lblItemCard, lblCeiling, lblReorderLimit, lblMinimum, lblItemNoCode, lblItemNameArabic, lblQuantityReceived, lblDateOfEntryInWarehouse, lblSourceSupplier, lblAmountSpent, lblPartyDirected, lblRemainingBalance, lblDispensingDocumentNo, lblPrint,
+        lblViewReceivingReport, lblReceivingReport;
+
 
         public override void OnPageHandlerExecuting(PageHandlerExecutingContext context)
         {
@@ -197,7 +199,8 @@ namespace LabMaterials.Pages
             this.lblRemainingBalance = (Program.Translations["RemainingBalance"][Lang]);
             this.lblDispensingDocumentNo = (Program.Translations["DispensingDocumentNo"][Lang]);
             this.lblPrint = (Program.Translations["Print"][Lang]);
-            
+            this.lblViewReceivingReport = (Program.Translations["ViewReceivingReport"][Lang]);
+            this.lblReceivingReport = (Program.Translations["ReceivingReport"][Lang]);
 
 
         }

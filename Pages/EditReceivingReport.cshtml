@@ -135,10 +135,15 @@
                        @* Add ItemsForReport  *@
                         @for(int i =0; i < Model.ItemsForReport.Count; i++){
 
-                            <div class="addItems border p-2">
+                            <div class="addItems border p-2 item-group">
                             
                                 <h3>Item @(i +1)</h3>
-                            
+                                    @if(i != 0){
+                                        <div class="text-end">
+                                            <button type="button" class="btn btn-danger btn-sm remove-entry me-3">Remove</button>
+                                        </div>
+                                    }
+                                                
                                     <div class="form-group mb-4">
                                         <label>@Model.lblItemGroup</label> <span class="majestic">*</span>
                                         <select class="form-select" id="ItemGroup_@i" name="ItemsForReport[@i].ItemGroup" onchange="filterItemByGroup(@i)">
@@ -710,6 +715,20 @@
             });
         });
         //filling related inputs ends
+
+        //deletem item group
+        document.addEventListener('click', function (e) {
+            if (e.target && e.target.classList.contains('remove-entry')) {
+                console.log("remove entry")
+                const itemGroup = e.target.closest('.item-group');
+                if (itemGroup) {
+                    itemGroup.remove();
+                }
+
+                  const addButton = document.getElementById('addButton');
+                addButton.disabled = false;
+            }
+        });
 
     </script>
 }

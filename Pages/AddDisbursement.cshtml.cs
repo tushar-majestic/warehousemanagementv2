@@ -43,6 +43,8 @@ namespace LabMaterials.Pages
         public List<User> SupervisorList {  get; set; }
         public List<User> KeeperList {  get; set; }
         public List<ItemCard> ItemsValue { get; set; }
+        public List<DocumentType> DocumentList { get; set; }
+
         
         
         public int? SupervisorId, DeptManagerId, KeeperId;
@@ -107,7 +109,7 @@ namespace LabMaterials.Pages
                         .Where(u => u.UserGroupId == SupervisorId)
                         .ToList();
 
-             //Keeper  list
+            //Keeper  list
             var KeeperId = dbContext.UserGroups
                     .Where(g => g.UserGroupName == "Warehouse Keeper")
                     .Select(g => g.UserGroupId)
@@ -117,6 +119,8 @@ namespace LabMaterials.Pages
                         .Where(u => u.UserGroupId == KeeperId)
                         .ToList();
             ItemsValue = query.ToList();
+            DocumentList = dbContext.DocumentTypes
+                        .ToList();
 
         }
         public void OnGetOld()
@@ -202,6 +206,8 @@ namespace LabMaterials.Pages
                 DeptManagerList = dbContext.Users
                             .Where(u => u.UserGroupId == DeptManager)
                             .ToList();
+                DocumentList = dbContext.DocumentTypes
+                        .ToList();
                 Destinations = dbContext.Destinations.ToList();
                 Stores = dbContext.Stores.ToList();
                 ItemCards = dbContext.ItemCards.ToList();
