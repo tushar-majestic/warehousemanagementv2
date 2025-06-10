@@ -94,7 +94,7 @@ namespace LabMaterials.Pages
             {
                 if (columns != null && columns.Any())
                 {
-
+                    CurrentPage = 1;    
                     string selectedColumns = string.Join(",", columns);
 
                     int? userId = HttpContext.Session.GetInt32("UserId");

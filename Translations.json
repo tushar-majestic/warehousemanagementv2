@@ -1730,7 +1730,24 @@
   "Print" : {
     "en" : "Print",
     "ar" : "مطبعة"
+  },
+  "ViewReceivingReport": {
+    "en": "View Receiving Report",
+    "ar": "عرض تقرير الاستلام"
+  },
+  "ReceivingReport": {
+    "en": "Receiving Report",
+    "ar": "استلام التقرير"
+  },
+  "ClosedWarehouseMsg":{
+    "en": "Item Card cannot be added to closed Warehouse.",
+    "ar": "لا يمكن إضافة بطاقة العنصر إلى المستودع المغلق."
+  },
+  "ClosedRoomMsg":{
+    "en": "Item Card cannot be added to closed Room.",
+    "ar": "لا يمكن إضافة بطاقة العنصر إلى الغرفة المغلقة."
   }
+
 
 
 

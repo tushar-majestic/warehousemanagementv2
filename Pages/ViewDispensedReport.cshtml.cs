@@ -35,6 +35,7 @@ namespace LabMaterials.Pages
         public List<ItemCard> ItemCardsNew { get; set; }
         public List<Item> Item { get; set; }
         public List<Unit> Units { get; set; }
+        public int RequestedById;
 
         public List<Store> Stores { get; set; }
         public MaterialRequest? MaterialRequest { get; set; }
@@ -67,6 +68,7 @@ namespace LabMaterials.Pages
 
             if (MaterialRequest != null)
             {
+                this.RequestedById = MaterialRequest.RequestedByUserId;
                 DispensedItems = await dbContext.DespensedItems
                     .Where(r => r.MaterialRequestId == MaterialRequest.RequestId)
                     .ToListAsync();
