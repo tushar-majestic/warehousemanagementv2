@@ -264,9 +264,11 @@ document.addEventListener("DOMContentLoaded", function () {
                     <!-- Left: Filter Categories -->
                     <div class="border-end p-2" style="width: 40%; overflow-y: auto; position: relative;">
                         <div class="fw-bolder text-center mb-2">@Model.lblFilterBy</div>
+
                         <div class="filter-option text-primary mb-2" onclick="showFilterValues('status')" style="cursor: pointer;">@Model.lblLStatus</div>
                         <div class="filter-option text-primary mb-2" onclick="showFilterValues('storeName')" style="cursor: pointer;">@Model.StoreName</div>
                         <div class="filter-option text-primary mb-2" onclick="showFilterValues('requestingPlace')" style="cursor: pointer;">@Model.lblRequestingPlace</div>
+
 
                         <!-- Clear Filters Button -->
                         <button type="button" class="btn btn-primary"
