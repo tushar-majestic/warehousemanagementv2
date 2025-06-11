@@ -44,7 +44,7 @@ namespace LabMaterials.Pages
         lblDocumentDate, lblDocumentNo, lblBasedOnDocument, lblComments, lblUnitPrice, lblTotalPrice, lblQuantity, lblUnitOfMeasure,
         lblItemNameDescription, lblItemNo, lblCount, lblSAR, lblRiyal, lblChiefResponsible, lblTechnicalMember, lblRecipient, lblSignature, lblName,
         lblDate, lblcreateItemCard, lbldeductItemCard, lblItemMovement, lblStores, lblItemCard, lblCeiling, lblReorderLimit, lblMinimum, lblItemNoCode, lblItemNameArabic, lblQuantityReceived, lblDateOfEntryInWarehouse, lblSourceSupplier, lblAmountSpent, lblPartyDirected, lblRemainingBalance, lblDispensingDocumentNo, lblPrint,
-        lblViewReceivingReport, lblReceivingReport,lblBack, lblOk, lblRequestDate, lblViewMaterialDispensing;
+        lblViewReceivingReport, lblReceivingReport,lblBack, lblOk, lblRequestDate, lblViewMaterialDispensing, lblSubmit, lblOrderNumber, lblOrderDate, lblSector, lblStoreName, lblReason, lblAction, lblEdit, lblCreatedAt, lblFromSector, lblToSector, lblWarehouse, lblReasonForReturn, lblSurplus, lblExpired, lblInvalid, lblDamaged, lblAdditionalNotes, lblReturnedItems, lblItemNameEng, lblItemCode, lblDesc, lblQty, lblExpiry, lblRecommendedAction, lblCommitteeNotes, lblApplicantSectorName, lblRequestSentSector, lblInspCommitteeRecommendations, lblReturned, lblItemDescription, lblReturnRequestDetails, lblReturnItemRequest;
 
 
         public override void OnPageHandlerExecuting(PageHandlerExecutingContext context)
@@ -205,6 +205,40 @@ namespace LabMaterials.Pages
             this.lblOk = (Program.Translations["Ok"][Lang]);
             this.lblRequestDate = (Program.Translations["RequestDate"][Lang]);
             this.lblViewMaterialDispensing = (Program.Translations["ViewMaterialDispensing"][Lang]);
+            this.lblSubmit = (Program.Translations["Submit"][Lang]);
+            this.lblOrderNumber = (Program.Translations["OrderNumber"][Lang]);
+            this.lblOrderDate = (Program.Translations["OrderDate"][Lang]);
+            this.lblSector = (Program.Translations["Sector"][Lang]);
+            this.lblStoreName = (Program.Translations["StoreName"][Lang]);
+            this.lblReason = (Program.Translations["Reason"][Lang]);
+            this.lblAction = (Program.Translations["Action"][Lang]);
+            this.lblEdit = (Program.Translations["Edit"][Lang]);
+            this.lblCreatedAt = (Program.Translations["CreatedAt"][Lang]);
+            this.lblFromSector = (Program.Translations["FromSector"][Lang]);
+            this.lblToSector = (Program.Translations["ToSector"][Lang]);
+            this.lblWarehouse = (Program.Translations["Warehouse"][Lang]);
+            this.lblReasonForReturn = (Program.Translations["ReasonForReturn"][Lang]);
+            this.lblSurplus = (Program.Translations["SurPlus"][Lang]);
+            this.lblExpired = (Program.Translations["Expired"][Lang]);
+            this.lblInvalid = (Program.Translations["Invalid"][Lang]);
+            this.lblDamaged = (Program.Translations["Damaged"][Lang]);
+            this.lblAdditionalNotes = (Program.Translations["AdditionalNotes"][Lang]);
+            this.lblReturnedItems = (Program.Translations["ReturnedItems"][Lang]);
+            this.lblItemNameEng = (Program.Translations["ItemNameEng"][Lang]);
+            this.lblItemCode = (Program.Translations["ItemCode"][Lang]);
+            this.lblDesc = (Program.Translations["Desc"][Lang]);
+            this.lblQty = (Program.Translations["Qty"][Lang]);
+            this.lblExpiry = (Program.Translations["ExpiryDate"][Lang]);
+            this.lblRecommendedAction = (Program.Translations["RecommendedAction"][Lang]);
+            this.lblCommitteeNotes = (Program.Translations["CommitteeNotes"][Lang]);
+            this.lblApplicantSectorName = (Program.Translations["ApplicantSectorName"][Lang]);
+            this.lblRequestSentSector = (Program.Translations["RequestSentSector"][Lang]);
+            this.lblInspCommitteeRecommendations = (Program.Translations["InspCommitteeRecommendations"][Lang]);
+            this.lblReturned = (Program.Translations["Returned"][Lang]);
+            this.lblItemDescription = (Program.Translations["ItemDescription"][Lang]);
+            this.lblReturnRequestDetails = (Program.Translations["ReturnRequestDetails"][Lang]);
+            this.lblReturnItemRequest = (Program.Translations["ReturnItemRequest"][Lang]);
+
 
 
         }

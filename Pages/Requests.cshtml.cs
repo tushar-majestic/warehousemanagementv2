@@ -24,7 +24,7 @@ namespace LabMaterials.Pages
 
 
 
-        public string lblRequests, lblNewReceivingReport, pagetype = "inbox", inboxClass = "btn-dark text-white", outboxClass = "btn-light";
+        public string lblRequests, lblNewReceivingReport, pagetype = "inbox", inboxClass = "btn-dark text-white", outboxClass = "btn-light",lblSearch, lblInbox, lblRequestSent, lblAccept, lblCommentReject, lblReplyResend, lblAddOrderToItemCard, lblDeductOrderItemCard, lblAddRecommendations, lblAttachDestructionReport, lblAddRecyclingNotes, lblAssignSupervisor, lblAssignMembers, lblDeductionDone, lblAccepted,lblFileAttached, lblRejected, lblReplied, lblAddedOrderItemCard, lblAdded, lblCommentRejectRequest, lblYourComment, AcceptSpecifyRecipient, lblAcceptSpecifyRecipient,lblWarehouseKeeper, lblSelectWarehouseKeeper, lblSelectGeneralSpervisor, lblInspectionCommitteeOfficer, lblSelectInspectionCommitteeOfficer, lblDestructionOfficer, lblSelectDestructionOfficer, lblRecyclingOfficer, lblSelectRecyclingOfficer, lblAddAttachment, lblReplyResendRequest, lblYourReply, lblReply;
 
         public RequestsModel(LabDBContext context, IWebHostEnvironment environment)
         {
@@ -508,6 +508,19 @@ namespace LabMaterials.Pages
                     }
                     dbContext.SaveChanges();
 
+                }
+                else
+                {
+                    //if attachment file is not added
+                    Report.DestOffApprovalDate = DateTime.UtcNow;
+
+                    var message = dbContext.Messages.FirstOrDefault(m => m.Id == AcceptReturnMessageId);
+
+                    if (message != null)
+                    {
+                        message.Type = "File Attached";
+                    }
+                    dbContext.SaveChanges();
                 }
                 
             }
@@ -1060,9 +1073,9 @@ namespace LabMaterials.Pages
                 {
                     if (report.ManagerApprovalDate != null)
                         report.ManagerApprovalDate = null;
-                    
+
                     string SectorManagerMessage = string.Format("Your return items request is rejected with comment: {0}", Comment);
-                    var msgToSectorManager= new Message
+                    var msgToSectorManager = new Message
                     {
                         ReturnRequestId = RejectReceivingReportId,
                         ReportType = "ReturnItems",
@@ -1095,6 +1108,26 @@ namespace LabMaterials.Pages
 
                     };
                     _context.Messages.Add(msgToInspOffi);
+                }
+                else if (this.UserGroupName == "Return Inspection Committee Officer")
+                {
+                    if (report.InspOffApprovalDate != null)
+                        report.InspOffApprovalDate = null;
+                        
+                    string ManagerMessage = string.Format("Your return items request is rejected with comment: {0}", Comment);
+                    var msgToManager = new Message
+                    {
+                        ReturnRequestId = RejectReceivingReportId,
+                        ReportType = "ReturnItems",
+                        SenderId = this.UserId,
+                        RecipientId = report.ManagerId,
+                        Content = ManagerMessage,
+                        Type = "",
+                        CreatedAt = DateTime.UtcNow,
+
+
+                    };
+                    _context.Messages.Add(msgToManager);
                 }
 
             }
@@ -1236,6 +1269,45 @@ namespace LabMaterials.Pages
         {
             this.lblRequests = (Program.Translations["Requests"])[Lang];
             this.lblNewReceivingReport = (Program.Translations["NewReceivingReport"])[Lang];
+            this.lblSearch = (Program.Translations["Search"])[Lang];
+            this.lblInbox = (Program.Translations["Inbox"])[Lang];
+            this.lblRequestSent = (Program.Translations["RequestSent"])[Lang];
+            this.lblAccept = (Program.Translations["Accept"])[Lang];
+            this.lblCommentReject = (Program.Translations["CommentReject"])[Lang];
+            this.lblReplyResend = (Program.Translations["ReplyResend"])[Lang];
+            this.lblAddOrderToItemCard = (Program.Translations["AddOrderToItemCard"])[Lang];
+            this.lblDeductOrderItemCard = (Program.Translations["DeductOrderItemCard"])[Lang];
+            this.lblAddRecommendations = (Program.Translations["AddRecommendations"])[Lang];
+            this.lblAttachDestructionReport = (Program.Translations["AttachDestructionReport"])[Lang];
+            this.lblAddRecyclingNotes = (Program.Translations["AddRecyclingNotes"])[Lang];
+            this.lblAssignSupervisor = (Program.Translations["AssignSupervisor"])[Lang];
+            this.lblAssignMembers = (Program.Translations["AssignMembers"])[Lang];
+            this.lblDeductionDone = (Program.Translations["DeductionDone"])[Lang];
+            this.lblAccepted = (Program.Translations["Accepted"])[Lang];
+            this.lblFileAttached = (Program.Translations["FileAttached"])[Lang];
+            this.lblRejected = (Program.Translations["Rejected"])[Lang];
+            this.lblReplied = (Program.Translations["Replied"])[Lang];
+            this.lblAddedOrderItemCard = (Program.Translations["AddedOrderItemCard"])[Lang];
+            this.lblAdded = (Program.Translations["Added"])[Lang];
+            this.lblCommentRejectRequest = (Program.Translations["CommentRejectRequest"])[Lang];
+            this.lblYourComment = (Program.Translations["YourComment"])[Lang];
+            this.lblAcceptSpecifyRecipient = (Program.Translations["AcceptSpecifyRecipient"])[Lang];
+            this.lblWarehouseKeeper = (Program.Translations["WarehouseKeeper"])[Lang];
+            this.lblSelectWarehouseKeeper = (Program.Translations["SelectWarehouseKeeper"])[Lang];
+            this.lblSelectGeneralSpervisor = (Program.Translations["SelectGeneralSpervisor"])[Lang];
+            this.lblInspectionCommitteeOfficer = (Program.Translations["InspectionCommitteeOfficer"])[Lang];
+            this.lblSelectInspectionCommitteeOfficer = (Program.Translations["SelectInspectionCommitteeOfficer"])[Lang];
+            this.lblDestructionOfficer = (Program.Translations["DestructionOfficer"])[Lang];
+            this.lblSelectDestructionOfficer = (Program.Translations["SelectDestructionOfficer"])[Lang];
+            this.lblRecyclingOfficer = (Program.Translations["RecyclingOfficer"])[Lang];
+            this.lblSelectRecyclingOfficer = (Program.Translations["SelectRecyclingOfficer"])[Lang];
+            this.lblAddAttachment = (Program.Translations["AddAttachment"])[Lang];
+            this.lblReplyResendRequest = (Program.Translations["ReplyResendRequest"])[Lang];
+            this.lblYourReply = (Program.Translations["YourReply"])[Lang];
+            
+            this.lblReply = (Program.Translations["Reply"])[Lang];
+
+
         }
     }
 }

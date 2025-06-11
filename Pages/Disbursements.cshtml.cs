@@ -231,7 +231,7 @@ namespace LabMaterials.Pages
                 page = int.Parse(pagevalue);
             }
             base.ExtractSessionData();
-            if (CanManageStore)
+            if (CanDisburseItems)
             {
                 FillLables();
                 var dbContext = new LabDBContext();

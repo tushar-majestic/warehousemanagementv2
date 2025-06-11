@@ -8,6 +8,12 @@
     .nested-table td th {
         border: none;
     }
+    .m-0{
+        margin: 0 !important;
+    }
+    .mb-16{
+        margin-bottom: 16px !important;
+    }
 </style>
 
 
@@ -75,43 +81,53 @@
                     
                 </div> *@
 
-                <dl class="row">
-                    <dt class="col-sm-3">@Model.lblFiscalYear</dt>
-                    <dd class="col-sm-3">@MaterialRequest.FiscalYear</dd>
+                <dl class="row mb-16">
+                    <dt class="col-sm-3 m-0">@Model.lblFiscalYear</dt>
+                    <dd class="col-sm-3 m-0">@MaterialRequest.FiscalYear</dd>
 
-                    <dt class="col-sm-3">@Model.lblRequestDate</dt>
-                    <dd class="col-sm-3">@MaterialRequest.CreatedAt?.ToString("dd-MM-yyyy")</dd>
+                    <dt class="col-sm-3 m-0">@Model.lblRequestDate</dt>
+                    <dd class="col-sm-3 m-0">@MaterialRequest.CreatedAt?.ToString("dd-MM-yyyy")</dd>
+                </dl>
+                <dl class="row mb-16">
 
-                    <dt class="col-sm-3">@Model.lblRequestingSector</dt>
-                    <dd class="col-sm-3">@Model.RequestingSector</dd>
+                    <dt class="col-sm-3 m-0">@Model.lblRequestingSector</dt>
+                    <dd class="col-sm-3 m-0">@Model.RequestingSector</dd>
 
-                    <dt class="col-sm-3">@Model.lblSector</dt>
-                    <dd class="col-sm-3">@MaterialRequest.Sector</dd>
-                    
-                    <dt class="col-sm-3">@Model.lblReceivingWarehouse</dt>
-                    <dd class="col-sm-3">@StoreName</dd>
+                    <dt class="col-sm-3 m-0">@Model.lblSector</dt>
+                    <dd class="col-sm-3 m-0">@MaterialRequest.Sector</dd>
+                </dl>
+                <dl class="row mb-16">
 
-                    <dt class="col-sm-3">@Model.lblRequestDocumentType</dt>
-                    <dd class="col-sm-3">@MaterialRequest.RequestDocumentType</dd>
+                    <dt class="col-sm-3 m-0">@Model.lblReceivingWarehouse</dt>
+                    <dd class="col-sm-3 m-0">@StoreName</dd>
 
-                    <dt class="col-sm-3">@Model.lblRequestDocumentNumber</dt>
-                    <dd class="col-sm-3">@MaterialRequest.DocumentNumber</dd>
+                    <dt class="col-sm-3 m-0">@Model.lblRequestDocumentType</dt>
+                    <dd class="col-sm-3 m-0">@MaterialRequest.RequestDocumentType</dd>
+                </dl>
+                <dl class="row mb-16">
 
-                    <dt class="col-sm-3">@Model.lblOrderDate</dt>
-                    <dd class="col-sm-3">@MaterialRequest.OrderDate.ToString("dd-MM-yyyy")</dd>
+                    <dt class="col-sm-3 m-0">@Model.lblRequestDocumentNumber</dt>
+                    <dd class="col-sm-3 m-0">@MaterialRequest.DocumentNumber</dd>
 
-                    <dt class="col-sm-3">@Model.lblDeptManager</dt>
-                    <dd class="col-sm-3">@Model.DeptManager</dd>
+                    <dt class="col-sm-3 m-0">@Model.lblOrderDate</dt>
+                    <dd class="col-sm-3 m-0">@MaterialRequest.OrderDate.ToString("dd-MM-yyyy")</dd>
+                </dl>
+                <dl class="row mb-16">
 
-                    <dt class="col-sm-3">@Model.lblKeeperName</dt>
-                    <dd class="col-sm-3">@Model.Keeper</dd>
+                    <dt class="col-sm-3 m-0">@Model.lblDeptManager</dt>
+                    <dd class="col-sm-3 m-0">@Model.DeptManager</dd>
+
+                    <dt class="col-sm-3 m-0">@Model.lblKeeperName</dt>
+                    <dd class="col-sm-3 m-0">@Model.Keeper</dd>
+                </dl>
+                <dl class="row mb-16">
 
                     @* <dt class="col-sm-3">Technical Member</dt>
                     <dd class="col-sm-3">TechnicalMember</dd> *@
 
-                    <dt class="col-sm-3">@Model.lblGeneralSupervisor</dt>
+                    <dt class="col-sm-3 m-0">@Model.lblGeneralSupervisor</dt>
                         @if(Model.GeneralSupervisor != null){
-                            <dd class="col-sm-3">@Model.GeneralSupervisor</dd>
+                            <dd class="col-sm-3 m-0">@Model.GeneralSupervisor</dd>
                         }
 
                 </dl>
