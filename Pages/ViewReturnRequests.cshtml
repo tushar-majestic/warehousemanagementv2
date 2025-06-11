@@ -70,7 +70,7 @@
         @if(Model.CanReturnItems){
             <div class="btn-group ms-2 ms-lg-3">
                 <a href="newreturnRequest" class="btn btn-sm d-flex btn-gray-800 justify-content-center top-big-btn d-inline-flex align-items-center">
-                    <img b-ie9pk9zf1q="" class="icon text-white icon-xs mx-2" src="images/plus.png">Return Item Request
+                    <img b-ie9pk9zf1q="" class="icon text-white icon-xs mx-2" src="images/plus.png">@Model.lblReturnItemRequest
                 </a>
             </div>
         }
@@ -235,25 +235,25 @@
                             <th scope="col" class="border-0 rounded-start">#</th>
                             @if (Model.SelectedColumns.Contains("orderNumber"))
                             {
-                                <th scope="col" class="border-0">Order Number</th>
+                                <th scope="col" class="border-0">@Model.lblOrderNumber</th>
                             }
                             @if (Model.SelectedColumns.Contains("orderDate"))
                             {
-                                <th scope="col" class="border-0">Order Date</th>
+                                <th scope="col" class="border-0">@Model.lblOrderDate</th>
                             }
                             @if (Model.SelectedColumns.Contains("sector"))
                             {
-                                <th scope="col" class="border-0">Sector</th>
+                                <th scope="col" class="border-0">@Model.lblSector</th>
                             }
                             @if (Model.SelectedColumns.Contains("store"))
                             {
-                                <th scope="col" class="border-0">Store</th>
+                                <th scope="col" class="border-0">@Model.lblStoreName</th>
                             }
                             @if (Model.SelectedColumns.Contains("reason"))
                             {
-                                <th scope="col" class="border-0">Reason</th>
+                                <th scope="col" class="border-0">@Model.lblReason</th>
                             }
-                            <th scope="col" class="border-0 rounded-end">Actions</th>
+                            <th scope="col" class="border-0 rounded-end">@Model.lblAction</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -283,7 +283,7 @@
                                 <td>@req.Reason</td>
                                 }
                                 <td>
-                                    <a href="/ReturnRequestsDetails/@req.Id" class="btn btn-sm btn-primary">View</a>
+                                    <a href="/ReturnRequestsDetails/@req.Id" class="btn btn-sm btn-primary">@Model.lblView</a>
                                 </td>
                             </tr>
                         }
@@ -379,23 +379,23 @@
                 <th scope="col" class="border-0 rounded-start">#</th>
                 @if (Model.SelectedColumns.Contains("orderNumber"))
                 {
-                    <th scope="col" class="border-0">Order Number</th>
+                    <th scope="col" class="border-0">@Model.lblOrderNumber</th>
                 }
                 @if (Model.SelectedColumns.Contains("orderDate"))
                 {
-                    <th scope="col" class="border-0">Order Date</th>
+                    <th scope="col" class="border-0">@Model.lblOrderDate</th>
                 }
                 @if (Model.SelectedColumns.Contains("sector"))
                 {
-                    <th scope="col" class="border-0">Sector</th>
+                    <th scope="col" class="border-0">@Model.lblSector</th>
                 }
                 @if (Model.SelectedColumns.Contains("store"))
                 {
-                    <th scope="col" class="border-0">Store</th>
+                    <th scope="col" class="border-0">@Model.lblStoreName</th>
                 }
                 @if (Model.SelectedColumns.Contains("reason"))
                 {
-                    <th scope="col" class="border-0">Reason</th>
+                    <th scope="col" class="border-0">@Model.lblReason</th>
                 }
             </tr>
         </thead>

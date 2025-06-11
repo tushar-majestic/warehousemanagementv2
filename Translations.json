@@ -1762,6 +1762,210 @@
   "Ok":{
     "en": "Ok",
     "ar": "نعم"
+  },
+  "Inbox":{
+    "en": "Inbox",
+    "ar": "صندوق الرسائل الوارد"
+  },
+  "RequestSent":{
+    "en": "Request Sent",
+    "ar": "علامة تبويب الطلب المرسل"
+  },
+  "Accept":{
+    "en": "Accept",
+    "ar": "يقبل"
+  },
+  "CommentReject":{
+    "en": "Comment & Reject",
+    "ar": "التعليق والرفض"
+  },
+  "ReplyResend":{
+    "en" : "Reply & Resend",
+    "ar" : "الرد وإعادة الإرسال"
+  },
+  "AddOrderToItemCard":{
+    "en" : "Add Order to Item Card",
+    "ar" : "الرد وإعادة الإرسال"
+  },
+  "DeductOrderItemCard":{
+    "en" : "Deduct Order form Item Card",
+    "ar": "Deduct Order form Item Card"
+  },
+  "AddRecommendations" :{
+    "en" : "Add Committee Recommendations",
+    "ar" : "إضافة توصيات اللجنة"
+  },
+  "AttachDestructionReport":{
+    "en" : "Attach Destruction Report",
+    "ar" : "إرفاق تقرير التدمير"
+  },
+  "AddRecyclingNotes" : {
+    "en" : "Add Recycling Notes",
+    "ar" : "أضف ملاحظات إعادة التدوير"
+  },
+  "AssignSupervisor" : {
+    "en" : "Assign Supervisor",
+    "ar" : "تعيين المشرف"
+  },
+  "AssignMembers" : {
+    "en" : "Assign Members",
+    "ar" : "تعيين أعضاء"
+  },
+  "DeductionDone" : {
+    "en" : "Deduction Done",
+    "ar" : "Deduction Done"
+  },
+  "Accepted" :{
+    "en" : "Accepted",
+    "ar" : "مسلم بصحته"
+  },
+  "FileAttached" : {
+    "en" : "File Attached",
+    "ar" : "الملف مرفق"
+  },
+  "Rejected" : {
+    "en" : "Rejected",
+    "ar" : "مرفوض"
+  },
+  "Replied" : {
+    "en" : "Replied",
+    "ar" : "أجاب"
+  },
+  "AddedOrderItemCard" : {
+    "en" : "Added Order to Item Card",
+    "ar" : "تمت إضافة الطلب إلى بطاقة العنصر"
+  },
+  "Added" : {
+    "en" : "Added",
+    "ar" : "تمت الإضافة"
+  },
+  "CommentRejectRequest" : {
+    "en" : "Comment & Reject Request",
+    "ar" : "التعليق ورفض الطلب"
+  },
+  "YourComment" : {
+    "en" : "Your Comment",
+    "ar" : ""
+  },
+  "AcceptSpecifyRecipient" : {
+    "en" : "Accept & Specify Recipient",
+    "ar" : "قبول وتحديد المستلم"
+  },
+  "WarehouseKeeper" : {
+    "en" : "Warehouse Keeper",
+    "ar" : ""
+  },
+  "SelectWarehouseKeeper" : {
+    "en" : "Select Warehouse Keeper",
+    "ar" : "اختيار أمين المستودع"
+  },
+  "SelectGeneralSpervisor" : {
+    "en" : "Select General Supervisor",
+    "ar" : "اختيار المشرف العام"
+  },
+  "InspectionCommitteeOfficer" : {
+    "en" : "Returns Inspection Committee Officer",
+    "ar" : "ضابط لجنة التفتيش"
+  },
+  "SelectInspectionCommitteeOfficer" : {
+    "en" : "Select Inspection Committee Officer",
+    "ar" : ""
+  },
+  "DestructionOfficer" : {
+    "en" : "Destruction Officer",
+    "ar" : "ضابط التدمير"
+  },
+  "SelectDestructionOfficer" : {
+    "en" : "Select Destruction Officer",
+    "ar" : "حدد ضابط التدمير"
+  },
+  "RecyclingOfficer" : {
+    "en" : "Recycling Officer",
+    "ar" : "موظف إعادة التدوير"
+  },
+  "SelectRecyclingOfficer" : {
+    "en" : "Select Recycling Officer",
+    "ar" : ""
+  },
+  "ReplyResendRequest":{
+    "en" : "Reply & Resend Request",
+    "ar" : "الرد وإعادة إرسال الطلب"
+  },
+  "YourReply" : {
+    "en" : "Your Reply",
+    "ar" : "ردك"
+  },
+  "Reply" : {
+    "en" : "Reply",
+    "ar" : "رد"
+  },
+  "Reason" : {
+    "en" : "Reason",
+    "ar" : "سبب"
+  },
+  "CreatedAt": {
+    "en": "Created At",
+    "ar": "تم الإنشاء في"
+  },
+  "FromSector" : {
+    "en" : "From Sector",
+    "ar" : "من القطاع"
+  },
+  "ToSector" : {
+    "en" : "To Sector",
+    "ar" : "الى القطاع"
+  },
+  "Warehouse" : {
+    "en" : "Warehouse",
+    "ar" : "مستودع"
+  },
+  "AdditionalNotes" : {
+    "en" : "Additional Notes",
+    "ar" : "ملاحظات إضافية"
+  },
+  "ReturnedItems": {
+    "en" : "Returned Items",
+    "ar" : "العناصر التي تم إرجاعها"
+  },
+  "ItemNameEng": {
+    "en": "Item Name(EN)",
+    "ar": "اسم العنصر (EN)"
+  },
+  "Desc" : {
+    "en" : "Desc",
+    "ar" : "وصف"
+  },
+  "Qty" : {
+    "en" : "Qty",
+    "ar" : "كمية"
+  },
+  "RecommendedAction" : {
+    "en" : "Recommended Action",
+    "ar" : "الإجراء الموصى به"
+  },
+  "CommitteeNotes" : {
+    "en" : "Committee Notes",
+    "ar" : "ملاحظات اللجنة"
+  },
+  "ApplicantSectorName" : {
+    "en" : "Name of the applicant's sector",
+    "ar" : "اسم قطاع مقدم الطلب"
+  },
+  "RequestSentSector": {
+    "en" : "Sector to which the request is sent",
+    "ar" : "القطاع الذي يتم إرسال الطلب إليه"
+  },
+  "InspCommitteeRecommendations" : {
+    "en" : "Inspection Committee Recommendations",
+    "ar" : "توصيات لجنة التفتيش"
+  },
+  "ReturnRequestDetails" : {
+    "en" : "Return Request Details",
+    "ar" : "تفاصيل طلب الإرجاع"
+  },
+  "ReturnItemRequest": {
+    "en": "Return Item Request",
+    "ar": "طلب إرجاع السلعة"
   }
 
 

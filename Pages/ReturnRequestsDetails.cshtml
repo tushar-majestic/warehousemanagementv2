@@ -1,7 +1,7 @@
 ﻿@page "/ReturnRequestsDetails/{id:int}"
 @model LabMaterials.Pages.ReturnRequestsDetailsModel
 @{
-    ViewData["Title"] = "Return Request Details";
+    ViewData["Title"] = @Model.lblReturnRequestDetails;
 }
 <style>
  .table-format {
@@ -39,6 +39,13 @@
  }
  .text-size{
     font-size: 16px
+ }
+ .m-0{
+    margin: 0px !important;
+ }
+
+ .mb-8{
+    margin-bottom: 8px !important;
  }
 </style>
 
@@ -80,70 +87,84 @@
                     @if(Model.ReturnRequest.SupervisorApprovalDate == null && Model.UserId == Model.ReturnRequest.CreatedBy){
                         <form method="post" asp-page-handler="EditReturnRequest">
                             <input type="hidden" name="ReturnRequestId" value="@Model.ReturnRequest.Id">
-                            <button  class="btn btn-secondary">Edit</button>
+                            <button  class="btn btn-secondary">@Model.lblEdit</button>
                         </form>
                     }
 
-                    <button id="PrintReport" class="btn btn-primary">Print</button>
+                    <button id="PrintReport" class="btn btn-primary">@Model.lblPrint</button>
                 </div>
             </div>
     <div class="card-body">
-        <dl class="row">
-            <dt class="col-sm-4">Order Number</dt>
-            <dd class="col-sm-8">@Model.ReturnRequest.OrderNumber</dd>
+        <dl class="row mb-8">
+            <dt class="col-sm-4">@Model.lblOrderNumber</dt>
+            <dd class="col-sm-8 m-0">@Model.ReturnRequest.OrderNumber</dd>
+        </dl>
+        <dl class="row mb-8">
+            <dt class="col-sm-4">@Model.lblOrderDate</dt>
+            <dd class="col-sm-8 m-0">@Model.ReturnRequest.OrderDate.ToString("yyyy-MM-dd")</dd>
+        </dl>
 
-            <dt class="col-sm-4">Order Date</dt>
-            <dd class="col-sm-8">@Model.ReturnRequest.OrderDate.ToString("yyyy-MM-dd")</dd>
+        <dl class="row mb-8">
+            <dt class="col-sm-4">@Model.lblCreatedAt</dt>
+            <dd class="col-sm-8 m-0">@Model.ReturnRequest.CreatedAt.ToString("yyyy-MM-dd HH:mm")</dd>
+        </dl>
 
-            <dt class="col-sm-4">Created At</dt>
-            <dd class="col-sm-8">@Model.ReturnRequest.CreatedAt.ToString("yyyy-MM-dd HH:mm")</dd>
+        <dl class="row mb-8">
+            <dt class="col-sm-4">@Model.lblFromSector</dt>
+            <dd class="col-sm-8 m-0">@Model.ReturnRequest.FromSector</dd>
+        </dl>
 
-            <dt class="col-sm-4">From Sector</dt>
-            <dd class="col-sm-8">@Model.ReturnRequest.FromSector</dd>
+        <dl class="row mb-8">
+            <dt class="col-sm-4">@Model.lblToSector</dt>
+            <dd class="col-sm-8 m-0">@Model.ReturnRequest.ToSector</dd>
+        </dl>
 
-            <dt class="col-sm-4">To Sector</dt>
-            <dd class="col-sm-8">@Model.ReturnRequest.ToSector</dd>
+        <dl class="row mb-8">
+            <dt class="col-sm-4">@Model.lblWarehouse </dt>
+            <dd class="col-sm-8 m-0">@Model.ReturnRequest.Warehouse</dd>
+        </dl>
 
-            <dt class="col-sm-4">Warehouse </dt>
-            <dd class="col-sm-8">@Model.ReturnRequest.Warehouse</dd>
-
-            <dt class="col-sm-4">Return Reasons</dt>
-            <dd class="col-sm-8">
-                @if (Model.ReturnRequest.IsSurplus) { <span class="badge bg-info me-1">Surplus</span> }
-                @if (Model.ReturnRequest.IsExpired) { <span class="badge bg-warning text-dark me-1">Expired</span> }
-                @if (Model.ReturnRequest.IsInvalid) { <span class="badge bg-secondary me-1">Invalid</span> }
-                @if (Model.ReturnRequest.IsDamaged) { <span class="badge bg-danger me-1">Damaged</span> }
+        <dl class="row mb-8">
+            <dt class="col-sm-4">@Model.lblReasonForReturn</dt>
+            <dd class="col-sm-8 m-0">
+                @if (Model.ReturnRequest.IsSurplus) { <span class="badge bg-info me-1">@Model.lblSurplus</span> }
+                @if (Model.ReturnRequest.IsExpired) { <span class="badge bg-warning text-dark me-1">@Model.lblExpired</span> }
+                @if (Model.ReturnRequest.IsInvalid) { <span class="badge bg-secondary me-1">@Model.lblInvalid</span> }
+                @if (Model.ReturnRequest.IsDamaged) { <span class="badge bg-danger me-1">@Model.lblDamaged</span> }
                 @if (!Model.ReturnRequest.IsSurplus && !Model.ReturnRequest.IsExpired && !Model.ReturnRequest.IsInvalid && !Model.ReturnRequest.IsDamaged)
                 {
                     <span class="text-muted">None</span>
                 }
             </dd>
+        </dl>
+        <dl class="row mb-8">
+
 
             @if (!string.IsNullOrEmpty(Model.ReturnRequest.Reason))
             {
-                <dt class="col-sm-4">Additional Notes</dt>
-                <dd class="col-sm-8">@Model.ReturnRequest.Reason</dd>
+                <dt class="col-sm-4">@Model.lblAdditionalNotes</dt>
+                <dd class="col-sm-8 m-0">@Model.ReturnRequest.Reason</dd>
             }
         </dl>
     
 
 
-        <h4 class="mt-4">Returned Items</h4>
+        <h4 class="mt-4">@Model.lblReturnedItems</h4>
 
         @if (Model.ReturnRequestItems.Any())
         {
             <table class="table table-bordered table-striped">
                 <thead>
                     <tr>
-                        <th>Item Name (EN)</th>
-                        <th>Code</th>
-                        <th>Desc</th>
-                        <th>Qty</th>
-                        <th>Expiry</th>
+                        <th>@Model.lblItemNameEng</th>
+                        <th>@Model.lblItemCode</th>
+                        <th>@Model.lblDesc</th>
+                        <th>@Model.lblQty</th>
+                        <th>@Model.lblExpiry</th>
                         @if(Model.ReturnRequest.InspOffApprovalDate != null){
-                            <th >Recommended Action</th>
+                            <th>@Model.lblRecommendedAction</th>
                         
-                            <th >Committee Notes</th>
+                            <th>@Model.lblCommitteeNotes</th>
                         }
                     </tr>
                 </thead>
@@ -181,7 +202,7 @@
     }
    
 
-    <a href="/ViewReturnRequests" class="btn btn-secondary mt-3">Back to List</a>
+    <a href="/ViewReturnRequests" class="btn btn-secondary mt-3">@Model.lblBack</a>
 </div>
 
 <div class="table-size"  id="printArea" style="display: none; width: 826px;" dir="@Model.dir">
@@ -198,8 +219,8 @@
     
  
         <div class="left-column" style="width: 57%">
-            <div>Order Number: @rep.OrderNumber</div>
-            <div>Order Date: @rep.OrderDate.ToString("yyyy-MM-dd")</div>
+            <div>@Model.lblOrderNumber: @rep.OrderNumber</div>
+            <div>@Model.lblOrderDate: @rep.OrderDate.ToString("yyyy-MM-dd")</div>
             <div>@Model.lblPageCount: <span id="pageCountSpan">Calculating...</span></div>
         </div>
 
@@ -207,14 +228,14 @@
         <div class="center-column" style="width: 57%">
             <table class="table-1 w-100">
                 <tr style="text-align: center;">
-                    <td colspan="2" style="font-weight: 600;">Reason For Return</td>
+                    <td colspan="2" style="font-weight: 600;">@Model.lblReasonForReturn</td>
                 </tr>
                 <tr>
                     <td colspan="2">
-                        @if (rep.IsSurplus) { <span class="badge bg-info me-1">Surplus</span> }
-                        @if (rep.IsExpired) { <span class="badge bg-warning text-dark me-1">Expired</span> }
-                        @if (rep.IsInvalid) { <span class="badge bg-secondary me-1">Invalid</span> }
-                        @if (rep.IsDamaged) { <span class="badge bg-danger me-1">Damaged</span> }
+                        @if (rep.IsSurplus) { <span class="badge bg-info me-1">@Model.lblSurplus</span> }
+                        @if (rep.IsExpired) { <span class="badge bg-warning text-dark me-1">@Model.lblExpired</span> }
+                        @if (rep.IsInvalid) { <span class="badge bg-secondary me-1">@Model.lblInvalid</span> }
+                        @if (rep.IsDamaged) { <span class="badge bg-danger me-1">@Model.lblDamaged</span> }
                         @if (!rep.IsSurplus && !rep.IsExpired && !rep.IsInvalid && !rep.IsDamaged)
                         {
                             <span class="text-muted">None</span>
@@ -224,7 +245,7 @@
                 @if (!string.IsNullOrEmpty(rep.Reason))
                 {
                     <tr>
-                        <td style="font-weight: 500;">Additional Notes</td>
+                        <td style="font-weight: 500;">@Model.lblAdditionalNotes</td>
                         <td>@rep.Reason</td>
                     </tr>
                 }
@@ -232,9 +253,9 @@
         </div>
 
         <div class="right-column" style="display: flex; flex-direction: column; align-item: end; text-align: end">
-            <div>Name of the applicant's sector : @rep.FromSector</div>
-            <div>Sector to which the request is sent : @rep.ToSector</div>
-            <div>Warehouse: @rep.Warehouse</div>
+            <div>@Model.lblApplicantSectorName : @rep.FromSector</div>
+            <div>@Model.lblRequestSentSector : @rep.ToSector</div>
+            <div>@Model.lblWarehouse: @rep.Warehouse</div>
         </div>
 
     </div>
@@ -243,12 +264,12 @@
             <thead>
                 <tr>
                     <th style="width: 5%;">Count</th>
-                    <th colspan="4" style="width: 25%;">Inspection Committee Recommendations</th>
-                    <th style="width: 5%;">Returned Quantity</th>
-                    <th style="width: 5%;">Unit Of Measure</th>
-                    <th style="width: 15%;">Item Name</th>
-                    <th style="width: 7%;">Item No</th>
-                    <th style="width: 7%;">Item Description</th>
+                    <th colspan="4" style="width: 25%;">@Model.lblInspCommitteeRecommendations</th>
+                    <th style="width: 5%;">@Model.lblReturned @Model.lblQuantity</th>
+                    <th style="width: 5%;">@Model.lblUnitOfMeasure</th>
+                    <th style="width: 15%;">@Model.lblItemName</th>
+                    <th style="width: 7%;">@Model.lblItemNo</th>
+                    <th style="width: 7%;">@Model.lblItemDescription</th>
                    
                 </tr>
             </thead>

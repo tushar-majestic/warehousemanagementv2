@@ -96,7 +96,10 @@ namespace LabMaterials.Pages
                 .FirstOrDefaultAsync(r => r.Id == ReturnRequestId.Value);
             #pragma warning restore CS8601 // Possible null reference assignment.
 
-           
+            ReturnItems = await _context.ReturnRequestItems
+                .Where(r => r.ReturnRequestId == ReturnRequestId)
+                .ToListAsync();
+
 
             try
             {
@@ -175,43 +178,48 @@ namespace LabMaterials.Pages
             Console.WriteLine("Error saving: " + ex.Message);
         }
             //if Inspection Commitee Officer is logged in than he can only add the recommended action and additional notes
-            if (UserGroupName == "Return Inspection Committee Officer")
-            {
-                for (int i = 0; i < ReturnItems.Count; i++)
+            
+                if (UserGroupName == "Return Inspection Committee Officer")
                 {
-                    var item = ReturnItems[i];
-                    var notesKey = $"ReturnItems[{i}].Notes";
-                    var actionKey = $"ReturnItems[{i}].RecommendedAction";
-
-                    var actionValue = Request.Form[actionKey];
-                    var notesValue = Request.Form[notesKey];
-
-                    if (!string.IsNullOrEmpty(notesValue))
+                    for (int i = 0; i < ReturnItems.Count; i++)
                     {
-                        item.Notes = notesValue;
+                        var item = ReturnItems[i];
+                        var notesKey = $"ReturnItems[{i}].Notes";
+                        var actionKey = $"ReturnItems[{i}].RecommendedAction";
+
+                        var actionValue = Request.Form[actionKey];
+                        var notesValue = Request.Form[notesKey];
+                        Console.WriteLine($"notesValue: {notesValue}");
+                        Console.WriteLine($"actionValue: {actionValue}");
+
+                        if (!string.IsNullOrEmpty(notesValue))
+                        {
+                            item.Notes = notesValue;
+                        }
+
+                        if (!string.IsNullOrEmpty(actionValue) &&
+                            Enum.TryParse(typeof(LabMaterials.DB.ReturnRequestItem.ItemCondition), actionValue, out var parsedAction))
+                        {
+                            item.RecommendedAction = (LabMaterials.DB.ReturnRequestItem.ItemCondition)parsedAction;
+                        }
                     }
 
-                    if (!string.IsNullOrEmpty(actionValue) &&
-                        Enum.TryParse(typeof(LabMaterials.DB.ReturnRequestItem.ItemCondition), actionValue, out var parsedAction))
+                    Report.InspOffApprovalDate = DateTime.UtcNow;
+
+                    if (InboxId.HasValue && InboxId.Value != 0)
                     {
-                        item.RecommendedAction = (LabMaterials.DB.ReturnRequestItem.ItemCondition)parsedAction;
+                        var message = _context.Messages.FirstOrDefault(m => m.Id == this.InboxId);
+
+                        if (message != null)
+                        {
+                            message.Type = "Assign Supervisor";
+                        }
                     }
+                    await _context.SaveChangesAsync();
+
+
                 }
-
-                Report.InspOffApprovalDate = DateTime.UtcNow;
-
-                if (InboxId.HasValue && InboxId.Value != 0)
-                {
-                    var message = _context.Messages.FirstOrDefault(m => m.Id == this.InboxId);
-
-                    if (message != null)
-                    {
-                        message.Type = "Assign Supervisor";
-                    }
-                }
-
-
-            }
+           
             //if Recycling Officer is logged in than he can only Recyling Notes for the specific items.
             else if (UserGroupName == "Recycling Officer")
             {
