@@ -44,7 +44,7 @@ namespace LabMaterials.Pages
         lblDocumentDate, lblDocumentNo, lblBasedOnDocument, lblComments, lblUnitPrice, lblTotalPrice, lblQuantity, lblUnitOfMeasure,
         lblItemNameDescription, lblItemNo, lblCount, lblSAR, lblRiyal, lblChiefResponsible, lblTechnicalMember, lblRecipient, lblSignature, lblName,
         lblDate, lblcreateItemCard, lbldeductItemCard, lblItemMovement, lblStores, lblItemCard, lblCeiling, lblReorderLimit, lblMinimum, lblItemNoCode, lblItemNameArabic, lblQuantityReceived, lblDateOfEntryInWarehouse, lblSourceSupplier, lblAmountSpent, lblPartyDirected, lblRemainingBalance, lblDispensingDocumentNo, lblPrint,
-        lblViewReceivingReport, lblReceivingReport,lblBack, lblOk, lblRequestDate, lblViewMaterialDispensing, lblSubmit, lblOrderNumber, lblOrderDate, lblSector, lblStoreName, lblReason, lblAction, lblEdit, lblCreatedAt, lblFromSector, lblToSector, lblWarehouse, lblReasonForReturn, lblSurplus, lblExpired, lblInvalid, lblDamaged, lblAdditionalNotes, lblReturnedItems, lblItemNameEng, lblItemCode, lblDesc, lblQty, lblExpiry, lblRecommendedAction, lblCommitteeNotes, lblApplicantSectorName, lblRequestSentSector, lblInspCommitteeRecommendations, lblReturned, lblItemDescription, lblReturnRequestDetails, lblReturnItemRequest;
+        lblViewReceivingReport, lblReceivingReport,lblBack, lblOk, lblRequestDate, lblViewMaterialDispensing, lblSubmit, lblOrderNumber, lblOrderDate, lblSector, lblStoreName, lblReason, lblAction, lblEdit, lblCreatedAt, lblFromSector, lblToSector, lblWarehouse, lblReasonForReturn, lblSurplus, lblExpired, lblInvalid, lblDamaged, lblAdditionalNotes, lblReturnedItems, lblItemNameEng, lblItemCode, lblDesc, lblQty, lblExpiry, lblRecommendedAction, lblCommitteeNotes, lblApplicantSectorName, lblRequestSentSector, lblInspCommitteeRecommendations, lblReturned, lblItemDescription, lblReturnRequestDetails, lblReturnItemRequest, lblFilter, lblUpdate;
 
 
         public override void OnPageHandlerExecuting(PageHandlerExecutingContext context)
@@ -238,6 +238,8 @@ namespace LabMaterials.Pages
             this.lblItemDescription = (Program.Translations["ItemDescription"][Lang]);
             this.lblReturnRequestDetails = (Program.Translations["ReturnRequestDetails"][Lang]);
             this.lblReturnItemRequest = (Program.Translations["ReturnItemRequest"][Lang]);
+            this.lblFilter = (Program.Translations["Filter"][Lang]);
+            this.lblUpdate = (Program.Translations["Update"][Lang]);
 
 
 
