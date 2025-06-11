@@ -390,7 +390,7 @@
 
     <div class="d-flex justify-content-between align-items-center">
         <div></div>
-        <div>
+        <div style="direction: ltr;">
             @if (Model.TotalPages > 1)
             {
                 <nav aria-label="Page navigation">
@@ -631,7 +631,7 @@
 
     @if (Model.TotalPages > 1)
     {
-        <nav aria-label="Page navigation">
+        <nav aria-label="Page navigation" style="direction: ltr;">
             <ul class="pagination">
 
                 @* Previous button *@
