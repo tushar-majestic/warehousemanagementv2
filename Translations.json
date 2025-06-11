@@ -1109,7 +1109,7 @@
   },
   "ShowHideColumn": {
     "en": "Show/Hide Column",
-    "ar": "Show/Hide Column"
+    "ar": "إظهار/إخفاء العمود"
   },
 
 
@@ -1151,15 +1151,15 @@
   },
   "StoreTypeMissing": {
     "en": "Warehouse Type is missing.",
-    "ar": "Warehouse Type is missing."
+    "ar": "نوع المستودع مفقود"
   },
   "ManagerNameMissing": {
     "en": "Warehouse Manager Name is missing.",
-    "ar": "Warehouse Manager Name is missing."
+    "ar": "اسم مدير المستودع مفقود"
   },
   "ManagerJobNumberMissing": {
     "en": "Manager Job Number is missing.",
-    "ar": "Manager Job Number is missing."
+    "ar": "رقم وظيفة المدير مفقود"
   },
   "Notifications": {
     "en": "Notifications",
@@ -1167,71 +1167,71 @@
   },
   "BuildingNumber": {
     "en": "Building No.",
-    "ar": "Building No."
+    "ar": "رقم المبنى"
   },
   "NoOfShelves": {
     "en": "Number of Shelves",
-    "ar": "Number of Shelves"
+    "ar": "عدد الرفوف"
   },
   "RoomDesc": {
     "en": "Room Description",
-    "ar": "Room Description"
+    "ar": "وصف الغرفة"
   },
   "KeeperJobNum": {
     "en": "Warehouse Keeper Job Number",
-    "ar": "Warehouse Keeper Job Number"
+    "ar": "رقم وظيفة أمين المستودع"
   },
   "KeeperName": {
     "en": "Warehouse Keeper Name",
-    "ar": "Warehouse Keeper Name"
+    "ar": "اسم أمين المستودع"
   },
   "RoomStatus": {
     "en": "Room Status",
-    "ar": "Room Status"
+    "ar": "حالة الغرفة"
   },
   "BuildingNumberMissing": {
     "en": "Building Number is required.",
-    "ar": "Building Number is required."
+    "ar": "رقم المبنى مطلوب"
   },
   "KeeperMissing": {
     "en": "Warehouse Keeper required.",
-    "ar": "Warehouse Keeper required."
+    "ar": "مطلوب أمين مستودع"
   },
   "WarehouseStatusMissing": {
     "en": "Warehouse Status is required.",
-    "ar": "Warehouse Status is required."
+    "ar": "حالة المستودع مطلوبة"
   },
   "RoomStatusMissing": {
     "en": "Room Status is required.",
-    "ar": "Room Status is required."
+    "ar": "حالة الغرفة مطلوبة"
   },
   "RoomExists": {
     "en": "Room Exists.",
-    "ar": "Room Exists."
+    "ar": "الغرفة موجودة"
   },
   "CoordinatorName": {
     "en": "Coordinator Name",
-    "ar": "Coordinator Name"
+    "ar": "اسم المنسق"
   },
   "ManagerWarehouseOnly": {
     "en": "Manager can add room to his warehouse only.",
-    "ar": "Manager can add room to his warehouse only."
+    "ar": "يمكن للمدير إضافة غرفة إلى مستودعه فقط"
   },
   "ManagerEditWarehouseOnly": {
     "en": "Manager can edit room of his warehouse only.",
-    "ar": "Manager can edit room of his warehouse only."
+    "ar": "يمكن للمدير تعديل غرفة مستودعه فقط"
   },
   "WarehouseManagerName": {
     "en": "Warehouse Manager Name",
-    "ar": "Warehouse Manager Name"
+    "ar": "اسم مدير المستودع"
   },
   "WarehouseMissing": {
     "en": "Warehouse is required",
-    "ar": "Warehouse is required"
+    "ar": "المستودع مطلوب"
   },
   "CreateReport": {
     "en": "Create Receiving Report",
-    "ar": "Create Receiving Report"
+    "ar": "إنشاء تقرير الاستلام"
   },
   "FiscalYear": {
     "en": "Fiscal Year",
@@ -1267,7 +1267,7 @@
   },
   "AddAttachment": {
     "en": "Add Attachment",
-    "ar": "Add Attachment"
+    "ar": "إضافة مرفق"
   },
 
   "ItemGroup": {
@@ -1292,11 +1292,11 @@
   },
   "RecipientID": {
     "en": "Recipient Employee ID",
-    "ar": "Recipient Employee ID"
+    "ar": "معرف الموظف المستلم"
   },
   "RecipientName": {
     "en": "Recipient Employee Name",
-    "ar": "Recipient Employee Name"
+    "ar": "اسم الموظف المستلم"
   },
   "TechnicalMember": {
     "en": "Technical Member",
@@ -1304,7 +1304,7 @@
   },
   "ChiefResponsible": {
     "en": "Chief Responsible (General Supervisor)",
-    "ar": "Chief Responsible (General Supervisor)"
+    "ar": "المسؤول الرئيسي (المشرف العام)"
   },
   "GeneralSupervisor": {
     "en": "General Supervisor",
@@ -1312,7 +1312,7 @@
   },
   "SubmitReport": {
     "en": "Submit Report",
-    "ar": "Submit Report"
+    "ar": "إرسال التقرير"
   },
   "RecipientSector": {
     "en": "Recipient Sector",
@@ -1320,123 +1320,123 @@
   },
   "FiscalYearMissing": {
     "en": "Fiscal Year is required.",
-    "ar": "Fiscal Year is required."
+    "ar": "السنة المالية مطلوبة"
   },
   "ReceivingDateMissing": {
     "en": "Receiving Date is required.",
-    "ar": "Receiving Date is required."
+    "ar": "تاريخ الاستلام مطلوب"
   },
   "RecipientSectorMissing": {
     "en": "Recipient Sector is required.",
-    "ar": "Recipient Sector is required."
+    "ar": "يجب أن يكون القطاع المستلم مطلوبًا"
   },
   "SectorNumberMissing": {
     "en": "Sector Number is required.",
-    "ar": "Sector Number is required."
+    "ar": "رقم القطاع مطلوب"
   },
   "ReceivingWarehouseMissing": {
     "en": "Receiving Warehouse is required.",
-    "ar": "Receiving Warehouse is required."
+    "ar": "يجب أن يكون هناك مستودع استلام"
   },
   "BasedOnDocumentMissing": {
     "en": "Based On Document is required.",
-    "ar": "Based On Document is required."
+    "ar": "بناءً على المستند المطلوب"
   },
   "DocumentNumberMissing": {
     "en": "Document Number is required.",
-    "ar": "Document Number is required."
+    "ar": "رقم الوثيقة مطلوب"
   },
   "DocumentDateMissing": {
     "en": "Document Date is required.",
-    "ar": "Document Date is required."
+    "ar": "تاريخ الوثيقة مطلوب"
   },
   "DamageItem": {
     "en": "Return Item Request",
-    "ar": "Return Item Request"
+    "ar": "طلب إرجاع السلعة"
   },
   "AddItemCard": {
     "en": "Add Item Card",
-    "ar": "Add Item Card"
+    "ar": "إضافة بطاقة السلعة"
   },
   "ArabicLanguage": {
     "en": "Arabic",
-    "ar": "Arabic"
+    "ar": "عربي"
   },
   "EnglishLanguage": {
     "en": "English",
-    "ar": "English"
+    "ar": "إنجليزي"
   },
   "TypeofContract": {
     "en": "Type of Contract",
-    "ar": "Type of Contract"
+    "ar": "نوع العقد"
   },
   "TypeofAsset": {
     "en": "Type of Asset",
-    "ar": "Type of Asset"
+    "ar": "نوع الأصل"
   },
   "Chemical": {
     "en": "Chemical",
-    "ar": "Chemical"
+    "ar": "كيميائي"
   },
   "RiskRating": {
     "en": "Risk Rating",
-    "ar": "Risk Rating"
+    "ar": "تصنيف المخاطر"
   },
   "StateofMatter": {
     "en": "State of Matter",
-    "ar": "State of Matter"
+    "ar": "حالة المادة"
   },
   "Returned": {
     "en": "Returned",
-    "ar": "Returned"
+    "ar": "عاد"
   },
   "ReturnNotes": {
     "en": "Return Notes",
-    "ar": "Return Notes"
+    "ar": "ملاحظات العودة"
   },
   "Remove": {
     "en": "Remove",
-    "ar": "Remove"
+    "ar": "يزيل"
   },
   "AddMore": {
     "en": "Add More",
-    "ar": "Add More"
+    "ar": "أضف المزيد"
   },
   "OrderNumber": {
     "en": "Order Number",
-    "ar": "Order Number"
+    "ar": "رقم الطلب"
   },
   "OrderDate": {
     "en": "Order Date",
-    "ar": "Order Date"
+    "ar": "تاريخ الطلب"
   },
   "RequestingSector": {
     "en": "Requesting Sector",
-    "ar": "Requesting Sector"
+    "ar": "القطاع الطالب"
   },
   "ApplicantsSector": {
     "en": "Applicant's Sector",
-    "ar": "Applicant's Sector"
+    "ar": "قطاع مقدم الطلب"
   },
   "ReasonForReturn": {
     "en": "Reason For Return",
-    "ar": "Reason For Return"
+    "ar": "سبب العودة"
   },
   "SurPlus": {
     "en": "SurPlus",
-    "ar": "SurPlus"
+    "ar": "فائض"
   },
   "Expired": {
     "en": "Expired",
-    "ar": "Expired"
+    "ar": "منتهي الصلاحية"
   },
   "Invalid": {
     "en": "Invalid",
-    "ar": "Invalid"
+    "ar": "غير صالح"
   },
   "Damaged": {
     "en": "Damaged",
-    "ar": "Damaged"
+    "ar": "تالف"
   },
   "AmountSpent": {
     "en": "Amount Spent",
@@ -1444,55 +1444,55 @@
   },
   "RequestDocumentType": {
     "en": "Request Document Type",
-    "ar": "Request Document Type"
+    "ar": "نوع مستند الطلب"
   },
   "RequestDocumentNumber": {
     "en": "Request Document Number",
-    "ar": "Request Document Number"
+    "ar": "رقم مستند الطلب"
   },
   "Sector": {
     "en": "Sector",
-    "ar": "Sector"
+    "ar": "قطاع"
   },
   "Filter": {
     "en": "Filter",
-    "ar": "Filter"
+    "ar": "فلتر"
   },
   "FilterBy": {
     "en": "Filter By",
-    "ar": "Filter By"
+    "ar": "تصفية حسب"
   },
   "Apply": {
     "en": "Apply",
-    "ar": "Apply"
+    "ar": "يتقدم"
   },
   "ClearFilters": {
     "en": "Clear Filters",
-    "ar": "Clear Filters"
+    "ar": "مسح المرشحات"
   },
   "ExportExcel": {
     "en": "Export Excel",
-    "ar": "Export Excel"
+    "ar": "تصدير اكسل"
   },
   "PrintTable": {
     "en": "Print Table",
-    "ar": "Print Table"
+    "ar": "جدول الطباعة"
   },
   "SupplierMissing": {
     "en": "Supplier is required.",
-    "ar": "Supplier is required"
+    "ar": "مطلوب المورد"
   },
   "ReceipientMissing": {
     "en": "Receipient is required",
-    "ar": "Receipient is required"
+    "ar": "يجب أن يكون المستلم"
   },
   "TechnicalMemberMissing": {
-    "en": "TechnicalMember is required",
-    "ar": "TechnicalMember is required"
+    "en": "Technical Member is required",
+    "ar": "مطلوب عضو فني"
   },
   "CommentMissing": {
     "en": "Enter Comment to reject request.",
-    "ar": "Enter Comment to reject request."
+    "ar": "أدخل التعليق لرفض الطلب"
   },
   "Print": {
     "en": "Print",
@@ -1560,71 +1560,71 @@
   },
   "JobNumberExist": {
     "en": "Job Number Exists",
-    "ar": "Job Number Exists"
+    "ar": "رقم الوظيفة موجود"
   },
   "WarehouseNameMissing": {
     "en": "Warehouse Name Missing",
-    "ar": "Warehouse Name Missing"
+    "ar": "اسم المستودع مفقود"
   },
   "DeptManagerMissing": {
     "en": "Department Manager Missing",
-    "ar": "Department Manager Missing"
+    "ar": "مدير القسم مفقود"
   },
   "DeptManager": {
     "en": "Department Manager",
-    "ar": "Department Manager"
+    "ar": "مدير القسم"
   },
   "CreateItemCard": {
     "en": "Create Item Card",
-    "ar": "Create Item Card"
+    "ar": "إنشاء بطاقة العنصر"
   },
   "DeductItemCard": {
     "en": "Deduct Order From Item Card",
-    "ar": "Deduct Order From Item Card"
+    "ar": "خصم الطلب من بطاقة العنصر"
   },
   "ExtensionNumber": {
     "en": "Extension Number",
-    "ar": "Extension Number"
+    "ar": "رقم التمديد"
   },
   "ChiefResponsibleMissing": {
     "en": "ChiefResponsible is Missing",
-    "ar": "ChiefResponsible is Missing"
+    "ar": "المسؤول الرئيسي مفقود"
   },
   "ItemMovement": {
     "en": "Item Movement",
-    "ar": "Item Movement"
+    "ar": "حركة السلعة"
   },
   "Privileges": {
     "en": "Privileges",
-    "ar": "Privileges"
+    "ar": "الامتيازات"
   },
   "AddPrivilege": {
     "en": "Add Privilege",
-    "ar": "Add Privilege"
+    "ar": "إضافة امتياز"
   },
   "Back": {
     "en": "Back",
-    "ar": "Back"
+    "ar": "خلف"
   },
   "NoPrivilegesfound": {
     "en": "No Privileges found.",
-    "ar": "No Privileges found."
+    "ar": "لم يتم العثور على أي امتيازات"
   },
   "PrivilegeName": {
     "en": "Privilege Name",
-    "ar": "Privilege Name"
+    "ar": "اسم الامتياز"
   },
   "ID": {
     "en": "ID",
-    "ar": "ID"
+    "ar": "بطاقة تعريف"
   },
   "CompanyName": {
     "en": "Sector/Company Name",
-    "ar": "Sector/Company Name"
+    "ar": "القطاع/اسم الشركة"
   },
   "CoordinatorNameMissing": {
     "en": "Coordinator Name is Missing",
-    "ar": "Coordinator Name is Missing"
+    "ar": "اسم المنسق مفقود"
   },
   "MinimumQuantity": {
     "en": "Item(s) are below Minimum Stock.",
@@ -1653,23 +1653,23 @@
   },
   "DestinationNumber": {
     "en": "Destination Number",
-    "ar": " Destination Number"
+    "ar": "رقم الوجهة"
   },
   "Approved": {
     "en": "Approved",
-    "ar": "Approved"
+    "ar": "موافقة"
   },
   "AuthorizedPerson": {
     "en": "Authorized Person",
-    "ar": "Authorized Person"
+    "ar": "الشخص المعتمد"
   },
   "RequestDate": {
     "en": "Request Date",
-    "ar": "Request Date"
+    "ar": "تاريخ الطلب"
   },
   "NoObjection": {
     "en": "There is no objection to spending within the limits permitted by the balances",
-    "ar": "There is no objection to spending within the limits permitted by the balances"
+    "ar": "لا مانع من الإنفاق في حدود المسموح به في الأرصدة"
   },
   "Receipient":{
     "en": "Receipient",
@@ -1735,17 +1735,33 @@
     "en": "View Receiving Report",
     "ar": "عرض تقرير الاستلام"
   },
+  "ViewMaterialDispensing": {
+    "en": "View Material Dispensing",
+    "ar": "عرض توزيع المواد"
+  },
   "ReceivingReport": {
     "en": "Receiving Report",
     "ar": "استلام التقرير"
   },
   "ClosedWarehouseMsg":{
-    "en": "Item Card cannot be added to closed Warehouse.",
+    "en": "Item Card cannot be added in closed Warehouse.",
     "ar": "لا يمكن إضافة بطاقة العنصر إلى المستودع المغلق."
   },
   "ClosedRoomMsg":{
-    "en": "Item Card cannot be added to closed Room.",
+    "en": "Item Card cannot be added in closed Room.",
     "ar": "لا يمكن إضافة بطاقة العنصر إلى الغرفة المغلقة."
+  },
+  "DedClosedWarehouseMsg" :{
+    "en": "Deduction From Item Card cannot be done in closed Warehouse.",
+    "ar": "لا يمكن إضافة الخصم من بطاقة العنصر إلى المستودع المغلق."
+  },
+  "DedClosedRoomMsg" :{
+    "en": "Deduction From Item Card cannot be done in closed Room.",
+    "ar": "لا يمكن إضافة الخصم من بطاقة العنصر إلى المستودع المغلق."
+  },
+  "Ok":{
+    "en": "Ok",
+    "ar": "نعم"
   }
 
 

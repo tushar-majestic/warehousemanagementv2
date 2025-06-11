@@ -37,7 +37,7 @@
                 <div class="table-responsive">
                     <form method="post">
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
+                        <input type="hidden" name="OriginalName" value="@Model.HazardType.HazardTypeName" />
                         <div class="form-group mb-3">
                             <label asp-for="HazardType.HazardTypeName" class="form-label">@Model.lblHazardTypeName</label>
                             <input asp-for="HazardType.HazardTypeName" class="form-control" />

@@ -44,7 +44,7 @@ namespace LabMaterials.Pages
         lblDocumentDate, lblDocumentNo, lblBasedOnDocument, lblComments, lblUnitPrice, lblTotalPrice, lblQuantity, lblUnitOfMeasure,
         lblItemNameDescription, lblItemNo, lblCount, lblSAR, lblRiyal, lblChiefResponsible, lblTechnicalMember, lblRecipient, lblSignature, lblName,
         lblDate, lblcreateItemCard, lbldeductItemCard, lblItemMovement, lblStores, lblItemCard, lblCeiling, lblReorderLimit, lblMinimum, lblItemNoCode, lblItemNameArabic, lblQuantityReceived, lblDateOfEntryInWarehouse, lblSourceSupplier, lblAmountSpent, lblPartyDirected, lblRemainingBalance, lblDispensingDocumentNo, lblPrint,
-        lblViewReceivingReport, lblReceivingReport;
+        lblViewReceivingReport, lblReceivingReport,lblBack, lblOk, lblRequestDate, lblViewMaterialDispensing;
 
 
         public override void OnPageHandlerExecuting(PageHandlerExecutingContext context)
@@ -201,6 +201,10 @@ namespace LabMaterials.Pages
             this.lblPrint = (Program.Translations["Print"][Lang]);
             this.lblViewReceivingReport = (Program.Translations["ViewReceivingReport"][Lang]);
             this.lblReceivingReport = (Program.Translations["ReceivingReport"][Lang]);
+            this.lblBack = (Program.Translations["Back"][Lang]);
+            this.lblOk = (Program.Translations["Ok"][Lang]);
+            this.lblRequestDate = (Program.Translations["RequestDate"][Lang]);
+            this.lblViewMaterialDispensing = (Program.Translations["ViewMaterialDispensing"][Lang]);
 
 
         }

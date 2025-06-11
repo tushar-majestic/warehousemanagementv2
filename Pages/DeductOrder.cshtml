@@ -96,7 +96,7 @@
                                 </div>
                                 <div class="form-group w-23">
                                     <label>Expiry Date</label>
-                                    <input type="date" class="form-control" asp-for="@Model.ItemCardsFromReport[i].ExpiryDate"  />
+                                    <input type="date" class="form-control" asp-for="@Model.ItemCardsFromReport[i].ExpiryDate" readonly />
                                 </div>
                             </div>
 
@@ -189,6 +189,42 @@
     <partial name="_ValidationScriptsPartial" />
 
     <script>
+
+        const notyf = new Notyf({
+            position: {
+                x: 'center',
+                y: 'top',
+            },
+            types: [
+                {
+                    type: 'error',
+                    background: '#e3392c',
+                    icon: {
+                        className: 'fas fa-times',
+                        tagName: 'span',
+                        color: '#000000'
+                    },
+                    dismissible: true,
+                    duration: 0,
+                    ripple: true
+                }
+            ]
+        });
+
+        function showErrorNotification(message) {
+            notyf.open({
+                type: 'error',
+                message: message
+            });
+        }
+
+        @if (!string.IsNullOrEmpty(Model.ErrorMsg))
+        {
+            <text>
+                    var errorMessageFromServer = @Html.Raw(Json.Serialize(Model.ErrorMsg));
+                    showErrorNotification(errorMessageFromServer);
+            </text>
+        }
         document.getElementById('storeSelect').addEventListener('mousedown', function (e) {
          e.preventDefault();
         });
