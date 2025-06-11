@@ -413,11 +413,11 @@ document.addEventListener("DOMContentLoaded", function () {
                             <!-- Filter Panel -->
                             <div id="filterDropdownPanel"
                                 class="card shadow-sm position-absolute flex-row"
-                                style="right: 0; top: 100%; width: 400px; display: none; z-index: 1000; height: 400px; overflow: hidden;">
+                                style="inset-inline-end: 0; top: 100%; width: 400px; display: none; z-index: 1000; height: 400px; overflow: hidden;">
 
                                 <!-- Left: Filter Categories -->
                                 <div class="border-end p-2" style="width: 40%; overflow-y: auto; position: relative;">
-                                    <div class="fw-bolder text-center mb-2">Filter By</div>
+                                    <div class="fw-bolder text-center mb-2">@Model.lblFilterBy</div>
                                     <div class="filter-option text-primary mb-2" onclick="showFilterValues('typeName')" style="cursor: pointer;">Type Name</div>
                                     <div class="filter-option text-primary mb-2" onclick="showFilterValues('hazardType')" style="cursor: pointer;">@Model.lblRiskRating</div>
                                     <div class="filter-option text-primary mb-2" onclick="showFilterValues('unitCode')" style="cursor: pointer;">@Model.lblUnitOfMeasure</div>
