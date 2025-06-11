@@ -11,7 +11,7 @@ namespace LabMaterials.Pages
     public class ManageItemCardsModel : BasePageModel
     {
         public string lblTotalItem, lblAddItemCard, lblItemGroups, lblSearch, lblItems, lblExportExcel, lblPrintTable, lblItemName,
-        lblStateofMatter, lblRiskRating, lblChemical, lblSubmit, lblUnitCode, lblHazardType, lblItemCode, lblGroupName, lblStores;
+        lblStateofMatter, lblRiskRating, lblChemical, lblSubmit, lblUnitCode, lblHazardType, lblItemCode, lblGroupName, lblStoreName;
 
         public List<string> SelectedColumns { get; set; } = new List<string>();
         // public List<ItemCardViewModels> ItemCardView {get; set;}
@@ -304,7 +304,7 @@ namespace LabMaterials.Pages
             this.lblTotalItem = (Program.Translations["TotalItem"])[Lang];
             this.lblChemical = (Program.Translations["Chemical"])[Lang];
             this.lblRiskRating = (Program.Translations["RiskRating"])[Lang];
-            this.lblStores = (Program.Translations["Stores"])[Lang];
+            this.lblStoreName = (Program.Translations["StoreName"])[Lang];
             this.lblStateofMatter = (Program.Translations["StateofMatter"])[Lang];
         }
     }

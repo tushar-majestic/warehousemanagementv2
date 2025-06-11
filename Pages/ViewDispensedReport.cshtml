@@ -1,7 +1,7 @@
 ﻿@page
 @model LabMaterials.Pages.ViewDispensedReportModel
 @{
-    ViewData["Title"] = "View Material Dispensing";
+    ViewData["Title"] = @Model.lblViewMaterialDispensing;
 }
 
 <style>
@@ -79,7 +79,7 @@
                     <dt class="col-sm-3">@Model.lblFiscalYear</dt>
                     <dd class="col-sm-3">@MaterialRequest.FiscalYear</dd>
 
-                    <dt class="col-sm-3">Request Date</dt>
+                    <dt class="col-sm-3">@Model.lblRequestDate</dt>
                     <dd class="col-sm-3">@MaterialRequest.CreatedAt?.ToString("dd-MM-yyyy")</dd>
 
                     <dt class="col-sm-3">@Model.lblRequestingSector</dt>
@@ -88,7 +88,7 @@
                     <dt class="col-sm-3">@Model.lblSector</dt>
                     <dd class="col-sm-3">@MaterialRequest.Sector</dd>
                     
-                    <dt class="col-sm-3">Receiving Warehouse</dt>
+                    <dt class="col-sm-3">@Model.lblReceivingWarehouse</dt>
                     <dd class="col-sm-3">@StoreName</dd>
 
                     <dt class="col-sm-3">@Model.lblRequestDocumentType</dt>
@@ -219,11 +219,14 @@
             <th style="width: 25%;font-size: 14px;" rowspan="2">@Model.lblComments</th>
         </tr>
         <tr>
-            <td style="width: 3.5%;font-size: 14px; text-align: center;">H</td>
+            <td style="width: 3.5%;font-size: 14px; text-align: center;">@Model.lblRiyal</td>
             <td style="width: 3.5%;font-size: 14px; text-align: center;">@Model.lblSAR</td>
-            <td style="width: 3.5%;font-size: 14px; text-align: center;">H</td>
+            <td style="width: 3.5%;font-size: 14px; text-align: center;">@Model.lblRiyal</td>
             <td style="width: 3.5%;font-size: 14px; text-align: center;">@Model.lblSAR</td>
         </tr>
+        @{
+            var totalPrice = 0m;
+        }
         @if (Model.DispensedItems != null){
             var count = 1;
             @foreach (var item in Model.DispensedItems) {
@@ -236,6 +239,10 @@
                 // Safely get SAR and Halala for TotalPrice
                 var totalPriceSar = Math.Truncate(item.TotalPrice);
                 var totalPriceHalala = (int)((item.TotalPrice - totalPriceSar) * 100);
+
+                var itemTotal = item.Quantity * item.UnitPrice;
+                totalPrice += itemTotal;
+
                 <tr>
                     <td style="font-size: 14px;">@count.</td>
                     <td style="font-size: 14px;">@ItemCard.ItemCode</td>
@@ -256,7 +263,7 @@
             <td style="font-size: 14px;">&nbsp;</td>
             <td style="font-size: 14px;">&nbsp;</td>
             <td style="font-size: 14px;">&nbsp;</td>
-            <td colspan="7" >@Model.lblTotalPrice</td>
+            <td colspan="7" >@Model.lblTotalPrice - @totalPrice</td>
         </tr>
         <tr>
             <td colspan="2" style="text-align: center;font-size: 14px;"><b>@Model.lblManagerName</b></td>

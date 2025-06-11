@@ -143,12 +143,12 @@
                         <div class="form-check mb-1">
                             <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="warehouse"
                                 id="warehouse"  @(Model.SelectedColumns.Contains("warehouse") ? "checked" : "")>
-                            <label class="form-check-label" for="warehouse">@Model.lblStores</label>
+                            <label class="form-check-label" for="warehouse">@Model.lblStoreName</label>
                         </div>
                         
                         <div class="form-check mb-1 text-center">
                             <button type="submit" name="action" value="updateColumns"
-                                class="btn btn-success btn-sm">Ok</button>
+                                class="btn btn-success btn-sm">@Model.lblOk</button>
                         </div>
                     </div>
                 </div>
@@ -253,31 +253,31 @@
                         <tr>
                             @if (Model.SelectedColumns.Contains("itemGroup"))
                             {
-                                <th scope="col" class="border-0 rounded-start">Item Group</th>
+                                <th scope="col" class="border-0 rounded-start">@Model.lblItemGroups</th>
                             }
                             @if (Model.SelectedColumns.Contains("itemName"))
                             {
-                                <th scope="col" class="border-0 rounded-start">Item Name</th>
+                                <th scope="col" class="border-0 rounded-start">@Model.lblItemName</th>
                             }
                             @if (Model.SelectedColumns.Contains("itemCode"))
                             {
-                                <th scope="col" class="border-0 rounded-start">Item Code</th>
+                                <th scope="col" class="border-0 rounded-start">@Model.lblItemCode</th>
                             }
                             @if (Model.SelectedColumns.Contains("itemDesc"))
                             {
-                                <th scope="col" class="border-0 rounded-start">Item Description</th>
+                                <th scope="col" class="border-0 rounded-start">@Model.lblItemNameDescription</th>
                             }
                             @if (Model.SelectedColumns.Contains("unitOfMeasure"))
                             {
-                                <th scope="col" class="border-0 rounded-start">Unit Of Measure</th>
+                                <th scope="col" class="border-0 rounded-start">@Model.lblUnitOfMeasure</th>
                             }
                             @if (Model.SelectedColumns.Contains("chemical"))
                             {
-                                <th scope="col" class="border-0 rounded-start">Chemical</th>
+                                <th scope="col" class="border-0 rounded-start">@Model.lblChemical</th>
                             }
                             @if (Model.SelectedColumns.Contains("hazardType"))
                             {
-                                <th scope="col" class="border-0 rounded-start">Hazard Type</th>
+                                <th scope="col" class="border-0 rounded-start">@Model.lblHazardType</th>
                             }
                             @* <th scope="col" class="border-0 rounded-start">Expiry Date</th>
                             <th scope="col" class="border-0 rounded-start">Type Of Asset</th> *@
@@ -285,11 +285,11 @@
                             <th scope="col" class="border-0 rounded-start">Reorder Limit</th> *@
                             @if (Model.SelectedColumns.Contains("quantity"))
                             {
-                                <th scope="col" class="border-0 rounded-start">Quantity Available</th>
+                                <th scope="col" class="border-0 rounded-start">@Model.lblQuantity</th>
                             }
                             @if (Model.SelectedColumns.Contains("warehouse"))
                             {
-                                <th scope="col" class="border-0 rounded-start">Warehouse Name</th>
+                                <th scope="col" class="border-0 rounded-start">@Model.lblStoreName</th>
                             }
                             @* <th scope="col" class="border-0 rounded-start">Date Of Entry</th>
                             <th scope="col" class="border-0 rounded-start">Room</th>
