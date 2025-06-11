@@ -253,7 +253,7 @@ document.addEventListener("DOMContentLoaded", function () {
         {
             <div class="col text-end position-relative">
                 <button type="button" id="toggleFilterDropdown" class="btn btn-secondary">
-                    Filter
+                    @Model.lblFilter
                 </button>
 
                 <!-- Filter Panel -->
@@ -263,23 +263,23 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     <!-- Left: Filter Categories -->
                     <div class="border-end p-2" style="width: 40%; overflow-y: auto; position: relative;">
-                        <div class="fw-bolder text-center mb-2">Filter By</div>
-                        <div class="filter-option text-primary mb-2" onclick="showFilterValues('status')" style="cursor: pointer;">Status</div>
-                        <div class="filter-option text-primary mb-2" onclick="showFilterValues('storeName')" style="cursor: pointer;">Warehouse Name</div>
-                        <div class="filter-option text-primary mb-2" onclick="showFilterValues('requestingPlace')" style="cursor: pointer;">Requesting Place</div>
+                        <div class="fw-bolder text-center mb-2">@Model.lblFilterBy</div>
+                        <div class="filter-option text-primary mb-2" onclick="showFilterValues('status')" style="cursor: pointer;">@Model.lblLStatus</div>
+                        <div class="filter-option text-primary mb-2" onclick="showFilterValues('storeName')" style="cursor: pointer;">@Model.StoreName</div>
+                        <div class="filter-option text-primary mb-2" onclick="showFilterValues('requestingPlace')" style="cursor: pointer;">@Model.lblRequestingPlace</div>
 
                         <!-- Clear Filters Button -->
                         <button type="button" class="btn btn-primary"
                             style="position: absolute; bottom: 10px; left: 10px;"
                             onclick="window.location.href='/Disbursements'">
-                            Clear Filters
+                           @Model.lblClearFilters
                         </button>
                     </div>
 
                     <!-- Right: Dynamic Filter Values + Apply Button -->
                     <div class="p-2" id="filterValues"
                         style="width: 60%; overflow-y: auto; border-left: 1px solid #eee;">
-                        <div class="text-muted">Select a filter from left</div>
+                        <div class="text-muted">@Model.lblSelectFilterLeft</div>
                     </div>
                 </div>
             </div>
@@ -398,7 +398,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     <div class="form-check mb-1 text-center mt-2">
                         <button type="submit" name="action" value="updateColumns" class="btn btn-success btn-sm">
-                            Ok
+                            @Model.lblOk
                         </button>
                     </div>
 

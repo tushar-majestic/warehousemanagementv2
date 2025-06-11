@@ -44,7 +44,7 @@ namespace LabMaterials.Pages
         lblDocumentDate, lblDocumentNo, lblBasedOnDocument, lblComments, lblUnitPrice, lblTotalPrice, lblQuantity, lblUnitOfMeasure,
         lblItemNameDescription, lblItemNo, lblCount, lblSAR, lblRiyal, lblChiefResponsible, lblTechnicalMember, lblRecipient, lblSignature, lblName,
         lblDate, lblcreateItemCard, lbldeductItemCard, lblItemMovement, lblStores, lblItemCard, lblCeiling, lblReorderLimit, lblMinimum, lblItemNoCode, lblItemNameArabic, lblQuantityReceived, lblDateOfEntryInWarehouse, lblSourceSupplier, lblAmountSpent, lblPartyDirected, lblRemainingBalance, lblDispensingDocumentNo, lblPrint,
-        lblViewReceivingReport, lblReceivingReport,lblBack, lblOk, lblRequestDate, lblViewMaterialDispensing, lblSubmit, lblOrderNumber, lblOrderDate, lblSector, lblStoreName, lblReason, lblAction, lblEdit, lblCreatedAt, lblFromSector, lblToSector, lblWarehouse, lblReasonForReturn, lblSurplus, lblExpired, lblInvalid, lblDamaged, lblAdditionalNotes, lblReturnedItems, lblItemNameEng, lblItemCode, lblDesc, lblQty, lblExpiry, lblRecommendedAction, lblCommitteeNotes, lblApplicantSectorName, lblRequestSentSector, lblInspCommitteeRecommendations, lblReturned, lblItemDescription, lblReturnRequestDetails, lblReturnItemRequest, lblFilter, lblUpdate;
+        lblViewReceivingReport, lblReceivingReport,lblBack, lblOk, lblRequestDate, lblViewMaterialDispensing, lblSubmit, lblOrderNumber, lblOrderDate, lblSector, lblStoreName, lblReason, lblAction, lblEdit, lblCreatedAt, lblFromSector, lblToSector, lblWarehouse, lblReasonForReturn, lblSurplus, lblExpired, lblInvalid, lblDamaged, lblAdditionalNotes, lblReturnedItems, lblItemNameEng, lblItemCode, lblDesc, lblQty, lblExpiry, lblRecommendedAction, lblCommitteeNotes, lblApplicantSectorName, lblRequestSentSector, lblInspCommitteeRecommendations, lblReturned, lblItemDescription, lblReturnRequestDetails, lblReturnItemRequest, lblFilter, lblUpdate, lblFilterBy, lblLStatus, lblRequestingPlace, lblClearFilters, lblSelectFilterLeft, lblItemGroup, lblChemical, lblHazardType, lblAvailableQuantity;
 
 
         public override void OnPageHandlerExecuting(PageHandlerExecutingContext context)
@@ -240,6 +240,15 @@ namespace LabMaterials.Pages
             this.lblReturnItemRequest = (Program.Translations["ReturnItemRequest"][Lang]);
             this.lblFilter = (Program.Translations["Filter"][Lang]);
             this.lblUpdate = (Program.Translations["Update"][Lang]);
+            this.lblFilterBy = (Program.Translations["FilterBy"][Lang]);
+            this.lblLStatus = (Program.Translations["Status"][Lang]);
+            this.lblRequestingPlace = (Program.Translations["RequestingPlace"][Lang]);
+            this.lblClearFilters = (Program.Translations["ClearFilters"][Lang]);
+            this.lblSelectFilterLeft = (Program.Translations["SelectFilterLeft"][Lang]);
+            this.lblItemGroup = (Program.Translations["ItemGroup"][Lang]);
+            this.lblChemical = (Program.Translations["Chemical"][Lang]);
+            this.lblHazardType = (Program.Translations["HazardType"][Lang]);
+            this.lblAvailableQuantity = (Program.Translations["AvailableQuantity"][Lang]);
 
 
 

@@ -1966,6 +1966,14 @@
   "ReturnItemRequest": {
     "en": "Return Item Request",
     "ar": "طلب إرجاع السلعة"
+  },
+  "Status" : {
+    "en" :"Status",
+    "ar" : "وضع"
+  },
+  "SelectFilterLeft":{
+    "en" : "Select a filter from left",
+    "ar" : "حدد مرشحًا من اليسار."
   }
 
 
