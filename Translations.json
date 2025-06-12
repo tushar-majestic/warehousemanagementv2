@@ -1974,7 +1974,28 @@
   "SelectFilterLeft":{
     "en" : "Select a filter from left",
     "ar" : "حدد مرشحًا من اليسار."
+  },
+  "ManageHazardTypes" : {
+    "en" : "Manage Hazard Types",
+    "ar" : "إدارة أنواع المخاطر"
+  },
+  "ManageDocumentType" : {
+    "en" : "Manage Document Type",
+    "ar" : "إدارة نوع الوثيقة"
+  },
+  "AddHazardType" : {
+    "en" : "Add Hazard Type",
+    "ar" : "أضف نوع الخطر"
+  },
+  "Details" : {
+    "en" : "Details",
+    "ar" : "تفاصيل"
+  },
+  "AddDocumentType" : {
+    "en" : "Add Document Type",
+    "ar" : "إضافة نوع الوثيقة"
   }
+
 
 
 
