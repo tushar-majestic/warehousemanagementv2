@@ -188,7 +188,7 @@ namespace LabMaterials.Pages
             }
             else
             {
-                var itemId = dbContext.Storages.First(s => s.StoreId == StoreId && s.AvailableQuantity > 0).ItemId;
+                //var itemId = dbContext.Storages.First(s => s.StoreId == StoreId && s.AvailableQuantity > 0).ItemId;
                 Message = string.Format((Program.Translations["StoreNotDeleted"])[Lang]);
                 FillData(null, null);
                 LoadSelectedColumns();

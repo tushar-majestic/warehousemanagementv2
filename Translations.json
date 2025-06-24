@@ -788,8 +788,8 @@
     "ar": "تم حذف المستودع {0}"
   },
   "StoreNotDeleted": {
-    "en": "The Warehouse cannot be deleted as there are items {0} in this warehouse, like {1}",
-    "ar": "لا يمكن حذف المستودع نظرا لوجود أصناف {0} في هذا المستودع، مثل {1}"
+    "en": "The Warehouse cannot be deleted as there are items  in this warehouse.",
+    "ar": "لا يمكن حذف المستودع نظرا لوجود أصناف  في هذا المستودع، مثل "
   },
   "StorageDeleted": {
     "en": "Storage of item {0} deleted",

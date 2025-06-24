@@ -772,6 +772,10 @@ document.addEventListener("DOMContentLoaded", function () {
                     {
                     <th scope="col" class="border-0">@Model.lblRiskRating</th>
                     }
+                    @if (Model.SelectedColumns.Contains("stateofMatter"))
+                    {
+                    <th scope="col" class="border-0">@Model.lblStateofMatter</th>
+                    }
                     @if (Model.SelectedColumns.Contains("typeName"))
                     {
                     <th scope="col" class="border-0">@Model.lblTypeName</th>
@@ -784,10 +788,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     {
                     <th scope="col" class="border-0">@Model.lblGroupName</th>
                     }
-                    @* @if (Model.SelectedColumns.Contains("stateofMatter"))
-                    {
-                    <th scope="col" class="border-0">@Model.lblStateofMatter</th>
-                    } *@
+                    
                     @if (Model.SelectedColumns.Contains("expiry"))
                     {
                     <th scope="col" class="border-0">@Model.lblExpiryDate</th>
@@ -817,6 +818,10 @@ document.addEventListener("DOMContentLoaded", function () {
                             {
                             <td style='color: @(item.Chemical == true ?"red":"teal")'>@item.RiskRating</td>
                             }
+                            @if (Model.SelectedColumns.Contains("stateofMatter"))
+                            {
+                            <td>@item.StateofMatter</td>
+                            }
                             @if (Model.SelectedColumns.Contains("typeName"))
                             {
                             <td>@item.TypeName</td>
@@ -829,10 +834,6 @@ document.addEventListener("DOMContentLoaded", function () {
                             {
                             <td>@item.GroupDesc</td>
                             }
-                            @* @if (Model.SelectedColumns.Contains("stateofMatter"))
-                            {
-                            <td>@item.StateofMatter</td>
-                            } *@
                             @if (Model.SelectedColumns.Contains("expiry"))
                             {
                                 <td>@(item.ExpiryDate.HasValue ? item.ExpiryDate.Value.ToString("dd-MM/yyyy") : "")</td>
