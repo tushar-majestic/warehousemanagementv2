@@ -368,11 +368,10 @@
         </div>
     </div>
 
-    <div class="d-flex align-items-center justify-content-between">
-        @* <div>@Model.lblTotalItem : @Model.TotalItems</div> *@
-        <div>
+    @* <div class="d-flex align-items-center justify-content-between">
+        <div> *@
              @if (Model.TotalPages > 1)
-    {
+            {
         <nav aria-label="Page navigation" style="direction: ltr;">
             <ul class="pagination">
 
@@ -451,9 +450,9 @@
             </ul>
         </nav>
     }
-        </div>
+        @* </div>
 
-    </div>
+    </div> *@
 
 
 

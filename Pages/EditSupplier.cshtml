@@ -80,11 +80,18 @@
                 <form method="post" class="card-body">
                     <div class="row mb-4">
 
+                        <div class="mb-4">
 
+                            <label>@Model.lblSupplierType</label>
+                                <select class="form-select" asp-for="SupplierType">
+                                <option value="Internal" >Internal</option>
+                                <option value="External" >External</option>
+                            </select>
+                        </div>
                         <div class="col-lg-12 col-sm-12">
                             <input type="hidden" name="SupplierId" value="@Model.SupplierId" />
                             <div class="mb-4">
-                                <label for="SupplierName">@Model.lblSupplierName</label>
+                                <label for="SupplierName">@Model.lblCompanyName</label>
                                 <input type="text" class="form-control" id="SupplierName" name="SupplierName"
                                     value="@Model.SupplierName" />
 
@@ -103,14 +110,7 @@
 
                             </div>
 
-                            <div class="mb-4">
-
-                                <label>@Model.lblSupplierType</label>
-                                    <select class="form-select" asp-for="SupplierType">
-                                    <option value="Internal" >Internal</option>
-                                    <option value="External" >External</option>
-                                </select>
-                            </div>
+                           
 
                             <div class="mb-4">
                                 <label for="ExtensionNumber">@Model.lblExtensionNumber</label>
