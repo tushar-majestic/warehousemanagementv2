@@ -1994,6 +1994,22 @@
   "AddDocumentType" : {
     "en" : "Add Document Type",
     "ar" : "إضافة نوع الوثيقة"
+  },
+  "Alerts": {
+    "en": "Alerts",
+    "ar": "التنبيهات"
+  },
+  "Maximum":{
+    "en": "Maximum",
+    "ar": "الحد الأقصى"
+  },
+  "Reorder":{
+    "en": "Re-order",
+    "ar": "إعادة الطلب"
+  },
+  "Notmoved":{
+    "en": "Not Moved",
+    "ar": "لم يتم نقله"
   }
 
 
