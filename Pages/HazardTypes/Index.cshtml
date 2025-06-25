@@ -28,7 +28,7 @@
     </div>
     <div class="btn-toolbar mb-2 mb-md-0 d-flex flex-wrap">
         <div class="btn-group d-flex mx-3 ms-lg-3">
-            <a asp-page="Create" class="btn btn-primary">+ Add Hazard Type</a>
+            <a asp-page="Create" class="btn btn-primary">+ @Model.lblAddHazardType</a>
         </div>
     </div>
 </div>
@@ -55,11 +55,11 @@
                                     @* <div class="btn-group d-flex mx-3 ms-lg-3">
                                         <a asp-page="./Edit" asp-route-id="@item.HazardTypeName" class="btn btn-primary">Edit</a>
                                     </div> *@
+                                    @* <div class="btn-group d-flex mx-3 ms-lg-3">
+                                        <a asp-page="./Details" asp-route-id="@item.HazardTypeName" class="btn btn-secondary">@Model.lblDetails</a>
+                                    </div> *@
                                     <div class="btn-group d-flex mx-3 ms-lg-3">
-                                        <a asp-page="./Details" asp-route-id="@item.HazardTypeName" class="btn btn-secondary">Details</a>
-                                    </div>
-                                    <div class="btn-group d-flex mx-3 ms-lg-3">
-                                        <a asp-page="./Delete" asp-route-id="@item.HazardTypeName" class="btn btn-danger">Delete</a>
+                                        <a asp-page="./Delete" asp-route-id="@item.HazardTypeName" class="btn btn-danger">@Model.lblDelete</a>
                                     </div>
                                 </div>
                             </td>

@@ -191,22 +191,22 @@
                     <div class="form-check mb-1">
                         <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="supplierName"
                             id="supplierName" @(Model.SelectedColumns.Contains("supplierName") ? "checked" : "")>
-                        <label class="form-check-label" for="supplierName">SupplierName</label>
+                        <label class="form-check-label" for="supplierName">@Model.lblSupplierName</label>
                     </div>
                     <div class="form-check mb-1">
                         <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="itemName"
                             id="itemName" @(Model.SelectedColumns.Contains("itemName") ? "checked" : "")>
-                        <label class="form-check-label" for="itemName">ItemName</label>
+                        <label class="form-check-label" for="itemName">@Model.lblItemName</label>
                     </div>
                     <div class="form-check mb-1">
                         <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="quantity"
                             id="quantity" @(Model.SelectedColumns.Contains("quantity") ? "checked" : "")>
-                        <label class="form-check-label" for="quantity">Quantity</label>
+                        <label class="form-check-label" for="quantity">@Model.lblQuantityReceived</label>
                     </div>
                     <div class="form-check mb-1">
                         <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="receivedDate"
                             id="receivedDate" @(Model.SelectedColumns.Contains("receivedDate") ? "checked" : "")>
-                        <label class="form-check-label" for="receivedDate">ReceivedDate</label>
+                        <label class="form-check-label" for="receivedDate">@Model.lblReceivedAt</label>
                     </div>
                     @* <div class="form-check mb-1">
                         <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="inventoryBalance"

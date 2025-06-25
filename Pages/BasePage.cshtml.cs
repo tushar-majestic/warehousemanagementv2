@@ -44,7 +44,7 @@ namespace LabMaterials.Pages
         lblDocumentDate, lblDocumentNo, lblBasedOnDocument, lblComments, lblUnitPrice, lblTotalPrice, lblQuantity, lblUnitOfMeasure,
         lblItemNameDescription, lblItemNo, lblCount, lblSAR, lblRiyal, lblChiefResponsible, lblTechnicalMember, lblRecipient, lblSignature, lblName,
         lblDate, lblcreateItemCard, lbldeductItemCard, lblItemMovement, lblStores, lblItemCard, lblCeiling, lblReorderLimit, lblMinimum, lblItemNoCode, lblItemNameArabic, lblQuantityReceived, lblDateOfEntryInWarehouse, lblSourceSupplier, lblAmountSpent, lblPartyDirected, lblRemainingBalance, lblDispensingDocumentNo, lblPrint,
-        lblViewReceivingReport, lblReceivingReport,lblBack, lblOk, lblRequestDate, lblViewMaterialDispensing, lblSubmit, lblOrderNumber, lblOrderDate, lblSector, lblStoreName, lblReason, lblAction, lblEdit, lblCreatedAt, lblFromSector, lblToSector, lblWarehouse, lblReasonForReturn, lblSurplus, lblExpired, lblInvalid, lblDamaged, lblAdditionalNotes, lblReturnedItems, lblItemNameEng, lblItemCode, lblDesc, lblQty, lblExpiry, lblRecommendedAction, lblCommitteeNotes, lblApplicantSectorName, lblRequestSentSector, lblInspCommitteeRecommendations, lblReturned, lblItemDescription, lblReturnRequestDetails, lblReturnItemRequest, lblFilter, lblUpdate, lblFilterBy, lblLStatus, lblRequestingPlace, lblClearFilters, lblSelectFilterLeft, lblItemGroup, lblChemical, lblHazardType, lblAvailableQuantity, lblManageHazardTypes, lblManageDocumentType, lblUsers, lblAddHazardType,lblDetails, lblAddDocumentType, lblAlerts, lblMaximum, lblReorder, lblNotmoved;
+        lblViewReceivingReport, lblReceivingReport,lblBack, lblOk, lblRequestDate, lblViewMaterialDispensing, lblSubmit, lblOrderNumber, lblOrderDate, lblSector, lblStoreName, lblReason, lblAction, lblEdit, lblCreatedAt, lblFromSector, lblToSector, lblWarehouse, lblReasonForReturn, lblSurplus, lblExpired, lblInvalid, lblDamaged, lblAdditionalNotes, lblReturnedItems, lblItemNameEng, lblItemCode, lblDesc, lblQty, lblExpiry, lblRecommendedAction, lblCommitteeNotes, lblApplicantSectorName, lblRequestSentSector, lblInspCommitteeRecommendations, lblReturned, lblItemDescription, lblReturnRequestDetails, lblReturnItemRequest, lblFilter, lblUpdate, lblFilterBy, lblLStatus, lblRequestingPlace, lblClearFilters, lblSelectFilterLeft, lblItemGroup, lblChemical, lblHazardType, lblAvailableQuantity, lblManageHazardTypes, lblManageDocumentType, lblUsers, lblAddHazardType,lblDetails, lblAddDocumentType, lblAlerts, lblMaximum, lblReorder, lblNotmoved, lblLastActivity, lblAttachment,lblDownloadFile, lblUnits, lblDelete, lblCreate, lblDocumentTypes,lblDocumentType, lblCreateDocumentType, lblCancel, lblSave, lblId,lblAddStoreType, lblStoreType, lblAddMore, lblRemove, lblItem, lblSelectItemGroup,lblSelectFiscalYear,lblSelectReceivingWarehouse,lblSelectBasedOndocument, lblSelectSupplierName, lblRiskRating, lblCreateReturnRequest, lblStateofMatter, lblSelectState, lblReturnQuantity,lblSelectApplicantSector, lblSelectStore, lblEditReturnRequest, lblAddRecyclingNotesItems, lblSelectRecommendedAction, lblRecyclingNotes,lblAddRecommendations, lblSelectItem, lblReturnNotes ;
 
 
         public override void OnPageHandlerExecuting(PageHandlerExecutingContext context)
@@ -259,6 +259,42 @@ namespace LabMaterials.Pages
             this.lblMaximum = (Program.Translations["Maximum"])[Lang];
             this.lblReorder = (Program.Translations["Reorder"])[Lang];
             this.lblNotmoved = (Program.Translations["Notmoved"])[Lang];
+            this.lblLastActivity = (Program.Translations["LastActivity"])[Lang];
+            this.lblAttachment = (Program.Translations["Attachment"])[Lang];
+            this.lblDownloadFile = (Program.Translations["DownloadFile"])[Lang];
+            this.lblUnits = (Program.Translations["Units"])[Lang];
+            this.lblDelete = (Program.Translations["Delete"])[Lang];
+            this.lblCreate = (Program.Translations["Create"])[Lang];
+            this.lblDocumentTypes = (Program.Translations["DocumentTypes"])[Lang];
+            this.lblDocumentType = (Program.Translations["DocumentType"])[Lang];
+            this.lblCreateDocumentType = (Program.Translations["CreateDocumentType"])[Lang];
+            this.lblCancel = (Program.Translations["Cancel"])[Lang];
+            this.lblSave = (Program.Translations["Save"])[Lang];
+            this.lblId = (Program.Translations["Id"])[Lang];
+            this.lblAddStoreType = (Program.Translations["AddStoreType"])[Lang];
+            this.lblStoreType = (Program.Translations["StoreType"])[Lang];
+            this.lblAddMore = (Program.Translations["AddMore"])[Lang];
+            this.lblItem = (Program.Translations["Item"])[Lang];
+            this.lblRemove = (Program.Translations["Remove"])[Lang];
+            this.lblSelectItemGroup = (Program.Translations["SelectItemGroup"])[Lang];
+            this.lblSelectFiscalYear = (Program.Translations["SelectFiscalYear"])[Lang];
+            this.lblSelectReceivingWarehouse = (Program.Translations["SelectReceivingWarehouse"])[Lang];
+            this.lblSelectBasedOndocument = (Program.Translations["SelectBasedOndocument"])[Lang];
+            this.lblSelectSupplierName = (Program.Translations["SelectSupplierName"])[Lang];
+            this.lblRiskRating = (Program.Translations["RiskRating"])[Lang];
+            this.lblCreateReturnRequest = (Program.Translations["CreateReturnRequest"])[Lang];
+            this.lblStateofMatter = (Program.Translations["StateofMatter"])[Lang];
+            this.lblSelectState = (Program.Translations["SelectState"])[Lang];
+            this.lblReturnQuantity = (Program.Translations["ReturnQuantity"])[Lang];
+            this.lblSelectApplicantSector = (Program.Translations["ReturnQuantity"])[Lang];
+            this.lblSelectStore = (Program.Translations["SelectStore"])[Lang];
+            this.lblEditReturnRequest = (Program.Translations["EditReturnRequest"])[Lang];
+            this.lblAddRecyclingNotesItems = (Program.Translations["AddRecyclingNotesItems"])[Lang];
+            this.lblSelectRecommendedAction = (Program.Translations["SelectRecommendedAction"])[Lang];
+            this.lblRecyclingNotes = (Program.Translations["RecyclingNotes"])[Lang];
+            this.lblAddRecommendations = (Program.Translations["AddRecommendations"])[Lang];
+            this.lblSelectItem = (Program.Translations["SelectItem"])[Lang];
+            this.lblReturnNotes = (Program.Translations["ReturnNotes"])[Lang];
 
 
 

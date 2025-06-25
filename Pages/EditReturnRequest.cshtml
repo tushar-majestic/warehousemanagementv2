@@ -21,18 +21,18 @@
                     </li>
                     <li class="breadcrumb-item d-flex align-items-center">
                         <img src="images/inventory.png" alt="Home" width="16" height="16" class="me-2" />
-                        Edit Return Request
+                        @Model.lblEditReturnRequest
                     </li>
                 </ol>
             </nav>
             @if(Model.UserGroupName == "Return Inspection Committee Officer"){
-                <h1 class="h4">Add Committee Recommendations</h1>
+                <h1 class="h4">@Model.lblAddRecommendations</h1>
             }
             else if(Model.UserGroupName == "Recycling Officer"){
-              <h1 class="h4">Add Recycling Notes to Recycling Items</h1>
+              <h1 class="h4">@Model.lblAddRecyclingNotesItems</h1>
             }
             else{
-                <h1 class="h4">Edit Return Request</h1>
+                <h1 class="h4">@Model.lblEditReturnRequest</h1>
             }
             
         </div>
@@ -66,9 +66,9 @@
                                         
 
                                         <div class="col-md-6 mb-4">
-                                            <label>Item Group</label>
+                                            <label>@Model.lblItemGroup</label>
                                             <select class="form-select item-group-select" name="ReturnItems[@i].ItemGroup" asp-for="ReturnItems[@i].ItemGroup"  id="itemGroup_@i" onchange="filterItemsByGroup(@i)">
-                                                <option value="">Select Group</option>
+                                                <option value="">@Model.lblSelectItemGroup</option>
                                                 @foreach (var group in Model.ItemGroups)
                                                 {
                                                     <option value="@group.GroupCode">@group.GroupDesc</option>
@@ -78,10 +78,10 @@
                                         </div>
                                       
                                         <div class="col-md-6 mb-4">
-                                            <label>Arabic Item Name</label>
+                                            <label>@Model.lblItemNameArabic</label>
                                             <select class="form-select ArabicItemName" name="ReturnItems[@i].ItemCardId"  asp-for="@Model.ReturnItems[@i].ItemCardId" 
                                                     onchange="onItemChange(this, @i)">
-                                                <option value="">Select Item</option>
+                                                <option value="">@Model.lblSelectItem</option>
                                                 @foreach (var item in Model.ItemCards)
                                                 {   
                                                     var Item = Model.AllItems.FirstOrDefault(i => i.ItemId == item.ItemId);
@@ -101,7 +101,7 @@
                                             </select>
                                         </div>
                                         <div class="col-md-6 mb-4">
-                                            <label>Item Code</label>
+                                            <label>@Model.lblItemCode</label>
                                             <input type="text" name="ReturnItems[@i].ItemCode" class="form-control ItemCode" value="@Model.ReturnItems[@i].ItemCode"  readonly />
                                         </div>
 
@@ -113,15 +113,15 @@
                                         <input hidden type="text" name="ReturnItems[@i].ItemNameEnglish" class="form-control ItemNameEnglish"  />
                                         
                                         <div class="col-md-6 mb-4">
-                                            <label>Item Description</label>
+                                            <label>@Model.lblItemDescription</label>
                                             <input type="text" name="ReturnItems[@i].ItemDescription" class="form-control ItemDescription"  value="@Model.ReturnItems[@i].ItemDescription"  readonly/>
                                         </div>
                                         <div class="col-md-6 mb-4">
-                                            <label>Chemical</label>
+                                            <label>@Model.lblChemical</label>
                                             <input type="text" name="ReturnItems[@i].Chemical" class="form-control chemical" value="@Model.ReturnItems[@i].Chemical" readonly />
                                         </div>
                                         <div class="col-md-6 mb-4">
-                                            <label>Risk Rating</label>
+                                            <label>@Model.lblRiskRating</label>
                                             <input type="text" name="ReturnItems[@i].RiskRating" value="@Model.ReturnItems[@i].RiskRating" class="form-control RiskRating"  readonly/>
                                         </div>
                                         @* <div class="col-md-6 mb-4">
@@ -131,9 +131,9 @@
                                         </div> *@
 
                                         <div class="col-md-6 mb-4">
-                                            <label>State of Matter</label>
+                                            <label>@Model.lblStateofMatter</label>
                                             <select name="ReturnItems[@i].StateOfMatter" class="form-select" required>
-                                            <option value="">Select State</option>
+                                            <option value="">@Model.lblSelectState</option>
                                             @foreach (var state in Model.StateOfMatters)
                                             {
                                                 var isSelected = state.Value == Model.ReturnItems[i].StateOfMatter;
@@ -146,19 +146,19 @@
 
                                         </div>
                                         <div class="col-md-6 mb-4">
-                                            <label>Expiry Date</label>
+                                            <label>@Model.lblExpiry</label>
                                             <input type="date" name="ReturnItems[@i].ExpiryDate"  value="@Model.ReturnItems[@i].ExpiryDate?.ToString("yyyy-MM-dd")" class="form-control ExpDate"   />
                                         </div>
                                         <div class="col-md-6 mb-4">
-                                            <label>Unit of Measure</label>
+                                            <label>@Model.lblUnitOfMeasure</label>
                                             <input type="text" name="ReturnItems[@i].UnitOfMeasure" value="@Model.ReturnItems[@i].UnitOfMeasure" class="form-control UnitofMeasure"  readonly/>
                                         </div>
                                         <div class="col-md-6 mb-4">
-                                            <label>Return Quantity</label>
+                                            <label>@Model.lblReturnQuantity</label>
                                             <input type="number" name="ReturnItems[@i].ReturnedQuantity" value="@Model.ReturnItems[@i].ReturnedQuantity" class="form-control"  />
                                         </div>
                                         <div class="col-12 mb-4">
-                                            <label>Return Notes</label>
+                                            <label>@Model.lblReturnNotes</label>
                                             <textarea name="ReturnItems[@i].ReturnNotes" value="@Model.ReturnItems[@i].ReturnNotes" class="form-control" rows="2" > @Model.ReturnItems[@i].ReturnNotes</textarea>
                                         </div>
 
@@ -167,11 +167,11 @@
                                 </div>
                             }
                         </div>
-                        <button type="button" class="btn btn-secondary mb-3" id="addEntryBtn" >Add More Items</button>
+                        <button type="button" class="btn btn-secondary mb-3" id="addEntryBtn" >@Model.lblAddMore</button>
 
                         
                         <div class="mb-4">
-                            <label>Order Date</label>
+                            <label>@Model.lblOrderDate</label>
                             <input type="date" name="OrderDate" class="form-control" value="@Model.Report.OrderDate.ToString("yyyy-MM-dd")" />
                         </div>
 
@@ -197,11 +197,11 @@
                             @{
                                 var store = Model.Stores.FirstOrDefault(s=> s.StoreId == Model.Report.WarehouseId);
                             }
-                            <p><b>Store</b>: @store.StoreName</p>                        
+                            <p><b>@Model.lblStoreName</b>: @store.StoreName</p>                        
                         
                         </div>
                         <div class="mb-4">
-                            <label>Reason for Return</label><br />
+                            <label>@Model.lblReasonForReturn</label><br />
                             <div class="form-check">
                                 <input type="radio" class="form-check-input" name="ReasonForReturn" value="SurPlus"   @(Model.Report.IsSurplus ? "checked" : "")/>
                                 <label class="form-check-label">Surplus</label>

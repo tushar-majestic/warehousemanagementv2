@@ -15,31 +15,31 @@
                 </li>
                 <li class="breadcrumb-item d-flex align-items-center">
                     <img src="images/management.png" alt="Home" width="16" height="16" class="me-2" />
-                    <a href="/ManageUsers" class="text-decoration-none">Users</a>
+                    <a href="/ManageUsers" class="text-decoration-none">@Model.lblUsers</a>
                 </li>
                  <li class="breadcrumb-item d-flex align-items-center">
                     <img src="images/management.png" alt="Home" width="16" height="16" class="me-2" />
-                    <a href="/ViewDoctypes" class="text-decoration-none">Document Types</a>
+                    <a href="/ViewDoctypes" class="text-decoration-none">@Model.lblDocumentTypes</a>
                 </li>
                 <li class="breadcrumb-item d-flex align-items-center">
                     <img src="images/management.png" alt="Home" width="16" height="16" class="me-2" />
-                    Add Document Types
+                    @Model.lblAddDocumentType
                 </li>
             </ol>
         </nav>
-        <h2 class="h4">Create Document Type</h2>
+        <h2 class="h4">@Model.lblCreateDocumentType</h2>
     </div>
 </div>
 
 <form method="post">
     <div class="mb-3">
-        <label asp-for="DocumentType.DocType" class="form-label">Document Type</label>
+        <label asp-for="DocumentType.DocType" class="form-label">@Model.lblDocumentType</label>
         <input asp-for="DocumentType.DocType" class="form-control" />
         <span asp-validation-for="DocumentType.DocType" class="text-danger"></span>
     </div>
 
-    <button type="submit" class="btn btn-primary">Create</button>
-    <a asp-page="ManageUsers" class="btn btn-secondary">Cancel</a>
+    <button type="submit" class="btn btn-primary">@Model.lblCreate</button>
+    <a asp-page="ManageUsers" class="btn btn-secondary">@Model.lblCancel</a>
 </form>
 
 @section Scripts {

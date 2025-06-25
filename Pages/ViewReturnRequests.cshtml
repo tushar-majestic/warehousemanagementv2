@@ -116,27 +116,27 @@
                 <div class="form-check mb-1">
                     <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="orderNumber"
                         id="orderNumber" @(Model.SelectedColumns.Contains("orderNumber") ? "checked" : "")>
-                    <label class="form-check-label" for="orderNumber">OrderNumber</label>
+                    <label class="form-check-label" for="orderNumber">@Model.lblOrderNumber</label>
                 </div>
                 <div class="form-check mb-1">
                     <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="orderDate"
                         id="orderDate" @(Model.SelectedColumns.Contains("orderDate") ? "checked" : "")>
-                    <label class="form-check-label" for="orderDate">OrderDate</label>
+                    <label class="form-check-label" for="orderDate">@Model.lblOrderDate</label>
                 </div>
                 <div class="form-check mb-1">
                     <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="sector"
                         id="sector" @(Model.SelectedColumns.Contains("sector") ? "checked" : "")>
-                    <label class="form-check-label" for="sector">Sector</label>
+                    <label class="form-check-label" for="sector">@Model.lblSector</label>
                 </div>
                 <div class="form-check mb-1">
                     <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="store"
                         id="store" @(Model.SelectedColumns.Contains("store") ? "checked" : "")>
-                    <label class="form-check-label" for="store">Store</label>
+                    <label class="form-check-label" for="store">@Model.lblStoreName</label>
                 </div>
                 <div class="form-check mb-1">
                     <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="reason"
                         id="reason" @(Model.SelectedColumns.Contains("reason") ? "checked" : "")>
-                    <label class="form-check-label" for="reason">Reason</label>
+                    <label class="form-check-label" for="reason">@Model.lblReason</label>
                 </div>
 
                 <div class="form-check mb-1 text-center">
