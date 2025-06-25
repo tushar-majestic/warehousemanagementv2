@@ -2010,23 +2010,113 @@
   "Notmoved":{
     "en": "Not Moved",
     "ar": "لم يتم نقله"
+  },
+  "LastActivity":{
+    "en": "Last Activity",
+    "ar": "النشاط الأخير"
+  },
+  "Attachment":{
+    "en": "Attachment",
+    "ar": "الملف مرفق"
+  },
+  "DownloadFile" : {
+    "en": "Download File",
+    "ar": "تنزيل الملف"
+  },
+  "Create": {
+    "en": "Create",
+    "ar": "يخلق"
+  },
+ "DocumentTypes": {
+    "en": "Document Types",
+    "ar": "أنواع المستندات"
+  },
+  "CreateDocumentType": {
+    "en": "Create Document Type",
+    "ar": "إنشاء نوع المستند"
+  },
+  "Save":{
+    "en": "Save",
+    "ar": "يحفظ"
+  },
+  "Id":{
+    "en": "ID",
+    "ar": "ID"
+  },
+  "AddWarehouseType":{
+    "en": "Add Warehouse Type",
+    "ar": "إضافة نوع المستودع"
+  },
+  "AddStoreType":{
+    "en": "Add Store Type",
+    "ar": "أضف نوع المتجر"
+  },
+  "StoreType":{
+    "en": "Store Type",
+    "ar": "نوع المتجر"
+  },
+  "Item":{
+    "en": "Item",
+    "ar": "غرض"
+  },
+  "SelectItemGroup":{
+    "en": "Select Item Group",
+    "ar": "حدد مجموعة العناصر"
+  },
+  "SelectFiscalYear":{
+    "en": "Select Fiscal Year",
+    "ar": "حدد السنة المالية"
+  },
+  "SelectReceivingWarehouse":{
+    "en": "Select Receiving Warehouse",
+    "ar": "حدد مستودع الاستلام"
+  },
+  "SelectBasedOndocument":{
+    "en": "Select Based On document",
+    "ar": "تحديد بناءً على المستند"
+  },
+  "SelectSupplierName":{
+    "en": "Select Supplier Name",
+    "ar": "حدد اسم المورد"
+  },
+  "CreateReturnRequest":{
+    "en": "Create Return Request",
+    "ar": "إنشاء طلب إرجاع"
+  },
+  "SelectItem":{
+    "en": "Select Item",
+    "ar": "حدد العنصر"
+  },
+  "SelectState":{
+    "en": "Select State",
+    "ar": "اختر الولاية"
+  },
+  "ReturnQuantity":{
+    "en": "Return Quantity",
+    "ar": "كمية الإرجاع"
+  },
+  "SelectApplicantSector":{
+    "en": "Select Applicant's Sector",
+    "ar": "Select Applicant's Sector"
+  },
+  "SelectStore":{
+    "en": "Select Store",
+    "ar": "Select Store"
+  },
+  "EditReturnRequest":{
+    "en": "Edit Return Request",
+    "ar": "Edit Return Request"
+  },
+  "AddRecyclingNotesItems":{
+    "en": "Add Recycling Notes to Recycling Items",
+    "ar": "Add Recycling Notes to Recycling Items"
+  },
+  "SelectRecommendedAction":{
+    "en": "Select Recommended Action",
+    "ar": "Select Recommended Action"
+  },
+  "RecyclingNotes" : {
+    "en" : "Recycling Notes",
+    "ar" : "Recycling Notes"
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
-
-
-  
-

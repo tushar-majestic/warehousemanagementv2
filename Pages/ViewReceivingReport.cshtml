@@ -57,7 +57,7 @@
                         <form method="post">
                             <input type="hidden" value="@report.SerialNumber" name="serialNumber" />
                             <input type="hidden" value="@report.Id" name="ReceivingReportId" />
-                            <input type="submit" value="Edit" class="btn btn-secondary" asp-page-handler="Edit" />
+                            <input type="submit" value="@Model.lblEdit" class="btn btn-secondary" asp-page-handler="Edit" />
                         </form>
                     }
                     

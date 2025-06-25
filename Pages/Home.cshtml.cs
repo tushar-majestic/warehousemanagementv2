@@ -85,8 +85,14 @@ namespace LabMaterials.Pages
                 {
                     ErrorMsg = string.Format((Program.Translations["StartDateGreaterThanEndDate"])[Lang]);
                 }
-                countSupplies = dbContext.Supplies.Where(e => e.ReceivedAt >= startDate && e.ReceivedAt <= endDate).Count();
-                countdisbursement = dbContext.DisbursementRequests.Where(e => e.ReqReceivedAt >= startDate && e.ReqReceivedAt <= endDate).Count();
+                // countSupplies = dbContext.Supplies.Where(e => e.ReceivedAt >= startDate && e.ReceivedAt <= endDate).Count();
+                // countdisbursement = dbContext.DisbursementRequests.Where(e => e.ReqReceivedAt >= startDate && e.ReqReceivedAt <= endDate).Count();
+
+                countSupplies = dbContext.ReceivingReports.Where(e => e.ReceivingDate >= startDate && e.ReceivingDate <= endDate).Count();
+                countdisbursement = dbContext.MaterialRequests.Where(e => e.OrderDate >= startDate && e.OrderDate <= endDate).Count();
+
+                Console.WriteLine($"Home count supplies {countSupplies}");
+                Console.WriteLine($"Home count countdisbursement {countdisbursement}");
 
                 //var itemsList = dbContext.Items.Select(item => new
                 //{

@@ -21,11 +21,11 @@
                     </li>
                     <li class="breadcrumb-item d-flex align-items-center">
                         <img src="images/inventory.png" alt="Home" width="16" height="16" class="me-2" />
-                        Create Return Request
+                        @Model.lblCreateReturnRequest
                     </li>
                 </ol>
             </nav>
-              <h1 class="h4">Create Return Request</h1>
+              <h1 class="h4">@Model.lblCreateReturnRequest</h1>
             
         </div>
     </div>
@@ -141,7 +141,7 @@
                     }
                 </div>
 
-                <button type="button" class="btn btn-secondary mb-3" id="addEntryBtn" disabled>Add More Items</button>
+                <button type="button" class="btn btn-secondary mb-3" id="addEntryBtn" disabled>Add More</button>
                 @* <div class="mb-3">
                     <label>Order Number</label>
                     <input type="text" name="OrderNumber" class="form-control" />

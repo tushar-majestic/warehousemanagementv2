@@ -48,7 +48,7 @@
         var StoreName = Model.Stores.FirstOrDefault(i => i.StoreId == MaterialRequest.WarehouseId)?.StoreName ?? "";
         <div class="card mb-4 border shadow-sm">
             <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-                <strong>@Model.lblMaterialDispensing - Serial No: @MaterialRequest.SerialNumber</strong>
+                <strong>@Model.lblMaterialDispensing - @Model.lblSerialNo: @MaterialRequest.SerialNumber</strong>
                 <div>
                     @* <a asp-page="/EditReceivingReport" asp-route-id="@report.Id" class="btn btn-sm btn-success me-2 text-white">Edit</a> *@
                     @* <a asp-page="/PrintReceivingReport" asp-route-id="@report.Id" class="btn btn-sm btn-secondary">Print</a> *@
@@ -58,7 +58,7 @@
                             <form method="post" class="me-2">
                                 <input type="hidden" value="@MaterialRequest.SerialNumber" name="serialNumber" />
                                 <input type="hidden" value="@MaterialRequest.RequestId" name="ReceivingReportId" />
-                                <input type="submit" value="Edit" class="btn btn-secondary" asp-page-handler="Edit" />
+                                <input type="submit" value="@Model.lblEdit" class="btn btn-secondary" asp-page-handler="Edit" />
                             </form>
                         }
 
