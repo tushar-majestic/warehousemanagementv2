@@ -1,4 +1,4 @@
-using LabMaterials.dtos;
+﻿using LabMaterials.dtos;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
@@ -139,7 +139,7 @@ namespace LabMaterials.Pages
                     from cc in colorGroup.DefaultIfEmpty()
                     select new { di, ic, cc }
                 )
-                .AsEnumerable() // ?? Force client-side from here
+                .AsEnumerable() // 🟡 Force client-side from here
                 .GroupBy(x => x.ic.ItemCode)
                 .Select(g =>
                 {
