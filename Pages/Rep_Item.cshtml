@@ -150,7 +150,7 @@
                 </div>
                 
                 <div class="col-4 col-md-2 ps-md-0 mx-3">
-                    <button type="submit" name="action" value="search"class="btn btn-primary">@Model.lblSubmit</button>
+                    <button type="submit" name="action" value="search"class="btn btn-primary">@Model.lblSearch</button>
                 </div>
 
                 <div class="col d-flex justify-content-end gap-2">
@@ -203,7 +203,7 @@
                             </div>
                             <div class="form-check mb-1 text-center">
                                 <button type="submit" name="action" value="updateColumns"
-                                    class="btn btn-success btn-sm">Ok</button>
+                                    class="btn btn-success btn-sm">@Model.lblOk</button>
                             </div>
                         </div>
                     </div>
@@ -218,7 +218,7 @@
         <div>
              @if (Model.TotalPages > 1)
     {
-        <nav aria-label="Page navigation">
+        <nav aria-label="Page navigation" style="direction: ltr;">
             <ul class="pagination">
 
                 @* Previous button *@
@@ -403,7 +403,7 @@
 
     @if (Model.TotalPages > 1)
     {
-        <nav aria-label="Page navigation">
+        <nav aria-label="Page navigation" style="direction: ltr;">
             <ul class="pagination">
 
                 @* Previous button *@

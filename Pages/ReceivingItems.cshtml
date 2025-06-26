@@ -120,66 +120,66 @@
                     <div class="form-check mb-1">
                         <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="serialNumber"
                             id="serialNumber" @(Model.SelectedColumns.Contains("serialNumber") ? "checked" : "")>
-                        <label class="form-check-label" for="serialNumber">serial Number</label>
+                        <label class="form-check-label" for="serialNumber">@Model.lblSerialNo</label>
                     </div>
                     <div class="form-check mb-1">
                         <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="fiscalYear"
                             id="fiscalYear" @(Model.SelectedColumns.Contains("fiscalYear") ? "checked" : "")>
-                        <label class="form-check-label" for="fiscalYear">Fiscal Year</label>
+                        <label class="form-check-label" for="fiscalYear">@Model.lblFiscalYear</label>
                     </div>
                     <div class="form-check mb-1">
                         <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="receivingDate"
                             id="receivingDate" @(Model.SelectedColumns.Contains("receivingDate") ? "checked" : "")>
-                        <label class="form-check-label" for="receivingDate">Receiving Date</label>
+                        <label class="form-check-label" for="receivingDate">@Model.lblReceivingDate</label>
                     </div>
                     <div class="form-check mb-1">
                         <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="receipientSector"
                             id="receipientSector" @(Model.SelectedColumns.Contains("receipientSector") ? "checked" : "")>
-                        <label class="form-check-label" for="receipientSector">Receipient Sector</label>
+                        <label class="form-check-label" for="receipientSector">@Model.lblRecipientSector</label>
                     </div>
                     <div class="form-check mb-1">
                         <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="sectorNumber"
                             id="sectorNumber" @(Model.SelectedColumns.Contains("sectorNumber") ? "checked" : "")>
-                        <label class="form-check-label" for="sectorNumber">Sector Number</label>
+                        <label class="form-check-label" for="sectorNumber">@Model.lblSectorNo</label>
                     </div>
                     <div class="form-check mb-1">
                         <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="receivingWarehouse"
                             id="receivingWarehouse" @(Model.SelectedColumns.Contains("receivingWarehouse") ? "checked" : "")>
-                        <label class="form-check-label" for="receivingWarehouse">Receiving Warehouse</label>
+                        <label class="form-check-label" for="receivingWarehouse">@Model.lblReceivingWarehouse</label>
                     </div>
 
                     <div class="form-check mb-1">
                         <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="basedOnDocument"
                             id="basedOnDocument" @(Model.SelectedColumns.Contains("basedOnDocument") ? "checked" : "")>
-                        <label class="form-check-label" for="basedOnDocument">Based On Document</label>
+                        <label class="form-check-label" for="basedOnDocument">@Model.lblBasedOnDocument</label>
                     </div>
 
                     <div class="form-check mb-1">
                         <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="documentNumber"
                             id="documentNumber" @(Model.SelectedColumns.Contains("documentNumber") ? "checked" : "")>
-                        <label class="form-check-label" for="documentNumber">Document Number</label>
+                        <label class="form-check-label" for="documentNumber">@Model.lblDocumentNo</label>
                     </div>
 
                     <div class="form-check mb-1">
                         <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="documentDate"
                             id="documentDate" @(Model.SelectedColumns.Contains("documentDate") ? "checked" : "")>
-                        <label class="form-check-label" for="documentDate">Document Date</label>
+                        <label class="form-check-label" for="documentDate">@Model.lblDocumentDate</label>
                     </div>
 
                     <div class="form-check mb-1">
                         <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="supplier"
                             id="supplier" @(Model.SelectedColumns.Contains("supplier") ? "checked" : "")>
-                        <label class="form-check-label" for="supplier">Supplier</label>
+                        <label class="form-check-label" for="supplier">@Model.lblSupplierName</label>
                     </div>
 
                     <div class="form-check mb-1">
                         <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="attachment"
                             id="attachment" @(Model.SelectedColumns.Contains("attachment") ? "checked" : "")>
-                        <label class="form-check-label" for="attachment">Attachment</label>
+                        <label class="form-check-label" for="attachment">@Model.lblAttachment</label>
                     </div>
 
                     <div class="form-check mb-1 text-center">
-                        <button type="submit" name="action" value="updateColumns" class="btn btn-success btn-sm">Ok</button>
+                        <button type="submit" name="action" value="updateColumns" class="btn btn-success btn-sm">@Model.lblOk</button>
                     </div>
 
 
@@ -273,58 +273,59 @@
                             
                             @* <th scope="col" class="border-0 rounded-start">#</th> *@
                             @if (Model.SelectedColumns.Contains("serialNumber")){
-                               <th scope="col" class="border-0">Serial Number</th>
+                               <th scope="col" class="border-0">@Model.lblSerialNo</th>
                             }
                             
                             @if (Model.SelectedColumns.Contains("fiscalYear")){
-                                <th scope="col" class="border-0">Fiscal Year</th>
+                                <th scope="col" class="border-0">@Model.lblFiscalYear</th>
                             }
 
                             @if (Model.SelectedColumns.Contains("receivingDate")){
-                                <th scope="col" class="border-0">Receiving Date</th>
+                                <th scope="col" class="border-0">@Model.lblReceivingDate</th>
                             }
 
                             @if (Model.SelectedColumns.Contains("receipientSector"))
                             {
-                                <th scope="col" class="border-0">Receipient Sector</th>
+                                <th scope="col" class="border-0">@Model.lblRecipientSector</th>
                             }
 
                             @if (Model.SelectedColumns.Contains("sectorNumber"))
                             {
-                                <th scope="col" class="border-0">Sector Number</th>
+                                <th scope="col" class="border-0">@Model.lblSectorNo</th>
                             }
 
                             @if (Model.SelectedColumns.Contains("receivingWarehouse"))
                             {    
-                                <th scope="col" class="border-0">Receiving Warehouse</th>
+                                <th scope="col" class="border-0">@Model.lblReceivingWarehouse</th>
                             }
 
                             @if (Model.SelectedColumns.Contains("basedOnDocument"))
                             {    
-                                <th scope="col" class="border-0">Based On Document</th>
+                                <th scope="col" class="border-0">@Model.lblBasedOnDocument</th>
                             }
 
                             @if (Model.SelectedColumns.Contains("documentNumber"))
                             {    
-                                <th scope="col" class="border-0">Document Number</th>
+                                <th scope="col" class="border-0">@Model.lblDocumentNo</th>
                             }
 
                             @if (Model.SelectedColumns.Contains("documentDate"))
                             {    
-                                <th scope="col" class="border-0">Document Date</th>
+                                <th scope="col" class="border-0">@Model.lblDocumentDate</th>
                             }
 
                             @if (Model.SelectedColumns.Contains("supplier"))
                             {    
-                                <th scope="col" class="border-0">Supplier</th>
+                                <th scope="col" class="border-0">@Model.lblSupplierName</th>
                             }
+                            @* <th>Request Status</th> *@
 
                              @if (Model.SelectedColumns.Contains("attachment"))
                             {    
-                                <th scope="col" class="border-0">Attachment</th>
+                                <th scope="col" class="border-0">@Model.lblAttachment</th>
                             }
 
-                            <th scope="col" class="border-0 rounded-end">Actions</th>
+                            <th scope="col" class="border-0 rounded-end">@Model.lblAction</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -382,7 +383,7 @@
                                     @if (Model.SelectedColumns.Contains("attachment"))
                                     {
                                         @if(req.AttachmentPath != ""){
-                                            <td><a href="@req.AttachmentPath">Download File</a></td>
+                                            <td><a href="@req.AttachmentPath">@Model.lblDownloadFile</a></td>
                                         }
                                         else{
                                             <td>-</td>
@@ -497,50 +498,50 @@
             <thead class="thead-light">
                 <tr>
                     @if (Model.SelectedColumns.Contains("serialNumber")){
-                        <th scope="col" class="border-0">Serial Number</th>
+                        <th scope="col" class="border-0">@Model.lblSerialNo</th>
                     }
                             
                     @if (Model.SelectedColumns.Contains("fiscalYear")){
-                        <th scope="col" class="border-0">Fiscal Year</th>
+                        <th scope="col" class="border-0">@Model.lblFiscalYear</th>
                     }
 
                     @if (Model.SelectedColumns.Contains("receivingDate")){
-                        <th scope="col" class="border-0">Receiving Date</th>
+                        <th scope="col" class="border-0">@Model.lblReceivingDate</th>
                     }
 
                     @if (Model.SelectedColumns.Contains("receipientSector"))
                     {
-                        <th scope="col" class="border-0">Receipient Sector</th>
+                        <th scope="col" class="border-0">@Model.lblRecipientSector</th>
                     }
 
                     @if (Model.SelectedColumns.Contains("sectorNumber"))
                     {
-                        <th scope="col" class="border-0">Sector Number</th>
+                        <th scope="col" class="border-0">@Model.lblSectorNo</th>
                     }
 
                     @if (Model.SelectedColumns.Contains("receivingWarehouse"))
                     {    
-                        <th scope="col" class="border-0">Receiving Warehouse</th>
+                        <th scope="col" class="border-0">@Model.lblReceivingWarehouse</th>
                     }
 
                     @if (Model.SelectedColumns.Contains("basedOnDocument"))
                     {    
-                        <th scope="col" class="border-0">Based On Document</th>
+                        <th scope="col" class="border-0">@Model.lblBasedOnDocument</th>
                     }
 
                     @if (Model.SelectedColumns.Contains("documentNumber"))
                     {    
-                        <th scope="col" class="border-0">Document Number</th>
+                        <th scope="col" class="border-0">@Model.lblDocumentNo</th>
                     }
 
                     @if (Model.SelectedColumns.Contains("documentDate"))
                     {    
-                        <th scope="col" class="border-0">Document Date</th>
+                        <th scope="col" class="border-0">@Model.lblDocumentDate</th>
                     }
 
                     @if (Model.SelectedColumns.Contains("supplier"))
                     {    
-                        <th scope="col" class="border-0">Supplier</th>
+                        <th scope="col" class="border-0">@Model.lblSupplierName</th>
                     }
 
                     

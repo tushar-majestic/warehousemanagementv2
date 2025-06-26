@@ -66,6 +66,10 @@
                         </li>
                         <li class="breadcrumb-item d-flex align-items-center">
                             <img src="images/supplies.png" alt="Home" width="16" height="16" class="me-2" />
+                            <a href="/ManageSupplier" class="text-decoration-none">@Model.lblSuppliers</a>
+                        </li>
+                        <li class="breadcrumb-item d-flex align-items-center">
+                            <img src="images/supplies.png" alt="Home" width="16" height="16" class="me-2" />
                             @Model.lblAddSupplier
                         </li>
                     </ol>
@@ -88,8 +92,8 @@
                                 <label>@Model.lblSupplierType</label>
                                 <select class="form-select" aria-label="Supplier Type" id="SupplierType" name="SupplierType">
                                     <option selected disabled>@Model.lblSupplierType</option>
-                                    <option value="Internal">Internal</option>
-                                    <option value="External">External</option>
+                                    <option value="Internal">@Model.lblInternal</option>
+                                    <option value="External">@Model.lblInternal</option>
                                 </select>
                             </div>
 
@@ -108,7 +112,7 @@
 
                             <div class="mb-4">
                                 <label for="SupplierPhoneNumber">@Model.lblSupplierPhoneNumber</label>
-                                <input type="text" class="form-control" id="SupplierPhoneNumber" name="SupplierPhoneNumber"
+                                <input type="text" class="form-control" id="SupplierPhoneNumber" name="SupplierPhoneNumber"  pattern="0[0-9]*" title="Phone number must start with 0"
                                         />
 
                             </div>

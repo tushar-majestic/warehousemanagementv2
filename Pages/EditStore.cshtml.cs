@@ -160,7 +160,18 @@ namespace LabMaterials.Pages
                                 var relatedRooms = dbContext.Rooms.Where(r => r.StoreId == store.StoreId).ToList();
                                 foreach (var room in relatedRooms)
                                 {
-                                    room.RoomStatus = "Closed"; 
+                                    room.RoomStatus = "Closed";
+                                }
+
+                                dbContext.SaveChanges();
+                            }
+                            else
+                            {
+                                // Update all rooms associated with this store to "Open"
+                                var relatedRooms = dbContext.Rooms.Where(r => r.StoreId == store.StoreId).ToList();
+                                foreach (var room in relatedRooms)
+                                {
+                                    room.RoomStatus = "Open";
                                 }
 
                                 dbContext.SaveChanges();

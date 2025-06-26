@@ -201,7 +201,7 @@
                         </div>
                         <div class="form-check mb-1 text-center">
                             <button type="submit" name="action" value="updateColumns"
-                                class="btn btn-success btn-sm">Ok</button>
+                                class="btn btn-success btn-sm">@Model.lblOk</button>
                         </div>
                     </div>
                 </div>
@@ -210,7 +210,7 @@
     </div>
      @if (Model.TotalPages > 1)
     {
-        <nav aria-label="Page navigation">
+        <nav aria-label="Page navigation" style="direction: ltr;">
             <ul class="pagination">
 
                 @* Previous button *@
@@ -399,7 +399,7 @@
                                             <input type="submit" value="@Model.lblEdit" class="btn btn-secondary"
                                                    asp-page-handler="Edit" />
                                             <input type="submit" value="@Model.lblDelete" class="btn btn-danger"
-                                                   asp-page-handler="Delete" />
+                                                   asp-page-handler="Delete" />     
                                             <input type="submit" value="@Model.lblManageShelves" class="btn btn-primary"
                                                    asp-page-handler="ManageShelves" />
                                             
@@ -422,7 +422,7 @@
 
     @if (Model.TotalPages > 1)
     {
-        <nav aria-label="Page navigation">
+        <nav aria-label="Page navigation" style="direction: ltr;">
             <ul class="pagination">
 
                 @* Previous button *@

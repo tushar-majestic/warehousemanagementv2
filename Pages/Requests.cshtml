@@ -27,15 +27,15 @@
        
         <form method="get" class="d-flex align-items-center">
             <input type="hidden" name="type" value="@Model.pagetype" />
-            <input type="text" name="searchTerm" class="form-control " style="width: 30%;" placeholder="Search inbox..." value="@Request.Query["searchTerm"]" />
-            <button type="submit" class="btn btn-primary ms-2">Search</button>
+            <input type="text" name="searchTerm" class="form-control " style="width: 30%;" placeholder="@Model.lblSearch" value="@Request.Query["searchTerm"]" />
+            <button type="submit" class="btn btn-primary ms-2">@Model.lblSearch</button>
         </form>
 
     </div>
     
 
     <nav class="nav">
-        <a class="nav-link @Model.inboxClass border border-bottom-0" href="?type=inbox">Inbox 
+        <a class="nav-link @Model.inboxClass border border-bottom-0" href="?type=inbox">@Model.lblInbox 
             @if(@Model.InboxCount > 0){
                 <sup>
                     <span class="badge rounded-pill badge-notification bg-danger">@Model.InboxCount</span>
@@ -46,7 +46,7 @@
         
         @if (Model.CanGenerateDispensingRequest || Model.CanGenerateReceivingRequest || Model.CanReturnItems)
         {
-            <a class="nav-link @Model.outboxClass border border-bottom-0" href="?type=outbox">Request Sent</a>
+            <a class="nav-link @Model.outboxClass border border-bottom-0" href="?type=outbox">@Model.lblRequestSent</a>
         }
     </nav>
     <div class="card border-0 shadow mb-4">
@@ -89,17 +89,17 @@
                                                         <input type="text" value="@inbox.ReportId" name="ReceivingReportId" hidden />
                                                         <input type="hidden" value="@inbox.Id" name="MessageId">
                                                         <button class="btn btn-info btn-sm p-1" asp-page-handler="Accept">
-                                                            Accept
+                                                            @Model.lblAccept
                                                         </button>
                                                         </form>
 
                                                         <button class="btn btn-warning btn-sm p-1" data-toggle="modal" data-target="#commentRejectModal" onclick="setRejectReportId(@inbox.ReportId, @inbox.Id,'@inbox.ReportType')">
-                                                        Comment & Reject
+                                                            @Model.lblCommentReject
                                                         </button>
                                                     }
                                                     @* case 2 Sender:Tech Mem Receiver: keeper *@
                                                     else if(senderGroupName == "Technical Member" && Model.UserGroupName == "Warehouse Keeper"){
-                                                        <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#ReplyModal" onclick="setReplyReportId(@inbox.ReportId,'@inbox.SenderId',@inbox.Id,'@inbox.ReportType')">Reply & Resend</button>
+                                                        <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#ReplyModal" onclick="setReplyReportId(@inbox.ReportId,'@inbox.SenderId',@inbox.Id,'@inbox.ReportType')">@Model.lblReplyResend</button>
 
                                                     }
                                                     @* case 5 Sender:General Supervisor Receiver: keeper *@
@@ -109,15 +109,15 @@
                                                             <input type="hidden" value="@inbox.Id" id="InboxId" name="InboxId" />
                                                             <input type="hidden" value="@inbox.ReportType" id="ReportType" name="ReportType" />
 
-                                                            <button asp-page-handler="AddOrder" class="btn btn-info btn-sm p-1"> Add Order to Item Card</button>
+                                                            <button asp-page-handler="AddOrder" class="btn btn-info btn-sm p-1">@Model.lblAddOrderToItemCard</button>
                                                             
                                                         </form>
                                                     }
                                                     @* case 6 Sender:General Supervisor Receiver: Tech Mem *@
                                                     else if(senderGroupName == "General Supervisor" && Model.UserGroupName == "Technical Member"){
-                                                        <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#ReplyModal" onclick="setReplyReportId(@inbox.ReportId,'@inbox.SenderId',@inbox.Id,'@inbox.ReportType')">Reply & Resend</button>
+                                                        <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#ReplyModal" onclick="setReplyReportId(@inbox.ReportId,'@inbox.SenderId',@inbox.Id,'@inbox.ReportType')">@Model.lblReplyResend</button>
 
-                                                        <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#commentRejectModal" onclick="setRejectReportId(@inbox.ReportId, @inbox.Id,'@inbox.ReportType')">Comment & Reject</button>
+                                                        <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#commentRejectModal" onclick="setRejectReportId(@inbox.ReportId, @inbox.Id,'@inbox.ReportType')">@Model.lblCommentReject</button>
                                                     }
 
 
@@ -130,11 +130,11 @@
                                                         @* <input type="text" value="@inbox.ReportId" name="ReceivingReportId" hidden />
                                                         <input type="hidden" value="@inbox.Id" name="MessageId"> *@
                                                         <button class="btn btn-info btn-sm p-1" data-toggle="modal" data-target="#specifyRecipientDispensing" onclick="setAcceptReportId(@inbox.MaterialRequestId, @inbox.Id)">
-                                                                Accept
+                                                            @Model.lblAccept
                                                         </button>
 
                                                         <button class="btn btn-warning btn-sm p-1" data-toggle="modal" data-target="#commentRejectModal" onclick="setRejectReportId(@inbox.MaterialRequestId, @inbox.Id,'@inbox.ReportType')">
-                                                            Comment & Reject
+                                                            @Model.lblCommentReject
                                                         </button>
                                                     }
                                                     @* case 2 Sender: Department Manager Receiver: Warehouse Keeper *@
@@ -151,11 +151,11 @@
                                                         </form> *@
 
                                                         <button class="btn btn-info btn-sm p-1" data-toggle="modal" data-target="#specifyRecipientDispensing" onclick="setAcceptReportId(@inbox.MaterialRequestId, @inbox.Id)">
-                                                                Accept
+                                                             @Model.lblAccept
                                                         </button>
 
                                                         <button class="btn btn-warning btn-sm p-1" data-toggle="modal" data-target="#commentRejectModal" onclick="setRejectReportId(@inbox.MaterialRequestId, @inbox.Id,'@inbox.ReportType')">
-                                                            Comment & Reject
+                                                           @Model.lblCommentReject
                                                         </button>
                                                     }
                                                     @* case 3 Sender: warehouse Keeper Reciver: supervisor *@
@@ -165,25 +165,25 @@
                                                             <input type="hidden" id="AcceptReportId" value="@inbox.MaterialRequestId" name="AcceptReportId" />
                                                             <input type="hidden" id="AcceptMessageId" name="AcceptMessageId" value="@inbox.Id"/>
                                                             <input type="hidden" name="ReceipientId" />
-                                                            <button asp-page-handler="AcceptAndSpecify" class="btn btn-info btn-sm p-1">Accept</button>
+                                                            <button asp-page-handler="AcceptAndSpecify" class="btn btn-info btn-sm p-1"> @Model.lblAccept</button>
                                                         </form>
                                                         
 
                                                         <button class="btn btn-warning btn-sm p-1" data-toggle="modal" data-target="#commentRejectModal" onclick="setRejectReportId(@inbox.MaterialRequestId, @inbox.Id,'@inbox.ReportType')">
-                                                            Comment & Reject
+                                                            @Model.lblCommentReject
                                                         </button>
                                                     }
                                                     @* Case 4 Sender: Department Manager Receiver: Warehouse Manager  *@
                                                     else if (senderGroupName == "Department Manager" && Model.UserGroupName == "Warehouse Manager"){
-                                                        <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#ReplyModal" onclick="setReplyReportId(@inbox.MaterialRequestId,'@inbox.SenderId',@inbox.Id,'@inbox.ReportType')">Reply & Resend</button>
+                                                        <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#ReplyModal" onclick="setReplyReportId(@inbox.MaterialRequestId,'@inbox.SenderId',@inbox.Id,'@inbox.ReportType')">@Model.lblReplyResend</button>
 
                                                         
                                                     }
                                                     @* case 5 Sender: Warehouse Keeper Receiver: Dept Manager  *@
                                                     else if(senderGroupName == "Warehouse Keeper" && Model.UserGroupName == "Department Manager"){
-                                                        <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#ReplyModal" onclick="setReplyReportId(@inbox.MaterialRequestId,'@inbox.SenderId',@inbox.Id,'@inbox.ReportType')">Reply & Resend</button>
+                                                        <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#ReplyModal" onclick="setReplyReportId(@inbox.MaterialRequestId,'@inbox.SenderId',@inbox.Id,'@inbox.ReportType')">@Model.lblReplyResend</button>
 
-                                                        <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#commentRejectModal" onclick="setRejectReportId(@inbox.ReportId, @inbox.Id,'@inbox.ReportType')">Comment & Reject</button>
+                                                        <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#commentRejectModal" onclick="setRejectReportId(@inbox.ReportId, @inbox.Id,'@inbox.ReportType')">@Model.lblCommentReject</button>
                                                     }
                                                     @* case 6 Sender: Supervisor  Receiver: keeper  *@
                                                 
@@ -192,9 +192,9 @@
                                                     
 
                                                     else if(senderGroupName == "General Supervisor" && Model.UserGroupName == "Warehouse Keeper" && !supervisorApproval){
-                                                        <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#ReplyModal" onclick="setReplyReportId(@inbox.MaterialRequestId,'@inbox.SenderId',@inbox.Id,'@inbox.ReportType')">Reply & Resend</button>
+                                                        <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#ReplyModal" onclick="setReplyReportId(@inbox.MaterialRequestId,'@inbox.SenderId',@inbox.Id,'@inbox.ReportType')">@Model.lblReplyResend</button>
 
-                                                        <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#commentRejectModal" onclick="setRejectReportId(@inbox.ReportId, @inbox.Id,'@inbox.ReportType')">Comment & Reject</button>
+                                                        <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#commentRejectModal" onclick="setRejectReportId(@inbox.ReportId, @inbox.Id,'@inbox.ReportType')">@Model.lblCommentReject</button>
                                                     }
                                                     else if(senderGroupName == "General Supervisor" && Model.UserGroupName == "Warehouse Keeper" && supervisorApproval){
                                                         <form method="post" class="d-inline">
@@ -203,7 +203,7 @@
                                                             <input type="hidden" value="@inbox.MaterialRequestId" name="DisReportId" />
                                                             <input type="hidden" value="@inbox.Id" id="MsgId" name="MsgId" />
                                                             
-                                                            <button asp-page-handler="DeductOrder" class="btn btn-info btn-sm p-1"> Deduct Order form Item Card</button>
+                                                            <button asp-page-handler="DeductOrder" class="btn btn-info btn-sm p-1">@Model.lblDeductOrderItemCard</button>
                                                         </form>
 
                                                         @* <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#commentRejectModal" onclick="setRejectReportId(@inbox.ReportId, @inbox.Id,'@inbox.ReportType')">Comment & Reject</button> *@
@@ -215,18 +215,18 @@
                                                     @* case1: Sender- SectorManager receiver: warehouse Manager *@
                                                     if(senderGroupName == "Sector Manager" && Model.UserGroupName == "Warehouse Manager"){
                                                         <button class="btn btn-info btn-sm p-1" data-toggle="modal" data-target="#specifyRecipientReturn" onclick="setAcceptReturnReportId(@inbox.ReturnRequestId, @inbox.Id)">
-                                                                Accept
+                                                                 @Model.lblAccept
                                                         </button>
 
                                                         <button class="btn btn-warning btn-sm p-1" data-toggle="modal" data-target="#commentRejectModal" onclick="setRejectReportId(@inbox.ReturnRequestId, @inbox.Id,'@inbox.ReportType')">
-                                                            Comment & Reject
+                                                            @Model.lblCommentReject
                                                         </button>
                                                     }
                                                     @* case2: Sender- Warehouse Manager receiver:  Sector Manager  when warehouse manager rejects the request*@ 
                                                     else if(senderGroupName == "Warehouse Manager" && Model.UserGroupName == "Sector Manager"){
-                                                        <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#ReplyModal" onclick="setReplyReportId(@inbox.ReturnRequestId,'@inbox.SenderId',@inbox.Id,'@inbox.ReportType')">Reply & Resend</button>
+                                                        <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#ReplyModal" onclick="setReplyReportId(@inbox.ReturnRequestId,'@inbox.SenderId',@inbox.Id,'@inbox.ReportType')">@Model.lblReplyResend</button>
 
-                                                        <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#commentRejectModal" onclick="setRejectReportId(@inbox.ReturnRequestId, @inbox.Id,'@inbox.ReportType')">Comment & Reject</button>
+                                                        @* <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#commentRejectModal" onclick="setRejectReportId(@inbox.ReturnRequestId, @inbox.Id,'@inbox.ReportType')">@Model.lblCommentReject</button> *@
                                                     }
                                                     @* case3: Sender- Warehouse Manager receiver:  Inspection Officer *@
                                                     else if(senderGroupName == "Warehouse Manager" && Model.UserGroupName == "Return Inspection Committee Officer"){
@@ -234,7 +234,7 @@
                                                             <input type="hidden" name="ReturnRequestId" value="@inbox.ReturnRequestId">
                                                             <input type="hidden" name="InboxId" value="@inbox.Id">
                                                             <button class="btn btn-info btn-sm p-1" asp-page-handler="EditReturnRequest" >
-                                                                Add Committee Recommendations
+                                                                @Model.lblAddRecommendations
                                                             </button>
                                                         </form>
                                                 
@@ -242,19 +242,27 @@
                                                     @* case4: Sender- Inspection Committee Officer receiver:  Supervisor *@
                                                     else if(senderGroupName == "Return Inspection Committee Officer" && Model.UserGroupName == "General Supervisor"){
                                                         <button class="btn btn-info btn-sm p-1" data-toggle="modal" data-target="#specifyRecipientReturn" onclick="setAcceptReturnReportId(@inbox.ReturnRequestId, @inbox.Id)">
-                                                                Accept
+                                                                 @Model.lblAccept
                                                         </button>
 
                                                         <button class="btn btn-warning btn-sm p-1" data-toggle="modal" data-target="#commentRejectModal" onclick="setRejectReportId(@inbox.ReturnRequestId, @inbox.Id,'@inbox.ReportType')">
-                                                            Comment & Reject
+                                                           @Model.lblCommentReject
                                                         </button>
                                                     }
                                                     @* case5: Sender- General Supervisor  receiver:  Inspection Committee Officer *@
                                                     else if(senderGroupName == "General Supervisor" && Model.UserGroupName == "Return Inspection Committee Officer"){
-                                                        <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#ReplyModal" onclick="setReplyReportId(@inbox.ReturnRequestId,'@inbox.SenderId',@inbox.Id,'@inbox.ReportType')">Reply & Resend</button>
+                                                        <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#ReplyModal" onclick="setReplyReportId(@inbox.ReturnRequestId,'@inbox.SenderId',@inbox.Id,'@inbox.ReportType')">@Model.lblReplyResend</button>
 
                                                         <button class="btn btn-warning btn-sm p-1" data-toggle="modal" data-target="#commentRejectModal" onclick="setRejectReportId(@inbox.ReturnRequestId, @inbox.Id,'@inbox.ReportType')">
-                                                            Comment & Reject
+                                                           @Model.lblCommentReject
+                                                        </button>
+                                                    }
+                                                    @* case6: Sender- Inspection Committee Officer  receiver:  Warehouse Manager *@
+                                                    else if(senderGroupName == "Return Inspection Committee Officer" && Model.UserGroupName == "Warehouse Manager"){
+                                                        <button class="btn btn-info btn-sm" data-toggle="modal" data-target="#ReplyModal" onclick="setReplyReportId(@inbox.ReturnRequestId,'@inbox.SenderId',@inbox.Id,'@inbox.ReportType')">@Model.lblReplyResend</button>
+
+                                                        <button class="btn btn-warning btn-sm p-1" data-toggle="modal" data-target="#commentRejectModal" onclick="setRejectReportId(@inbox.ReturnRequestId, @inbox.Id,'@inbox.ReportType')">
+                                                           @Model.lblCommentReject
                                                         </button>
                                                     }
                                                     @* case5: Sender- General Supervisor  receiver:  Inspection Committee Officer *@
@@ -267,7 +275,7 @@
                                                       
 
                                                         <button class="btn btn-info btn-sm p-1" data-toggle="modal" data-target="#attachDestructionReport" onclick="setAcceptReturnReportIdForDestruction(@inbox.ReturnRequestId, @inbox.Id)">
-                                                                Attach Destruction report
+                                                                @Model.lblAttachDestructionReport
                                                         </button>
 
                                                        
@@ -279,7 +287,7 @@
                                                             <input type="hidden" name="InboxId" value="@inbox.Id">
                                                             
                                                             <button class="btn btn-info btn-sm p-1" asp-page-handler="EditReturnRequest" >
-                                                                Add Recycling Notes
+                                                                @Model.lblAddRecyclingNotes
                                                             </button>
                                                         </form>
                                                     }
@@ -289,28 +297,28 @@
                                             else if(inbox.Type == "Assign Supervisor" && inbox.ReportType == "Dispensing")
                                             {
                                                 <button class="btn btn-info btn-sm p-1" data-toggle="modal" data-target="#specifyRecipientDispensing" onclick="setAcceptReportId(@inbox.MaterialRequestId, @inbox.Id)">
-                                                      Assign Supervisor
+                                                    @Model.lblAssignSupervisor
                                                 </button>
                                             }
                                             else if(inbox.Type == "Assign Supervisor" && inbox.ReportType == "ReturnItems")
                                             {
                                                 <button class="btn btn-info btn-sm p-1" data-toggle="modal" data-target="#specifyRecipientReturn" onclick="setAcceptReturnReportId(@inbox.ReturnRequestId, @inbox.Id)">
-                                                      Assign Supervisor
+                                                     @Model.lblAssignSupervisor
                                                 </button>
                                             }
                                             else if(inbox.Type == "Assign Members" && inbox.ReportType == "ReturnItems")
                                             {
                                                 <button class="btn btn-info btn-sm p-1" data-toggle="modal" data-target="#specifyRecipientReturn" onclick="setAcceptReturnReportId(@inbox.ReturnRequestId, @inbox.Id)">
-                                                      Assign Members
+                                                    @Model.lblAssignMembers
                                                 </button>
                                             }
                                             else if(inbox.Type == "Deduction Done")
                                             {
-                                              <span class="bg-success p-2 rounded text-white">Deduction Done</span>
+                                              <span class="bg-success p-2 rounded text-white">@Model.lblDeductionDone</span>
                                             }
                                             else if(inbox.Type == "Accepted")
                                             {
-                                                <span class="bg-success p-2 rounded text-white">Accepted</span>
+                                                <span class="bg-success p-2 rounded text-white">@Model.lblAccepted</span>
                                             }
                                             else if(inbox.Type == "Add Order" && inbox.ReportType == "ReturnItems")
                                             {   
@@ -319,26 +327,26 @@
                                                     <input type="hidden" value="@inbox.Id" id="InboxId" name="InboxId" />
                                                     <input type="hidden" value="@inbox.ReportType" id="ReportType" name="ReportType" />
                                                     <button class="btn btn-info btn-sm p-1" type="submit">
-                                                      Add Order To Item Card
+                                                      @Model.lblAddOrderToItemCard
                                                     </button>
                                                 </form>
                                                 
                                             }
                                             else if(inbox.Type == "File Attached")
                                             {
-                                                <span class="bg-success p-2 rounded text-white">File Attached</span>
+                                                <span class="bg-success p-2 rounded text-white">@Model.lblFileAttached</span>
                                             }
                                             else if(inbox.Type == "Rejected"){
-                                                <span class="bg-danger p-2 rounded text-white">Rejected</span>
+                                                <span class="bg-danger p-2 rounded text-white">@Model.lblRejected</span>
                                             }
                                             else if(inbox.Type == "Replied"){
-                                                <span class="bg-success p-2 rounded text-white">Replied</span>
+                                                <span class="bg-success p-2 rounded text-white">@Model.lblReplied</span>
                                             }
                                             else if(inbox.Type == "Added" && inbox.ReportType == "Receiving"){
-                                                <span class="bg-success p-2 rounded text-white">Added Order to Item Card</span>
+                                                <span class="bg-success p-2 rounded text-white">@Model.lblAddedOrderItemCard</span>
                                             }
                                             else if(inbox.Type == "Added" && inbox.ReportType == "ReturnItems"){
-                                                <span class="bg-success p-2 rounded text-white">Added</span>
+                                                <span class="bg-success p-2 rounded text-white">@Model.lblAdded</span>
                                             }
                                             
                                             @{
@@ -464,7 +472,7 @@
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="commentRejectModalLabel">Comment & Reject Request</h5>
+                                    <h5 class="modal-title" id="commentRejectModalLabel">@Model.lblCommentRejectRequest</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
@@ -476,7 +484,7 @@
                                             <input type="hidden" id="RejectReceivingReportId" name="RejectReceivingReportId" />
                                             <input type="hidden" id="RejectMessageId" name="RejectMessageId" />
                                             <input type="hidden" name="ReportType" id="ReportType"/>
-                                            <label for="Comment">Your Comment</label>
+                                            <label for="Comment">@Model.lblYourComment</label>
                                             <textarea id="Comment" name="Comment" class="form-control" rows="3" required></textarea>
                                         </div>
                                     </div>
@@ -495,7 +503,7 @@
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="specifyRecipientDispensingLabel">Accept & specify Recipient</h5>
+                                    <h5 class="modal-title" id="specifyRecipientDispensingLabel">@Model.lblAcceptSpecifyRecipient</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
@@ -506,10 +514,10 @@
                                             <input type="hidden" id="AcceptReportId" name="AcceptReportId" />
                                             <input type="hidden" id="AcceptMessageId" name="AcceptMessageId" />
                                             @if(Model.UserGroupName == "Department Manager"){
-                                                <label for="ReceipientId">Warehouse Keeper</label>
+                                                <label for="ReceipientId">@Model.lblWarehouseKeeper</label>
                                                 <select class="form-select"  id="ReceipientId" name="ReceipientId" required>
                                         
-                                                    <option value="">Select Warehouse Keeper</option>
+                                                    <option value="">@Model.lblSelectWarehouseKeeper</option>
                                                     @if (Model.KeeperList != null)
                                                     {
                                                         foreach (var item in Model.KeeperList)
@@ -520,10 +528,10 @@
                                                 </select>
                                             }
                                             else if(Model.UserGroupName == "Warehouse Keeper"){
-                                                <label for="ReceipientId">Supervisor</label>
+                                                <label for="ReceipientId">@Model.lblGeneralSupervisor</label>
                                                 <select class="form-select"  id="ReceipientId" name="ReceipientId" required>
                                         
-                                                    <option value="">Select Supervisor</option>
+                                                    <option value="">@Model.lblSelectGeneralSpervisor</option>
                                                     @if (Model.SupervisorList != null)
                                                     {
                                                         foreach (var item in Model.SupervisorList)
@@ -537,7 +545,7 @@
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="submit" asp-page="/Requests" asp-page-handler="AcceptAndSpecify" class="btn btn-info" id="acceptbtn"  >Accept</button>
+                                        <button type="submit" asp-page="/Requests" asp-page-handler="AcceptAndSpecify" class="btn btn-info" id="acceptbtn"  > @Model.lblAccept</button>
                                        
                                     </div>
                                 </form>
@@ -550,7 +558,7 @@
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="specifyRecipientReturnLabel">Accept & specify Recipient</h5>
+                                    <h5 class="modal-title" id="specifyRecipientReturnLabel">@Model.lblAcceptSpecifyRecipient</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
@@ -563,10 +571,10 @@
                                             <input type="hidden" id="AcceptReturnReportId" name="AcceptReturnReportId" />
                                             <input type="hidden" id="AcceptReturnMessageId" name="AcceptReturnMessageId" />
                                             @if(Model.UserGroupName == "Warehouse Manager"){
-                                                <label for="Receipient">Returns Inspection Committee Officer</label>
+                                                <label for="Receipient">@Model.lblInspectionCommitteeOfficer</label>
                                                 <select class="form-select"  id="Receipient" name="Receipient" required>
                                         
-                                                    <option value="">Select Inspection Committee Officer</option>
+                                                    <option value="">@Model.lblSelectInspectionCommitteeOfficer</option>
                                                     @if (Model.InspectionOfficerList != null)
                                                     {
                                                         foreach (var item in Model.InspectionOfficerList)
@@ -577,10 +585,10 @@
                                                 </select>
                                             }
                                             else if(Model.UserGroupName == "Return Inspection Committee Officer"){
-                                                <label for="Receipient">General Supervisor</label>
+                                                <label for="Receipient">@Model.lblGeneralSupervisor</label>
                                                 <select class="form-select"  id="Receipient" name="Receipient" required>
                                         
-                                                    <option value="">Select Supervisor</option>
+                                                    <option value="">@Model.lblSelectGeneralSpervisor</option>
                                                     @if (Model.SupervisorList != null)
                                                     {
                                                         foreach (var item in Model.SupervisorList)
@@ -592,10 +600,10 @@
                                             }
                                             else if (Model.UserGroupName == "General Supervisor"){
                                                 <div class="mb-2">
-                                                    <label for="Receipient">Destruction Officer</label>
+                                                    <label for="Receipient">@Model.lblDestructionOfficer</label>
                                                     <select class="form-select"  id="Receipient" name="Receipient" required>
                                             
-                                                        <option value="">Select Destruction Officer</option>
+                                                        <option value="">@Model.lblSelectDestructionOfficer</option>
                                                         @if (Model.DestructionOfficerList != null)
                                                         {
                                                             foreach (var item in Model.DestructionOfficerList)
@@ -607,10 +615,10 @@
                                                 </div>
                                                
                                                 <div class="mb-2">
-                                                    <label for="keeperId">Warehouse Keeper</label>
+                                                    <label for="keeperId">@Model.lblWarehouseKeeper</label>
                                                     <select class="form-select"  id="keeperId" name="keeperId" required>
                                             
-                                                        <option value="">Select Warehouse Keeper</option>
+                                                        <option value="">@Model.lblSelectWarehouseKeeper</option>
                                                         @if (Model.KeeperList != null)
                                                         {
                                                             foreach (var item in Model.KeeperList)
@@ -622,10 +630,10 @@
                                                 </div>
 
                                                 <div class="mb-2">
-                                                    <label for="RecyclingOffiId">Recycling Officer</label>
+                                                    <label for="RecyclingOffiId">@Model.lblRecyclingOfficer</label>
                                                     <select class="form-select"  id="RecyclingOffiId" name="RecyclingOffiId" required>
                                             
-                                                        <option value="">Select Recycling Officer</option>
+                                                        <option value="">@Model.lblSelectRecyclingOfficer</option>
                                                         @if (Model.RecyclingOfficerList != null)
                                                         {
                                                             foreach (var item in Model.RecyclingOfficerList)
@@ -642,7 +650,7 @@
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="submit"  class="btn btn-info">Accept</button>
+                                        <button type="submit"  class="btn btn-info"> @Model.lblAccept</button>
                                        
                                     </div>
                                 </form>
@@ -656,7 +664,7 @@
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="attachDestructionReportLabel">Attach Destruction report</h5>
+                                    <h5 class="modal-title" id="attachDestructionReportLabel">@Model.lblAttachDestructionReport</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
@@ -669,14 +677,14 @@
                                             <input type="hidden" id="MessageIdForDestruction" name="AcceptReturnMessageId" />
 
                                             <div class="form-group mb-4">
-                                                <label>Add Attachment</label>
+                                                <label>@Model.lblAddAttachment</label>
                                                     <input type="file" name="AttachmentFile" class="form-control"  />
                                             </div>
                                             
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="submit"  class="btn btn-info">Submit</button>
+                                        <button type="submit"  class="btn btn-info">@Model.lblSubmit</button>
                                        
                                     </div>
                                 </form>
@@ -690,7 +698,7 @@
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="ReplyModalLabel">Reply & Resend Request</h5>
+                                    <h5 class="modal-title" id="ReplyModalLabel">@Model.lblReplyResendRequest</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
@@ -705,13 +713,13 @@
                                             <input type="hidden" name="ReplyReportType" id="ReplyReportType"/>
 
 
-                                            <label for="Reply">Your Reply</label>
+                                            <label for="Reply">@Model.lblYourReply</label>
                                             <textarea id="Reply" name="Reply" class="form-control" rows="3" required></textarea>
                                         </div>
                                     </div>
                                     <div class="modal-footer">
                                         <!-- Button to submit the message and reply -->
-                                        <button type="submit" class="btn btn-danger" id="replyBtn" >Reply</button>
+                                        <button type="submit" class="btn btn-danger" id="replyBtn" >@Model.lblReply</button>
                                        
                                     </div>
                                 </form>

@@ -25,7 +25,7 @@
         </ol>
     </nav>
 
-    <h1 class="h4">Edit Receiving Report</h1>
+    <h1 class="h4"> @Model.lblEditReceivingReport</h1>
 </div>
 <div asp-validation-summary="All" class="text-danger"></div>
 <div class="row">
@@ -48,7 +48,7 @@
                             <label>@Model.lblFiscalYear</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "")">*</span>
 
                             <select class="form-select" id="FiscalYear" asp-for="Report.FiscalYear" name="FiscalYear"  onchange="fetchSerialNumber()"  >
-                                <option value="">Select Fiscal Year</option>
+                                <option value="">@Model.lblSelectFiscalYear</option>
                                 <option value="@previousYear">@previousYear</option>
                                 <option value="@currentYear">@currentYear</option>
                             </select>
@@ -73,7 +73,7 @@
 
                             
                             <select asp-for="Report.ReceivingWarehouse" class="form-control"  id="ReceivingWarehouse" >
-                                <option value="">Select Receiving Warehouse</option>
+                                <option value="">@Model.lblSelectReceivingWarehouse</option>
                                 @foreach (var Warehouse in Model.Warehouses)
                                 {   var ManagerName = Model.Users.FirstOrDefault(u => u.UserId == Warehouse.WarehouseManagerId)?.   FullName ?? "";
                                 var JobNumber = Model.Users.FirstOrDefault(u => u.UserId == Warehouse.WarehouseManagerId)?.   JobNumber ;
@@ -87,11 +87,17 @@
                             <label>@Model.lblBasedOnDocument</label> <span class="majestic">*</span>
                             @* <input asp-for="Report.BasedOnDocument" class="form-control" required /> *@
                             <select asp-for="Report.BasedOnDocument" class="form-select" id="BasedOnDocument" name="BasedOnDocument" >
-                                <option value="">Select Based On document</option>
-                                <option value="Certification">Certification</option>
+                                <option value="">@Model.lblSelectBasedOndocument</option>
+                                @* <option value="Certification">Certification</option>
                                 <option value="Purchase order">Purchase order</option>
                                 <option value="Return order">Return order</option>
-                                <option value="Transfer from another warehouse">Transfer from another warehouse</option>
+                                <option value="Transfer from another warehouse">Transfer from another warehouse</option> *@
+                                @if(Model.DocumentList != null){
+                                    @foreach (var document in Model.DocumentList)
+                                    {
+                                        <option value="@document.DocType">@document.DocType</option>
+                                    }
+                                }
 
                             </select>
                         </div>
@@ -115,8 +121,8 @@
                         <div class="form-group mb-4">
                             <label>@Model.lblSupplierType</label> <span class="majestic">*</span>
                             <select class="form-select" id="SupplierType" name="SupplierType" >
-                                <option value="Internal">Internal</option>
-                                <option value="External">External</option>
+                                <option value="Internal">@Model.lblInternal</option>
+                                <option value="External">@Model.lblExternal</option>
                             </select>
                         </div>
 
@@ -124,7 +130,7 @@
 
                             <label>@Model.lblSupplierName</label> <span class="majestic">*</span>
                             <select id="SupplierName" asp-for="Report.SupplierId" class="form-control" >
-                                <option value="">Select Supplier Name</option>
+                                <option value="">@Model.lblSelectSupplierName</option>
                                 @foreach (var supplier in Model.Suppliers)
                                 {
                                     <option value="@supplier.SupplierId" data-type="@supplier.SupplierType">@supplier.SupplierName</option>
@@ -135,16 +141,21 @@
                        @* Add ItemsForReport  *@
                         @for(int i =0; i < Model.ItemsForReport.Count; i++){
 
-                            <div class="addItems border p-2">
+                            <div class="addItems border p-2 item-group">
                             
-                                <h3>Item @(i +1)</h3>
-                            
+                                <h3>@Model.lblItem @(i +1)</h3>
+                                    @if(i != 0){
+                                        <div class="text-end">
+                                            <button type="button" class="btn btn-danger btn-sm remove-entry me-3">@Model.lblRemove</button>
+                                        </div>
+                                    }
+                                                
                                     <div class="form-group mb-4">
                                         <label>@Model.lblItemGroup</label> <span class="majestic">*</span>
                                         <select class="form-select" id="ItemGroup_@i" name="ItemsForReport[@i].ItemGroup" onchange="filterItemByGroup(@i)">
                                             @* <option value="Chemicals">Chemicals</option>
                                             <option value="Glass">Glass</option> *@
-                                            <option value="">Select Item Group</option>
+                                            <option value="">@Model.lblSelectItemGroup</option>
                                             @if (Model.ItemGroupList != null)
                                             {
                                                 foreach (var item in Model.ItemGroupList)
@@ -165,7 +176,7 @@
                                         <div class="form-group mb-4 ms-2 flex-fill">
                                             <label>@Model.lblItemName</label> <span class="majestic">*</span>
                                             <select  class="form-control" id="ItemName_@i" asp-for="@Model.ItemsForReport[@i].ItemId" name="ItemsForReport[@i].ItemId" >
-                                                <option value="">Select Item</option>
+                                                <option value="">@Model.lblSelectItem</option>
                                                 @foreach (var item in Model.Items)
                                                 {
                                                     var UnitCode = Model.Units.FirstOrDefault(u => u.Id == item.UnitId)?.UnitCode ?? "";
@@ -227,7 +238,7 @@
                         }
                         <div id="itemsContainer" class="mt-3"></div>
 
-                        <button type="button" id="addButton" class="btn btn-secondary" onclick="addItem()" >Add More</button>
+                        <button type="button" id="addButton" class="btn btn-secondary" onclick="addItem()" >@Model.lblAddMore</button>
                        @* Add ItemsForReport ended  *@
 
 
@@ -247,7 +258,7 @@
                             <select class="form-select" asp-for="Report.TechnicalMemberId"    id="TechnicalMember" name="TechnicalMember" >
                                 @* <option value="FirstTechnical">First Technical Member</option>
                                 <option value="SecondTechnical">Second Technical Member</option> *@
-                                <option value="">Select Technical Member</option>
+                                <option value="">@Model.lblSelectTechnicalMember</option>
                                 @if (Model.TechnicalMemberList != null)
                                 {
                                     foreach (var item in Model.TechnicalMemberList)
@@ -260,7 +271,7 @@
                         <div class="form-group mb-4">
                             <label>@Model.lblChiefResponsible</label>
                             <select asp-for="Report.ChiefResponsibleId"  class="form-select" id="ChiefResponsible" name="ChiefResponsible" >
-                                 <option value="">Select General Supervisor</option>
+                                 <option value="">@Model.lblSelectGeneralSpervisor</option>
                                 @if (Model.GeneralSupervisorList != null)
                                 {
                                     foreach (var item in Model.GeneralSupervisorList)
@@ -710,6 +721,20 @@
             });
         });
         //filling related inputs ends
+
+        //deletem item group
+        document.addEventListener('click', function (e) {
+            if (e.target && e.target.classList.contains('remove-entry')) {
+                console.log("remove entry")
+                const itemGroup = e.target.closest('.item-group');
+                if (itemGroup) {
+                    itemGroup.remove();
+                }
+
+                  const addButton = document.getElementById('addButton');
+                addButton.disabled = false;
+            }
+        });
 
     </script>
 }

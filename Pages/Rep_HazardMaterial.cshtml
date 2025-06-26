@@ -156,7 +156,7 @@
                         <label class="form-check-label" for="itemCode">ItemCode</label>
                     </div>
                     <div class="form-check mb-1">
-                        <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="action"
+                        <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="itemName"
                             id="itemName" @(Model.SelectedColumns.Contains("itemName") ? "checked" : "")>
                         <label class="form-check-label" for="itemName">ItemName</label>
                     </div>
@@ -173,26 +173,26 @@
                     <div class="form-check mb-1">
                         <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="hazardType"
                             id="hazardType" @(Model.SelectedColumns.Contains("hazardType") ? "checked" : "")>
-                        <label class="form-check-label" for="hazardType">HazardType</label>
+                        <label class="form-check-label" for="hazardType">@Model.lblHazardType</label>
                     </div>
                     <div class="form-check mb-1">
                         <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="TypeName"
                             id="TypeName" @(Model.SelectedColumns.Contains("TypeName") ? "checked" : "")>
-                        <label class="form-check-label" for="TypeName">TypeName</label>
+                        <label class="form-check-label" for="TypeName">@Model.lblTypeName</label>
                     </div>
                     <div class="form-check mb-1">
                         <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="unitCode"
                             id="unitCode" @(Model.SelectedColumns.Contains("unitCode") ? "checked" : "")>
-                        <label class="form-check-label" for="unitCode">UnitCode</label>
+                        <label class="form-check-label" for="unitCode">@Model.lblUnitCode</label>
                     </div>
                     <div class="form-check mb-1">
                         <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="GroupName"
                             id="GroupName" @(Model.SelectedColumns.Contains("GroupName") ? "checked" : "")>
-                        <label class="form-check-label" for="GroupName">GroupName</label>
+                        <label class="form-check-label" for="GroupName">@Model.lblGroupName</label>
                     </div>
 
                     <div class="form-check mb-1 text-center">
-                        <button type="submit" name="action" value="updateColumns" class="btn btn-success btn-sm">Ok</button>
+                        <button type="submit" name="action" value="updateColumns" class="btn btn-success btn-sm">@Model.lblOk</button>
                     </div>
 
                 </div>
@@ -205,7 +205,7 @@
     <div>@Model.lblTotalItem : @Model.TotalItems</div>
     @if (Model.TotalPages > 1)
     {
-        <nav aria-label="Page navigation">
+        <nav aria-label="Page navigation" style="direction: ltr;">
             <ul class="pagination">
 
                 @* Previous button *@
@@ -367,7 +367,7 @@
 
    @if (Model.TotalPages > 1)
     {
-        <nav aria-label="Page navigation">
+        <nav aria-label="Page navigation" style="direction: ltr;">
             <ul class="pagination">
 
                 @* Previous button *@

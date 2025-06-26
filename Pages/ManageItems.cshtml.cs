@@ -39,7 +39,7 @@ namespace LabMaterials.Pages
             lblUnitCode, lblSearch, lblSubmit, lblManageItemGroup, lblManageUnit, lblAddItem, lblEdit,
             lblDelete, lblTotalItem, lblExpiryDate, lblBatchNo, lblDamage, lblDamagedItems,
             lblImport, lblDonwloadSampleFile, lblFromDate, lblToDate, lblNewReceivingReport, lblExportExcel, lblPrintTable, lblArabicLanguage, lblEnglishLanguage,
-            lblChemical, lblRiskRating, lblStateofMatter;
+            lblChemical, lblRiskRating, lblStateofMatter, lblFilterBy;
 
         public void OnGet(string? ItemName, string? Group, DateTime? FromDate, DateTime? ToDate, int page = 1)
         {
@@ -340,7 +340,8 @@ namespace LabMaterials.Pages
             {
                 var dbContext = new LabDBContext();
 
-                if (dbContext.Supplies.Count(s => s.ItemId == ItemId) == 0)
+                //if (dbContext.Supplies.Count(s => s.ItemId == ItemId) == 0)
+                if (dbContext.ItemCards.Count(s => s.ItemId == ItemId) == 0)
                 {
                     var item = dbContext.Items.Single(s => s.ItemId == ItemId);
 
@@ -509,6 +510,7 @@ namespace LabMaterials.Pages
             this.lblChemical = (Program.Translations["Chemical"])[Lang];
             this.lblRiskRating = (Program.Translations["RiskRating"])[Lang];
             this.lblStateofMatter = (Program.Translations["StateofMatter"])[Lang];
+            this.lblFilterBy = (Program.Translations["FilterBy"])[Lang];
         }
 
     }

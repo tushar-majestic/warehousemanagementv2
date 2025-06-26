@@ -263,7 +263,7 @@
                         </div>
                         <div class="form-check mb-1 text-center">
                             <button type="submit" name="action" value="updateColumns"
-                                class="btn btn-success btn-sm">Ok</button>
+                                class="btn btn-success btn-sm">@Model.lblOk</button>
                         </div>
                     </div>
                 </div>
@@ -273,7 +273,7 @@
 
             @if (Model.TotalPages > 1)
             {
-                <nav aria-label="Page navigation">
+                <nav aria-label="Page navigation" style="direction: ltr;">
                     <ul class="pagination">
 
                         @* Previous button *@
@@ -407,7 +407,7 @@
                                     firstStore = false;
                                     <tr>
                                         <td style="min-width:100px;  width:100px;">
-                                            <button class="btn btn-sm toggle-collapse" data-toggle="collapse"
+                                            <button class="btn btn-sm toggle-collapse" 
                                                     data-target="#@($"demo_{item.StoreNumber}_{item.StoreName.Replace(" ", "_")}")">
                                                 <img class="icon icon-xs border-0" src="images/collapse.png">
                                             </button>
@@ -469,8 +469,10 @@
                                                 <input type="hidden" value="@Model.StoreName" name="StoreName" />
                                                 <input type="submit" value="@Model.lblEdit" class="btn btn-secondary"
                                                        asp-page-handler="Edit" />
-                                                <input type="submit" value="@Model.lblDelete" class="btn btn-danger"
-                                                       asp-page-handler="Delete" />
+                                                @if (Model.CanAddStore){
+                                                    <input type="submit" value="@Model.lblDelete" class="btn btn-danger"
+                                                        asp-page-handler="Delete" />
+                                                }
                                             </form>
                                         </td>
                                     </tr>
@@ -612,7 +614,7 @@
 
      @if (Model.TotalPages > 1)
     {
-        <nav aria-label="Page navigation">
+        <nav aria-label="Page navigation" style="direction: ltr;">
             <ul class="pagination">
 
                 @* Previous button *@

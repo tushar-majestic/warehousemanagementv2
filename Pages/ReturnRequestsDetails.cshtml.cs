@@ -49,8 +49,7 @@ namespace LabMaterials.Pages
         
          public IActionResult OnPostEditReturnRequest([FromForm] int ReturnRequestId)
         {
-
-
+            base.ExtractSessionData();
 
             HttpContext.Session.SetInt32("ReturnRequestId", ReturnRequestId);
             HttpContext.Session.SetInt32("InboxId", 0);

@@ -15,32 +15,32 @@
                 </li>
                 <li class="breadcrumb-item d-flex align-items-center">
                     <img src="images/management.png" alt="Home" width="16" height="16" class="me-2" />
-                    <a href="/ManageUsers" class="text-decoration-none">Users</a>
+                    <a href="/ManageUsers" class="text-decoration-none">@Model.lblUsers</a>
                 </li>
                  <li class="breadcrumb-item d-flex align-items-center">
                     <img src="images/management.png" alt="Home" width="16" height="16" class="me-2" />
-                    <a href="/ViewStoreTypes" class="text-decoration-none">Warehouse Type</a>
+                    <a href="/ViewStoreTypes" class="text-decoration-none">@Model.lblWarehouseType</a>
                 </li>
                 <li class="breadcrumb-item d-flex align-items-center">
                     <img src="images/management.png" alt="Home" width="16" height="16" class="me-2" />
-                    Add Store Type
+                    @Model.lblAddStoreType
                 </li>
             </ol>
         </nav>
-        <h2 class="h4">Add Store Type</h2>
+        <h2 class="h4">@Model.lblAddStoreType</h2>
     </div>
 </div>
 
 
 <form method="post">
     <div class="mb-3">
-        <label asp-for="StoreTypeModel.StoreType" class="form-label">Store Type</label>
-        <input asp-for="StoreTypeModel.StoreType" class="form-control" placeholder="Enter store type (e.g., Central)" />
+        <label asp-for="StoreTypeModel.StoreType" class="form-label">@Model.lblStoreType</label>
+        <input asp-for="StoreTypeModel.StoreType" class="form-control" placeholder="" />
         <span asp-validation-for="StoreTypeModel.StoreType" class="text-danger"></span>
     </div>
 
-    <button type="submit" class="btn btn-primary">Save</button>
-    <a asp-page="ManageUsers" class="btn btn-secondary">Cancel</a>
+    <button type="submit" class="btn btn-primary">@Model.lblSave</button>
+    <a asp-page="ManageUsers" class="btn btn-secondary">@Model.lblCancel</a>
 </form>
 
 @section Scripts {

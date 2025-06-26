@@ -15,6 +15,9 @@ namespace LabMaterials.Pages_HazardTypes
 
         [BindProperty]
         public HazardType HazardType { get; set; } = default!;
+
+       [BindProperty]
+        public string OriginalName { get; set; }
         public string lblUsers, lblHazardTypeName, lblAction, lblHazardType;
         public async Task<IActionResult> OnGetAsync(string id)
         {
@@ -53,6 +56,7 @@ namespace LabMaterials.Pages_HazardTypes
             {
                 if (!HazardTypeExists(HazardType.HazardTypeName))
                 {
+                    Console.WriteLine("not found");
                     return NotFound();
                 }
                 else

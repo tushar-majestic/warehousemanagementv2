@@ -66,6 +66,10 @@
                         </li>
                         <li class="breadcrumb-item d-flex align-items-center">
                             <img src="images/supplies.png" alt="Home" width="16" height="16" class="me-2" />
+                            <a href="/ManageSupplier" class="text-decoration-none">@Model.lblSuppliers</a>
+                        </li>
+                        <li class="breadcrumb-item d-flex align-items-center">
+                            <img src="images/supplies.png" alt="Home" width="16" height="16" class="me-2" />
                             @Model.lblUpdateSupplier
                         </li>
                     </ol>
@@ -80,11 +84,18 @@
                 <form method="post" class="card-body">
                     <div class="row mb-4">
 
+                        <div class="mb-4">
 
+                            <label>@Model.lblSupplierType</label>
+                                <select class="form-select" asp-for="SupplierType">
+                                <option value="Internal" >@Model.lblInternal</option>
+                                <option value="External" >@Model.lblExternal</option>
+                            </select>
+                        </div>
                         <div class="col-lg-12 col-sm-12">
                             <input type="hidden" name="SupplierId" value="@Model.SupplierId" />
                             <div class="mb-4">
-                                <label for="SupplierName">@Model.lblSupplierName</label>
+                                <label for="SupplierName">@Model.lblCompanyName</label>
                                 <input type="text" class="form-control" id="SupplierName" name="SupplierName"
                                     value="@Model.SupplierName" />
 
@@ -103,14 +114,7 @@
 
                             </div>
 
-                            <div class="mb-4">
-
-                                <label>@Model.lblSupplierType</label>
-                                    <select class="form-select" asp-for="SupplierType">
-                                    <option value="Internal" >Internal</option>
-                                    <option value="External" >External</option>
-                                </select>
-                            </div>
+                           
 
                             <div class="mb-4">
                                 <label for="ExtensionNumber">@Model.lblExtensionNumber</label>
@@ -125,7 +129,7 @@
                                     <a href="ManageSupplier"
                                         class="btn btn-outline-gray-600  align-items-center w-100">@Model.lblCancel</a>
 
-                                    <input type="submit" value="Update"
+                                    <input type="submit" value="@Model.lblUpdate"
                                         class="btn btn-sm btn-gray-800 align-items-center w-100"
                                         style="text-align:center;" />
 

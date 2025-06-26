@@ -21,11 +21,11 @@
                     </li>
                     <li class="breadcrumb-item d-flex align-items-center">
                         <img src="images/inventory.png" alt="Home" width="16" height="16" class="me-2" />
-                        Create Return Request
+                        @Model.lblCreateReturnRequest
                     </li>
                 </ol>
             </nav>
-              <h1 class="h4">Create Return Request</h1>
+              <h1 class="h4">@Model.lblCreateReturnRequest</h1>
             
         </div>
     </div>
@@ -55,9 +55,9 @@
                         <div class="return-entry border p-3 mb-3 rounded d-flex" style="flex-direction: column;  align-items: end;">
                             <div class="row">
                                 <div class="col-md-6 mb-4">
-                                    <label>Item Group</label>
+                                    <label>@Model.lblItemGroup</label>
                                     <select class="form-select item-group-select" name="ReturnItems[@i].itemGroup"  id="itemGroup_@i" onchange="filterItemsByGroup(@i)">
-                                        <option value="">Select Group</option>
+                                        <option value="">@Model.lblSelectItemGroup</option>
                                         @foreach (var group in Model.ItemGroups)
                                         {
                                             <option value="@group.GroupCode">@group.GroupDesc</option>
@@ -65,10 +65,10 @@
                                     </select>
                                 </div>
                                 <div class="col-md-6 mb-4">
-                                    <label>Arabic Item Name</label>
+                                    <label>@Model.lblItemNameArabic</label>
                                     <select class="form-select ArabicItemName" name="ReturnItems[@i].ItemCardId"  id="ArabicItemName_@i"
                                             onchange="onItemChange(this, @i)">
-                                        <option value="">Select Item</option>
+                                        <option value="">@Model.lblSelectItem</option>
                                         @foreach (var item in Model.ItemCards)
                                         {   
                                             var Item = Model.AllItems.FirstOrDefault(i => i.ItemId == item.ItemId);
@@ -87,7 +87,7 @@
                                     </select>
                                 </div>
                                 <div class="col-md-6 mb-4">
-                                    <label>Item Code</label>
+                                    <label>@Model.lblItemCode</label>
                                     <input type="text" name="ReturnItems[@i].ItemCode" class="form-control ItemCode" readonly />
                                 </div>
 
@@ -99,21 +99,21 @@
                                 <input hidden type="text" name="ReturnItems[@i].ItemNameEnglish" class="form-control ItemNameEnglish" readonly />
                                 
                                 <div class="col-md-6 mb-4">
-                                    <label>Item Description</label>
+                                    <label>@Model.lblItemDescription</label>
                                     <input type="text" name="ReturnItems[@i].ItemDescription" class="form-control ItemDescription" readonly />
                                 </div>
                                 <div class="col-md-6 mb-4">
-                                    <label>Chemical</label>
+                                    <label>@Model.lblChemical</label>
                                     <input type="text" name="ReturnItems[@i].Chemical" class="form-control chemical" readonly />
                                 </div>
                                 <div class="col-md-6 mb-4">
-                                    <label>Risk Rating</label>
+                                    <label>@Model.lblRiskRating</label>
                                     <input type="text" name="ReturnItems[@i].RiskRating" class="form-control RiskRating" readonly />
                                 </div>
                                 <div class="col-md-6 mb-4">
-                                    <label>State of Matter</label>
+                                    <label>@Model.lblStateofMatter</label>
                                     <select name="ReturnItems[@i].StateOfMatter" class="form-select" required>
-                                        <option value="">Select State</option>
+                                        <option value="">@Model.lblSelectState</option>
                                         @foreach (var state in Model.StateOfMatters)
                                         {
                                             <option value="@state.Value">@state.Text</option>
@@ -121,19 +121,19 @@
                                     </select>
                                 </div>
                                 <div class="col-md-6 mb-4">
-                                    <label>Expiry Date</label>
+                                    <label>@Model.lblExpiry</label>
                                     <input type="date" name="ReturnItems[@i].ExpiryDate" class="form-control ExpDate"   />
                                 </div>
                                 <div class="col-md-6 mb-4">
-                                    <label>Unit of Measure</label>
+                                    <label>@Model.lblUnitOfMeasure</label>
                                     <input type="text" name="ReturnItems[@i].UnitOfMeasure" class="form-control UnitofMeasure" readonly />
                                 </div>
                                 <div class="col-md-6 mb-4">
-                                    <label>Return Quantity</label>
+                                    <label>@Model.lblReturnQuantity</label>
                                     <input type="number" name="ReturnItems[@i].ReturnedQuantity" class="form-control" required />
                                 </div>
                                 <div class="col-12 mb-4">
-                                    <label>Return Notes</label>
+                                    <label>@Model.lblReturnNotes</label>
                                     <textarea name="ReturnItems[@i].ReturnNotes" class="form-control" rows="2"></textarea>
                                 </div>
                             </div>
@@ -141,24 +141,24 @@
                     }
                 </div>
 
-                <button type="button" class="btn btn-secondary mb-3" id="addEntryBtn" disabled>Add More Items</button>
+                <button type="button" class="btn btn-secondary mb-3" id="addEntryBtn" disabled>@Model.lblAddMore</button>
                 @* <div class="mb-3">
                     <label>Order Number</label>
                     <input type="text" name="OrderNumber" class="form-control" />
                 </div> *@
                 <div class="mb-4">
-                    <label>Order Date</label>
+                    <label>@Model.lblOrderDate</label>
                     <input type="date" name="OrderDate" class="form-control" value="@Model.CurrentDate.ToString("yyyy-MM-dd")" />
                 </div>
 
                 <div class="mb-4">
-                    <label>Requesting Sector</label>
+                    <label>@Model.lblRequestingSector</label>
                     <input type="text" name="RequestingSector" class="form-control" value="General Administration of Educational Services" />
                 </div>
                 <div class="mb-4">
-                    <label>Applicant's Sector</label>
+                    <label>@Model.lblApplicantsSector</label>
                     <select name="ApplicantsSector" class="form-select" required>
-                    <option value="">Select Applicant's Sector</option>
+                    <option value="">@Model.lblSelectApplicantSector</option>
                         @foreach (var ApplicantsSector in Model.requesters.Where(r => r.Ended == null))
                         {
                             <option value="@ApplicantsSector.ReqId">@ApplicantsSector.ReqName, @ApplicantsSector.DestinationName</option>
@@ -167,9 +167,9 @@
                     @* <input type="text" name="ApplicantsSector" class="form-control" /> *@
                 </div>
                 <div class="mb-4">
-                    <label>Store</label>
+                    <label>@Model.lblStoreName</label>
                     <select name="StoreId" class="form-select" required>
-                    <option value="">Select Store</option>
+                    <option value="">@Model.lblSelectStore</option>
                         @foreach (var store in Model.Stores.Where(s => s.IsActive == 1 && s.Ended == null))
                         {
                             <option value="@store.StoreId">@store.StoreName</option>
@@ -177,27 +177,27 @@
                     </select>
                 </div>
                 <div class="mb-4">
-                    <label>Reason for Return</label><br />
+                    <label>@Model.lblReasonForReturn</label><br />
                     <div class="form-check">
                         <input type="radio" class="form-check-input" name="ReasonForReturn" value="SurPlus" />
-                        <label class="form-check-label">Surplus</label>
+                        <label class="form-check-label">@Model.lblSurplus</label>
                     </div>
                     <div class="form-check">
                         <input type="radio" class="form-check-input" name="ReasonForReturn" value="Expired" />
-                        <label class="form-check-label">Expired</label>
+                        <label class="form-check-label">@Model.lblExpired</label>
                     </div>
                     <div class="form-check">
                         <input type="radio" class="form-check-input" name="ReasonForReturn" value="Invalid" />
-                        <label class="form-check-label">Invalid</label>
+                        <label class="form-check-label">@Model.lblInvalid</label>
                     </div>
                     <div class="form-check">
                         <input type="radio" class="form-check-input" name="ReasonForReturn" value="Damaged" />
-                        <label class="form-check-label">Damaged</label>
+                        <label class="form-check-label">@Model.lblDamaged</label>
                     </div>
                 </div>
                 <div class="d-flex gap-3">
-                    <a href="/ManageItems" class="btn btn-outline-secondary">Cancel</a>
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <a href="/ManageItems" class="btn btn-outline-secondary">@Model.lblCancel</a>
+                    <button type="submit" class="btn btn-primary">@Model.lblSubmit</button>
                 </div>
             </form>
 

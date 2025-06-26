@@ -191,22 +191,22 @@
                     <div class="form-check mb-1">
                         <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="supplierName"
                             id="supplierName" @(Model.SelectedColumns.Contains("supplierName") ? "checked" : "")>
-                        <label class="form-check-label" for="supplierName">SupplierName</label>
+                        <label class="form-check-label" for="supplierName">@Model.lblSupplierName</label>
                     </div>
                     <div class="form-check mb-1">
                         <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="itemName"
                             id="itemName" @(Model.SelectedColumns.Contains("itemName") ? "checked" : "")>
-                        <label class="form-check-label" for="itemName">ItemName</label>
+                        <label class="form-check-label" for="itemName">@Model.lblItemName</label>
                     </div>
                     <div class="form-check mb-1">
                         <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="quantity"
                             id="quantity" @(Model.SelectedColumns.Contains("quantity") ? "checked" : "")>
-                        <label class="form-check-label" for="quantity">Quantity</label>
+                        <label class="form-check-label" for="quantity">@Model.lblQuantityReceived</label>
                     </div>
                     <div class="form-check mb-1">
                         <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="receivedDate"
                             id="receivedDate" @(Model.SelectedColumns.Contains("receivedDate") ? "checked" : "")>
-                        <label class="form-check-label" for="receivedDate">ReceivedDate</label>
+                        <label class="form-check-label" for="receivedDate">@Model.lblReceivedAt</label>
                     </div>
                     @* <div class="form-check mb-1">
                         <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="inventoryBalance"
@@ -236,7 +236,7 @@
     </div> *@
     <div class="d-flex justify-content-between align-items-center">
         <div>@Model.lblTotalItem : @Model.TotalItems</div>
-        <div>
+        <div style="direction: ltr;">
             @if (Model.TotalPages > 1)
             {
                 <nav aria-label="Page navigation">
@@ -378,7 +378,7 @@
     </div>
     @if (Model.TotalPages > 1)
     {
-        <nav aria-label="Page navigation">
+        <nav aria-label="Page navigation" style="direction: ltr;">
             <ul class="pagination">
 
                 @* Previous button *@
@@ -497,7 +497,7 @@
                             }
                             @if (Model.SelectedColumns.Contains("receivedDate"))
                             {
-                                <td>@item.ReceivedAt</td>
+                                <td>@item.ReceivedAt.ToString("dd-MM-yyyy")</td>
                             }
                             @* @if (Model.SelectedColumns.Contains("inventoryBalance"))
                             {

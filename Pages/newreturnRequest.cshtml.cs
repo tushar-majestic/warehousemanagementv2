@@ -29,7 +29,6 @@ namespace LabMaterials.Pages
 
         // --- Localized Labels (sample) ---
         public string lblHome => "Home";
-        public string lblDamagedItems => "Return Requests";
         public string lblDamageItem => "New Return Request";
         public string lblItemCode => "Item Code";
         public string lblItemName => "Item Name";

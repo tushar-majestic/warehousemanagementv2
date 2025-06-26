@@ -193,7 +193,7 @@
                     </div> *@
 
                     <div class="form-check mb-1 text-center">
-                        <button type="submit" name="action" value="updateColumns" class="btn btn-success btn-sm">Ok</button>
+                        <button type="submit" name="action" value="updateColumns" class="btn btn-success btn-sm">@Model.lblOk</button>
                     </div>
 
                 </div>
@@ -208,7 +208,7 @@
     <div>@Model.lblTotalItem : @Model.TotalItems</div>
     @if (Model.TotalPages > 1)
     {
-        <nav aria-label="Page navigation">
+        <nav aria-label="Page navigation" style="direction: ltr;">
             <ul class="pagination">
 
                 @* Previous button *@
@@ -354,7 +354,7 @@
     </div>
     @if (Model.TotalPages > 1)
     {
-        <nav aria-label="Page navigation">
+        <nav aria-label="Page navigation" style="direction: ltr;">
             <ul class="pagination">
 
                 @* Previous button *@

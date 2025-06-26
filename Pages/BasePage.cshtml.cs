@@ -1,3 +1,4 @@
+using System.Diagnostics.Metrics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -25,6 +26,8 @@ namespace LabMaterials.Pages
         public bool CanGenerateReceivingRequest { get; set; }
         public bool CanManageItemGroup { get; set; }
         public bool CanGenerateDispensingRequest { get; set; }
+
+        public bool CanDeleteItems { get; set; }
         public bool CanDeleteSupplier { get; set; }
         public bool CanAddStore { get; set; }
 
@@ -36,12 +39,13 @@ namespace LabMaterials.Pages
 
         public string lblView, lblRequests, lblLabMaterials, lblHome, lblNotifications, lblShowHideColumn, lblDisbursement, lblReports, lblReportsInquiries,
         lblManageUsers, lblManageItems, lblManageSupplies, lblManageStores, lblUserProfile, lblLogout, lblDamagedItems, lblLanguage,
-        lblWarehouseType, lblManagerName, lblBuildingNumber, lblRoomDesc, lblStatus, lblRoomStatus, lblOpen, lblClosed, lblRoomNumber,lblRoomNameNumber,
+        lblWarehouseType, lblManagerName, lblBuildingNumber, lblRoomDesc, lblStatus, lblRoomStatus, lblOpen, lblClosed, lblRoomNumber, lblRoomNameNumber,
         lblNoOfShelves, lblKeeperName, lblKeeperJobNum, lblWarehouseManagerName, lblItemCards, lblReceivingItems, lblSerialNo,
-        lblSupplierName, lblRecipientSector, lblPageCount, lblSectorNo, lblDateOfReceipt, lblRecipientWarehouse, lblFiscalYear,lblReceivingDate,lblReceivingWarehouse,lblSupplierType,lblReceipient,lblGeneralSupervisor,lblItemName,lblItemQty,
+        lblSupplierName, lblRecipientSector, lblPageCount, lblSectorNo, lblDateOfReceipt, lblRecipientWarehouse, lblFiscalYear, lblReceivingDate, lblReceivingWarehouse, lblSupplierType, lblReceipient, lblGeneralSupervisor, lblItemName, lblItemQty,
         lblDocumentDate, lblDocumentNo, lblBasedOnDocument, lblComments, lblUnitPrice, lblTotalPrice, lblQuantity, lblUnitOfMeasure,
-        lblItemNameDescription, lblItemNo, lblCount, lblSAR,lblRiyal, lblChiefResponsible, lblTechnicalMember, lblRecipient, lblSignature, lblName,
-        lblDate, lblcreateItemCard, lbldeductItemCard, lblItemMovement, lblStores, lblItemCard, lblCeiling, lblReorderLimit, lblMinimum, lblItemNoCode, lblItemNameArabic, lblQuantityReceived, lblDateOfEntryInWarehouse, lblSourceSupplier, lblAmountSpent, lblPartyDirected, lblRemainingBalance, lblDispensingDocumentNo, lblPrint;
+        lblItemNameDescription, lblItemNo, lblCount, lblSAR, lblRiyal, lblChiefResponsible, lblTechnicalMember, lblRecipient, lblSignature, lblName,
+        lblDate, lblcreateItemCard, lbldeductItemCard, lblItemMovement, lblStores, lblItemCard, lblCeiling, lblReorderLimit, lblMinimum, lblItemNoCode, lblItemNameArabic, lblQuantityReceived, lblDateOfEntryInWarehouse, lblSourceSupplier, lblAmountSpent, lblPartyDirected, lblRemainingBalance, lblDispensingDocumentNo, lblPrint,
+        lblViewReceivingReport, lblReceivingReport,lblBack, lblOk, lblRequestDate, lblViewMaterialDispensing, lblSubmit, lblOrderNumber, lblOrderDate, lblSector, lblStoreName, lblReason, lblAction, lblEdit, lblCreatedAt, lblFromSector, lblToSector, lblWarehouse, lblReasonForReturn, lblSurplus, lblExpired, lblInvalid, lblDamaged, lblAdditionalNotes, lblReturnedItems, lblItemNameEng, lblItemCode, lblDesc, lblQty, lblExpiry, lblRecommendedAction, lblCommitteeNotes, lblApplicantSectorName, lblRequestSentSector, lblInspCommitteeRecommendations, lblReturned, lblItemDescription, lblReturnRequestDetails, lblReturnItemRequest, lblFilter, lblUpdate, lblFilterBy, lblLStatus, lblRequestingPlace, lblClearFilters, lblSelectFilterLeft, lblItemGroup, lblChemical, lblHazardType, lblAvailableQuantity, lblManageHazardTypes, lblManageDocumentType, lblUsers, lblAddHazardType,lblDetails, lblAddDocumentType, lblAlerts, lblMaximum, lblReorder, lblNotmoved, lblLastActivity, lblAttachment,lblDownloadFile, lblUnits, lblDelete, lblCreate, lblDocumentTypes,lblDocumentType, lblCreateDocumentType, lblCancel, lblSave, lblId,lblAddStoreType, lblStoreType, lblAddMore, lblRemove, lblItem, lblSelectItemGroup,lblSelectFiscalYear,lblSelectReceivingWarehouse,lblSelectBasedOndocument, lblSelectSupplierName, lblRiskRating, lblCreateReturnRequest, lblStateofMatter, lblSelectState, lblReturnQuantity,lblSelectApplicantSector, lblSelectStore, lblEditReturnRequest, lblAddRecyclingNotesItems, lblSelectRecommendedAction, lblRecyclingNotes,lblAddRecommendations, lblSelectItem, lblReturnNotes, lblRequestingSector, lblApplicantsSector, lblAreYouSure, lblInternal, lblExternal, lblRoomName, lblSelectRoomByNum, lblSelectRoom, lblShelfNumber, lblSelectShelf, lblOutOfWarehouseDate, lblParty, lblDispensingDocumentTypeNumber, lblSelectRequestingSector, lblSelectRequestDocumentType, lblDeptManager, lblSelectDeptMember, lblSelectTechnicalMember, lblSelectGeneralSpervisor, lblSelectAssetType, lblSustainable, lblConsumable, lblTypeName, lblUnitCode, lblGroupName, lblStoreNumber ;
 
         public override void OnPageHandlerExecuting(PageHandlerExecutingContext context)
         {
@@ -82,6 +86,7 @@ namespace LabMaterials.Pages
                 CanDeleteSupplier = HttpContext.Session.GetInt32("CanDeleteSupplier") == 1;
                 CanManageItemCard = HttpContext.Session.GetInt32("CanManageItemCard") == 1;
                 CanGenerateDispensingRequest = HttpContext.Session.GetInt32("CanGenerateDispensingRequest") == 1;
+                CanDeleteItems = HttpContext.Session.GetInt32("CanDeleteItems") == 1;
                 dir = HttpContext.Session.GetString("Lang") == "en" ? "ltr" : "rtl";
                 Lang = HttpContext.Session.GetString("Lang") == "en" ? "en" : "ar";
                 FillLables();
@@ -194,7 +199,134 @@ namespace LabMaterials.Pages
             this.lblRemainingBalance = (Program.Translations["RemainingBalance"][Lang]);
             this.lblDispensingDocumentNo = (Program.Translations["DispensingDocumentNo"][Lang]);
             this.lblPrint = (Program.Translations["Print"][Lang]);
-            
+            this.lblViewReceivingReport = (Program.Translations["ViewReceivingReport"][Lang]);
+            this.lblReceivingReport = (Program.Translations["ReceivingReport"][Lang]);
+            this.lblBack = (Program.Translations["Back"][Lang]);
+            this.lblOk = (Program.Translations["Ok"][Lang]);
+            this.lblRequestDate = (Program.Translations["RequestDate"][Lang]);
+            this.lblViewMaterialDispensing = (Program.Translations["ViewMaterialDispensing"][Lang]);
+            this.lblSubmit = (Program.Translations["Submit"][Lang]);
+            this.lblOrderNumber = (Program.Translations["OrderNumber"][Lang]);
+            this.lblOrderDate = (Program.Translations["OrderDate"][Lang]);
+            this.lblSector = (Program.Translations["Sector"][Lang]);
+            this.lblStoreName = (Program.Translations["StoreName"][Lang]);
+            this.lblReason = (Program.Translations["Reason"][Lang]);
+            this.lblAction = (Program.Translations["Action"][Lang]);
+            this.lblEdit = (Program.Translations["Edit"][Lang]);
+            this.lblCreatedAt = (Program.Translations["CreatedAt"][Lang]);
+            this.lblFromSector = (Program.Translations["FromSector"][Lang]);
+            this.lblToSector = (Program.Translations["ToSector"][Lang]);
+            this.lblWarehouse = (Program.Translations["Warehouse"][Lang]);
+            this.lblReasonForReturn = (Program.Translations["ReasonForReturn"][Lang]);
+            this.lblSurplus = (Program.Translations["SurPlus"][Lang]);
+            this.lblExpired = (Program.Translations["Expired"][Lang]);
+            this.lblInvalid = (Program.Translations["Invalid"][Lang]);
+            this.lblDamaged = (Program.Translations["Damaged"][Lang]);
+            this.lblAdditionalNotes = (Program.Translations["AdditionalNotes"][Lang]);
+            this.lblReturnedItems = (Program.Translations["ReturnedItems"][Lang]);
+            this.lblItemNameEng = (Program.Translations["ItemNameEng"][Lang]);
+            this.lblItemCode = (Program.Translations["ItemCode"][Lang]);
+            this.lblDesc = (Program.Translations["Desc"][Lang]);
+            this.lblQty = (Program.Translations["Qty"][Lang]);
+            this.lblExpiry = (Program.Translations["ExpiryDate"][Lang]);
+            this.lblRecommendedAction = (Program.Translations["RecommendedAction"][Lang]);
+            this.lblCommitteeNotes = (Program.Translations["CommitteeNotes"][Lang]);
+            this.lblApplicantSectorName = (Program.Translations["ApplicantSectorName"][Lang]);
+            this.lblRequestSentSector = (Program.Translations["RequestSentSector"][Lang]);
+            this.lblInspCommitteeRecommendations = (Program.Translations["InspCommitteeRecommendations"][Lang]);
+            this.lblReturned = (Program.Translations["Returned"][Lang]);
+            this.lblItemDescription = (Program.Translations["ItemDescription"][Lang]);
+            this.lblReturnRequestDetails = (Program.Translations["ReturnRequestDetails"][Lang]);
+            this.lblReturnItemRequest = (Program.Translations["ReturnItemRequest"][Lang]);
+            this.lblFilter = (Program.Translations["Filter"][Lang]);
+            this.lblUpdate = (Program.Translations["Update"][Lang]);
+            this.lblFilterBy = (Program.Translations["FilterBy"][Lang]);
+            this.lblLStatus = (Program.Translations["Status"][Lang]);
+            this.lblRequestingPlace = (Program.Translations["RequestingPlace"][Lang]);
+            this.lblClearFilters = (Program.Translations["ClearFilters"][Lang]);
+            this.lblSelectFilterLeft = (Program.Translations["SelectFilterLeft"][Lang]);
+            this.lblItemGroup = (Program.Translations["ItemGroup"][Lang]);
+            this.lblChemical = (Program.Translations["Chemical"][Lang]);
+            this.lblHazardType = (Program.Translations["HazardType"][Lang]);
+            this.lblAvailableQuantity = (Program.Translations["AvailableQuantity"][Lang]);
+            this.lblManageHazardTypes = (Program.Translations["ManageHazardTypes"][Lang]);
+            this.lblManageDocumentType = (Program.Translations["ManageDocumentType"][Lang]);
+            this.lblUsers = (Program.Translations["Users"])[Lang];
+            this.lblAddHazardType = (Program.Translations["AddHazardType"])[Lang];
+            this.lblDetails = (Program.Translations["Details"])[Lang];
+            this.lblAddDocumentType = (Program.Translations["AddDocumentType"])[Lang];
+            this.lblAlerts = (Program.Translations["Alerts"])[Lang];
+            this.lblMaximum = (Program.Translations["Maximum"])[Lang];
+            this.lblReorder = (Program.Translations["Reorder"])[Lang];
+            this.lblNotmoved = (Program.Translations["Notmoved"])[Lang];
+            this.lblLastActivity = (Program.Translations["LastActivity"])[Lang];
+            this.lblAttachment = (Program.Translations["Attachment"])[Lang];
+            this.lblDownloadFile = (Program.Translations["DownloadFile"])[Lang];
+            this.lblUnits = (Program.Translations["Units"])[Lang];
+            this.lblDelete = (Program.Translations["Delete"])[Lang];
+            this.lblCreate = (Program.Translations["Create"])[Lang];
+            this.lblDocumentTypes = (Program.Translations["DocumentTypes"])[Lang];
+            this.lblDocumentType = (Program.Translations["DocumentType"])[Lang];
+            this.lblCreateDocumentType = (Program.Translations["CreateDocumentType"])[Lang];
+            this.lblCancel = (Program.Translations["Cancel"])[Lang];
+            this.lblSave = (Program.Translations["Save"])[Lang];
+            this.lblId = (Program.Translations["Id"])[Lang];
+            this.lblAddStoreType = (Program.Translations["AddStoreType"])[Lang];
+            this.lblStoreType = (Program.Translations["StoreType"])[Lang];
+            this.lblAddMore = (Program.Translations["AddMore"])[Lang];
+            this.lblItem = (Program.Translations["Item"])[Lang];
+            this.lblRemove = (Program.Translations["Remove"])[Lang];
+            this.lblSelectItemGroup = (Program.Translations["SelectItemGroup"])[Lang];
+            this.lblSelectFiscalYear = (Program.Translations["SelectFiscalYear"])[Lang];
+            this.lblSelectReceivingWarehouse = (Program.Translations["SelectReceivingWarehouse"])[Lang];
+            this.lblSelectBasedOndocument = (Program.Translations["SelectBasedOndocument"])[Lang];
+            this.lblSelectSupplierName = (Program.Translations["SelectSupplierName"])[Lang];
+            this.lblRiskRating = (Program.Translations["RiskRating"])[Lang];
+            this.lblCreateReturnRequest = (Program.Translations["CreateReturnRequest"])[Lang];
+            this.lblStateofMatter = (Program.Translations["StateofMatter"])[Lang];
+            this.lblSelectState = (Program.Translations["SelectState"])[Lang];
+            this.lblReturnQuantity = (Program.Translations["ReturnQuantity"])[Lang];
+            this.lblSelectApplicantSector = (Program.Translations["ReturnQuantity"])[Lang];
+            this.lblSelectStore = (Program.Translations["SelectStore"])[Lang];
+            this.lblEditReturnRequest = (Program.Translations["EditReturnRequest"])[Lang];
+            this.lblAddRecyclingNotesItems = (Program.Translations["AddRecyclingNotesItems"])[Lang];
+            this.lblSelectRecommendedAction = (Program.Translations["SelectRecommendedAction"])[Lang];
+            this.lblRecyclingNotes = (Program.Translations["RecyclingNotes"])[Lang];
+            this.lblAddRecommendations = (Program.Translations["AddRecommendations"])[Lang];
+            this.lblSelectItem = (Program.Translations["SelectItem"])[Lang];
+            this.lblReturnNotes = (Program.Translations["ReturnNotes"])[Lang];
+            this.lblRequestingSector = (Program.Translations["RequestingSector"])[Lang];
+            this.lblApplicantsSector = (Program.Translations["ApplicantsSector"])[Lang];
+            this.lblAreYouSure = (Program.Translations["AreYouSure"])[Lang];
+            this.lblInternal = (Program.Translations["Internal"])[Lang];
+            this.lblExternal = (Program.Translations["External"])[Lang];
+            this.lblRoomName = (Program.Translations["RoomName"])[Lang];
+            this.lblSelectRoomByNum = (Program.Translations["SelectRoomByNum"])[Lang];
+            this.lblSelectRoom = (Program.Translations["SelectRoom"])[Lang];
+            this.lblShelfNumber = (Program.Translations["ShelfNumber"])[Lang];
+            this.lblSelectShelf = (Program.Translations["SelectShelf"])[Lang];
+            this.lblOutOfWarehouseDate = (Program.Translations["OutOfWarehouseDate"])[Lang];
+            this.lblParty = (Program.Translations["Party"])[Lang];
+            this.lblDispensingDocumentTypeNumber = (Program.Translations["DispensingDocumentTypeNumber"])[Lang];
+            this.lblSelectRequestingSector = (Program.Translations["SelectRequestingSector"])[Lang];
+            this.lblSelectRequestDocumentType = (Program.Translations["SelectRequestDocumentType"])[Lang];
+            this.lblDeptManager = (Program.Translations["DeptManager"])[Lang];
+            this.lblSelectDeptMember = (Program.Translations["SelectDeptMember"])[Lang];
+            this.lblSelectTechnicalMember = (Program.Translations["SelectTechnicalMember"])[Lang];
+            this.lblSelectGeneralSpervisor = (Program.Translations["SelectGeneralSpervisor"])[Lang];
+            this.lblSelectAssetType = (Program.Translations["SelectAssetType"])[Lang];
+            this.lblSustainable = (Program.Translations["Sustainable"])[Lang];
+            this.lblConsumable = (Program.Translations["Consumable"])[Lang];
+            this.lblTypeName = (Program.Translations["TypeName"])[Lang];
+            this.lblUnitCode = (Program.Translations["UnitCode"])[Lang];
+            this.lblGroupName = (Program.Translations["GroupName"])[Lang];
+            this.lblStoreNumber =  (Program.Translations["StoreNumber"])[Lang];
+
+
+
+
+
+
 
 
         }

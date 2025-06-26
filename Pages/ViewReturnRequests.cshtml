@@ -70,7 +70,7 @@
         @if(Model.CanReturnItems){
             <div class="btn-group ms-2 ms-lg-3">
                 <a href="newreturnRequest" class="btn btn-sm d-flex btn-gray-800 justify-content-center top-big-btn d-inline-flex align-items-center">
-                    <img b-ie9pk9zf1q="" class="icon text-white icon-xs mx-2" src="images/plus.png">Return Item Request
+                    <img b-ie9pk9zf1q="" class="icon text-white icon-xs mx-2" src="images/plus.png">@Model.lblReturnItemRequest
                 </a>
             </div>
         }
@@ -116,27 +116,27 @@
                 <div class="form-check mb-1">
                     <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="orderNumber"
                         id="orderNumber" @(Model.SelectedColumns.Contains("orderNumber") ? "checked" : "")>
-                    <label class="form-check-label" for="orderNumber">OrderNumber</label>
+                    <label class="form-check-label" for="orderNumber">@Model.lblOrderNumber</label>
                 </div>
                 <div class="form-check mb-1">
                     <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="orderDate"
                         id="orderDate" @(Model.SelectedColumns.Contains("orderDate") ? "checked" : "")>
-                    <label class="form-check-label" for="orderDate">OrderDate</label>
+                    <label class="form-check-label" for="orderDate">@Model.lblOrderDate</label>
                 </div>
                 <div class="form-check mb-1">
                     <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="sector"
                         id="sector" @(Model.SelectedColumns.Contains("sector") ? "checked" : "")>
-                    <label class="form-check-label" for="sector">Sector</label>
+                    <label class="form-check-label" for="sector">@Model.lblSector</label>
                 </div>
                 <div class="form-check mb-1">
                     <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="store"
                         id="store" @(Model.SelectedColumns.Contains("store") ? "checked" : "")>
-                    <label class="form-check-label" for="store">Store</label>
+                    <label class="form-check-label" for="store">@Model.lblStoreName</label>
                 </div>
                 <div class="form-check mb-1">
                     <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="reason"
                         id="reason" @(Model.SelectedColumns.Contains("reason") ? "checked" : "")>
-                    <label class="form-check-label" for="reason">Reason</label>
+                    <label class="form-check-label" for="reason">@Model.lblReason</label>
                 </div>
 
                 <div class="form-check mb-1 text-center">
@@ -151,7 +151,7 @@
 </div>
 @if (Model.TotalPages > 1)
 {
-    <nav aria-label="Page navigation">
+    <nav aria-label="Page navigation" style="direction: ltr;">
         <ul class="pagination">
 
             @* Previous button *@
@@ -235,25 +235,25 @@
                             <th scope="col" class="border-0 rounded-start">#</th>
                             @if (Model.SelectedColumns.Contains("orderNumber"))
                             {
-                                <th scope="col" class="border-0">Order Number</th>
+                                <th scope="col" class="border-0">@Model.lblOrderNumber</th>
                             }
                             @if (Model.SelectedColumns.Contains("orderDate"))
                             {
-                                <th scope="col" class="border-0">Order Date</th>
+                                <th scope="col" class="border-0">@Model.lblOrderDate</th>
                             }
                             @if (Model.SelectedColumns.Contains("sector"))
                             {
-                                <th scope="col" class="border-0">Sector</th>
+                                <th scope="col" class="border-0">@Model.lblSector</th>
                             }
                             @if (Model.SelectedColumns.Contains("store"))
                             {
-                                <th scope="col" class="border-0">Store</th>
+                                <th scope="col" class="border-0">@Model.lblStoreName</th>
                             }
                             @if (Model.SelectedColumns.Contains("reason"))
                             {
-                                <th scope="col" class="border-0">Reason</th>
+                                <th scope="col" class="border-0">@Model.lblReason</th>
                             }
-                            <th scope="col" class="border-0 rounded-end">Actions</th>
+                            <th scope="col" class="border-0 rounded-end">@Model.lblAction</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -283,7 +283,7 @@
                                 <td>@req.Reason</td>
                                 }
                                 <td>
-                                    <a href="/ReturnRequestsDetails/@req.Id" class="btn btn-sm btn-primary">View</a>
+                                    <a href="/ReturnRequestsDetails/@req.Id" class="btn btn-sm btn-primary">@Model.lblView</a>
                                 </td>
                             </tr>
                         }
@@ -299,7 +299,7 @@
     </div>
 @if (Model.TotalPages > 1)
 {
-    <nav aria-label="Page navigation">
+    <nav aria-label="Page navigation" style="direction: ltr;">
         <ul class="pagination">
 
             @* Previous button *@
@@ -379,23 +379,23 @@
                 <th scope="col" class="border-0 rounded-start">#</th>
                 @if (Model.SelectedColumns.Contains("orderNumber"))
                 {
-                    <th scope="col" class="border-0">Order Number</th>
+                    <th scope="col" class="border-0">@Model.lblOrderNumber</th>
                 }
                 @if (Model.SelectedColumns.Contains("orderDate"))
                 {
-                    <th scope="col" class="border-0">Order Date</th>
+                    <th scope="col" class="border-0">@Model.lblOrderDate</th>
                 }
                 @if (Model.SelectedColumns.Contains("sector"))
                 {
-                    <th scope="col" class="border-0">Sector</th>
+                    <th scope="col" class="border-0">@Model.lblSector</th>
                 }
                 @if (Model.SelectedColumns.Contains("store"))
                 {
-                    <th scope="col" class="border-0">Store</th>
+                    <th scope="col" class="border-0">@Model.lblStoreName</th>
                 }
                 @if (Model.SelectedColumns.Contains("reason"))
                 {
-                    <th scope="col" class="border-0">Reason</th>
+                    <th scope="col" class="border-0">@Model.lblReason</th>
                 }
             </tr>
         </thead>

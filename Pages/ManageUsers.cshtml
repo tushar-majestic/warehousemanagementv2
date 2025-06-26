@@ -117,28 +117,28 @@
         <div class="btn-group d-flex mx-1 ms-lg-1">
             <a href="ViewStoreTypes" class="btn btn-primary d-inline-flex align-items-center justify-content-center">
                 <img b-ie9pk9zf1q="" class="icon icon-xs me-2 text-white" src="images/manage-b.png">
-                Warehouse Type
+               @Model.lblWarehouseType
             </a>
         </div>
 
         <div class="btn-group d-flex mx-1 ms-lg-1">
             <a href="ViewDoctypes" class="btn btn-primary d-inline-flex align-items-center justify-content-center">
                 <img b-ie9pk9zf1q="" class="icon icon-xs me-2 text-white" src="images/manage-b.png">
-               Manage Document Type
+              @Model.lblManageDocumentType
             </a>
         </div>
 
-        <div class="btn-group d-flex mx-1 ms-lg-1">
+        @* <div class="btn-group d-flex mx-1 ms-lg-1">
             <a href="ViewPrivileges" class="btn btn-primary d-inline-flex align-items-center justify-content-center">
                 <img b-ie9pk9zf1q="" class="icon icon-xs me-2  text-white"  src="images/manage-b.png">
                 Manage Privilege
             </a>
-        </div>
+        </div> *@
 
         <div class="btn-group d-flex mx-1 ms-lg-1">
             <a href="HazardTypes/Index" class="btn btn-primary d-inline-flex align-items-center justify-content-center">
                 <img b-ie9pk9zf1q="" class="icon icon-xs me-2  text-white"  src="images/manage-b.png">
-                Manage Hazard Types
+                @Model.lblManageHazardTypes
             </a>
         </div>
         <div class="btn-group d-flex mx-1 ms-lg-1">
@@ -254,7 +254,7 @@
                     </div>
 
                     <div class="form-check mb-1 text-center">
-                        <button type="submit" name="action" value="updateColumns" class="btn btn-success btn-sm">Ok</button>
+                        <button type="submit" name="action" value="updateColumns" class="btn btn-success btn-sm">@Model.lblOk</button>
                     </div>
 
                 </div>
@@ -263,7 +263,7 @@
     </div>
     @if (Model.TotalPages > 1)
     {
-        <nav aria-label="Page navigation">
+        <nav aria-label="Page navigation" style="direction: ltr;">
             <ul class="pagination">
 
                 @* Previous button *@
@@ -473,7 +473,7 @@
     @* <div style="text-align:center; color:maroon">@Model.Message</div> *@
     @if (Model.TotalPages > 1)
     {
-        <nav aria-label="Page navigation">
+        <nav aria-label="Page navigation" style="direction: ltr;">
             <ul class="pagination">
 
                 @* Previous button *@

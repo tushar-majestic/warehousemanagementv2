@@ -19,7 +19,7 @@ namespace LabMaterials.Pages
         public string FromDate, ToDate;
         public int page { get; set; }
         public string lblSupplierName, lblSupplierNotUpdated, lblSupplierPhoneNumber, lblSelectSupplierType, lblSupplierType, SupplierNameSearch, 
-        lblUpdateSupplier, lblEdit, lblCancel, lblSupplies, lblSuppliers, lblCoordinatorName, CoordinatorNameSearch, lblExtensionNumber;
+        lblUpdateSupplier, lblEdit, lblCancel, lblSupplies, lblSuppliers, lblCoordinatorName, CoordinatorNameSearch, lblExtensionNumber, lblCompanyName;
         public void OnGet()
         {
             base.ExtractSessionData();
@@ -144,6 +144,8 @@ namespace LabMaterials.Pages
             this.lblSuppliers = (Program.Translations["Suppliers"])[Lang];
             this.lblCoordinatorName = (Program.Translations["CoordinatorName"])[Lang];
             this.lblExtensionNumber = (Program.Translations["ExtensionNumber"])[Lang];
+            this.lblCompanyName = (Program.Translations["CompanyName"])[Lang];
+
 
         }
     }

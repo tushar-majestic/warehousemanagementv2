@@ -146,7 +146,7 @@
                 </div>
             </div>
             <div class="col-4 col-md-2  col-xl-1 ps-md-0 text-end">
-                <button type="submit" name="action" value="search" class="btn btn-primary">@Model.lblSubmit</button>
+                <button type="submit" name="action" value="search" class="btn btn-primary">@Model.lblSearch</button>
             </div>
 
 
@@ -225,7 +225,7 @@
         <div>
              @if (Model.TotalPages > 1)
     {
-        <nav aria-label="Page navigation">
+        <nav aria-label="Page navigation" style="direction: ltr;">
             <ul class="pagination">
 
                 @* Previous button *@
@@ -316,31 +316,31 @@
                         <tr>
                             @if (Model.SelectedColumns.Contains("itemGroup"))
                             {
-                                <th scope="col" class="border-0 rounded-start">Item Group</th>
+                                <th scope="col" class="border-0 rounded-start">@Model.lblItemGroup</th>
                             }
                             @if (Model.SelectedColumns.Contains("itemName"))
                             {
-                                <th scope="col" class="border-0 rounded-start">Item Name</th>
+                                <th scope="col" class="border-0 rounded-start">@Model.lblItemName</th>
                             }
                             @if (Model.SelectedColumns.Contains("itemCode"))
                             {
-                                <th scope="col" class="border-0 rounded-start">Item Code</th>
+                                <th scope="col" class="border-0 rounded-start">@Model.lblItemCode</th>
                             }
                             @if (Model.SelectedColumns.Contains("itemDesc"))
                             {
-                                <th scope="col" class="border-0 rounded-start">Item Description</th>
+                                <th scope="col" class="border-0 rounded-start">@Model.lblItemDescription</th>
                             }
                             @if (Model.SelectedColumns.Contains("unitOfMeasure"))
                             {
-                                <th scope="col" class="border-0 rounded-start">Unit Of Measure</th>
+                                <th scope="col" class="border-0 rounded-start">@Model.lblUnitOfMeasure</th>
                             }
                             @if (Model.SelectedColumns.Contains("chemical"))
                             {
-                                <th scope="col" class="border-0 rounded-start">Chemical</th>
+                                <th scope="col" class="border-0 rounded-start">@Model.lblChemical</th>
                             }
                             @if (Model.SelectedColumns.Contains("hazardType"))
                             {
-                                <th scope="col" class="border-0 rounded-start">Hazard Type</th>
+                                <th scope="col" class="border-0 rounded-start">@Model.lblHazardType</th>
                             }
                             @* <th scope="col" class="border-0 rounded-start">Expiry Date</th>
                             <th scope="col" class="border-0 rounded-start">Type Of Asset</th> *@
@@ -348,15 +348,15 @@
                             <th scope="col" class="border-0 rounded-start">Reorder Limit</th> *@
                             @if (Model.SelectedColumns.Contains("quantity"))
                             {
-                                <th scope="col" class="border-0 rounded-start">Quantity Available</th>
+                                <th scope="col" class="border-0 rounded-start">@Model.lblAvailableQuantity</th>
                             }
                             @if (Model.SelectedColumns.Contains("warehouse"))
                             {
-                                <th scope="col" class="border-0 rounded-start">Warehouse Name</th>
+                                <th scope="col" class="border-0 rounded-start">@Model.lblStoreName</th>
                             }
                             @if (Model.SelectedColumns.Contains("date"))
                             {
-                                <th scope="col" class="border-0 rounded-start">Date</th>
+                                <th scope="col" class="border-0 rounded-start">@Model.lblDate</th>
                             }
                             @* <th scope="col" class="border-0 rounded-start">Date Of Entry</th>
                             <th scope="col" class="border-0 rounded-start">Room</th>
@@ -430,12 +430,11 @@
         </div>
     </div>
 
-    <div class="d-flex align-items-center justify-content-between">
-        @* <div>@Model.lblTotalItem : @Model.TotalItems</div> *@
-        <div>
+    @* <div class="d-flex align-items-center justify-content-between">
+        <div> *@
             @if (Model.TotalPages > 1)
             {
-            <nav aria-label="Page navigation">
+            <nav aria-label="Page navigation" style="direction: ltr;">
                 <ul class="pagination">
 
                     @* Previous button *@
@@ -511,8 +510,8 @@
                 </ul>
             </nav>
             }
-        </div>
-    </div>
+        @* </div>
+    </div> *@
 
 
 
@@ -522,31 +521,31 @@
                 <tr>
                     @if (Model.SelectedColumns.Contains("itemGroup"))
                     {
-                        <th scope="col" class="border-0 rounded-start">Item Group</th>
+                        <th scope="col" class="border-0 rounded-start">@Model.lblItemGroup</th>
                     }
                     @if (Model.SelectedColumns.Contains("itemName"))
                     {
-                        <th scope="col" class="border-0 rounded-start">Item Name</th>
+                        <th scope="col" class="border-0 rounded-start">@Model.lblItemName</th>
                     }
                     @if (Model.SelectedColumns.Contains("itemCode"))
                     {
-                        <th scope="col" class="border-0 rounded-start">Item Code</th>
+                        <th scope="col" class="border-0 rounded-start">@Model.lblItemCode</th>
                     }
                     @if (Model.SelectedColumns.Contains("itemDesc"))
                     {
-                        <th scope="col" class="border-0 rounded-start">Item Description</th>
+                        <th scope="col" class="border-0 rounded-start">@Model.lblItemDescription</th>
                     }
                     @if (Model.SelectedColumns.Contains("unitOfMeasure"))
                     {
-                        <th scope="col" class="border-0 rounded-start">Unit Of Measure</th>
+                        <th scope="col" class="border-0 rounded-start">@Model.lblUnitOfMeasure</th>
                     }
                     @if (Model.SelectedColumns.Contains("chemical"))
                     {
-                        <th scope="col" class="border-0 rounded-start">Chemical</th>
+                        <th scope="col" class="border-0 rounded-start">@Model.lblChemical</th>
                     }
                     @if (Model.SelectedColumns.Contains("hazardType"))
                     {
-                        <th scope="col" class="border-0 rounded-start">Hazard Type</th>
+                        <th scope="col" class="border-0 rounded-start">@Model.lblHazardType</th>
                     }
                     @* <th scope="col" class="border-0 rounded-start">Expiry Date</th>
                     <th scope="col" class="border-0 rounded-start">Type Of Asset</th> *@
@@ -554,15 +553,15 @@
                     <th scope="col" class="border-0 rounded-start">Reorder Limit</th> *@
                     @if (Model.SelectedColumns.Contains("quantity"))
                     {
-                        <th scope="col" class="border-0 rounded-start">Quantity Available</th>
+                        <th scope="col" class="border-0 rounded-start">@Model.lblAvailableQuantity</th>
                     }
                     @if (Model.SelectedColumns.Contains("warehouse"))
                     {
-                        <th scope="col" class="border-0 rounded-start">Warehouse Name</th>
+                        <th scope="col" class="border-0 rounded-start">@Model.lblStoreName</th>
                     }
                     @if (Model.SelectedColumns.Contains("date"))
                     {
-                        <th scope="col" class="border-0 rounded-start">Date</th>
+                        <th scope="col" class="border-0 rounded-start">@Model.lblDate</th>
                     }
                     @* <th scope="col" class="border-0 rounded-start">Date Of Entry</th>
                     <th scope="col" class="border-0 rounded-start">Room</th>

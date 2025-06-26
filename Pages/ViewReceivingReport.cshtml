@@ -1,12 +1,18 @@
 ﻿@page
 @model LabMaterials.Pages.ViewReceivingReportModel
 @{
-    ViewData["Title"] = "View Receiving Reports";
+    ViewData["Title"] = @Model.lblViewReceivingReport;
 }
 
 <style>
     .nested-table td th {
         border:none;
+    }
+    .m-0{
+        margin: 0 !important;
+    }
+    .mb-16{
+        margin-bottom: 16px !important;
     }
 </style>
 
@@ -42,7 +48,7 @@
         var report = Model.Report;
         <div class="card mb-4 border shadow-sm">
             <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-                <strong>Receiving Report - Serial No: @report.SerialNumber</strong>
+                <strong>@Model.lblReceivingReport - @Model.lblSerialNo : @report.SerialNumber</strong>
                 <div class="d-flex gap-4">
                     @* <a asp-page="/EditReceivingReport" asp-route-id="@report.Id" class="btn btn-sm btn-success me-2 text-white">Edit</a> *@
                     @* <a asp-page="/PrintReceivingReport" asp-route-id="@report.Id" class="btn btn-sm btn-secondary">Print</a> *@
@@ -51,7 +57,7 @@
                         <form method="post">
                             <input type="hidden" value="@report.SerialNumber" name="serialNumber" />
                             <input type="hidden" value="@report.Id" name="ReceivingReportId" />
-                            <input type="submit" value="Edit" class="btn btn-secondary" asp-page-handler="Edit" />
+                            <input type="submit" value="@Model.lblEdit" class="btn btn-secondary" asp-page-handler="Edit" />
                         </form>
                     }
                     
@@ -71,54 +77,69 @@
                     
                 </div> *@
 
-                <dl class="row">
-                    <dt class="col-sm-3" >@Model.lblFiscalYear</dt>
-                    <dd class="col-sm-3" >@report.FiscalYear</dd>
+                <dl class="row mb-16">
+                    <dt class="col-sm-3 m-0" >@Model.lblFiscalYear</dt>
+                    <dd class="col-sm-3 m-0" >@report.FiscalYear</dd>
+                
 
-                    <dt class="col-sm-3">@Model.lblReceivingDate</dt>
-                    <dd class="col-sm-3">@report.ReceivingDate.ToString("dd-MM-yyyy")</dd>
+                    <dt class="col-sm-3 m-0">@Model.lblReceivingDate</dt>
+                    <dd class="col-sm-3 m-0">@report.ReceivingDate.ToString("dd-MM-yyyy")</dd>
+                </dl>
+                <dl class="row mb-16">
 
-                    <dt class="col-sm-3">@Model.lblRecipientSector</dt>
-                    <dd class="col-sm-3">@report.RecipientSector</dd>
+                    <dt class="col-sm-3 m-0">@Model.lblRecipientSector</dt>
+                    <dd class="col-sm-3 m-0">@report.RecipientSector</dd>
 
-                    <dt class="col-sm-3">@Model.lblSectorNo</dt>
-                    <dd class="col-sm-3">@report.SectorNumber</dd>
-                    
-                    
-                    <dt class="col-sm-3">@Model.lblReceivingWarehouse</dt>
-                    <dd class="col-sm-3">@Model.ReceivingWarehouse</dd>
+                    <dt class="col-sm-3 m-0">@Model.lblSectorNo</dt>
+                    <dd class="col-sm-3 m-0">@report.SectorNumber</dd>
+                </dl>    
+                <dl class="row mb-16">   
 
-                    <dt class="col-sm-3">@Model.lblBasedOnDocument</dt>
-                    <dd class="col-sm-3">@report.BasedOnDocument</dd>
+                    <dt class="col-sm-3 m-0">@Model.lblReceivingWarehouse</dt>
+                    <dd class="col-sm-3 m-0">@Model.ReceivingWarehouse</dd>
 
-                    <dt class="col-sm-3">@Model.lblDocumentNo</dt>
-                    <dd class="col-sm-3">@report.DocumentNumber</dd>
+                    <dt class="col-sm-3 m-0">@Model.lblBasedOnDocument</dt>
+                    <dd class="col-sm-3 m-0">@report.BasedOnDocument</dd>
+                </dl>  
 
-                    <dt class="col-sm-3">@Model.lblDocumentDate</dt>
-                    <dd class="col-sm-3">@report.DocumentDate.ToString("dd-MM-yyyy")</dd>
+                <dl class="row mb-16">   
 
-                    <dt class="col-sm-3">@Model.lblSupplierType</dt>
-                    <dd class="col-sm-3">@report.Supplier?.SupplierType</dd>
+                    <dt class="col-sm-3 m-0">@Model.lblDocumentNo</dt>
+                    <dd class="col-sm-3 m-0">@report.DocumentNumber</dd>
 
-                    <dt class="col-sm-3">@Model.lblSupplierName</dt>
-                    <dd class="col-sm-3">@report.Supplier?.SupplierName</dd>
-                    
-                    <dt class="col-sm-3">@Model.lblReceipient</dt>
-                    <dd class="col-sm-3">@Model.ReceipientManager</dd>
+                    <dt class="col-sm-3 m-0">@Model.lblDocumentDate</dt>
+                    <dd class="col-sm-3 m-0">@report.DocumentDate.ToString("dd-MM-yyyy")</dd>
+                </dl>
 
-                    <dt class="col-sm-3">@Model.lblTechnicalMember</dt>
-                    <dd class="col-sm-3">@Model.TechnicalMember</dd>
+                <dl class="row mb-16">   
 
-                    <dt class="col-sm-3">@Model.lblGeneralSupervisor</dt>
+                    <dt class="col-sm-3 m-0">@Model.lblSupplierType</dt>
+                    <dd class="col-sm-3 m-0">@report.Supplier?.SupplierType</dd>
+
+                    <dt class="col-sm-3 m-0">@Model.lblSupplierName</dt>
+                    <dd class="col-sm-3 m-0">@report.Supplier?.SupplierName</dd>
+                </dl>
+
+                <dl class="row mb-16">   
+
+                    <dt class="col-sm-3 m-0">@Model.lblReceipient</dt>
+                    <dd class="col-sm-3 m-0">@Model.ReceipientManager</dd>
+
+                    <dt class="col-sm-3 m-0">@Model.lblTechnicalMember</dt>
+                    <dd class="col-sm-3 m-0">@Model.TechnicalMember</dd>
+                </dl>
+
+                <dl class="row mb-16">   
+
+                    <dt class="col-sm-3 m-0">@Model.lblGeneralSupervisor</dt>
                         @if(Model.GeneralSupervisor != null){
-                            <dd class="col-sm-3">@Model.GeneralSupervisor</dd>
+                            <dd class="col-sm-3 m-0">@Model.GeneralSupervisor</dd>
                         }
                         else
-                        { <dd class="col-sm-3">none</dd>
+                        { <dd class="col-sm-3 m-0">none</dd>
                         }
 
                 </dl>
-
 
                 <table class="table table-bordered table-striped" >
                     <thead>

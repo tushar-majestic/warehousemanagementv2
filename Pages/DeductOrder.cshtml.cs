@@ -21,6 +21,7 @@ namespace LabMaterials.Pages
         public List<Shelf> Shelves { get; set; }
         public PendingDeduction Deduction { get; set; } = default!;
 
+        public string ErrorMsg { get; set; }
 
         public DeductOrderModel(LabDBContext context)
         {
@@ -82,7 +83,7 @@ namespace LabMaterials.Pages
                                            ExpiryDate = ic.Item.ExpiryDate,
                                            QuantityReceived = di.Quantity,
                                            UnitOfmeasure = unit.UnitCode,
-                                           //Chemical = ri.Item.Chemical
+                                           Chemical =  (bool)ic.Item.Chemical? "yes" : "no"
                                        }).ToList();
 
                 var DispensingReport = _context.MaterialRequests
@@ -115,6 +116,41 @@ namespace LabMaterials.Pages
             return new JsonResult(shelves);
         }
 
+        private async Task populateData()
+        {   
+            this.ReportId = HttpContext.Session.GetInt32("DisReportId");
+            var dispensedItems = await _context.DespensedItems
+               .Include(ri => ri.ItemCard)
+               .Include(ri => ri.MaterialRequest)
+               .Where(ri => ri.MaterialRequestId == ReportId.Value)
+               .ToListAsync();
+
+            var itemCardIds = dispensedItems.Select(d => d.ItemCardId).Distinct().ToList();
+
+            var roomIds = await _context.ItemCardBatches
+                    .Where(b => itemCardIds.Contains(b.ItemCardId))
+                    .Select(b => b.RoomId)
+                    .Distinct()
+                    .ToListAsync();
+
+            Rooms = await _context.Rooms
+                    .Where(r => roomIds.Contains(r.RoomId))
+                    .ToListAsync();
+                    
+
+            var DispensingReport = _context.MaterialRequests
+                .Where(di => di.RequestId == ReportId.Value).FirstOrDefault();
+
+                if (DispensingReport != null)
+                {
+                    MaterialRequest = new MaterialRequest
+                    {
+                        DocumentNumber = DispensingReport.DocumentNumber,
+                        RequestingSector = DispensingReport.RequestingSector,
+                        WarehouseId = DispensingReport.WarehouseId
+                    };
+                }
+        }
         public async Task<IActionResult> OnPostAsync([FromForm] int StoreId, [FromForm] DateTime OutDate, [FromForm] int PartyId, [FromForm] string DocumentNumber)
         {
             base.ExtractSessionData();
@@ -123,10 +159,29 @@ namespace LabMaterials.Pages
             await PopulateDropdownsAsync();
             var dbContext = new LabDBContext();
 
-    
+
+            await populateData();
+            var store = _context.Stores.FirstOrDefault(s => s.StoreId == StoreId);
+            var isActive = store?.IsActive;
+
+            if (isActive == 0)
+            {
+                ErrorMsg = (Program.Translations["DedClosedWarehouseMsg"])[Lang];
+
+                //await populateData();
+                return Page();
+            }
 
             foreach (var item in ItemCardsFromReport)
             {   
+                var room = _context.Rooms.FirstOrDefault(r => r.RoomId == item.RoomId);
+                var roomStatus = room?.RoomStatus;
+                var roomName = room?.RoomName ?? "";
+
+                if (roomStatus == "Closed")
+                {
+                    ErrorMsg = $"{Program.Translations["DedClosedRoomMsg"][Lang]} ({roomName})"; return Page();
+                }
                 // 1. Reduce from ItemCard table
                 var itemCard = dbContext.ItemCards.FirstOrDefault(i => i.Id == item.ItemId);
                 if (itemCard != null)
@@ -134,7 +189,7 @@ namespace LabMaterials.Pages
                     itemCard.QuantityAvailable -= item.QuantityReceived;
                 }
 
-                // 2. Reduce from ItemCardBatches table (adjust logic as needed)
+                // 2. Reduce from ItemCardBatches table
                 var batch = dbContext.ItemCardBatches
                         .Where(b => b.ItemCardId == item.ItemId)
                         .Where(b => b.RoomId == item.RoomId)
@@ -150,7 +205,7 @@ namespace LabMaterials.Pages
                 // 3. Reduce from ShelveItems table
                 var shelveItem = dbContext.ShelveItems
                                 .FirstOrDefault(s => s.ItemCardId == item.ItemId &&
-                                                    s.ShelfId == item.ShelfId );
+                                                    s.ShelfId == item.ShelfId);
 
                 if (shelveItem != null)
                 {
@@ -175,8 +230,8 @@ namespace LabMaterials.Pages
                 };
 
                 _context.PendingDeductions.Add(newdeduction);
-                 dbContext.SaveChanges();
-                 await _context.SaveChangesAsync();
+                dbContext.SaveChanges();
+                await _context.SaveChangesAsync();
             }
 
 

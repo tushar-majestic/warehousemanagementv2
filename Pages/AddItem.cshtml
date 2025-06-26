@@ -139,6 +139,10 @@
                             <a href="/Home" class="text-decoration-none">@Model.lblHome</a>
                         </li>
                         <li class="breadcrumb-item d-flex align-items-center">
+                            <img src="images/retailer.png" alt="Home" width="16" height="16" class="me-2" />
+                            <a href="/ManageStore" class="text-decoration-none">@Model.lblStores</a>
+                        </li>
+                        <li class="breadcrumb-item d-flex align-items-center">
                             <img src="images/inventory.png" alt="Home" width="16" height="16" class="me-2" />
                             <a href="/ManageItems" class="text-decoration-none">@Model.lblItems</a>
                         </li>
@@ -285,7 +289,7 @@
                             </div> *@
 
                             <div class="mb-4" id="expiryDate">
-                                <label for="ExpiryDate">Expiry Date</label>
+                                <label for="ExpiryDate">@Model.lblExpiry</label>
                                 <input asp-for="ExpiryDate" class="form-control" type="date" name="ExpiryDate"
                                     value="@Model.ExpiryDate.ToString("yyyy-MM-dd")" />
                             </div>

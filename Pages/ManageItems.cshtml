@@ -235,6 +235,10 @@ document.addEventListener("DOMContentLoaded", function () {
                         <a href="/Home" class="text-decoration-none">@Model.lblHome</a>
                     </li>
                     <li class="breadcrumb-item d-flex align-items-center">
+                        <img src="images/retailer.png" alt="Home" width="16" height="16" class="me-2" />
+                        <a href="/ManageStore" class="text-decoration-none">@Model.lblStores</a>
+                    </li>
+                    <li class="breadcrumb-item d-flex align-items-center">
                         <img src="images/inventory.png" alt="Home" width="16" height="16" class="me-2" />
                         @Model.lblItems
                     </li>
@@ -399,7 +403,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             </div>
                             <div class="form-check mb-1 text-center">
                                 <button type="submit" name="action" value="updateColumns"
-                                    class="btn btn-success btn-sm">Ok</button>
+                                    class="btn btn-success btn-sm">@Model.lblOk</button>
                             </div>
                         </div>
                     </div>
@@ -407,18 +411,18 @@ document.addEventListener("DOMContentLoaded", function () {
                     {
                         <div class="text-end position-relative">
                             <button type="button" id="toggleFilterDropdown" class="btn btn-secondary">
-                                Filter
+                                @Model.lblFilter
                             </button>
 
                             <!-- Filter Panel -->
                             <div id="filterDropdownPanel"
                                 class="card shadow-sm position-absolute flex-row"
-                                style="right: 0; top: 100%; width: 400px; display: none; z-index: 1000; height: 400px; overflow: hidden;">
+                                style="inset-inline-end: 0; top: 100%; width: 400px; display: none; z-index: 1000; height: 400px; overflow: hidden;">
 
                                 <!-- Left: Filter Categories -->
                                 <div class="border-end p-2" style="width: 40%; overflow-y: auto; position: relative;">
-                                    <div class="fw-bolder text-center mb-2">Filter By</div>
-                                    <div class="filter-option text-primary mb-2" onclick="showFilterValues('typeName')" style="cursor: pointer;">Type Name</div>
+                                    <div class="fw-bolder text-center mb-2">@Model.lblFilterBy</div>
+                                    <div class="filter-option text-primary mb-2" onclick="showFilterValues('typeName')" style="cursor: pointer;">@Model.lblTypeName</div>
                                     <div class="filter-option text-primary mb-2" onclick="showFilterValues('hazardType')" style="cursor: pointer;">@Model.lblRiskRating</div>
                                     <div class="filter-option text-primary mb-2" onclick="showFilterValues('unitCode')" style="cursor: pointer;">@Model.lblUnitOfMeasure</div>
 
@@ -426,14 +430,14 @@ document.addEventListener("DOMContentLoaded", function () {
                                     <button type="button" class="btn btn-primary"
                                         style="position: absolute; bottom: 10px; left: 10px;"
                                         onclick="window.location.href='/ManageItems'">
-                                        Clear Filters
+                                        @Model.lblClearFilters
                                     </button>
                                 </div>
 
                                 <!-- Right: Dynamic Filter Values + Apply Button -->
                                 <div class="p-2" id="filterValues"
                                     style="width: 60%; overflow-y: auto; border-left: 1px solid #eee;">
-                                    <div class="text-muted">Select a filter from left</div>
+                                    <div class="text-muted">@Model.lblSelectFilterLeft</div>
                                 </div>
                             </div>
                         </div>
@@ -465,87 +469,87 @@ document.addEventListener("DOMContentLoaded", function () {
 
     <div class="d-flex align-items-center justify-content-between">
         <div>@Model.lblTotalItem : @Model.TotalItems</div>
-        <div>
+        <div  style="direction: ltr;">
              @if (Model.TotalPages > 1)
-    {
-        <nav aria-label="Page navigation">
-            <ul class="pagination">
+            {
+                <nav aria-label="Page navigation">
+                    <ul class="pagination">
 
-                @* Previous button *@
-                @if (Model.CurrentPage > 1)
-                {
+                        @* Previous button *@
+                        @if (Model.CurrentPage > 1)
+                        {
 
-                    <li class="page-item">
-                        <a class="page-link"
-                            href="?page=@(Model.CurrentPage - 1)&ItemName=@Model.ItemName&Group=@Model.Group&typeName=@Model.TypeName&hazardType=@Model.HazardType&unitCode=@Model.UnitCode&FromDate=@Model.FromDate?.ToString("yyyy-MM-dd")&ToDate=@Model.ToDate?.ToString("yyyy-MM-dd")">&laquo;</a>
-                    </li>
-                }
+                            <li class="page-item">
+                                <a class="page-link"
+                                    href="?page=@(Model.CurrentPage - 1)&ItemName=@Model.ItemName&Group=@Model.Group&typeName=@Model.TypeName&hazardType=@Model.HazardType&unitCode=@Model.UnitCode&FromDate=@Model.FromDate?.ToString("yyyy-MM-dd")&ToDate=@Model.ToDate?.ToString("yyyy-MM-dd")">&laquo;</a>
+                            </li>
+                        }
 
-                @* Show pages normally if the total pages are less than or equal to 10 *@
-                @if (Model.TotalPages <= 10)
-                {
-                    @for (int i = 1; i <= Model.TotalPages; i++)
-                    {
-                        <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
-                            <a class="page-link"
-                                href="?page=@i&ItemName=@Model.ItemName&Group=@Model.Group&typeName=@Model.TypeName&hazardType=@Model.HazardType&unitCode=@Model.UnitCode&FromDate=@Model.FromDate?.ToString("yyyy-MM-dd")&ToDate=@Model.ToDate?.ToString("yyyy-MM-dd")">@i</a>
-                        </li>
-                    }
-                }
-                else
-                {
-                    @* Show the first page, then ellipsis if there are skipped pages *@
-                    @if (Model.CurrentPage > 3)
-                    {
-                        <li class="page-item">
-                            <a class="page-link"
-                                href="?page=1&ItemName=@Model.ItemName&Group=@Model.Group&typeName=@Model.TypeName&hazardType=@Model.HazardType&unitCode=@Model.UnitCode&FromDate=@Model.FromDate?.ToString("yyyy-MM-dd")&ToDate=@Model.ToDate?.ToString("yyyy-MM-dd")">1</a>
-                        </li>
-                        <li class="page-item disabled">
-                            <span class="page-link">...</span>
-                        </li>
-                    }
+                        @* Show pages normally if the total pages are less than or equal to 10 *@
+                        @if (Model.TotalPages <= 10)
+                        {
+                            @for (int i = 1; i <= Model.TotalPages; i++)
+                            {
+                                <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                                    <a class="page-link"
+                                        href="?page=@i&ItemName=@Model.ItemName&Group=@Model.Group&typeName=@Model.TypeName&hazardType=@Model.HazardType&unitCode=@Model.UnitCode&FromDate=@Model.FromDate?.ToString("yyyy-MM-dd")&ToDate=@Model.ToDate?.ToString("yyyy-MM-dd")">@i</a>
+                                </li>
+                            }
+                        }
+                        else
+                        {
+                            @* Show the first page, then ellipsis if there are skipped pages *@
+                            @if (Model.CurrentPage > 3)
+                            {
+                                <li class="page-item">
+                                    <a class="page-link"
+                                        href="?page=1&ItemName=@Model.ItemName&Group=@Model.Group&typeName=@Model.TypeName&hazardType=@Model.HazardType&unitCode=@Model.UnitCode&FromDate=@Model.FromDate?.ToString("yyyy-MM-dd")&ToDate=@Model.ToDate?.ToString("yyyy-MM-dd")">1</a>
+                                </li>
+                                <li class="page-item disabled">
+                                    <span class="page-link">...</span>
+                                </li>
+                            }
 
-                    @* Show pages from (current-1) to (current+1) *@
-                    @for (int i = Math.Max(1, Model.CurrentPage - 1); i <= Math.Min(Model.TotalPages, Model.CurrentPage + 1); i++)
-                    {
-                        <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
-                            <a class="page-link"
-                                href="?page=@i&ItemName=@Model.ItemName&Group=@Model.Group&typeName=@Model.TypeName&hazardType=@Model.HazardType&unitCode=@Model.UnitCode&FromDate=@Model.FromDate?.ToString("yyyy-MM-dd")&ToDate=@Model.ToDate?.ToString("yyyy-MM-dd")">@i</a>
-                        </li>
-                    }
+                            @* Show pages from (current-1) to (current+1) *@
+                            @for (int i = Math.Max(1, Model.CurrentPage - 1); i <= Math.Min(Model.TotalPages, Model.CurrentPage + 1); i++)
+                            {
+                                <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                                    <a class="page-link"
+                                        href="?page=@i&ItemName=@Model.ItemName&Group=@Model.Group&typeName=@Model.TypeName&hazardType=@Model.HazardType&unitCode=@Model.UnitCode&FromDate=@Model.FromDate?.ToString("yyyy-MM-dd")&ToDate=@Model.ToDate?.ToString("yyyy-MM-dd")">@i</a>
+                                </li>
+                            }
 
-                    @* Add "..." if there are skipped pages after the current page *@
-                    @if (Model.CurrentPage < Model.TotalPages - 1)
-                    {
-                        <li class="page-item disabled">
-                            <span class="page-link">...</span>
-                        </li>
-                    }
+                            @* Add "..." if there are skipped pages after the current page *@
+                            @if (Model.CurrentPage < Model.TotalPages - 1)
+                            {
+                                <li class="page-item disabled">
+                                    <span class="page-link">...</span>
+                                </li>
+                            }
 
-                    @* Show the last page, if it's not already visible *@
-                    @if (Model.CurrentPage < Model.TotalPages - 2)
-                    {
-                        <li class="page-item">
-                            <a class="page-link"
-                                href="?page=@Model.TotalPages&ItemName=@Model.ItemName&Group=@Model.Group&typeName=@Model.TypeName&hazardType=@Model.HazardType&unitCode=@Model.UnitCode&FromDate=@Model.FromDate?.ToString("yyyy-MM-dd")&ToDate=@Model.ToDate?.ToString("yyyy-MM-dd")">@Model.TotalPages</a>
-                        </li>
-                    }
-                }
+                            @* Show the last page, if it's not already visible *@
+                            @if (Model.CurrentPage < Model.TotalPages - 2)
+                            {
+                                <li class="page-item">
+                                    <a class="page-link"
+                                        href="?page=@Model.TotalPages&ItemName=@Model.ItemName&Group=@Model.Group&typeName=@Model.TypeName&hazardType=@Model.HazardType&unitCode=@Model.UnitCode&FromDate=@Model.FromDate?.ToString("yyyy-MM-dd")&ToDate=@Model.ToDate?.ToString("yyyy-MM-dd")">@Model.TotalPages</a>
+                                </li>
+                            }
+                        }
 
-                @* Last buttons *@
-                @if (Model.CurrentPage < Model.TotalPages)
-                {
-                    <li class="page-item">
-                        <a class="page-link"
-                            href="?page=@(Model.CurrentPage + 1)&ItemName=@Model.ItemName&Group=@Model.Group&typeName=@Model.TypeName&hazardType=@Model.HazardType&unitCode=@Model.UnitCode&FromDate=@Model.FromDate?.ToString("yyyy-MM-dd")&ToDate=@Model.ToDate?.ToString("yyyy-MM-dd")">&raquo;</a>
-                    </li>
+                        @* Last buttons *@
+                        @if (Model.CurrentPage < Model.TotalPages)
+                        {
+                            <li class="page-item">
+                                <a class="page-link"
+                                    href="?page=@(Model.CurrentPage + 1)&ItemName=@Model.ItemName&Group=@Model.Group&typeName=@Model.TypeName&hazardType=@Model.HazardType&unitCode=@Model.UnitCode&FromDate=@Model.FromDate?.ToString("yyyy-MM-dd")&ToDate=@Model.ToDate?.ToString("yyyy-MM-dd")">&raquo;</a>
+                            </li>
 
-                }
+                        }
 
-            </ul>
-        </nav>
-    }
+                    </ul>
+                </nav>
+            }
         </div>
 
     </div>
@@ -648,7 +652,10 @@ document.addEventListener("DOMContentLoaded", function () {
                                             <input type="hidden" value="@Model.ItemName" name="ItemName" />
                                             <input type="hidden" value="@Model.Group" name="Group" />
                                             <input type="submit" value="@Model.lblEdit" class="btn btn-secondary" asp-page-handler="Edit" />
-                                            <input type="submit" value="@Model.lblDelete" class="btn btn-danger" asp-page-handler="Delete" />
+                                            @if (Model.CanDeleteItems)
+                                            {
+                                                <input type="submit" value="@Model.lblDelete" class="btn btn-danger" asp-page-handler="Delete" />
+                                            }
                                             <!--<input type="submit" value="@Model.lblDamage" class="btn btn-danger" asp-page-handler="Damage" formaction="DamageItem?ItemId=@item.ItemId" /> -->
                                             <a class="btn btn-danger" href="DamageItem?id=@item.ItemId">@Model.lblDamage </a>
                                         </form>
@@ -669,83 +676,84 @@ document.addEventListener("DOMContentLoaded", function () {
 
     @if (Model.TotalPages > 1)
     {
-        <nav aria-label="Page navigation">
-            <ul class="pagination">
+            <nav aria-label="Page navigation" style="direction: ltr;">
+                <ul class="pagination">
 
-                @* Previous button *@
-                @if (Model.CurrentPage > 1)
-                {
-
-                    <li class="page-item">
-                        <a class="page-link"
-                            href="?page=@(Model.CurrentPage - 1)&ItemName=@Model.ItemName&Group=@Model.Group&typeName=@Model.TypeName&hazardType=@Model.HazardType&unitCode=@Model.UnitCode&FromDate=@Model.FromDate?.ToString("yyyy-MM-dd")&ToDate=@Model.ToDate?.ToString("yyyy-MM-dd")">&laquo;</a>
-                    </li>
-                }
-
-                @* Show pages normally if the total pages are less than or equal to 10 *@
-                @if (Model.TotalPages <= 10)
-                {
-                    @for (int i = 1; i <= Model.TotalPages; i++)
+                    @* Previous button *@
+                    @if (Model.CurrentPage > 1)
                     {
-                        <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+
+                        <li class="page-item">
                             <a class="page-link"
-                                href="?page=@i&ItemName=@Model.ItemName&Group=@Model.Group&typeName=@Model.TypeName&hazardType=@Model.HazardType&unitCode=@Model.UnitCode&FromDate=@Model.FromDate?.ToString("yyyy-MM-dd")&ToDate=@Model.ToDate?.ToString("yyyy-MM-dd")">@i</a>
+                                href="?page=@(Model.CurrentPage - 1)&ItemName=@Model.ItemName&Group=@Model.Group&typeName=@Model.TypeName&hazardType=@Model.HazardType&unitCode=@Model.UnitCode&FromDate=@Model.FromDate?.ToString("yyyy-MM-dd")&ToDate=@Model.ToDate?.ToString("yyyy-MM-dd")">&laquo;</a>
                         </li>
                     }
-                }
-                else
-                {
-                    @* Show the first page, then ellipsis if there are skipped pages *@
-                    @if (Model.CurrentPage > 3)
+
+                    @* Show pages normally if the total pages are less than or equal to 10 *@
+                    @if (Model.TotalPages <= 10)
+                    {
+                        @for (int i = 1; i <= Model.TotalPages; i++)
+                        {
+                            <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                                <a class="page-link"
+                                    href="?page=@i&ItemName=@Model.ItemName&Group=@Model.Group&typeName=@Model.TypeName&hazardType=@Model.HazardType&unitCode=@Model.UnitCode&FromDate=@Model.FromDate?.ToString("yyyy-MM-dd")&ToDate=@Model.ToDate?.ToString("yyyy-MM-dd")">@i</a>
+                            </li>
+                        }
+                    }
+                    else
+                    {
+                        @* Show the first page, then ellipsis if there are skipped pages *@
+                        @if (Model.CurrentPage > 3)
+                        {
+                            <li class="page-item">
+                                <a class="page-link"
+                                    href="?page=1&ItemName=@Model.ItemName&Group=@Model.Group&typeName=@Model.TypeName&hazardType=@Model.HazardType&unitCode=@Model.UnitCode&FromDate=@Model.FromDate?.ToString("yyyy-MM-dd")&ToDate=@Model.ToDate?.ToString("yyyy-MM-dd")">1</a>
+                            </li>
+                            <li class="page-item disabled">
+                                <span class="page-link">...</span>
+                            </li>
+                        }
+
+                        @* Show pages from (current-1) to (current+1) *@
+                        @for (int i = Math.Max(1, Model.CurrentPage - 1); i <= Math.Min(Model.TotalPages, Model.CurrentPage + 1); i++)
+                        {
+                            <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                                <a class="page-link"
+                                    href="?page=@i&ItemName=@Model.ItemName&Group=@Model.Group&typeName=@Model.TypeName&hazardType=@Model.HazardType&unitCode=@Model.UnitCode&FromDate=@Model.FromDate?.ToString("yyyy-MM-dd")&ToDate=@Model.ToDate?.ToString("yyyy-MM-dd")">@i</a>
+                            </li>
+                        }
+
+                        @* Add "..." if there are skipped pages after the current page *@
+                        @if (Model.CurrentPage < Model.TotalPages - 1)
+                        {
+                            <li class="page-item disabled">
+                                <span class="page-link">...</span>
+                            </li>
+                        }
+
+                        @* Show the last page, if it's not already visible *@
+                        @if (Model.CurrentPage < Model.TotalPages - 2)
+                        {
+                            <li class="page-item">
+                                <a class="page-link"
+                                    href="?page=@Model.TotalPages&ItemName=@Model.ItemName&Group=@Model.Group&typeName=@Model.TypeName&hazardType=@Model.HazardType&unitCode=@Model.UnitCode&FromDate=@Model.FromDate?.ToString("yyyy-MM-dd")&ToDate=@Model.ToDate?.ToString("yyyy-MM-dd")">@Model.TotalPages</a>
+                            </li>
+                        }
+                    }
+
+                    @* Last buttons *@
+                    @if (Model.CurrentPage < Model.TotalPages)
                     {
                         <li class="page-item">
                             <a class="page-link"
-                                href="?page=1&ItemName=@Model.ItemName&Group=@Model.Group&typeName=@Model.TypeName&hazardType=@Model.HazardType&unitCode=@Model.UnitCode&FromDate=@Model.FromDate?.ToString("yyyy-MM-dd")&ToDate=@Model.ToDate?.ToString("yyyy-MM-dd")">1</a>
+                                href="?page=@(Model.CurrentPage + 1)&ItemName=@Model.ItemName&Group=@Model.Group&typeName=@Model.TypeName&hazardType=@Model.HazardType&unitCode=@Model.UnitCode&FromDate=@Model.FromDate?.ToString("yyyy-MM-dd")&ToDate=@Model.ToDate?.ToString("yyyy-MM-dd")">&raquo;</a>
                         </li>
-                        <li class="page-item disabled">
-                            <span class="page-link">...</span>
-                        </li>
+
                     }
 
-                    @* Show pages from (current-1) to (current+1) *@
-                    @for (int i = Math.Max(1, Model.CurrentPage - 1); i <= Math.Min(Model.TotalPages, Model.CurrentPage + 1); i++)
-                    {
-                        <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
-                            <a class="page-link"
-                                href="?page=@i&ItemName=@Model.ItemName&Group=@Model.Group&typeName=@Model.TypeName&hazardType=@Model.HazardType&unitCode=@Model.UnitCode&FromDate=@Model.FromDate?.ToString("yyyy-MM-dd")&ToDate=@Model.ToDate?.ToString("yyyy-MM-dd")">@i</a>
-                        </li>
-                    }
-
-                    @* Add "..." if there are skipped pages after the current page *@
-                    @if (Model.CurrentPage < Model.TotalPages - 1)
-                    {
-                        <li class="page-item disabled">
-                            <span class="page-link">...</span>
-                        </li>
-                    }
-
-                    @* Show the last page, if it's not already visible *@
-                    @if (Model.CurrentPage < Model.TotalPages - 2)
-                    {
-                        <li class="page-item">
-                            <a class="page-link"
-                                href="?page=@Model.TotalPages&ItemName=@Model.ItemName&Group=@Model.Group&typeName=@Model.TypeName&hazardType=@Model.HazardType&unitCode=@Model.UnitCode&FromDate=@Model.FromDate?.ToString("yyyy-MM-dd")&ToDate=@Model.ToDate?.ToString("yyyy-MM-dd")">@Model.TotalPages</a>
-                        </li>
-                    }
-                }
-
-                @* Last buttons *@
-                @if (Model.CurrentPage < Model.TotalPages)
-                {
-                    <li class="page-item">
-                        <a class="page-link"
-                            href="?page=@(Model.CurrentPage + 1)&ItemName=@Model.ItemName&Group=@Model.Group&typeName=@Model.TypeName&hazardType=@Model.HazardType&unitCode=@Model.UnitCode&FromDate=@Model.FromDate?.ToString("yyyy-MM-dd")&ToDate=@Model.ToDate?.ToString("yyyy-MM-dd")">&raquo;</a>
-                    </li>
-
-                }
-
-            </ul>
-        </nav>
+                </ul>
+            </nav>
+       
     }
     <div class="table-responsive" id="exportTableContainer" style="display: none;">
         <table class="table table-centered table-nowrap mb-0 rounded" id="exportTable">
@@ -768,6 +776,10 @@ document.addEventListener("DOMContentLoaded", function () {
                     {
                     <th scope="col" class="border-0">@Model.lblRiskRating</th>
                     }
+                    @if (Model.SelectedColumns.Contains("stateofMatter"))
+                    {
+                    <th scope="col" class="border-0">@Model.lblStateofMatter</th>
+                    }
                     @if (Model.SelectedColumns.Contains("typeName"))
                     {
                     <th scope="col" class="border-0">@Model.lblTypeName</th>
@@ -780,10 +792,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     {
                     <th scope="col" class="border-0">@Model.lblGroupName</th>
                     }
-                    @* @if (Model.SelectedColumns.Contains("stateofMatter"))
-                    {
-                    <th scope="col" class="border-0">@Model.lblStateofMatter</th>
-                    } *@
+                    
                     @if (Model.SelectedColumns.Contains("expiry"))
                     {
                     <th scope="col" class="border-0">@Model.lblExpiryDate</th>
@@ -813,6 +822,10 @@ document.addEventListener("DOMContentLoaded", function () {
                             {
                             <td style='color: @(item.Chemical == true ?"red":"teal")'>@item.RiskRating</td>
                             }
+                            @if (Model.SelectedColumns.Contains("stateofMatter"))
+                            {
+                            <td>@item.StateofMatter</td>
+                            }
                             @if (Model.SelectedColumns.Contains("typeName"))
                             {
                             <td>@item.TypeName</td>
@@ -825,10 +838,6 @@ document.addEventListener("DOMContentLoaded", function () {
                             {
                             <td>@item.GroupDesc</td>
                             }
-                            @* @if (Model.SelectedColumns.Contains("stateofMatter"))
-                            {
-                            <td>@item.StateofMatter</td>
-                            } *@
                             @if (Model.SelectedColumns.Contains("expiry"))
                             {
                                 <td>@(item.ExpiryDate.HasValue ? item.ExpiryDate.Value.ToString("dd-MM/yyyy") : "")</td>
