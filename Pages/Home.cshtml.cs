@@ -1,4 +1,4 @@
-using LabMaterials.dtos;
+﻿using LabMaterials.dtos;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
@@ -74,7 +74,7 @@ namespace LabMaterials.Pages
                     .ToListAsync();
 
                 totalQuantity = dbContext.Items.Sum(e => e.AvailableQuantity);
-                totalDisburse = dbContext.DisbursementRequests.Sum(e => e.ItemQuantity);
+
 
                 countItems = dbContext.Items.Where(e => e.Ended == null).Count();
                 countUsers = dbContext.Users.Where(e => e.Ended == null).Count();
@@ -85,14 +85,8 @@ namespace LabMaterials.Pages
                 {
                     ErrorMsg = string.Format((Program.Translations["StartDateGreaterThanEndDate"])[Lang]);
                 }
-                // countSupplies = dbContext.Supplies.Where(e => e.ReceivedAt >= startDate && e.ReceivedAt <= endDate).Count();
-                // countdisbursement = dbContext.DisbursementRequests.Where(e => e.ReqReceivedAt >= startDate && e.ReqReceivedAt <= endDate).Count();
-
                 countSupplies = dbContext.ReceivingReports.Where(e => e.ReceivingDate >= startDate && e.ReceivingDate <= endDate).Count();
                 countdisbursement = dbContext.MaterialRequests.Where(e => e.OrderDate >= startDate && e.OrderDate <= endDate).Count();
-
-                Console.WriteLine($"Home count supplies {countSupplies}");
-                Console.WriteLine($"Home count countdisbursement {countdisbursement}");
 
                 //var itemsList = dbContext.Items.Select(item => new
                 //{
@@ -134,26 +128,56 @@ namespace LabMaterials.Pages
                 //                ItemCode = i.ItemCode,
                 //            }).OrderByDescending(item => item.DISBURSE_Percentage);
 
-                var disbursementList = (from i in dbContext.Items
-                                        join di in dbContext.DisbursementRequests on i.ItemCode equals di.Itemcode
-                                        join cc in dbContext.ColorCodes on i.ItemId equals cc.ItemId
-                                        select new
-                                        {
-                                            ItemCode = i.ItemCode,
-                                            DISBURSE_Name = i.ItemName,
-                                            COLOR_CODE = cc.ColorCode1,
-                                            DISBURSE_Percentage = (double)di.ItemQuantity / totalDisburse * 100,
-                                        })
-                        .GroupBy(item => item.ItemCode)
-                        .Select(group => new
-                        {
-                            ItemCode = group.Key,
-                            DISBURSE_Name = group.First().DISBURSE_Name,
-                            COLOR_CODE = group.First().COLOR_CODE,
-                            DISBURSE_Percentage = group.Sum(item => item.DISBURSE_Percentage),
-                            Count = group.Count() // Count of occurrences for each item code
-                        })
-                        .OrderByDescending(item => item.DISBURSE_Percentage);
+                var totalDisburse = dbContext.DespensedItems.Sum(x => x.Quantity);
+                if (totalDisburse == 0) totalDisburse = 1; // prevent division by zero
+                                                           // Console.WriteLine(totalDisburse);
+
+                var disbursementList = (
+                    from di in dbContext.DespensedItems
+                    join ic in dbContext.ItemCards on di.ItemCardId equals ic.Id
+                    join cc in dbContext.ColorCodes on ic.ItemId equals cc.ItemId into colorGroup
+                    from cc in colorGroup.DefaultIfEmpty()
+                    select new { di, ic, cc }
+                )
+                .AsEnumerable() // 🟡 Force client-side from here
+                .GroupBy(x => x.ic.ItemCode)
+                .Select(g =>
+                {
+                    var first = g.First();
+                    return new
+                    {
+                        ItemCode = g.Key,
+                        DISBURSE_Name = first.ic.ItemName,
+                        COLOR_CODE = first.cc?.ColorCode1 ?? "#CCCCCC",
+                        DISBURSE_Percentage = g.Sum(x => x.di.Quantity) * 100.0 / totalDisburse,
+                        Count = g.Count()
+                    };
+                })
+                .OrderByDescending(x => x.DISBURSE_Percentage)
+                .ToList();
+
+
+                foreach (var item in disbursementList)
+                {
+                    Console.WriteLine($"Item: {item.DISBURSE_Name}, %: {item.DISBURSE_Percentage:F2}, Color: {item.COLOR_CODE}, Count: {item.Count}");
+                }
+                var chartData = disbursementList.Select(x => new
+                {
+                    label = x.DISBURSE_Name,
+                    value = Math.Round(x.DISBURSE_Percentage, 2),
+                    color = x.COLOR_CODE
+                }).ToList();
+
+                var labels = string.Join(", ", chartData.Select(x => $"'{x.label}'"));
+                var values = string.Join(", ", chartData.Select(x => x.value));
+                var colors = string.Join(", ", chartData.Select(x => $"'{x.color}'"));
+
+                Console.WriteLine("Labels: " + labels);
+                Console.WriteLine("Values: " + values);
+                Console.WriteLine("Colors: " + colors);
+
+
+
 
                 //var disbursementList = dbContext.DisbursementRequests.Select(disburseItem => new
                 //{
@@ -195,8 +219,8 @@ namespace LabMaterials.Pages
 
                 MostRequestingDestination = destWithCount.ToList();
 
-                var fastMovingItem = (from dr in dbContext.DisbursementRequests
-                                      join i in dbContext.ItemCards on dr.Itemcode equals i.ItemCode
+                var fastMovingItem = (from dI in dbContext.DespensedItems
+                                      join i in dbContext.ItemCards on dI.ItemCardId equals i.Id
                                       group i by i.ItemName into g
                                       orderby g.Count() descending
                                       select new ItemInfo

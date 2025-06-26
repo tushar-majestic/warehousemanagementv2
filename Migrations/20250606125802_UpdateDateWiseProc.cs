@@ -18,6 +18,7 @@ IF OBJECT_ID('dbo.PRC_GET_DATE_WISE_DATA', 'P') IS NOT NULL
 
             // 🔄 Create the new version
             migrationBuilder.Sql(@"
+
 CREATE PROCEDURE [dbo].[PRC_GET_DATE_WISE_DATA] (  
     @PDISBURSE_DATES  VARCHAR(500) OUT,  
     @PSUPPLY_DATES    VARCHAR(500) OUT,  
@@ -33,40 +34,42 @@ BEGIN
     DECLARE @StartDate DATETIME  = DATEADD(YEAR, -2, DATEFROMPARTS(YEAR(GETDATE()), 1, 1));
     DECLARE @EndDate   DATETIME  = GETDATE();
 
-    BEGIN TRY
+     BEGIN TRY
         /* ─────────────── Disbursement ─────────────── */
         SELECT
             @PDISBURSE_DATES = STUFF((
-                SELECT ', ' + FORMAT(MIN(ReqReceivedAt), 'MMM yyyy')
-                FROM  DisbursementRequest
-                WHERE ReqReceivedAt BETWEEN @StartDate AND @EndDate
-                GROUP BY YEAR(ReqReceivedAt), MONTH(ReqReceivedAt)
-                ORDER BY YEAR(ReqReceivedAt), MONTH(ReqReceivedAt)
+                SELECT ', ' + FORMAT(MIN(OrderDate), 'MMM yyyy')
+                FROM  MaterialRequests
+                WHERE OrderDate BETWEEN @StartDate AND @EndDate
+                GROUP BY YEAR(OrderDate), MONTH(OrderDate)
+                ORDER BY YEAR(OrderDate), MONTH(OrderDate)
                 FOR XML PATH('')), 1, 2, ''),
             @PDISBURSE_COUNT = STUFF((
-                SELECT ', ' + CAST(COUNT(DisbursementRequestId) AS VARCHAR)
-                FROM  DisbursementRequest
-                WHERE ReqReceivedAt BETWEEN @StartDate AND @EndDate
-                GROUP BY YEAR(ReqReceivedAt), MONTH(ReqReceivedAt)
-                ORDER BY YEAR(ReqReceivedAt), MONTH(ReqReceivedAt)
+                SELECT ', ' + CAST(COUNT(RequestId) AS VARCHAR)
+                FROM  MaterialRequests
+                WHERE OrderDate BETWEEN @StartDate AND @EndDate
+                GROUP BY YEAR(OrderDate), MONTH(OrderDate)
+                ORDER BY YEAR(OrderDate), MONTH(OrderDate)
                 FOR XML PATH('')), 1, 2, '');
 
         /* ─────────────── Supply ─────────────── */
         SELECT
             @PSUPPLY_DATES = STUFF((
-                SELECT ', ' + FORMAT(MIN(ReceivedAt), 'MMM yyyy')
-                FROM  Supply
-                WHERE ReceivedAt BETWEEN @StartDate AND @EndDate
-                GROUP BY YEAR(ReceivedAt), MONTH(ReceivedAt)
-                ORDER BY YEAR(ReceivedAt), MONTH(ReceivedAt)
+                SELECT ', ' + FORMAT(MIN(ReceivingDate), 'MMM yyyy')
+                FROM  ReceivingReports
+                WHERE ReceivingDate BETWEEN @StartDate AND @EndDate
+                GROUP BY YEAR(ReceivingDate), MONTH(ReceivingDate)
+                ORDER BY YEAR(ReceivingDate), MONTH(ReceivingDate)
                 FOR XML PATH('')), 1, 2, ''),
             @PSUPPLY_COUNT = STUFF((
-                SELECT ', ' + CAST(COUNT(SupplyId) AS VARCHAR)
-                FROM  Supply
-                WHERE ReceivedAt BETWEEN @StartDate AND @EndDate
-                GROUP BY YEAR(ReceivedAt), MONTH(ReceivedAt)
-                ORDER BY YEAR(ReceivedAt), MONTH(ReceivedAt)
+                SELECT ', ' + CAST(COUNT(Id) AS VARCHAR)
+                FROM  ReceivingReports
+                WHERE ReceivingDate BETWEEN @StartDate AND @EndDate
+                GROUP BY YEAR(ReceivingDate), MONTH(ReceivingDate)
+                ORDER BY YEAR(ReceivingDate), MONTH(ReceivingDate)
                 FOR XML PATH('')), 1, 2, '');
+
+
 
         /* ─────────────── Status ─────────────── */
         SET @PCODE = '100';
