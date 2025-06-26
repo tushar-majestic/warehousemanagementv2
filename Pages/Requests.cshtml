@@ -599,9 +599,9 @@
                                                 </select>
                                             }
                                             else if (Model.UserGroupName == "General Supervisor"){
-                                                <div class="mb-2" id="destruction-officer-section" >
-                                                    <label for="Receipient">@Model.lblDestructionOfficer</label>
-                                                    <select class="form-select"  id="Receipient" name="Receipient" required>
+                                                <div class="mb-2" id="destruction-officer-section" style="display: none;" >
+                                                    <label for="destOffId">@Model.lblDestructionOfficer</label>
+                                                    <select class="form-select"  id="destOffId" name="destOffId" >
                                             
                                                         <option value="">@Model.lblSelectDestructionOfficer</option>
                                                         @if (Model.DestructionOfficerList != null)
@@ -615,8 +615,8 @@
                                                 </div>
                                                
                                                 <div class="mb-2">
-                                                    <label for="keeperId">@Model.lblWarehouseKeeper</label>
-                                                    <select class="form-select"  id="keeperId" name="keeperId" required>
+                                                    <label for="Receipient">@Model.lblWarehouseKeeper</label>
+                                                    <select class="form-select"  id="Receipient" name="Receipient" required>
                                             
                                                         <option value="">@Model.lblSelectWarehouseKeeper</option>
                                                         @if (Model.KeeperList != null)
@@ -629,9 +629,9 @@
                                                     </select>
                                                 </div>
 
-                                                <div class="mb-2">
+                                                <div class="mb-2" id="recycling-officer-section" style="display: none;">
                                                     <label for="RecyclingOffiId">@Model.lblRecyclingOfficer</label>
-                                                    <select class="form-select"  id="RecyclingOffiId" name="RecyclingOffiId" required>
+                                                    <select class="form-select"  id="RecyclingOffiId" name="RecyclingOffiId" >
                                             
                                                         <option value="">@Model.lblSelectRecyclingOfficer</option>
                                                         @if (Model.RecyclingOfficerList != null)
@@ -678,7 +678,7 @@
 
                                             <div class="form-group mb-4">
                                                 <label>@Model.lblAddAttachment</label>
-                                                    <input type="file" name="AttachmentFile" class="form-control"  />
+                                                <input type="file" name="AttachmentFile" class="form-control"  required/>
                                             </div>
                                             
                                         </div>
@@ -755,14 +755,19 @@
             document.getElementById("AcceptReturnReportId").value = id;
             document.getElementById("AcceptReturnMessageId").value = messageId;
 
-             @* // Default hide
+             // Default hide
+            const recyclingSection = document.getElementById('recycling-officer-section');
             const destructionSection = document.getElementById('destruction-officer-section');
-            
+
 
             // Make AJAX call to check if any item is for destruction
-            fetch(`/Requests?handler=HasDestructionItems&returnRequestId=${id}`)
+            fetch(`/Requests?handler=HasRecyclingItems&returnRequestId=${id}`)
                 .then(response => response.json())
                 .then(data => {
+                    if (data.hasRecyclable && recyclingSection) {
+                        recyclingSection.style.display = 'block';
+                        recyclingSection.querySelector('select').setAttribute('required', 'required');
+                    }
                     if (data.hasDestruction && destructionSection) {
                         destructionSection.style.display = 'block';
                         destructionSection.querySelector('select').setAttribute('required', 'required');
@@ -770,7 +775,7 @@
                 })
                 .catch(err => {
                     console.error('Error checking destruction items:', err);
-                }); *@
+                });
         }
 
         function setAcceptReturnReportIdForDestruction(id, messageId){

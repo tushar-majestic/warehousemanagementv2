@@ -71,6 +71,7 @@ namespace LabMaterials.DB
             New,
             Used,
             Recyclable,
+            Destruction,
             Other
         }
 

@@ -383,7 +383,7 @@
                                     @if (Model.SelectedColumns.Contains("attachment"))
                                     {
                                         @if(req.AttachmentPath != ""){
-                                            <td><a href="@req.AttachmentPath">@Model.lblDownloadFile</a></td>
+                                            <td><a href="@req.AttachmentPath" download="Attachment">@Model.lblDownloadFile</a></td>
                                         }
                                         else{
                                             <td>-</td>
