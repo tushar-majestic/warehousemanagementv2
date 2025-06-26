@@ -599,7 +599,7 @@
                                                 </select>
                                             }
                                             else if (Model.UserGroupName == "General Supervisor"){
-                                                <div class="mb-2">
+                                                <div class="mb-2" id="destruction-officer-section" >
                                                     <label for="Receipient">@Model.lblDestructionOfficer</label>
                                                     <select class="form-select"  id="Receipient" name="Receipient" required>
                                             
@@ -754,6 +754,23 @@
         function setAcceptReturnReportId(id, messageId){
             document.getElementById("AcceptReturnReportId").value = id;
             document.getElementById("AcceptReturnMessageId").value = messageId;
+
+             @* // Default hide
+            const destructionSection = document.getElementById('destruction-officer-section');
+            
+
+            // Make AJAX call to check if any item is for destruction
+            fetch(`/Requests?handler=HasDestructionItems&returnRequestId=${id}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.hasDestruction && destructionSection) {
+                        destructionSection.style.display = 'block';
+                        destructionSection.querySelector('select').setAttribute('required', 'required');
+                    }
+                })
+                .catch(err => {
+                    console.error('Error checking destruction items:', err);
+                }); *@
         }
 
         function setAcceptReturnReportIdForDestruction(id, messageId){

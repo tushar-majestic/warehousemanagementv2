@@ -1265,6 +1265,20 @@ namespace LabMaterials.Pages
 
             return RedirectToPage("./DeductOrder");
         }
+
+        // public JsonResult OnGetHasDestructionItems(int returnRequestId)
+        // {
+        //     var dbContext = new LabDBContext();
+
+        //     // Assuming "Destruction" is a string in the action table
+           
+
+        //     var hasDestruction = dbContext.ReturnRequestItems
+        //         .Any(r => r.ReturnRequestId == returnRequestId && r.RecommendedAction == 0);
+
+        //     return new JsonResult(new { hasDestruction });
+        // }
+
         private void FillLables()
         {
             this.lblRequests = (Program.Translations["Requests"])[Lang];
@@ -1304,7 +1318,7 @@ namespace LabMaterials.Pages
             this.lblAddAttachment = (Program.Translations["AddAttachment"])[Lang];
             this.lblReplyResendRequest = (Program.Translations["ReplyResendRequest"])[Lang];
             this.lblYourReply = (Program.Translations["YourReply"])[Lang];
-            
+
             this.lblReply = (Program.Translations["Reply"])[Lang];
 
 
