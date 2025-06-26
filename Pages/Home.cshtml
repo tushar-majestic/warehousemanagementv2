@@ -1,12 +1,60 @@
 ﻿@page
 @model LabMaterials.Pages.HomeModel
 @{
-    // Prepare all chart data in Razor
-    string[] labelArr = Model.LineChartLabels?.Split(',').Select(s => s.Trim()).ToArray() ?? Array.Empty<string>();
-    int[] suppliesDataArr = Model.SuppliesData?.Split(',').Select(s => int.TryParse(s.Trim(), out var v) ? v : 0).ToArray() ?? Array.Empty<int>();
-    int[] disburseDataArr = Model.DisbursementData?.Split(',').Select(s => int.TryParse(s.Trim(), out var v) ? v : 0).ToArray() ?? Array.Empty<int>();
+    // // Prepare all chart data in Razor
+    // string[] labelArr = Model.LineChartLabels?.Split(',').Select(s => s.Trim()).ToArray() ?? Array.Empty<string>();
+    // string[] labelArr1 = Model.LineChartLabelssupplies?.Split(',').Select(s => s.Trim()).ToArray() ?? Array.Empty<string>();
+    // var allLabels = labelArr.Concat(labelArr1)
+    // .Select(s => s.Trim())
+    // .Where(s => !string.IsNullOrWhiteSpace(s))
+    // .Distinct() // Optional: remove duplicates
+    // .ToArray();
+
+    // string joined = string.Join(",", allLabels);
+
+    // int[] suppliesDataArr = Model.SuppliesData?.Split(',').Select(s => int.TryParse(s.Trim(), out var v) ? v : 0).ToArray() ?? Array.Empty<int>();
+    // int[] disburseDataArr = Model.DisbursementData?.Split(',').Select(s => int.TryParse(s.Trim(), out var v) ? v : 0).ToArray() ?? Array.Empty<int>();
+    // string lblSupplies = Model.lblSupplies ?? "Supplies";
+    // string lblDisburse = Model.lblDisbursement ?? "Disbursement";
+    
+    // Parse labels from CSV strings
+    string[] disbLabels = Model.LineChartLabels?.Split(',').Select(s => s.Trim()).ToArray() ?? Array.Empty<string>();
+    string[] suppLabels = Model.LineChartLabelssupplies?.Split(',').Select(s => s.Trim()).ToArray() ?? Array.Empty<string>();
+
+    // Combine and normalize labels
+    var allLabels = disbLabels
+        .Concat(suppLabels)
+        .Where(s => !string.IsNullOrWhiteSpace(s))
+        .Select(s => s.Trim())
+        .Distinct()
+        .OrderBy(s => DateTime.TryParseExact(s, "MMM yyyy", null, System.Globalization.DateTimeStyles.None, out var dt) ? dt : DateTime.MaxValue)
+        .ToArray();
+
+    // Parse data values and map them to their labels
+    var disbDataDict = disbLabels
+        .Select((label, index) => new { label, value = Model.DisbursementData?.Split(',').ElementAtOrDefault(index) })
+        .Where(x => !string.IsNullOrWhiteSpace(x.label) && int.TryParse(x.value?.Trim(), out _))
+        .ToDictionary(x => x.label, x => int.Parse(x.value));
+
+    var suppDataDict = suppLabels
+        .Select((label, index) => new { label, value = Model.SuppliesData?.Split(',').ElementAtOrDefault(index) })
+        .Where(x => !string.IsNullOrWhiteSpace(x.label) && int.TryParse(x.value?.Trim(), out _))
+        .ToDictionary(x => x.label, x => int.Parse(x.value));
+
+    // Align data with full label set (insert null if not found)
+    var alignedDisbData = allLabels
+        .Select(label => disbDataDict.TryGetValue(label, out var v) ? v : (int?)0)
+        .ToArray();
+
+    var alignedSuppData = allLabels
+        .Select(label => suppDataDict.TryGetValue(label, out var v) ? v : (int?)0)
+        .ToArray();
+
+    // Chart labels
     string lblSupplies = Model.lblSupplies ?? "Supplies";
     string lblDisburse = Model.lblDisbursement ?? "Disbursement";
+}
+
 }
 @section Scripts
 {
@@ -169,11 +217,11 @@
              new Chart(ctx, {
                  type: 'line',
                  data: {
-                     labels: @Html.Raw(Json.Serialize(labelArr)),
+                    labels: @Html.Raw(Json.Serialize(allLabels)),
                      datasets: [
                          {
                              label: @Html.Raw(Json.Serialize(lblSupplies)),
-                             data: @Html.Raw(Json.Serialize(suppliesDataArr)),
+                             data: @Html.Raw(Json.Serialize(alignedSuppData)),
                              borderColor: 'rgb(13, 148, 136)',
                              backgroundColor: gradientSup,
                              borderWidth: 2,
@@ -184,7 +232,7 @@
                          },
                          {
                              label: @Html.Raw(Json.Serialize(lblDisburse)),
-                             data: @Html.Raw(Json.Serialize(disburseDataArr)),
+                             data: @Html.Raw(Json.Serialize(alignedDisbData)),
                              borderColor: 'rgb(220, 38, 38)',
                              backgroundColor: gradientDis,
                              borderWidth: 2,
@@ -227,7 +275,14 @@
                                  display: true,
                                  text: 'Quantity',
                                  font: { weight: '600' }
-                             }
+                             },
+                              ticks: {
+                                    // Force whole numbers
+                                    callback: function(value) {
+                                        if (Number.isInteger(value)) return value;
+                                    },
+                                    stepSize: 1  // Optional: specify the step size if you want fixed intervals
+                                }
                          }
                      }
                  }
