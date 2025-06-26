@@ -33,6 +33,8 @@ namespace LabMaterials.Pages
         public List<User> TechnicalMemberList {  get; set; }
 
         public List<Unit> Units { get; set; } 
+        public List<DocumentType> DocumentList { get; set; }
+
         public List<ItemGroup> ItemGroupList { get; set; } 
 
 
@@ -103,6 +105,9 @@ namespace LabMaterials.Pages
             GeneralSupervisorList = dbContext.Users
                         .Where(u => u.UserGroupId == GeneralSupervisorId)
                         .ToList();
+            
+            DocumentList = dbContext.DocumentTypes
+                        .ToList();
 
             //Technical Member list
             var TechnicalMemberId = dbContext.UserGroups
@@ -142,7 +147,8 @@ namespace LabMaterials.Pages
             Units = dbContext.Units.ToList();
             ItemGroupList = dbContext.ItemGroup.ToList();
             Users = dbContext.Users.ToList();
-
+            DocumentList = dbContext.DocumentTypes
+                        .ToList();
 
             //General Supervisor list
             var GeneralSupervisorId = dbContext.UserGroups

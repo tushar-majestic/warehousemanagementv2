@@ -2118,5 +2118,71 @@
   "RecyclingNotes" : {
     "en" : "Recycling Notes",
     "ar" : "Recycling Notes"
+  },
+  
+  "AreYouSure":{
+    "en": "Are you sure you want to delete this?",
+    "ar": "هل أنت متأكد أنك تريد حذف هذا؟"
+  },
+  "Internal":{
+    "en" : "Internal",
+    "ar": ""
+  },
+  "External":{
+    "en" : "External",
+    "ar": ""
+  },
+  "SelectRoomByNum":{
+    "en": "Select Room by number",
+    "ar": "حدد الغرفة حسب الرقم"
+  },
+  "SelectRoom": {
+    "en": "Select Room",
+    "ar": "اختر الغرفة"
+  },
+  "SelectShelf": {
+    "en" : "Select Shelf",
+    "ar" : "حدد الجرف"
+  },
+  "OutOfWarehouseDate":{
+    "en": "Out Of Warehouse Date",
+    "ar": "تاريخ انتهاء الصلاحية"
+  },
+  "Party":{
+    "en": "Party",
+    "ar": "فريق"
+  },
+  "DispensingDocumentTypeNumber":{
+    "en": "Dispensing DocumentType Number",
+    "ar": "رقم نوع مستند الصرف"
+  },
+  "SelectRequestingSector":{
+    "en": "Select Requesting Sector",
+    "ar": "حدد القطاع الطالب"
+  },
+  "SelectRequestDocumentType":{
+    "en": "Select Request Document Type",
+    "ar": "حدد نوع مستند الطلب"
+  },
+  "SelectDeptMember":{
+    "en": "Select Department Member",
+    "ar": "اختر عضو القسم"
+  },
+  "SelectTechnicalMember":{
+    "en": "Select Technical Member",
+    "ar": "اختر العضو الفني"
+  },
+  "SelectAssetType":{
+    "en": "Select Asset Type",
+    "ar": "حدد نوع الأصل"
+  },
+  "Sustainable" : {
+    "en" : "Sustainable",
+    "ar" : "مستمر"
+  },
+  "Consumable": {
+    "en": "Consumable",
+    "ar" : "مستهلكة"
   }
+  
 }

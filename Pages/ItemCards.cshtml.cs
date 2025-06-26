@@ -28,6 +28,8 @@ namespace LabMaterials.Pages
         public string Message { get; set; }
         public int RoomId;
         public int ShelfId;
+        public List<DocumentType> DocumentList { get; set; }
+
 
 
 
@@ -61,10 +63,13 @@ namespace LabMaterials.Pages
         public async Task<IActionResult> OnGetAsync()
         {
             base.ExtractSessionData();
+            var dbContext = new LabDBContext();
             // await PopulateDropdownsAsync();
             ItemList = _context.Items
             .Select(i => new SelectListItem { Value = i.ItemCode, Text = i.ItemCode })
             .ToList();
+            DocumentList = dbContext.DocumentTypes
+                        .ToList();
 
             AllItems = _context.Items.ToList();
 
@@ -197,6 +202,8 @@ namespace LabMaterials.Pages
         public async Task<IActionResult> OnPostAsync([FromForm] int StoreId, [FromForm] string DocumentType, [FromForm] string ReceiptDocumentnumber, [FromForm] int RoomId, [FromForm] int ShelfId, [FromForm] int SupplierId, [FromForm] DateTime DateOfEntry)
         {   
             base.ExtractSessionData();
+            var dbContext = new LabDBContext();
+
             
             var reportId = HttpContext.Session.GetInt32("ReportId");
             this.InboxId = HttpContext.Session.GetInt32("InboxId");
@@ -207,7 +214,8 @@ namespace LabMaterials.Pages
             var room = _context.Rooms.FirstOrDefault(r => r.RoomId == RoomId);
             var roomStatus = room?.RoomStatus;
             var storeId = room?.StoreId;
-
+            DocumentList = dbContext.DocumentTypes
+                        .ToList();
 
             var store = _context.Stores.FirstOrDefault(s => s.StoreId == storeId);
             var isActive = store?.IsActive;
@@ -339,7 +347,7 @@ namespace LabMaterials.Pages
 
 
                 }
-                var dbContext = new LabDBContext();
+                // var dbContext = new LabDBContext();
 
                 var message = dbContext.Messages.FirstOrDefault(m => m.Id == this.InboxId);
 

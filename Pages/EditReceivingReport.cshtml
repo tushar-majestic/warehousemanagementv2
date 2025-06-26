@@ -48,7 +48,7 @@
                             <label>@Model.lblFiscalYear</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "")">*</span>
 
                             <select class="form-select" id="FiscalYear" asp-for="Report.FiscalYear" name="FiscalYear"  onchange="fetchSerialNumber()"  >
-                                <option value="">Select Fiscal Year</option>
+                                <option value="">@Model.lblSelectFiscalYear</option>
                                 <option value="@previousYear">@previousYear</option>
                                 <option value="@currentYear">@currentYear</option>
                             </select>
@@ -88,10 +88,16 @@
                             @* <input asp-for="Report.BasedOnDocument" class="form-control" required /> *@
                             <select asp-for="Report.BasedOnDocument" class="form-select" id="BasedOnDocument" name="BasedOnDocument" >
                                 <option value="">@Model.lblSelectBasedOndocument</option>
-                                <option value="Certification">Certification</option>
+                                @* <option value="Certification">Certification</option>
                                 <option value="Purchase order">Purchase order</option>
                                 <option value="Return order">Return order</option>
-                                <option value="Transfer from another warehouse">Transfer from another warehouse</option>
+                                <option value="Transfer from another warehouse">Transfer from another warehouse</option> *@
+                                @if(Model.DocumentList != null){
+                                    @foreach (var document in Model.DocumentList)
+                                    {
+                                        <option value="@document.DocType">@document.DocType</option>
+                                    }
+                                }
 
                             </select>
                         </div>
@@ -115,8 +121,8 @@
                         <div class="form-group mb-4">
                             <label>@Model.lblSupplierType</label> <span class="majestic">*</span>
                             <select class="form-select" id="SupplierType" name="SupplierType" >
-                                <option value="Internal">Internal</option>
-                                <option value="External">External</option>
+                                <option value="Internal">@Model.lblInternal</option>
+                                <option value="External">@Model.lblExternal</option>
                             </select>
                         </div>
 
@@ -170,7 +176,7 @@
                                         <div class="form-group mb-4 ms-2 flex-fill">
                                             <label>@Model.lblItemName</label> <span class="majestic">*</span>
                                             <select  class="form-control" id="ItemName_@i" asp-for="@Model.ItemsForReport[@i].ItemId" name="ItemsForReport[@i].ItemId" >
-                                                <option value="">Select Item</option>
+                                                <option value="">@Model.lblSelectItem</option>
                                                 @foreach (var item in Model.Items)
                                                 {
                                                     var UnitCode = Model.Units.FirstOrDefault(u => u.Id == item.UnitId)?.UnitCode ?? "";
@@ -252,7 +258,7 @@
                             <select class="form-select" asp-for="Report.TechnicalMemberId"    id="TechnicalMember" name="TechnicalMember" >
                                 @* <option value="FirstTechnical">First Technical Member</option>
                                 <option value="SecondTechnical">Second Technical Member</option> *@
-                                <option value="">Select Technical Member</option>
+                                <option value="">@Model.lblSelectTechnicalMember</option>
                                 @if (Model.TechnicalMemberList != null)
                                 {
                                     foreach (var item in Model.TechnicalMemberList)
@@ -265,7 +271,7 @@
                         <div class="form-group mb-4">
                             <label>@Model.lblChiefResponsible</label>
                             <select asp-for="Report.ChiefResponsibleId"  class="form-select" id="ChiefResponsible" name="ChiefResponsible" >
-                                 <option value="">Select General Supervisor</option>
+                                 <option value="">@Model.lblSelectGeneralSpervisor</option>
                                 @if (Model.GeneralSupervisorList != null)
                                 {
                                     foreach (var item in Model.GeneralSupervisorList)

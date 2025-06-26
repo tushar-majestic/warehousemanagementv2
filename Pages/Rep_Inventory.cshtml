@@ -190,17 +190,17 @@
                         <div class="form-check mb-1">
                             <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="itemName"
                                 id="itemName" @(Model.SelectedColumns.Contains("itemName") ? "checked" : "")>
-                            <label class="form-check-label" for="itemName">ItemName</label>
+                            <label class="form-check-label" for="itemName">@Model.lblItemName</label>
                         </div>
                         <div class="form-check mb-1">
                             <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="warehouseNumber"
                                 id="warehouseNumber" @(Model.SelectedColumns.Contains("warehouseNumber") ? "checked" : "")>
-                            <label class="form-check-label" for="warehouseNumber">WarehouseNumber</label>
+                            <label class="form-check-label" for="warehouseNumber">@Model.lblStoreNumber</label>
                         </div>
                         <div class="form-check mb-1">
                             <input class="form-check-input column-checkbox" name="columns" type="checkbox"
                                 value="warehouseName" id="warehouseName" @(Model.SelectedColumns.Contains("warehouseName") ? "checked" : "")>
-                            <label class="form-check-label" for="warehouseName">WarehouseName</label>
+                            <label class="form-check-label" for="warehouseName">@Model.lblStoreName</label>
                         </div>
                         @* <div class="form-check mb-1">
                             <input class="form-check-input column-checkbox" name="columns" type="checkbox"
@@ -210,16 +210,16 @@
                         <div class="form-check mb-1">
                             <input class="form-check-input column-checkbox" name="columns" type="checkbox"
                                 value="AvailableQuantity" id="AvailableQuantity" @(Model.SelectedColumns.Contains("AvailableQuantity") ? "checked" : "")>
-                            <label class="form-check-label" for="AvailableQuantity">AvailableQuantity</label>
+                            <label class="form-check-label" for="AvailableQuantity">@Model.lblAvailableQuantity</label>
                         </div>
                         <div class="form-check mb-1">
                             <input class="form-check-input column-checkbox" name="columns" type="checkbox"
                                 value="expiry" id="expiry" @(Model.SelectedColumns.Contains("expiry") ? "checked" : "")>
-                            <label class="form-check-label" for="expiry">ExpiryDate</label>
+                            <label class="form-check-label" for="expiry">@Model.lblExpiry</label>
                         </div>
                         <div class="form-check mb-1 text-center">
                             <button type="submit" name="action" value="updateColumns"
-                                class="btn btn-success btn-sm">Ok</button>
+                                class="btn btn-success btn-sm">@Model.lblOk</button>
                         </div>
                     </div>
                 </div>

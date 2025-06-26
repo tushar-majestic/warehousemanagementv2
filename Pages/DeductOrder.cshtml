@@ -35,7 +35,7 @@
         <div class="card border-0 shadow components-section p-3">
             <form method="post">
                 <div class="form-group mb-4" >
-                    <label  class="control-label">Warehouse Name</label>
+                    <label  class="control-label">@Model.lblWarehouse</label>
                     @* <input type="text" asp-for="ItemCard.StoreId" class="form-control"/> *@
                     <select  asp-for="MaterialRequest.WarehouseId" id="storeSelect" name="StoreId" class="form-control" asp-items="ViewBag.WarehouseId" readonly></select>
                 </div>
@@ -44,26 +44,26 @@
                 {
                     var item = Model.ItemCardsFromReport[i];
                     <div class="card mb-4 p-3 ">
-                            <h4>Item @(i + 1)</h4>
+                            <h4>@Model.lblItem @(i + 1)</h4>
                             <input  asp-for="@Model.ItemCardsFromReport[i].ItemId" class="form-control" hidden />
                             <div class="d-flex justify-content-between">
                                 <div class="form-group w-23">
-                                    <label>Item Group</label>
+                                    <label>@Model.lblItemGroup</label>
                                     <input asp-for="@Model.ItemCardsFromReport[i].GroupCode"  class="form-control" readonly />
                                 </div>
 
                                 <div class="form-group w-23">
-                                    <label>Item Code</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
+                                    <label>@Model.lblItemCode</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
                                     <input asp-for="@Model.ItemCardsFromReport[i].ItemCode" class="form-control" readonly />
                                 </div>
                             
                                 <div class="form-group w-23">
-                                    <label>Item Name(Arabic)</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
+                                    <label>@Model.lblItemNameArabic</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
                                     <input asp-for="@Model.ItemCardsFromReport[i].ItemName" class="form-control" readonly />
                                 </div>
 
                                 <div class="form-group w-23">
-                                    <label>Item Name(English)</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
+                                    <label>@Model.lblItemNameEng</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
                                     <input asp-for="@Model.ItemCardsFromReport[i].ItemName"  class="form-control" readonly />
                                 </div>
                                 @* <div class="form-group w-23">
@@ -74,28 +74,28 @@
                             </div>
                         
                             <div class="form-group">
-                                <label>Description</label>
+                                <label>@Model.lblItemDescription</label>
                                 <textarea  class="form-control" asp-for="@Model.ItemCardsFromReport[i].ItemDescription"  readonly></textarea>
                             </div>
                             
                             <div class="d-flex justify-content-between">
 
                                 <div class="form-group w-23">
-                                    <label>Unit of Measure</label>
+                                    <label>@Model.lblUnitOfMeasure</label>
                                     <input class="form-control" asp-for="@Model.ItemCardsFromReport[i].UnitOfmeasure"  readonly />
                                 </div>
 
                                 <div class="form-group w-23">
-                                    <label>Chemical</label>
+                                    <label>@Model.lblChemical</label>
                                     <input  class="form-control" asp-for="@Model.ItemCardsFromReport[i].Chemical" readonly />
                                 </div>
 
                                 <div class="form-group w-23">
-                                    <label>Risk Rating</label>
+                                    <label>@Model.lblRiskRating</label>
                                     <input asp-for="@Model.ItemCardsFromReport[i].HazardTypeName" class="form-control" readonly/>
                                 </div>
                                 <div class="form-group w-23">
-                                    <label>Expiry Date</label>
+                                    <label>@Model.lblExpiry</label>
                                     <input type="date" class="form-control" asp-for="@Model.ItemCardsFromReport[i].ExpiryDate" readonly />
                                 </div>
                             </div>
@@ -112,10 +112,10 @@
                                     </select>
                                 </div> *@
                                 <div class="form-group w-23">
-                                    <label >Room Number</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
+                                    <label >@Model.lblRoomNumber</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
                                     @if(Model.Rooms != null){
                                         <select class="form-control RoomNo" asp-for="ItemCardsFromReport[i].RoomId" id="RoomNo_@i" onchange="filterShelfByRoom(@i)" required>
-                                            <option value="">Select Room by number</option>
+                                            <option value="">@Model.lblSelectRoomByNum</option>
                                             @foreach(var r in Model.Rooms){
                                                 <option value="@r.RoomId">@r.RoomNo</option>
                                             }
@@ -125,10 +125,10 @@
                                 </div>
 
                                 <div class="form-group w-23">
-                                    <label >Room Name</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
+                                    <label >@Model.lblRoomName</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
                                     @if(Model.Rooms != null){
                                         <select class="form-control RoomName" id="RoomName_@i" onchange="filterShelfByRoom(@i)" required>
-                                            <option value="">Select Room</option>
+                                            <option value="">@Model.lblSelectRoom</option>
                                             @foreach(var r in Model.Rooms){
                                                 <option value="@r.RoomId">@r.RoomName</option>
                                             }
@@ -139,14 +139,14 @@
                                 </div>
 
                                 <div class="form-group w-23">
-                                    <label>Shelf No.</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
+                                    <label>@Model.lblShelfNumber</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
                                     <select class="form-control ShelfId" id="ShelfId_@i" asp-for="ItemCardsFromReport[i].ShelfId" disabled required>
-                                        <option value="">Select Shelf</option>
+                                        <option value="">@Model.lblSelectShelf</option>
                                     </select>
                                 </div>
 
                                 <div class="form-group w-23">
-                                    <label>Quantity </label>
+                                    <label>@Model.lblQuantity</label>
                                     <input class="form-control "type="number" asp-for="ItemCardsFromReport[i].QuantityReceived" readonly/>
                                 </div>
                             </div>
@@ -157,12 +157,12 @@
 
                 <div class="d-flex justify-content-between">
                     <div class="form-group " style="width: 48%;">
-                        <label>Out Of Warehouse Date</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
+                        <label>@Model.lblOutOfWarehouseDate</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
                         <input type="date" class="form-control" name="OutDate" required />
                     </div>
 
                     <div class="form-group " style="width: 48%;">
-                        <label>Party</label>
+                        <label>@Model.lblParty</label>
                         <select asp-for="MaterialRequest.RequestingSector" name="PartyId" id="party" class="form-control" asp-items="ViewBag.Destinations" readonly>
                         </select>
                     </div>
@@ -170,15 +170,15 @@
 
                 <div class="d-flex justify-content-between">
                     <div class="form-group " style="width: 48%;">
-                        <label>Dispensing DocumentType Number</label>
+                        <label>@Model.lblDispensingDocumentTypeNumber</label>
                         <input type="text" name="DocumentNumber" asp-for="MaterialRequest.DocumentNumber" class="form-control" readonly />
                     </div>
 
                 </div>
 
 
-                <button type="submit" class="btn btn-primary">Create</button>
-                <a asp-page="./Requests" class="btn btn-secondary">Cancel</a>
+                <button type="submit" class="btn btn-primary">@Model.lblCreate</button>
+                <a asp-page="./Requests" class="btn btn-secondary">@Model.lblCancel</a>
             </form>
         </div>
     </div>

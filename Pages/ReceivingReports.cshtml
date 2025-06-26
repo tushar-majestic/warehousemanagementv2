@@ -278,7 +278,7 @@
                             <select class="form-select" asp-for="Report.TechnicalMemberId" id="TechnicalMember" name="TechnicalMember">
                                 @* <option value="FirstTechnical">First Technical Member</option>
                                 <option value="SecondTechnical">Second Technical Member</option> *@
-                                <option value="">Select Technical Member</option>
+                                <option value="">@Model.lblSelectTechnicalMember</option>
                                 @if (Model.TechnicalMemberList != null)
                                 {
                                     foreach (var item in Model.TechnicalMemberList)
@@ -291,7 +291,7 @@
                         <div class="form-group mb-4">
                             <label>@Model.lblChiefResponsible</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
                             <select asp-for="Report.ChiefResponsibleId" class="form-select" id="ChiefResponsible" name="ChiefResponsible">
-                                <option value="">Select General Supervisor</option>
+                                <option value="">@Model.lblSelectGeneralSpervisor</option>
                                 @if (Model.GeneralSupervisorList != null)
                                 {
                                     foreach (var item in Model.GeneralSupervisorList)
