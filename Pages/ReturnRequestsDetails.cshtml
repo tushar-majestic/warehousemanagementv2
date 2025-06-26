@@ -18,8 +18,9 @@
      font-size: 22px;
      vertical-align: top;
  }
-
- .nested-table {
+using DocumentFormat.OpenXml.Office.CustomUI;
+#line default
+sted-table {
      width: 100%;
      border-collapse: collapse;
  }
@@ -148,8 +149,13 @@
         </dl>
     
 
-
-        <h4 class="mt-4">@Model.lblReturnedItems</h4>
+        <div class="d-flex justify-content-between align-items-center mt-4 mb-4">
+            <h4 >@Model.lblReturnedItems</h4>
+            @if(Model.ReturnRequest.DestructionReportPath != ""){
+                <a class="btn btn-secondary" href="@Model.ReturnRequest.DestructionReportPath" download="Destruction">@Model.lblDownloadDesReport</a>
+            }
+        </div>
+        
 
         @if (Model.ReturnRequestItems.Any())
         {
