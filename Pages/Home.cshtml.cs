@@ -26,6 +26,8 @@ namespace LabMaterials.Pages
             SuppliesData, DisbursementData, lblFromDate, lblToDate, lblTotalItems, lblTotalUsers, lblTotalStores,
             lblDisbursements, lblSupplies, lblSuppliesAndDisbursements, lblItems, lblItemCards, lblMinimumQuantity, lblMaximumQuantity, lblReorderQuantity, lblAlert, lblNotMoved3;
 
+        public string? LineChartLabelssupplies { get; private set; }
+
         public DateTime? FromDate = DateTime.Now;
         public DateTime? ToDate = DateTime.Now;
         public IList<ItemCard> ItemCardminimum { get; set; } = default!;
@@ -267,6 +269,7 @@ namespace LabMaterials.Pages
                 var DisbursementD = disburseCount;
                 LineChartTitle = lineTitle;
                 LineChartLabels = lineLabels;
+                LineChartLabelssupplies = supplyDates;
                 SuppliesData = SuppliesD;
                 DisbursementData = DisbursementD;
 
