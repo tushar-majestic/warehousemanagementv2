@@ -1,3 +1,4 @@
+using System.Diagnostics.Metrics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -44,8 +45,7 @@ namespace LabMaterials.Pages
         lblDocumentDate, lblDocumentNo, lblBasedOnDocument, lblComments, lblUnitPrice, lblTotalPrice, lblQuantity, lblUnitOfMeasure,
         lblItemNameDescription, lblItemNo, lblCount, lblSAR, lblRiyal, lblChiefResponsible, lblTechnicalMember, lblRecipient, lblSignature, lblName,
         lblDate, lblcreateItemCard, lbldeductItemCard, lblItemMovement, lblStores, lblItemCard, lblCeiling, lblReorderLimit, lblMinimum, lblItemNoCode, lblItemNameArabic, lblQuantityReceived, lblDateOfEntryInWarehouse, lblSourceSupplier, lblAmountSpent, lblPartyDirected, lblRemainingBalance, lblDispensingDocumentNo, lblPrint,
-        lblViewReceivingReport, lblReceivingReport,lblBack, lblOk, lblRequestDate, lblViewMaterialDispensing, lblSubmit, lblOrderNumber, lblOrderDate, lblSector, lblStoreName, lblReason, lblAction, lblEdit, lblCreatedAt, lblFromSector, lblToSector, lblWarehouse, lblReasonForReturn, lblSurplus, lblExpired, lblInvalid, lblDamaged, lblAdditionalNotes, lblReturnedItems, lblItemNameEng, lblItemCode, lblDesc, lblQty, lblExpiry, lblRecommendedAction, lblCommitteeNotes, lblApplicantSectorName, lblRequestSentSector, lblInspCommitteeRecommendations, lblReturned, lblItemDescription, lblReturnRequestDetails, lblReturnItemRequest, lblFilter, lblUpdate, lblFilterBy, lblLStatus, lblRequestingPlace, lblClearFilters, lblSelectFilterLeft, lblItemGroup, lblChemical, lblHazardType, lblAvailableQuantity, lblManageHazardTypes, lblManageDocumentType, lblUsers, lblAddHazardType,lblDetails, lblAddDocumentType, lblAlerts, lblMaximum, lblReorder, lblNotmoved, lblLastActivity, lblAttachment,lblDownloadFile, lblUnits, lblDelete, lblCreate, lblDocumentTypes,lblDocumentType, lblCreateDocumentType, lblCancel, lblSave, lblId,lblAddStoreType, lblStoreType, lblAddMore, lblRemove, lblItem, lblSelectItemGroup,lblSelectFiscalYear,lblSelectReceivingWarehouse,lblSelectBasedOndocument, lblSelectSupplierName, lblRiskRating, lblCreateReturnRequest, lblStateofMatter, lblSelectState, lblReturnQuantity,lblSelectApplicantSector, lblSelectStore, lblEditReturnRequest, lblAddRecyclingNotesItems, lblSelectRecommendedAction, lblRecyclingNotes,lblAddRecommendations, lblSelectItem, lblReturnNotes ;
-
+        lblViewReceivingReport, lblReceivingReport,lblBack, lblOk, lblRequestDate, lblViewMaterialDispensing, lblSubmit, lblOrderNumber, lblOrderDate, lblSector, lblStoreName, lblReason, lblAction, lblEdit, lblCreatedAt, lblFromSector, lblToSector, lblWarehouse, lblReasonForReturn, lblSurplus, lblExpired, lblInvalid, lblDamaged, lblAdditionalNotes, lblReturnedItems, lblItemNameEng, lblItemCode, lblDesc, lblQty, lblExpiry, lblRecommendedAction, lblCommitteeNotes, lblApplicantSectorName, lblRequestSentSector, lblInspCommitteeRecommendations, lblReturned, lblItemDescription, lblReturnRequestDetails, lblReturnItemRequest, lblFilter, lblUpdate, lblFilterBy, lblLStatus, lblRequestingPlace, lblClearFilters, lblSelectFilterLeft, lblItemGroup, lblChemical, lblHazardType, lblAvailableQuantity, lblManageHazardTypes, lblManageDocumentType, lblUsers, lblAddHazardType,lblDetails, lblAddDocumentType, lblAlerts, lblMaximum, lblReorder, lblNotmoved, lblLastActivity, lblAttachment,lblDownloadFile, lblUnits, lblDelete, lblCreate, lblDocumentTypes,lblDocumentType, lblCreateDocumentType, lblCancel, lblSave, lblId,lblAddStoreType, lblStoreType, lblAddMore, lblRemove, lblItem, lblSelectItemGroup,lblSelectFiscalYear,lblSelectReceivingWarehouse,lblSelectBasedOndocument, lblSelectSupplierName, lblRiskRating, lblCreateReturnRequest, lblStateofMatter, lblSelectState, lblReturnQuantity,lblSelectApplicantSector, lblSelectStore, lblEditReturnRequest, lblAddRecyclingNotesItems, lblSelectRecommendedAction, lblRecyclingNotes,lblAddRecommendations, lblSelectItem, lblReturnNotes, lblRequestingSector, lblApplicantsSector, lblAreYouSure, lblInternal, lblExternal, lblRoomName, lblSelectRoomByNum, lblSelectRoom, lblShelfNumber, lblSelectShelf, lblOutOfWarehouseDate, lblParty, lblDispensingDocumentTypeNumber, lblSelectRequestingSector, lblSelectRequestDocumentType, lblDeptManager, lblSelectDeptMember, lblSelectTechnicalMember, lblSelectGeneralSpervisor, lblSelectAssetType, lblSustainable, lblConsumable, lblTypeName, lblUnitCode, lblGroupName, lblStoreNumber ;
 
         public override void OnPageHandlerExecuting(PageHandlerExecutingContext context)
         {
@@ -295,6 +295,32 @@ namespace LabMaterials.Pages
             this.lblAddRecommendations = (Program.Translations["AddRecommendations"])[Lang];
             this.lblSelectItem = (Program.Translations["SelectItem"])[Lang];
             this.lblReturnNotes = (Program.Translations["ReturnNotes"])[Lang];
+            this.lblRequestingSector = (Program.Translations["RequestingSector"])[Lang];
+            this.lblApplicantsSector = (Program.Translations["ApplicantsSector"])[Lang];
+            this.lblAreYouSure = (Program.Translations["AreYouSure"])[Lang];
+            this.lblInternal = (Program.Translations["Internal"])[Lang];
+            this.lblExternal = (Program.Translations["External"])[Lang];
+            this.lblRoomName = (Program.Translations["RoomName"])[Lang];
+            this.lblSelectRoomByNum = (Program.Translations["SelectRoomByNum"])[Lang];
+            this.lblSelectRoom = (Program.Translations["SelectRoom"])[Lang];
+            this.lblShelfNumber = (Program.Translations["ShelfNumber"])[Lang];
+            this.lblSelectShelf = (Program.Translations["SelectShelf"])[Lang];
+            this.lblOutOfWarehouseDate = (Program.Translations["OutOfWarehouseDate"])[Lang];
+            this.lblParty = (Program.Translations["Party"])[Lang];
+            this.lblDispensingDocumentTypeNumber = (Program.Translations["DispensingDocumentTypeNumber"])[Lang];
+            this.lblSelectRequestingSector = (Program.Translations["SelectRequestingSector"])[Lang];
+            this.lblSelectRequestDocumentType = (Program.Translations["SelectRequestDocumentType"])[Lang];
+            this.lblDeptManager = (Program.Translations["DeptManager"])[Lang];
+            this.lblSelectDeptMember = (Program.Translations["SelectDeptMember"])[Lang];
+            this.lblSelectTechnicalMember = (Program.Translations["SelectTechnicalMember"])[Lang];
+            this.lblSelectGeneralSpervisor = (Program.Translations["SelectGeneralSpervisor"])[Lang];
+            this.lblSelectAssetType = (Program.Translations["SelectAssetType"])[Lang];
+            this.lblSustainable = (Program.Translations["Sustainable"])[Lang];
+            this.lblConsumable = (Program.Translations["Consumable"])[Lang];
+            this.lblTypeName = (Program.Translations["TypeName"])[Lang];
+            this.lblUnitCode = (Program.Translations["UnitCode"])[Lang];
+            this.lblGroupName = (Program.Translations["GroupName"])[Lang];
+            this.lblStoreNumber =  (Program.Translations["StoreNumber"])[Lang];
 
 
 

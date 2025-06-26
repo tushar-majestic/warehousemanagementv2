@@ -405,7 +405,7 @@
                                     <select class="form-select" name="RequestingSector" asp-for="Report.RequestingSector">
                                         @* <select class="form-select" id="DId" name="DId"> *@
                                         @if (Model.Destinations != null)
-                                        {   <option>Select Requesting Sector</option>
+                                        {   <option>@Model.lblSelectRequestingSector</option>
                                             foreach (var item in Model.Destinations)
                                             {
                                                 <option value="@item.DId" >@item.DestinationName</option>
@@ -417,7 +417,7 @@
                                 <div class="mb-4 ms-2" style="width: 48%;">
                                     <label for="RequestDocumentType">@Model.lblRequestDocumentType</label>
                                     <select class="form-select" name="RequestDocumentType" asp-for="Report.RequestDocumentType">
-                                        <option>Select Request document Type</option>
+                                        <option>@Model.lblSelectRequestDocumentType</option>
                                         @* <option value="Completion">Completion</option>
                                         <option value="Speech">Speech</option> *@
                                         @if(Model.DocumentList != null){
@@ -480,10 +480,10 @@
 
                             <div class=" mb-4">
                                 <div class="form-group me-2" >
-                                    <label>Department Manager</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
+                                    <label>@Model.lblDeptManager</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
                                     <select class="form-select" asp-for="Report.DeptManagerId"    id="DeptManagerId" name="DeptManagerId" >
                                        
-                                        <option value="">Select Department Member</option>
+                                        <option value="">@Model.lblSelectDeptMember</option>
                                         @if (Model.DeptManagerList != null)
                                         {
                                             foreach (var item in Model.DeptManagerList)
@@ -524,7 +524,7 @@
                                                 <select class="form-select item-group-select"  id="itemGroup_@i" name="ItemsForReport[@i].ItemGroup" onchange="filterItemsByGroup(@i)" >
                                                     @if (Model.ItemGroups != null)
                                                     {
-                                                        <option value="">Select Item Group</option>
+                                                        <option value="">@Model.lblSelectItemGroup</option>
                                                         foreach (var item in Model.ItemGroups)
                                                         {
                                                             <option value="@item.GroupCode">@item.GroupDesc</option>
@@ -546,7 +546,7 @@
                                                 <label>@Model.lblItemName (@Model.lblArabicLanguage)</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
 
                                                 <select class="ArabicItemName form-select" id="ArabicItemName_@i"  asp-for="@Model.ItemsForReport[@i].ItemCardId" name="ItemsForReport[@i].ItemCardId"  onchange="handleItemChange(event)">
-                                                    <option value="">Select Item </option>
+                                                    <option value="">@Model.lblSelectItem</option>
                                                     
                                                         @foreach (var item in Model.ItemCards)
                                                         {           
@@ -572,7 +572,7 @@
                                             <div class="form-group mb-4 ms-2" style="width: 49%;">
                                                 <label for="EnglishArabicName">@Model.lblItemName (@Model.lblEnglishLanguage)</label> <span class="@(Model.IsMajesticUser() ? "majestic" : "text-white")">*</span>
                                                 <select class="EnglishArabicName form-select" id="EnglishArabicName_@i"   onchange="handleItemChange(event)">
-                                                <option value="">Select Item </option>
+                                                <option value="">@Model.lblSelectItem</option>
                                                     @foreach (var item in Model.ItemCards)
                                                     {
                                                         <option value="@item.Id"
@@ -660,7 +660,7 @@
                             </div>
                             <div class="mb-3">
                                 <button type="button" class="btn btn-primary" id="addEntryBtn" disabled>@Model.lblAddMore</button>
-                            </div
+                            </div>
                             
                             <div class="mb-4">
                                 <div class="d-flex mb-2 mb-md-0" style="gap: 10px">

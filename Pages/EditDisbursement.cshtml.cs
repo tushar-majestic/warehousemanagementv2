@@ -36,6 +36,8 @@ namespace LabMaterials.Pages
         public MaterialRequest Report { get; set; }
         [BindProperty]
         public List<DespensedItem> ItemsForReport { get; set; } = new List<DespensedItem>();
+        public List<DocumentType> DocumentList { get; set; }
+
 
         public int? SupervisorId, DeptManagerId, KeeperId;
         public int StoreId, Quantity;
@@ -125,6 +127,9 @@ namespace LabMaterials.Pages
 
             Report = dbContext.MaterialRequests
                 .FirstOrDefault(r => r.RequestId == ReceivingReportId.Value);
+
+            DocumentList = dbContext.DocumentTypes
+                        .ToList();
            
         }
 
@@ -150,6 +155,8 @@ namespace LabMaterials.Pages
                 ItemCards = dbContext.ItemCards.ToList();
                 Units = dbContext.Units.ToList();
                 ItemGroups = dbContext.ItemGroups.Where(g => g.Units.Count() > 0).ToList();
+                DocumentList = dbContext.DocumentTypes
+                        .ToList();
 
                 ItemsValue = dbContext.ItemCards
                     .Select(x => new ItemCard

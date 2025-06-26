@@ -403,7 +403,7 @@ document.addEventListener("DOMContentLoaded", function () {
                             </div>
                             <div class="form-check mb-1 text-center">
                                 <button type="submit" name="action" value="updateColumns"
-                                    class="btn btn-success btn-sm">Ok</button>
+                                    class="btn btn-success btn-sm">@Model.lblOk</button>
                             </div>
                         </div>
                     </div>
@@ -422,7 +422,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                 <!-- Left: Filter Categories -->
                                 <div class="border-end p-2" style="width: 40%; overflow-y: auto; position: relative;">
                                     <div class="fw-bolder text-center mb-2">@Model.lblFilterBy</div>
-                                    <div class="filter-option text-primary mb-2" onclick="showFilterValues('typeName')" style="cursor: pointer;">Type Name</div>
+                                    <div class="filter-option text-primary mb-2" onclick="showFilterValues('typeName')" style="cursor: pointer;">@Model.lblTypeName</div>
                                     <div class="filter-option text-primary mb-2" onclick="showFilterValues('hazardType')" style="cursor: pointer;">@Model.lblRiskRating</div>
                                     <div class="filter-option text-primary mb-2" onclick="showFilterValues('unitCode')" style="cursor: pointer;">@Model.lblUnitOfMeasure</div>
 
@@ -430,14 +430,14 @@ document.addEventListener("DOMContentLoaded", function () {
                                     <button type="button" class="btn btn-primary"
                                         style="position: absolute; bottom: 10px; left: 10px;"
                                         onclick="window.location.href='/ManageItems'">
-                                        Clear Filters
+                                        @Model.lblClearFilters
                                     </button>
                                 </div>
 
                                 <!-- Right: Dynamic Filter Values + Apply Button -->
                                 <div class="p-2" id="filterValues"
                                     style="width: 60%; overflow-y: auto; border-left: 1px solid #eee;">
-                                    <div class="text-muted">Select a filter from left</div>
+                                    <div class="text-muted">@Model.lblSelectFilterLeft</div>
                                 </div>
                             </div>
                         </div>

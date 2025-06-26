@@ -104,7 +104,7 @@
                                 <label for="StoreId">@Model.lblStoreName</label>
                                 <select class="form-select" id="StoreId" name="StoreId">
                                     @if (Model.Stores != null)
-                                    {   <option value=""> Select Store</option>
+                                    {   <option value="">@Model.lblSelectStore</option>
                                         foreach (var item in Model.Stores)
                                         {
                                             if(item.IsActive == 1 ){
