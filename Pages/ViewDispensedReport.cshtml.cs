@@ -43,7 +43,7 @@ namespace LabMaterials.Pages
         public string lblView, lblEdit, lblTotalItem, lblJobNumber, lblEmpAffiliation, lblTransfer, lblMaterialDispensing, lblPrint,
         lblSerialNumber, lblOrderDate, lblRequestingSector, lblRequestDocumentType, lblRequestDocumentNumber, lblSector, lblStoreName,
         lblManagerName, lblItemName, lblItemNo, lblCount, lblSAR, lblPageCount, lblDestinationNumber, lblApproved, lblSignature, lblDate,
-        lblAuthorizedPerson, lblNoObjection, lblName, lblDeptManager, lblKeeperName, lblGeneralSupervisor, lblRequestDate, lblReceivingWarehouse;
+        lblAuthorizedPerson, lblNoObjection, lblName, lblDeptManager, lblKeeperName, lblGeneralSupervisor, lblRequestDate, lblReceivingWarehouse, lblDisbursements;
         // public void OnGet()
         // {
 
@@ -131,6 +131,8 @@ namespace LabMaterials.Pages
             this.lblGeneralSupervisor = (Program.Translations["GeneralSupervisor"])[Lang];
             this.lblReceivingWarehouse = (Program.Translations["ReceivingWarehouse"])[Lang];
             this.lblRequestDate = (Program.Translations["RequestDate"])[Lang];
+            this.lblDisbursements = (Program.Translations["Disbursements"])[Lang];
+
 
         }
     }

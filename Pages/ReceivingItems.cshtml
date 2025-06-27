@@ -173,6 +173,12 @@
                     </div>
 
                     <div class="form-check mb-1">
+                        <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="status"
+                            id="status" @(Model.SelectedColumns.Contains("status") ? "checked" : "")>
+                        <label class="form-check-label" for="status">@Model.lblRequestStatus</label>
+                    </div>
+
+                    <div class="form-check mb-1">
                         <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="attachment"
                             id="attachment" @(Model.SelectedColumns.Contains("attachment") ? "checked" : "")>
                         <label class="form-check-label" for="attachment">@Model.lblAttachment</label>
@@ -318,7 +324,10 @@
                             {    
                                 <th scope="col" class="border-0">@Model.lblSupplierName</th>
                             }
-                            @* <th>Request Status</th> *@
+                            @if (Model.SelectedColumns.Contains("status"))
+                            {    
+                                <th scope="col" class="border-0">@Model.lblRequestStatus</th>
+                            }
 
                              @if (Model.SelectedColumns.Contains("attachment"))
                             {    
@@ -379,6 +388,15 @@
                                     @if (Model.SelectedColumns.Contains("supplier"))
                                     {
                                         <td>@req.Supplier?.SupplierName</td>
+                                    }
+                                    @if (Model.SelectedColumns.Contains("status"))
+                                    {   
+                                        if(req.GeneralSupApproval){
+                                            <td>@Model.lblApproved</td>
+                                        }
+                                        else{
+                                            <td>@Model.lblPending</td>
+                                        }
                                     }
                                     @if (Model.SelectedColumns.Contains("attachment"))
                                     {

@@ -21,6 +21,7 @@ namespace LabMaterials.Pages
         public int? UserId;
         [BindProperty]
         public string ItemName { get; set; }
+        public string StoreName { get; set; }
         private readonly LabDBContext _context;
         public int TotalItems { get; set; }
         public int CurrentPage { get; set; }
@@ -34,7 +35,7 @@ namespace LabMaterials.Pages
         {
             _context = context;
         }
-        public void OnGet(string? ItemName, DateTime? FromDate, DateTime? ToDate, int page = 1)
+        public void OnGet(string? ItemName,string? StoreName, DateTime? FromDate, DateTime? ToDate, int page = 1)
         {
             base.ExtractSessionData();
             FillLables();
@@ -48,7 +49,7 @@ namespace LabMaterials.Pages
                     this.ItemName = ItemName;
                     this.FromDate = FromDate;
                     this.ToDate = ToDate;
-                    FillData(ItemName, FromDate, ToDate, page);
+                    FillData(ItemName,StoreName, FromDate, ToDate, page);
 
                 }
             }
@@ -78,7 +79,7 @@ namespace LabMaterials.Pages
             }
         }
 
-        public IActionResult OnPostAction(string ItemName, DateTime? FromDate, DateTime? ToDate, string action, List<string> columns)
+        public IActionResult OnPostAction(string ItemName,string StoreName, DateTime? FromDate, DateTime? ToDate, string action, List<string> columns)
         {
             base.ExtractSessionData();
             FillLables();
@@ -87,11 +88,12 @@ namespace LabMaterials.Pages
             {
                 CurrentPage = 1;
                 this.ItemName = ItemName;
+                this.StoreName = StoreName;
                 this.FromDate = FromDate;
                 this.ToDate = ToDate;
                 if (CanManageItems)
                 {
-                    FillData(ItemName, FromDate, ToDate);
+                    FillData(ItemName,StoreName, FromDate, ToDate);
                     LoadSelectedColumns();
                 }
 
@@ -104,9 +106,10 @@ namespace LabMaterials.Pages
                 {
                     string selectedColumns = string.Join(",", columns);
                     this.ItemName = ItemName;
+                    this.StoreName = StoreName;
                     this.FromDate = FromDate;
                     this.ToDate = ToDate;
-                    FillData(ItemName, FromDate, ToDate);
+                    FillData(ItemName,StoreName, FromDate, ToDate);
 
                     int? userId = HttpContext.Session.GetInt32("UserId");
                     string pageName = "itemsCardsReport";
@@ -145,7 +148,7 @@ namespace LabMaterials.Pages
         }
 
 
-        private void FillData(string ItemName, DateTime? StartDate, DateTime? EndDate, int page = 1)
+        private void FillData(string ItemName,string StoreName, DateTime? StartDate, DateTime? EndDate, int page = 1)
         {
             FillLables();
 
@@ -170,6 +173,10 @@ namespace LabMaterials.Pages
                          });
             if (!string.IsNullOrWhiteSpace(ItemName))
                 query = query.Where(i => i.ItemName.Contains(ItemName));
+
+            if (!string.IsNullOrWhiteSpace(StoreName))
+                query = query.Where(i => i.WarehouseName.Contains(StoreName));
+
             if (StartDate is not null && EndDate is not null)
             {
                 query = query.Where(e => e.DateOfEntry.Value.Date >= StartDate && e.DateOfEntry.Value.Date <= EndDate);

@@ -129,7 +129,7 @@
 
       </tr>
     </thead>
-    @if (Model.BatchDetails != null && Model.BatchDetails.Any())
+    @* @if (Model.BatchDetails != null && Model.BatchDetails.Any())
     {
     <tbody>
       @foreach (var batchItem in Model.BatchDetails)
@@ -139,26 +139,89 @@
         var Party = Model.Party.FirstOrDefault(s => s.DId == dispensedItem?.PartyId)?.DestinationName ?? "-";
 
         <tr>
-          <td>@batch.DateOfEntry.ToString("dd-MM-yyyy")</td>
-          <td>@batch.ReceiptDocumentnumber</td>
-          <td>@batch.QuantityReceived</td>
-          <td>@batch.Supplier.SupplierName</td>
+          <td>@batchItem.DateOfEntry.ToString("dd-MM-yyyy")</td>
+          <td>@batchItem.ReceiptDocumentnumber</td>
+          <td>@batchItem.QuantityReceived</td>
+          <td>@batchItem.Supplier.SupplierName</td>
+          
+
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
           <td>@(dispensedItem != null ? dispensedItem.ReduceQty : "-")</td>
           <td>@Party</td>
-          <td>@(dispensedItem != null ? batch.QuantityAvailable : "-")</td>
+          <td>@(dispensedItem != null ? batchItem.QuantityAvailable : "-")</td>
           <td>@(dispensedItem != null ? dispensedItem.DocumentNumber : "-")</td>
-
         </tr>
   
     }
     </tbody>
+    } *@
+
+    @if (Model.BatchDetails != null && Model.BatchDetails.Any())
+    {
+      <tbody>
+      @foreach (var group in Model.BatchDetails.GroupBy(b => b.ItemCardId))
+      {
+          var itemCardId = group.Key;
+          var batchList = group.ToList();
+          var dispensedList = Model.dispensed
+              .Where(d => d.ItemCardId == itemCardId)
+              .ToList();
+
+          int max = Math.Max(batchList.Count, dispensedList.Count);
+
+          for (int i = 0; i < max; i++)
+          {
+            var batchItem = i < batchList.Count ? batchList[i] : null;
+            var dispensedItem = i < dispensedList.Count ? dispensedList[i] : null;
+
+            if (batchItem != null)
+            {
+                <tr>
+                    <td>@batchItem.DateOfEntry.ToString("dd-MM-yyyy")</td>
+                    <td>@batchItem.ReceiptDocumentnumber</td>
+                    <td>@batchItem.QuantityReceived</td>
+                    <td>@batchItem.Supplier?.SupplierName</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+
+                </tr>
+            }
+
+            if (dispensedItem != null)
+            {
+                var partyName = Model.Party.FirstOrDefault(s => s.DId == dispensedItem.PartyId)?.DestinationName ?? "-";
+
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>@dispensedItem.ReduceQty</td>
+                    <td>@partyName</td>
+                    <td>@dispensedItem.QuantityAvailable</td> 
+                    <td>@dispensedItem.DocumentNumber</td>
+                </tr>
+            }
+          }
+        }
+      </tbody>
+    } 
+
+    
+
+    else
+    {
+        <p>No batch data available.</p>
     }
-else
-{
-    <p>No batch data available.</p>
-}
   </table>
-    }
+}
 
 </div>
 

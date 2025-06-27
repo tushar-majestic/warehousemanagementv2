@@ -139,8 +139,14 @@
                     <label class="form-check-label" for="reason">@Model.lblReason</label>
                 </div>
 
+                <div class="form-check mb-1">
+                    <input class="form-check-input column-checkbox" name="columns" type="checkbox" value="status"
+                        id="status" @(Model.SelectedColumns.Contains("status") ? "checked" : "")>
+                    <label class="form-check-label" for="status">@Model.lblRequestStatus</label>
+                </div>
+
                 <div class="form-check mb-1 text-center">
-                    <button type="submit" name="action" value="updateColumns" class="btn btn-success btn-sm">Ok</button>
+                    <button type="submit" name="action" value="updateColumns" class="btn btn-success btn-sm">@Model.lblOk</button>
                 </div>
 
 
@@ -253,6 +259,10 @@
                             {
                                 <th scope="col" class="border-0">@Model.lblReason</th>
                             }
+                            @if (Model.SelectedColumns.Contains("status"))
+                            {
+                                <th scope="col" class="border-0">@Model.lblRequestStatus</th>
+                            }
                             <th scope="col" class="border-0 rounded-end">@Model.lblAction</th>
                         </tr>
                     </thead>
@@ -281,6 +291,13 @@
                                 @if (Model.SelectedColumns.Contains("reason"))
                                 {
                                 <td>@req.Reason</td>
+                                }
+                                @if (Model.SelectedColumns.Contains("status"))
+                                {   if(req.SupervisorApprovalDate != null){
+                                        <td>@Model.lblApproved</td>
+                                    }else{
+                                        <td>@Model.lblPending</td>
+                                    }
                                 }
                                 <td>
                                     <a href="/ReturnRequestsDetails/@req.Id" class="btn btn-sm btn-primary">@Model.lblView</a>

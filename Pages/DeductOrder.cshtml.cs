@@ -223,6 +223,7 @@ namespace LabMaterials.Pages
                     OutDate = OutDate,
                     PartyId = PartyId,
                     DocumentNumber = DocumentNumber,
+                    QuantityAvailable = itemCard.QuantityAvailable,
                     Status = true,
                     DeductedBy = HttpContext.Session.GetInt32("UserId").Value,
                     MaterialRequestId = this.ReportId.Value,
