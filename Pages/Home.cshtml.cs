@@ -81,14 +81,24 @@ namespace LabMaterials.Pages
                 countItems = dbContext.Items.Where(e => e.Ended == null).Count();
                 countUsers = dbContext.Users.Where(e => e.Ended == null).Count();
                 countStores = dbContext.Stores.Where(e => e.Ended == null).Count();
-                startDate = startDate is null ? DateTime.Now : startDate;
-                endDate = endDate is null ? DateTime.Now : endDate;
+                // startDate = startDate is null ? DateTime.Now : startDate;
+                // endDate = endDate is null ? DateTime.Now : endDate;
+              
+                startDate ??= DateTime.Today;
+                endDate ??= DateTime.Today;
+
+
+                Console.WriteLine($"home start date {startDate}");
+                Console.WriteLine($"home end date {endDate}");
+
                 if (startDate > endDate)
                 {
                     ErrorMsg = string.Format((Program.Translations["StartDateGreaterThanEndDate"])[Lang]);
                 }
                 countSupplies = dbContext.ReceivingReports.Where(e => e.ReceivingDate >= startDate && e.ReceivingDate <= endDate).Count();
                 countdisbursement = dbContext.MaterialRequests.Where(e => e.OrderDate >= startDate && e.OrderDate <= endDate).Count();
+                Console.WriteLine($"home countSupplies {countSupplies}");
+                Console.WriteLine($"home countdisbursement {countdisbursement}");
 
                 //var itemsList = dbContext.Items.Select(item => new
                 //{
@@ -210,14 +220,26 @@ namespace LabMaterials.Pages
                            });
                 */
 
-                var destWithCount = (from dr in dbContext.DisbursementRequests
-                                     group dr by dr.RequestingPlace.ToLower() into g
-                                     orderby g.Count() descending
-                                     select new DestinationsInfo
-                                     {
-                                         DestinationName = g.Key,
-                                         Count = g.Count()
-                                     }).Take(1);
+               var destWithCount = (from dr in dbContext.MaterialRequests
+                     join r in dbContext.Destinations on dr.RequestingSector equals r.DId
+                     group r by r.DId into g
+                     orderby g.Count() descending
+                     select new DestinationsInfo
+                     {
+                         DestinationId = g.Key,
+                         DestinationName = g.Select(x => x.DestinationName).FirstOrDefault(),
+                         Count = g.Count()
+                     }).Take(1);
+
+
+                // var destWithCount = (from dr in dbContext.DisbursementRequests
+                //                      group dr by dr.RequestingPlace.ToLower() into g
+                //                      orderby g.Count() descending
+                //                      select new DestinationsInfo
+                //                      {
+                //                          DestinationName = g.Key,
+                //                          Count = g.Count()
+                //                      }).Take(1);
 
                 MostRequestingDestination = destWithCount.ToList();
 

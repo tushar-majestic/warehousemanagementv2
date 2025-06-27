@@ -28,6 +28,9 @@ public partial class PendingDeduction
 
   public int PartyId { get; set; }
 
+  public int QuantityAvailable { get; set; }
+
+
   public int MaterialRequestId { get; set; }
 
   public string DocumentNumber { get; set; } = null;

@@ -2187,6 +2187,14 @@
   "DownloadDesReport":{
    "en": "Download Destruction Report",
    "ar": "تحميل تقرير التدمير"
+  },
+  "RequestStatus": {
+    "en": "Request Status",
+    "ar": "حالة الطلب"
+  },
+  "Pending":{
+    "en": "Pending",
+    "ar": "قيد الانتظار"
   }
   
 }

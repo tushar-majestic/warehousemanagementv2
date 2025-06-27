@@ -55,7 +55,7 @@
     string lblDisburse = Model.lblDisbursement ?? "Disbursement";
 }
 
-}
+
 @section Scripts
 {
     <script type="text/javascript" language="javascript">
@@ -516,13 +516,13 @@
                         <div class="col-6 mb-xl-0">
                             <div class="mb-2">
                                 <label for="startDate" class="form-label">@Model.lblFromDate</label>
-                                <input asp-for="FromDate" type="date" class="form-control form-control-sm" id="startDate" name="startDate" value="@Model.FromDate" onchange="checkDates()">
+                                <input asp-for="FromDate" type="date" class="form-control form-control-sm" id="startDate" name="startDate" value="@Model.FromDate?.ToString("yyyy-MM-dd")" onchange="checkDates()">
                             </div>
                         </div>
                         <div class="col-6  mb-xl-0">
                             <div class="mb-2">
                                 <label for="endDate" class="form-label">@Model.lblToDate</label>
-                                <input asp-for="ToDate" type="date" class="form-control form-control-sm" id="endDate" name="endDate" value="@Model.ToDate" onchange="checkDates()">
+                                <input asp-for="ToDate" type="date" class="form-control form-control-sm" id="endDate" name="endDate" value="@Model.ToDate?.ToString("yyyy-MM-dd")" onchange="checkDates()">
                             </div>
                         </div>
                     </div>
