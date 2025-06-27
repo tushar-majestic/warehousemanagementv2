@@ -11,7 +11,7 @@ namespace LabMaterials.Pages
 
 
 
-        public string lblRequests, lblNewReceivingReport, pagetype = "inbox", inboxClass = "btn-dark text-white", outboxClass = "btn-light",lblSearch, lblInbox, lblRequestSent, lblAccept, lblCommentReject, lblReplyResend, lblAddOrderToItemCard, lblDeductOrderItemCard, lblAddRecommendations, lblAttachDestructionReport, lblAddRecyclingNotes, lblAssignSupervisor, lblAssignMembers, lblDeductionDone, lblAccepted,lblFileAttached, lblRejected, lblReplied, lblAddedOrderItemCard, lblAdded, lblCommentRejectRequest, lblYourComment, AcceptSpecifyRecipient, lblAcceptSpecifyRecipient,lblWarehouseKeeper, lblSelectWarehouseKeeper, lblSelectGeneralSpervisor, lblInspectionCommitteeOfficer, lblSelectInspectionCommitteeOfficer, lblDestructionOfficer, lblSelectDestructionOfficer, lblRecyclingOfficer, lblSelectRecyclingOfficer, lblAddAttachment, lblReplyResendRequest, lblYourReply, lblReply;
+        public string lblRequests, lblNewReceivingReport, pagetype = "inbox", inboxClass = "btn-dark text-white", outboxClass = "btn-light",lblSearch, lblInbox, lblRequestSent, lblAccept, lblCommentReject, lblReplyResend, lblAddOrderToItemCard, lblDeductOrderItemCard, lblAddRecommendations, lblAttachDestructionReport, lblAddRecyclingNotes, lblAssignSupervisor, lblAssignMembers, lblDeductionDone, lblAccepted,lblFileAttached, lblRejected, lblReplied, lblAddedOrderItemCard, lblAdded, lblCommentRejectRequest, lblYourComment, AcceptSpecifyRecipient, lblAcceptSpecifyRecipient,lblWarehouseKeeper, lblSelectWarehouseKeeper, lblSelectGeneralSpervisor, lblInspectionCommitteeOfficer, lblSelectInspectionCommitteeOfficer, lblDestructionOfficer, lblSelectDestructionOfficer, lblRecyclingOfficer, lblSelectRecyclingOfficer, lblAddAttachment, lblReplyResendRequest, lblYourReply, lblReply, lblReject;
 
         public RequestsModel(LabDBContext context, IWebHostEnvironment environment)
         {
@@ -324,14 +324,19 @@ namespace LabMaterials.Pages
                         report.DeptManagerApprovalDate = DateTime.Now;
 
                         //message to keeper 
-                        string keeperMessage = string.Format("Sent Material Dispensing Request Approve the request or add comments.");
+                        // string keeperMessage = string.Format("Sent Material Dispensing Request Approve the request or add comments.");
+                        string keeperMessageEn = string.Format(Program.Translations["DispRequestSent"]["en"]);
+                        string keeperMessageAr = string.Format(Program.Translations["DispRequestSent"]["ar"]);
+
+
                         var msgToKeeper = new Message
                         {
                             MaterialRequestId = AcceptReportId,
                             ReportType = "Dispensing",
                             SenderId = this.UserId,
                             RecipientId = report.KeeperId,
-                            Content = keeperMessage,
+                            Content = keeperMessageEn,
+                            ArContent = keeperMessageAr,
                             Type = "",
                             CreatedAt = DateTime.UtcNow
                         };
@@ -347,14 +352,19 @@ namespace LabMaterials.Pages
                         report.SupervisorId = ReceipientId.Value;
 
                         //message to supervisor
-                        string supervisorMessage = string.Format("Sent Material Dispensing Request Approve the request or add comments.");
+                        // string supervisorMessage = string.Format("Sent Material Dispensing Request Approve the request or add comments.");
+                        string supervisorMessageEn = string.Format(Program.Translations["DispRequestSent"]["en"]);
+
+                        string supervisorMessageAr = string.Format(Program.Translations["DispRequestSent"]["ar"]);
+
                         var msgToKeeper = new Message
                         {
                             MaterialRequestId = AcceptReportId,
                             ReportType = "Dispensing",
                             SenderId = this.UserId,
                             RecipientId = report.SupervisorId,
-                            Content = supervisorMessage,
+                            Content = supervisorMessageEn,
+                            ArContent = supervisorMessageAr,
                             Type = "",
                             CreatedAt = DateTime.UtcNow
                         };
@@ -371,28 +381,36 @@ namespace LabMaterials.Pages
                         report.SupervisorApprovalDate = DateTime.UtcNow;
 
                         //message to manager who created the request
-                        string managerMessage = string.Format("Has Approved the dispencing request for delivery");
+                        
+                        // string managerMessage = string.Format("Has Approved the dispencing request for delivery");
+                        string managerMessageEn = string.Format(Program.Translations["DispApprovedRequest"]["en"]);
+                        string managerMessageAr = string.Format(Program.Translations["DispApprovedRequest"]["ar"]);
+
                         var msgToManager = new Message
                         {
                             MaterialRequestId = AcceptReportId,
                             ReportType = "Dispensing",
                             SenderId = this.UserId,
                             RecipientId = report.RequestedByUserId,
-                            Content = managerMessage,
+                            Content = managerMessageEn,
+                            ArContent = managerMessageAr,
                             Type = "",
                             CreatedAt = DateTime.UtcNow
                         };
                         dbContext.Messages.Add(msgToManager);
 
                         //message to keeper to deduct order from itemcard
-                        string keeperMessage = string.Format("Has Approved the dispencing request for delivery");
+                        // string keeperMessage = string.Format("Has Approved the dispencing request for delivery");
+                         string keeperMessageEn = string.Format(Program.Translations["DispApprovedRequest"]["en"]);
+                        string keeperMessageAr = string.Format(Program.Translations["DispApprovedRequest"]["ar"]);
                         var msgToKeeper = new Message
                         {
                             MaterialRequestId = AcceptReportId,
                             ReportType = "Dispensing",
                             SenderId = this.UserId,
                             RecipientId = report.KeeperId,
-                            Content = keeperMessage,
+                            Content = keeperMessageEn,
+                            ArContent = keeperMessageAr,
                             Type = "",
                             CreatedAt = DateTime.UtcNow
                         };
@@ -498,14 +516,19 @@ namespace LabMaterials.Pages
                     {
                         var CreatedBy = dbContext.Users.FirstOrDefault(u => u.UserId == Report.CreatedBy);
 
-                        string keeperMessage = string.Format("Committee Recommendations were added on the return Items request generated by {0}", CreatedBy.FullName);
+                        // string keeperMessage = string.Format("Committee Recommendations were added on the return Items request generated by {0}", CreatedBy.FullName);
+
+                        string keeperMessageEn = string.Format(Program.Translations["RecAddedMsg"]["en"], CreatedBy.FullName);
+                        string keeperMessageAr = string.Format(Program.Translations["RecAddedMsg"]["ar"], CreatedBy.FullName);
+
                         var keeper = new Message
                         {
                             ReturnRequestId = AcceptReturnReportId,
                             ReportType = "ReturnItems",
                             SenderId = this.UserId,
                             RecipientId = Report.KeeperId,
-                            Content = keeperMessage,
+                            Content = keeperMessageEn,
+                            ArContent = keeperMessageAr,
                             Type = "Add Order",
                             CreatedAt = DateTime.UtcNow
                         };
@@ -564,14 +587,19 @@ namespace LabMaterials.Pages
                         report.ManagerApprovalDate = DateTime.UtcNow;
 
                         //message to Inspection Officer
-                        string InspOffMessage = string.Format("Sent Return Items Request add Committee recommendations.");
+                        // string InspOffMessage = string.Format("Sent Return Items Request add Committee recommendations.");
+
+                        string InspOffMessageEn = string.Format(Program.Translations["AddCommitteeRecMsg"]["en"]);
+                        string InspOffMessageAr = string.Format(Program.Translations["AddCommitteeRecMsg"]["ar"]);
+
                         var msgToInspOfficer = new Message
                         {
                             ReturnRequestId = AcceptReturnReportId,
                             ReportType = "ReturnItems",
                             SenderId = this.UserId,
                             RecipientId = report.InspOffId,
-                            Content = InspOffMessage,
+                            Content = InspOffMessageEn,
+                            ArContent = InspOffMessageAr,
                             Type = "",
                             CreatedAt = DateTime.UtcNow
                         };
@@ -587,14 +615,18 @@ namespace LabMaterials.Pages
                         report.InspOffApprovalDate = DateTime.UtcNow;
 
                         //message to Supervisor 
-                        string SupervisorMessage = string.Format("Sent Return Items Request Approve the request or add comments.");
+                        // string SupervisorMessage = string.Format("Sent Return Items Request Approve the request or add comments.");
+                        string supervisorMessageEn = string.Format(Program.Translations["RetRequestSent"]["en"]);
+                        string supervisorMessageAr = string.Format(Program.Translations["RetRequestSent"]["ar"]);
+
                         var msgToSupervisor = new Message
                         {
                             ReturnRequestId = AcceptReturnReportId,
                             ReportType = "ReturnItems",
                             SenderId = this.UserId,
                             RecipientId = report.SupervisorId,
-                            Content = SupervisorMessage,
+                            Content = supervisorMessageEn,
+                            ArContent = supervisorMessageAr,
                             Type = "",
                             CreatedAt = DateTime.UtcNow
                         };
@@ -611,14 +643,18 @@ namespace LabMaterials.Pages
                         //message to Destruction Officer 
                         if (destOffId.HasValue)
                         {
-                            string DestOfficerMessage = string.Format("Sent Return Items Request Attach Destruction report.");
+                            // string DestOfficerMessage = string.Format("Sent Return Items Request Attach Destruction report.");
+                            string DestOfficerMessageEn = string.Format(Program.Translations["AttachDestReportMsg"]["en"]);
+                            string DestOfficerMessageAr = string.Format(Program.Translations["AttachDestReportMsg"]["ar"]);
+
                             var DestOfficer = new Message
                             {
                                 ReturnRequestId = AcceptReturnReportId,
                                 ReportType = "ReturnItems",
                                 SenderId = this.UserId,
                                 RecipientId = report.DestOffId,
-                                Content = DestOfficerMessage,
+                                Content = DestOfficerMessageEn,
+                                ArContent = DestOfficerMessageAr,
                                 Type = "",
                                 CreatedAt = DateTime.UtcNow
                             };
@@ -631,14 +667,18 @@ namespace LabMaterials.Pages
                         //message to keeper  if destrutcion officer is
                         if (destOffId.HasValue || RecyclingOffiId.HasValue)
                         {
-                            string keeperMessage = string.Format("Committee Recommendations were added on the return Items request generated by {0}", CreatedBy.FullName);
+                            // string keeperMessage = string.Format("Committee Recommendations were added on the return Items request generated by {0}", CreatedBy.FullName);
+
+                            string keeperMessageEn = string.Format(Program.Translations["RecAddedMsg"]["en"],CreatedBy.FullName);
+                            string keeperMessageAr = string.Format(Program.Translations["RecAddedMsg"]["ar"],CreatedBy.FullName);
                             var keeper = new Message
                             {
                                 ReturnRequestId = AcceptReturnReportId,
                                 ReportType = "ReturnItems",
                                 SenderId = this.UserId,
                                 RecipientId = report.KeeperId,
-                                Content = keeperMessage,
+                                Content = keeperMessageEn,
+                                ArContent = keeperMessageAr,
                                 Type = "",
                                 CreatedAt = DateTime.UtcNow
                             };
@@ -646,14 +686,17 @@ namespace LabMaterials.Pages
                         }
                         else if (!destOffId.HasValue && !RecyclingOffiId.HasValue)
                         {
-                            string keeperMessage = string.Format("Committee Recommendations were added on the return Items request generated by {0}", CreatedBy.FullName);
+                            // string keeperMessage = string.Format("Committee Recommendations were added on the return Items request generated by {0}", CreatedBy.FullName);
+                            string keeperMessageEn = string.Format(Program.Translations["RecAddedMsg"]["en"],CreatedBy.FullName);
+                            string keeperMessageAr = string.Format(Program.Translations["RecAddedMsg"]["ar"],CreatedBy.FullName);
                             var keeper = new Message
                             {
                                 ReturnRequestId = AcceptReturnReportId,
                                 ReportType = "ReturnItems",
                                 SenderId = this.UserId,
                                 RecipientId = report.KeeperId,
-                                Content = keeperMessage,
+                                Content = keeperMessageEn,
+                                ArContent = keeperMessageAr,
                                 Type = "Add Order",
                                 CreatedAt = DateTime.UtcNow
                             };
@@ -666,14 +709,19 @@ namespace LabMaterials.Pages
                         //message to recycling Officer 
                         if (RecyclingOffiId.HasValue)
                         {
-                            string recyclingOfficerMsg = string.Format("Add recycling notes to specific recycling Items in the Return Items Request generated by {0}", CreatedBy.FullName);
+                            // string recyclingOfficerMsg = string.Format("Add recycling notes to specific recycling Items in the Return Items Request generated by {0}", CreatedBy.FullName);
+
+                            string recyclingOfficerMsgEn = string.Format(Program.Translations["AddRecyclingNotesMsg"]["en"], CreatedBy.FullName);
+                            string recyclingOfficerMsgAr = string.Format(Program.Translations["AddRecyclingNotesMsg"]["ar"], CreatedBy.FullName);
+
                             var recyclingOfficer = new Message
                             {
                                 ReturnRequestId = AcceptReturnReportId,
                                 ReportType = "ReturnItems",
                                 SenderId = this.UserId,
                                 RecipientId = report.RecOffId,
-                                Content = recyclingOfficerMsg,
+                                Content = recyclingOfficerMsgEn,
+                                ArContent = recyclingOfficerMsgAr,
                                 Type = "",
                                 CreatedAt = DateTime.UtcNow
                             };
@@ -748,14 +796,19 @@ namespace LabMaterials.Pages
                     report.KeeperApprovalDate = DateTime.UtcNow;
 
                     //message to Receipient (sector manager)
-                    string sectorManagerMessage = string.Format("Sent Material Dispensing Request Approve the request or add comments.");
+                    // string sectorManagerMessage = string.Format("Sent Material Dispensing Request Approve the request or add comments.");
+
+                    string sectorManagerMessageEn = string.Format(Program.Translations["DispRequestSent"]["en"]);
+                    string sectorManagerMessageAr = string.Format(Program.Translations["DispRequestSent"]["ar"]);
+
                     var msgToSectorManager = new Message
                     {
                         MaterialRequestId = AcceptReportId,
                         ReportType = "Dispensing",
                         SenderId = this.UserId,
                         RecipientId = report.SupervisorId,
-                        Content = sectorManagerMessage,
+                        Content = sectorManagerMessageEn,
+                        ArContent = sectorManagerMessageAr,
                         Type = "",
                         CreatedAt = DateTime.UtcNow
                     };
@@ -818,14 +871,17 @@ namespace LabMaterials.Pages
                         var CreatedBy = dbContext.Users.FirstOrDefault(u => u.UserId == report.CreatedBy);
 
                         //message to warehouse manager for information
-                        string managerMessage = string.Format("Approved the request for items generated by {0}.", CreatedBy.FullName);
+                        string managerMessageEn = string.Format(Program.Translations["ApprovedRequest"]["en"], CreatedBy.FullName);
+                        string managerMessageAr = string.Format(Program.Translations["ApprovedRequest"]["ar"], CreatedBy.FullName);
+                        // string managerMessage = string.Format("Approved the request for items generated by {0}.", CreatedBy.FullName);
                         var msgToManager = new Message
                         {
                             ReportId = ReceivingReportId,
                             ReportType = "Receiving",
                             SenderId = this.UserId,
                             RecipientId = report.RecipientEmployeeId,
-                            Content = managerMessage,
+                            Content = managerMessageEn,
+                            ArContent = managerMessageAr,
                             Type = "",
                             CreatedAt = DateTime.UtcNow
                         };
@@ -838,15 +894,18 @@ namespace LabMaterials.Pages
                     //message to general supervisor for approval
                     //if general Supervisor is assigned.
                     if (generalSup != null)
-                    {
-                        string supMessage = string.Format("Sent Request for Items. Approve the request or add comments.");
+                    {   
+                        string supMessageEn = string.Format(Program.Translations["RequestSentMsg"]["en"]);
+                        string supMessageAr = string.Format(Program.Translations["RequestSentMsg"]["ar"]);
+                        // string supMessage = string.Format("Sent Request for Items. Approve the request or add comments.");
                         var msgToSup = new Message
                         {
                             ReportId = ReceivingReportId,
                             ReportType = "Receiving",
                             SenderId = this.UserId,
                             RecipientId = report.ChiefResponsibleId,
-                            Content = supMessage,
+                            Content = supMessageEn,
+                            ArContent = supMessageAr,
                             Type = "",
                             CreatedAt = DateTime.UtcNow
 
@@ -862,14 +921,17 @@ namespace LabMaterials.Pages
                         report.GeneralSupervisorApprovalDate = DateTime.Now;
 
                         //send message to keeper
-                        string keeperMessage = string.Format("Your request is accepted by {0}(TechnicalMember) and no general supervisor was added.", technicalMember.FullName);
+                        string keeperMessageEn = string.Format(Program.Translations["TmAcceptedNoSup"]["en"], technicalMember.FullName);
+                        string keeperMessageAr = string.Format(Program.Translations["TmAcceptedNoSup"]["ar"], technicalMember.FullName);
+                        // string keeperMessage = string.Format("Your request is accepted by {0}(TechnicalMember) and no general supervisor was added.", technicalMember.FullName);
                         var msgToKeeper = new Message
                         {
                             ReportId = ReceivingReportId,
                             ReportType = "Receiving",
                             SenderId = this.UserId,
                             RecipientId = report.CreatedBy,
-                            Content = keeperMessage,
+                            Content = keeperMessageEn,
+                            ArContent = keeperMessageAr,
                             Type = "",
                             CreatedAt = DateTime.UtcNow
 
@@ -887,15 +949,18 @@ namespace LabMaterials.Pages
                     report.IsRejectedByGeneralSupervisor = false;
                     report.GeneralSupervisorApprovalDate = DateTime.Now;
 
+                    string keeperMessageEn = string.Format(Program.Translations["TmGsAccepted"]["en"],  technicalMember.FullName, generalSup.FullName);
+                    string keeperMessageAr = string.Format(Program.Translations["TmGsAccepted"]["ar"],  technicalMember.FullName, generalSup.FullName);
 
-                    string keeperMessage = string.Format("Your request is accepted by {0}(TechnicalMember) and {1}(General Supervisor).", technicalMember.FullName, generalSup.FullName);
+                    // string keeperMessage = string.Format("Your request is accepted by {0}(TechnicalMember) and {1}(General Supervisor).", technicalMember.FullName, generalSup.FullName);
                     var msgToKeeper = new Message
                     {
                         ReportId = ReceivingReportId,
                         ReportType = "Receiving",
                         SenderId = this.UserId,
                         RecipientId = report.CreatedBy,
-                        Content = keeperMessage,
+                        Content = keeperMessageEn,
+                        ArContent = keeperMessageAr,
                         Type = "",
                         CreatedAt = DateTime.UtcNow
 
@@ -906,14 +971,17 @@ namespace LabMaterials.Pages
                     var CreatedBy = dbContext.Users.FirstOrDefault(u => u.UserId == report.CreatedBy);
 
                     //message to warehouse manager for information
-                    string managerMessage = string.Format("Approved the request for items generated by {0}.", CreatedBy.FullName);
+                    string managerMessageEn = string.Format(Program.Translations["ApprovedRequest"]["en"], CreatedBy.FullName);
+                    string managerMessageAr = string.Format(Program.Translations["ApprovedRequest"]["ar"], CreatedBy.FullName);
+                    // string managerMessage = string.Format("Approved the request for items generated by {0}.", CreatedBy.FullName);
                     var msgToManager = new Message
                     {
                         ReportId = ReceivingReportId,
                         ReportType = "Receiving",
                         SenderId = this.UserId,
                         RecipientId = report.RecipientEmployeeId,
-                        Content = managerMessage,
+                        Content = managerMessageEn,
+                        ArContent = managerMessageAr,
                         Type = "",
                         CreatedAt = DateTime.UtcNow
                     };
@@ -960,14 +1028,18 @@ namespace LabMaterials.Pages
                     if (report.DepartmentManagerApproval == true)
                         report.DepartmentManagerApproval = false;
 
-                    string managerMessage = string.Format("Your request is rejected with comment: {0}", Comment);
+                    // string managerMessage = string.Format("Your request is rejected with comment: {0}", Comment);
+                    string managerMessageEn = string.Format(Program.Translations["RejectMsg"]["en"],Comment );
+                    string managerMessageAr = string.Format(Program.Translations["RejectMsg"]["ar"],Comment );
+
                     var msgToManager = new Message
                     {
                         MaterialRequestId = RejectReceivingReportId,
                         ReportType = "Dispensing",
                         SenderId = this.UserId,
                         RecipientId = report.RequestedByUserId,
-                        Content = managerMessage,
+                        Content = managerMessageEn,
+                        ArContent = managerMessageAr,
                         Type = "",
                         CreatedAt = DateTime.UtcNow,
 
@@ -980,14 +1052,18 @@ namespace LabMaterials.Pages
                     if (report.KeeperApproval == true)
                         report.KeeperApproval = false;
 
-                    string deptManagerMessage = string.Format("Your request is rejected with comment: {0}", Comment);
+                    // string deptManagerMessage = string.Format("Your request is rejected with comment: {0}", Comment);
+                    string deptManagerMessageEn = string.Format(Program.Translations["RejectMsg"]["en"],Comment );
+                    string deptManagerMessageAr = string.Format(Program.Translations["RejectMsg"]["ar"],Comment );
+
                     var msgToManager = new Message
                     {
                         MaterialRequestId = RejectReceivingReportId,
                         ReportType = "Dispensing",
                         SenderId = this.UserId,
                         RecipientId = report.DeptManagerId,
-                        Content = deptManagerMessage,
+                        Content = deptManagerMessageEn,
+                        ArContent = deptManagerMessageAr,
                         Type = "",
                         CreatedAt = DateTime.UtcNow,
 
@@ -1000,14 +1076,19 @@ namespace LabMaterials.Pages
                     if (report.SupervisorApproval == true)
                         report.SupervisorApproval = false;
 
-                    string keeperMessage = string.Format("Your request is rejected with comment: {0}", Comment);
+                    // string keeperMessage = string.Format("Your request is rejected with comment: {0}", Comment);
+
+                    string keeperMessageEn = string.Format(Program.Translations["RejectMsg"]["en"],Comment );
+                    string keeperMessageAr = string.Format(Program.Translations["RejectMsg"]["ar"],Comment );
+
                     var msgToKeeper = new Message
                     {
                         MaterialRequestId = RejectReceivingReportId,
                         ReportType = "Dispensing",
                         SenderId = this.UserId,
                         RecipientId = report.KeeperId,
-                        Content = keeperMessage,
+                        Content = keeperMessageEn,
+                        ArContent = keeperMessageAr,
                         Type = "",
                         CreatedAt = DateTime.UtcNow,
 
@@ -1037,14 +1118,18 @@ namespace LabMaterials.Pages
                     if (report.TechnicalMemberApproval == true)
                         report.TechnicalMemberApproval = false;
 
-                    string keeperMessage = string.Format("Your request is rejected with comment: {0}", Comment);
+                    // string keeperMessage = string.Format("Your request is rejected with comment: {0}", Comment);
+
+                    string keeperMessageEn = string.Format(Program.Translations["RejectMsg"]["en"],Comment );
+                    string keeperMessageAr = string.Format(Program.Translations["RejectMsg"]["ar"],Comment );
                     var msgToKeeper = new Message
                     {
                         ReportId = RejectReceivingReportId,
                         ReportType = "Receiving",
                         SenderId = this.UserId,
                         RecipientId = report.CreatedBy,
-                        Content = keeperMessage,
+                        Content = keeperMessageEn,
+                        ArContent = keeperMessageAr,
                         Type = "",
                         CreatedAt = DateTime.UtcNow,
 
@@ -1063,14 +1148,19 @@ namespace LabMaterials.Pages
                         report.GeneralSupApproval = false;
 
                     var CreatedBy = dbContext.Users.FirstOrDefault(u => u.UserId == report.CreatedBy);
-                    string ManagerMessage = string.Format("Rejected the request for items generated by {0}. with comment: {1}", CreatedBy.FullName, Comment);
+                    // string ManagerMessage = string.Format("Rejected the request for items generated by {0}. with comment: {1}", CreatedBy.FullName, Comment);
+
+                    string ManagerMessageEn = string.Format(Program.Translations["ReqRejectWithComment"]["en"], CreatedBy.FullName, Comment);
+                    string ManagerMessageAr = string.Format(Program.Translations["ReqRejectWithComment"]["ar"], CreatedBy.FullName, Comment);
+
                     var msgToManager = new Message
                     {
                         ReportId = RejectReceivingReportId,
                         ReportType = "Receiving",
                         SenderId = this.UserId,
                         RecipientId = report.RecipientEmployeeId,
-                        Content = ManagerMessage,
+                        Content = ManagerMessageEn,
+                        ArContent = ManagerMessageAr,
                         Type = "",
                         CreatedAt = DateTime.UtcNow
 
@@ -1079,14 +1169,19 @@ namespace LabMaterials.Pages
 
 
                     //Send message to technical Member
-                    string TechMemMessage = string.Format("Rejected the request for items generated by {0}. with comment: {1}", CreatedBy.FullName, Comment);
+                    // string TechMemMessage = string.Format("Rejected the request for items generated by {0}. with comment: {1}", CreatedBy.FullName, Comment);
+
+                    string TechMemMessageEn = string.Format(Program.Translations["ReqRejectWithComment"]["en"], CreatedBy.FullName, Comment);
+                    string TechMemMessageAr = string.Format(Program.Translations["ReqRejectWithComment"]["ar"], CreatedBy.FullName, Comment);
+
                     var msgToTechMem = new Message
                     {
                         ReportId = RejectReceivingReportId,
                         ReportType = "Receiving",
                         SenderId = this.UserId,
                         RecipientId = report.TechnicalMemberId,
-                        Content = TechMemMessage,
+                        Content = TechMemMessageEn,
+                        ArContent = TechMemMessageAr,
                         Type = "",
                         CreatedAt = DateTime.UtcNow
 
@@ -1108,14 +1203,19 @@ namespace LabMaterials.Pages
                     if (report.ManagerApprovalDate != null)
                         report.ManagerApprovalDate = null;
 
-                    string SectorManagerMessage = string.Format("Your return items request is rejected with comment: {0}", Comment);
+                    // string SectorManagerMessage = string.Format("Your return items request is rejected with comment: {0}", Comment);
+
+                    string SectorManagerMessageEn = string.Format(Program.Translations["RetReqRejected"]["en"], Comment);
+                    string SectorManagerMessageAr = string.Format(Program.Translations["RetReqRejected"]["ar"], Comment);
+
                     var msgToSectorManager = new Message
                     {
                         ReturnRequestId = RejectReceivingReportId,
                         ReportType = "ReturnItems",
                         SenderId = this.UserId,
                         RecipientId = report.CreatedBy,
-                        Content = SectorManagerMessage,
+                        Content = SectorManagerMessageEn,
+                        ArContent = SectorManagerMessageAr,
                         Type = "",
                         CreatedAt = DateTime.UtcNow,
 
@@ -1128,14 +1228,18 @@ namespace LabMaterials.Pages
                     if (report.SupervisorApprovalDate != null)
                         report.SupervisorApprovalDate = null;
 
-                    string InspOffiMessage = string.Format("Your return items request is rejected with comment: {0}", Comment);
+                    // string InspOffiMessage = string.Format("Your return items request is rejected with comment: {0}", Comment);
+
+                    string InspOffiMessageEn = string.Format(Program.Translations["RetReqRejected"]["en"], Comment);
+                    string InspOffiMessageAr = string.Format(Program.Translations["RetReqRejected"]["ar"], Comment);
                     var msgToInspOffi = new Message
                     {
                         ReturnRequestId = RejectReceivingReportId,
                         ReportType = "ReturnItems",
                         SenderId = this.UserId,
                         RecipientId = report.InspOffId,
-                        Content = InspOffiMessage,
+                        Content = InspOffiMessageEn,
+                        ArContent = InspOffiMessageAr,
                         Type = "",
                         CreatedAt = DateTime.UtcNow,
 
@@ -1148,14 +1252,19 @@ namespace LabMaterials.Pages
                     if (report.InspOffApprovalDate != null)
                         report.InspOffApprovalDate = null;
                         
-                    string ManagerMessage = string.Format("Your return items request is rejected with comment: {0}", Comment);
+                    // string ManagerMessage = string.Format("Your return items request is rejected with comment: {0}", Comment);
+
+                    string ManagerMessageEn = string.Format(Program.Translations["RetReqRejected"]["en"], Comment);
+                    string ManagerMessageAr = string.Format(Program.Translations["RetReqRejected"]["ar"], Comment);
+
                     var msgToManager = new Message
                     {
                         ReturnRequestId = RejectReceivingReportId,
                         ReportType = "ReturnItems",
                         SenderId = this.UserId,
                         RecipientId = report.ManagerId,
-                        Content = ManagerMessage,
+                        Content = ManagerMessageEn,
+                        ArContent = ManagerMessageAr,
                         Type = "",
                         CreatedAt = DateTime.UtcNow,
 
@@ -1203,14 +1312,18 @@ namespace LabMaterials.Pages
                     return NotFound();
                 }
 
-                string ReplyMessage = string.Format("Replied with comment: {0}", Reply);
+                // string ReplyMessage = string.Format("Replied with comment: {0}", Reply);
+
+                string ReplyMessageEn = string.Format(Program.Translations["RepliedWithComment"]["en"], Reply);
+                string ReplyMessageAr = string.Format(Program.Translations["RepliedWithComment"]["ar"], Reply);
                 var msgTo = new Message
                 {
                     MaterialRequestId = ReplyReportId,
                     ReportType = "Dispensing",
                     SenderId = this.UserId,
                     RecipientId = ReplySender,
-                    Content = ReplyMessage,
+                    Content = ReplyMessageEn,
+                    ArContent = ReplyMessageAr,
                     Type = "",
                     CreatedAt = DateTime.UtcNow
 
@@ -1230,14 +1343,19 @@ namespace LabMaterials.Pages
 
                 // report.IsReplied = true;
 
-                string ReplyMessage = string.Format("Replied with comment: {0}", Reply);
+                // string ReplyMessage = string.Format("Replied with comment: {0}", Reply);
+
+                string ReplyMessageEn = string.Format(Program.Translations["RepliedWithComment"]["en"], Reply);
+                string ReplyMessageAr = string.Format(Program.Translations["RepliedWithComment"]["ar"], Reply);
+
                 var msgToTechMem = new Message
                 {
                     ReportId = ReplyReportId,
                     ReportType = "Receiving",
                     SenderId = this.UserId,
                     RecipientId = ReplySender,
-                    Content = ReplyMessage,
+                    Content = ReplyMessageEn,
+                    ArContent = ReplyMessageAr,
                     Type = "",
                     CreatedAt = DateTime.UtcNow
 
@@ -1255,14 +1373,19 @@ namespace LabMaterials.Pages
 
                 // report.IsReplied = true;
 
-                string ReplyMessage = string.Format("Replied with comment: {0}", Reply);
+                // string ReplyMessage = string.Format("Replied with comment: {0}", Reply);
+
+                string ReplyMessageEn = string.Format(Program.Translations["RepliedWithComment"]["en"], Reply);
+                string ReplyMessageAr = string.Format(Program.Translations["RepliedWithComment"]["ar"], Reply);
+
                 var msgToSender = new Message
                 {
                     ReturnRequestId = ReplyReportId,
                     ReportType = "ReturnItems",
                     SenderId = this.UserId,
                     RecipientId = ReplySender,
-                    Content = ReplyMessage,
+                    Content = ReplyMessageEn,
+                    ArContent = ReplyMessageAr,
                     Type = "",
                     CreatedAt = DateTime.UtcNow
 
@@ -1312,7 +1435,7 @@ namespace LabMaterials.Pages
                 .Any(r => r.ReturnRequestId == returnRequestId && r.RecommendedAction == ItemCondition.Destruction);
 
             return new JsonResult(new { hasRecyclable, hasDestruction });
-        } 
+        }
 
         private void FillLables()
         {
@@ -1355,7 +1478,8 @@ namespace LabMaterials.Pages
             this.lblYourReply = (Program.Translations["YourReply"])[Lang];
 
             this.lblReply = (Program.Translations["Reply"])[Lang];
-
+            this.lblReject = (Program.Translations["Reject"])[Lang];
+          
 
         }
     }

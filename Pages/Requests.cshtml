@@ -79,7 +79,12 @@
                                                         
                                                                                         
                                             }
-                                            <div  class="m-2"><b>@sender?.FullName- </b>@inbox.Content</div>
+                                            @if(Model.Lang == "ar" && inbox.ArContent != null){
+                                                <div  class="m-2"><b>@sender?.FullName- </b>@inbox.ArContent</div>
+                                            }
+                                            else{
+                                                <div  class="m-2"><b>@sender?.FullName- </b>@inbox.Content</div>
+                                            }
                                             @if(inbox.Type == ""){
 
                                                 @if(inbox.ReportType == "Receiving"){
@@ -490,7 +495,7 @@
                                     </div>
                                     <div class="modal-footer">
                                         <!-- Button to submit the comment and reject -->
-                                        <button type="submit" asp-page="/Requests" asp-page-handler="RejectWithComment" class="btn btn-danger" id="rejectBtn"  >Reject</button>
+                                        <button type="submit" asp-page="/Requests" asp-page-handler="RejectWithComment" class="btn btn-danger" id="rejectBtn"  >@Model.lblReject</button>
                                        
                                     </div>
                                 </form>

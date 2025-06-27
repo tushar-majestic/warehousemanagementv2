@@ -8,7 +8,7 @@ namespace LabMaterials.Pages
     {
         private readonly LabDBContext _context;
         private readonly IWebHostEnvironment _environment;
-        public string lblCreateReport, lblSerialNumber, lblFiscalYear, lblReceivingDate, lblSectorNumber, lblReceivingWarehouse, lblBasedOnDocument, lblDocumentNumber, lblDocumentDate, lblAddAttachment, lblSupplierType, lblSupplierName, lblItemGroup, lblItemNo, lblItemName, lblItemDescription, lblUnitOfMeasure, lblQuantity, lblUnitPrice, lblTotalPrice, lblComments, lblRecipientID, lblRecipientName, lblTechnicalMember, lblChiefResponsible, lblSubmitReport, lblRecipientSector, lblNewReceivingReport;
+        public string lblCreateReport, lblSerialNumber, lblFiscalYear, lblReceivingDate, lblSectorNumber, lblReceivingWarehouse, lblBasedOnDocument, lblDocumentNumber, lblDocumentDate, lblAddAttachment, lblSupplierType, lblSupplierName, lblItemGroup, lblItemNo, lblItemName, lblItemDescription, lblUnitOfMeasure, lblQuantity, lblUnitPrice, lblTotalPrice, lblComments, lblRecipientID, lblRecipientName, lblTechnicalMember, lblChiefResponsible, lblSubmitReport, lblRecipientSector, lblNewReceivingReport, lblRequestSentMsg;
         public ReceivingReportsModel(LabDBContext context, IWebHostEnvironment environment)
         {
             _context = context;
@@ -294,14 +294,17 @@ namespace LabMaterials.Pages
             }
             await _context.SaveChangesAsync();
 
-            string Message = string.Format("Sent Request for Items. Approve the request or add comments.");
+            string MessageEn = string.Format(Program.Translations["RequestSentMsg"]["en"]);
+            string MessageAr = string.Format(Program.Translations["RequestSentMsg"]["ar"]);
+
             var msg = new Message
             {
                 ReportId = Report.Id,
                 ReportType = "Receiving",
                 SenderId = Report.CreatedBy,
                 RecipientId = Report.TechnicalMemberId,
-                Content = Message,
+                Content = MessageEn,
+                ArContent = MessageAr,
                 Type = "",
                 CreatedAt = DateTime.UtcNow
             };
@@ -343,6 +346,7 @@ namespace LabMaterials.Pages
             this.lblSubmitReport = (Program.Translations["SubmitReport"])[Lang];
             this.lblRecipientSector = (Program.Translations["RecipientSector"])[Lang];
             this.lblNewReceivingReport = (Program.Translations["NewReceivingReport"])[Lang];
+            this.lblRequestSentMsg = (Program.Translations["RequestSentMsg"])[Lang];
 
 
 

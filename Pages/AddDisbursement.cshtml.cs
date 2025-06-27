@@ -332,14 +332,17 @@ namespace LabMaterials.Pages
                     await _context.SaveChangesAsync();
                 }
 
-                string Message = string.Format("Sent Material Dispensing Request Approve the request or add comments.");
+                // string Message = string.Format("Sent Material Dispensing Request Approve the request or add comments.");
+                string MessageEn =  string.Format(Program.Translations["DisRequestSent"]["en"]);
+                string MessageAr =  string.Format(Program.Translations["DisRequestSent"]["ar"]);
                 var msg = new  Message
                 {
                     MaterialRequestId = Report.RequestId,
                     ReportType = "Dispensing",
                     SenderId = Report.RequestedByUserId,
                     RecipientId = Report.DeptManagerId,
-                    Content = Message,
+                    Content = MessageEn,
+                    ArContent = MessageAr,
                     Type = "",
                     CreatedAt = DateTime.UtcNow
                 };
@@ -494,7 +497,7 @@ namespace LabMaterials.Pages
             this.lblStoreName = (Program.Translations["StoreName"])[Lang];
             this.lblItemName = (Program.Translations["ItemName"])[Lang];
             this.lblItemCode = (Program.Translations["ItemCode"])[Lang];
-            this.lblItemTypeCode = (Program.Translations["ItemTypeCode"])[Lang]; 
+            this.lblItemTypeCode = (Program.Translations["ItemTypeCode"])[Lang];
             this.lblQuantity = (Program.Translations["Quantity"])[Lang];
             this.lblDisbursements = (Program.Translations["Disbursements"])[Lang];
             this.lblItemGroups = (Program.Translations["ItemGroups"])[Lang];

@@ -26,6 +26,8 @@ public partial class Message
     public int? RecipientId { get; set; }
 
     public string Content { get; set; } = null!;
+    public string? ArContent { get; set; } 
+
 
     public DateTime CreatedAt { get; set; }
 
