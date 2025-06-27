@@ -113,7 +113,7 @@
                         
 
                             <div class="form-group w-23">
-                            <label asp-for="@Model.ItemCardsFromReport[i].TypeOfAsset"></label>
+                            <label asp-for="@Model.ItemCardsFromReport[i].TypeOfAsset">@Model.lblTypeofAsset</label>
                                 <select asp-for="@Model.ItemCardsFromReport[i].TypeOfAsset" class="form-control">
                                     <option value="">@Model.lblSelectAssetType</option>
                                     <option value="Sustainable">@Model.lblSustainable</option>
@@ -122,7 +122,7 @@
                                 </select>
                             </div>
                             <div class="form-group w-23">
-                                <label asp-for="@Model.ItemCardsFromReport[i].Minimum"></label>
+                                <label asp-for="@Model.ItemCardsFromReport[i].Minimum">@Model.lblMinimum</label>
                                 <input asp-for="@Model.ItemCardsFromReport[i].Minimum"
                                     class="form-control minimum-input"
                                     type="number"
@@ -170,14 +170,14 @@
                     </div>
 
                     <div class="form-group" style="width: 48%;">
-                        <label asp-for="ItemCardBatch.DateOfEntry"></label>
+                        <label asp-for="ItemCardBatch.DateOfEntry">@Model.lblDateOfEntryInWarehouse</label>
                         <input asp-for="ItemCardBatch.DateOfEntry" name="DateOfEntry" id="DateOfEntry" class="form-control" type="date" readonly />
                     </div>
                 </div>
           
                 <div class="d-flex justify-content-between">
                     <div class="form-group" style="width:31%;">
-                        <label asp-for="ItemCardBatch.RoomId"></label>
+                        <label asp-for="ItemCardBatch.RoomId">@Model.lblRoomName</label>
                         <select asp-for="ItemCardBatch.RoomId" class="form-control" asp-items="ViewBag.RoomId" name="RoomId" id="RoomId"  onchange="filterShelfByRoom()">
                             <option value="">@Model.lblSelectRoom</option>
 
@@ -185,7 +185,7 @@
                     </div>
 
                     <div class="form-group" style="width:31%;">
-                        <label asp-for="ItemCardBatch.ShelfId"></label>
+                        <label asp-for="ItemCardBatch.ShelfId">@Model.lblSelectShelf</label>
                         <select asp-for="ItemCardBatch.ShelfId" name="ShelfId" id="ShelfId" class="form-control" asp-items="ViewBag.ShelfId">
                             <option value="">@Model.lblSelectShelf</option>
 
@@ -194,13 +194,13 @@
 
                     @if(Model.ReportType == "Receiving"){
                         <div class="form-group" style="width:31%;">
-                            <label asp-for="ItemCardBatch.SupplierId"></label>
+                            <label asp-for="ItemCardBatch.SupplierId">@Model.lblSupplierName</label>
                             <select asp-for="ItemCardBatch.SupplierId" name="SupplierId" id="SupplierId" class="form-control" asp-items="ViewBag.SupplierId" readonly></select>
                         </div>
                     }
                     else if(Model.ReportType == "ReturnItems"){
                         <div class="form-group" style="width:31%;">
-                            <label asp-for="ItemCardBatch.SupplierId"></label>
+                            <label asp-for="ItemCardBatch.SupplierId">@Model.lblSupplierName</label>
                             <select asp-for="ItemCardBatch.SupplierId" name="SupplierId" id="Supplier" class="form-control" asp-items="ViewBag.SupplierId"></select>
                         </div>
                     }
@@ -209,14 +209,14 @@
                 <div class="d-flex justify-content-between">
                     @if(Model.ReportType == "Receiving"){
                         <div class="form-group" style="width:48%;">
-                            <label asp-for="ItemCardBatch.DocumentType"></label>
+                            <label asp-for="ItemCardBatch.DocumentType">@Model.lblDocumentType</label>
                             <input asp-for="ItemCardBatch.DocumentType" name="DocumentType" id="DocumentType" class="form-control" readonly/>
                             
                         </div> 
                     }
                     else if(Model.ReportType == "ReturnItems"){
                         <div class="form-group" style="width:48%;">
-                            <label asp-for="ItemCardBatch.DocumentType"></label>
+                            <label asp-for="ItemCardBatch.DocumentType">@Model.lblDocumentType</label>
                             @* <select asp-for="ItemCardBatch.DocumentType" name="DocumentType" id="DocumentType" class="form-control"  asp-items="ViewBag.D" /> *@
                             <select asp-for="ItemCardBatch.DocumentType" class="form-select" id="DocumentType" name="DocumentType" >
                                 <option value="">@Model.lblSelectBasedOndocument</option>
@@ -238,7 +238,7 @@
                      
 
                     <div class="form-group" style="width:48%;">
-                        <label asp-for="ItemCardBatch.ReceiptDocumentnumber"></label>
+                        <label asp-for="ItemCardBatch.ReceiptDocumentnumber">@Model.lblDocumentNumber</label>
                         <input asp-for="ItemCardBatch.ReceiptDocumentnumber" name="ReceiptDocumentnumber" id="ReceiptDocumentnumber" class="form-control" readonly />
                     </div>
 

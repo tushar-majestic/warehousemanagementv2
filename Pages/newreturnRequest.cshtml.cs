@@ -30,34 +30,11 @@ namespace LabMaterials.Pages
         // --- Localized Labels (sample) ---
         public string lblHome => "Home";
         public string lblDamageItem => "New Return Request";
-        public string lblItemCode => "Item Code";
         public string lblItemName => "Item Name";
         public string lblArabicLanguage => "Arabic";
         public string lblEnglishLanguage => "English";
-        public string lblItemDescription => "Item Description";
         public string lblTypeofContract => "Type of Contract";
-        public string lblChemical => "Chemical";
-        public string lblRiskRating => "Risk Rating";
-        public string lblStateofMatter => "State of Matter";
-        public string lblExpiryDate => "Expiry Date";
-        public string lblUnitOfMeasure => "Unit of Measure";
-        public string lblReturned => "Returned";
-        public string lblQuantity => "Quantity";
-        public string lblReturnNotes => "Return Notes";
         public string lblOrderNumber => "Order Number";
-        public string lblOrderDate => "Order Date";
-        public string lblRequestingSector => "Requesting Sector";
-        public string lblApplicantsSector => "Applicant's Sector";
-        public string lblStoreName => "Store";
-        public string lblReasonForReturn => "Reason for Return";
-        public string lblSurPlus => "Surplus";
-        public string lblExpired => "Expired";
-        public string lblInvalid => "Invalid";
-        public string lblDamaged => "Damaged";
-        public string lblCancel => "Cancel";
-        public string lblAdd => "Submit";
-        public string lblRemove => "Remove";
-        public string lblAddMore => "Add More";
 
         public List<Item> AllItems { get; set; }
         [BindProperty]
@@ -259,14 +236,18 @@ namespace LabMaterials.Pages
             _context.Attach(request).Property(r => r.OrderNumber).IsModified = true;
             await _context.SaveChangesAsync();
 
-            string Message = string.Format("Sent Return Item Request Approve the request or add comments.");
+            string MessageEn = string.Format(Program.Translations["RetRequestSent"]["en"]);
+            string MessageAr = string.Format(Program.Translations["RetRequestSent"]["ar"]);
+
+            // string Message = string.Format("Sent Return Item Request Approve the request or add comments.");
             var msg = new Message
             {
                 ReturnRequestId = request.Id,
                 ReportType = "ReturnItems",
                 SenderId = request.CreatedBy,
                 RecipientId = request.ManagerId,
-                Content = Message,
+                Content = MessageEn,
+                ArContent = MessageAr,
                 Type = "",
                 CreatedAt = DateTime.UtcNow
             };
